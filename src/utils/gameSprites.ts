@@ -253,6 +253,18 @@ const withAnchor = (nfl: NflSprites, pick: Omit<NflPick, 'cx' | 'foot'> | null):
   return { ...pick, cx: a?.[0] ?? 31.5, foot: a?.[1] ?? 58 };
 };
 
+/**
+ * NFL edition: free agents (team blank or FA) by `POS:Name` -> the club he is known for (banner / last club). A caller
+ * that passes the player's current team (blank or FA) would otherwise draw him white; GameSprite and nflSpriteFor
+ * read this so a free agent is always in his last club's kit.
+ */
+const FREE_AGENT_CLUBS = new Map<string, string>();
+export const registerFreeAgents = (entries: Array<[string, string]>) => {
+  FREE_AGENT_CLUBS.clear();
+  entries.forEach(([k, c]) => c && FREE_AGENT_CLUBS.set(k, c));
+};
+export const freeAgentClub = (key: string): string | undefined => (IS_NFL ? FREE_AGENT_CLUBS.get(key) : undefined);
+
 export const nflSpriteFor = (
   nfl: NflSprites | null,
   key: string,
@@ -262,7 +274,7 @@ export const nflSpriteFor = (
   legend = false,
   tone?: string,
   role = 1,
-): NflPick | null => (nfl ? withAnchor(nfl, pickNfl(nfl, key, club, current, action, legend, tone, role)) : null);
+): NflPick | null => (nfl ? withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role)) : null);
 
 const STANDIN_SKINS: Record<string, number[]> = { pale: [2], light: [2], tan: [2, 1], medium: [1, 0], brown: [0], deep: [0] };
 
