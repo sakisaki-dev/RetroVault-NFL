@@ -1,4 +1,4 @@
-import { kitColorsOf } from '@/utils/kitColorTable';
+import { kitColorsOf, numberTables } from '@/utils/kitColorTable';
 import { homeUniform, pantsBands, sleeveBands, sockBands } from '@/components/collection/art/sprite/uniforms';
 
 /**
@@ -160,6 +160,76 @@ const repaintPixels = (px: Uint8ClampedArray, w: number, h: number, from: string
 };
 
 /**
+ * JERSEY NUMBER (NFL edition; scripts/nfl/jersey_numbers.py learned the font from the save's own sprites): the number
+ * baked into a kit file is the one he wore at that club (a file repainted into another club's kit keeps the old
+ * club's), so it is erased (every number-colour pixel on the chest, the band accent in rows 34-35) and his real number
+ * drawn in the game's font, in the club's number colour, only on pixels that are jersey (a ball or arm in front of the
+ * chest stays in front). Glyphs 6 x 7 from row 33; a lone digit at x 29, two at 26 and 31; band rows 34-35 take the
+ * band's accent colour.
+ */
+const NUM_SLOT_X: Record<string, number> = { one: 29, left: 26, right: 31 };
+const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, club: string) => {
+  const t = numberTables();
+  if (!t || h < 40 || w < 38) return;
+  const at = (x: number, y: number) => (y * w + x) * 4;
+  const key = (x: number, y: number) => (px[at(x, y)] << 16) | (px[at(x, y) + 1] << 8) | px[at(x, y) + 2];
+  const vote = (cells: number[]) => {
+    const c = new Map<number, number>();
+    cells.forEach((k) => c.set(k, (c.get(k) ?? 0) + 1));
+    return [...c.entries()].sort((a, b) => b[1] - a[1]).map(([k]) => k);
+  };
+  const solid = (x: number, y: number) => px[at(x, y) + 3] === 255;
+  const chest: number[] = [];
+  for (let y = 36; y < 40; y++) for (let x = 26; x < 38; x++) if (solid(x, y)) chest.push(key(x, y));
+  const jersey = vote(chest)[0];
+  if (jersey === undefined) return;
+  const edges = new Set<number>();
+  for (let y = 36; y < 40; y++) for (const x of [25, 26, 37, 38]) if (solid(x, y)) edges.add(key(x, y));
+  const inner: number[] = [];
+  for (let y = 36; y < 40; y++) for (let x = 27; x < 37; x++) if (solid(x, y) && !edges.has(key(x, y)) && key(x, y) !== jersey) inner.push(key(x, y));
+  const fileNc = vote(inner)[0];
+  const bg: Record<number, number> = {};
+  const accOf: Record<number, number | undefined> = {};
+  for (const y of [34, 35]) {
+    const row: number[] = [];
+    for (let x = 27; x < 37; x++) if (solid(x, y)) row.push(key(x, y));
+    const v = vote(row);
+    bg[y] = v[0];
+    accOf[y] = v.find((k) => k !== v[0]);
+  }
+  // erase
+  for (let y = 33; y < 40; y++) {
+    for (let x = 26; x < 38; x++) {
+      if (!solid(x, y)) continue;
+      const k = key(x, y);
+      const band = y === 34 || y === 35;
+      const to = band ? (accOf[y] !== undefined && k === accOf[y] ? bg[y] : undefined) : fileNc !== undefined && k === fileNc ? jersey : undefined;
+      if (to !== undefined) [px[at(x, y)], px[at(x, y) + 1], px[at(x, y) + 2]] = [(to >> 16) & 255, (to >> 8) & 255, to & 255];
+    }
+  }
+  const kit = t.kit[club];
+  const nc: RGB = kit?.nc ?? (fileNc !== undefined ? [(fileNc >> 16) & 255, (fileNc >> 8) & 255, fileNc & 255] : [255, 255, 255]);
+  const acc: RGB = kit?.acc ?? nc;
+  const s = String(number);
+  s.split('').forEach((d, i) => {
+    const slot = s.length === 1 ? 'one' : i === 0 ? 'left' : 'right';
+    const g = t.font[`${d}|${slot}`] ?? t.font[`${d}|${slot === 'left' ? 'right' : 'left'}`] ?? t.font[`${d}|one`];
+    if (!g) return;
+    for (let gy = 0; gy < 7; gy++) {
+      for (let gx = 0; gx < 6; gx++) {
+        if (g[gy][gx] !== '#') continue;
+        const x = NUM_SLOT_X[slot] + gx;
+        const y = 33 + gy;
+        if (!solid(x, y)) continue;
+        const band = y === 34 || y === 35;
+        if (key(x, y) !== (band ? bg[y] : jersey)) continue;
+        [px[at(x, y)], px[at(x, y) + 1], px[at(x, y) + 2]] = band ? acc : nc;
+      }
+    }
+  });
+};
+
+/**
  * BODY RESHAPE (src/config/bodyTypes.ts rolls it): whole pixel rows and columns are repeated or dropped, never scaled,
  * so the sprite stays pixel-perfect. Every save sprite is drawn on one body template (all five poses, every kit, the
  * stand-ins), measured from his feet row `foot` (58) and centre line `cx` (31.5):
@@ -240,6 +310,9 @@ export interface SpriteJob {
   paint?: string;
   /** Paint a coach's white polo: a CSS colour and his outfit mask (paintPolo) */
   polo?: { color: string; mask: string[] };
+  /** NFL edition: draw this jersey number in the game's font, in this club's number colours (numberize) */
+  number?: number;
+  numberClub?: string;
   /** Rows added (+) / removed (-) and columns a side (bodyTypes.ts BodyRoll) */
   rows?: number;
   cols?: number;
@@ -259,8 +332,9 @@ const CACHE_MAX = 600;
 export const processSprite = (src: string, job: SpriteJob = {}): Promise<string> => {
   const rows = job.rows ?? 0;
   const cols = job.cols ?? 0;
-  if (!job.paint && !job.polo && !rows && !cols) return Promise.resolve(src);
-  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}`;
+  const num = job.number !== undefined && job.numberClub ? job.number : undefined;
+  if (!job.paint && !job.polo && !rows && !cols && num === undefined) return Promise.resolve(src);
+  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}|${num ?? ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const job2 = loadImage(src).then((img) => {
@@ -277,6 +351,7 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
       if (from) repaintPixels(data.data, w, h, from, to);
       else paintPixels(data.data, w, h, to);
     }
+    if (num !== undefined) numberize(data.data, w, h, num, job.numberClub!);
     if (job.polo) paintPolo(data.data, w, h, job.polo.color, job.polo.mask);
     if (rows || cols) {
       const shaped = reshape(new Uint32Array(data.data.buffer), w, h, job.cx ?? 31.5, job.foot ?? 58, rows, cols);

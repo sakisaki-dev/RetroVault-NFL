@@ -5,7 +5,7 @@ import { getPlayerEdits, type PlayerEdit } from '@/utils/indexedDB';
 import { normalizeLeague } from '@/config/stats';
 import { loadPlayerExtras, signatureTeamOf } from '@/utils/playerExtras';
 import { IS_NFL } from '@/config/edition';
-import { registerFreeAgents } from '@/utils/gameSprites';
+import { registerFreeAgents, registerRealNumbers } from '@/utils/gameSprites';
 
 interface LeagueContextType {
   /** League players with position-normalized metrics. Excludes real-life legends. */
@@ -187,6 +187,7 @@ export const LeagueProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       });
     }
     if (IS_NFL) {
+      registerRealNumbers(extras?.realNumbers);
       const fa: Array<[string, string]> = [];
       POSITION_KEYS.forEach((k) =>
         (result.careerData[k] as Player[]).forEach((p) => {

@@ -35,17 +35,25 @@ def file_for(key, club, pose=""):
     return SPR / f"{e['uid']}_{CLUBS[club]:03d}{pose}.png"
 
 
+def chest(a):
+    """The jersey colour (most common on the chest under the band) and the number colour (the most common other colour
+    inside the number columns, never the colours at the chest's edges, which are the side outline)."""
+    rows = range(36, 40)
+    main = collections.Counter(tuple(int(v) for v in a[y, x, :3]) for y in rows for x in range(26, 38) if a[y, x, 3])
+    jersey = main.most_common(1)[0][0]
+    edges = {tuple(int(v) for v in a[y, x, :3]) for y in rows for x in (25, 26, 37, 38) if a[y, x, 3]}
+    inner = collections.Counter(tuple(int(v) for v in a[y, x, :3]) for y in rows for x in range(27, 37)
+                                if a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) not in edges | {jersey})
+    num = inner.most_common(1)[0][0] if inner else None
+    return jersey, num
+
+
 def number_colour(a, jersey):
-    box = a[33:40, 26:38]
-    cols = collections.Counter(tuple(int(v) for v in c[:3]) for row in box for c in row if c[3])
-    cand = [(c, k) for c, k in cols.items() if c not in jersey and sum(c) > 400]
-    return max(cand, key=lambda x: x[1])[0] if cand else (251, 255, 253)
+    return chest(a)[1]
 
 
 def jersey_colours(a):
-    box = a[36:40, 26:38]
-    cols = collections.Counter(tuple(int(v) for v in c[:3]) for row in box for c in row if c[3])
-    return [c for c, _ in cols.most_common(2)]
+    return [chest(a)[0]]
 
 
 def learn_glyphs():
@@ -59,16 +67,28 @@ def learn_glyphs():
         if not f.exists():
             continue
         a = np.asarray(Image.open(f).convert("RGBA")).astype(int)
-        jer = jersey_colours(a)
-        nc = number_colour(a, jer)
-        m = np.array([[tuple(a[y, x, :3]) == nc and a[y, x, 3] > 0 for x in range(64)] for y in range(64)])
+        jersey, nc = chest(a)
+        if nc is None:
+            continue
+        m = np.zeros((64, 64), bool)
+        for y in range(33, 40):
+            if y in (34, 35):  # the band: the number is the band row's minority colour
+                cnt = collections.Counter(tuple(int(v) for v in a[y, x, :3]) for x in range(27, 37) if a[y, x, 3])
+                bg = cnt.most_common(1)[0][0] if cnt else None
+                for x in range(27, 37):
+                    m[y, x] = bool(a[y, x, 3]) and tuple(int(v) for v in a[y, x, :3]) != bg
+            else:
+                for x in range(27, 37):
+                    m[y, x] = bool(a[y, x, 3]) and tuple(int(v) for v in a[y, x, :3]) == nc
         s = str(n)
+        # each digit by slot (the game shifts a narrow 1 differently alone, on the left and on the right): a wider
+        # window per slot so a shifted glyph still lands inside it
         if len(s) == 1:
-            votes[s].append(m[33:40, 30:34])
+            votes[(s, "one")].append(m[33:40, 29:35])
         else:
-            votes[s[0]].append(m[33:40, 27:31])
-            votes[s[1]].append(m[33:40, 32:36])
-    return {d: (np.mean(v, axis=0) > 0.5) for d, v in votes.items() if len(v) >= 5}
+            votes[(s[0], "left")].append(m[33:40, 26:32])
+            votes[(s[1], "right")].append(m[33:40, 31:37])
+    return {k: (np.mean(v, axis=0) > 0.5) for k, v in votes.items() if len(v) >= 3}
 
 
 GLYPHS = learn_glyphs()
@@ -90,59 +110,71 @@ def donor_for(club, pos, height, weight):
     return best[1]
 
 
+SLOT_X = {"one": 29, "left": 26, "right": 31}
+
+
+def glyph_cells(number):
+    out = []
+    s_ = str(number)
+    for d, slot in zip(s_, ["one"] if len(s_) == 1 else ["left", "right"]):
+        g = GLYPHS.get((d, slot)) if GLYPHS.get((d, slot)) is not None else GLYPHS.get((d, "right" if slot == "left" else "left"))
+        if g is not None:
+            out += [(33 + gy, SLOT_X[slot] + gx) for gy in range(7) for gx in range(g.shape[1]) if g[gy, gx]]
+    return out
+
+
 def build(name, number, club, pos, height, weight, template):
     donor = donor_for(club, pos, height, weight)
     a = np.asarray(Image.open(file_for(donor, club)).convert("RGBA")).copy()
-    jer = jersey_colours(a)
-    nc = number_colour(a, jer)
-    # erase his number: each number pixel takes the jersey colour of its row (the shade where the row is shaded)
+    jersey, nc = chest(a)
+    # the band rows' own background and number colours (the number crosses the band in the band's accent)
+    band = {}
+    for y in (34, 35):
+        cnt = collections.Counter(tuple(int(v) for v in a[y, x, :3]) for x in range(27, 37) if a[y, x, 3])
+        bg = cnt.most_common(1)[0][0]
+        acc = [c for c, _ in cnt.most_common() if c != bg]
+        band[y] = (bg, acc[0] if acc else nc)
+    # erase the donor's number at its glyph cells (plus any stray number pixel in the box)
+    for (y, x) in glyph_cells(NUMS.get(donor, "")):
+        if a[y, x, 3]:
+            a[y, x, :3] = band[y][0] if y in band else jersey
     for y in range(33, 40):
-        row = [tuple(int(v) for v in a[y, x, :3]) for x in range(26, 38) if a[y, x, 3]]
-        fill = collections.Counter(c for c in row if c != nc).most_common(1)
         for x in range(26, 38):
-            if a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) == nc and fill:
-                a[y, x, :3] = fill[0][0]
-    # his number in the game's font
-    s = str(number)
-    slots = [30] if len(s) == 1 else [27, 32]
-    for d, x0 in zip(s, slots):
-        g = GLYPHS.get(d)
-        if g is None:
-            continue
-        for gy in range(7):
-            for gx in range(4):
-                y, x = 33 + gy, x0 + gx
-                if g[gy, gx] and a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) in jer:
-                    a[y, x, :3] = nc
-    # the matched head on the anchor (rows above the collar)
+            if not a[y, x, 3]:
+                continue
+            c = tuple(int(v) for v in a[y, x, :3])
+            if y in band and c == band[y][1]:
+                a[y, x, :3] = band[y][0]
+            elif y not in band and c == nc:
+                a[y, x, :3] = jersey
+    # his number in the game font
+    for (y, x) in glyph_cells(number):
+        if a[y, x, 3]:
+            a[y, x, :3] = band[y][1] if y in band else nc
+    # the head: the matched template's head shape, blacked out with a light rim; skin on the body blacked out too
     t = np.asarray(Image.open(SPR / f"{template}_800.png").convert("RGBA"))
     neck = 27
-    a[:neck, 18:46] = 0
+    night = tuple(int(v * 0.22 + 8) for v in jersey)
+    rim = tuple(min(255, int(v * 0.45 + 120)) for v in jersey)
+    a[:neck, 16:48] = 0
+    head = t[:neck, 16:48, 3] > 0
     for y in range(neck):
-        for x in range(18, 46):
-            if t[y, x, 3]:
-                a[y, x] = t[y, x]
-    # shadow: every skin pixel (the template's skin tones on the head, the donor's on the arms and neck)
-    tl = M.template_look(SPR / f"{template}_800.png")
-    hair = np.array(tl["hair"])
-    deep = jer[0]
-    night = tuple(int(v * 0.25 + 10) for v in deep)
-    rim = tuple(min(255, int(v * 0.45 + 130)) for v in deep)
-    out = a.copy()
-    for y in range(64):
+        for x in range(16, 48):
+            if head[y, x - 16]:
+                edge = any(not (0 <= y + dy < neck and 16 <= x + dx < 48 and head[y + dy, x + dx - 16])
+                           for dy, dx in ((-1, 0), (0, -1), (0, 1)))
+                a[y, x] = (*(rim if edge else night), 255)
+    for y in range(neck, 64):
         for x in range(64):
             if not a[y, x, 3]:
                 continue
             c = a[y, x, :3].astype(int)
+            if tuple(int(v) for v in c) in (jersey, nc):
+                continue
             warm = M.is_skin(np.array([[c]], dtype=np.uint8))[0, 0] or (c[0] > c[2] + 20 and c[0] > 60 and c.sum() < 600)
-            is_hair = y < neck and not tl["bald"] and np.abs(c - hair).sum() < 60
-            eye_mouth = y < neck and (tuple(c) in ((255, 255, 255), (241, 122, 124), (12, 24, 38), (15, 72, 127), (40, 26, 18)))
-            if (warm and not is_hair) or (eye_mouth and not is_hair):
-                if tuple(c) in jer or tuple(c) == nc:
-                    continue
-                edge = any(not a[y + dy, x + dx, 3] for dy, dx in ((-1, 0), (0, -1), (0, 1), (1, 0)) if 0 <= y + dy < 64 and 0 <= x + dx < 64)
-                out[y, x, :3] = rim if (edge and y < neck) else night
-    return Image.fromarray(out), donor
+            if warm:
+                a[y, x, :3] = night
+    return Image.fromarray(a), donor
 
 
 def main():
@@ -168,7 +200,7 @@ def main():
         d.text((x + 40, 64 * S + 20), t, fill=(255, 214, 120))
         d.text((x + 64 * S + 10, 64 * S + 20), t2, fill=(150, 156, 175))
     sheet.save(out / "shadow_standins.png")
-    print("digits learned:", sorted(GLYPHS))
+    print("glyphs learned:", len(GLYPHS), sorted(k for k in GLYPHS if k[0]=="1"))
 
 
 if __name__ == "__main__":

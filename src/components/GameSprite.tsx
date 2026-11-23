@@ -5,7 +5,7 @@ import { reducedMotion } from '@/utils/motion';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { bodyFor, rolePose } from '@/config/bodyTypes';
-import { freeAgentClub, REGULAR_POSE, SPRITE_BASELINE, SPRITE_BUST, faceFor, nflSpriteFor, useGameSprites, type BodyPose, type FaceSubject, type SpriteAction } from '@/utils/gameSprites';
+import { freeAgentClub, realNumberOf, REGULAR_POSE, SPRITE_BASELINE, SPRITE_BUST, faceFor, nflSpriteFor, useGameSprites, type BodyPose, type FaceSubject, type SpriteAction } from '@/utils/gameSprites';
 
 /**
  * Retro Bowl's own sprite for a player (the owner's private sprites, src/utils/gameSprites.ts). Renders nothing when
@@ -94,21 +94,21 @@ const useTicker = (on: boolean, fps: number) => {
  * (config/bodyTypes.ts) pixel for pixel (gameKitPaint.ts processSprite, cached per file x club x body). Null until
  * ready; the plain file when there is nothing to do.
  */
-const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number): string | null => {
+const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string): string | null => {
   const [out, setOut] = useState<{ key: string; url: string } | null>(null);
-  const plain = !!src && !paint && !rows && !cols;
-  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}` : '';
+  const plain = !!src && !paint && !rows && !cols && !(number !== undefined && numberClub);
+  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}` : '';
   useEffect(() => {
     if (!key) return;
     let live = true;
     import('@/utils/gameKitPaint')
-      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot }))
+      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub }))
       .then((url) => live && setOut({ key, url }))
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [key, src, paint, rows, cols, cx, foot]);
+  }, [key, src, paint, rows, cols, cx, foot, number, numberClub]);
   if (plain) return src;
   return out && out.key === key ? out.url : null;
 };
@@ -147,7 +147,7 @@ const GameSprite = (props: GameSpriteProps) => {
     () => bodyFor(`${position ?? ''}:${name}`, (sprites?.looks ?? sprites?.regular?.skins)?.[name]),
     [sprites, position, name],
   );
-  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58);
+  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub);
 
   const regular = useMemo(() => {
     const r = sprites?.regular;

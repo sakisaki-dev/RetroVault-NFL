@@ -1,5 +1,5 @@
 import { IS_NFL } from '@/config/edition';
-import { setKitColors, type KitColors } from '@/utils/kitColorTable';
+import { numberTables, setKitColors, setNumberTables, type KitColors } from '@/utils/kitColorTable';
 import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
@@ -172,6 +172,7 @@ export const loadGameSprites = (): void => {
   Promise.all([privateJson('nfl/index.json'), siteLooks()]).then(([nfl, looks]) => {
     if (validNfl(nfl)) {
       setKitColors((nfl as { kitColors?: KitColors }).kitColors);
+      setNumberTables(nfl as Parameters<typeof setNumberTables>[0]);
       publish({ nfl, looks });
     }
   });
@@ -233,6 +234,8 @@ export interface NflPick {
   /** Club to paint the neutral kit into (gameKitPaint.ts); unset = draw src as is */
   paint?: string;
   pose: number;
+  /** NFL edition: the club whose number colours to draw his real number in, set when the drawn number must be redone */
+  numberClub?: string;
   /** The figure's centre line and feet row in the 64 x 64 frame (index anchors; the body template's 31.5, 58) */
   cx: number;
   foot: number;
@@ -265,6 +268,27 @@ export const registerFreeAgents = (entries: Array<[string, string]>) => {
 };
 export const freeAgentClub = (key: string): string | undefined => (IS_NFL ? FREE_AGENT_CLUBS.get(key) : undefined);
 
+/** NFL edition: real jersey numbers by `POS:Name` (player-extras realNumbers), set when the league loads. */
+let REAL_NUMBERS: Record<string, number> = {};
+export const registerRealNumbers = (n: Record<string, number> | undefined) => {
+  REAL_NUMBERS = n ?? {};
+};
+export const realNumberOf = (key: string): number | undefined => (IS_NFL ? REAL_NUMBERS[key] : undefined);
+
+/**
+ * The sprite's drawn number is his real one, redone where the file's isn't: every repainted or painted-neutral sprite
+ * and the kit files index.json `numberFix` lists (a number he wore at another club). Sets `numberClub` on the pick.
+ */
+const withNumber = (pick: NflPick | null, key: string, legend: boolean): NflPick | null => {
+  if (!pick || !IS_NFL || legend || realNumberOf(key) === undefined) return pick;
+  const t = numberTables();
+  if (!t) return pick;
+  const file = pick.src.slice(pick.src.lastIndexOf('/') + 1);
+  if (pick.paint) return { ...pick, numberClub: pick.paint.split('<')[0] };
+  if (pick.kit !== 'neutral' && t.fix.has(file)) return { ...pick, numberClub: pick.kit };
+  return pick;
+};
+
 export const nflSpriteFor = (
   nfl: NflSprites | null,
   key: string,
@@ -274,7 +298,7 @@ export const nflSpriteFor = (
   legend = false,
   tone?: string,
   role = 1,
-): NflPick | null => (nfl ? withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role)) : null);
+): NflPick | null => (nfl ? withNumber(withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role)), key, legend) : null);
 
 const STANDIN_SKINS: Record<string, number[]> = { pale: [2], light: [2], tan: [2, 1], medium: [1, 0], brown: [0], deep: [0] };
 
