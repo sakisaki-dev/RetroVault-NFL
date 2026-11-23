@@ -1,5 +1,5 @@
 import { IS_NFL } from '@/config/edition';
-import { numberTables, setKitColors, setNumberTables, type KitColors } from '@/utils/kitColorTable';
+import { numberTables, setKitColors, setNumberTables, setSockTemplate, type KitColors } from '@/utils/kitColorTable';
 import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
@@ -173,6 +173,7 @@ export const loadGameSprites = (): void => {
     if (validNfl(nfl)) {
       setKitColors((nfl as { kitColors?: KitColors }).kitColors);
       setNumberTables(nfl as Parameters<typeof setNumberTables>[0]);
+      setSockTemplate((nfl as { sockTemplate?: Record<string, string[]> }).sockTemplate);
       publish({ nfl, looks });
     }
   });

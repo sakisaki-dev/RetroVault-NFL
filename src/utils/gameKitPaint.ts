@@ -1,4 +1,4 @@
-import { kitColorsOf, numberTables } from '@/utils/kitColorTable';
+import { kitColorsOf, numberTables, sockTemplate } from '@/utils/kitColorTable';
 import { homeUniform, pantsBands, sleeveBands, sockBands } from '@/components/collection/art/sprite/uniforms';
 
 /**
@@ -21,8 +21,9 @@ const SHADE = 0x8f8f8f;
 const TRIM = 0xfbfffd;
 const BODY_TOP = 27;
 const PANTS_TOP = 41;
-const SOCKS_TOP = 52;
-const SHOES_TOP = 56;
+// The socks begin at row 49 (stripe rows 49-53, the bottoms beside the shoes to row 58); measured over the neutral kits
+const SOCKS_TOP = 49;
+const SHOES_TOP = 59;
 
 type RGB = [number, number, number];
 
@@ -112,21 +113,38 @@ const CLASS_KEY: [number, string][] = [[BASE, 'base'], [SHADE, 'shade'], [TRIM, 
  * wears in a band (kitColors: what the neutral colours became in the save's real kit files) becomes what the neutral
  * colour becomes in `team`'s palette (paintPixels). Skin, hair, gloves, shoes and the number keep their colours.
  */
-const repaintPixels = (px: Uint8ClampedArray, w: number, h: number, from: string, team: string) => {
+const repaintPixels = (px: Uint8ClampedArray, w: number, h: number, from: string, team: string, pose = 1) => {
   const src = kitColorsOf(from);
   if (!src) return;
   const pal = paletteFor(team);
   const bands: [string, Record<number, RGB>, number, number][] = [
     ['jersey', pal.jersey, BODY_TOP, PANTS_TOP],
     ['pants', pal.pants, PANTS_TOP, SOCKS_TOP],
-    ['socks', pal.socks, SOCKS_TOP, SHOES_TOP],
   ];
+  // the socks by the neutral kit's class template (stripe rows and all), never by their old colours
+  const tpl = sockTemplate(pose);
+  if (tpl) {
+    for (let y = SOCKS_TOP; y < Math.min(SHOES_TOP, h); y++) {
+      const row = tpl[y - SOCKS_TOP] ?? '';
+      for (let x = 0; x < w; x++) {
+        const cls = row[x] === 'b' ? BASE : row[x] === 's' ? SHADE : row[x] === 't' ? TRIM : 0;
+        const i = (y * w + x) * 4;
+        if (cls && px[i + 3] === 255) [px[i], px[i + 1], px[i + 2]] = pal.socks[cls];
+      }
+    }
+  }
   for (const [band, to, y0, y1] of bands) {
     const map = new Map<number, RGB>();
     for (const [cls, name] of CLASS_KEY) {
       const c = src[band]?.[name];
       const t = to[cls];
       if (c && t && !map.has((c[0] << 16) | (c[1] << 8) | c[2])) map.set((c[0] << 16) | (c[1] << 8) | c[2], t);
+    }
+    // the jersey's outer outline is drawn in the club's accent (kitColors `side`): the target's sleeve stripe colour
+    const side = src[band]?.side;
+    if (side && band === 'jersey' && to[TRIM]) {
+      const k = (side[0] << 16) | (side[1] << 8) | side[2];
+      if (!map.has(k)) map.set(k, to[TRIM]);
     }
     // sleeves and other cloth shades the neutral template has no class for: a colour near the club's base or shade
     // (RGB distance under 36, so never a skin tone) takes the target's base or shade scaled by the same brightness
@@ -209,7 +227,24 @@ const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, 
   }
   const kit = t.kit[club];
   const nc: RGB = kit?.nc ?? (fileNc !== undefined ? [(fileNc >> 16) & 255, (fileNc >> 8) & 255, fileNc & 255] : [255, 255, 255]);
-  const acc: RGB = kit?.acc ?? nc;
+  const acc0: RGB = kit?.acc ?? nc;
+  // a number that would vanish on the jersey the club wears (white on the Cowboys' white) takes the club's own dark
+  // colour, as the real jerseys do (navy on white)
+  const lumOf = (c: RGB) => {
+    const f = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  };
+  const contrast = (a: RGB, b: RGB) => (Math.max(lumOf(a), lumOf(b)) + 0.05) / (Math.min(lumOf(a), lumOf(b)) + 0.05);
+  const jerseyRgb: RGB = [(jersey >> 16) & 255, (jersey >> 8) & 255, jersey & 255];
+  const u = homeUniform(club);
+  const readable = (c: RGB, bgc: RGB): RGB => {
+    if (contrast(c, bgc) >= 3) return c;
+    const cands = [kit?.acc, rgbOf(u.pants), rgbOf(u.socks), rgbOf(u.trim), [0, 0, 0] as RGB, [255, 255, 255] as RGB].filter(Boolean) as RGB[];
+    return cands.find((x) => contrast(x, bgc) >= 3) ?? c;
+  };
+  const nc2 = readable(nc, jerseyRgb);
+  const bg34 = bg[34] !== undefined ? ([(bg[34] >> 16) & 255, (bg[34] >> 8) & 255, bg[34] & 255] as RGB) : jerseyRgb;
+  const acc: RGB = readable(nc2 === nc ? acc0 : nc2, bg34);
   const s = String(number);
   s.split('').forEach((d, i) => {
     const slot = s.length === 1 ? 'one' : i === 0 ? 'left' : 'right';
@@ -223,7 +258,7 @@ const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, 
         if (!solid(x, y)) continue;
         const band = y === 34 || y === 35;
         if (key(x, y) !== (band ? bg[y] : jersey)) continue;
-        [px[at(x, y)], px[at(x, y) + 1], px[at(x, y) + 2]] = band ? acc : nc;
+        [px[at(x, y)], px[at(x, y) + 1], px[at(x, y) + 2]] = band ? acc : nc2;
       }
     }
   });
@@ -348,7 +383,7 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
     if (job.paint) {
       // "Vikings<Falcons": his file is the Falcons kit, shown in the Vikings' (repaintPixels); plain "Vikings": a neutral
       const [to, from] = job.paint.split('<');
-      if (from) repaintPixels(data.data, w, h, from, to);
+      if (from) repaintPixels(data.data, w, h, from, to, Number(/_p(\d)\.png/.exec(src)?.[1] ?? 1));
       else paintPixels(data.data, w, h, to);
     }
     if (num !== undefined) numberize(data.data, w, h, num, job.numberClub!);

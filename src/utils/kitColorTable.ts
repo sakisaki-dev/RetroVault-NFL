@@ -26,3 +26,10 @@ export const setNumberTables = (n: { numberFont?: Record<string, string[]>; numb
   if (n.numberFont && n.numberKit) numbers = { font: n.numberFont, kit: n.numberKit, fix: new Set(n.numberFix ?? []) };
 };
 export const numberTables = () => numbers;
+
+/** The neutral kit's sock rows 49-58 per pose (index.json `sockTemplate`): b base, s shade, t trim, . not cloth. */
+let socks: Record<string, string[]> | null = null;
+export const setSockTemplate = (t: Record<string, string[]> | undefined) => {
+  if (t) socks = t;
+};
+export const sockTemplate = (pose: number) => socks?.[String(pose)];
