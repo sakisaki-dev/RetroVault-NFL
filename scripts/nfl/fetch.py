@@ -42,6 +42,8 @@ for y in range(FIRST, NOW + 1):
     if y >= 2018:
         for k in ("pass", "rush", "rec", "def"):
             FILES.append(("pfr_advstats", f"advstats_week_{k}_{y}.csv{'.gz' if y >= 2024 else ''}", cur))
+    if y >= NOW - 1:  # the weekly injury reports: only the latest week is shown
+        FILES.append(("injuries", f"injuries_{y}.csv", cur))
     if y >= 2013:
         FILES.append(("snap_counts", f"snap_counts_{y}.csv.gz", cur))
 

@@ -50,3 +50,35 @@
     display: none;
   }
 }
+
+/* NFL edition: the Injured tag, the Active tag's twin in red (IR, Out) or amber (Doubtful, Questionable) */
+.inl--hurt {
+  margin-left: 4px;
+}
+.inl--hurt i {
+  background: hsl(0 78% 58%);
+  box-shadow: 0 0 0 1.5px hsl(222 47% 8% / 0.85), 0 0 6px hsl(0 78% 58% / 0.8);
+}
+.inl--hurt i::after {
+  background: hsl(0 78% 58%);
+  animation: none;
+  display: none;
+}
+.inl--hurt.inl--label {
+  border-color: hsl(0 78% 58% / 0.5);
+  background: hsl(0 78% 22% / 0.4);
+}
+.inl--hurt b {
+  color: hsl(0 90% 76%);
+}
+.inl--hurt.inl--warm i {
+  background: hsl(38 95% 56%);
+  box-shadow: 0 0 0 1.5px hsl(222 47% 8% / 0.85), 0 0 6px hsl(38 95% 56% / 0.8);
+}
+.inl--hurt.inl--warm.inl--label {
+  border-color: hsl(38 95% 56% / 0.5);
+  background: hsl(38 80% 20% / 0.4);
+}
+.inl--hurt.inl--warm b {
+  color: hsl(40 100% 72%);
+}
