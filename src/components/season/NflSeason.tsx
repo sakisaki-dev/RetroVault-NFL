@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Crown, LayoutGrid, ListOrdered, Medal, Minus, Star, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
+import { PlayerHit, StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { SeasonView } from '@/utils/seasonLive';
@@ -21,8 +21,9 @@ const FIELD = 'linear-gradient(180deg, hsl(142 38% 17%), hsl(142 42% 12%))';
 const AWARD_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'Offensive POY', dpoy: 'Defensive POY', oroy: 'Offensive ROY', droy: 'Defensive ROY', sbmvp: 'Super Bowl MVP' };
 
 const AwardPlate = ({ kind, a, big }: { kind: string; a: { player: string; team: string; position: string }; big?: boolean }) => (
-  <li
-    className={cn('relative flex min-w-0 items-end gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.7)] px-2 pt-1.5', big ? 'col-span-2 sm:col-span-3 lg:col-span-1 lg:row-span-2 lg:flex-col lg:items-center lg:px-3 lg:pt-3' : '')}
+  <li className={cn('min-w-0', big && 'col-span-2 sm:col-span-3 lg:col-span-1 lg:row-span-2')}>
+  <PlayerHit name={a.player} pos={a.position}
+    className={cn('relative flex h-full w-full min-w-0 items-end gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.7)] px-2 pt-1.5', big ? 'lg:flex-col lg:items-center lg:px-3 lg:pt-3' : '')}
     style={{ background: `linear-gradient(135deg, ${color(a.team, 0.45)}, hsl(228 55% 6%) 75%)` }}
   >
     <div className={cn('flex-shrink-0 self-end', big && 'lg:order-2')} style={{ marginBottom: big ? -6 : -4 }}>
@@ -33,11 +34,12 @@ const AwardPlate = ({ kind, a, big }: { kind: string; a: { player: string; team:
         {kind === 'mvp' && <Crown className="h-3 w-3" aria-hidden />}
         {AWARD_LABEL[kind] ?? kind}
       </p>
-      <p className={cn('truncate font-display font-bold leading-tight', big ? 'text-xl' : 'text-sm')}>{a.player}</p>
+      <p className={cn('break-words font-display font-bold leading-tight', big ? 'text-xl' : 'text-sm')}>{a.player}</p>
       <p className="truncate text-[11px] text-muted-foreground">
         {a.position} · {nick(a.team)}
       </p>
     </div>
+  </PlayerHit>
   </li>
 );
 

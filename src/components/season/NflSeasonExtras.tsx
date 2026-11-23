@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { Flame, Gauge, Medal, Swords, Target, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { Player } from '@/types/player';
 import GameSprite, { type SpriteSize } from '@/components/GameSprite';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -9,6 +10,13 @@ import type { SeasonView } from '@/utils/seasonLive';
 import type { PlayerLookup } from './LivePanels';
 import { BOARD_BG, LampGrid, color, lampText } from './seasonGamesUi';
 import { SectionTitle } from './SeasonGames';
+import { useFieldArt } from '@/components/teamlab/fieldArt';
+import { useLeague } from '@/context/LeagueContext';
+import { normalizeName } from '@/utils/playerExtras';
+import { keyOfPlayer } from '@/utils/playerSearch';
+import { buildHash } from '@/components/stats/hub/hashRoute';
+import { peekKeyProps } from '@/components/peek/peekProps';
+import './nflPodium.css';
 
 /**
  * NFL Season page extras: each game's star performer (public/data/league/stars/<year>.json, scripts/nfl/game_stars.py,
@@ -77,7 +85,7 @@ export const StarStrip = ({ stars, week, away, home, lookup: _l }: { stars: Seas
         if (!s) return <span key={side} />;
         const [pos, name] = splitKey(s[0]);
         return (
-          <div key={side} className="flex min-w-0 items-center gap-1.5 px-2 py-1" style={{ background: `linear-gradient(${side === 'a' ? '90deg' : '270deg'}, ${color(team, 0.22)}, transparent)` }}>
+          <PlayerHit key={side} name={name} pos={pos} className="flex min-w-0 items-center gap-1.5 px-2 py-1" style={{ background: `linear-gradient(${side === 'a' ? '90deg' : '270deg'}, ${color(team, 0.22)}, transparent)` }}>
             <span className="flex h-9 w-8 flex-shrink-0 items-end justify-center overflow-hidden">
               <StarSprite name={name} pos={pos} team={team} size="s" kind="bust" />
             </span>
@@ -85,10 +93,57 @@ export const StarStrip = ({ stars, week, away, home, lookup: _l }: { stars: Seas
               <span className="block truncate font-semibold">{name}</span>
               <span className="block truncate text-muted-foreground">{s[2]}</span>
             </span>
-          </div>
+          </PlayerHit>
         );
       })}
     </div>
+  );
+};
+
+/* ---------------- Clickable players ---------------- */
+
+/** Name (+ position) → the site's player key, for names that come from game lines or Wikipedia award lists. */
+const useKeyFinder = () => {
+  const { getAllPlayers, dataVersion } = useLeague();
+  return useMemo(() => {
+    const by = new Map<string, Player[]>();
+    getAllPlayers().forEach((p) => {
+      const n = normalizeName(p.name.replace(/\s*\(.*\)$/, ''));
+      by.set(n, [...(by.get(n) ?? []), p]);
+    });
+    return (name: string, pos?: string): string | null => {
+      const list = by.get(normalizeName(name)) ?? [];
+      if (!list.length) return null;
+      const want = pos ? sitePos(pos) : null;
+      const hit = (want && list.find((p) => p.position === want)) || list.reduce((a, b) => ((b.games ?? 0) > (a.games ?? 0) ? b : a));
+      return keyOfPlayer(hit);
+    };
+    // dataVersion: a new league load is a new player list
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getAllPlayers, dataVersion]);
+};
+
+/**
+ * A player figure that opens his Deep Dive on tap and the quick look on hold (owner: "the players are not clickable").
+ * A name the roster doesn't have (a pre-1999 star) stays a plain figure.
+ */
+export const PlayerHit = ({ name, pos, playerKey, className, style, children, label }: { name: string; pos?: string; playerKey?: string | null; className?: string; style?: CSSProperties; children: ReactNode; label?: string }) => {
+  const find = useKeyFinder();
+  const key = playerKey ?? find(name, pos);
+  if (!key) return <div className={className} style={style}>{children}</div>;
+  return (
+    <button
+      type="button"
+      {...peekKeyProps(key)}
+      aria-label={label ?? `Open ${name}'s Deep Dive`}
+      onClick={() => {
+        window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: key });
+      }}
+      style={style}
+      className={cn('cursor-pointer text-left transition-[filter,transform] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--gold))] active:scale-[0.98]', className)}
+    >
+      {children}
+    </button>
   );
 };
 
@@ -164,8 +219,10 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
         const [pos] = splitKey(r.key);
         return (
           <li key={r.key} className="flex min-w-0 flex-col items-center text-center">
-            <StarSprite name={r.name} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
-            <p className="mt-1 max-w-full truncate font-display text-sm font-bold uppercase leading-tight">{r.name}</p>
+            <PlayerHit name={r.name} pos={pos} className="flex max-w-full flex-col items-center text-center">
+              <StarSprite name={r.name} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
+              <p className="mt-1 max-w-full truncate font-display text-sm font-bold uppercase leading-tight">{r.name}</p>
+            </PlayerHit>
             <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <TeamLogo team={r.team} decorative className="h-4 w-4" /> {findNFLTeam(r.team)?.name ?? r.team}
             </p>
@@ -178,6 +235,29 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
         );
       })}
     </ol>
+  );
+};
+
+/**
+ * The podium's stage (owner: "the background for the widget is a black background, make it more immersive"): a night
+ * stadium in the leader's club colours — the game's crowd and stand front painted to his club above, two floodlight
+ * beams, a spotlight on the winner's step and the painted turf under the podium (CSS stand-ins in a build without the
+ * game art).
+ */
+const PodiumStage = ({ team, children }: { team: string; children: ReactNode }) => {
+  const art = useFieldArt(team || 'Eagles', 'night');
+  const t = findNFLTeam(team);
+  const tint = t ? `hsl(${t.primaryColor})` : 'hsl(var(--gold))';
+  return (
+    <div className="nsx-stage" style={{ ['--nsx-tint' as string]: tint }}>
+      <div className={cn('nsx-stage__crowd', art.crowd && 'nsx-stage__crowd--art')} style={art.crowd ? { backgroundImage: `url(${art.crowd})` } : undefined} aria-hidden="true" />
+      {art.stands && <div className="nsx-stage__stands" style={{ backgroundImage: `url(${art.stands})` }} aria-hidden="true" />}
+      <span className="nsx-stage__beam nsx-stage__beam--l" aria-hidden="true" />
+      <span className="nsx-stage__beam nsx-stage__beam--r" aria-hidden="true" />
+      <span className="nsx-stage__spot" aria-hidden="true" />
+      <div className={cn('nsx-stage__turf', art.turf && 'nsx-stage__turf--art')} style={art.turf ? { backgroundImage: `url(${art.turf})` } : undefined} aria-hidden="true" />
+      <div className="nsx-stage__content">{children}</div>
+    </div>
   );
 };
 
@@ -229,11 +309,10 @@ export const Podiums = ({ season, stars, lookup, inProgress }: { season: SeasonV
           ))}
         </div>
       </div>
-      <div className="relative overflow-hidden rounded-xl border border-[hsl(var(--line)/0.7)] px-3 pb-3 pt-4" style={{ background: BOARD_BG }}>
-        <LampGrid />
-        <div className="relative">{rows.length ? <Podium rows={rows} unit={shown?.unit ?? ''} /> : <p className="text-center text-xs text-muted-foreground">No leaders yet.</p>}</div>
+      <PodiumStage team={rows[0]?.team ?? ''}>
+        {rows.length ? <Podium rows={rows} unit={shown?.unit ?? ''} /> : <p className="text-center text-xs text-muted-foreground">No leaders yet.</p>}
         {shown?.id.startsWith('aw:') && awards?.awardsAbout && <p className="relative mt-2 text-center text-[11px] text-muted-foreground">{awards.awardsAbout}</p>}
-      </div>
+      </PodiumStage>
     </div>
   );
 };
