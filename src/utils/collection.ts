@@ -1777,3 +1777,40 @@ export const readBackup = (text: string): { state: CollectionState; summary: Bac
 
 /** Replaces the binder with a backup read by readBackup. */
 export const restoreCollection = (state: CollectionState) => write(state, { kind: 'other' });
+
+// ---------- NFL demo helpers (the NFL edition's own "nfl:" binder only) ----------
+
+/** Demo: 25 of every pack type (Perfect Season and Legends Exchange included) and 1,000,000 coins, through the one save path. */
+export const grantDemoPacks = (pool: TierPool) => {
+  const s = readCollection();
+  const at = Date.now();
+  const rid = () => Math.random().toString(36).slice(2, 8);
+  const tiers: Tier[] = ['common', 'rare', 'rare', 'epic', 'legendary'];
+  const pick = (t: Tier) => {
+    const list = pool[t].length ? pool[t] : pool.common;
+    return list[Math.floor(Math.random() * list.length)];
+  };
+  const exchange: ExchangePack[] = Array.from({ length: 25 }, (_, i) => ({
+    id: `demo-ex-${at}-${i}-${rid()}`,
+    label: PACKS.exchange.label,
+    at,
+    cards: tiers.map((tier) => {
+      const p = pick(tier);
+      return { key: cardKey(p), tier, finish: 'base' as Finish, from: cardKey(p) };
+    }),
+  }));
+  write(
+    {
+      ...s,
+      packs: { standard: s.packs.standard + 25, premium: s.packs.premium + 25, elite: s.packs.elite + 25, holo: s.packs.holo + 25 },
+      perfect: [...s.perfect, ...Array.from({ length: 25 }, (_, i) => ({ id: `demo-ps-${at}-${i}-${rid()}`, label: '18–0 · demo', at }))],
+      exchange: [...s.exchange, ...exchange],
+      coins: (s.coins ?? 0) + 1_000_000,
+      earned: [{ type: 'standard' as const, reason: 'Demo: 25 of every pack and 1,000,000 coins', at }, ...s.earned].slice(0, EARNED_CAP),
+    },
+    { kind: 'other' },
+  );
+};
+
+/** Demo: empties the binder (cards, packs, coins, shards, everything) in this edition's own storage. */
+export const resetCollection = () => write(fresh(), { kind: 'other' });

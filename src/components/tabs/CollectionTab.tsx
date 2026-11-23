@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useNewSlot, useSlot, type Slot } from '@/utils/slot';
 import { toast } from 'sonner';
@@ -67,6 +68,8 @@ import {
   variantsOwned,
   type EarnablePack,
   type PackType,
+  grantDemoPacks,
+  resetCollection,
 } from '@/utils/collection';
 import PixelLoader from '@/components/ui/PixelLoader';
 
@@ -521,6 +524,29 @@ const CollectionTab = () => {
               {/* Whether the browser keeps the collection (Home Screen app / persistent storage), utils/homeScreen.ts */}
               <StorageTag />
               <BackupButton />
+              {IS_NFL && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      grantDemoPacks(tierPool);
+                      toast.success('Demo: 25 of every pack and 1,000,000 coins added');
+                    }}
+                    className="link-chip text-gold"
+                  >
+                    Demo: add packs
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm('Reset the NFL binder? Every card, pack and coin in this demo is erased.')) resetCollection();
+                    }}
+                    className="link-chip text-destructive"
+                  >
+                    Reset NFL binder
+                  </button>
+                </>
+              )}
               <button type="button" onClick={() => setDesigns(true)} className="link-chip text-gold">
                 <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" /> Card designs
               </button>
