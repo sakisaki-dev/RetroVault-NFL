@@ -70,6 +70,8 @@ const seasonOf = (json: string | null): string | undefined => {
   try {
     const sbs = JSON.parse(json) as { year?: string }[];
     const years = sbs.map((s) => Number(String(s.year ?? '').replace(/\D/g, ''))).filter(Number.isFinite);
+    // NFL edition: seasons are real years, and the Super Bowl list ends with the last completed one
+    if (process.env.RV_EDITION === 'nfl') return years.length ? String(Math.max(...years) + 1) : undefined;
     return years.length ? `Y${Math.max(...years)}` : undefined;
   } catch {
     return undefined;

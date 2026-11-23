@@ -318,25 +318,5 @@
   "division": "West",
   "city": "Seattle, WA",
   "stadium": "Lumen Field"
- },
- "CUR": {
-  "abbr": "YOU",
-  "name": "Your current club",
-  "primary": "#2a2f45",
-  "secondary": "#ffc83d",
-  "conference": null,
-  "division": null,
-  "city": null,
-  "stadium": null
- },
- "UNK": {
-  "abbr": "???",
-  "name": "Final team not recorded",
-  "primary": "#30364d",
-  "secondary": "#7d88ad",
-  "conference": null,
-  "division": null,
-  "city": null,
-  "stadium": null
  }
 }

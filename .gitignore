@@ -46,3 +46,4 @@ data/saves/
 # NFL edition demo: downloaded data and the raw save stay local
 data/nfl-cache/
 data/nfl/games/
+data/saves
