@@ -1,0 +1,590 @@
+[
+{
+"nick": "A-Train",
+"name": "Mike Alstott",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "All Day",
+"name": "Adrian Peterson",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Action Jackson",
+"name": "Lamar Jackson",
+"tail": "Quarterback",
+"linked": false
+},
+{
+"nick": "The Assassin",
+"name": "Jack Tatum",
+"tail": "Oakland Raiders, safety",
+"linked": true
+},
+{
+"nick": "Avatar",
+"name": "Jimmy Graham",
+"tail": "tight end",
+"linked": true
+},
+{
+"nick": "Bad Moon",
+"name": "Andre Rison",
+"tail": "many teams, wide receiver",
+"linked": true
+},
+{
+"nick": "Baggadonuts",
+"name": "Frank Winters",
+"tail": "Green Bay Packers, center",
+"linked": true
+},
+{
+"nick": "The Bearded Pony",
+"name": "Andrew Luck",
+"tail": "Indianapolis Colts, named for his amazing beard and the fact that he plays for the Colts.",
+"linked": true
+},
+{
+"nick": "Beast Mode",
+"name": "Marshawn Lynch",
+"tail": "Seattle Seahawks, named for his violent running style and unusual ability to break tackles",
+"linked": true
+},
+{
+"nick": "Big Dick Nick",
+"name": "Nick Foles",
+"tail": "Philadelphia Eagles quarterback",
+"linked": true
+},
+{
+"nick": "Big Phil",
+"name": "Phil Loadholt",
+"tail": "Minnesota Vikings offensive tackle",
+"linked": true
+},
+{
+"nick": "Blood",
+"name": "John McNally",
+"tail": "Green Bay Packers, running back",
+"linked": true
+},
+{
+"nick": "Boob",
+"name": "Bernard Darling",
+"tail": "Green Bay Packers, center",
+"linked": true
+},
+{
+"nick": "Boomer",
+"name": "Bob Brown",
+"tail": "tackle",
+"linked": false
+},
+{
+"nick": "Broadway Joe",
+"name": "Joe Namath",
+"tail": "New York Jets, quarterback",
+"linked": true
+},
+{
+"nick": "Buckets",
+"name": "Charles Goldenberg",
+"tail": "Green Bay Packers, guard/running back",
+"linked": true
+},
+{
+"nick": "The Bus",
+"name": "Jerome Bettis",
+"tail": "Pittsburgh Steelers, running back",
+"linked": true
+},
+{
+"nick": "Butt Kicker",
+"name": "Harrison Butker",
+"tail": "Kansas City Chiefs, placekicker",
+"linked": true
+},
+{
+"nick": "Captain Comeback",
+"name": "Roger Staubach",
+"tail": "Dallas Cowboys, quarterback",
+"linked": true
+},
+{
+"nick": "The Claymaker",
+"name": "Clay Matthews III",
+"tail": "",
+"linked": true
+},
+{
+"nick": "Cool Brees",
+"name": "Drew Brees",
+"tail": "",
+"linked": true
+},
+{
+"nick": "The Cowboy",
+"name": "Justin Smith",
+"tail": "",
+"linked": true
+},
+{
+"nick": "Crazy Legs",
+"name": "Elroy Hirsch",
+"tail": "running back/wide receiver",
+"linked": true
+},
+{
+"nick": "Curly",
+"name": "Earl Louis Lambeau",
+"tail": "Green Bay Packers, founder, halfback and coach",
+"linked": true
+},
+{
+"nick": "Danimal",
+"name": "Dan Hampton",
+"tail": "",
+"linked": true
+},
+{
+"nick": "Danny Dimes",
+"name": "Daniel Jones",
+"tail": "New York Giants, quarterback",
+"linked": true
+},
+{
+"nick": "Deacon",
+"name": "David Jones",
+"tail": "Los Angeles Rams, defensive end",
+"linked": true
+},
+{
+"nick": "Dicker the Kicker",
+"name": "Cameron Dicker",
+"tail": "Los Angeles Chargers, placekicker",
+"linked": true
+},
+{
+"nick": "The Diesel",
+"name": "John Riggins",
+"tail": "Washington Redskins, running back",
+"linked": true
+},
+{
+"nick": "The Dodger",
+"name": "Roger Staubach",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "Easy E",
+"name": "Eli Manning",
+"tail": "quarterback, named for his relaxed demeanor even in pressure situations",
+"linked": true
+},
+{
+"nick": "Edge",
+"name": "Edgerrin James",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Famous Jameis",
+"name": "Jameis Winston",
+"tail": "Tampa Bay Buccaneers, quarterback",
+"linked": true
+},
+{
+"nick": "Fat Randy",
+"name": "Randy Bullock",
+"tail": "Cincinnati Bengals, placekicker",
+"linked": true
+},
+{
+"nick": "Fatso",
+"name": "Art Donovan",
+"tail": "defensive tackle",
+"linked": false
+},
+{
+"nick": "The Freak",
+"name": "Jevon Kearse",
+"tail": "Tennessee Titans, defensive end",
+"linked": true
+},
+{
+"nick": "The Fridge",
+"name": "William Perry",
+"tail": "(American football), defensive tackle",
+"linked": true
+},
+{
+"nick": "The Ghost",
+"name": "Dave Casper",
+"tail": "Tight End who participated in two famous Oakland Raiders Plays:  \"Ghost to the Post\" & \"Holy Roller (American football)\"",
+"linked": true
+},
+{
+"nick": "Golden Boy",
+"name": "Paul Hornung",
+"tail": "Green Bay Packers, half back/kicker",
+"linked": true
+},
+{
+"nick": "The Gray Ghost of Gonzaga",
+"name": "Tony Canadeo",
+"tail": "halfback",
+"linked": true
+},
+{
+"nick": "Greasy",
+"name": "Earle Neale",
+"tail": "coach",
+"linked": true
+},
+{
+"nick": "The Gunslinger",
+"name": "Brett Favre",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "Highway 63",
+"name": "Gene Upshaw",
+"tail": "Hall of Fame Guard who won two Super Bowls with the Oakland Raiders",
+"linked": true
+},
+{
+"nick": "The Intellectual Assassin",
+"name": "Ron Mix",
+"tail": "offensive tackle",
+"linked": true
+},
+{
+"nick": "Joe Cool",
+"name": "Joe Montana",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "Johnny Football",
+"name": "Johnny Manziel",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "The Juice",
+"name": "O. J. Simpson",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Jug",
+"name": "Francis Louis Earp",
+"tail": "Green Bay Packers, center",
+"linked": true
+},
+{
+"nick": "The Kraken",
+"name": "Greg Hardy",
+"tail": "defensive end",
+"linked": true
+},
+{
+"nick": "Law Firm",
+"name": "BenJarvus Green-Ellis",
+"tail": "Running Back, because of his segmented name",
+"linked": true
+},
+{
+"nick": "Legatron",
+"name": "Greg Zuerlein",
+"tail": "Los Angeles Rams, placekicker",
+"linked": true
+},
+{
+"nick": "The Lion",
+"name": "Leo Nomellini",
+"tail": "defensive tackle",
+"linked": true
+},
+{
+"nick": "Machine Gun Kelly",
+"name": "Jim Kelly",
+"tail": "quarterback, Buffalo Bills",
+"linked": false
+},
+{
+"nick": "The Manster",
+"name": "Randy White",
+"tail": "defensive tackle",
+"linked": true
+},
+{
+"nick": "Mean Joe",
+"name": "Joe Greene",
+"tail": "Pittsburgh Steelers, defensive end",
+"linked": true
+},
+{
+"nick": "Megatron",
+"name": "Calvin Johnson",
+"tail": "wide receiver",
+"linked": true
+},
+{
+"nick": "The Minister of Defense",
+"name": "Reggie White",
+"tail": "Philadelphia Eagles, Green Bay Packers, defensive end",
+"linked": true
+},
+{
+"nick": "The Missile",
+"name": "Qadry Ismail",
+"tail": "wide receiver",
+"linked": true
+},
+{
+"nick": "Minitron",
+"name": "Julian Edelman",
+"tail": "wide receiver",
+"linked": true
+},
+{
+"nick": "MJD",
+"name": "Maurice Jones-Drew",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Money Badger",
+"name": "Michael Badgley",
+"tail": "Detroit Lions, placekicker",
+"linked": true
+},
+{
+"nick": "Money Mac",
+"name": "Evan McPherson",
+"tail": "Cincinnati Bengals, placekicker",
+"linked": true
+},
+{
+"nick": "The Muscle Hamster",
+"name": "Doug Martin",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Night Train",
+"name": "Dick Lane",
+"tail": "a reference to his fear of flying and resultant travel to road games on night trains.",
+"linked": true
+},
+{
+"nick": "Optimus Grimes",
+"name": "Brent Grimes Cornerback",
+"tail": "",
+"linked": true
+},
+{
+"nick": "The Pocket Hercules",
+"name": "Maurice Jones-Drew",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Pot Roast",
+"name": "Terrance Knighton",
+"tail": "defensive tackle",
+"linked": true
+},
+{
+"nick": "Primetime",
+"name": "Deion Sanders",
+"tail": "cornerback",
+"linked": true
+},
+{
+"nick": "Purple Jesus",
+"name": "Adrian Petersen",
+"tail": "Minnesota Vikings, running back",
+"linked": true
+},
+{
+"nick": "The Refrigerator",
+"name": "William Perry",
+"tail": "Chicago Bears, nose tackle",
+"linked": true
+},
+{
+"nick": "Robo-sack",
+"name": "Rob Johnson",
+"tail": "quarterback known for a reputation of being sacked frequently",
+"linked": true
+},
+{
+"nick": "Shady",
+"name": "LeSean McCoy",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "The Sheriff",
+"name": "Peyton Manning",
+"tail": "quarterback a reference to Manning's pre-snap routine, which is one of the most recognizable in the NFL.",
+"linked": true
+},
+{
+"nick": "Shooter",
+"name": "Evan McPherson",
+"tail": "Cincinnati Bengals, placekicker",
+"linked": false
+},
+{
+"nick": "Showtime",
+"name": "Patrick Mahomes",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "Smoking",
+"name": "Jay Cutler",
+"tail": "quarterback",
+"linked": true
+},
+{
+"nick": "Snacks",
+"name": "Damon Harrison",
+"tail": "Defensive Tackle.",
+"linked": true
+},
+{
+"nick": "The Snake",
+"name": "Kenny Stabler",
+"tail": "Hall of Fame quarterback who won Super Bowl XI with the Oakland Raiders",
+"linked": true
+},
+{
+"nick": "The Stork",
+"name": "Ted Hendricks",
+"tail": "Hall of Fame Linebacker who won Super Bowls with the Baltimore Colts and Oakland Raiders",
+"linked": true
+},
+{
+"nick": "Swede",
+"name": "Chester Johnston",
+"tail": "Green Bay Packers, running back",
+"linked": true
+},
+{
+"nick": "Sweetness",
+"name": "Walter Payton",
+"tail": "running back",
+"linked": true
+},
+{
+"nick": "Tiny",
+"name": "Paul Engebretsen",
+"tail": "Green Bay Packers, guard",
+"linked": true
+},
+{
+"nick": "Too Tall",
+"name": "Edward Lee Jones",
+"tail": "Dallas Cowboys, defensive end",
+"linked": true
+},
+{
+"nick": "The Toolbox",
+"name": "Ed West",
+"tail": "Green Bay Packers, tight end",
+"linked": true
+},
+{
+"nick": "The Tyler Rose",
+"name": "Earl Campbell",
+"tail": "an allusion to his hometown Tyler, Texas",
+"linked": true
+},
+{
+"nick": "White Shoes",
+"name": "Billy Johnson",
+"tail": "wide receiver",
+"linked": true
+},
+{
+"nick": "World",
+"name": "Jerry Rice",
+"tail": "San Francisco 49ers, wide receiver",
+"linked": true
+},
+{
+"nick": "Black and Blue Division",
+"name": "NFC North",
+"tail": "NFL; from the division's rugged style of play in the 20th century (also \"Frostbite Division\")",
+"linked": false
+},
+{
+"nick": "Als",
+"name": "Montreal Alouettes",
+"tail": "CFL; abbreviation of name",
+"linked": false
+},
+{
+"nick": "Argos",
+"name": "Toronto Argonauts",
+"tail": "CFL; abbreviation of name",
+"linked": false
+},
+{
+"nick": "The Blue and Gold",
+"name": "Winnipeg Blue Bombers",
+"tail": "CFL; after the team colours",
+"linked": false
+},
+{
+"nick": "The Boatmen",
+"name": "Toronto Argonauts",
+"tail": "CFL; in reference to the team's foundation by the Argonaut Rowing Club of Toronto, which in turn was derived from Jason and the Argonauts, mythical heroes and boatmen who are the namesake of both the rowing club and the CFL team",
+"linked": false
+},
+{
+"nick": "Bombers",
+"name": "Winnipeg Blue Bombers",
+"tail": "CFL; abbreviation of team name",
+"linked": false
+},
+{
+"nick": "The Double Blue",
+"name": "Toronto Argonauts",
+"tail": "CFL; in reference to the team colours, Oxford blue and Cambridge blue",
+"linked": false
+},
+{
+"nick": "Gades",
+"name": "Ottawa Renegades",
+"tail": "CFL; abbreviation of team name",
+"linked": false
+},
+{
+"nick": "Roughies or Green Riders",
+"name": "Saskatchewan Roughriders",
+"tail": "CFL; Green Riders to differentiate team from the now defunct Ottawa team of the same name. Roughies - abbreviation of team name",
+"linked": false
+},
+{
+"nick": "Stamps",
+"name": "Calgary Stampeders",
+"tail": "CFL; abbreviation of team name",
+"linked": false
+},
+{
+"nick": "Ti-cats",
+"name": "Hamilton Tiger-Cats",
+"tail": "CFL; telescoping of team name",
+"linked": false
+}
+]

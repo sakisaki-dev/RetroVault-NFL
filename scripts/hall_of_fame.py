@@ -75,6 +75,41 @@ def season_marks() -> list[tuple[str, list[tuple[str, float, int]]]]:
     return out
 
 
+POS_WORDS = {"quarterback": "QB", "running back": "RB", "halfback": "RB", "fullback": "RB", "wide receiver": "WR", "tight end": "TE",
+             "linebacker": "LB", "defensive end": "DL", "defensive tackle": "DL", "defensive lineman": "DL",
+             "cornerback": "DB", "safety": "DB", "defensive back": "DB", "offensive tackle": "OL", "guard": "OL", "center": "OL",
+             "offensive lineman": "OL", "tackle": "OL", "end": "WR"}
+
+
+def _norm(s: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+    s = re.sub(r"\b(jr|sr|ii|iii|iv|v)\b\.?", " ", s.replace(".", " "))
+    return re.sub(r"[^a-z]", "", s)
+
+
+def real_inductees(retired: dict, key: dict) -> dict[str, int]:
+    """POS:Name -> class year for every real inductee (data/nfl/hof.json) who is a retired player here: the same name,
+    a position of his group; among namesakes the one with the most games."""
+    path = ROOT / "data" / "nfl" / "hof.json"
+    if not path.exists():
+        return {}
+    by: dict[str, list] = {}
+    for k, c in retired.items():
+        if c:
+            by.setdefault(_norm(c["name"].split(" (")[0]), []).append(k)
+    out: dict[str, int] = {}
+    for e in json.loads(path.read_text()):
+        want = next((v for w, v in POS_WORDS.items() if w in e["position"].lower()), None)
+        first = int((re.match(r"\d{4}", (e.get("years") or [""])[0]) or re.match(r"(\d{4})", "0"))[0] or 0)
+        if first < 1998:
+            continue  # a namesake who played before the data begins (Kellen Winslow Sr., 1979), not the player here
+        cands = [k for k in by.get(_norm(e["name"]), []) if want is None or retired[k]["pos"] == want]
+        if cands:
+            out[max(cands, key=lambda k: retired[k]["games"])] = e["class"]
+    return out
+
+
 def standing_points(rank: int) -> int:
     return STANDING.get(rank, max(0, 27 - 2 * (rank - 10)))
 
@@ -157,9 +192,9 @@ def compute() -> dict:
             continue
         # seasons his games went up; a lone rise between the first two recorded seasons is the first import being
         # corrected (God Johnson 216 -> 234), not a season played
-        played = [y for y in present[1:] if ((ends[y][k].get("s") or {}).get("g") or 0)
-                  > ((ends[seasons[seasons.index(y) - 1]].get(k, {}).get("s") or {}).get("g") or 0)]
-        if played and not (len(played) == 1 and played[0] == seasons[1]):
+        played = [y for y in (present if NFL else present[1:]) if ((ends[y][k].get("s") or {}).get("g") or 0)
+                  > ((ends[seasons[seasons.index(y) - 1]].get(k, {}).get("s") or {}).get("g") or 0 if seasons.index(y) else 0)]
+        if played and (NFL or not (len(played) == 1 and played[0] == seasons[1])):
             last_played = played[-1]
         else:
             runs = (stints.get(p["n"]) or {}).get("stints", [])
@@ -174,9 +209,25 @@ def compute() -> dict:
             if at != first:
                 veteran.add(k)
 
+    # NFL edition: the real Pro Football Hall of Fame (data/nfl/hof.json, Wikipedia) are the members, in their real class
+    # year, with the site's own Hall of Fame Score beside; the site's rules only fill the ballot (retirees at the bar who
+    # are not in yet) and the watch list. Real inductees win.
+    real = real_inductees(retired, key) if NFL else {}
     # the ballot, season by season
     members, waiting, classes = {}, {}, []
-    for y in seasons:
+    if NFL:
+        by_year: dict[int, list] = {}
+        for k, yr in real.items():
+            members[k] = {**retired[k], "class": f"Class of {yr}", "classSeason": str(yr), "firstBallot": False,
+                          "veteran": False, "yearsOnBallot": 0, "real": True}
+            by_year.setdefault(yr, []).append(k)
+        for yr in sorted(by_year):
+            classes.append({"season": str(yr), "label": f"Class of {yr}",
+                            "members": [retired[k]["name"] for k in sorted(by_year[yr], key=lambda k: (-retired[k]["score"], k))]})
+        for k, c in retired.items():
+            if c and k not in members and c["score"] >= BAR and owner_hof.get(c["name"]) != "out":
+                waiting[k] = eligible_from[k]
+    for y in ([] if NFL else seasons):
         for k, c in retired.items():
             if c and eligible_from[k] == y and k not in members:
                 if owner_hof.get(c["name"]) == "out":
