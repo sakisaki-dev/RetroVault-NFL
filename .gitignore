@@ -49,3 +49,9 @@ data/nfl/games/
 data/saves
 data/nfl/cuts/
 data/nfl/season_ends.json
+dist-nfl/
+
+# NFL demo: shared caches and their worktree symlinks are never committed (a committed symlink replaced the real folder on merge)
+data/nfl-cache
+data/nfl/games
+data/saves
