@@ -25,6 +25,10 @@ interface Props {
   player: Player;
   options: Player[];
   ovr: number | undefined;
+  /** Tooltip on the OVR badge: which rating it is (this season / career) */
+  ovrTitle?: string;
+  ovrLabel?: string;
+  ovrAlt?: { label: string; value: number; title?: string } | null;
   wide: boolean;
   onChoose: (key: string) => void;
   onRandom: () => void;
@@ -37,7 +41,7 @@ interface Props {
 }
 
 /** Search + navigation bar and the full-width team-themed banner. */
-const DdHero = ({ player, options, ovr, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
+const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
   const { numberFor } = useJerseyNumbers();
   const extras = usePlayerExtras();
   // The banner wears his signature team (where he was best known); the franchise chips list them all
@@ -98,6 +102,9 @@ const DdHero = ({ player, options, ovr, wide, onChoose, onRandom, prev, next, on
           team={team ?? player.team}
           number={numberFor(player)}
           ovr={ovr ?? null}
+          ovrTitle={ovrTitle}
+          ovrLabel={ovrLabel}
+          ovrAlt={ovrAlt}
           hallOfFamer={isHallOfFamer(player)}
           // the hanging banners (RetiredHangers below) carry the retired number
           retiredBy={null}

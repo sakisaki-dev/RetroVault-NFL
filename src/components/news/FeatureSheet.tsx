@@ -38,6 +38,8 @@ export interface SheetPiece {
   dek: string;
   byline: ReactNode;
   body: string[];
+  /** Custom body (the NFL edition's ESPN articles: sanitised text with embedded photos and video); replaces `body` */
+  bodyNode?: ReactNode;
   /** Body lines as a numbered list (quick hits) */
   list?: boolean;
   stats: StoryStat[];
@@ -159,7 +161,9 @@ export const FeatureSheet = ({ piece, onClose, prev, next, players, onPlayer }: 
               <div className="fs-main">
                 {p.before}
                 <div className={cn('fs-body', p.list && 'fs-body--list')}>
-                  {p.list ? (
+                  {p.bodyNode ? (
+                    p.bodyNode
+                  ) : p.list ? (
                     <ol className="fs-hits">
                       {p.body.map((line) => (
                         <li key={line}>{line}</li>

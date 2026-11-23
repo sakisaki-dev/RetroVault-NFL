@@ -40,6 +40,9 @@
   line-height: 1.1;
 }
 .cc-chip__logo { flex-shrink: 0; }
+.cc-chip__sprite { flex-shrink: 0; display: inline-flex; width: 26px; height: 26px; overflow: hidden; align-items: flex-end; justify-content: center; margin: 2px 0 0 -2px; }
+.cc-chip__sprite > * { transform: scale(0.72); transform-origin: center bottom; }
+.cc-chip__pos + .cc-chip__name { margin-left: 4px; }
 .cc-chip__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 button.cc-chip { cursor: pointer; transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out); }
 button.cc-chip:hover { background: var(--x-panel-2, #182039); border-color: color-mix(in srgb, var(--cc-ink) 45%, var(--x-line, #2b3760)); border-left-color: var(--cc); }

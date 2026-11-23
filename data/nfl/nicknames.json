@@ -1,590 +1,6220 @@
-[
 {
-"nick": "A-Train",
-"name": "Mike Alstott",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "All Day",
-"name": "Adrian Peterson",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Action Jackson",
-"name": "Lamar Jackson",
-"tail": "Quarterback",
-"linked": false
-},
-{
-"nick": "The Assassin",
-"name": "Jack Tatum",
-"tail": "Oakland Raiders, safety",
-"linked": true
-},
-{
-"nick": "Avatar",
-"name": "Jimmy Graham",
-"tail": "tight end",
-"linked": true
-},
-{
-"nick": "Bad Moon",
-"name": "Andre Rison",
-"tail": "many teams, wide receiver",
-"linked": true
-},
-{
-"nick": "Baggadonuts",
-"name": "Frank Winters",
-"tail": "Green Bay Packers, center",
-"linked": true
-},
-{
-"nick": "The Bearded Pony",
-"name": "Andrew Luck",
-"tail": "Indianapolis Colts, named for his amazing beard and the fact that he plays for the Colts.",
-"linked": true
-},
-{
-"nick": "Beast Mode",
-"name": "Marshawn Lynch",
-"tail": "Seattle Seahawks, named for his violent running style and unusual ability to break tackles",
-"linked": true
-},
-{
-"nick": "Big Dick Nick",
-"name": "Nick Foles",
-"tail": "Philadelphia Eagles quarterback",
-"linked": true
-},
-{
-"nick": "Big Phil",
-"name": "Phil Loadholt",
-"tail": "Minnesota Vikings offensive tackle",
-"linked": true
-},
-{
-"nick": "Blood",
-"name": "John McNally",
-"tail": "Green Bay Packers, running back",
-"linked": true
-},
-{
-"nick": "Boob",
-"name": "Bernard Darling",
-"tail": "Green Bay Packers, center",
-"linked": true
-},
-{
-"nick": "Boomer",
-"name": "Bob Brown",
-"tail": "tackle",
-"linked": false
-},
-{
-"nick": "Broadway Joe",
-"name": "Joe Namath",
-"tail": "New York Jets, quarterback",
-"linked": true
-},
-{
-"nick": "Buckets",
-"name": "Charles Goldenberg",
-"tail": "Green Bay Packers, guard/running back",
-"linked": true
-},
-{
-"nick": "The Bus",
-"name": "Jerome Bettis",
-"tail": "Pittsburgh Steelers, running back",
-"linked": true
-},
-{
-"nick": "Butt Kicker",
-"name": "Harrison Butker",
-"tail": "Kansas City Chiefs, placekicker",
-"linked": true
-},
-{
-"nick": "Captain Comeback",
-"name": "Roger Staubach",
-"tail": "Dallas Cowboys, quarterback",
-"linked": true
-},
-{
-"nick": "The Claymaker",
-"name": "Clay Matthews III",
-"tail": "",
-"linked": true
-},
-{
-"nick": "Cool Brees",
-"name": "Drew Brees",
-"tail": "",
-"linked": true
-},
-{
-"nick": "The Cowboy",
-"name": "Justin Smith",
-"tail": "",
-"linked": true
-},
-{
-"nick": "Crazy Legs",
-"name": "Elroy Hirsch",
-"tail": "running back/wide receiver",
-"linked": true
-},
-{
-"nick": "Curly",
-"name": "Earl Louis Lambeau",
-"tail": "Green Bay Packers, founder, halfback and coach",
-"linked": true
-},
-{
-"nick": "Danimal",
-"name": "Dan Hampton",
-"tail": "",
-"linked": true
-},
-{
-"nick": "Danny Dimes",
-"name": "Daniel Jones",
-"tail": "New York Giants, quarterback",
-"linked": true
-},
-{
-"nick": "Deacon",
-"name": "David Jones",
-"tail": "Los Angeles Rams, defensive end",
-"linked": true
-},
-{
-"nick": "Dicker the Kicker",
-"name": "Cameron Dicker",
-"tail": "Los Angeles Chargers, placekicker",
-"linked": true
-},
-{
-"nick": "The Diesel",
-"name": "John Riggins",
-"tail": "Washington Redskins, running back",
-"linked": true
-},
-{
-"nick": "The Dodger",
-"name": "Roger Staubach",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "Easy E",
-"name": "Eli Manning",
-"tail": "quarterback, named for his relaxed demeanor even in pressure situations",
-"linked": true
-},
-{
-"nick": "Edge",
-"name": "Edgerrin James",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Famous Jameis",
-"name": "Jameis Winston",
-"tail": "Tampa Bay Buccaneers, quarterback",
-"linked": true
-},
-{
-"nick": "Fat Randy",
-"name": "Randy Bullock",
-"tail": "Cincinnati Bengals, placekicker",
-"linked": true
-},
-{
-"nick": "Fatso",
-"name": "Art Donovan",
-"tail": "defensive tackle",
-"linked": false
-},
-{
-"nick": "The Freak",
-"name": "Jevon Kearse",
-"tail": "Tennessee Titans, defensive end",
-"linked": true
-},
-{
-"nick": "The Fridge",
-"name": "William Perry",
-"tail": "(American football), defensive tackle",
-"linked": true
-},
-{
-"nick": "The Ghost",
-"name": "Dave Casper",
-"tail": "Tight End who participated in two famous Oakland Raiders Plays:  \"Ghost to the Post\" & \"Holy Roller (American football)\"",
-"linked": true
-},
-{
-"nick": "Golden Boy",
-"name": "Paul Hornung",
-"tail": "Green Bay Packers, half back/kicker",
-"linked": true
-},
-{
-"nick": "The Gray Ghost of Gonzaga",
-"name": "Tony Canadeo",
-"tail": "halfback",
-"linked": true
-},
-{
-"nick": "Greasy",
-"name": "Earle Neale",
-"tail": "coach",
-"linked": true
-},
-{
-"nick": "The Gunslinger",
-"name": "Brett Favre",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "Highway 63",
-"name": "Gene Upshaw",
-"tail": "Hall of Fame Guard who won two Super Bowls with the Oakland Raiders",
-"linked": true
-},
-{
-"nick": "The Intellectual Assassin",
-"name": "Ron Mix",
-"tail": "offensive tackle",
-"linked": true
-},
-{
-"nick": "Joe Cool",
-"name": "Joe Montana",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "Johnny Football",
-"name": "Johnny Manziel",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "The Juice",
-"name": "O. J. Simpson",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Jug",
-"name": "Francis Louis Earp",
-"tail": "Green Bay Packers, center",
-"linked": true
-},
-{
-"nick": "The Kraken",
-"name": "Greg Hardy",
-"tail": "defensive end",
-"linked": true
-},
-{
-"nick": "Law Firm",
-"name": "BenJarvus Green-Ellis",
-"tail": "Running Back, because of his segmented name",
-"linked": true
-},
-{
-"nick": "Legatron",
-"name": "Greg Zuerlein",
-"tail": "Los Angeles Rams, placekicker",
-"linked": true
-},
-{
-"nick": "The Lion",
-"name": "Leo Nomellini",
-"tail": "defensive tackle",
-"linked": true
-},
-{
-"nick": "Machine Gun Kelly",
-"name": "Jim Kelly",
-"tail": "quarterback, Buffalo Bills",
-"linked": false
-},
-{
-"nick": "The Manster",
-"name": "Randy White",
-"tail": "defensive tackle",
-"linked": true
-},
-{
-"nick": "Mean Joe",
-"name": "Joe Greene",
-"tail": "Pittsburgh Steelers, defensive end",
-"linked": true
-},
-{
-"nick": "Megatron",
-"name": "Calvin Johnson",
-"tail": "wide receiver",
-"linked": true
-},
-{
-"nick": "The Minister of Defense",
-"name": "Reggie White",
-"tail": "Philadelphia Eagles, Green Bay Packers, defensive end",
-"linked": true
-},
-{
-"nick": "The Missile",
-"name": "Qadry Ismail",
-"tail": "wide receiver",
-"linked": true
-},
-{
-"nick": "Minitron",
-"name": "Julian Edelman",
-"tail": "wide receiver",
-"linked": true
-},
-{
-"nick": "MJD",
-"name": "Maurice Jones-Drew",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Money Badger",
-"name": "Michael Badgley",
-"tail": "Detroit Lions, placekicker",
-"linked": true
-},
-{
-"nick": "Money Mac",
-"name": "Evan McPherson",
-"tail": "Cincinnati Bengals, placekicker",
-"linked": true
-},
-{
-"nick": "The Muscle Hamster",
-"name": "Doug Martin",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Night Train",
-"name": "Dick Lane",
-"tail": "a reference to his fear of flying and resultant travel to road games on night trains.",
-"linked": true
-},
-{
-"nick": "Optimus Grimes",
-"name": "Brent Grimes Cornerback",
-"tail": "",
-"linked": true
-},
-{
-"nick": "The Pocket Hercules",
-"name": "Maurice Jones-Drew",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Pot Roast",
-"name": "Terrance Knighton",
-"tail": "defensive tackle",
-"linked": true
-},
-{
-"nick": "Primetime",
-"name": "Deion Sanders",
-"tail": "cornerback",
-"linked": true
-},
-{
-"nick": "Purple Jesus",
-"name": "Adrian Petersen",
-"tail": "Minnesota Vikings, running back",
-"linked": true
-},
-{
-"nick": "The Refrigerator",
-"name": "William Perry",
-"tail": "Chicago Bears, nose tackle",
-"linked": true
-},
-{
-"nick": "Robo-sack",
-"name": "Rob Johnson",
-"tail": "quarterback known for a reputation of being sacked frequently",
-"linked": true
-},
-{
-"nick": "Shady",
-"name": "LeSean McCoy",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "The Sheriff",
-"name": "Peyton Manning",
-"tail": "quarterback a reference to Manning's pre-snap routine, which is one of the most recognizable in the NFL.",
-"linked": true
-},
-{
-"nick": "Shooter",
-"name": "Evan McPherson",
-"tail": "Cincinnati Bengals, placekicker",
-"linked": false
-},
-{
-"nick": "Showtime",
-"name": "Patrick Mahomes",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "Smoking",
-"name": "Jay Cutler",
-"tail": "quarterback",
-"linked": true
-},
-{
-"nick": "Snacks",
-"name": "Damon Harrison",
-"tail": "Defensive Tackle.",
-"linked": true
-},
-{
-"nick": "The Snake",
-"name": "Kenny Stabler",
-"tail": "Hall of Fame quarterback who won Super Bowl XI with the Oakland Raiders",
-"linked": true
-},
-{
-"nick": "The Stork",
-"name": "Ted Hendricks",
-"tail": "Hall of Fame Linebacker who won Super Bowls with the Baltimore Colts and Oakland Raiders",
-"linked": true
-},
-{
-"nick": "Swede",
-"name": "Chester Johnston",
-"tail": "Green Bay Packers, running back",
-"linked": true
-},
-{
-"nick": "Sweetness",
-"name": "Walter Payton",
-"tail": "running back",
-"linked": true
-},
-{
-"nick": "Tiny",
-"name": "Paul Engebretsen",
-"tail": "Green Bay Packers, guard",
-"linked": true
-},
-{
-"nick": "Too Tall",
-"name": "Edward Lee Jones",
-"tail": "Dallas Cowboys, defensive end",
-"linked": true
-},
-{
-"nick": "The Toolbox",
-"name": "Ed West",
-"tail": "Green Bay Packers, tight end",
-"linked": true
-},
-{
-"nick": "The Tyler Rose",
-"name": "Earl Campbell",
-"tail": "an allusion to his hometown Tyler, Texas",
-"linked": true
-},
-{
-"nick": "White Shoes",
-"name": "Billy Johnson",
-"tail": "wide receiver",
-"linked": true
-},
-{
-"nick": "World",
-"name": "Jerry Rice",
-"tail": "San Francisco 49ers, wide receiver",
-"linked": true
-},
-{
-"nick": "Black and Blue Division",
-"name": "NFC North",
-"tail": "NFL; from the division's rugged style of play in the 20th century (also \"Frostbite Division\")",
-"linked": false
-},
-{
-"nick": "Als",
-"name": "Montreal Alouettes",
-"tail": "CFL; abbreviation of name",
-"linked": false
-},
-{
-"nick": "Argos",
-"name": "Toronto Argonauts",
-"tail": "CFL; abbreviation of name",
-"linked": false
-},
-{
-"nick": "The Blue and Gold",
-"name": "Winnipeg Blue Bombers",
-"tail": "CFL; after the team colours",
-"linked": false
-},
-{
-"nick": "The Boatmen",
-"name": "Toronto Argonauts",
-"tail": "CFL; in reference to the team's foundation by the Argonaut Rowing Club of Toronto, which in turn was derived from Jason and the Argonauts, mythical heroes and boatmen who are the namesake of both the rowing club and the CFL team",
-"linked": false
-},
-{
-"nick": "Bombers",
-"name": "Winnipeg Blue Bombers",
-"tail": "CFL; abbreviation of team name",
-"linked": false
-},
-{
-"nick": "The Double Blue",
-"name": "Toronto Argonauts",
-"tail": "CFL; in reference to the team colours, Oxford blue and Cambridge blue",
-"linked": false
-},
-{
-"nick": "Gades",
-"name": "Ottawa Renegades",
-"tail": "CFL; abbreviation of team name",
-"linked": false
-},
-{
-"nick": "Roughies or Green Riders",
-"name": "Saskatchewan Roughriders",
-"tail": "CFL; Green Riders to differentiate team from the now defunct Ottawa team of the same name. Roughies - abbreviation of team name",
-"linked": false
-},
-{
-"nick": "Stamps",
-"name": "Calgary Stampeders",
-"tail": "CFL; abbreviation of team name",
-"linked": false
-},
-{
-"nick": "Ti-cats",
-"name": "Hamilton Tiger-Cats",
-"tail": "CFL; telescoping of team name",
-"linked": false
+ "sources": [
+  "https://en.wikipedia.org/wiki/List_of_NFL_nicknames",
+  "https://en.wikipedia.org/wiki/List_of_North_American_football_nicknames"
+ ],
+ "fetched": "2026-11-23",
+ "count": 260,
+ "players": [
+  {
+   "name": "the Minnesota Vikings defensive line during the 1970s",
+   "nicknames": [
+    "The Purple People Eaters"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1970,
+     1979
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "the Pittsburgh Steelers defensive line during the 1970s",
+   "nicknames": [
+    "Steel Curtain"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1970,
+     1979
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "the 3–4 defense of the Denver Broncos during the late 1970s and early 1980s",
+   "nicknames": [
+    "Orange Crush"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1970,
+     1989
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "the Detroit Lions defensive line during the early 1980s",
+   "nicknames": [
+    "The Silver Rush"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1980,
+     1989
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "the New York Jets defensive line during the early 1980s",
+   "nicknames": [
+    "The New York Sack Exchange"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1980,
+     1989
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "John Abraham",
+   "nicknames": [
+    "The Predator"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jamal Adams",
+   "nicknames": [
+    "Blitz Boy",
+    "President"
+   ],
+   "position": "S",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His tendency to blitz despite being a safety",
+    "His passion, intelligence, and vocal leadership: self-bestowed; blitzes quarterbacks way too much"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Lorenzo Alexander",
+   "nicknames": [
+    "One Man Gang"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "During his early career, Alexander played multiple offensive and defensive positions."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "the New Orleans Saints football team's linebacker corps of the late 1980s and the early 1990s. The Dome Patrol was rated by NFL Network as the #1 linebacker corps of all-time.",
+   "nicknames": [
+    "The Dome Patrol"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1980,
+     1999
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Javorius Allen",
+   "nicknames": [
+    "Buck"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His high school teammates referred to him as \"young buck\" as he was a freshman on the varsity team."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Josh Allen",
+   "nicknames": [
+    "Winter Soldier"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "NFL Films gave Allen the nickname in reference to his strong arm, imposing size, and Buffalo's cold weather. The \"Winter Soldier\" name also refers to the Marvel Cinematic Universe character Bucky Barnes and his strong prosthetic arm."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Mike Alstott",
+   "nicknames": [
+    "A-Train"
+   ],
+   "position": "T",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "How he was as difficult to tackle as a freight train; \"A\" is a reference to his surname initial"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Lance Alworth",
+   "nicknames": [
+    "Bambi"
+   ],
+   "position": "WR",
+   "teams": [
+    "Chargers"
+   ],
+   "era_hint": {
+    "years": [
+     1962,
+     1972
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "For his speed, and his spectacular and graceful moves."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1978,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Joe Andreessen",
+   "nicknames": [
+    "Buffalo Joe"
+   ],
+   "position": null,
+   "teams": [
+    "Bills"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Andreessen has spent most of his life in Erie County, New York, playing high school football in Lancaster, college at the University at Buffalo, and signing with the Buffalo Bills as an undrafted free agent."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Matt Araiza",
+   "nicknames": [
+    "Punt God"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His punting power"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Michael Badgley",
+   "nicknames": [
+    "Money Badger"
+   ],
+   "position": "K",
+   "teams": [
+    "Lions"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Abraham Barshofsky",
+   "nicknames": [
+    "Brooklyn Bullet"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "The Russian Jewish immigrant spent his childhood in Brooklyn, and also went by the anglicized name \"Johnny Barsha.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Tyler Bass",
+   "nicknames": [
+    "Bass-O-Matic"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on Bass's name and the Super Bass-O-Matic, a Dan Aykroyd sketch from Saturday Night Live that itself parodied the Veg-O-Matic from Ronco."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Brandon Beane",
+   "nicknames": [
+    "Big Baller Beane"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2016,
+     2029
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Given to him during his time as Bills GM in the 2020s for his popularity with the team's players. The phrase \"Big Baller B—\" was originally popularized in 2016 by the Big Baller Brand founded by LaVar Ball."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Chuck Bednarik",
+   "nicknames": [
+    "Concrete Charlie",
+    "Sixty Minute Man"
+   ],
+   "position": "C/LB",
+   "teams": [
+    "Eagles"
+   ],
+   "era_hint": {
+    "years": [
+     1949,
+     1962
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Bednarik worked as a concrete salesman during the NFL's offseason and was known for his hard hits and persistent endurance.",
+    "Playing on both offense and defense (and thus playing all sixty minutes of the game); is sometimes applied generally to any player that does this. Bednarik is generally recognized as the last to have done so."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1967,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Martellus Bennett",
+   "nicknames": [
+    "Black Unicorn"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jerome Bettis",
+   "nicknames": [
+    "The Bus"
+   ],
+   "position": "RB",
+   "teams": [
+    "Steelers"
+   ],
+   "era_hint": {
+    "years": [
+     1993,
+     2005
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Because of his ability to carry tacklers on his back like a \"bus\"."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2015
+  },
+  {
+   "name": "Terry Bradshaw",
+   "nicknames": [
+    "Blonde Bomber"
+   ],
+   "position": "QB",
+   "teams": [
+    "Steelers"
+   ],
+   "era_hint": {
+    "years": [
+     1970,
+     1983
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His blond hair, combined with his tendencies to throw the ball down the field, hence \"bomber\"."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1989,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Tom Brady",
+   "nicknames": [
+    "The GOAT"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A name given by fans for being the best QB in NFL history. Short for \"The Greatest Of All Time\"."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Robert Brazile",
+   "nicknames": [
+    "Dr. Doom"
+   ],
+   "position": "LB",
+   "teams": [
+    "Titans"
+   ],
+   "era_hint": {
+    "years": [
+     1975,
+     1984
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Taken from the cartoon character Doctor Doom because he was \"death on offensive men\"."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2018,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Drew Brees",
+   "nicknames": [
+    "Breesus",
+    "Cool Brees"
+   ],
+   "position": "QB",
+   "teams": [
+    "Saints"
+   ],
+   "era_hint": {
+    "years": [
+     2001,
+     2020
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Play on Brees's last name and his perception as the savior of Saints Football."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2026,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "defensive backfield of the Denver Broncos",
+   "nicknames": [
+    "The No Fly Zone"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Antonio Brown",
+   "nicknames": [
+    "AB",
+    "Mr. Big Chest",
+    "Tony-Toe Tap"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His initials and his alter ego for making catches on the sideline."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Bob Brown",
+   "nicknames": [
+    "Boomer"
+   ],
+   "position": "T",
+   "teams": [
+    "Eagles",
+    "Raiders"
+   ],
+   "era_hint": {
+    "years": [
+     1964,
+     1973
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2004,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "John Brown",
+   "nicknames": [
+    "Smokey"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Brown had jet black skin at birth, leading his grandmother to nickname him \"Smokey.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Randy Bullock",
+   "nicknames": [
+    "Fat Randy"
+   ],
+   "position": "K",
+   "teams": [
+    "Bengals"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Joe Burrow",
+   "nicknames": [
+    "Joe Shiesty",
+    "Joe Brr"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him in a viral TikTok by user TrapHouse Sports. Reasons for the nickname are unknown."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Harrison Butker",
+   "nicknames": [
+    "Butt Kicker"
+   ],
+   "position": "K",
+   "teams": [
+    "Chiefs"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Jim Butler",
+   "nicknames": [
+    "Cannonball"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A reflection of his 5'9\" physique"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dan Campbell",
+   "nicknames": [
+    "MCDC"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Stands For \"Motor City Dan Campbell\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Earl Campbell",
+   "nicknames": [
+    "The Tyler Rose"
+   ],
+   "position": "RB",
+   "teams": [
+    "Titans"
+   ],
+   "era_hint": {
+    "years": [
+     1978,
+     1985
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "an allusion to his hometown Tyler, Texas"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1991,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Tony Canadeo",
+   "nicknames": [
+    "The Gray Ghost of Gonzaga"
+   ],
+   "position": "HB",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": {
+    "years": [
+     1941,
+     1952
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1974,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Dave Casper",
+   "nicknames": [
+    "The Ghost"
+   ],
+   "position": "TE",
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": {
+    "years": [
+     1974,
+     1984
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Tight End who participated in two famous Oakland Raiders Plays: \"Ghost to the Post\" & \"Holy Roller (American football)\""
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2002,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Howard Cassady",
+   "nicknames": [
+    "Hopalong"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on his last name and famed Western character Bill \"Hop-Along\" Cassidy."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ben Cavil",
+   "nicknames": [
+    "Honey Buns"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname given to him for his sweet tooth."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Kam Chancellor",
+   "nicknames": [
+    "Bam Bam"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "For his devastatingly big hitting ability. Also referred to as 'Kamtrack' and 'Kam Chancellor the Touchdown Canceller'."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Chris Chandler",
+   "nicknames": [
+    "Crystal Chandelier"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Was plagued by concussions and injuries, referencing his presumed fragility"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Michael Clemons",
+   "nicknames": [
+    "Pinball"
+   ],
+   "position": "PR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "The punt returner had a scattershot running style akin to a pinball. Though his NFL career lasted only one season, he achieved much greater fame in the Canadian Football League."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Marques Colston",
+   "nicknames": [
+    "Quiet Storm"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Reference to Colston's shyness and ability to make big plays."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Chris Cooley",
+   "nicknames": [
+    "Captain Chaos"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Adapted from Dom DeLuise's character in The Cannonball Run; possibly due to shared initials."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jim Corcoran",
+   "nicknames": [
+    "The King"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A journeyman quarterback whose NFL career was quite brief, Corcoran earned a reputation for pomposity in high school when, coming onto the field in a clean uniform after a rainstorm, he drew a cheer of \"hail to the King!\" from a spectator."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Brent Grimes Cornerback",
+   "nicknames": [
+    "Optimus Grimes"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Kirk Cousins",
+   "nicknames": [
+    "Captain Kirk"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname adapted from the Star Trek character James Kirk."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jay Cutler",
+   "nicknames": [
+    "Smoking"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Andy Dalton",
+   "nicknames": [
+    "Red Rifle"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His ability to throw the ball downfield and his red hair."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Bernard Darling",
+   "nicknames": [
+    "Boob"
+   ],
+   "position": "C",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Sam Darnold",
+   "nicknames": [
+    "GEQBUS"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Acronym for \"God Emperor Quarterback of the United States\". Has a subreddit called r/The_Darnold, which is a parody of r/The Donald."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Najeh Davenport",
+   "nicknames": [
+    "Dump Truck"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Allusion to an incident which allegedly occurred when he was in college as well as a take on one-time teammate Jerome Bettis' nickname, \"The Bus\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Brian Dawkins",
+   "nicknames": [
+    "Weapon X"
+   ],
+   "position": "S",
+   "teams": [
+    "Eagles"
+   ],
+   "era_hint": {
+    "years": [
+     1996,
+     2011
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Over the span of his career, Dawkins developed a reputation as a ball-hawking safety and became the unquestioned leader of the Philadelphia Eagles' defense. He earned the nickname \"Weapon X,\" a codename of Marvel character Wolverine, the comic book superhero known for relentless aggression."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2018,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Dion Dawkins",
+   "nicknames": [
+    "Shnowman"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Dawkins coined the word \"shnow\"—a contraction of \"should know\"—that quickly became associated with him when he first used it in high school."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Tommy DeVito",
+   "nicknames": [
+    "Passing Paisano",
+    "Tommy Cutlets"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nod to his Italian-American Heritage",
+    "His parents, with whom DeVito still resides as of his rookie professional season, regularly serve chicken cutlets for dinner."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Cameron Dicker",
+   "nicknames": [
+    "Dicker the Kicker"
+   ],
+   "position": "K",
+   "teams": [
+    "Chargers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Quandre Diggs",
+   "nicknames": [
+    "Nino"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Originally the nickname he got from his teammates back in college."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Anthony Dixon",
+   "nicknames": [
+    "Boobie"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "The nickname comes from Boobie Miles, a character from Friday Night Lights, and was bestowed by his teammates in college."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Josh Dobbs",
+   "nicknames": [
+    "Passtronaut"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "In addition to being an NFL Quarterback, Dobbs double majored in aerospace engineering while playing for the University of Tennessee Volunteers"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Art Donovan",
+   "nicknames": [
+    "Fatso"
+   ],
+   "position": "DT",
+   "teams": [
+    "Colts"
+   ],
+   "era_hint": {
+    "years": [
+     1950,
+     1961
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "A reference to his large frame."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1968,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Elbert Dubenion",
+   "nicknames": [
+    "Golden Wheels"
+   ],
+   "position": "QB",
+   "teams": [
+    "Bills"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Johnny Green, a backup quarterback on Dubenion's Buffalo Bills, gave Dubenion a backhanded compliment admiring his exceptional speed while claiming he couldn't catch a football: \"he's sure got those golden wheels.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Francis Louis Earp",
+   "nicknames": [
+    "Jug"
+   ],
+   "position": "C",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Kenny Easley",
+   "nicknames": [
+    "The Enforcer"
+   ],
+   "position": "S",
+   "teams": [
+    "Seahawks"
+   ],
+   "era_hint": {
+    "years": [
+     1980,
+     1983
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Easley rightfully earned his nickname as “The Enforcer” for this style of play on the field. An all-around great athlete, he earned recognition for his abilities including 5 Pro Bowl selections, 5 total All-Pro selections, AFC Defensive Rookie of the Year honors in 1981, AFC Defensive Player of the Year honors in 1983, NFL 1980s All-Decade Team honors, is in the Seattle Seahawks Ring of Honor and was inducted into the Pro Football Hall of Fame, despite only playing for seven seasons."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2017,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Julian Edelman",
+   "nicknames": [
+    "Minitron"
+   ],
+   "position": "WR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "While not many would draw comparisons between the diminutive Julian Edelman and the monstrous Calvin Johnson, Tom Brady did just that by giving Edelman a new nickname: \"Minitron\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Trent Edwards",
+   "nicknames": [
+    "Captain Checkdown"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Name given to quarterback Trent Edwards for his refusal to throw the deep ball, preferring instead to dump off to running backs or tight ends."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Paul Engebretsen",
+   "nicknames": [
+    "Tiny"
+   ],
+   "position": "G",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Brett Favre",
+   "nicknames": [
+    "The Gunslinger"
+   ],
+   "position": "QB",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": {
+    "years": [
+     1991,
+     2010
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2016,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Ryan Fitzpatrick",
+   "nicknames": [
+    "Amish Rifle",
+    "Fitzmagic",
+    "Fitztragic"
+   ],
+   "position": "QB",
+   "teams": [
+    "Bills",
+    "Jets",
+    "Buccaneers",
+    "Dolphins"
+   ],
+   "era_hint": {
+    "years": [
+     2010,
+     2010
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Fitzpatrick has regularly grown a thick beard over the course of the football season, drawing comparisons to the Amish, who have a large community south of Buffalo, where he was playing at the time the name was bestowed in 2010.",
+    "Fitzpatrick has had brief spurts of resounding success, notable examples include when he played with the Buffalo Bills, New York Jets, Tampa Bay Buccaneers, and Miami Dolphins throughout his long career as an NFL journeyman quarterback.",
+    "Along with those brief spurts of success, Fitzpatrick is also notorious for going on cold streaks and drastrically underperfoming in games for multiple weeks."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Malcom Floyd",
+   "nicknames": [
+    "M-80"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His first initial and jersey number combined, also for his deep play ability."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Nick Foles",
+   "nicknames": [
+    "Big Dick Nick"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Connor Barwin once stated that Foles had the largest penis on the Eagles roster. The moniker became more used following Foles' improbable playoff run, culminating in the Eagles' first Super Bowl victory.",
+    "Philadelphia Eagles quarterback"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "William Perry (American football)",
+   "nicknames": [
+    "The Fridge"
+   ],
+   "position": "DT",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Ahmad Gardner",
+   "nicknames": [
+    "Sauce"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by one of his youth coaches and originally called \"A1 Sauce Sweet Feet Gardner\", which was then later shortened."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jared Goff",
+   "nicknames": [
+    "The Kid"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Often referred to by fans and anchors as \"a\" or \"the\" kid because of his facial young look to him."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Charles Goldenberg",
+   "nicknames": [
+    "Buckets"
+   ],
+   "position": null,
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [
+    "guard/running back"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Josh Gordon",
+   "nicknames": [
+    "Flash Gordon"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "After the early 20th century multimedia hero Flash Gordon"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jimmy Graham",
+   "nicknames": [
+    "Avatar"
+   ],
+   "position": "TE",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Harold \"Red\" Grange",
+   "nicknames": [
+    "Galloping Ghost",
+    "The Wheaton Iceman"
+   ],
+   "position": "HB",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1925,
+     1934
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "A part-time job he once held delivering ice in his hometown of Wheaton, Illinois"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1963,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "BenJarvus Green-Ellis",
+   "nicknames": [
+    "Law Firm"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Play on the length of his full name and its resemblance to the name of a law firm",
+    "because of his segmented name"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Darrell Green",
+   "nicknames": [
+    "Ageless Wonder"
+   ],
+   "position": "CB",
+   "teams": [
+    "Commanders"
+   ],
+   "era_hint": {
+    "years": [
+     1983,
+     2002
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His remarkable ability to maintain a high level of play during the latter years of his 20-year career."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2008,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Joe Greene",
+   "nicknames": [
+    "Mean Joe Greene",
+    "Mean Joe"
+   ],
+   "position": "DE",
+   "teams": [
+    "Steelers"
+   ],
+   "era_hint": {
+    "years": [
+     1969,
+     1981
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Greene never cared for the nickname"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1987
+  },
+  {
+   "name": "Rob Gronkowski",
+   "nicknames": [
+    "Gronk"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Shortening of his last name which is Gronkowski. Also a play off of the Incredible Hulk due to Rob's size, power, and dominance."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "George Halas",
+   "nicknames": [
+    "Papa Bear"
+   ],
+   "position": "E",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1919,
+     1983
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "The founding father of the Chicago Bears"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1963
+  },
+  {
+   "name": "Breece Hall",
+   "nicknames": [
+    "Breece Lightning/Beast"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on \"Greased Lightnin',\" the car in the musical and film Grease"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dante Hall",
+   "nicknames": [
+    "X Factor"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Hall's prolific special teams success during his prime was an \"X factor,\" a facet of his team's attack plan that most other teams did not have. In acknowledgement of his nickname, he would make an X gesture with his arms during his touchdown celebrations."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Casey Hampton",
+   "nicknames": [
+    "Big Snack"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Apparent reference to his large size and penchant for eating"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dan Hampton",
+   "nicknames": [
+    "Danimal"
+   ],
+   "position": "DT/E",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1979,
+     1990
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2002,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Greg Hardy",
+   "nicknames": [
+    "The Kraken"
+   ],
+   "position": "DE",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Javon Hargrave",
+   "nicknames": [
+    "Gravedigger"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by his defensive coordinator at South Carolina State after getting his first sack."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Damon Harrison",
+   "nicknames": [
+    "Snacks, Big Snacks",
+    "Snacks"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Based on his refusal to eat Rice Krispie Treats left for him by the coaching staff",
+    "Defensive Tackle."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "James Harrison",
+   "nicknames": [
+    "Deebo"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His similarity in appearance and demeanor to the character in the movie Friday played by Tom Lister, Jr."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Bob Hayes",
+   "nicknames": [
+    "Bullet Bob"
+   ],
+   "position": "WR",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": {
+    "years": [
+     1964,
+     1964
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Reference to his incredible speed-won two gold medals and set world record in the 100 m at 1964 Summer Olympics."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2009,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Ted Hendricks",
+   "nicknames": [
+    "The Mad Stork",
+    "The Stork"
+   ],
+   "position": "LB",
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": {
+    "years": [
+     1969,
+     1983
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "While playing for the University of Miami, the tall, thin Hendricks gained the nickname “The Mad Stork.”"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1990
+  },
+  {
+   "name": "Derrick Henry",
+   "nicknames": [
+    "King Henry"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His height (6 ft 3 in) and imposing stature."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Justin Herbert",
+   "nicknames": [
+    "If-Man"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Used to refer to the endless hypotheticals used by Herbert's supporters to explain his struggles."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Devin Hester",
+   "nicknames": [
+    "Anytime"
+   ],
+   "position": "WR/KR",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     2006,
+     2016
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His ability to return kicks and punts for touchdowns any time. Inspired from his mentor Deion \"Prime Time\" Sanders."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2024,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Craig Heyward",
+   "nicknames": [
+    "Iron Head"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Heyward had an unusually large head, which he often used as a battering ram."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "1984 San Francisco 49ers defensive secondary led by Dwight Hicks",
+   "nicknames": [
+    "Dwight Hicks and the Hot Licks"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Taysom Hill",
+   "nicknames": [
+    "Mormon Missile"
+   ],
+   "position": null,
+   "teams": [
+    "Saints"
+   ],
+   "era_hint": null,
+   "notes": [
+    "The utility player is a member of the Church of Jesus Christ of Latter-day Saints."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Tyreek Hill",
+   "nicknames": [
+    "Cheetah"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given due to his incredible top speed and acceleration, widely being regarded as one of the fastest NFL players of all time."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Elroy Hirsch",
+   "nicknames": [
+    "Crazy Legs"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Named for his unusual running style.",
+    "running back/wide receiver"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Devlin Hodges",
+   "nicknames": [
+    "Duck"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Hodges, in addition to his football playing, is a world-class champion duck caller."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Torry Holt",
+   "nicknames": [
+    "Big Game"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Goes back to his college career at North Carolina State when he had great performances in games, such as against No. 2 ranked Florida State. He also set rookie Super Bowl records for receptions and receiving yards in Super Bowl XXXIV ."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Paul Hornung",
+   "nicknames": [
+    "Golden Boy"
+   ],
+   "position": "HB/K",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": {
+    "years": [
+     1957,
+     1966
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "half back/kicker"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1986
+  },
+  {
+   "name": "Carlos Huerta",
+   "nicknames": [
+    "Iceman"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Bestowed in college, Huerta was renowned for keeping his composure (staying cool) in stressful situations."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "E. F. Hughitt",
+   "nicknames": [
+    "Tommy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "The origin of this early NFL star's nickname remains unknown. It was popular enough that he legally changed his name to Tommy after his playing career ended."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Tyler Huntley",
+   "nicknames": [
+    "Snoop"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by one of his coaches in high school for his resemblance of Snoop Dogg."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Clay Matthews III",
+   "nicknames": [
+    "The Claymaker"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Kenneth Walker III",
+   "nicknames": [
+    "K-9"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Called \"K9\" because he wears jersey number 9 and embodies the tenacious, \"dawg\" mentality of a Spartan (Michigan State) or a \"beast\" (Seahawks), with the nickname combining his number (\"K-9\") and his fierce running style, similar to a police dog."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Marion Barber III",
+   "nicknames": [
+    "Marion the Barbarian"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Because of his physical running style and reputation for repeatedly breaking tackles"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Michael Irvin",
+   "nicknames": [
+    "The Playmaker"
+   ],
+   "position": "WR",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": {
+    "years": [
+     1988,
+     1999
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "For his ability to defeat tight coverage, even double coverage, and make big plays.; possibly self-bestowed"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2007,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Qadry Ismail",
+   "nicknames": [
+    "The Missile"
+   ],
+   "position": "WR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Lamar Jackson",
+   "nicknames": [
+    "Action Jackson"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by teammates during high school because of his dynamic play style that produced highlight-reel worthy clips, from the Carl Weathers film of the same name"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Edgerrin James",
+   "nicknames": [
+    "Edge"
+   ],
+   "position": "RB",
+   "teams": [
+    "Colts"
+   ],
+   "era_hint": {
+    "years": [
+     1999,
+     2009
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Shortening of his first name"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2020,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Justin Jefferson",
+   "nicknames": [
+    "Jjettas"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Jefferson's Twitter and Instagram usernames."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Billy Johnson",
+   "nicknames": [
+    "White Shoes"
+   ],
+   "position": "WR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Calvin Johnson",
+   "nicknames": [
+    "Megatron"
+   ],
+   "position": "WR",
+   "teams": [
+    "Lions"
+   ],
+   "era_hint": {
+    "years": [
+     2007,
+     2015
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "A reference to his large frame, comparing him to a Transformers character"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2021,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Chad Johnson",
+   "nicknames": [
+    "Ocho Cinco"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2008,
+     2012
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Self-bestowed pidgin Spanish reference to his uniform number (85); originally named Chad Johnson, legally changed name to \"Chad Ochocinco\" in 2008 (changed back to Johnson in 2012). Also self-refers as \"Esteban Ochocinco\"."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Chris Johnson",
+   "nicknames": [
+    "CJ2K"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2009,
+     2009
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Given to him after rushing for over 2,000 yards during the 2009 season."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Cory Johnson",
+   "nicknames": [
+    "Poop"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Johnson once joked that his often fluctuating weight was due to his frequent defecation."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Rob Johnson",
+   "nicknames": [
+    "Robo-sack"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "quarterback known for a reputation of being sacked frequently"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Chester Johnston",
+   "nicknames": [
+    "Swede"
+   ],
+   "position": "RB",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Daryl Johnston",
+   "nicknames": [
+    "Moose"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by Cowboys backup quarterback Babe Laufenberg for his blocking ability and opening holes for runningback Emmitt Smith."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Maurice Jones-Drew",
+   "nicknames": [
+    "MJD",
+    "The Pocket Hercules"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Adam Jones",
+   "nicknames": [
+    "Pacman"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Bestowed in childhood by his grandmother, who surmised he changed directions more often than the popular arcade game character."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Daniel Jones",
+   "nicknames": [
+    "Danny Dimes"
+   ],
+   "position": "QB",
+   "teams": [
+    "Giants"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Coined by his team's (the New York Giants) social media department, allegedly for his ability to throw a football with precision as narrow as a dime."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "David Jones",
+   "nicknames": [
+    "Deacon"
+   ],
+   "position": "DE",
+   "teams": [
+    "Rams"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Ed Jones",
+   "nicknames": [
+    "Too Tall"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His tall height"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Edward Lee Jones",
+   "nicknames": [
+    "Too Tall"
+   ],
+   "position": "DE",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Edwin Pitts Jr.",
+   "nicknames": [
+    "Alabama Pitts"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "The convict-turned-pro athlete, who briefly played in the NFL in addition to his better-known baseball career, was born in Alabama, in contrast to his father Edwin Sr., who was born in Georgia."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Marvin Harrison Jr.",
+   "nicknames": [
+    "Maserati Marv"
+   ],
+   "position": "WR",
+   "teams": [
+    "Colts"
+   ],
+   "era_hint": {
+    "years": [
+     1996,
+     2008
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Given to him by Gus Johnson for being one of the fastest receivers in recent memory."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2016,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Kyle Juszczyk",
+   "nicknames": [
+    "Juice"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Based on his last name."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Alex Karras",
+   "nicknames": [
+    "Mad Duck"
+   ],
+   "position": "DT",
+   "teams": [
+    "Lions"
+   ],
+   "era_hint": {
+    "years": [
+     1958,
+     1970
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Because of his short legs, he appeared to waddle like a duck."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2020,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Jevon Kearse",
+   "nicknames": [
+    "The Freak"
+   ],
+   "position": "DE",
+   "teams": [
+    "Titans"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Travis Kelce",
+   "nicknames": [
+    "Zeus"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Chad Kelly",
+   "nicknames": [
+    "Swag Kelly"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2012,
+     2012
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Kelly released a rap song about himself in 2012, and the nickname stuck afterwards."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jim Kelly",
+   "nicknames": [
+    "Machine Gun Kelly"
+   ],
+   "position": "QB",
+   "teams": [
+    "Bills"
+   ],
+   "era_hint": {
+    "years": [
+     1984,
+     1996
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Jim Kelly was perhaps best known for running the Bills' \"No-Huddle Offense\", which was fast-paced and denied opposing defenses the opportunity to make timely substitutions, establishing the Buffalo Bills as one of the NFL's most successful and dangerous offenses. A reference to mobster Machine Gun Kelly."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2002
+  },
+  {
+   "name": "John Simms Kelly",
+   "nicknames": [
+    "Shipwreck"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A nod to famed pole-sitter Alvin Kelly, also popularly nicknamed \"Shipwreck.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Terrance Knighton",
+   "nicknames": [
+    "Pot Roast"
+   ],
+   "position": "DT",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Tucker Kraft",
+   "nicknames": [
+    "Rez Dawg",
+    "/",
+    "Y.A.C. and Cheese"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Grew up on an Indian Reservation in rural South Dakota. A play on Kraft Mac and Cheese and his impressive ability to gain Yards After Catch."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Erik Kramer",
+   "nicknames": [
+    "Brass"
+   ],
+   "position": "QB",
+   "teams": [
+    "Lions"
+   ],
+   "era_hint": null,
+   "notes": [
+    "In his first play from scrimmage for the Detroit Lions, Kramer, the Lions' backup quarterback at the time, audibled out of the originally called play, prompting a teammate to remark about his audacity that he must have \"brass balls.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dave Krieg",
+   "nicknames": [
+    "Mudbone"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Krieg long kept the origin of his nickname, \"Mudbone\", a secret. Jim Zorn outed him. His nickname was nominated by teammates Byron \"Bones\" Walker and Bryan Millard, and overwhelmingly voted in by his team. The name comes from the Richard Pryor character Mudbone. He was also nicknamed “The Man From Milton” because he went to Milton College which no longer existed by the time he was a starting NFL QB."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jake Kumerow",
+   "nicknames": [
+    "Touchdown Jesus"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname given due to his long hair and thick beard resembling a common depiction of Jesus"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Earl Louis Lambeau",
+   "nicknames": [
+    "Curly"
+   ],
+   "position": null,
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [
+    "founder, halfback and coach"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Daryle Lamonica",
+   "nicknames": [
+    "The Mad Bomber"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Lamonica tended to throw, or \"bomb\", the ball deep during unnecessary situations."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dick \"Night Train\" Lane",
+   "nicknames": [
+    "Night Train"
+   ],
+   "position": "CB",
+   "teams": [
+    "Cardinals",
+    "Lions"
+   ],
+   "era_hint": {
+    "years": [
+     1952,
+     1965
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "From the Jimmy Forrest record \"Night Train,\" which Lane enjoyed."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1974,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Dick Lane",
+   "nicknames": [
+    "Night Train"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "a reference to his fear of flying and resultant travel to road games on night trains."
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Steve Largent",
+   "nicknames": [
+    "Yoda"
+   ],
+   "position": "WR",
+   "teams": [
+    "Seahawks"
+   ],
+   "era_hint": {
+    "years": [
+     1976,
+     1989
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Teammates dubbed him \"Yoda\" to highlight his precision, technical mastery, and ability to \"channel\" the ball, functioning as a \"Jedi Master\" on the field."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1995,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Trevor Lawrence",
+   "nicknames": [
+    "The Prince that was Promised"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His generational talent as an NFL prospect"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Alfonse Leemans",
+   "nicknames": [
+    "Tuffy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname adopted due to softness of his given name, Alfonse."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Sean Lee",
+   "nicknames": [
+    "The General / General Lee"
+   ],
+   "position": "LB",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": null,
+   "notes": [
+    "The nickname was given to Lee by Bruce Carter, a former teammate of Lee's on the Dallas Cowboys. Carter says that Lee is always in charge and is a great leader. When he talks, everyone listens — \"General Lee.\" The name is also derived from General Robert E. Lee, a former General during the Civil War. But in no ways is the middle linebacker specifically named after the war general."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ray Lewis",
+   "nicknames": [
+    "Brickwall"
+   ],
+   "position": "LB",
+   "teams": [
+    "Ravens"
+   ],
+   "era_hint": {
+    "years": [
+     1996,
+     2012
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Lewis had the ability to hit players very hard and often injured them: many players compared one of Lewis's hits to the feeling of running into a brick wall."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2018,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "1980s/1990s Washington Redskins offensive line",
+   "nicknames": [
+    "The Hogs"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1980,
+     1999
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Chris Hanburger- linebacker",
+   "nicknames": [
+    "The Hangman"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Gene Lipscomb",
+   "nicknames": [
+    "Big Daddy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1950,
+     1959
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "At 6′9″ and 290 lb, Lipscomb, a professional wrestler during the offseason, was one of the largest players in professional football during the 1950s."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Phil Loadholt",
+   "nicknames": [
+    "Big Phil"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Minnesota Vikings offensive tackle"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Andrew Luck",
+   "nicknames": [
+    "The Bearded Pony"
+   ],
+   "position": null,
+   "teams": [
+    "Colts"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Marshawn Lynch",
+   "nicknames": [
+    "Beast Mode"
+   ],
+   "position": null,
+   "teams": [
+    "Seahawks"
+   ],
+   "era_hint": null,
+   "notes": [
+    "He used this term to describe himself during an interview; afterward, fans continued to use the term. Lynch later named his Fan Controlled Football franchise the Beasts in homage to the nickname.",
+    "named for his violent running style and unusual ability to break tackles"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Patrick Mahomes",
+   "nicknames": [
+    "Showtime"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Don Majkowski",
+   "nicknames": [
+    "Majik (Man)"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on the quarterback's unwieldy Polish surname."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Eli Manning",
+   "nicknames": [
+    "ELIte",
+    "Easy E"
+   ],
+   "position": "QB",
+   "teams": [
+    "Giants",
+    "Patriots"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Play on his first name, Eli, and the word Elite. Used by New York Giants fans in reference to quarterback Eli Manning claiming that he considers himself in the same elite class of quarterbacks as Tom Brady during a preseason interview. Manning backed up this claim by beating Brady and the New England Patriots in Super Bowl XLVI",
+    "named for his relaxed demeanor even in pressure situations"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Peyton Manning",
+   "nicknames": [
+    "The Sheriff"
+   ],
+   "position": "QB",
+   "teams": [
+    "Colts"
+   ],
+   "era_hint": {
+    "years": [
+     1998,
+     2015
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Well known for calling his own plays at the line of scrimmage and hurry-up offense.",
+    "quarterback a reference to Manning's pre-snap routine, which is one of the most recognizable in the NFL."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2021,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Johnny Manziel",
+   "nicknames": [
+    "Johnny Football"
+   ],
+   "position": "QB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Don Martindale",
+   "nicknames": [
+    "Wink"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Martindale shares a last name with media personality Winston \"Wink\" Martindale."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Doug Martin",
+   "nicknames": [
+    "Muscle Hamster",
+    "The Muscle Hamster"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Originally the nickname of his college girlfriend who was a short but powerful gymnast and later became Martin's nickname as well due to his short stature."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Drake Maye",
+   "nicknames": [
+    "Drake \"Drake Maye\" Maye"
+   ],
+   "position": null,
+   "teams": [
+    "Patriots"
+   ],
+   "era_hint": null,
+   "notes": [
+    "From his team's (the New England Patriots) social media department, reportedly because he was playing so well that his own nickname was enough of an honorific nickname to be repeated as a nickname"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "LeSean McCoy",
+   "nicknames": [
+    "Shady"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His mother gave him the nickname as he had many mood changes when he was young."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Hugh McElhenny",
+   "nicknames": [
+    "The King"
+   ],
+   "position": "RB",
+   "teams": [
+    "49ers"
+   ],
+   "era_hint": {
+    "years": [
+     1952,
+     1964
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Because he was \"the most feared running back in the NFL.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1970,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Terry McLaurin",
+   "nicknames": [
+    "Scary Terry"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by teammates for his fast playmaking abilities."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Steve McMichael",
+   "nicknames": [
+    "Mongo"
+   ],
+   "position": "DT",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1980,
+     1994
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Taken from the character in the film Blazing Saddles, played by Alex Karras."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2024,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Steve McNair",
+   "nicknames": [
+    "Air McNair"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Originally given to his older brother, McNair earned it due to his impressive throwing talent"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "John McNally",
+   "nicknames": [
+    "Johnny Blood",
+    "Blood"
+   ],
+   "position": "RB",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Inspired by the film Blood and Sand, McNally took the first name to hide his identity while he first went professional, hoping someday to return to college football (he never did)."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Evan McPherson",
+   "nicknames": [
+    "Money Mac",
+    "Shooter"
+   ],
+   "position": "K",
+   "teams": [
+    "Bengals"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Harrison Mevis",
+   "nicknames": [
+    "Thiccer Kicker"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His stout frame."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Gardner Minshew",
+   "nicknames": [
+    "Jock Strap King",
+    "Minshew Mania"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2019,
+     2020
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Given to him by Leonard Fournette from having a habit of doing jock strap-only exercises. A name given to him by fans for his impressive season in 2019 & 2020."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Freddie Mitchell",
+   "nicknames": [
+    "Fredex"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on his first name and FedEx."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Quinyon Mitchell",
+   "nicknames": [
+    "Quinyonamo Bay"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Suggested by Eagles fans as a reference to the United States Naval base located in Guantanamo Bay, Cuba."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ron Mix",
+   "nicknames": [
+    "Intellectual Assassin",
+    "The Intellectual Assassin"
+   ],
+   "position": "OT",
+   "teams": [
+    "Chargers"
+   ],
+   "era_hint": {
+    "years": [
+     1960,
+     1971
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Mix had a degree in law at the time he played professional football."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1979,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Arthur Moats",
+   "nicknames": [
+    "Don't Cross The"
+   ],
+   "position": "E",
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2010,
+     2010
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Name bestowed after Moats laid a clean, but particularly devastating hit on Brett Favre, ending Favre's streak of consecutive starts as well as leading to Favre's retirement at the end of the 2010 season. Moats are large trenches surrounding castles that served as a line of defense."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Joe Montana",
+   "nicknames": [
+    "David W. Gibson",
+    "Joe Cool"
+   ],
+   "position": "QB",
+   "teams": [
+    "49ers"
+   ],
+   "era_hint": {
+    "years": [
+     1979,
+     1994
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "A contestant in a San Francisco Chronicle contest to give Montana a nickname noted that Montana's real name sounded too much like a nickname and suggested the realistic-sounding \"David W. Gibson\" as an alternative. Montana was so amused by the suggestion that he had a placard of the name placed on his locker."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2000,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Joe Namath",
+   "nicknames": [
+    "Broadway Joe"
+   ],
+   "position": "QB",
+   "teams": [
+    "Jets"
+   ],
+   "era_hint": {
+    "years": [
+     1965,
+     1977
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Reference to the wide avenue that ran through New York, the city where he played QB with the New York Jets. An allusion to Broadway theater, Namath was known for his showmanship."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1985
+  },
+  {
+   "name": "Earle Neale",
+   "nicknames": [
+    "Greasy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "coach"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Cam Newton",
+   "nicknames": [
+    "Superman Cam"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Due to both his unusually athletic physique and habit of pretending to rip open his jersey to reveal a \"S\" underneath when scoring a rushing touchdown."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Nate Newton",
+   "nicknames": [
+    "The Kitchen"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Since he was presumably larger than \"William \"Refrigerator\" Perry\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Leo Nomellini",
+   "nicknames": [
+    "The Lion"
+   ],
+   "position": "DT",
+   "teams": [
+    "49ers"
+   ],
+   "era_hint": {
+    "years": [
+     1950,
+     1963
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1969,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Don Nottingham",
+   "nicknames": [
+    "The Human Bowling Ball"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "So named for his short but robust frame."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ed Oliver",
+   "nicknames": [
+    "Horse Whisperer"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2019,
+     2019
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "In March 2019, Oliver posted a picture on Twitter of him standing on the back of a horse as a demonstration of his confidence."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Kyle Orton",
+   "nicknames": [
+    "Uncle Rico"
+   ],
+   "position": "QB",
+   "teams": [
+    "Bills"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Orton bore a resemblance to Uncle Rico, a washed-up former high school backup quarterback in the movie Napoleon Dynamite, especially during his time with the Buffalo Bills. Prior to his signing with the Bills, he earned the nickname Neckbeard for his facial hair."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Bill Parcells",
+   "nicknames": [
+    "Tuna"
+   ],
+   "position": null,
+   "teams": [
+    "Patriots"
+   ],
+   "era_hint": {
+    "years": [
+     1980,
+     1980
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Bestowed in 1980, well after his (very brief) NFL playing career ended, when Parcells was an assistant with the New England Patriots, as an homage to the advertising icon Charlie the Tuna."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Willie Parker",
+   "nicknames": [
+    "Fast Willie"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His speed"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Walter Payton",
+   "nicknames": [
+    "Sweetness"
+   ],
+   "position": "RB",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1975,
+     1987
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Earned in college at Jackson State University for his slick moves on the field, his amazing dancing skills, and his friendly personality."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1993,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Doug Pederson",
+   "nicknames": [
+    "Dougie Fresh"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on the name Doug E. Fresh. Given to Pederson by Jalen Mills."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Luis Perez",
+   "nicknames": [
+    "King of Spring"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2019,
+     2025
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Perez has played seven consecutive seasons of professional spring football: 2019 in the AAF, 2020 in the XFL, 2021 in The Spring League, 2022 in the USFL, 2023 in the XFL and since 2024 in the UFL, appearing in three league championships from 2021 to 2023 and winning the 2023 XFL title. His NFL experience has been limited to preseason games up to 2025. Perez named his autobiography The Spring King."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "William Perry",
+   "nicknames": [
+    "The Refrigerator",
+    "The Fridge"
+   ],
+   "position": "NT",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": null,
+   "notes": [
+    "His immense size in comparison to other defensive linemen"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Adrian Petersen",
+   "nicknames": [
+    "Purple Jesus"
+   ],
+   "position": "RB",
+   "teams": [
+    "Vikings"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Adrian Peterson",
+   "nicknames": [
+    "All Day",
+    "AD",
+    "AP"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him by his parents because he would run \"all day\" / His initials"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Oial \"Bum\" Phillips",
+   "nicknames": [
+    "Bum"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A contraction of \"bumblebee,\" based on his aunt's thick southern accent (common to many others in the Phillips family including his son Wade Phillips and grandson Wes Phillips)"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jake Plummer",
+   "nicknames": [
+    "Jake the Snake"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "An homage to Ken Stabler. Both Stabler and Plummer were known for their scrambling abilities; plumber's snakes are augers designed to be able to navigate pipes with curved paths. Similarity in nickname to professional wrestler Jake \"The Snake\" Roberts, who also took his ring name from Stabler, is coincidental."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Johnny Podesto",
+   "nicknames": [
+    "Presto Podesto from Modesto"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His last name and place of birth."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Troy Polamalu",
+   "nicknames": [
+    "The Samoan Headhunter"
+   ],
+   "position": "S",
+   "teams": [
+    "Steelers"
+   ],
+   "era_hint": {
+    "years": [
+     2003,
+     2014
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His style of diving into receivers and diving into pass paths for interception, and for Polamalu's Polynesian ancestry"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2020,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Brock Purdy",
+   "nicknames": [
+    "Mr. Relevant"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2022,
+     2022
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Picked as the final player in the 2022 NFL draft and showed immediate success afterwards."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Todd Marinovich - quarterback",
+   "nicknames": [
+    "Robo-QB"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "B. J. Raji",
+   "nicknames": [
+    "The Freezer"
+   ],
+   "position": null,
+   "teams": [
+    "Bears",
+    "Packers"
+   ],
+   "era_hint": {
+    "years": [
+     1980,
+     1989
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "A play off the nickname of William \"The Refrigerator\" Perry whom the Bears utilized in a similar manner during the 1980s. \"Freezer\" also alludes to the Packers home stadium, Lambeau Field, which is known for its freezing temperatures in December and February."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Raghib Ismail - wide receiver",
+   "nicknames": [
+    "Rocket"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Ed Reed",
+   "nicknames": [
+    "Ball Hawk"
+   ],
+   "position": "S",
+   "teams": [
+    "Ravens"
+   ],
+   "era_hint": {
+    "years": [
+     2002,
+     2013
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Reed was always there to make a play on the ball (i.e. pass defense or interception)."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2019,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Darrelle Revis",
+   "nicknames": [
+    "Revis Island"
+   ],
+   "position": "CB",
+   "teams": [
+    "Jets"
+   ],
+   "era_hint": {
+    "years": [
+     2007,
+     2017
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His ability to cover wide receivers was compared to being stranded on an island"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2023,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Jerry Rice",
+   "nicknames": [
+    "Flash 80",
+    "World"
+   ],
+   "position": "WR",
+   "teams": [
+    "49ers"
+   ],
+   "era_hint": {
+    "years": [
+     1985,
+     2004
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His stunning plays combined with his number, 80"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2010
+  },
+  {
+   "name": "John Riggins",
+   "nicknames": [
+    "Diesel",
+    "The Diesel"
+   ],
+   "position": "RB",
+   "teams": [
+    "Commanders"
+   ],
+   "era_hint": {
+    "years": [
+     1971,
+     1985
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Because of his powerback style of play—compared to a truck that ran on diesel."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1992
+  },
+  {
+   "name": "Andre Rison",
+   "nicknames": [
+    "Bad Moon Rison",
+    "Bad Moon"
+   ],
+   "position": "WR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given nickname by ESPN's Chris Berman in reference to CCR's song \"Bad Moon Rising\".",
+    "many teams"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Ron Rivera",
+   "nicknames": [
+    "Riverboat Ron"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His aggressive nature in playcalling"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ben Roethlisberger",
+   "nicknames": [
+    "Big Ben"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His imposing size; a nod to the large Big Ben structure in London."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Dave Ridgway - place kicker for the Saskatchewan Roughriders",
+   "nicknames": [
+    "Robokicker"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "one of the most accurate placekickers in CFL history"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Greg Rousseau",
+   "nicknames": [
+    "Groot"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on his first initial and last name being similar to the Guardians of the Galaxy character. Rousseau was unfamiliar with the character when the nickname was bestowed but came to like the comparison."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Matt Ryan",
+   "nicknames": [
+    "Matty Ice"
+   ],
+   "position": "E",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "In reference to Matt Ryan's ability to have long game-winning drives under pressure (and pejoratively for Ryan's tendency to go \"ice cold\" during playoff games); also a play on \"Natty Ice\", a low-end beer brewed by Anheuser-Busch InBev"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Deion Sanders",
+   "nicknames": [
+    "Prime Time",
+    "Primetime"
+   ],
+   "position": "CB",
+   "teams": [
+    "Falcons",
+    "Cowboys"
+   ],
+   "era_hint": {
+    "years": [
+     1989,
+     2005
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "His ability to step up at critical moments and make big plays; possibly self-bestowed"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2011,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Gale Sayers",
+   "nicknames": [
+    "Kansas Comet"
+   ],
+   "position": "HB",
+   "teams": [
+    "Bears"
+   ],
+   "era_hint": {
+    "years": [
+     1965,
+     1971
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "\"Kansas Comet\" was stuck on him by the Director of Sports Information at the University of Kansas."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 1977,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Mark Schlereth",
+   "nicknames": [
+    "Stink"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A nickname coined by his teammates on the Washington Redskins after peeing himself constantly during his career."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "defensive backfield of the Seattle Seahawks (Richard Sherman",
+   "nicknames": [
+    "Legion of Boom™"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Kam Chancellor, Earl Thomas), named for their hard-hitting and physical style of play"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "the name given to the Buffalo Bills offense of the mid 1990s that was based on a similar offense called “run and shoot”",
+   "nicknames": [
+    "K-Gun"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1990,
+     1999
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "known for its no-huddle shotgun formations"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "O. J. Simpson",
+   "nicknames": [
+    "The Juice"
+   ],
+   "position": "RB",
+   "teams": [
+    "Bills"
+   ],
+   "era_hint": {
+    "years": [
+     1969,
+     1979
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "A play on the initials he had used as his de facto first name since infancy, a common abbreviation for orange juice."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1985,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Darius Slay",
+   "nicknames": [
+    "Big Play Slay"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname given to Darius Slay by Mississippi State defensive coordinator Geoff Collins"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Rod Smart",
+   "nicknames": [
+    "He Hate Me"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Self-bestowed nickname Smart used on the back of his jersey during his time in the XFL. Smart credits the nickname with helping him break into the NFL after the XFL folded."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jonathan Smith",
+   "nicknames": [
+    "Fast Freddie"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "After Fred Flintstone—specifically, how Smith's choice of quick, short strides when running resembled Flintstone's when operating the Flintmobile."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Justin Smith",
+   "nicknames": [
+    "The Cowboy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His Southern accent and his tendency to wear jeans and boots"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Ken Stabler",
+   "nicknames": [
+    "Snake"
+   ],
+   "position": "QB",
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": {
+    "years": [
+     1968,
+     1984
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [
+    "Both for his scrambling abilities and his ability to escape criminal charges for his wild off-field antics."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ],
+   "hall_of_fame": 2016,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Kenny Stabler",
+   "nicknames": [
+    "The Snake"
+   ],
+   "position": null,
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Roger Staubach",
+   "nicknames": [
+    "Captain Comeback",
+    "The Dodger"
+   ],
+   "position": "QB",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": {
+    "years": [
+     1970,
+     1979
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Name given to quarterback Roger Staubach during his career with the Dallas Cowboys during the 1970s for his ability to bring back his team from being down during important games. Also referred to as Captain America for his strong old fashioned beliefs, likening him to the comic book hero."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1985
+  },
+  {
+   "name": "Frank Stojack",
+   "nicknames": [
+    "Toughie"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Nickname given for never having been hurt on the field throughout his collegiate career and first year in the NFL."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Terrell Suggs",
+   "nicknames": [
+    "BallSoHard/T Sizzle"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2011,
+     2011
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Suggs claims that the reason he plays so toughly and aggressively is because he went to BallSoHard University; however, he did admit in an interview during the 2011 NFL season that he got the name from the commonly known lyric in the Jay-Z song \"Niggas in Paris\", feat. Kanye West."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jack Tatum",
+   "nicknames": [
+    "The Assassin"
+   ],
+   "position": "S",
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Given for his pure brutality."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Fred Taylor",
+   "nicknames": [
+    "Fragile Fred"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Perception of being injured constantly"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "1975 Dallas Cowboys team",
+   "nicknames": [
+    "Dirty Dozen"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1975,
+     1975
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Michael Thomas",
+   "nicknames": [
+    "Slant Boy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His tendency to run slant routes"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Skip Thomas",
+   "nicknames": [
+    "Dr. Death"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Because of his physical tackling, and apparent resemblance to the cartoon character."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jeff Tuel",
+   "nicknames": [
+    "Tuel Time"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1990,
+     1999
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "A play on the show-within-a-show Tool Time on the 1990s sitcom Home Improvement."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Tom Tupa",
+   "nicknames": [
+    "Two Point Tupa"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     1994,
+     1994
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "Tupa took advantage of the legalization of the two-point conversion in the 1994 NFL season; as holder on extra points, he picked the ball up and ran for the conversion three times that season, the first NFL player to score that way."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Michael Turner",
+   "nicknames": [
+    "Burner"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given both because of his ability to break long runs and because it rhymes with his last name. Got the name in college."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Gene Upshaw",
+   "nicknames": [
+    "Highway 63"
+   ],
+   "position": "G",
+   "teams": [
+    "Raiders"
+   ],
+   "era_hint": {
+    "years": [
+     1967,
+     1981
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1987
+  },
+  {
+   "name": "Jason Verrett",
+   "nicknames": [
+    "Feeva Island"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "During his media session at the combine, Verrett explained that his nickname is Feeva Island because he's \"a player that's always hot\" like he has a fever and he often plays man-to-man coverage \"on an island.\""
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jackie Wallace",
+   "nicknames": [
+    "Headhunter"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Wallace led with his head frequently during his playing career, a tactic that in hindsight Wallace suspected may have caused brain damage later in life."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Charvarius Ward",
+   "nicknames": [
+    "Mooney Ward"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given to him in reference to his big-time corner play"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Darnell Washington",
+   "nicknames": [
+    "Mount Washington"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A reference to both his large size, stature, and brute strength, comparing it to that of a mountain. The nickname also alludes to the mountain and neighborhood bearing the Mount Washington name in Pittsburgh."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "J. J. Watt",
+   "nicknames": [
+    "JJ Swatt"
+   ],
+   "position": null,
+   "teams": [
+    "Texans"
+   ],
+   "era_hint": null,
+   "notes": [
+    "named for his ability to bat down passes at the line of scrimmage"
+   ],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Joe Webb",
+   "nicknames": [
+    "Spiderman"
+   ],
+   "position": "WR",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Drafted as a wide receiver by the Minnesota Vikings, on Brett Favre's insistence Joe Webb was signed to the team as a back-up QB. Went on to lead Vikings to a win in Philadelphia, against Michael Vick and the Eagles playing a must-win game. Lovingly called Spiderman, due to his last name."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Ed West",
+   "nicknames": [
+    "The Toolbox"
+   ],
+   "position": "TE",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Byron White",
+   "nicknames": [
+    "Whizzer"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "An alliterative play on his last name and his speed; White, who led the league in rushing in his short three-year NFL career, was dismayed to find the nickname stuck with him well into his legal career (eventually ending up a Supreme Court Justice)."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "James White",
+   "nicknames": [
+    "Sweet Feet"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A nickname that carried on from high school to the pros due to his quickness while running the ball."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Randy White",
+   "nicknames": [
+    "The Manster"
+   ],
+   "position": "DT",
+   "teams": [
+    "Cowboys"
+   ],
+   "era_hint": {
+    "years": [
+     1975,
+     1988
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 1994,
+   "teams_source": "hof.json primary_teams"
+  },
+  {
+   "name": "Reggie White",
+   "nicknames": [
+    "The Minister of Defense"
+   ],
+   "position": "DE",
+   "teams": [
+    "Eagles",
+    "Packers"
+   ],
+   "era_hint": {
+    "years": [
+     1984,
+     2000
+    ],
+    "source": "hof.json years_active"
+   },
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ],
+   "hall_of_fame": 2006
+  },
+  {
+   "name": "Dan Wilkinson",
+   "nicknames": [
+    "Big Daddy"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His 6′5″, 340 lb frame"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Caleb Williams",
+   "nicknames": [
+    "Iceman"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Given due to his ability to produce game winning drives in close or comeback games."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Clarence Williams",
+   "nicknames": [
+    "Pooh Bear"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Bestowed by his grandmother due to a childhood resemblance to Winnie-the-Pooh."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Leonard Williams",
+   "nicknames": [
+    "Big Cat"
+   ],
+   "position": null,
+   "teams": [
+    "Jets"
+   ],
+   "era_hint": null,
+   "notes": [
+    "Given to him teammate during his rookie season with the New York Jets for his giant size."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Trent Williams",
+   "nicknames": [
+    "Silverback"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "Their strength, which is likened to that of a silverback gorilla"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "David Wilson",
+   "nicknames": [
+    "Dynamic Uno"
+   ],
+   "position": "RB",
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "His all-around skills at running back"
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Russell Wilson",
+   "nicknames": [
+    "Chef Russ",
+    "Dangeruss",
+    "Mr. Unlimited"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": {
+    "years": [
+     2020,
+     2020
+    ],
+    "source": "wikipedia_text"
+   },
+   "notes": [
+    "A name given by fans in 2020 along with the slogan \"Let Russ Cook\". Another name given by fans for his elusive scrambling ability. Calls himself that cause he's corny at times."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jacoby Windmon",
+   "nicknames": [
+    "The Windbreaker"
+   ],
+   "position": null,
+   "teams": [],
+   "era_hint": null,
+   "notes": [
+    "A play on his last name, given by fans for his hard-hitting ability and defensive presence."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames"
+   ]
+  },
+  {
+   "name": "Jameis Winston",
+   "nicknames": [
+    "Famous Jameis"
+   ],
+   "position": "QB",
+   "teams": [
+    "Buccaneers"
+   ],
+   "era_hint": null,
+   "notes": [
+    "A nod to Winston's high public profile during his college and professional careers, as well as a play on the Famous Amos cookie brand. Winston has filed for a trademark on the nickname."
+   ],
+   "sources": [
+    "List_of_NFL_nicknames",
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Frank Winters",
+   "nicknames": [
+    "Baggadonuts"
+   ],
+   "position": "C",
+   "teams": [
+    "Packers"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  },
+  {
+   "name": "Greg Zuerlein",
+   "nicknames": [
+    "Legatron"
+   ],
+   "position": "K",
+   "teams": [
+    "Rams"
+   ],
+   "era_hint": null,
+   "notes": [],
+   "sources": [
+    "List_of_North_American_football_nicknames"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "nickname": "Ain'ts",
+   "description": "Nickname given to the New Orleans Saints after their 1980 season of 14 consecutive losses. The name persisted somewhat as, although they would later qualify for the playoffs several times since then, they did not win a playoff game until their defeat of the defending Super Bowl champion Rams in the wild-card round of the 2000–01 playoffs.",
+   "members": [],
+   "teams": [
+    "Rams",
+    "Saints"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "America's Team",
+   "description": "Nickname given to the Dallas Cowboys for having a large number of fans outside its immediate local area (The term itself is likely derived from the title of the team's 1978 highlight film.).",
+   "members": [
+    "Highlight film (page does not exist)"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Bickering Bills",
+   "description": "The 1989 Buffalo Bills, so-called due to internal conflict within the organization between quarterback Jim Kelly and several veteran players as well as a fistfight that occurred between two assistant coaches.",
+   "members": [
+    "Jim Kelly"
+   ],
+   "teams": [
+    "Bills"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Big Blue",
+   "description": "An abridged version of the New York Giants nickname Big Blue Wrecking Crew",
+   "members": [
+    "Big Blue Wrecking Crew"
+   ],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Big Blue Wrecking Crew",
+   "description": "Name of the New York Giants defensive team from 1986 to 1990.",
+   "members": [
+    "Big Blue Wrecking Crew"
+   ],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bills West",
+   "description": "The 2001 San Diego Chargers, so named because of the signing of the Buffalo Bills' former general manager, John Butler, along with several Buffalo Bills players, including quarterback Doug Flutie.",
+   "members": [
+    "Doug Flutie"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Blitzburgh",
+   "description": "Name of the Pittsburgh Steelers defensive unit since the mid-1990s and their tendency to relentlessly attack opposing quarterbacks.",
+   "members": [],
+   "teams": [
+    "Steelers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Blue Wave",
+   "description": "Name of the Seattle Seahawks teams of the 1980s which included Hall of Famers Steve Largent and Kenny Easley. Quarterbacked by Dave Krieg and coached by Chuck Knox. Fans of the team would perform the wave every game.",
+   "members": [
+    "Steve Largent",
+    "Kenny Easley",
+    "Dave Krieg",
+    "Chuck Knox",
+    "Wave (audience)"
+   ],
+   "teams": [
+    "Seahawks"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Boogeymen",
+   "description": "2019 New England Patriots linebacker corps, specifically Dont'a Hightower, Jamie Collins Sr., and Kyle Van Noy.",
+   "members": [
+    "Dont'a Hightower",
+    "Kyle Van Noy"
+   ],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Boston TE Party",
+   "description": "A play on the name of the actual Boston Tea Party, it was the New England Patriots' tight end corps from 2010 to 2012, featuring Rob Gronkowski and Aaron Hernandez.",
+   "members": [
+    "Boston Tea Party",
+    "Tight end",
+    "Rob Gronkowski",
+    "Aaron Hernandez"
+   ],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bring The Heat Boulevard",
+   "description": "Robert Mathis and Dwight Freeney, Defensive linemen on the Peyton Manning-era Indianapolis Colts.",
+   "members": [
+    "Robert Mathis",
+    "Dwight Freeney",
+    "Peyton Manning"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bruise Brothers",
+   "description": "San Diego Chargers defensive line in the 1970s and 1980s.",
+   "members": [
+    "Bruise Brothers (San Diego Chargers)"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bull Elephant backfield",
+   "description": "running backs of the 1950s Rams: Dick Hoerner, Paul \"Tank\" Younger, and \"Deacon\" Dan Towler.",
+   "members": [
+    "Dick Hoerner",
+    "Paul \"Tank\" Younger",
+    "Dan Towler"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bulls on Parade",
+   "description": "Refers to the Houston Texans defense, starting in the 2011 season (but is still a nickname for the Texans). After the hiring of Wade Phillips, the defense went from almost last ranked in the NFL to ranked second at the end of the 2011 season, winning the AFC South for the first time and reaching the post-season for the first time in franchise history. The name is taken from the Rage Against the Machine song of the same name.",
+   "members": [
+    "Wade Phillips",
+    "AFC South",
+    "Rage Against the Machine"
+   ],
+   "teams": [
+    "Texans"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Bungles",
+   "description": "Name referring to the Cincinnati Bengals teams of the 1990s and 2000s, whose string of losing seasons with records 8–8 or worse spanned 14 consecutive years in addition to numerous draft busts. Name also used for any failing Cincinnati Bengals team thereafter. Coined by former Pittsburgh Press sportswriter Glen Sheely and popularized by Pittsburgh Steelers announcer Myron Cope.",
+   "members": [
+    "Pittsburgh Press",
+    "Myron Cope"
+   ],
+   "teams": [
+    "Bengals",
+    "Steelers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Cardiac Bears",
+   "description": "The Chicago Bears NFC North championship team of 2025. Noted for frequent come-from-behind victories under head coach Ben Johnson and quarterback Caleb Williams, including a dramatic overtime win against rivals, The Green Bay Packers.",
+   "members": [
+    "NFC North",
+    "Caleb Williams"
+   ],
+   "teams": [
+    "Bears",
+    "Packers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Cardiac Cardinals (Cards)",
+   "description": "The St. Louis Cardinals NFC East championship teams of 1974 (10–4) and '75 (11–3). Noted for their come-from-behind wins under their head coach, Don Coryell. The name was resurrected for the 1998 team that upset Dallas in the wild card game.",
+   "members": [
+    "NFC East",
+    "Don Coryell"
+   ],
+   "teams": [
+    "Cardinals",
+    "Cowboys"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Cardiac Cats",
+   "description": "Nickname appears in media whenever a cat team (Lions, Bengals, Panthers, Jaguars) has a comeback win or a generally nail-biting conclusion to their game. Most famously used during the 2003 Carolina Panthers season, which ended in a last-minute loss in the Super Bowl, and later to the Detroit Lions of the 2010s.",
+   "members": [
+    "Cardiac Cats"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Cardiac Jags",
+   "description": "The Jacksonville Jaguars earned this nickname because of making several comeback wins and/or winning nail-biters.",
+   "members": [],
+   "teams": [
+    "Jaguars"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Cowgirls",
+   "description": "Derogatory nickname for the Dallas Cowboys, in reference to their cheerleaders.",
+   "members": [
+    "Dallas Cowboys Cheerleaders"
+   ],
+   "teams": [
+    "Cowboys"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Da Bears",
+   "description": "Slang nickname given to the Chicago Bears made popular by the Bill Swerski's Superfans sketches of the early 1990s on Saturday Night Live. Sometimes used to retroactively refer to the 1985 Bears.",
+   "members": [
+    "Bill Swerski's Superfans",
+    "Saturday Night Live"
+   ],
+   "teams": [
+    "Bears"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Dark Side:",
+   "description": "Nickname for the 2025 Seattle Seahawks defense under head coach Mike Macdonald, who led the league in scoring among all defenses over the season and won Super Bowl LX. The nickname was influenced by the Pacific Northwest region's own nickname of \"The Big Dark\".",
+   "members": [
+    "Mike Macdonald",
+    "Pacific Northwest"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Deflatriots:",
+   "description": "Used in reference to Deflategate. Derogatory insult towards the New England Patriots.",
+   "members": [
+    "Deflategate"
+   ],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Dirty Birds",
+   "description": "The 1998 Atlanta Falcons (but is still a nickname for the Falcons). The name originates from an end zone dance started by Jamal Anderson that was adopted by all the players upon scoring.",
+   "members": [
+    "Jamal Anderson"
+   ],
+   "teams": [
+    "Falcons"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Dome Patrol",
+   "description": "The linebacker corps, specifically Rickey Jackson, Vaughan Johnson, Sam Mills, and Pat Swilling, of the National Football League's New Orleans Saints during the late 1980s and early 1990s.",
+   "members": [
+    "Dome Patrol",
+    "Linebacker",
+    "Rickey Jackson",
+    "Vaughan Johnson",
+    "Sam Mills",
+    "Pat Swilling"
+   ],
+   "teams": [
+    "Saints"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Doomsday Defense",
+   "description": "The 1970s Dallas Cowboys defensive team. Doomsday I, the unit that led the Cowboys to victory in Super Bowl VI, was anchored by future Pro Football Hall of Fame members Herb Adderley, Bob Lilly, and Mel Renfro, while Doomsday II, which spearheaded the drive to the title in Super Bowl XII, featured Hall of Famer Randy White and fellow defensive linemen Harvey Martin and Ed \"Too Tall\" Jones.",
+   "members": [
+    "Herb Adderley",
+    "Bob Lilly",
+    "Mel Renfro",
+    "Harvey Martin",
+    "Ed \"Too Tall\" Jones"
+   ],
+   "teams": [
+    "Cowboys"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Everybody Eats:",
+   "description": "The 2024 Buffalo Bills offense, based upon a multifaceted attack in which any of the team's skill positions is roughly equally likely to receive the ball, as opposed to a singular marquee player who draws the majority of attention from the opposing defense. 13 Bills players scored at least one receiving touchdown in 2024, tying an NFL record.",
+   "members": [
+    "Marquee player"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Electric Company",
+   "description": "The 1970s Buffalo Bills offensive line. They were given that name because they \"turned on the 'Juice'\" by paving the way for star halfback O. J. Simpson, who was nicknamed \"Juice\", because a common nickname for orange juice is also O. J.",
+   "members": [
+    "O. J. Simpson",
+    "Orange juice"
+   ],
+   "teams": [
+    "Bills"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Evil Empire",
+   "description": "Name associating the New England Patriots dynasty of the 2000s. Coach Bill Belichick was deemed \"evil\" after the Spygate scandal and the term is a play on Belichick's frequent use of hooded sweatshirts on the sideline, making him resemble the Emperor Palpatine character from the Star Wars motion picture series.",
+   "members": [
+    "Emperor Palpatine",
+    "Star Wars"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Fearsome Foursome",
+   "description": "The 1960s Los Angeles Rams defensive line.",
+   "members": [],
+   "teams": [
+    "Rams"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "G Men",
+   "description": "Nickname of the New York Giants.",
+   "members": [],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Gang Green",
+   "description": "Nickname of the New York Jets, or the Philadelphia Eagles defensive team from 1987 to 1990, when the team was coached by Buddy Ryan.",
+   "members": [
+    "Buddy Ryan"
+   ],
+   "teams": [
+    "Eagles",
+    "Jets"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Ghosts",
+   "description": "The 2019 New England Patriots secondary, in reference to Jets quarterback Sam Darnold \"seeing ghosts\" on Monday Night Football.",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Gravediggers",
+   "description": "The 2020 Tampa Bay Buccaneers front seven, which led the league in rushing defense and were 6th in the league in sacks.",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Greatest Show on Turf",
+   "description": "The 1999–2001 St. Louis Rams record-breaking offensive team featuring Kurt Warner, Marshall Faulk, Isaac Bruce, Torry Holt, Az-Zahir Hakim, and Ricky Proehl. They were recognized as one of the greatest offenses to play in NFL history. (Note: The first team referred to as \"The Greatest Show on Turf\" was the 1992 Houston Oilers, the title of their 1993 NFL Films highlight film. The Oilers employed the wide-open run-and-shoot offense.)",
+   "members": [
+    "The Greatest Show on Turf",
+    "Kurt Warner",
+    "Marshall Faulk",
+    "Isaac Bruce",
+    "Torry Holt",
+    "Az-Zahir Hakim",
+    "Ricky Proehl",
+    "Run & Shoot"
+   ],
+   "teams": [
+    "Rams",
+    "Titans"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Gritz Blitz",
+   "description": "Nickname for the 1977 Atlanta Falcons defense led by then defensive assistant Jerry Glanville that allowed the fewest points per game (9.2) in NFL history.",
+   "members": [
+    "Jerry Glanville"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Ground Chuck",
+   "description": "Nickname for the conservative, ball-control offense favored by coach Chuck Knox.",
+   "members": [
+    "Chuck Knox"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Homeland Defense",
+   "description": "Nickname for the New England Patriots defense during their runs to Super Bowl XXXVIII and XXXIX.",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Hogs",
+   "description": "The Washington Redskins' offensive line in the 1980s. They were considered one of the largest and strongest offensive lines in football history, originally consisting of Joe Jacoby, Russ Grimm, Mark May, George Starke, and Jeff Bostic.",
+   "members": [
+    "Joe Jacoby",
+    "Russ Grimm",
+    "Mark May",
+    "George Starke",
+    "Jeff Bostic"
+   ],
+   "teams": [
+    "Commanders"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Hosses",
+   "description": "Affection name used by media and fans for the Baltimore Colts, especially during the late 1950s and 1960s.",
+   "members": [],
+   "teams": [
+    "Colts"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Jackson 5",
+   "description": "Nickname of the 2017 Jacksonville Jaguars secondary coming from the famous music group",
+   "members": [
+    "Jackson 5"
+   ],
+   "teams": [
+    "Jaguars"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Jeff Stoutland University",
+   "description": "Nickname for Philadelphia Eagles offensive line coach Jeff Stoutland's development of offensive linemen. During his tenure on the Eagles from 2013 to 2025, Stoutland coached six different Pro Bowl linemen, including Brandon Brooks, Landon Dickerson, Lane Johnson, Jason Kelce, Evan Mathis, and Jason Peters (Johnson, Kelce, Mathis, and Peters also received All-Pro honors). The nickname was originally coined during the 2022 season by Eagles offensive lineman Jordan Mailata.",
+   "members": [
+    "Jeff Stoutland",
+    "Brandon Brooks",
+    "Landon Dickerson",
+    "Lane Johnson",
+    "Jason Kelce",
+    "Evan Mathis",
+    "Jason Peters",
+    "Jordan Mailata"
+   ],
+   "teams": [
+    "Eagles"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Kardiac Kids",
+   "description": "The 1980 Cleveland Browns offensive unit featuring Brian Sipe, Greg Pruitt, Ozzie Newsome, Dave Logan, and Reggie Rucker who had a penchant for having games decided in the final moments.",
+   "members": [
+    "Kardiac Kids",
+    "Brian Sipe",
+    "Greg Pruitt",
+    "Ozzie Newsome",
+    "Reggie Rucker"
+   ],
+   "teams": [
+    "Browns"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Killer Bees",
+   "description": "The 1982 Miami Dolphins defensive team; seven of their 11 starters had last names that began with the letter \"B\" (Bob Baumhower, Bill Barnett, Lyle Blackwood, Kim Bokamper, Glenn Blackwood, Charles Bowser, Doug Betters, and Bob Brudzinski). They allowed only 131 points in the strike-shortened, nine-game regular season.",
+   "members": [
+    "Bob Baumhower",
+    "Bill Barnett",
+    "Lyle Blackwood",
+    "Kim Bokamper",
+    "Glenn Blackwood",
+    "Charles Bowser",
+    "Doug Betters",
+    "Bob Brudzinski"
+   ],
+   "teams": [
+    "Dolphins"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Killer B's",
+   "description": "Three members of the Pittsburgh Steelers, consisting of Ben Roethlisberger, Le'Veon Bell, Antonio Brown, and sometimes Chris Boswell. Name was first used during the 2016 NFL season.",
+   "members": [
+    "Ben Roethlisberger",
+    "Le'Veon Bell",
+    "Antonio Brown",
+    "Chris Boswell"
+   ],
+   "teams": [
+    "Steelers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Legion of Boom",
+   "description": "The dominant secondary of the Seattle Seahawks, consisting of All-Pro safety tandem Earl Thomas and Kam Chancellor as well as the league's largest set of corners in 6′4″ Pro Bowler Brandon Browner and 6′3″ All-Pro Richard Sherman. The term has come to encompass the entire defense.",
+   "members": [
+    "Legion of Boom (Seattle Seahawks)",
+    "Earl Thomas (defensive back)",
+    "Kam Chancellor",
+    "Brandon Browner"
+   ],
+   "teams": [
+    "Seahawks"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Legion of Zoom",
+   "description": "The unstoppable wide receiver corps of the Kansas City Chiefs, particularly known for their speed, consisting of Tyreek Hill, Sammy Watkins, Demarcus Robinson, and Mecole Hardman and notably TE Travis Kelce, starting in 2018 with the arrival of a top quarterback, Patrick Mahomes",
+   "members": [
+    "Legion of Zoom",
+    "Tyreek Hill",
+    "Sammy Watkins",
+    "Demarcus Robinson",
+    "Mecole Hardman",
+    "Travis Kelce",
+    "Patrick Mahomes"
+   ],
+   "teams": [
+    "Chiefs"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Marty Ball",
+   "description": "Coach Marty Schottenheimer's football strategy.",
+   "members": [
+    "Marty Ball",
+    "Marty Schottenheimer"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Miami Pound Machine",
+   "description": "Miami Pound Machine The nickname of the late 1980s and early '90s Dolphins defense, named for Gloria Estefan's band Miami Sound Machine",
+   "members": [
+    "Gloria Estefan",
+    "Miami Sound Machine"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Million Dollar Backfield",
+   "description": "Million Dollar Backfield was given to two historical backfields. It was first used to refer to the backfield of the then–Chicago Cardinals in 1947 after owner Charles Bidwill spent an unprecedented amount of money to lure several of the era's top players to the team. The term was resurrected again in 1954 for the backfield of the San Francisco 49ers, which would go on to produce four Hall of Famers.",
+   "members": [
+    "Charles Bidwill"
+   ],
+   "teams": [
+    "49ers",
+    "Cardinals"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Monsters of the Midway",
+   "description": "Originally applied to the Chicago Bears of the early 1940s, but revived for the 1980s Bears and subsequent successful Bears defensive teams. Originally used for the University of Chicago Maroons college football team. \"Midway\" was the name of the park on campus.",
+   "members": [
+    "Monsters of the Midway",
+    "University of Chicago"
+   ],
+   "teams": [
+    "Bears"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "New Jack City",
+   "description": "The New York Jets secondary in the late 2010s and the early 2020s, led by both Jamal Adams and Marcus Maye. It was based on the movie New Jack City which is about robberies in New York City.",
+   "members": [
+    "Jamal Adams",
+    "Marcus Maye",
+    "New Jack City"
+   ],
+   "teams": [
+    "Jets"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "New York Sack Exchange",
+   "description": "The New York Jets defense of the early 1980s, led by defensive end Mark Gastineau along with Joe Klecko, and interior linemen Marty Lyons and Abdul Salaam. Fans began showing up at Shea Stadium with \"NY Sack Exchange\" signs, then the team itself began to promote that moniker. Name references the New York Stock Exchange on New York's Wall Street.",
+   "members": [
+    "New York Sack Exchange",
+    "Mark Gastineau",
+    "Joe Klecko",
+    "Marty Lyons",
+    "New York Stock Exchange",
+    "Wall Street"
+   ],
+   "teams": [
+    "Jets"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "No-Fly Zone",
+   "description": "Mid 2010's Denver Broncos defensive backfield including players Aqib Talib, Chris Harris Jr., TJ Ward, Darian Stewart and Bradley Roby. Helped lead a Broncos dominating defense to Super Bowl 50 victory.",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "No-Name Defense",
+   "description": "The 1970s Miami Dolphins defensive team, especially that of its undefeated 1972 season, which performed excellently despite a lack of recognizable stars. They earned their nickname the previous year when Dallas coach Tom Landry said in an interview prior to Super Bowl VI that he could not remember the names of the Miami defensive players.",
+   "members": [
+    "Tom Landry"
+   ],
+   "teams": [
+    "Dolphins"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Orange Crush",
+   "description": "The 1970s Denver Broncos defensive team, led by defensive end Lyle Alzado and linebackers Randy Gradishar and Tom Jackson.",
+   "members": [
+    "Lyle Alzado",
+    "Randy Gradishar"
+   ],
+   "teams": [
+    "Broncos"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Over-the-Hill Gang",
+   "description": "The George Allen–coached Washington Redskins of the early 1970s, so named because of the large number of veteran players on the team. Many of those players also played for Allen when he coached the Los Angeles Rams from 1966–1970.",
+   "members": [],
+   "teams": [
+    "Commanders",
+    "Rams"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Patsies",
+   "description": "Poorly performing New England Patriots squads, a play on the nickname \"The Pats\".",
+   "members": [],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Purple People Eaters",
+   "description": "The 1970s Minnesota Vikings defensive line, specifically the combination of Alan Page, Jim Marshall, Carl Eller, and Gary Larsen. The name is a reference to both the purple uniforms of the Vikings and the 1958 Sheb Wooley song \"Purple People Eater.\"",
+   "members": [
+    "Purple People Eaters",
+    "Alan Page",
+    "Jim Marshall (defensive end)",
+    "Carl Eller",
+    "Gary Larsen",
+    "Sheb Wooley"
+   ],
+   "teams": [
+    "Vikings"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Purple Murder",
+   "description": "The Baltimore Ravens' color is purple. A group of crows is called a \"murder of crows\", and Ravens are similar to crows. Technically, a group of Ravens is referred to as an \"unkindness of ravens\". In addition, Ray Lewis, a longtime member of the Ravens, was implicated in a murder case during his playing career, possibly popularizing the phrase.",
+   "members": [
+    "Ray Lewis",
+    "Ray Lewis"
+   ],
+   "teams": [
+    "Ravens"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Red Stallions",
+   "description": "The Atlanta Falcons; it comes from a 2023 Tennessee Titans social media post where people on Nashville's Broadway guessed the team names of the Titans opponents that season by logo.",
+   "members": [
+    "Broadway (Nashville, Tennessee)"
+   ],
+   "teams": [
+    "Titans"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Sack Pack",
+   "description": "The defensive line of the Baltimore Colts in the mid-to-late 1970s. The Sack Pack were defensive tackles Joe Ehrmann (#76) and Mike Barnes (#63) and defensive ends Fred Cook (#72) and John Dutton (#78). In 1975, the Sack Pack established itself with 59 sacks. It had 56 the following year and 47 in 1977 before slowing down due to injuries.",
+   "members": [
+    "Joe Ehrmann",
+    "John Dutton (defensive lineman)"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Sacksonville",
+   "description": "A portmanteau of the word sack and the city of Jacksonville. \"Sacksonville\" is used to refer to the Jacksonville Jaguars defense during the 2017 season, which was known to cause a high number of sacks, interceptions, and turnovers.",
+   "members": [
+    "Sacksonville",
+    "Portmanteau",
+    "Quarterback sack",
+    "Jacksonville"
+   ],
+   "teams": [
+    "Jaguars"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "San Diego Super Chargers",
+   "description": "Nickname given to the San Diego Chargers from its fight song.",
+   "members": [
+    "Fight song"
+   ],
+   "teams": [
+    "Chargers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Steel Curtain",
+   "description": "Nickname given to the defensive line of the 1970s Pittsburgh Steelers, the backbone of a dominant defense, which was itself giver this moniker. The nickname was a play on the phrase Iron Curtain during the height of the Cold War.",
+   "members": [
+    "Steel Curtain",
+    "Iron Curtain",
+    "Cold War"
+   ],
+   "teams": [
+    "Steelers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Sonic and Knuckles",
+   "description": "Nickname given to the Detroit Lions' 2020s running back tandem of Jahmyr Gibbs and David Montgomery in reference to the video game characters. Gibbs is referred to as Sonic due to his speed, and Montgomery is Knuckles due to his brute strength.",
+   "members": [
+    "Jahmyr Gibbs",
+    "Sonic the Hedgehog (character)",
+    "Knuckles the Echidna"
+   ],
+   "teams": [
+    "Lions"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Sons of Anarchy",
+   "description": "The New York Jets defensive line of the early 2010s consisting of Muhammad Wilkerson, Damon Harrison, and Sheldon Richardson. Alludes to the FX television series of the same name which was highly popular at the time.",
+   "members": [
+    "Sons of Anarchy"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Succs/Yuccs:",
+   "description": "Derogatory nickname given to the Tampa Bay Buccaneers due to their reputation as a perennial losing team",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "SWAT team",
+   "description": "Name of the Cincinnati Bengals' secondary of David Fulcher, Solomon Wilcots, Eric Thomas, and Lewis Billups coached by Defensive Coordinator Dick LeBeau during the 1988 season.",
+   "members": [
+    "David Fulcher",
+    "Solomon Wilcots",
+    "Eric Thomas (cornerback)",
+    "Lewis Billups",
+    "Dick LeBeau"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Tacks",
+   "description": "General name for the Tennessee Titans, alternately, the Flaming Thumbtacks. Based on the shape of the letter T in the logo. Name popularized by Greg Easterbrook in his Tuesday Morning Quarterback blog.",
+   "members": [],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Three Amigos",
+   "description": "Denver Broncos wide receivers Mark Jackson, Vance Johnson, and Ricky Nattiel. The nickname came from the 1986 movie, \"The Three Amigos\".",
+   "members": [
+    "Mark Jackson (wide receiver)",
+    "Vance Johnson",
+    "Ricky Nattiel",
+    "Three Amigos"
+   ],
+   "teams": [
+    "Broncos"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "The Triplets",
+   "description": "Troy Aikman, Michael Irvin, and Emmitt Smith, the offensive stars of the 1990s Dallas Cowboys three-time Super Bowl winning teams",
+   "members": [
+    "Troy Aikman",
+    "Michael Irvin",
+    "Emmitt Smith"
+   ],
+   "teams": [
+    "Cowboys"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Twenty Thousand Dollar Beauties",
+   "description": "The 1919 Hammond Bobcats, one of the high budget teams whose player spending budgets triggered the formation of the NFL. The Bobcats themselves would not survive to the NFL, and its players and investors would be split among the Decatur Staleys (later the Chicago Bears), Hammond Pros and Chicago Tigers.",
+   "members": [
+    "Hammond Pros",
+    "Chicago Tigers"
+   ],
+   "teams": [
+    "Bears"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "YAC Bros:",
+   "description": "Nickname for the 2020s 49ers offense, who are known for their high Yards after catch, consisting of offensive stars Christian McCaffrey, Deebo Samuel, Brandon Aiyuk, and George Kittle",
+   "members": [
+    "Yards after catch",
+    "Christian McCaffrey",
+    "Deebo Samuel",
+    "Brandon Aiyuk",
+    "George Kittle"
+   ],
+   "teams": [
+    "49ers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Ain'ts*",
+   "description": "New Orleans Saints, NFL; rhyming play on the non-standard English negative ain't, first used during the 1980 season when the team went 1-15",
+   "members": [
+    "English language",
+    "Ain't"
+   ],
+   "teams": [
+    "Saints"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "B.I.L.L.S.*",
+   "description": "Buffalo Bills, by detractors, acronyms for \"Boy I Love Losing Super Bowls\", in reference to the team's failure to win the Super Bowl in four straight tries during the early 1990s",
+   "members": [],
+   "teams": [
+    "Bills"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Big Blue (Wrecking Crew)",
+   "description": "New York Giants, NFL; from the color of their jerseys, influenced by the nickname of IBM",
+   "members": [
+    "Big Blue Wrecking Crew",
+    "IBM"
+   ],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Black and Gold",
+   "description": "Pittsburgh Steelers, NFL; from their uniform colors",
+   "members": [],
+   "teams": [
+    "Steelers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Black and Blue Division",
+   "description": "NFC North, NFL; from the division's rugged style of play in the 20th century (also \"Frostbite Division\")",
+   "members": [
+    "NFC North"
+   ],
+   "teams": [],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Blue Giants",
+   "description": "Used for New York Giants because of the team color",
+   "members": [],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Bolts",
+   "description": "Los Angeles Chargers, NFL; from the lightning bolt design on their helmets",
+   "members": [
+    "Thunderbolt"
+   ],
+   "teams": [
+    "Chargers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Bucs/Buckies",
+   "description": "Tampa Bay Buccaneers, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "Buccaneers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Bungles",
+   "description": "Cincinnati Bengals, NFL; mainly used by detractors",
+   "members": [],
+   "teams": [
+    "Bengals"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Cheeseheads",
+   "description": "Nickname used for residents of Wisconsin in reference to the state's large dairy industry. Sometimes employed derogatorily by neighboring states, the moniker was embraced by residents, particularly Green Bay Packers fans, and has become synonymous with Wisconsin's football culture. (While the state is presently known for cheese production, the Packers team itself was originally named for the Indian meat packing company in Green Bay, WI.)",
+   "members": [
+    "Cheeseheads"
+   ],
+   "teams": [],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Cheatriots",
+   "description": "New England Patriots, NFL; Used by detractors as a reference to the Patriots cheating allegations during Bill Belichick and Tom Brady era",
+   "members": [],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Chefs",
+   "description": "Kansas City Chiefs, NFL; origin Snickers candy bar commercial; however, the NFL has licensed official \"Kansas City Chief Head Chef Cookie Jars\"",
+   "members": [
+    "Snickers"
+   ],
+   "teams": [
+    "Chiefs"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Chesapeake Watershed Region Indigenous Persons",
+   "description": "Washington Redskins, NFL; translation of team name into politically correct terms It was later changed to \"Potomac Drainage Basin Indigenous Persons\" (see below) since the Baltimore Ravens also share the Chesapeake Bay region.",
+   "members": [
+    "Political correctness",
+    "Chesapeake Bay"
+   ],
+   "teams": [
+    "Commanders",
+    "Ravens"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Clowns",
+   "description": "Cleveland Browns, NFL; used by detractors.",
+   "members": [],
+   "teams": [
+    "Browns"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Da Raidahs",
+   "description": "Las Vegas Raiders, NFL; The way Chris Berman of ESPN says, \"The Raiders\", a spoof of Raiders team owner Al Davis' accent.",
+   "members": [
+    "Chris Berman",
+    "Al Davis"
+   ],
+   "teams": [
+    "Raiders"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Dawgs",
+   "description": "Cleveland Browns, NFL; according to Hanford Dixon, then a cornerback with the original Art Modell-owned Browns, he gave his defensive teammates this nickname to inspire them before the 1985 season",
+   "members": [
+    "Hanford Dixon",
+    "Cornerback"
+   ],
+   "teams": [
+    "Browns"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "DeadSkins",
+   "description": "Washington Redskins, NFL; rhyming play on team name; used by detractors or disgruntled fans.",
+   "members": [],
+   "teams": [
+    "Commanders"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Detroit Lie-downs",
+   "description": "Detroit Lions, NFL; so called because they just lie down and let other teams run over them.",
+   "members": [],
+   "teams": [
+    "Lions"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Dirty Birds",
+   "description": "Atlanta Falcons, NFL; team dubbed themselves by this name during their race to Super Bowl XXXIII",
+   "members": [],
+   "teams": [
+    "Falcons"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Dolts",
+   "description": "Indianapolis Colts, NFL; rhyming play on name with a term for \"idiot\"; by detractors",
+   "members": [],
+   "teams": [
+    "Colts"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Donks",
+   "description": "Denver Broncos, used by detractors.",
+   "members": [],
+   "teams": [
+    "Broncos"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Empire",
+   "description": "Used by detractors to refer to either the Dallas Cowboys, due to their reputation of having a large fanbase, plentiful funds, and several Super Bowl rings, and the New England Patriots, due to their own reputation of also being one of the most hated teams in the NFL and being the de facto villain for the league, and because of their recent Super Bowl dynasty. The \"role\" of the Emperor is usually filled by Jerry Jones or Bill Belichick.",
+   "members": [
+    "Galactic Empire (Star Wars)",
+    "Palpatine",
+    "Jerry Jones",
+    "Bill Belichick"
+   ],
+   "teams": [
+    "Cowboys",
+    "Patriots"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Flaming Thumbtacks",
+   "description": "Tennessee Titans, NFL; a humorous interpretation of their team logo, actually a flaming stylized letter \"T\"",
+   "members": [],
+   "teams": [
+    "Titans"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Fins",
+   "description": "Miami Dolphins, NFL; play on abbreviation of name with the appendages of a dolphin",
+   "members": [],
+   "teams": [
+    "Dolphins"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Fish",
+   "description": "Miami Dolphins, NFL; while the mascot and team logo of bottlenose dolphins are not fish, but mammals. The rhyme detractors used when they played in the Orange Bowl was, \"squish the fish in the Orange Dish.\" Now rarely used due to the Florida Marlins, who are also called \"The Fish\".",
+   "members": [
+    "Mascot",
+    "Team logo (page does not exist)",
+    "Fish",
+    "Mammal",
+    "Florida Marlins"
+   ],
+   "teams": [
+    "Dolphins"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Forty-Whiners/The Whiners",
+   "description": "San Francisco 49ers, used by detractors.",
+   "members": [],
+   "teams": [
+    "49ers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "G-Men",
+   "description": "New York Giants, NFL; initial of team name, possibly a play on the term for a government (e.g., FBI) agent",
+   "members": [
+    "FBI"
+   ],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Goats",
+   "description": "Los Angeles Rams, NFL; when playing poorly",
+   "members": [],
+   "teams": [
+    "Rams"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Greatest Show on Turf",
+   "description": "St. Louis Rams, known for their league-leading offense from 1999 to 2001",
+   "members": [
+    "Greatest Show on Turf"
+   ],
+   "teams": [
+    "Rams"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Honolulu Blue Wrecking Crew",
+   "description": "Detroit Lions, NFL; from a primary color of the uniform",
+   "members": [],
+   "teams": [
+    "Lions"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Houston No-Wins",
+   "description": "Houston Texans, NFL; rhyming play on name when team is performing poorly",
+   "members": [],
+   "teams": [
+    "Texans"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Iggles",
+   "description": "Philadelphia Eagles, NFL; reference to how some Philadelphians pronounce \"Eagles\"",
+   "members": [],
+   "teams": [
+    "Eagles"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Jags",
+   "description": "Jacksonville Jaguars, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "Jaguars"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Jest",
+   "description": "New York Jets, NFL; humorous misspelling of team name; used when team is performing poorly",
+   "members": [],
+   "teams": [
+    "Jets"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Jints",
+   "description": "New York Giants, NFL; used occasionally by local media, as eye dialect for the team's name. Also used for the baseball team while it was in New York.",
+   "members": [
+    "Eye dialect"
+   ],
+   "teams": [
+    "Giants"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Lambs",
+   "description": "Los Angeles Rams, NFL; a lamb being a soft, cuddly, meek baby sheep (as opposed to a ram, being an aggressive full-grown male sheep); rhyming nickname used by detractors when team performs poorly",
+   "members": [],
+   "teams": [
+    "Rams"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "'Niners",
+   "description": "San Francisco 49ers, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "49ers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Oilers",
+   "description": "Tennessee Titans, NFL; a reference of the team's name before it moved to Tennessee, the Houston Oilers",
+   "members": [],
+   "teams": [
+    "Titans"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Pack",
+   "description": "Green Bay Packers, NFL; abbreviation of name, and a play on the collective term for a group of animals such as dogs or wolves",
+   "members": [],
+   "teams": [
+    "Packers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Pats",
+   "description": "New England Patriots, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Patsies",
+   "description": "New England Patriots, NFL; play on nickname \"Pats\" (above) and the term patsy Archived September 27, 2007, at the Wayback Machine, \"a person who is easily manipulated or victimized\"",
+   "members": [
+    "Wayback Machine"
+   ],
+   "teams": [
+    "Patriots"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Potomac Drainage Basin Indigenous Persons",
+   "description": "Washington Redskins, NFL; translation of team name into politically correct terms, popularized by NFL columnist and Washington, D.C. resident Gregg Easterbrook in his weekly column Tuesday Morning Quarterback.",
+   "members": [
+    "Political correctness",
+    "Washington, D.C.",
+    "Gregg Easterbrook"
+   ],
+   "teams": [
+    "Commanders"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Seagulls",
+   "description": "Seattle Seahawks, term often said by detractors when Seahawks are playing poorly.",
+   "members": [],
+   "teams": [
+    "Seahawks"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "The Silver and Black",
+   "description": "Las Vegas Raiders, NFL; from the colors of the uniforms",
+   "members": [],
+   "teams": [
+    "Raiders"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Sinners",
+   "description": "New Orleans Saints, NFL; \"sinner\" is often a paired opposite of \"saint\"; used by detractors, but also as a result of New Orleans Saints Bounty Scandal",
+   "members": [
+    "New Orleans Saints bounty scandal"
+   ],
+   "teams": [
+    "Saints"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "'Skins",
+   "description": "Washington Redskins, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "Commanders"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "'Stillers",
+   "description": "Pittsburgh Steelers, NFL; how native Pittsburghers (Picksbergers) pronounce the name of their team",
+   "members": [],
+   "teams": [
+    "Steelers"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Vikes",
+   "description": "Minnesota Vikings, NFL; abbreviation of team name",
+   "members": [],
+   "teams": [
+    "Vikings"
+   ],
+   "page": "List_of_North_American_football_nicknames"
+  },
+  {
+   "nickname": "Beanie",
+   "description": "",
+   "members": [
+    "Chris Wells",
+    "Veryl Ebert"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Butch Cassidy and the Sundance Kid",
+   "description": "Miami Dolphins running back duo from 1968 to 1974; named after the movie about the famous outlaws.",
+   "members": [
+    "Larry Csonka",
+    "Jim Kiick"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Double Trouble",
+   "description": "Carolina Panthers running back duo from 2008 to 2014, previously known as Smash and Dash",
+   "members": [
+    "DeAngelo Williams",
+    "Jonathan Stewart"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Earth, Wind and Fire",
+   "description": "2008 NY Giants running backs; Jacobs = Earth, Ward = Wind, Bradshaw = Fire",
+   "members": [
+    "Brandon Jacobs, Derrick Ward,",
+    "Ahmad Bradshaw"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Exciting Whites",
+   "description": "Using the meme by the same name, Philadelphia Eagles fans began to use a photo of a supermarket wine selection titled \"Exciting Whites\" to react to outstanding defensive plays by white defenders Cooper DeJean and Reed Blankenship. The duo embraced the trend by wearing custom exciting whites t-shirts into their week 11 matchup of the 2024 season against the Washington Commanders. During the following offseason, Dejean and Blankenship further demonstrated their acceptance of the nickname by starting a podcast titled \"Exciting Mics.\"",
+   "members": [
+    "Cooper DeJean",
+    "Reed Blankenship"
+   ],
+   "teams": [
+    "Eagles",
+    "Commanders"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Marks Brothers",
+   "description": "Prolific Miami Dolphins wide receiver duo of the 1980s who shared the same first name (also a reference to the Marx Brothers. They were also christened \"Mark Twain.\")",
+   "members": [
+    "Mark Clayton",
+    "Mark Duper"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Posse",
+   "description": "Trio of wide receivers on the Washington Redskins of the late 1980s through the early 1990s:",
+   "members": [
+    "Art Monk, Gary Clark",
+    "Ricky Sanders"
+   ],
+   "teams": [
+    "Commanders"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Smash and Dash",
+   "description": "Running back duo of the Titans starting in 2008; White being Smash for his 'power running back' skills and Johnson being Dash because of his astonishing breakaway speed",
+   "members": [
+    "Chris Johnson",
+    "LenDale White"
+   ],
+   "teams": [
+    "Titans"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Smith Brothers, Smith Bros",
+   "description": "Former Green Bay Packers linebacker duo who shared the same last name.",
+   "members": [
+    "Preston Smith",
+    "Za'Darius Smith"
+   ],
+   "teams": [
+    "Packers"
+   ],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Thunder and Lightning",
+   "description": "1976–1980 New Orleans Saints dynamic running back duo known as \"Thunder and Lightning\". The nickname is credited to former Saints Head Coach Hank Stram.",
+   "members": [
+    "Chuck Muncie",
+    "Tony Galbreath"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Wildman",
+   "description": "",
+   "members": [
+    "Ray Nitschke",
+    "Norm Willey"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "Williams Wall",
+   "description": "The duo is largely responsible for the Vikings fielding such a stiff run defense, and they make it nearly impossible for the opposition to consistently gain yardage between the tackles.",
+   "members": [
+    "Pat Williams",
+    "Kevin Williams"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  },
+  {
+   "nickname": "WD40",
+   "description": "For Dunn's initials and Alstott's jersey No. 40, a play on the proprietary lubricant of the same name.",
+   "members": [
+    "Mike Alstott",
+    "Warrick Dunn"
+   ],
+   "teams": [],
+   "page": "List_of_NFL_nicknames"
+  }
+ ],
+ "non_players": [
+  {
+   "names": [
+    "Ambrose Schindler"
+   ],
+   "nicknames": [
+    "Amblin' Amby"
+   ],
+   "description": "Schindler was one of the earliest scrambling quarterbacks. He chose not to play in the NFL despite being selected in the 1940 NFL draft, but would later return to professional football as an official in the 1960s."
+  },
+  {
+   "names": [
+    "Carnell Williams"
+   ],
+   "nicknames": [
+    "Cadillac"
+   ],
+   "description": "A high school broadcaster at Etowah High School in Attalla, Alabama compared Williams' running to a luxury car."
+  },
+  {
+   "names": [
+    "Steven Hauschka"
+   ],
+   "nicknames": [
+    "Hausch Money"
+   ],
+   "description": "Pete Carroll, head coach of the Seattle Seahawks, coined the nickname in response to Hauschka's ability to kick field goals in clutch situations. The name was revived, possibly independently, when Hauschka joined the Buffalo Bills and continued to make key field goals, often from long range."
+  },
+  {
+   "names": [
+    "Marquise Brown"
+   ],
+   "nicknames": [
+    "Hollywood"
+   ],
+   "description": "Given to him back in college by Oklahoma announcer Gus Johnson back in 2017."
+  },
+  {
+   "names": [
+    "Dante Hall"
+   ],
+   "nicknames": [
+    "The Human Joystick"
+   ],
+   "description": "Nickname given to him by coach Vermeil because of his big play ability in the return game."
+  },
+  {
+   "names": [
+    "Patrick Mahomes"
+   ],
+   "nicknames": [
+    "Kermit",
+    "Showtime",
+    "The Grim Reaper"
+   ],
+   "description": "\"Kermit\" based on his voice sounding similar to Kermit the Frog. \"Grim Reaper\" based upon a speech Mahomes's coach Andy Reid made in a 2022 playoff game: \"when it's grim, be the Grim Reaper.\""
+  },
+  {
+   "names": [
+    "Maxx Crosby"
+   ],
+   "nicknames": [
+    "Mad Maxx",
+    "The Condor"
+   ],
+   "description": "Given to him in college for being fueled by relentless anger & motivation. A name given to him football analyst Brian Baldinger for his unusually large wingspan & his pursuit on quarterbacks."
+  },
+  {
+   "names": [
+    "Anthony Sherman"
+   ],
+   "nicknames": [
+    "Sausage"
+   ],
+   "description": "Given to him by Kansas City Chiefs play-by-play announcer Mitch Holthus."
+  },
+  {
+   "names": [
+    "Aaron Donald"
+   ],
+   "nicknames": [
+    "The Terminator"
+   ],
+   "description": "A name given by Rams' head coach Sean McVay due to his ability to terrorize opposing offenses."
+  },
+  {
+   "names": [
+    "Devin Hester"
+   ],
+   "nicknames": [
+    "Windy City Flyer"
+   ],
+   "description": "Hester's speed and a nickname for the city of Chicago, in which he plays; bestowed by WBBM 780 radio-announcer Jeff Joniak"
+  }
+ ]
 }
-]

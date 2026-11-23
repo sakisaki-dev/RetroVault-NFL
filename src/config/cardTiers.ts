@@ -34,7 +34,20 @@ export const tierRank = (t: Tier) => TIERS.findIndex((x) => x.key === t);
  */
 export const NFL_TIER_MIN = { legendary: 5300, epic: 3300, rare: 1550 } as const;
 
+/**
+ * NFL edition (owner, 2026-11-23): tiers follow the rating the price reads, 0.8 CAR + 0.2 SZN for an active player, CAR
+ * alone for the rest (cardMarket.ts priceRating), cut at the same shares as before: Legendary the top 2% (96+), Epic the
+ * next 7% (90+), Rare the next 20% (78+), Common the rest. A Hall of Famer is at least Epic. Without a rating it
+ * falls back to Career Legacy.
+ */
+export const NFL_TIER_OVR_MIN = { legendary: 96, epic: 90, rare: 78 } as const;
+
 export const tierFor = (player: Pick<Player, 'careerLegacy'>, ovr: number | null | undefined): Tier => {
+  if (IS_NFL && ovr != null) {
+    if (ovr >= NFL_TIER_OVR_MIN.legendary) return 'legendary';
+    if (isHallOfFamer(player) || ovr >= NFL_TIER_OVR_MIN.epic) return 'epic';
+    return ovr >= NFL_TIER_OVR_MIN.rare ? 'rare' : 'common';
+  }
   if (IS_NFL) {
     if (player.careerLegacy >= NFL_TIER_MIN.legendary) return 'legendary';
     if (isHallOfFamer(player) || player.careerLegacy >= NFL_TIER_MIN.epic) return 'epic';

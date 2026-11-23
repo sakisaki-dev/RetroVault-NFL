@@ -1,6 +1,7 @@
-import { IS_NFL } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
+import InTheNews from '@/components/espn/InTheNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, CalendarClock, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
+import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
 import {
   POSITIONS,
@@ -14,6 +15,7 @@ import {
   type SimilarityMode,
 } from '@/config/advanced';
 import { playerSkillGrades } from '@/config/skillGrades';
+import DdSkillsSwitch from './DdSkillsSwitch';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { cn } from '@/lib/utils';
 import Chips from '../analytics/Chips';
@@ -23,11 +25,13 @@ import CompMap from './CompMap';
 import { familiesFor, familyOfPlayer } from '@/config/families';
 import { buildShapeMap } from '../visual/shapeMap';
 import DdAdvanced from './DdAdvanced';
+import DdAdvancedFactors from './DdAdvancedFactors';
 import DdCareer, { type PosStat } from './DdCareer';
 import DdEmpty from './DdEmpty';
 import DdClock from '../../clock/DdClock';
 import DdHero from './DdHero';
 import DdRecords from './DdRecords';
+import DdGameLog from '../gamelog/DdGameLog';
 import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
@@ -63,12 +67,15 @@ const ALL_SECTIONS = [
   { id: 'dd-map', label: 'Neighbourhood', short: 'Map', icon: ChartScatter },
   { id: 'dd-advanced', label: 'Advanced profile', short: 'Advanced', icon: Activity },
   { id: 'dd-graphs', label: 'Career graphs', short: 'Graphs', icon: LineChart },
+  ...(IS_NFL ? [{ id: 'dd-gamelog', label: 'Game log', short: 'Games', icon: ClipboardList }] : []),
   { id: 'dd-career', label: 'Career & legacy', short: 'Career', icon: Milestone },
   { id: 'dd-clock', label: 'Age & clock', short: 'Age', icon: CalendarClock },
   { id: 'dd-records', label: 'Records & awards', short: 'Records', icon: Medal },
 ] as const;
 /** No live save in the NFL edition, so no Age & clock */
-const SECTIONS = IS_NFL ? ALL_SECTIONS.filter((s) => s.id !== 'dd-clock') : ALL_SECTIONS;
+const SECTIONS: readonly { id: string; label: string; short: string; icon: typeof Gauge }[] = IS_NFL
+  ? [...ALL_SECTIONS.filter((s) => s.id !== 'dd-clock'), { id: 'dd-news', label: 'In the news', short: 'News', icon: Newspaper }]
+  : ALL_SECTIONS;
 
 const useMedia = (query: string) => {
   const [on, setOn] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia(query).matches);
@@ -121,7 +128,7 @@ const pctIn = (vals: number[], v: number) => {
  */
 const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey, onPlayerChange, onCompare }: PlayerDeepDiveProps) => {
   const players = useMemo(() => (data ? leaguePlayers(data) : (playersProp ?? []).filter((p) => !p.isRealLegend)), [data, playersProp]);
-  const { ovrMap, legends } = useGamePool();
+  const { ovrMap, careerOvrMap, legends, seasonOvr, ovrBasis } = useGamePool();
   const wide = useMedia('(min-width: 768px)');
   const reduced = usePrefersReducedMotion();
   const sorted = useMemo(() => [...players].sort((a, b) => b.careerLegacy - a.careerLegacy), [players]);
@@ -283,6 +290,23 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const prev = idx > 0 ? ladder[idx - 1] : null;
   const next = idx >= 0 && idx < ladder.length - 1 ? ladder[idx + 1] : null;
   const ovr = ovrMap.get(keyOf(player));
+  const car = careerOvrMap.get(keyOf(player));
+  const seasonShown = ovrBasis.get(keyOf(player)) === 'season' && seasonOvr && ovr != null;
+  const carTitle = car == null ? undefined : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
+  // Two ratings (owner, 2026-11-23): SZN = this season alone, CAR = the whole career. A retired player shows CAR only.
+  const ovrTitle = IS_NFL
+    ? seasonShown
+      ? `How OVR works. SZN ${ovr}: his ${seasonLabel(seasonOvr.season)} season so far ranked within ${player.position}s: per-game production and efficiency (EPA where it applies), scaled by how much he plays (snap share), with small samples pulled toward the position's floor so a few good games do not make a 99. CAR ${car ?? '–'}: his whole career ranked within the position. Price and card tier read 0.8 CAR + 0.2 SZN.`
+      : `How OVR works. ${carTitle ?? ''} No ${seasonLabel(seasonOvr?.season ?? 2026)} games, so there is no SZN${player.status === 'Active' ? '' : ' (retired players are rated on their career alone)'}.`
+    : seasonShown
+    ? `SZN ${ovr}: season OVR for Y${seasonOvr.season}${seasonOvr.live ? ' so far' : ''}, his season line ranked within ${player.position}s who played it (small samples shrunk toward the position mean).`
+    : car == null
+      ? undefined
+      : player.status === 'Active'
+        ? `${carTitle} No games in Y${seasonOvr?.season ?? ''}, so there is no season OVR.`
+        : `${carTitle} Retired players have no season OVR; their past seasons appear in the career graphs.`;
+  const ovrLabel = seasonShown ? 'SZN' : 'CAR';
+  const ovrAlt = seasonShown && car != null ? { label: 'CAR', value: car, title: carTitle } : null;
   const insufficient = !hasSimilarityData(player);
   const compare = onCompare ?? openInHeadToHead;
   const vals = posValues.get(position)!;
@@ -331,6 +355,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         player={player}
         options={sorted}
         ovr={ovr}
+        ovrTitle={ovrTitle}
+        ovrLabel={ovrLabel}
+        ovrAlt={ovrAlt}
         wide={wide}
         onChoose={(k) => choose(k, { scroll: false })}
         onRandom={random}
@@ -361,7 +388,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={`Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
-            {grades && <DdSkills player={player} ovr={ovr} traits={grades.traits} overall={grades.overall} players={players} onOpenPlayer={(p) => choose(keyOf(p))} />}
+            <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 
           <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
@@ -446,6 +473,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
           <DdSection id="dd-advanced" index={3} title="Advanced profile" icon={Activity} kicker="Every advanced metric for his position: percentile, + index (100 = average qualifier) and rank among qualifiers.">
             <DdAdvanced player={player} boards={boards} />
+            {IS_NFL && <DdAdvancedFactors player={player} players={players} picker onOpenPlayer={(p) => choose(keyOf(p))} />}
           </DdSection>
 
           <DdSection
@@ -457,6 +485,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           >
             <DdGraphsLazy player={player} players={players} wide={wide} />
           </DdSection>
+
+          {IS_NFL && (
+            <DdSection id="dd-gamelog" index={4.5} title="Game log" icon={ClipboardList} kicker="Every game on file: the line, the result, splits, best games, streaks and how steady he is.">
+              <DdGameLog player={player} />
+            </DdSection>
+          )}
 
           <DdSection id="dd-career" index={5} title="Career & legacy" icon={Milestone}>
             <DdCareer player={player} posStats={posStats} />
@@ -470,6 +504,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           <DdSection id="dd-records" index={7} title="Records & awards" icon={Medal}>
             <DdRecords player={player} book={book} ovr={ovr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
+
+          {IS_NFL && (
+            <DdSection id="dd-news" index={8} title="In the news" icon={Newspaper} kicker="The real ESPN articles and clips that tag him, from the latest NFL news and his club's feed.">
+              <InTheNews player={player} />
+            </DdSection>
+          )}
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 import type { Player } from '@/types/player';
 import { HOF_THRESHOLD, LEGACY_TIERS } from '@/config/stats';
+import { IS_NFL } from '@/config/edition';
 import { officialOvrMap, playerKey } from '@/config/ovr';
-import { playerSkillGrades } from '@/config/skillGrades';
+import { foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
 import { TIERS, tierFor, type Finish, type PrizmCopy, type PrizmParallel, type Tier, type Variant } from '@/config/cardTiers';
 import { AUTOGRAPH_MEAN_MULT } from '@/config/autographs';
 
@@ -44,6 +45,18 @@ import { AUTOGRAPH_MEAN_MULT } from '@/config/autographs';
  * `npm run rebuild` adds one whenever any player's OVR, skill or legacy changed, so prices move only when the data
  * does. Nothing here is hand-maintained.
  */
+
+/**
+ * The rating the PRICE reads (owner, 2026-11-23): an active player's card value blends his season rating into his career
+ * one, rating = round(CAR_WEIGHT * CAR + SZN_WEIGHT * SZN) = 0.8 CAR + 0.2 SZN; a retired player, or an active one with
+ * no season line, is priced on CAR alone. CAR = the career OVR (config/ovr.ts officialOvrMap), SZN = the season OVR
+ * (scripts/season_ovr.py). A point's stored `ovr` stays the career rating (stories cite it); `szn` is the new input.
+ */
+// Owner, 2026-11-23: 0.8 CAR + 0.2 SZN for an active player (both editions; live retrovault-v2 c7c6cec0)
+export const CAR_WEIGHT = 0.8;
+export const SZN_WEIGHT = 0.2;
+export const priceRating = (car: number, szn: number | null | undefined) =>
+  szn == null ? car : Math.round(CAR_WEIGHT * car + SZN_WEIGHT * szn);
 
 export const OVR_FLOOR = 25;
 export const OVR_SCALE = 2400;
@@ -115,7 +128,10 @@ export function autographPrice(value: number, mult: number, finish: Finish = 'ba
 // ---------- Snapshots ----------
 
 export interface MarketPoint {
+  /** CAR: the career OVR (the price reads priceRating(ovr, szn)) */
   ovr: number;
+  /** SZN: the season OVR of an active player who played the latest season (absent: priced on `ovr` alone) */
+  szn?: number;
   /** Skill rating (62–99), null when the player has no graded skills */
   skill: number | null;
   /** Career Legacy, rounded */
@@ -176,26 +192,29 @@ export const milestoneStats = (p: Player): Record<string, number> => {
  * official OVR over the game pool (league + real NFL players, minus exclusions), skill rating graded against the
  * whole league, Career Legacy from the normalized league. `league` is normalized and has no real legends.
  */
-export const snapshotPlayers = (league: Player[], legends: Player[], excluded: Set<string>): Record<string, MarketPoint> => {
+export const snapshotPlayers = (league: Player[], legends: Player[], excluded: Set<string>, season: Record<string, number> = {}, advanced: Record<string, number[]> = {}): Record<string, MarketPoint> => {
   const ovrMap = officialOvrMap(league, legends, excluded);
   const pool = league.filter((p) => !excluded.has(playerKey(p)));
   const rows = pool.map((p) => {
     const ovr = ovrMap.get(playerKey(p)) ?? 62;
-    const overall = playerSkillGrades(league, p).overall;
-    return { p, ovr, tier: tierFor(p, ovr), skill: overall?.rating ?? null, grade: overall?.grade.grade };
+    // NFL: the career advanced factors are part of the skill rating (skillGrades.ts foldAdvanced; scripts/nfl/advanced.py)
+    const overall = foldAdvanced(playerSkillGrades(league, p).overall, advanced[playerKey(p)] ?? []);
+    const szn = p.status === 'Active' ? season[playerKey(p)] : undefined;
+    return { p, ovr, szn, tier: tierFor(p, IS_NFL ? priceRating(ovr, szn) : ovr), skill: overall?.rating ?? null, grade: overall?.grade.grade };
   });
   const counts = new Map<Tier, number>();
   rows.forEach((r) => counts.set(r.tier, (counts.get(r.tier) ?? 0) + 1));
   const out: Record<string, MarketPoint> = {};
   [...rows]
     .sort((a, b) => playerKey(a.p).localeCompare(playerKey(b.p)))
-    .forEach(({ p, ovr, tier, skill, grade }) => {
+    .forEach(({ p, ovr, szn, tier, skill, grade }) => {
       const legacy = Math.round(p.careerLegacy || 0);
       out[playerKey(p)] = {
         ovr,
+        ...(szn != null ? { szn } : {}),
         skill,
         legacy,
-        value: cardValue({ ovr, skill, legacy, tier, tierCount: counts.get(tier) ?? 1, poolSize: rows.length }),
+        value: cardValue({ ovr: priceRating(ovr, szn), skill, legacy, tier, tierCount: counts.get(tier) ?? 1, poolSize: rows.length }),
         ...(grade ? { grade } : {}),
         s: milestoneStats(p),
       };
@@ -207,7 +226,7 @@ export const snapshotPlayers = (league: Player[], legends: Player[], excluded: S
 export const samePlayers = (a: Record<string, MarketPoint>, b: Record<string, MarketPoint>) => {
   const ka = Object.keys(a);
   if (ka.length !== Object.keys(b).length) return false;
-  return ka.every((k) => b[k] && a[k].ovr === b[k].ovr && a[k].skill === b[k].skill && a[k].legacy === b[k].legacy);
+  return ka.every((k) => b[k] && a[k].ovr === b[k].ovr && a[k].szn === b[k].szn && a[k].skill === b[k].skill && a[k].legacy === b[k].legacy);
 };
 
 // ---------- Reading the history (UI) ----------

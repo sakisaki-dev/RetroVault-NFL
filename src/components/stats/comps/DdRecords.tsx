@@ -2,6 +2,10 @@ import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { isDefensivePosition } from '@/config/stats';
 import { AWARD_META } from '@/utils/playerMeta';
+import { IS_NFL } from '@/config/edition';
+import { priceRating } from '@/utils/cardMarket';
+import { playerKey } from '@/config/ovr';
+import { useGamePool } from '@/utils/useOfficialOvr';
 import { VARIANTS, cardKey, finishLabel, tierFor, tierLabel, useCollection } from '@/utils/collection';
 import { fmtNum } from '../analytics/viz';
 import type { RecordBook } from '../records';
@@ -19,7 +23,11 @@ const DdRecords = ({ player, book, ovr, onOpenPlayer }: { player: Player; book: 
   const pace = book.pace.filter((p) => p.player.name === player.name && p.player.position === player.position);
   const awards = AWARD_META[isDefensivePosition(player.position) ? 'defense' : 'offense'];
   const owned = cards[cardKey(player)];
-  const tier = tierFor(player, ovr);
+  // the tier follows the rating the price reads: NFL edition 0.8 CAR + 0.2 SZN (cardMarket.ts priceRating)
+  const { careerOvrMap, seasonOvr } = useGamePool();
+  const career = careerOvrMap.get(playerKey(player));
+  const szn = player.status === 'Active' ? seasonOvr?.ovr[playerKey(player)] : undefined;
+  const tier = tierFor(player, IS_NFL && career != null ? priceRating(career, szn) : ovr);
 
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">

@@ -207,6 +207,22 @@ export const overallFor = (features: CompFeature[], baseline: Map<string, number
   return { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
 };
 
+/**
+ * NFL edition (owner: "feel free to add more factors to the grade"): the advanced-stat factors (nflAdvanced.ts: EPA,
+ * CPOE, target share, separation, pressures, missed tackles...; style traits like time to throw and aDOT left out)
+ * count as much as the classic traits combined: the overall percentile is the mean of the classic overall and the mean
+ * of the advanced percentiles. A metric the player or the source lacks (before 2018, no NGS) is skipped, never a zero;
+ * with none, the classic overall stands.
+ */
+export const ADVANCED_SHARE = 0.5;
+export const foldAdvanced = (overall: Overall | null, advancedPcts: number[]): Overall | null => {
+  const pcts = advancedPcts.filter(Number.isFinite);
+  if (!overall || !pcts.length) return overall;
+  const pct = (1 - ADVANCED_SHARE) * overall.pct + ADVANCED_SHARE * (pcts.reduce((a, b) => a + b, 0) / pcts.length);
+  const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
+  return { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
+};
+
 export interface SkillGrade {
   trait: SkillTrait;
   /** Raw stat value (NaN when missing) and its display string */

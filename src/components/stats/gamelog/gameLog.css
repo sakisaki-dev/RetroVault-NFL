@@ -1,0 +1,112 @@
+.gl { --gl-w: 152 62% 48%; --gl-l: 354 90% 62%; }
+.gl-turf { color: hsl(var(--turf)); }
+.gl-flag { color: hsl(var(--flag)); }
+.gl-sub { font-size: 11px; color: hsl(var(--muted-foreground)); }
+.gl-empty { padding: 1.25rem; text-align: center; color: hsl(var(--muted-foreground)); font-size: 0.875rem; }
+.gl-panel { position: relative; border: 1px solid hsl(var(--line)); border-radius: 12px; padding: 0.85rem; background: linear-gradient(180deg, hsl(var(--panel)), hsl(var(--night) / 0.9)); box-shadow: inset 0 1px 0 hsl(var(--chalk) / 0.05); min-width: 0; }
+.gl-panel::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 36px; border-radius: 12px 12px 0 0; background: radial-gradient(120% 100% at 50% 0, hsl(var(--gold) / 0.1), transparent 70%); pointer-events: none; }
+.gl-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.4rem 0.75rem; margin-bottom: 0.6rem; position: relative; }
+.gl-h { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; }
+.gl-h::before { content: ''; width: 8px; height: 8px; background: hsl(var(--gold)); box-shadow: 0 0 8px hsl(var(--gold) / 0.7); }
+
+/* scoreboard */
+.gl-board { position: relative; border: 2px solid hsl(var(--line)); border-radius: 12px; padding: 0.9rem 0.7rem 0.7rem; background: linear-gradient(180deg, hsl(228 47% 5%), hsl(var(--panel))); overflow: hidden; }
+.gl-board__bulbs { position: absolute; top: 3px; left: 8px; right: 8px; height: 4px; background: radial-gradient(circle, hsl(var(--gold)) 1.4px, transparent 1.6px) 0 0 / 14px 4px repeat-x; opacity: 0.8; }
+.gl-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+@media (min-width: 640px) { .gl-tiles { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.gl-tile { display: flex; flex-direction: column; gap: 1px; padding: 0.45rem 0.6rem; border: 1px solid hsl(var(--line) / 0.7); border-radius: 8px; background: hsl(var(--night) / 0.7); min-width: 0; }
+.gl-tile__k { font-family: 'Silkscreen', monospace; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.gl-tile__v { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.7rem; line-height: 1.05; font-variant-numeric: tabular-nums; text-shadow: 0 0 12px hsl(var(--chalk) / 0.12); }
+.gl-tile__s { font-size: 10.5px; color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* filters */
+.gl-filters { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; align-items: center; }
+.gl-chips { display: flex; gap: 0.3rem; overflow-x: auto; max-width: 100%; padding-bottom: 3px; scrollbar-width: thin; flex: 1 1 18rem; }
+.gl-chip, .gl-seg__b { font-family: 'Silkscreen', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 0.38rem 0.6rem; min-height: 32px; border: 1px solid hsl(var(--line)); border-radius: 6px; background: hsl(var(--panel)); color: hsl(var(--secondary-foreground)); white-space: nowrap; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.gl-chip:hover, .gl-seg__b:hover:not(:disabled) { background: hsl(var(--panel-2)); }
+.gl-chip.is-on, .gl-seg__b.is-on { background: hsl(var(--gold)); color: hsl(43 100% 8%); border-color: hsl(var(--gold)); font-weight: 700; }
+.gl-seg__b:disabled { opacity: 0.4; cursor: default; }
+.gl-chip:focus-visible, .gl-seg__b:focus-visible, .gl-th:focus-visible, .gl-bar:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.gl-seg { display: inline-flex; gap: 0.25rem; flex-wrap: wrap; }
+
+/* chart: a turf-lined field board */
+.gl-field { background: linear-gradient(180deg, hsl(228 47% 6%) 0%, hsl(var(--panel)) 55%, hsl(147 40% 11%) 100%); }
+.gl-chart { position: relative; display: flex; align-items: stretch; gap: 3px; height: 190px; padding: 0 0 22px 26px; margin-top: 0.25rem; border-bottom: 3px solid hsl(var(--turf-deep)); }
+.gl-grid { position: absolute; inset: 0 0 22px 26px; pointer-events: none; }
+.gl-grid span { position: absolute; left: 0; right: 0; border-top: 1px dashed hsl(var(--chalk) / 0.14); }
+.gl-grid i { position: absolute; left: -26px; top: -7px; width: 22px; text-align: right; font: normal 9px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
+.gl-col { position: relative; flex: 1 1 0; max-width: 40px; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; min-width: 0; }
+.gl-bar { display: block; width: 100%; min-height: 3px; border: 0; border-radius: 3px 3px 0 0; cursor: pointer; padding: 0; transform-origin: bottom; position: relative; margin-bottom: 0; }
+.gl-bar--w { background: linear-gradient(180deg, hsl(var(--gl-w)), hsl(var(--turf-deep))); }
+.gl-bar--l { background: linear-gradient(180deg, hsl(var(--gl-l)), hsl(354 60% 32%)); }
+.gl-bar--t { background: linear-gradient(180deg, hsl(var(--sky)), hsl(199 60% 30%)); }
+.gl-bar--post { box-shadow: 0 -4px 0 hsl(var(--gold)); }
+.gl-bar:hover, .gl-bar.is-sel { filter: brightness(1.3); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85), 0 0 14px hsl(var(--gold) / 0.45); z-index: 2; }
+.gl-bar--post.is-sel { box-shadow: 0 -4px 0 hsl(var(--gold)), 0 0 0 2px hsl(var(--chalk) / 0.85); }
+.gl-wk { position: absolute; bottom: -18px; left: 0; right: 0; text-align: center; font: 9px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
+@media (prefers-reduced-motion: no-preference) {
+  .gl-bar--anim { animation: gl-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  @keyframes gl-rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+}
+.gl-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; align-items: center; margin-top: 0.4rem; font-size: 11px; color: hsl(var(--secondary-foreground)); }
+.gl-dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 4px; }
+.gl-dot--w { background: hsl(var(--gl-w)); } .gl-dot--l { background: hsl(var(--gl-l)); } .gl-dot--post { background: hsl(var(--gold)); }
+.gl-pick { display: flex; gap: 0.7rem; align-items: center; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--tc) 60%, hsl(var(--line))); background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 22%, hsl(var(--night))), hsl(var(--night) / 0.8)); min-height: 3.6rem; }
+.gl-pick__t { font-weight: 700; font-size: 0.85rem; }
+.gl-pick__l { display: flex; flex-wrap: wrap; gap: 0.1rem 0.75rem; font: 12px 'JetBrains Mono', monospace; margin-top: 2px; }
+.gl-pick__l em { font: normal 9px 'Silkscreen', monospace; color: hsl(var(--muted-foreground)); }
+.gl-logo { object-fit: contain; flex: none; display: inline-block; filter: drop-shadow(0 1px 2px #0008); }
+.gl-logo--ph { display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; font: 700 10px 'Silkscreen', monospace; color: #fff; }
+.gl-res { font: 11.5px 'JetBrains Mono', monospace; white-space: nowrap; }
+.gl-res b { display: inline-block; min-width: 1.1em; text-align: center; padding: 0 3px; border-radius: 3px; }
+.gl-res--w b { background: hsl(var(--gl-w) / 0.2); color: hsl(var(--gl-w)); } .gl-res--l b { background: hsl(var(--gl-l) / 0.2); color: hsl(var(--gl-l)); } .gl-res--t b { background: hsl(var(--sky) / 0.2); color: hsl(var(--sky)); }
+
+/* consistency */
+.gl-cons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; }
+@media (min-width: 480px) { .gl-cons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.gl-cons .gl-tile__v { font-size: 1.4rem; }
+.gl-range { position: relative; height: 34px; margin: 1rem 6px 0.2rem; }
+.gl-range::before { content: ''; position: absolute; left: 0; right: 0; top: 8px; height: 6px; border-radius: 3px; background: hsl(var(--line) / 0.6); }
+.gl-range__band { position: absolute; top: 5px; height: 12px; border-radius: 4px; background: linear-gradient(90deg, hsl(var(--turf-deep)), hsl(var(--turf)), hsl(var(--gold))); box-shadow: 0 0 10px hsl(var(--turf) / 0.4); }
+.gl-range__mean { position: absolute; top: 0; width: 3px; height: 22px; margin-left: -1px; background: hsl(var(--chalk)); border-radius: 2px; box-shadow: 0 0 6px hsl(var(--chalk) / 0.6); }
+.gl-range__end { position: absolute; top: 20px; font: 10px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
+.gl-form { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) 2.6rem 2.8rem; gap: 0.5rem; align-items: center; font-size: 12px; }
+.gl-form__l { font-weight: 600; } .gl-form__l small { margin-left: 4px; font-size: 9px; color: hsl(var(--muted-foreground)); }
+.gl-form__bar { height: 8px; border-radius: 4px; background: hsl(var(--night)); overflow: hidden; border: 1px solid hsl(var(--line) / 0.6); }
+.gl-form__bar i { display: block; height: 100%; background: linear-gradient(90deg, hsl(var(--turf-deep)), hsl(var(--gold))); }
+.gl-form__v { font: 700 12px 'JetBrains Mono', monospace; text-align: right; } .gl-form__d { font: 11px 'JetBrains Mono', monospace; text-align: right; }
+
+/* best games */
+.gl-best { display: flex; align-items: center; gap: 0.55rem; padding: 0.4rem 0.55rem; border-radius: 9px; border: 1px solid hsl(var(--line) / 0.7); border-left: 4px solid var(--tc); background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 16%, transparent), transparent 70%); }
+.gl-best__n { font: 700 14px 'Silkscreen', monospace; color: hsl(var(--gold)); width: 1rem; text-align: center; }
+.gl-best__t { font-weight: 700; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 0 0.5rem; align-items: center; }
+.gl-best__l { font-size: 11px; color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-best__s { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.7rem; color: hsl(var(--gold)); }
+
+/* tables */
+.gl-tablewrap { overflow-x: auto; margin: 0 -0.25rem; padding: 0 0.25rem; }
+.gl-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.gl-table th, .gl-table td { padding: 0.35rem 0.45rem; text-align: right; white-space: nowrap; border-bottom: 1px solid hsl(var(--line) / 0.45); }
+.gl-table thead th { font: 9px 'Silkscreen', monospace; letter-spacing: 0.05em; text-transform: uppercase; color: hsl(var(--muted-foreground)); position: sticky; top: 0; }
+.gl-table tbody tr:hover { background: hsl(var(--gold) / 0.06); }
+.gl-th { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 2px 0; min-height: 28px; }
+.gl-th span { display: inline-block; width: 1em; color: hsl(var(--gold)); }
+.gl-rowh { text-align: left !important; font-weight: 600; }
+.gl-rowh > span { display: inline-flex; align-items: center; gap: 0.4rem; vertical-align: middle; }
+.gl-rowh > .gl-logo { margin-right: 0.4rem; vertical-align: middle; }
+.gl-rowh small { display: block; font-weight: 400; font-size: 10px; color: hsl(var(--muted-foreground)); margin-left: 0.2rem; }
+.gl-log .gl-rowh > span { flex-direction: row; } .gl-log .gl-rowh small { display: inline; }
+.gl-post { background: hsl(var(--gold) / 0.07); }
+.gl-keycell { display: flex; align-items: center; justify-content: flex-end; gap: 0.4rem; }
+.gl-minibar { width: 54px; height: 6px; border-radius: 3px; background: hsl(var(--night)); overflow: hidden; display: inline-block; }
+.gl-minibar i { display: block; height: 100%; background: linear-gradient(90deg, hsl(var(--turf-deep)), hsl(var(--gold))); }
+@media (max-width: 520px) { .gl-hide-sm { display: none; } .gl-table { font-size: 11.5px; } .gl-table th, .gl-table td { padding: 0.35rem 0.3rem; } }
+.gl-pager { display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-top: 0.7rem; font-size: 12px; color: hsl(var(--muted-foreground)); }
+
+/* streaks */
+.gl-streaks { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: 0.5rem; }
+.gl-streak { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: 0.6rem; align-items: center; padding: 0.5rem 0.65rem; border: 1px solid hsl(var(--line) / 0.7); border-radius: 10px; background: hsl(var(--night) / 0.6); }
+.gl-streak.is-live { border-color: hsl(var(--gold)); box-shadow: 0 0 14px hsl(var(--gold) / 0.25); }
+.gl-streak__n { grid-row: span 2; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1; color: hsl(var(--gold)); min-width: 2ch; text-align: center; }
+.gl-streak__l { font-size: 12px; font-weight: 600; line-height: 1.2; }
+.gl-streak__s { font-size: 10.5px; color: hsl(var(--muted-foreground)); }

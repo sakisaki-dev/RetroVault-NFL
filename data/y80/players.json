@@ -37,7 +37,8 @@
    "salary": 45.0,
    "contract": 3.0,
    "playoffGames": 15
-  }
+  },
+  "nick": "Winter Soldier"
  },
  {
   "n": "Kyle Allen",
@@ -1518,7 +1519,8 @@
    "salary": 22.0,
    "contract": 1.0,
    "playoffGames": 11
-  }
+  },
+  "nick": "Groot"
  },
  {
   "n": "Poona Ford",
@@ -1623,7 +1625,8 @@
    "salary": 21.0,
    "contract": 3.0,
    "playoffGames": 14
-  }
+  },
+  "nick": "Horse Whisperer"
  },
  {
   "n": "Jordan Phillips",
@@ -2006,7 +2009,8 @@
    "salary": 11.0,
    "contract": 1.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Buffalo Joe"
  },
  {
   "n": "Edefuan Ulofoshio",
@@ -2169,7 +2173,8 @@
    "salary": 14.0,
    "contract": 1.0,
    "playoffGames": 16
-  }
+  },
+  "nick": "Shnowman"
  },
  {
   "n": "Tylan Grable",
@@ -6785,7 +6790,8 @@
    "salary": 40.0,
    "contract": 1.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "Drake \"Drake Maye\" Maye"
  },
  {
   "n": "Bryan Hudson",
@@ -7870,7 +7876,8 @@
    "salary": 30.0,
    "contract": 2.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Breece Lightning/Beast"
  },
  {
   "n": "Jason Brownlee",
@@ -13214,7 +13221,8 @@
    "salary": 12.0,
    "contract": 3.0,
    "playoffGames": 25
-  }
+  },
+  "nick": "Zeus"
  },
  {
   "n": "Mike Caliendo",
@@ -15148,7 +15156,8 @@
    "salary": 40.0,
    "contract": 2.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "If-Man"
  },
  {
   "n": "Easton Stick",
@@ -19962,7 +19971,8 @@
    "salary": 20.0,
    "contract": 2.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Snoop"
  },
  {
   "n": "Lamar Jackson",
@@ -22814,7 +22824,8 @@
    "salary": 40.0,
    "contract": 2.0,
    "playoffGames": 7
-  }
+  },
+  "nick": "Joe Shiesty"
  },
  {
   "n": "Chase Brown",
@@ -27803,7 +27814,8 @@
    "salary": 19.0,
    "contract": 1.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Mount Washington"
  },
  {
   "n": "Rodney Williams",
@@ -32076,7 +32088,8 @@
    "salary": 10.0,
    "contract": 2.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Jock Strap King"
  },
  {
   "n": "Anthony Richardson Sr.",
@@ -34782,7 +34795,8 @@
    "salary": 40.0,
    "contract": 3.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "The Prince that was Promised"
  },
  {
   "n": "Tank Bigsby",
@@ -41908,7 +41922,8 @@
    "salary": 5.0,
    "contract": 3.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Passing Paisano"
  },
  {
   "n": "Daniel Jones",
@@ -45753,7 +45768,8 @@
    "salary": 22.0,
    "contract": 3.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Quinyonamo Bay"
  },
  {
   "n": "Dylan McMahon",
@@ -46875,7 +46891,8 @@
    "salary": 30.0,
    "contract": 3.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "Scary Terry"
  },
  {
   "n": "Byron Pringle",
@@ -54022,7 +54039,8 @@
    "salary": 45.0,
    "contract": 3.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "GEQBUS"
  },
  {
   "n": "Brock Purdy",
@@ -54062,7 +54080,8 @@
    "salary": 35.0,
    "contract": 2.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "Mr. Relevant"
  },
  {
   "n": "Jordan Mason",
@@ -55005,7 +55024,8 @@
    "salary": 16.0,
    "contract": 3.0,
    "playoffGames": 11
-  }
+  },
+  "nick": "Gravedigger"
  },
  {
   "n": "Drake Jackson",
@@ -55358,7 +55378,8 @@
    "salary": 7.0,
    "contract": 1.0,
    "playoffGames": 16
-  }
+  },
+  "nick": "Juice"
  },
  {
   "n": "Darrell Luter Jr.",
@@ -55498,7 +55519,8 @@
    "salary": 19.0,
    "contract": 2.0,
    "playoffGames": 17
-  }
+  },
+  "nick": "Mooney Ward"
  },
  {
   "n": "Samuel Womack III",
@@ -56082,7 +56104,8 @@
    "salary": 12.0,
    "contract": 3.0,
    "playoffGames": 12
-  }
+  },
+  "nick": "Silverback"
  },
  {
   "n": "Isaac Alarcon",
@@ -56701,7 +56724,7 @@
    "contract": 2.0,
    "playoffGames": 4
   },
-  "nick": "K9"
+  "nick": "K-9"
  },
  {
   "n": "Jake Bobo",
@@ -57758,7 +57781,8 @@
    "salary": 16.0,
    "contract": 2.0,
    "playoffGames": 1
-  }
+  },
+  "nick": "Blitz Boy"
  },
  {
   "n": "Quandre Diggs",
@@ -57793,7 +57817,8 @@
    "salary": 12.0,
    "contract": 3.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "Nino"
  },
  {
   "n": "Julian Love",
@@ -60368,7 +60393,8 @@
    "salary": 40.0,
    "contract": 3.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Iceman"
  },
  {
   "n": "Rome Odunze",
@@ -60962,7 +60988,8 @@
    "salary": 40.0,
    "contract": 1.0,
    "playoffGames": 10
-  }
+  },
+  "nick": "The Kid"
  },
  {
   "n": "Hendon Hooker",
@@ -63694,7 +63721,8 @@
    "salary": 22.0,
    "contract": 2.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "Rez Dawg"
  },
  {
   "n": "Luke Musgrave",
@@ -65620,7 +65648,8 @@
    "salary": 16.0,
    "contract": 2.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Captain Kirk"
  },
  {
   "n": "Joshua Dobbs",
@@ -65996,7 +66025,8 @@
    "salary": 30.0,
    "contract": 1.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Jjettas"
  },
  {
   "n": "Jalen Nailor",
@@ -70682,7 +70712,7 @@
    "contract": 2.0,
    "playoffGames": 4
   },
-  "nick": "the Red Rifle"
+  "nick": "Red Rifle"
  },
  {
   "n": "Bryce Young",
@@ -72715,7 +72745,8 @@
    "salary": 5.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "The Windbreaker"
  },
  {
   "n": "Kyon Barrs",
@@ -73197,7 +73228,8 @@
    "salary": 6.0,
    "contract": 2.0,
    "playoffGames": 6
-  }
+  },
+  "nick": "Mormon Missile"
  },
  {
   "n": "Juwan Johnson",
@@ -105689,7 +105721,8 @@
    "playoffGames": 48,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The GOAT"
  },
  {
   "n": "Drew Brees",
@@ -105732,7 +105765,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Cool Brees"
+  "nick": "Breesus"
  },
  {
   "n": "Marcedes Lewis",
@@ -106052,7 +106085,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "T-Sizzle"
+  "nick": "BallSoHard/T Sizzle"
  },
  {
   "n": "Frank Gore (RB, Jets)",
@@ -106214,7 +106247,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Easy E"
+  "nick": "ELIte"
  },
  {
   "n": "Antonio Gates",
@@ -106295,7 +106328,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Matty Ice,"
+  "nick": "Matty Ice"
  },
  {
   "n": "Ronde Barber",
@@ -106898,7 +106931,8 @@
    "playoffGames": 17,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Chef Russ"
  },
  {
   "n": "Anquan Boldin",
@@ -107997,7 +108031,8 @@
    "playoffGames": 6,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Predator"
  },
  {
   "n": "Jared Allen",
@@ -108334,7 +108369,8 @@
    "debut": 1996,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Brickwall"
  },
  {
   "n": "Adrian Peterson",
@@ -108564,7 +108600,8 @@
    "playoffGames": 22,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Deebo"
  },
  {
   "n": "Carson Palmer",
@@ -108719,7 +108756,8 @@
    "debut": 1996,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Weapon X"
  },
  {
   "n": "Brian Urlacher",
@@ -109951,7 +109989,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Game"
  },
  {
   "n": "Ed Reed",
@@ -109988,7 +110027,8 @@
    "playoffGames": 15,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Ball Hawk"
  },
  {
   "n": "Ike Taylor",
@@ -110248,7 +110288,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "One Man Gang"
  },
  {
   "n": "Delanie Walker",
@@ -111425,7 +111466,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Ocho Cinco"
  },
  {
   "n": "Ryan Fitzpatrick",
@@ -111467,7 +111509,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Amish Rifle"
  },
  {
   "n": "Kyle Rudolph",
@@ -112853,7 +112896,8 @@
    "playoffGames": 15,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Samoan Headhunter"
  },
  {
   "n": "Mario Williams (DL, Dolphins)",
@@ -112965,7 +113009,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Anytime"
  },
  {
   "n": "Clay Matthews",
@@ -114279,7 +114324,8 @@
    "playoffGames": 9,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "JJ Swatt"
  },
  {
   "n": "Cole Beasley",
@@ -114394,7 +114440,8 @@
    "playoffGames": 14,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Snack"
  },
  {
   "n": "Chester Taylor",
@@ -114849,7 +114896,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Super Cam"
+  "nick": "Superman Cam"
  },
  {
   "n": "Marvin Jones",
@@ -115224,7 +115271,8 @@
    "debut": 1996,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Maserati Marv"
  },
  {
   "n": "Alge Crumpler",
@@ -115488,7 +115536,8 @@
    "playoffGames": 13,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "AB"
  },
  {
   "n": "Anthony Sherman",
@@ -115864,7 +115913,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Pacman"
  },
  {
   "n": "Vincent Jackson",
@@ -116761,7 +116811,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Quiet Storm"
  },
  {
   "n": "Darrius Heyward-Bey",
@@ -119515,7 +119566,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Black Unicorn"
  },
  {
   "n": "Julian Edelman",
@@ -122537,7 +122589,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "CJ2K"
  },
  {
   "n": "William Hayes",
@@ -126271,7 +126324,8 @@
    "playoffGames": 9,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Burner"
  },
  {
   "n": "Chris Gamble",
@@ -127051,7 +127105,8 @@
    "playoffGames": 8,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Slant Boy"
  },
  {
   "n": "Jon Bostic",
@@ -127769,7 +127824,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Snacks"
+  "nick": "Snacks, Big Snacks"
  },
  {
   "n": "Mike Daniels",
@@ -129151,7 +129206,8 @@
    "debut": 1995,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Air McNair"
  },
  {
   "n": "Aaron Stecker",
@@ -130423,7 +130479,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Don't Cross The"
  },
  {
   "n": "Alfred Morris",
@@ -131023,7 +131080,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The General / General Lee"
  },
  {
   "n": "Nigel Bradham",
@@ -131386,7 +131444,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "X Factor"
  },
  {
   "n": "Brian Young",
@@ -132731,7 +132790,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "M-80"
  },
  {
   "n": "Devery Henderson",
@@ -133410,7 +133470,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Captain Chaos"
  },
  {
   "n": "Greg Jones",
@@ -138017,7 +138078,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Smokey"
  },
  {
   "n": "Eric Rowe",
@@ -138393,7 +138455,8 @@
    "playoffGames": 14,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Bam Bam"
  },
  {
   "n": "Kendrick Lewis",
@@ -138892,7 +138955,8 @@
    "playoffGames": 8,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Spiderman"
  },
  {
   "n": "Chris Conte",
@@ -140271,7 +140335,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Marion the Barbarian"
  },
  {
   "n": "Tony Scheffler",
@@ -144129,7 +144194,8 @@
    "playoffGames": 12,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Sweet Feet"
  },
  {
   "n": "Zach Kerr",
@@ -145863,7 +145929,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "World"
+  "nick": "Flash 80"
  },
  {
   "n": "Rudi Johnson",
@@ -150544,7 +150610,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Uncle Rico"
  },
  {
   "n": "Will Blackmon",
@@ -153923,7 +153990,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Freezer"
  },
  {
   "n": "Jasper Brinkley",
@@ -154000,7 +154068,8 @@
    "playoffGames": 8,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Boobie"
  },
  {
   "n": "Koa Misi",
@@ -154226,7 +154295,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "The Muscle Hamster"
+  "nick": "Muscle Hamster"
  },
  {
   "n": "Lerentee McCray",
@@ -156707,7 +156776,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "MCDC"
  },
  {
   "n": "Cory Hall",
@@ -161656,7 +161726,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Flash Gordon"
  },
  {
   "n": "Kyle Long",
@@ -163537,7 +163608,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Fast Willie"
  },
  {
   "n": "Mike Karney",
@@ -166441,7 +166513,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Dump Truck"
  },
  {
   "n": "Kevin Curtis",
@@ -175484,7 +175557,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Buck"
  },
  {
   "n": "Quinton Dunbar",
@@ -184076,7 +184150,8 @@
    "debut": 1983,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Ageless Wonder"
  },
  {
   "n": "Mike Maslowski",
@@ -190565,7 +190640,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Primetime"
+  "nick": "Prime Time"
  },
  {
   "n": "Brad Scioli",
@@ -190827,7 +190902,8 @@
    "playoffGames": 9,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Fredex"
  },
  {
   "n": "Jonathan Wells",
@@ -196604,7 +196680,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "He Hate Me"
  },
  {
   "n": "Antwan Lake",
@@ -198948,7 +199025,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Touchdown Jesus"
  },
  {
   "n": "Ramik Wilson",
@@ -206280,7 +206358,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Feeva Island"
  },
  {
   "n": "Dominique Easley",
@@ -213053,7 +213132,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Captain Checkdown"
  },
  {
   "n": "Ryan McBean",
@@ -218909,7 +218989,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Deacon"
  },
  {
   "n": "Kareem Moore",
@@ -249305,7 +249386,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Dynamic Uno"
  },
  {
   "n": "Justin Staples",
@@ -266687,7 +266769,8 @@
    "debut": 1988,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Playmaker"
  },
  {
   "n": "Warren Moon",

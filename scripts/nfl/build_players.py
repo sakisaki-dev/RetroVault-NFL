@@ -134,7 +134,7 @@ def legend_rows(roster, awards):
     hof_names = set()
     hp = NFL / "hof.json"
     if INCLUDE_PRE1999_HOF and hp.exists():
-        hof_names = {norm(e["name"]) for e in json.loads(hp.read_text())}
+        hof_names = {norm(e["name"]) for e in json.loads(hp.read_text())["inductees"] if e.get("role") == "player"}
     award_by = defaultdict(list)
     for k, lst in awards["awards"].items():
         for a in lst:
@@ -197,33 +197,40 @@ def inches(h):
 
 
 def apply_nicknames(players):
-    """players.json `nick` for everyone with a well-attested nickname (data/nfl/nicknames.json from Wikipedia's list of
-    football nicknames, scripts/nfl/fetch_wiki.py): the name matches, and the position agrees when the entry gives one;
-    a name two players share goes to the one the entry's position fits, else the one with the most games."""
+    """players.json `nick`: data/nfl/nicknames.json (nfl-wiki: players[] with nicknames, position, teams, era_hint), matched by
+    normalised name. Namesakes: the position when the entry has one, then a club he played for (stints) or the era hint
+    overlapping his seasons, then the one with the most games. Plus data/nfl/nicknames_infobox.json {gsis: nick} (the first
+    paragraph of his own page, scripts/nfl/fetch_nicknames_lead.py). The first nickname listed is his `nick`."""
     path = NFL / "nicknames.json"
-    if not path.exists():
-        return
-    words = {"quarterback": "QB", "running back": "RB", "halfback": "RB", "fullback": "RB", "wide receiver": "WR", "receiver": "WR",
-             "tight end": "TE", "linebacker": "LB", "defensive end": "DL", "defensive tackle": "DL", "defensive lineman": "DL",
-             "cornerback": "DB", "safety": "DB", "defensive back": "DB", "tackle": "OL", "guard": "OL", "center": "OL",
-             "offensive lineman": "OL", "lineman": "OL"}
+    stints = json.loads((Y80 / "stints.json").read_text()) if (Y80 / "stints.json").exists() else {}
     by = defaultdict(list)
     for p in players:
         by[norm(p["n"].split(" (")[0])].append(p)
+
+    def span(p):
+        runs = (stints.get(p["n"]) or {}).get("stints", [])
+        return min((r["from"] for r in runs), default=0), max((r["to"] for r in runs), default=0), {r["team"] for r in runs}
+
     given = 0
-    for e in json.loads(path.read_text()):
-        cands = by.get(norm(e["name"]), [])
-        tail = e.get("tail", "").lower()
-        want = {v for w, v in words.items() if w in tail}
-        fit = [p for p in cands if p["pos"] in want] if want else []
-        pick = fit or ([] if want else cands)
-        if not pick:
-            continue
-        top = max(pick, key=lambda p: p["g"])
-        if top["g"] > 0 and not top.get("nick"):
-            top["nick"] = e["nick"]
+    entries = json.loads(path.read_text()).get("players", []) if path.exists() else []
+    for e in entries:
+        cands = [p for p in by.get(norm(e["name"]), []) if p["g"] > 0]
+        pos = e.get("position")
+        if pos:
+            g = RV_POS.get(pos.split(",")[0].split("/")[0].strip().upper())
+            fit = [p for p in cands if p["pos"] == g]
+            cands = fit or ([] if g and len(cands) > 1 else cands)
+        if len(cands) > 1:
+            teams = set(e.get("teams") or [])
+            yrs = (e.get("era_hint") or {}).get("years")
+            def score(p):
+                lo, hi, clubs = span(p)
+                return ((1 if teams & clubs else 0) + (1 if yrs and lo <= yrs[1] and hi >= yrs[0] else 0), p["g"])
+            cands = [max(cands, key=score)]
+        if cands and not cands[0].get("nick") and e.get("nicknames"):
+            cands[0]["nick"] = e["nicknames"][0]
             given += 1
-    lead = NFL / "nicknames_infobox.json"   # the first paragraph of his own Wikipedia page (scripts/nfl/fetch_nicknames.py)
+    lead = NFL / "nicknames_infobox.json"
     own = json.loads(lead.read_text()) if lead.exists() else {}
     for p in players:
         nick = own.get((p.get("nfl") or {}).get("gsis"))

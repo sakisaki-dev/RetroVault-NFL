@@ -75,10 +75,8 @@ def season_marks() -> list[tuple[str, list[tuple[str, float, int]]]]:
     return out
 
 
-POS_WORDS = {"quarterback": "QB", "running back": "RB", "halfback": "RB", "fullback": "RB", "wide receiver": "WR", "tight end": "TE",
-             "linebacker": "LB", "defensive end": "DL", "defensive tackle": "DL", "defensive lineman": "DL",
-             "cornerback": "DB", "safety": "DB", "defensive back": "DB", "offensive tackle": "OL", "guard": "OL", "center": "OL",
-             "offensive lineman": "OL", "tackle": "OL", "end": "WR"}
+POS_GROUP = {"QB": "QB", "RB": "RB", "FB": "RB", "HB": "RB", "WR": "WR", "TE": "TE", "OT": "OL", "T": "OL", "G": "OL", "C": "OL",
+             "DE": "DL", "DT": "DL", "NT": "DL", "DL": "DL", "LB": "LB", "CB": "DB", "S": "DB", "DB": "DB"}
 
 
 def _norm(s: str) -> str:
@@ -89,22 +87,30 @@ def _norm(s: str) -> str:
 
 
 def real_inductees(retired: dict, key: dict) -> dict[str, int]:
-    """POS:Name -> class year for every real inductee (data/nfl/hof.json) who is a retired player here: the same name,
-    a position of his group; among namesakes the one with the most games."""
+    """POS:Name -> class year for every real inductee (data/nfl/hof.json from scripts/nfl/fetch_hof.py, players only) who
+    is a retired player here: the same name, his years active overlapping the seasons he has stints in, and a position of
+    his group when the page gives one; among namesakes the one with the most games."""
     path = ROOT / "data" / "nfl" / "hof.json"
     if not path.exists():
         return {}
+    stints = json.loads((SRC / "stints.json").read_text())
+    span = {}
+    for k, c in retired.items():
+        if c:
+            runs = (stints.get(c["name"]) or {}).get("stints", [])
+            span[k] = (min((r["from"] for r in runs), default=0), max((r["to"] for r in runs), default=0))
     by: dict[str, list] = {}
     for k, c in retired.items():
         if c:
             by.setdefault(_norm(c["name"].split(" (")[0]), []).append(k)
     out: dict[str, int] = {}
-    for e in json.loads(path.read_text()):
-        want = next((v for w, v in POS_WORDS.items() if w in e["position"].lower()), None)
-        first = int((re.match(r"\d{4}", (e.get("years") or [""])[0]) or re.match(r"(\d{4})", "0"))[0] or 0)
-        if first < 1998:
-            continue  # a namesake who played before the data begins (Kellen Winslow Sr., 1979), not the player here
-        cands = [k for k in by.get(_norm(e["name"]), []) if want is None or retired[k]["pos"] == want]
+    for e in json.loads(path.read_text())["inductees"]:
+        if e.get("role") != "player":
+            continue
+        groups = {POS_GROUP[x] for x in e.get("positions", []) if x in POS_GROUP}
+        lo, hi = (e.get("years_active") or [0, 0])
+        cands = [k for k in by.get(_norm(e["name"]), [])
+                 if (not groups or retired[k]["pos"] in groups) and span[k][0] <= hi and span[k][1] >= lo]
         if cands:
             out[max(cands, key=lambda k: retired[k]["games"])] = e["class"]
     return out

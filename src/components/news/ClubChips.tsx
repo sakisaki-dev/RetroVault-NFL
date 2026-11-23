@@ -5,6 +5,8 @@ import { getTeamColors, getTeamTextColor } from '@/utils/teamColors';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { peekProps } from '@/components/peek/peekProps';
+import GameSprite from '@/components/GameSprite';
+import { IS_NFL } from '@/config/edition';
 
 /**
  * Player and team chips that wear their club's colours and a small logo (Season Story, Hot Takes, Did you know): the
@@ -43,7 +45,13 @@ export const ClubChips = ({ names, teams = [], players, onPlayer, max, label = '
           <li key={n}>
             {p ? (
               <button type="button" className="cc-chip" style={clubVars(bannerTeamOf(p))} {...peekProps(p)} onClick={() => onPlayer(p)} aria-label={`Open ${p.name}'s card`}>
-                {bannerTeamOf(p) && <TeamLogo team={bannerTeamOf(p)} size={14} decorative className="cc-chip__logo" />}
+                {IS_NFL ? (
+                  <span className="cc-chip__sprite" aria-hidden="true">
+                    <GameSprite player={p} team={bannerTeamOf(p)} kind="bust" size="s" />
+                  </span>
+                ) : (
+                  bannerTeamOf(p) && <TeamLogo team={bannerTeamOf(p)} size={14} decorative className="cc-chip__logo" />
+                )}
                 <span className="cc-chip__pos">{p.position}</span>
                 <span className="cc-chip__name">{p.name}</span>
               </button>
