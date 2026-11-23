@@ -52,7 +52,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
     <div className="cg-panel min-w-0" style={{ '--cg-club': ink.mark } as CSSProperties} aria-live="polite">
       <div className="cg-panel__head">
         <div className="cg-panel__stage" aria-hidden="true">
-          <GameSprite key={`${club}-${ringSeason}`} player={player} team={club ?? undefined} kind="figure" size="m" action={ringSeason ? 'celebrate' : undefined} className="cg-panel__sprite" />
+          <GameSprite key={`${club}-${ringSeason}-${p.year}`} player={player} team={club ?? undefined} season={p.year} kind="figure" size="m" action={ringSeason ? 'celebrate' : undefined} className="cg-panel__sprite" />
           {ink.team && <TeamLogo team={ink.team} size={40} decorative className="cg-panel__logo" />}
         </div>
         <div className="min-w-0 flex-1">

@@ -53,6 +53,12 @@ export interface NflSpriteEntry {
    * seeded by POS:Name (scripts/private_nfl_sprites.py); drawn like any neutral, painted into his club kit */
   assigned?: boolean;
   pool?: 'generic' | 'real';
+  /**
+   * NFL edition: club name → the files drawn in that club's famous era kit (`<uid>_<club>_era[_pN].png`, scripts/nfl/era.py):
+   * the poses made, and `mid` when the middle season of his time with the club lies in the era (the era kit is then his
+   * default kit there; a `season` in the era's span picks it too, one outside it the modern kit).
+   */
+  eras?: Record<string, { poses: number[]; mid?: boolean }>;
 }
 export interface NflSprites {
   size: [number, number];
@@ -62,8 +68,13 @@ export interface NflSprites {
   legends?: Record<string, NflSpriteEntry>;
   /** The game's generated look templates (skin 0 dark, 1 mix, 2 light), worn by league players the save doesn't have */
   standins?: { uid: string; skin: number; neutral: number[] }[];
-  /** file → [centre x of his legs, last row of his feet] in the 64 x 64 frame (scripts/private_nfl_sprites.py) */
+  /** file → [centre x of his legs, last row of his feet] in the 64 x 64 frame (scripts/private_nfl_sprites.py); a file
+   * not listed stands at the body template's own [31.5, 58] (scripts/nfl/spritelib.py leaves those out) */
   anchors?: Record<string, [number, number]>;
+  /** NFL edition: club → its era kit and the seasons it was worn (src/config/eraKits.ts) */
+  eraKits?: Record<string, { id: string; label: string; from: number; to: number }>;
+  /** NFL edition: a file name the paths use → the file that holds the same image (identical sprites are stored once) */
+  aliases?: Record<string, string>;
   /** The head coach and the coordinators (CoachSprite.tsx) */
   coaches?: NflCoaches;
 }
@@ -174,6 +185,7 @@ export const loadGameSprites = (): void => {
       setKitColors((nfl as { kitColors?: KitColors }).kitColors);
       setNumberTables(nfl as Parameters<typeof setNumberTables>[0]);
       setSockTemplate((nfl as { sockTemplate?: Record<string, string[]> }).sockTemplate);
+      SPRITE_ALIASES = (nfl as NflSprites).aliases ?? {};
       publish({ nfl, looks });
     }
   });
@@ -235,6 +247,8 @@ export interface NflPick {
   /** Club to paint the neutral kit into (gameKitPaint.ts); unset = draw src as is */
   paint?: string;
   pose: number;
+  /** NFL edition: the club's era kit this file is drawn in (its label, e.g. "2001 Patriots"); the number is already his */
+  era?: string;
   /** NFL edition: the club whose number colours to draw his real number in, set when the drawn number must be redone */
   numberClub?: string;
   /** The figure's centre line and feet row in the 64 x 64 frame (index anchors; the body template's 31.5, 58) */
@@ -242,7 +256,12 @@ export interface NflPick {
   foot: number;
 }
 
-const nflFile = (uid: string, kit: number, pose: number) => `${PRIVATE_BASE}nfl/${uid}_${String(kit).padStart(3, '0')}${pose > 1 ? `_p${pose}` : ''}.png`;
+/** File name (as a path builds it) → the file that holds the image (index.json `aliases`); set when the index loads. */
+let SPRITE_ALIASES: Record<string, string> = {};
+const nflFile = (uid: string, kit: number, pose: number, era = false) => {
+  const name = `${uid}_${String(kit).padStart(3, '0')}${era ? '_era' : ''}${pose > 1 ? `_p${pose}` : ''}.png`;
+  return `${PRIVATE_BASE}nfl/${SPRITE_ALIASES[name] ?? name}`;
+};
 
 /**
  * A player's NFL save sprite in his club's kit, in this order: the kit the save drew for that club (in the wanted
@@ -299,7 +318,8 @@ export const nflSpriteFor = (
   legend = false,
   tone?: string,
   role = 1,
-): NflPick | null => (nfl ? withNumber(withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role)), key, legend) : null);
+  season?: number,
+): NflPick | null => (nfl ? withNumber(withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role, season)), key, legend) : null);
 
 const STANDIN_SKINS: Record<string, number[]> = { pale: [2], light: [2], tan: [2, 1], medium: [1, 0], brown: [0], deep: [0] };
 
@@ -327,6 +347,7 @@ const pickNfl = (
   legend: boolean,
   tone?: string,
   role = 1,
+  season?: number,
 ): Omit<NflPick, 'cx' | 'foot'> | null => {
   const e = legend ? nfl.legends?.[key] : nfl.players[key] ?? standinFor(nfl, key, tone);
   if (!e) return null;
@@ -337,6 +358,20 @@ const pickNfl = (
   const kitUid = kitName !== undefined ? nfl.clubs[kitName] : undefined;
   const poses = kitName ? e.kits[kitName] : [];
   const team = id ? findNFLTeam(target)!.name : undefined;
+  // NFL edition: a club's famous era kit. With a season (the Deep Dive's career timeline, a season scene, a game log row) the
+  // era kit is worn when that season lies in the era's span; with none, when the middle season of his time with the club
+  // does (`mid`). Only a player who has era files for the club (index `eras`) is ever drawn in one.
+  if (IS_NFL && !legend && e.eras) {
+    const eraName = Object.keys(e.eras).find((k) => k.toLowerCase() === (target ?? '').toLowerCase() || (!!id && findNFLTeam(k)?.id === id));
+    const info = eraName ? e.eras[eraName] : undefined;
+    const span = eraName ? nfl.eraKits?.[eraName] : undefined;
+    const kitUid2 = eraName ? nfl.clubs[eraName] : undefined;
+    if (eraName && info && span && kitUid2 !== undefined && info.poses.length && (season !== undefined ? season >= span.from && season <= span.to : !!info.mid)) {
+      const wanted = action === 'idle' && role !== want ? role : want;
+      const pose = info.poses.includes(wanted) ? wanted : info.poses.includes(want) ? want : info.poses.includes(1) ? 1 : info.poses[0];
+      return { src: nflFile(e.uid, kitUid2, pose, true), kit: eraName, pose, era: span.label };
+    }
+  }
   // playstyle (config/bodyTypes.ts rolePose): standing idle, he holds his role's pose, in his club's kit as the save
   // drew it or the neutral kit painted; explicit actions never come here
   if (action === 'idle' && role !== want) {

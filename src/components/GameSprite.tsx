@@ -39,6 +39,12 @@ export interface GameSpriteProps {
   kind?: 'figure' | 'bust' | 'helmet' | 'face' | 'body';
   size?: SpriteSize;
   action?: SpriteAction;
+  /**
+   * NFL edition: the season shown (a career timeline point, a season scene, a game log row). A club with a famous era kit
+   * (src/config/eraKits.ts: 2001 Patriots, 1990s Lions ...) draws it for a season in its span when the player has era
+   * files for that club (index `eras`); with no season he wears the kit of the middle season of his time with the club.
+   */
+  season?: number;
   /** A real NFL legend: his save sprite, for the arcade games only (never league pages or the Collection) */
   legend?: boolean;
   /** A small tag when the kit isn't his club's (an unpainted neutral kit, another club's kit) */
@@ -120,7 +126,7 @@ const useProcessed = (src: string | undefined, paint: string | undefined, rows: 
 const px = (extra?: CSSProperties): CSSProperties => ({ imageRendering: 'pixelated', ...extra });
 
 const GameSprite = (props: GameSpriteProps) => {
-  const { player, team, legend = false, showKit = false, peek = false, className, style } = props;
+  const { player, team, season, legend = false, showKit = false, peek = false, className, style } = props;
   const kind = props.kind === 'face' ? 'bust' : props.kind === 'body' || !props.kind ? 'figure' : props.kind;
   const size: SpriteSize = props.size ?? (kind === 'bust' ? sizeOf(props.scale) : sizeOf(props.nflScale ?? props.scale)) ?? 'm';
   const action: SpriteAction = props.action ?? (props.pose ? LEGACY_ACTION[props.pose] ?? 'idle' : 'idle');
@@ -138,9 +144,9 @@ const GameSprite = (props: GameSpriteProps) => {
       const tone = typeof locked === 'string' ? locked : spriteSkin;
       // playstyle: a figure standing idle holds his role's pose (bodyTypes.ts rolePose); busts stand
       const role = kind === 'figure' ? rolePose(position) : 1;
-      return nflSpriteFor(sprites?.nfl ?? null, `${position ?? ''}:${name}`, club, current, kind === 'bust' ? 'idle' : action, legend, tone, role);
+      return nflSpriteFor(sprites?.nfl ?? null, `${position ?? ''}:${name}`, club, current, kind === 'bust' ? 'idle' : action, legend, tone, role, season);
     },
-    [sprites, kind, position, name, club, current, action, legend, spriteSkin],
+    [sprites, kind, position, name, club, current, action, legend, spriteSkin, season],
   );
   // his body (bodyTypes.ts): the stable roll for his position, or his locked look (sprites.json)
   const body = useMemo(
