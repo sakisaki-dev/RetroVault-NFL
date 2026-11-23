@@ -5,6 +5,8 @@ import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
 import { playerSkillGrades } from '@/config/skillGrades';
 import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
+import DdAdvancedFactors from './DdAdvancedFactors';
+import { IS_NFL } from '@/config/edition';
 
 interface Props {
   player: Player;
@@ -75,6 +77,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         players={useSeason ? seasonPlayers : players}
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
       />
+      {IS_NFL && <DdAdvancedFactors player={player} players={players} scope={useSeason ? String(seasonOvr?.season) : 'c'} onOpenPlayer={onOpenPlayer} />}
     </div>
   );
 };

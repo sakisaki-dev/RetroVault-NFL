@@ -24,6 +24,7 @@ import CompMap from './CompMap';
 import { familiesFor, familyOfPlayer } from '@/config/families';
 import { buildShapeMap } from '../visual/shapeMap';
 import DdAdvanced from './DdAdvanced';
+import DdAdvancedFactors from './DdAdvancedFactors';
 import DdCareer, { type PosStat } from './DdCareer';
 import DdEmpty from './DdEmpty';
 import DdClock from '../../clock/DdClock';
@@ -467,6 +468,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
           <DdSection id="dd-advanced" index={3} title="Advanced profile" icon={Activity} kicker="Every advanced metric for his position: percentile, + index (100 = average qualifier) and rank among qualifiers.">
             <DdAdvanced player={player} boards={boards} />
+            {IS_NFL && <DdAdvancedFactors player={player} players={players} picker onOpenPlayer={(p) => choose(keyOf(p))} />}
           </DdSection>
 
           <DdSection
