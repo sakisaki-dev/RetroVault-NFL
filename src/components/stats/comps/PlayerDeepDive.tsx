@@ -1,6 +1,6 @@
 import { IS_NFL } from '@/config/edition';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, CalendarClock, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
+import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
 import {
   POSITIONS,
@@ -28,6 +28,7 @@ import DdEmpty from './DdEmpty';
 import DdClock from '../../clock/DdClock';
 import DdHero from './DdHero';
 import DdRecords from './DdRecords';
+import DdGameLog from '../gamelog/DdGameLog';
 import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
@@ -63,6 +64,7 @@ const ALL_SECTIONS = [
   { id: 'dd-map', label: 'Neighbourhood', short: 'Map', icon: ChartScatter },
   { id: 'dd-advanced', label: 'Advanced profile', short: 'Advanced', icon: Activity },
   { id: 'dd-graphs', label: 'Career graphs', short: 'Graphs', icon: LineChart },
+  ...(IS_NFL ? [{ id: 'dd-gamelog', label: 'Game log', short: 'Games', icon: ClipboardList }] : []),
   { id: 'dd-career', label: 'Career & legacy', short: 'Career', icon: Milestone },
   { id: 'dd-clock', label: 'Age & clock', short: 'Age', icon: CalendarClock },
   { id: 'dd-records', label: 'Records & awards', short: 'Records', icon: Medal },
@@ -457,6 +459,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           >
             <DdGraphsLazy player={player} players={players} wide={wide} />
           </DdSection>
+
+          {IS_NFL && (
+            <DdSection id="dd-gamelog" index={4.5} title="Game log" icon={ClipboardList} kicker="Every game on file: the line, the result, splits, best games, streaks and how steady he is.">
+              <DdGameLog player={player} />
+            </DdSection>
+          )}
 
           <DdSection id="dd-career" index={5} title="Career & legacy" icon={Milestone}>
             <DdCareer player={player} posStats={posStats} />
