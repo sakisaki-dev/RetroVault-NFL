@@ -10,6 +10,7 @@ import { ClubChips } from '@/components/news/ClubChips';
 import { HeroLogos, PlayerBanners, StoryThumb, firstClubIn, teamVars } from '@/components/news/clubArt';
 import { NEWS_KIND_LABEL, timeAgo, useEspnNews, type NewsItem, type NewsKind } from '@/utils/espnNews';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { keyOfPlayer } from '@/utils/playerSearch';
 import { ArticleReader } from './ArticleReader';
 import { SCENE_KIND, agoParts, kindOf, openDeepDive, useNewsPlayers } from './newsData';
 import '@/components/news/news-art.css';
@@ -50,7 +51,7 @@ export interface ItemProps {
 
 export const StoryItem = ({ it, i, players, cast, onRead }: ItemProps & { it: NewsItem; i: number }) => {
   const ps = cast.get(it.id) ?? [];
-  const names = ps.map((p) => p.name);
+  const names = ps.map(keyOfPlayer);
   const club = clubOf(it, ps);
   return (
     <li className="ss-item stagger-in" style={{ ...teamVars(club), '--i': i } as CSSProperties}>
@@ -134,7 +135,7 @@ const NewsTab = () => {
   const itemProps = { players, cast, onRead: read };
 
   const leadCast = lead ? cast.get(lead.id) ?? [] : [];
-  const leadNames = leadCast.map((p) => p.name);
+  const leadNames = leadCast.map(keyOfPlayer);
   const leadClub = lead ? clubOf(lead, leadCast) : '';
   const leadMode = lead && lead.teams.length >= 2 ? (kindOf(lead) === 'trade' ? 'trade' : 'vs') : 'one';
   const ago = lead ? agoParts(lead.published) : null;

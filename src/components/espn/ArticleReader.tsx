@@ -6,6 +6,7 @@ import { FeatureSheet, type SheetPiece } from '@/components/news/FeatureSheet';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useArticle, type ArticleBlock, type ArticleVideo } from '@/utils/espnArticle';
 import { NEWS_KIND_LABEL, timeAgo, type NewsItem } from '@/utils/espnNews';
+import { keyOfPlayer } from '@/utils/playerSearch';
 import { SCENE_KIND, kindOf, openDeepDive, useNewsPlayers } from './newsData';
 import './espn.css';
 
@@ -93,7 +94,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
   const kind = kindOf(item);
   const at = order.findIndex((x) => x.id === item.id);
   const link = (x: NewsItem | undefined, label: string) => (x ? { headline: x.headline, label, onGo: () => onOpen(x) } : null);
-  const names = cast.map((p) => p.name);
+  const names = cast.map(keyOfPlayer);
   const hero = { teams: item.teams.slice(0, 2), mode: (item.teams.length >= 2 ? (kind === 'trade' ? 'trade' : 'vs') : 'one') as 'one' | 'vs' | 'trade' };
 
   const firstText = article?.blocks.findIndex((b) => b.t === 'html' && b.tag === 'p') ?? -1;
