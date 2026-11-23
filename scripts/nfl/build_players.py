@@ -18,6 +18,7 @@ by name, season and club; OL "blocks" = starts (50%+ of the offense's snaps, 201
 import csv
 import gzip
 import json
+import os
 import re
 import unicodedata
 from collections import defaultdict
@@ -30,7 +31,9 @@ Y80 = ROOT / "data" / "y80"
 FIRST, LAST = 1999, 2026
 LEGEND_MIN_GAMES = 16  # beyond the save: every player who debuted 1999 or later with this many career games, or any award
 SNAPS_FROM = 2013       # offensive linemen have no weekly stat lines: their games come from snap counts, which start here
-MAX_POSES = None
+# Hall of Famers who debuted before 1999 (data only from 1999 on, so their lines are partial, nfl.partial = true): off until
+# the owner decides. Set RV_INCLUDE_PRE1999_HOF=1 (needs data/nfl/hof.json)
+INCLUDE_PRE1999_HOF = os.environ.get("RV_INCLUDE_PRE1999_HOF") == "1"
 # nflverse position -> Retro Vault position group (the save's, as scripts/nfl/match.py)
 RV_POS = {"QB": "QB", "RB": "RB", "FB": "RB", "HB": "RB", "WR": "WR", "TE": "TE", "OL": "OL", "T": "OL", "G": "OL", "C": "OL",
           "OT": "OL", "OG": "OL", "DL": "DL", "DE": "DL", "DT": "DL", "NT": "DL", "LB": "LB", "ILB": "LB", "OLB": "LB",
@@ -128,6 +131,10 @@ def legend_rows(roster, awards):
                         w = int(r["week"] or 0)
                         if (y, w) >= last_game.get(pid, (0, 0, ""))[:2]:
                             last_game[pid] = (y, w, r["team"])
+    hof_names = set()
+    hp = NFL / "hof.json"
+    if INCLUDE_PRE1999_HOF and hp.exists():
+        hof_names = {norm(e["name"]) for e in json.loads(hp.read_text())}
     award_by = defaultdict(list)
     for k, lst in awards["awards"].items():
         for a in lst:
@@ -148,12 +155,15 @@ def legend_rows(roster, awards):
         if not pos:
             continue
         fy, rk, dy = first[pid], num(r["rookie_season"]), num(r["draft_year"])
-        if rk and 1988 <= rk <= 1998 or dy and 1988 <= dy <= 1998:
-            continue                                  # debuted before 1999: a partial career in the data
-        if fy <= 2000 and not ((rk or 0) >= 1999 or (dy or 0) >= 1999):
-            continue
+        early = bool(rk and 1988 <= rk <= 1998 or dy and 1988 <= dy <= 1998 or fy <= 2000 and not ((rk or 0) >= 1999 or (dy or 0) >= 1999))
+        partial = False
+        if early:
+            # debuted before 1999: a partial (1999-on) career. Only with INCLUDE_PRE1999_HOF, and only real Hall of Famers.
+            if not (INCLUDE_PRE1999_HOF and norm(r["display_name"]) in hof_names and (rk or 0) < 1999):
+                continue
+            partial = True
         debut = rk if rk and rk >= 1999 else fy
-        if pos == "OL" and debut < SNAPS_FROM:
+        if pos == "OL" and (debut < SNAPS_FROM or partial):
             continue
         g = len(games.get(pid, ()))
         awarded = any(a[0] in seasons_team[pid] and any(ABBR.get(t, t) == a[1] for t in seasons_team[pid][a[0]])
@@ -170,7 +180,7 @@ def legend_rows(roster, awards):
                     "sprites": 0, "match": "legend", "gsis": pid, "pfr": r["pfr_id"], "espn": r["espn_id"],
                     "nv_name": r["display_name"], "nv_pos": r["position"], "nv_height": inches(r["height"]),
                     "nv_weight": num(r["weight"]), "draft": [r["draft_year"], r["draft_round"], r["draft_pick"], r["draft_team"]],
-                    "legend": True, "games": g, "lastSeason": lg[0] if lg else None})
+                    "legend": True, "partial": partial, "games": g, "lastSeason": lg[0] if lg else None})
     out.sort(key=lambda p: (-p["games"], p["gsis"]))
     return out
 
@@ -211,6 +221,13 @@ def apply_nicknames(players):
         top = max(pick, key=lambda p: p["g"])
         if top["g"] > 0 and not top.get("nick"):
             top["nick"] = e["nick"]
+            given += 1
+    lead = NFL / "nicknames_infobox.json"   # the first paragraph of his own Wikipedia page (scripts/nfl/fetch_nicknames.py)
+    own = json.loads(lead.read_text()) if lead.exists() else {}
+    for p in players:
+        nick = own.get((p.get("nfl") or {}).get("gsis"))
+        if nick and not p.get("nick"):
+            p["nick"] = nick
             given += 1
     print(f"nicknames: {given} players")
 
@@ -354,6 +371,8 @@ def main():
                       "draft": p.get("draft"), "rookie": p.get("rookie"), "salary": p.get("salary"),
                       "contract": p.get("contract"), "playoffGames": len(L) - len(reg)}
         if p.get("legend"):
+            if p.get("partial"):
+                rec["nfl"]["partial"] = True  # debuted before 1999: only the 1999-on seasons are counted
             rec["nfl"]["past"] = True          # debuted 1999 or later, beyond the save (build_players.legend_rows)
             if retired:
                 rec["nfl"]["retired"] = True   # on no 2026 roster: Retired (prepare.py writes the status fact)

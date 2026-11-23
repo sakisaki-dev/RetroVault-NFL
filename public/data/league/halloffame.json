@@ -674,15 +674,13 @@
    "parts": {
     "standing": 60,
     "honours": 24,
-    "records": 35
+    "records": 30
    },
    "records": [
     "Passing yards",
     "Passing TDs"
    ],
-   "seasonRecords": [
-    "Most TD passes, season"
-   ],
+   "seasonRecords": [],
    "rings": 7,
    "mvp": 3,
    "opoy": 2,
@@ -1001,31 +999,6 @@
    "projected": true
   },
   {
-   "key": "QB:Patrick Mahomes",
-   "name": "Patrick Mahomes",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7631,
-   "rank": 4,
-   "score": 74,
-   "parts": {
-    "standing": 45,
-    "honours": 24,
-    "records": 5
-   },
-   "records": [],
-   "seasonRecords": [
-    "Most TD passes, season"
-   ],
-   "rings": 3,
-   "mvp": 2,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 3,
-   "games": 136,
-   "projected": true
-  },
-  {
    "key": "OL:Jake Matthews",
    "name": "Jake Matthews",
    "pos": "OL",
@@ -1051,30 +1024,26 @@
    "projected": true
   },
   {
-   "key": "WR:Davante Adams",
-   "name": "Davante Adams",
-   "pos": "WR",
+   "key": "QB:Patrick Mahomes",
+   "name": "Patrick Mahomes",
+   "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 6691,
-   "rank": 3,
+   "careerLegacy": 7631,
+   "rank": 4,
    "score": 69,
    "parts": {
-    "standing": 49,
-    "honours": 0,
-    "records": 20
+    "standing": 45,
+    "honours": 24,
+    "records": 0
    },
-   "records": [
-    "Receiving TDs"
-   ],
-   "seasonRecords": [
-    "Most TD receptions, season"
-   ],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 2,
+   "opoy": 1,
    "dpoy": 0,
-   "sbmvp": 0,
-   "games": 184,
+   "sbmvp": 3,
+   "games": 136,
    "projected": true
   },
   {
@@ -1144,6 +1113,31 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 173,
+   "projected": true
+  },
+  {
+   "key": "WR:Davante Adams",
+   "name": "Davante Adams",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6691,
+   "rank": 3,
+   "score": 64,
+   "parts": {
+    "standing": 49,
+    "honours": 0,
+    "records": 15
+   },
+   "records": [
+    "Receiving TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 184,
    "projected": true
   },
   {

@@ -2978,7 +2978,8 @@
    "salary": 15.0,
    "contract": 1.0,
    "playoffGames": 15
-  }
+  },
+  "nick": "Cheetah"
  },
  {
   "n": "Jaylen Waddle",
@@ -37074,7 +37075,8 @@
    "salary": 22.0,
    "contract": 2.0,
    "playoffGames": 9
-  }
+  },
+  "nick": "King Henry"
  },
  {
   "n": "Tyjae Spears",
@@ -37258,7 +37260,8 @@
    "salary": 9.0,
    "contract": 1.0,
    "playoffGames": 9
-  }
+  },
+  "nick": "DHop"
  },
  {
   "n": "Kearis Jackson",
@@ -40968,7 +40971,8 @@
    "salary": 13.0,
    "contract": 1.0,
    "playoffGames": 12
-  }
+  },
+  "nick": "Tank"
  },
  {
   "n": "Tyrus Wheat",
@@ -56696,7 +56700,8 @@
    "salary": 27.0,
    "contract": 2.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "K9"
  },
  {
   "n": "Jake Bobo",
@@ -57093,7 +57098,8 @@
    "salary": 20.0,
    "contract": 3.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Big Cat"
  },
  {
   "n": "Jordyn Brooks",
@@ -67079,7 +67085,8 @@
    "salary": 11.0,
    "contract": 2.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "the Hitman"
  },
  {
   "n": "Jay Ward",
@@ -68182,7 +68189,8 @@
    "salary": 5.0,
    "contract": 1.0,
    "playoffGames": 6
-  }
+  },
+  "nick": "Flash"
  },
  {
   "n": "Bijan Robinson",
@@ -70673,7 +70681,8 @@
    "salary": 10.0,
    "contract": 2.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "the Red Rifle"
  },
  {
   "n": "Bryce Young",
@@ -105761,7 +105770,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Dog"
  },
  {
   "n": "Jason Witten",
@@ -105916,7 +105926,8 @@
    "playoffGames": 23,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Ben"
  },
  {
   "n": "Philip Rivers",
@@ -105995,7 +106006,8 @@
    "playoffGames": 21,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "T-Sizzle"
  },
  {
   "n": "Frank Gore (RB, Jets)",
@@ -106158,7 +106170,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Matty Ice,"
  },
  {
   "n": "Matthew Slater",
@@ -107843,7 +107856,8 @@
    "playoffGames": 11,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Play Slay"
  },
  {
   "n": "William Gholston",
@@ -108597,7 +108611,8 @@
    "playoffGames": 11,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "the Honey Badger"
  },
  {
   "n": "Thomas Jones",
@@ -109981,7 +109996,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "L.T."
  },
  {
   "n": "LeSean McCoy",
@@ -110472,7 +110488,8 @@
    "playoffGames": 18,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "the Closer"
  },
  {
   "n": "Ryan Clark",
@@ -114041,7 +114058,8 @@
    "playoffGames": 13,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Beast Mode"
  },
  {
   "n": "Michael Bennett",
@@ -114306,7 +114324,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Super Cam"
  },
  {
   "n": "Marvin Jones",
@@ -114945,7 +114964,8 @@
    "playoffGames": 13,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Sausage"
  },
  {
   "n": "T.Y. Hilton",
@@ -116291,7 +116311,8 @@
    "playoffGames": 22,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Gronk"
  },
  {
   "n": "Adrian Amos",
@@ -116589,7 +116610,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Revis Island"
  },
  {
   "n": "Demaryius Thomas",
@@ -117416,7 +117438,8 @@
    "playoffGames": 14,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Slot Machine,"
  },
  {
   "n": "Scott Fujita",
@@ -122787,7 +122810,8 @@
    "playoffGames": 17,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "the Shark"
  },
  {
   "n": "Marcus Washington",
@@ -128201,7 +128225,8 @@
    "playoffGames": 11,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Belldozer"
  },
  {
   "n": "Aaron Stecker",
@@ -128689,7 +128714,8 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Jet"
  },
  {
   "n": "Marcus Peters",
@@ -193764,7 +193790,8 @@
    "playoffGames": 9,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "the Sandman"
  },
  {
   "n": "Isaiah Ekejiuba",

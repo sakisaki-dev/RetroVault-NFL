@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 Y80 = ROOT / "data" / "y80"
 CACHE = ROOT / "data" / "nfl-cache"
-FIRST_SEASON = 1999  # schedules for the Season page (every season nflverse has games for)
+FIRST_SEASON = 2018  # schedules for the Season page
 
 
 def put(name, value):

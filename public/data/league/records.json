@@ -436,20 +436,19 @@
       "season": "2011"
      },
      {
+      "value": 5477,
+      "mark": "5,477 yds",
+      "player": "Peyton Manning",
+      "pos": "QB",
+      "season": "2013"
+     },
+     {
       "value": 5316,
       "mark": "5,316 yds",
       "player": "Tom Brady",
       "pos": "QB",
       "team": "Buccaneers",
       "season": "2021"
-     },
-     {
-      "value": 5250,
-      "mark": "5,250 yds",
-      "player": "Patrick Mahomes",
-      "pos": "QB",
-      "team": "Chiefs",
-      "season": "2022"
      }
     ],
     "basis": "seasons 1999-2026",
@@ -468,9 +467,16 @@
    },
    "scope": "season",
    "league": {
-    "value": 50,
-    "mark": "50",
+    "value": 55,
+    "mark": "55",
     "top": [
+     {
+      "value": 55,
+      "mark": "55",
+      "player": "Peyton Manning",
+      "pos": "QB",
+      "season": "2013"
+     },
      {
       "value": 50,
       "mark": "50",
@@ -486,14 +492,6 @@
       "pos": "QB",
       "team": "Patriots",
       "season": "2007"
-     },
-     {
-      "value": 48,
-      "mark": "48",
-      "player": "Aaron Rodgers",
-      "pos": "QB",
-      "team": "Packers",
-      "season": "2020"
      }
     ],
     "basis": "seasons 1999-2026",
@@ -556,9 +554,16 @@
    },
    "scope": "season",
    "league": {
-    "value": 18,
-    "mark": "18",
+    "value": 23,
+    "mark": "23",
     "top": [
+     {
+      "value": 23,
+      "mark": "23",
+      "player": "Randy Moss",
+      "pos": "WR",
+      "season": "2007"
+     },
      {
       "value": 18,
       "mark": "18",
@@ -574,14 +579,6 @@
       "pos": "WR",
       "team": "Bengals",
       "season": "2024"
-     },
-     {
-      "value": 17,
-      "mark": "17",
-      "player": "Rob Gronkowski",
-      "pos": "TE",
-      "team": "Patriots",
-      "season": "2011"
      }
     ],
     "basis": "seasons 1999-2026",

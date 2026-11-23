@@ -57,9 +57,12 @@ sp = ROOT / "public" / "private-sprites" / "nfl" / "index.json"
 if sp.exists():
     idx = json.loads(sp.read_text())
     have = set(idx.get("players", {}))
-    miss = [k for k in keys if k not in have]
+    past = {f"{p['pos']}:{p['n']}" for p in players if (p.get("nfl") or {}).get("past")}
+    miss = [k for k in keys if k not in have and k not in past]
     if miss:
         errors.append(f"{len(miss)} players without a sprite entry, e.g. {miss[:3]}")
+    if len([k for k in past if k not in have]):
+        warns.append(f"{len([k for k in past if k not in have])} past players have no sprite entry yet (silhouettes: nfl-sprites)")
 else:
     warns.append("no sprites (run npm run nfl:sprites)")
 print(f"nfl audit: {len(players)} players, {len(errors)} errors, {len(warns)} warnings")
