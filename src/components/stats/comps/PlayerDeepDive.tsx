@@ -36,6 +36,7 @@ import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
 import { DdSection } from './ddParts';
+import DeferredSection from '@/components/ui/DeferredSection';
 import { MIN_RADAR_AXES, buildPositionModel, buildSimilarityMap, type PositionModel, type SimilarityMap } from './compModel';
 import { onCompFinderRequest, openInHeadToHead, takeCompFinderRequest, takeDeepDiveSection } from './compFinderLink';
 import DdGraphsLazy from './graphs/DdGraphsLazy';
@@ -99,6 +100,11 @@ const cachedMap = (model: PositionModel, mode: SimilarityMode) => {
   if (!m) byMode.set(mode, (m = buildSimilarityMap(model, mode)));
   return m;
 };
+const SHAPE_CACHE = new WeakMap<object, ReturnType<typeof buildShapeMap>>();
+const shapeCached = (fams: NonNullable<ReturnType<typeof familiesFor>>) => {
+  if (!SHAPE_CACHE.has(fams)) SHAPE_CACHE.set(fams, buildShapeMap(fams));
+  return SHAPE_CACHE.get(fams) ?? null;
+};
 const BOARD_CACHE = new WeakMap<AdvContext, Map<Position, ReturnType<typeof evaluatePosition>>>();
 const cachedBoards = (players: Player[], position: Position, ctx: AdvContext) => {
   let byPos = BOARD_CACHE.get(ctx);
@@ -118,6 +124,111 @@ const pctIn = (vals: number[], v: number) => {
     else if (x === v) eq++;
   });
   return (100 * (below + eq / 2)) / vals.length;
+};
+
+/** Records & awards: the league record book is built when this section mounts, not with the page. */
+const RecordsLazy = ({ getBook, ...rest }: { getBook: () => ReturnType<typeof buildRecordBook> } & Omit<React.ComponentProps<typeof DdRecords>, 'book'>) => (
+  <DdRecords {...rest} book={getBook()} />
+);
+
+/**
+ * The Neighbourhood map. Its all-pairs similarity map (and the families map, only when asked for) is the heaviest
+ * computation on the page (O(n^2) pairs and an eigen-solve over every qualifier at his position), so it is built when
+ * this section mounts (DeferredSection: near the viewport) and cached per model and mode.
+ */
+const MapSection = ({
+  player,
+  players,
+  model,
+  fams,
+  mapMode,
+  setMapMode,
+  famView,
+  setFamView,
+  insufficient,
+  ovrMap,
+  mapComps,
+  overlay,
+  wide,
+  onPick,
+}: {
+  player: Player;
+  players: Player[];
+  model: PositionModel;
+  fams: ReturnType<typeof familiesFor>;
+  mapMode: SimilarityMode;
+  setMapMode: (m: SimilarityMode) => void;
+  famView: boolean;
+  setFamView: (v: boolean) => void;
+  insufficient: boolean;
+  ovrMap: Map<string, number>;
+  mapComps: ReturnType<typeof similarPlayers>;
+  overlay: { player: Player } | undefined;
+  wide: boolean;
+  onPick: (p: Player) => void;
+}) => {
+  void players;
+  const simMap = useMemo(() => (model && model.axes >= MIN_RADAR_AXES && model.pool.length >= 3 ? cachedMap(model, mapMode) : null), [model, mapMode]);
+  // the families map is the costly one: built only once the Families view is chosen
+  const famOption = !!fams?.shaped && fams.vectors.length >= 3;
+  const shapeMap = useMemo(() => (fams && famView ? shapeCached(fams) : null), [fams, famView]);
+  const shownMap = famView && shapeMap ? shapeMap : simMap;
+  return (
+    <>
+            {simMap && !insufficient ? (
+              <div className="glass-card space-y-2 p-3 sm:p-4">
+                <Chips
+                  label="Map distance"
+                  value={famView && shapeMap ? 'family' : mapMode}
+                  onChange={(v) => {
+                    if (v === 'family') setFamView(true);
+                    else {
+                      setFamView(false);
+                      setMapMode(v);
+                    }
+                  }}
+                  options={[
+                    { value: 'style', label: 'Plays like' },
+                    { value: 'level', label: 'Closest overall' },
+                    ...(famOption ? [{ value: 'family' as const, label: 'Families' }] : []),
+                  ]}
+                />
+                <CompMap
+                  map={shownMap ?? simMap}
+                  zones={famView && !!shapeMap}
+                  nnLabel={famView && shapeMap ? 'Closest shape' : undefined}
+                  ovrMap={ovrMap}
+                  selectedKey={keyOf(player)}
+                  topComps={mapComps}
+                  overlayKey={overlay && !overlay.player.isRealLegend ? keyOf(overlay.player) : ''}
+                  onPick={onPick}
+                  wide={wide}
+                  focusZoom={wide ? 1.8 : 1.6}
+                />
+                <details className="text-xs text-muted-foreground">
+                  <summary className="cursor-pointer font-semibold hover:text-foreground">How this map works</summary>
+                  <p className="mt-1.5">
+                    Every league {player.position} is placed by classical multidimensional scaling of the {mapMode === 'style' ? 'style (shape correlation)' : 'level + style'} distance between
+                    each pair, using the same z-scored rates as the comps ({model.features.map((f) => f.label).join(', ')}). The two axes keep {Math.round(simMap.explained * 100)}% of the
+                    spread; they have no units. Dot size = official OVR, gold ring = Hall of Famer, faded = under {SIM_MIN_GAMES} games, grey lines join nearest neighbours, gold lines run
+                    to his top 5 comps. Drag to pan, pinch or use the buttons to zoom; Tab through dots and press Enter to dive into a player.
+                  </p>
+                  <p className="mt-1.5">
+                    Families: places every {player.position} by play-style shape instead (his style percentiles with his overall level taken out, so how he plays, not how good
+                    he is) and shades a zone for each {player.position} family: k-means clusters of those shapes, named by rule from a fixed label table. Tap or hover a zone or legend entry to
+                    highlight it; tap one to list its members. Same families as the League Landscape family map.
+                  </p>
+                </details>
+              </div>
+            ) : (
+              <p className="glass-card p-4 text-sm text-muted-foreground">
+                {insufficient
+                  ? `Not enough of ${player.name}'s rates are on record to place him on the map.`
+                  : `${player.position}s have ${model.features.length === 1 ? `a single style rate (${model.features[0].label})` : 'too few style rates'}, so there is no 2-D map for this position.`}
+              </p>
+            )}
+    </>
+  );
 };
 
 /**
@@ -186,10 +297,20 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   }, [sectionReq, selKey, byKey]);
 
   // ---------- Memoised league / position computations ----------
-  const models = useMemo(() => new Map(POSITIONS.map((pos) => [pos, buildPositionModel(players, pos)] as const)), [players]);
+  // One position model, built when a player at that position is shown (the other seven are never needed for him)
+  const modelCache = useMemo(() => new Map<Position, ReturnType<typeof buildPositionModel>>(), [players]);
+  const modelOf = (pos: Position) => {
+    let m = modelCache.get(pos);
+    if (!m) modelCache.set(pos, (m = buildPositionModel(players, pos)));
+    return m;
+  };
   const ctx = useMemo(() => buildContext(players), [players]);
   // Every qualifier per board: the Record book chips rank from these lists and their pop-ups show the same order.
-  const book = useMemo(() => buildRecordBook(data ?? null, Infinity), [data]);
+  // Built when the Records section mounts (it is far down the page and the build sorts the league for every board)
+  const getBook = useMemo(() => {
+    let b: ReturnType<typeof buildRecordBook> | null = null;
+    return () => (b ??= buildRecordBook(data ?? null, Infinity));
+  }, [data]);
   const posValues = useMemo(() => {
     const m = new Map<Position, { dom: number[]; tt: number[]; tpg: number[] }>();
     POSITIONS.forEach((pos) => {
@@ -205,12 +326,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const [famView, setFamView] = useState(false);
 
   const position = player?.position ?? 'QB';
-  const model = models.get(position)!;
+  const model = useMemo(() => modelOf(position), [modelCache, position]); // eslint-disable-line react-hooks/exhaustive-deps
   const boards = useMemo(() => cachedBoards(players, position, ctx), [players, position, ctx]);
-  const simMap = useMemo(() => (model && model.axes >= MIN_RADAR_AXES && model.pool.length >= 3 ? cachedMap(model, mapMode) : null), [model, mapMode]);
   const fams = useMemo(() => familiesFor(players, position), [players, position]);
-  const shapeMap = useMemo(() => (fams ? buildShapeMap(fams) : null), [fams]);
-  const shownMap = famView && shapeMap ? shapeMap : simMap;
+  // The Families option and the hero's family link exist when the position has shaped families; the map itself is built
+  // when the Neighbourhood section mounts (MapSection), the families map only once it is asked for
+  const famAvail = !!fams?.shaped && fams.vectors.length >= 3;
 
   const grades = useMemo(() => (player ? playerSkillGrades(players, player) : null), [players, player]);
   // Comps: top 10 in each mode (cards show 3 per mode, the numbered list 10 in the chosen mode, the map 5).
@@ -366,7 +487,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         onOpenCard={() => onSelect(player)}
         family={fams?.shaped ? familyOfPlayer(fams, player) : null}
         onFamily={
-          shapeMap
+          famAvail
             ? () => {
                 setFamView(true);
                 document.getElementById('dd-map')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -417,58 +538,24 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             icon={ChartScatter}
             kicker="Zoomed in on him among every league player at his position. Closer = plays more alike."
           >
-            {simMap && !insufficient ? (
-              <div className="glass-card space-y-2 p-3 sm:p-4">
-                <Chips
-                  label="Map distance"
-                  value={famView && shapeMap ? 'family' : mapMode}
-                  onChange={(v) => {
-                    if (v === 'family') setFamView(true);
-                    else {
-                      setFamView(false);
-                      setMapMode(v);
-                    }
-                  }}
-                  options={[
-                    { value: 'style', label: 'Plays like' },
-                    { value: 'level', label: 'Closest overall' },
-                    ...(shapeMap ? [{ value: 'family' as const, label: 'Families' }] : []),
-                  ]}
-                />
-                <CompMap
-                  map={shownMap ?? simMap}
-                  zones={famView && !!shapeMap}
-                  nnLabel={famView && shapeMap ? 'Closest shape' : undefined}
-                  ovrMap={ovrMap}
-                  selectedKey={keyOf(player)}
-                  topComps={mapComps}
-                  overlayKey={overlay && !overlay.player.isRealLegend ? keyOf(overlay.player) : ''}
-                  onPick={(p) => choose(keyOf(p))}
-                  wide={wide}
-                  focusZoom={wide ? 1.8 : 1.6}
-                />
-                <details className="text-xs text-muted-foreground">
-                  <summary className="cursor-pointer font-semibold hover:text-foreground">How this map works</summary>
-                  <p className="mt-1.5">
-                    Every league {player.position} is placed by classical multidimensional scaling of the {mapMode === 'style' ? 'style (shape correlation)' : 'level + style'} distance between
-                    each pair, using the same z-scored rates as the comps ({model.features.map((f) => f.label).join(', ')}). The two axes keep {Math.round(simMap.explained * 100)}% of the
-                    spread; they have no units. Dot size = official OVR, gold ring = Hall of Famer, faded = under {SIM_MIN_GAMES} games, grey lines join nearest neighbours, gold lines run
-                    to his top 5 comps. Drag to pan, pinch or use the buttons to zoom; Tab through dots and press Enter to dive into a player.
-                  </p>
-                  <p className="mt-1.5">
-                    Families: places every {player.position} by play-style shape instead (his style percentiles with his overall level taken out, so how he plays, not how good
-                    he is) and shades a zone for each {player.position} family: k-means clusters of those shapes, named by rule from a fixed label table. Tap or hover a zone or legend entry to
-                    highlight it; tap one to list its members. Same families as the League Landscape family map.
-                  </p>
-                </details>
-              </div>
-            ) : (
-              <p className="glass-card p-4 text-sm text-muted-foreground">
-                {insufficient
-                  ? `Not enough of ${player.name}'s rates are on record to place him on the map.`
-                  : `${player.position}s have ${model.features.length === 1 ? `a single style rate (${model.features[0].label})` : 'too few style rates'}, so there is no 2-D map for this position.`}
-              </p>
-            )}
+            <DeferredSection ids={[]} minHeight={560}>
+              <MapSection
+                player={player}
+                players={players}
+                model={model}
+                fams={fams}
+                mapMode={mapMode}
+                setMapMode={setMapMode}
+                famView={famView}
+                setFamView={setFamView}
+                insufficient={insufficient}
+                ovrMap={ovrMap}
+                mapComps={mapComps}
+                overlay={overlay}
+                wide={wide}
+                onPick={(p) => choose(keyOf(p))}
+              />
+            </DeferredSection>
           </DdSection>
 
           <DdSection id="dd-advanced" index={3} title="Advanced profile" icon={Activity} kicker="Every advanced metric for his position: percentile, + index (100 = average qualifier) and rank among qualifiers.">
@@ -502,7 +589,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           </DdSection>}
 
           <DdSection id="dd-records" index={7} title="Records & awards" icon={Medal}>
-            <DdRecords player={player} book={book} ovr={ovr} onOpenPlayer={(p) => choose(keyOf(p))} />
+            <DeferredSection ids={[]} minHeight={320}>
+              <RecordsLazy player={player} getBook={getBook} ovr={ovr} onOpenPlayer={(p) => choose(keyOf(p))} />
+            </DeferredSection>
           </DdSection>
 
           {IS_NFL && (
