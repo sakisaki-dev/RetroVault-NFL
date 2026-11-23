@@ -136,42 +136,13 @@ def main() -> None:
         share = {g: n[c] / sum(n.values()) for g, n in by_group.items()}
         standins[uid] = {"uid": uid, "skin": max(share, key=share.get), "neutral": poses}
     print("stand-in templates by skin group:", {g: sum(1 for x in standins.values() if x["skin"] == g) for g in sorted(by_group)})
-    have = {e["uid"] for e in players.values()}
-    pool = [{"uid": u, "skin": x["skin"], "col": -1, "pool": "generic"} for u, x in sorted(standins.items())]
-    used_pos: dict[str, set] = defaultdict(set)
-    used_club: dict[str, set] = defaultdict(set)
-    club_of = {f"{p['pos']}:{p['n']}": p.get("team") or "" for p in players_json}
-    for key, e in players.items():
-        used_pos[key.split(":")[0]].add(e["uid"])
-        used_club[club_of[key]].add(e["uid"])
+    # No random stand-in looks any more (owner, 2026-11-23: "remove the random generation, the silhouette should apply to
+    # all players who don't have a sprite"): a player without a file of his own gets the silhouette stand-in from
+    # scripts/nfl/silhouettes.py, which runs after this step, kit_colors.py and jersey_numbers.py.
     assigned = {"generic": 0, "real": 0}
-    for m in sorted(missing, key=lambda m: m["key"]):
-        key, pos, club = m["key"], m["key"].split(":")[0], m["team"] or ""
-        raw = raw_by_uid.get(m["uid"])
-        fits = []
-        if raw:
-            skin, col = int(float(raw.get("skin", -1))), int(float(raw.get("col_skin", -1)))
-            fits = [x for x in pool if x["skin"] == skin]
-        ranked = sorted(fits or pool, key=lambda x: fnv(f"{key}|{x['uid']}"), reverse=True)
-        x = next((x for x in ranked if x["uid"] not in used_pos[pos] and x["uid"] not in used_club[club]),
-                 next((x for x in ranked if x["uid"] not in used_pos[pos]), ranked[0]))
-        for kit, pose, name in sprites[x["uid"]]:
-            if kit == 800:
-                put(name)
-        players[key] = {"uid": x["uid"], "kits": {}, "neutral": [1, 2, 3, 4, 5], "assigned": True, "pool": x["pool"]}
-        used_pos[pos].add(x["uid"])
-        used_club[club].add(x["uid"])
-        assigned[x["pool"]] += 1
-    for u in {e["uid"] for e in players.values() if e.get("assigned")}:
-        if u in standins:
-            continue
-    # the stand-in list keeps only the templates a player's look needs elsewhere (the site picks a look for a player
-    # without an entry); the generic ones are small, so all that were copied stay
-    used_standins = sorted({e["uid"] for e in players.values() if e.get("assigned")} & set(standins))
-    for u in sorted(standins):
-        if u not in used_standins:
-            for pose in standins[u]["neutral"]:
-                put(P.sprite_name(u, 800, pose))
+    for u in sorted(standins):  # the generic templates stay: the silhouette's head outlines come from them
+        for pose in standins[u]["neutral"]:
+            put(P.sprite_name(u, 800, pose))
     index = {
         "about": "NFL edition demo: the real players' own game sprites (New Star Games, NFL/NFLPA marks), copied by "
                  "scripts/nfl/sprites.py from the 2026 save. Local only.",
@@ -191,7 +162,7 @@ def main() -> None:
     (OUT / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False) + "\n")
     n_real = len(players) - sum(assigned.values())
     print(f"sprites: {len(players)} players ({n_real} with their own, {assigned['generic']} generic + "
-          f"{assigned['real']} real stand-in looks), {len(list(OUT.glob('*.png')))} files, pool {len(pool)}")
+          f"{assigned['real']} real stand-in looks), {len(list(OUT.glob('*.png')))} files")
 
 
 if __name__ == "__main__":
