@@ -12,6 +12,8 @@ import { MYSTERY_STYLE, POSITION_NAMES, loadGameStat, playerKey, saveGameStat, s
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { getTeamTextColor } from '@/utils/teamColors';
 import { useJerseyNumbers } from '@/utils/jerseys';
+import { useAdvanced } from '@/utils/nflAdvanced';
+import { IS_NFL } from '@/config/edition';
 import './buildALegend.css';
 import {
   BUILD_POSITIONS,
@@ -20,9 +22,11 @@ import {
   fmtFeature,
   gradeFor,
   hofVerdict,
-  overallFor,
-  positionBaseline,
+  buildBaseline,
+  buildFeatures,
+  buildOverall,
   matchSlots,
+  setTraitsInPlay,
   skillPct,
   scoreBuild,
   clubAlternatives,
@@ -73,7 +77,8 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
   const [active, setActive] = useState<number | null>(null);
   const top = result.matches[0];
   const pos = result.position;
-  const rows = result.features.map((f, i) => {
+  // the chart compares the classic play-style traits (the match reads only those); advanced traits sit on the board
+  const rows = result.features.slice(0, compFeatures(pos).length).map((f, i) => {
     const sorted = baseline.get(f.id) ?? [];
     const mine = result.vector[i];
     const his = f.get(top.player);
@@ -178,8 +183,10 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
 
 // ---------- Grades ----------
 
-const GradeChip = ({ pct, size = 'md' }: { pct: number; size?: 'sm' | 'md' | 'lg' }) => {
+const GradeChip = ({ pct, size = 'md', plain = false }: { pct: number; size?: 'sm' | 'md' | 'lg'; plain?: boolean }) => {
   const g = gradeFor(pct);
+  // a style trait (time to throw, aDOT) is neither good nor bad: no letter
+  if (plain) return <span className={cn('bal-grade', `bal-grade--${size}`)} style={{ background: '#3a466e', fontSize: '0.5em', letterSpacing: '0.04em' }}>STYLE</span>;
   return (
     <span className={cn('bal-grade', `bal-grade--${size}`, g?.grade === 'S' && 'bal-grade--s')} style={{ background: g?.color ?? '#3a466e' }}>
       {g?.grade ?? '—'}
@@ -329,7 +336,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           <span className="nm">{name}</span>
         </span>
         <span className="bal-tile-mid">
-          <GradeChip pct={pct} size="md" />
+          <GradeChip pct={pct} size="md" plain={f.style} />
           <span className="val">
             <b>{fmtFeature(f, slot.value)}</b>
             <span>
@@ -343,7 +350,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           </span>
           {landed && Number.isFinite(his) && (
             <span className="his">
-              His <GradeChip pct={hisPct} size="sm" />
+              His <GradeChip pct={hisPct} size="sm" plain={f.style} />
             </span>
           )}
         </span>
@@ -415,7 +422,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           <span className="nm">{name}</span>
         </span>
         <span className="bal-tile-mid">
-          {ok ? <GradeChip pct={pct} size="lg" /> : <span className="q">--</span>}
+          {ok ? <GradeChip pct={pct} size="lg" plain={f.style} /> : <span className="q">--</span>}
           <span className="val">
             <b>{ok ? fmtFeature(f, v) : 'No data'}</b>
             <span>
@@ -646,7 +653,21 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   const available = useMemo(() => BUILD_POSITIONS.filter((p) => spinPool(players, p).length >= MIN_SPIN_POOL), [players]);
   const [position, setPosition] = useState<Position>(() => BUILD_POSITIONS[loadGameStat(POS_KEY, 0)] ?? 'QB');
   const pos = available.includes(position) ? position : available[0];
-  const features = useMemo(() => (pos ? compFeatures(pos) : []), [pos]);
+  // NFL edition: the advanced factors join as extra traits once that position's file has loaded (Start waits for it, at
+  // most 4 s, so a game never changes its trait list mid-way)
+  const adv = useAdvanced(pos);
+  const advReady = !IS_NFL || !pos || !!(adv && Object.keys(adv.p).some((k) => k.startsWith(`${pos}:`)));
+  const [advGaveUp, setAdvGaveUp] = useState(false);
+  useEffect(() => {
+    if (advReady) return;
+    const t = window.setTimeout(() => setAdvGaveUp(true), 4000);
+    return () => window.clearTimeout(t);
+  }, [advReady, pos]);
+  const features = useMemo(() => {
+    const f = pos ? buildFeatures(pos, adv) : [];
+    if (pos) setTraitsInPlay(pos, f); // the spin prefers players who have data for an open trait
+    return f;
+  }, [pos, adv]);
   const pool = useMemo(() => (pos ? spinPool(players, pos) : []), [players, pos]);
 
   const [mystery, setMystery] = useState(false);
@@ -676,10 +697,10 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   const current = spinState?.landed && !spinState.done ? spinState.target : null;
   const spinning = !!spinState && !spinState.landed;
 
-  const baseline = useMemo(() => (pos ? positionBaseline(players, pos) : new Map<string, number[]>()), [players, pos]);
+  const baseline = useMemo(() => (pos ? buildBaseline(players, pos, features) : new Map<string, number[]>()), [players, pos, features]);
 
   const filled = slots.filter(Boolean).length;
-  const overall = useMemo(() => (pos ? overallFor(features, baseline, slots.map((s) => (s ? s.value : null)), pos) : null), [features, baseline, slots, pos]);
+  const overall = useMemo(() => (pos ? buildOverall(pos, features, baseline, slots.map((s) => (s ? s.value : null))) : null), [features, baseline, slots, pos]);
   const live = useMemo(
     () => (pos && showLive && filled >= LIVE_AFTER ? (matchSlots(players, pos, slots, 1)[0] ?? null) : null),
     [players, pos, slots, showLive, filled],
@@ -691,7 +712,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   const finish = useCallback(
     (all: (Slot | null)[]) => {
       if (!pos) return;
-      const r = scoreBuild(players, pos, all);
+      const r = scoreBuild(players, pos, all, features);
       const sim = r.matches[0]?.similarity ?? 0;
       const rounded = Math.round(sim * 10) / 10;
       setNewBest(rounded > best);
@@ -713,7 +734,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
       setPhase('reveal');
       toTop();
     },
-    [players, pos, best, clones],
+    [players, pos, best, clones, features],
   );
 
   /**
@@ -806,7 +827,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   }, [landedId]);
 
   const start = useCallback(() => {
-    if (!pos) return;
+    if (!pos || (!advReady && !advGaveUp)) return;
     saveGameStat(POS_KEY, BUILD_POSITIONS.indexOf(pos));
     seen.current = new Set();
     setSlots(features.map(() => null));
@@ -820,7 +841,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
     setPhase('draft');
     setAnnounce('');
     toTop();
-  }, [pos, features]);
+  }, [pos, features, advReady, advGaveUp]);
 
   const lock = useCallback(
     (i: number) => {

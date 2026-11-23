@@ -9,7 +9,9 @@ import {
 } from '@/config/advanced';
 import { isLegend } from './gameUtils';
 import { bannerTeamOf } from '@/utils/playerExtras';
-import { overallFor, positionBaseline, type Overall } from '@/config/skillGrades';
+import { foldAdvanced, overallFor, positionBaseline, skillPct, type Overall } from '@/config/skillGrades';
+import { IS_NFL } from '@/config/edition';
+import type { AdvFile } from '@/utils/nflAdvanced';
 
 // Grading lives in config/skillGrades.ts (shared with the Player Deep Dive); re-exported for the game.
 export {
@@ -42,6 +44,63 @@ export const CLONE_THRESHOLD = 95;
 export const MIN_SPIN_POOL = 5;
 
 
+/**
+ * NFL edition: the advanced-stat factors (public/data/nfl/advanced, scripts/nfl/advanced.py) as extra traits after the
+ * classic ones, so Build-a-Legend offers the same factors the skill grades fold in. Each is a career value from the
+ * advanced file (NaN for a player outside its qualified pool, "no data" like any missing stat); time to throw and aDOT
+ * are styles (shown, never graded). They are never part of the similarity match: the match reads only the classic traits.
+ */
+export const buildFeatures = (pos: Position, adv: AdvFile | null): CompFeature[] => {
+  const classic = compFeatures(pos);
+  if (!IS_NFL || !adv) return classic;
+  const extra = Object.entries(adv.metrics)
+    .filter(([, m]) => m.pos.includes(pos))
+    .map(([id, m]): CompFeature => ({
+      id: `adv:${id}`,
+      label: m.label,
+      definition: `${m.desc}. Career, ${adv.first}-${adv.season}. Source: ${m.src}.${m.dir === 'style' ? ' A style, not good or bad.' : ''}`,
+      get: (p) => adv.p[`${p.position}:${p.name}`]?.c?.[id]?.[0] ?? NaN,
+      weight: 0,
+      decimals: m.dec,
+      suffix: m.unit,
+      lowerIsBetter: m.dir === 'low',
+      style: m.dir === 'style',
+    }))
+    .filter((f) => Object.keys(adv.p).some((k) => k.startsWith(`${pos}:`) && Number.isFinite(f.get({ position: pos, name: k.slice(pos.length + 1) } as Player))));
+  return [...classic, ...extra];
+};
+
+/** Sorted baseline per trait: the classic pools, plus each advanced trait over the players who have it (its qualified pool). */
+export const buildBaseline = (players: Player[], pos: Position, features: CompFeature[]): Map<string, number[]> => {
+  const base = positionBaseline(players, pos);
+  const n = compFeatures(pos).length;
+  if (features.length <= n) return base;
+  const out = new Map(base);
+  const atPos = players.filter((p) => p.position === pos && !isLegend(p));
+  features.slice(n).forEach((f) => out.set(f.id, atPos.map(f.get).filter(Number.isFinite).sort((a, b) => a - b)));
+  return out;
+};
+
+/**
+ * The legend's overall: the classic overall (shared grade function) folded 50/50 with the mean percentile of the filled
+ * advanced traits (skillGrades.ts foldAdvanced, the same blend the Deep Dive's skill grade uses); styles are left out.
+ */
+export const buildOverall = (pos: Position, features: CompFeature[], baseline: Map<string, number[]>, values: (number | null)[]): Overall | null => {
+  const n = compFeatures(pos).length;
+  const classic = overallFor(features.slice(0, n), baseline, values.slice(0, n), pos);
+  if (features.length <= n) return classic;
+  const pcts = features.slice(n).flatMap((f, i) => {
+    const v = values[n + i];
+    return f.style || v == null ? [] : [skillPct(f, baseline.get(f.id) ?? [], v)];
+  });
+  return foldAdvanced(classic, pcts);
+};
+
+/** The traits of the game in play at a position (classic plus advanced): spins favour players who have data for an open one. */
+const inPlay = new Map<Position, CompFeature[]>();
+export const setTraitsInPlay = (pos: Position, features: CompFeature[]) => void inPlay.set(pos, features);
+const traitsInPlay = (pos: Position) => inPlay.get(pos) ?? compFeatures(pos);
+
 export interface Slot {
   player: Player;
   value: number;
@@ -56,7 +115,7 @@ export const spinPool = (players: Player[], position: Position) =>
  * who has a usable value for at least one open slot.
  */
 export const spin = (pool: Player[], position: Position, slots: (Slot | null)[], seen: Set<Player>, rand: () => number = Math.random): Player | null => {
-  const feats = compFeatures(position);
+  const feats = traitsInPlay(position);
   const useful = (p: Player) => feats.some((f, i) => !slots[i] && Number.isFinite(f.get(p)));
   let cand = pool.filter((p) => !seen.has(p) && useful(p));
   if (!cand.length) cand = pool.filter(useful);
@@ -68,7 +127,7 @@ export const spin = (pool: Player[], position: Position, slots: (Slot | null)[],
 export const clubOf = (p: Player): string => bannerTeamOf(p) || 'Free agents';
 
 const usefulFor = (position: Position, slots: (Slot | null)[]) => {
-  const feats = compFeatures(position);
+  const feats = traitsInPlay(position);
   return (p: Player) => feats.some((f, i) => !slots[i] && Number.isFinite(f.get(p)));
 };
 
@@ -132,19 +191,19 @@ export interface BuildResult {
 
 /** Matches a (possibly partial) build: unfilled slots are NaN and skipped by the similarity score. */
 export const matchSlots = (players: Player[], position: Position, slots: (Slot | null)[], count?: number) =>
-  similarityToVector(players, position, slots.map((s) => (s ? s.value : NaN)), count);
+  similarityToVector(players, position, slots.slice(0, compFeatures(position).length).map((s) => (s ? s.value : NaN)), count);
 
-export const scoreBuild = (players: Player[], position: Position, slots: (Slot | null)[]): BuildResult => {
+export const scoreBuild = (players: Player[], position: Position, slots: (Slot | null)[], features: CompFeature[] = compFeatures(position)): BuildResult => {
   const vector = slots.map((s) => (s ? s.value : NaN));
-  const matches = similarityToVector(players, position, vector);
+  const matches = similarityToVector(players, position, vector.slice(0, compFeatures(position).length));
   const top10 = matches.slice(0, 10);
   return {
     position,
-    features: compFeatures(position),
+    features,
     vector,
     picks: slots.map((s) => s?.player ?? null),
     matches,
-    overall: overallFor(compFeatures(position), positionBaseline(players, position), vector.map((x) => (Number.isFinite(x) ? x : null)), position),
+    overall: buildOverall(position, features, buildBaseline(players, position, features), vector.map((x) => (Number.isFinite(x) ? x : null))),
     hofComps: top10.filter((c) => isHallOfFamer(c.player)).length,
     compsConsidered: top10.length,
   };
