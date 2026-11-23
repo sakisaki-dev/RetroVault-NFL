@@ -1,4 +1,5 @@
 import { IS_NFL } from '@/config/edition';
+import { setKitColors, type KitColors } from '@/utils/kitColorTable';
 import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
@@ -169,7 +170,10 @@ export const loadGameSprites = (): void => {
   started = true;
   // the NFL index with the site's locked looks, together, so a locked body (Sherman Brandson) never draws twice
   Promise.all([privateJson('nfl/index.json'), siteLooks()]).then(([nfl, looks]) => {
-    if (validNfl(nfl)) publish({ nfl, looks });
+    if (validNfl(nfl)) {
+      setKitColors((nfl as { kitColors?: KitColors }).kitColors);
+      publish({ nfl, looks });
+    }
   });
   privateJson('index.json')
     .then(async (index) => {
@@ -309,12 +313,15 @@ const pickNfl = (
     const pose = poses.includes(1) ? 1 : poses[0];
     return { src: nflFile(e.uid, kitUid, pose), kit: kitName, pose };
   }
-  // He has no sprite in his club's kit and no neutral to paint (a free agent whose last club the save never drew him
-  // for): one of the game's stand-in looks painted into the club's kit, so he still wears it
+  // His own file exists only in other clubs' kits and he has no neutral to paint (a quarterback the save drew in the
+  // Falcons' kit, now a Viking; a free agent): take one of his own kit files and repaint it into the club he is shown
+  // in (gameKitPaint.ts repaintPixels, paint "Target<Source"), so his face is always his own.
   if (IS_NFL && team && !legend) {
-    const st = standinFor(nfl, key, tone);
-    const pose = st && (st.neutral.includes(want) ? want : st.neutral[0]);
-    if (st && pose !== undefined) return { src: nflFile(st.uid, 800, pose), kit: team, paint: team, pose };
+    const from = Object.keys(e.kits).find((k) => e.kits[k].includes(want) && nfl.clubs[k] !== undefined) ?? Object.keys(e.kits).find((k) => e.kits[k].length && nfl.clubs[k] !== undefined);
+    if (from) {
+      const pose = e.kits[from].includes(want) ? want : e.kits[from][0];
+      return { src: nflFile(e.uid, nfl.clubs[from], pose), kit: team, paint: `${team}<${from}`, pose };
+    }
   }
   if (neutralPose !== undefined) return { src: nflFile(e.uid, 800, neutralPose), kit: 'neutral', pose: neutralPose };
   return null;

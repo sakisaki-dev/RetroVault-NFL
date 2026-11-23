@@ -1,3 +1,4 @@
+import { kitColorsOf } from '@/utils/kitColorTable';
 import { homeUniform, pantsBands, sleeveBands, sockBands } from '@/components/collection/art/sprite/uniforms';
 
 /**
@@ -100,6 +101,60 @@ const paintPixels = (px: Uint8ClampedArray, w: number, h: number, team: string) 
       if (px[i + 3] < 255) continue;
       const to = band[(px[i] << 16) | (px[i + 1] << 8) | px[i + 2]];
       if (to) [px[i], px[i + 1], px[i + 2]] = to;
+    }
+  }
+};
+
+const CLASS_KEY: [number, string][] = [[BASE, 'base'], [SHADE, 'shade'], [TRIM, 'trim']];
+
+/**
+ * Repaints a file the save drew in `from`'s own kit into `team`'s home kit (in place): each colour that file's club
+ * wears in a band (kitColors: what the neutral colours became in the save's real kit files) becomes what the neutral
+ * colour becomes in `team`'s palette (paintPixels). Skin, hair, gloves, shoes and the number keep their colours.
+ */
+const repaintPixels = (px: Uint8ClampedArray, w: number, h: number, from: string, team: string) => {
+  const src = kitColorsOf(from);
+  if (!src) return;
+  const pal = paletteFor(team);
+  const bands: [string, Record<number, RGB>, number, number][] = [
+    ['jersey', pal.jersey, BODY_TOP, PANTS_TOP],
+    ['pants', pal.pants, PANTS_TOP, SOCKS_TOP],
+    ['socks', pal.socks, SOCKS_TOP, SHOES_TOP],
+  ];
+  for (const [band, to, y0, y1] of bands) {
+    const map = new Map<number, RGB>();
+    for (const [cls, name] of CLASS_KEY) {
+      const c = src[band]?.[name];
+      const t = to[cls];
+      if (c && t && !map.has((c[0] << 16) | (c[1] << 8) | c[2])) map.set((c[0] << 16) | (c[1] << 8) | c[2], t);
+    }
+    // sleeves and other cloth shades the neutral template has no class for: a colour near the club's base or shade
+    // (RGB distance under 36, so never a skin tone) takes the target's base or shade scaled by the same brightness
+    const near: { c: RGB; t: RGB }[] = [];
+    for (const [cls, name] of CLASS_KEY.slice(0, 2)) {
+      const c = src[band]?.[name];
+      if (c && to[cls]) near.push({ c, t: to[cls] });
+    }
+    const lum = (c: RGB) => 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2] + 1;
+    for (let y = y0; y < Math.min(y1, h); y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        if (px[i + 3] < 255) continue;
+        const key = (px[i] << 16) | (px[i + 1] << 8) | px[i + 2];
+        let t = map.get(key);
+        if (!t) {
+          let best = 36 * 36;
+          for (const n of near) {
+            const d = (px[i] - n.c[0]) ** 2 + (px[i + 1] - n.c[1]) ** 2 + (px[i + 2] - n.c[2]) ** 2;
+            if (d < best) {
+              best = d;
+              const k = Math.min(1.6, Math.max(0.5, lum([px[i], px[i + 1], px[i + 2]]) / lum(n.c)));
+              t = n.t.map((v) => Math.min(255, Math.round(v * k))) as RGB;
+            }
+          }
+        }
+        if (t) [px[i], px[i + 1], px[i + 2]] = t;
+      }
     }
   }
 };
@@ -216,7 +271,12 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
     if (!ctx) return src;
     ctx.drawImage(img, 0, 0);
     const data = ctx.getImageData(0, 0, w, h);
-    if (job.paint) paintPixels(data.data, w, h, job.paint);
+    if (job.paint) {
+      // "Vikings<Falcons": his file is the Falcons kit, shown in the Vikings' (repaintPixels); plain "Vikings": a neutral
+      const [to, from] = job.paint.split('<');
+      if (from) repaintPixels(data.data, w, h, from, to);
+      else paintPixels(data.data, w, h, to);
+    }
     if (job.polo) paintPolo(data.data, w, h, job.polo.color, job.polo.mask);
     if (rows || cols) {
       const shaped = reshape(new Uint32Array(data.data.buffer), w, h, job.cx ?? 31.5, job.foot ?? 58, rows, cols);
