@@ -18,6 +18,8 @@ const ESPN_PROXY =
 export default defineConfig(() => ({
   // GitHub Pages serves the site from /RetroVault/; the deploy workflow sets BASE_PATH. Local dev stays at /.
   base: process.env.BASE_PATH || "/",
+  // The perf harness builds against a scratch copy of public/ (scripts/perf/synth.py: a synthetic 10,000-player roster)
+  publicDir: process.env.RV_PUBLIC_DIR || "public",
   define: { __PRIVATE_SPRITES__: JSON.stringify(PRIVATE_SPRITES) },
   // Source maps beside the bundles (not linked from them), so a crash screen's minified stack can be mapped back
   build: { sourcemap: "hidden" },
