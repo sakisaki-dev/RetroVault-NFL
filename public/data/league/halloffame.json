@@ -5,19 +5,142 @@
  "season": "2026",
  "members": [
   {
+   "key": "QB:Peyton Manning",
+   "name": "Peyton Manning",
+   "pos": "QB",
+   "frozenSeason": "2015",
+   "careerLegacy": 8191,
+   "rank": 6,
+   "score": 100,
+   "parts": {
+    "standing": 44,
+    "honours": 16,
+    "records": 35,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 24
+   },
+   "records": [
+    "Passing yards",
+    "Passing TDs"
+   ],
+   "seasonRecords": [
+    "Most TD passes, season"
+   ],
+   "rings": 2,
+   "mvp": 5,
+   "opoy": 2,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 250,
+   "nfl": {
+    "elite": 14,
+    "seasons": 18,
+    "partial": true,
+    "debut": 1998
+   },
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Charles Woodson",
+   "name": "Charles Woodson",
+   "pos": "DB",
+   "frozenSeason": "2015",
+   "careerLegacy": 8170,
+   "rank": 2,
+   "score": 100,
+   "parts": {
+    "standing": 52,
+    "honours": 9,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 24
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 235,
+   "nfl": {
+    "elite": 11,
+    "seasons": 18,
+    "partial": true,
+    "debut": 1998
+   },
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Julius Peppers",
+   "name": "Julius Peppers",
+   "pos": "DL",
+   "frozenSeason": "2018",
+   "careerLegacy": 7576,
+   "rank": 2,
+   "score": 100,
+   "parts": {
+    "standing": 52,
+    "honours": 0,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Sacks",
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 261,
+   "nfl": {
+    "elite": 12,
+    "seasons": 17
+   },
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
    "key": "RB:LaDainian Tomlinson",
    "name": "LaDainian Tomlinson",
    "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 8130,
-   "rank": 1,
+   "frozenSeason": "2011",
+   "careerLegacy": 7571,
+   "rank": 2,
    "score": 100,
    "parts": {
-    "standing": 60,
-    "honours": 24,
-    "records": 20
+    "standing": 52,
+    "honours": 16,
+    "records": 35,
+    "peak": 26,
+    "longevity": 8,
+    "pre1999": 0
    },
    "records": [
+    "Rushing yards",
     "Rushing TDs"
    ],
    "seasonRecords": [
@@ -29,8 +152,90 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 170,
+   "nfl": {
+    "elite": 7,
+    "seasons": 11
+   },
    "class": "Class of 2017",
    "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "TE:Tony Gonzalez",
+   "name": "Tony Gonzalez",
+   "pos": "TE",
+   "frozenSeason": "2013",
+   "careerLegacy": 6943,
+   "rank": 3,
+   "score": 100,
+   "parts": {
+    "standing": 50,
+    "honours": 0,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 24
+   },
+   "records": [
+    "Receiving yards",
+    "Receiving TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 237,
+   "nfl": {
+    "elite": 14,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1997
+   },
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Larry Fitzgerald",
+   "name": "Larry Fitzgerald",
+   "pos": "WR",
+   "frozenSeason": "2020",
+   "careerLegacy": 6770,
+   "rank": 8,
+   "score": 100,
+   "parts": {
+    "standing": 40,
+    "honours": 0,
+    "records": 30,
+    "peak": 18,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards",
+    "Receiving TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 263,
+   "nfl": {
+    "elite": 7,
+    "seasons": 17
+   },
+   "class": "Class of 2026",
+   "classSeason": "2026",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -40,14 +245,17 @@
    "key": "DB:Ed Reed",
    "name": "Ed Reed",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7983,
-   "rank": 2,
-   "score": 82,
+   "frozenSeason": "2013",
+   "careerLegacy": 6749,
+   "rank": 4,
+   "score": 100,
    "parts": {
-    "standing": 54,
-    "honours": 13,
-    "records": 15
+    "standing": 48,
+    "honours": 9,
+    "records": 15,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
    },
    "records": [
     "Interceptions"
@@ -59,6 +267,10 @@
    "dpoy": 1,
    "sbmvp": 0,
    "games": 172,
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
    "class": "Class of 2019",
    "classSeason": "2019",
    "firstBallot": false,
@@ -67,137 +279,20 @@
    "real": true
   },
   {
-   "key": "QB:Peyton Manning",
-   "name": "Peyton Manning",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 8756,
-   "rank": 3,
-   "score": 78,
-   "parts": {
-    "standing": 49,
-    "honours": 24,
-    "records": 5
-   },
-   "records": [],
-   "seasonRecords": [
-    "Most TD passes, season"
-   ],
-   "rings": 2,
-   "mvp": 5,
-   "opoy": 2,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 250,
-   "class": "Class of 2021",
-   "classSeason": "2021",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Larry Fitzgerald",
-   "name": "Larry Fitzgerald",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 8664,
-   "rank": 1,
-   "score": 75,
-   "parts": {
-    "standing": 60,
-    "honours": 0,
-    "records": 15
-   },
-   "records": [
-    "Receiving yards"
-   ],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 263,
-   "class": "Class of 2026",
-   "classSeason": "2026",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Julius Peppers",
-   "name": "Julius Peppers",
+   "key": "DL:Michael Strahan",
+   "name": "Michael Strahan",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 8154,
+   "frozenSeason": "2007",
+   "careerLegacy": 6458,
    "rank": 1,
-   "score": 75,
+   "score": 100,
    "parts": {
-    "standing": 60,
-    "honours": 0,
-    "records": 15
-   },
-   "records": [
-    "Sacks"
-   ],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 261,
-   "class": "Class of 2024",
-   "classSeason": "2024",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "QB:Drew Brees",
-   "name": "Drew Brees",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7883,
-   "rank": 4,
-   "score": 74,
-   "parts": {
-    "standing": 45,
-    "honours": 24,
-    "records": 5
-   },
-   "records": [],
-   "seasonRecords": [
-    "Best passing season"
-   ],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 2,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 287,
-   "class": "Class of 2026",
-   "classSeason": "2026",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Charles Woodson",
-   "name": "Charles Woodson",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 9083,
-   "rank": 1,
-   "score": 73,
-   "parts": {
-    "standing": 60,
-    "honours": 13,
-    "records": 0
+    "standing": 54,
+    "honours": 9,
+    "records": 0,
+    "peak": 12,
+    "longevity": 20,
+    "pre1999": 42
    },
    "records": [],
    "seasonRecords": [],
@@ -206,9 +301,52 @@
    "opoy": 0,
    "dpoy": 1,
    "sbmvp": 0,
-   "games": 235,
-   "class": "Class of 2021",
-   "classSeason": "2021",
+   "games": 129,
+   "nfl": {
+    "elite": 4,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1993
+   },
+   "class": "Class of 2014",
+   "classSeason": "2014",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "TE:Antonio Gates",
+   "name": "Antonio Gates",
+   "pos": "TE",
+   "frozenSeason": "2018",
+   "careerLegacy": 6425,
+   "rank": 7,
+   "score": 100,
+   "parts": {
+    "standing": 42,
+    "honours": 0,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 234,
+   "nfl": {
+    "elite": 11,
+    "seasons": 16
+   },
+   "class": "Class of 2025",
+   "classSeason": "2025",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -218,16 +356,20 @@
    "key": "WR:Randy Moss",
    "name": "Randy Moss",
    "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6697,
-   "rank": 5,
-   "score": 62,
+   "frozenSeason": "2012",
+   "careerLegacy": 6137,
+   "rank": 12,
+   "score": 100,
    "parts": {
-    "standing": 42,
+    "standing": 35,
     "honours": 0,
-    "records": 20
+    "records": 35,
+    "peak": 24,
+    "longevity": 20,
+    "pre1999": 18
    },
    "records": [
+    "Receiving yards",
     "Receiving TDs"
    ],
    "seasonRecords": [
@@ -239,6 +381,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 195,
+   "nfl": {
+    "elite": 8,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1998
+   },
    "class": "Class of 2018",
    "classSeason": "2018",
    "firstBallot": false,
@@ -247,56 +395,39 @@
    "real": true
   },
   {
-   "key": "TE:Tony Gonzalez",
-   "name": "Tony Gonzalez",
-   "pos": "TE",
-   "frozenSeason": "2026",
-   "careerLegacy": 7783,
-   "rank": 2,
-   "score": 54,
+   "key": "QB:Drew Brees",
+   "name": "Drew Brees",
+   "pos": "QB",
+   "frozenSeason": "2020",
+   "careerLegacy": 5910,
+   "rank": 22,
+   "score": 100,
    "parts": {
-    "standing": 54,
-    "honours": 0,
-    "records": 0
+    "standing": 29,
+    "honours": 16,
+    "records": 20,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 237,
-   "class": "Class of 2019",
-   "classSeason": "2019",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Ronde Barber",
-   "name": "Ronde Barber",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6732,
-   "rank": 3,
-   "score": 51,
-   "parts": {
-    "standing": 49,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
+   "records": [
+    "Passing yards"
+   ],
+   "seasonRecords": [
+    "Best passing season"
+   ],
    "rings": 1,
    "mvp": 0,
-   "opoy": 0,
+   "opoy": 2,
    "dpoy": 0,
-   "sbmvp": 0,
-   "games": 222,
-   "class": "Class of 2023",
-   "classSeason": "2023",
+   "sbmvp": 1,
+   "games": 287,
+   "nfl": {
+    "elite": 11,
+    "seasons": 20
+   },
+   "class": "Class of 2026",
+   "classSeason": "2026",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -306,16 +437,21 @@
    "key": "LB:Ray Lewis",
    "name": "Ray Lewis",
    "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6288,
+   "frozenSeason": "2012",
+   "careerLegacy": 5892,
    "rank": 10,
-   "score": 51,
+   "score": 100,
    "parts": {
-    "standing": 27,
-    "honours": 24,
-    "records": 0
+    "standing": 36,
+    "honours": 16,
+    "records": 15,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 30
    },
-   "records": [],
+   "records": [
+    "Tackles"
+   ],
    "seasonRecords": [],
    "rings": 2,
    "mvp": 0,
@@ -323,370 +459,12 @@
    "dpoy": 2,
    "sbmvp": 1,
    "games": 184,
-   "class": "Class of 2018",
-   "classSeason": "2018",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "TE:Antonio Gates",
-   "name": "Antonio Gates",
-   "pos": "TE",
-   "frozenSeason": "2026",
-   "careerLegacy": 7175,
-   "rank": 3,
-   "score": 49,
-   "parts": {
-    "standing": 49,
-    "honours": 0,
-    "records": 0
+   "nfl": {
+    "elite": 3,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1996
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 234,
-   "class": "Class of 2025",
-   "classSeason": "2025",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "LB:DeMarcus Ware",
-   "name": "DeMarcus Ware",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7425,
-   "rank": 4,
-   "score": 47,
-   "parts": {
-    "standing": 45,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 178,
-   "class": "Class of 2023",
-   "classSeason": "2023",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Troy Polamalu",
-   "name": "Troy Polamalu",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5563,
-   "rank": 9,
-   "score": 46,
-   "parts": {
-    "standing": 30,
-    "honours": 16,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 156,
-   "class": "Class of 2020",
-   "classSeason": "2020",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Champ Bailey",
-   "name": "Champ Bailey",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6468,
-   "rank": 4,
-   "score": 45,
-   "parts": {
-    "standing": 45,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 213,
-   "class": "Class of 2019",
-   "classSeason": "2019",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "RB:Marshall Faulk",
-   "name": "Marshall Faulk",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4982,
-   "rank": 13,
-   "score": 45,
-   "parts": {
-    "standing": 21,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 1,
-   "opoy": 3,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 97,
-   "class": "Class of 2011",
-   "classSeason": "2011",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Jared Allen",
-   "name": "Jared Allen",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 6777,
-   "rank": 6,
-   "score": 39,
-   "parts": {
-    "standing": 39,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 187,
-   "class": "Class of 2025",
-   "classSeason": "2025",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "RB:Edgerrin James",
-   "name": "Edgerrin James",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5807,
-   "rank": 7,
-   "score": 36,
-   "parts": {
-    "standing": 36,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 148,
-   "class": "Class of 2020",
-   "classSeason": "2020",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Dwight Freeney",
-   "name": "Dwight Freeney",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 6091,
-   "rank": 8,
-   "score": 35,
-   "parts": {
-    "standing": 33,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 200,
-   "class": "Class of 2024",
-   "classSeason": "2024",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "QB:Kurt Warner",
-   "name": "Kurt Warner",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5357,
-   "rank": 19,
-   "score": 33,
-   "parts": {
-    "standing": 9,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 2,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 122,
-   "class": "Class of 2017",
-   "classSeason": "2017",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Terrell Owens",
-   "name": "Terrell Owens",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6461,
-   "rank": 9,
-   "score": 30,
-   "parts": {
-    "standing": 30,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 170,
-   "class": "Class of 2018",
-   "classSeason": "2018",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Michael Strahan",
-   "name": "Michael Strahan",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 5373,
-   "rank": 15,
-   "score": 30,
-   "parts": {
-    "standing": 17,
-    "honours": 13,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 129,
-   "class": "Class of 2014",
-   "classSeason": "2014",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Andre Johnson",
-   "name": "Andre Johnson",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6413,
-   "rank": 10,
-   "score": 27,
-   "parts": {
-    "standing": 27,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 192,
-   "class": "Class of 2024",
-   "classSeason": "2024",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "LB:Brian Urlacher",
-   "name": "Brian Urlacher",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4978,
-   "rank": 17,
-   "score": 24,
-   "parts": {
-    "standing": 13,
-    "honours": 11,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 181,
    "class": "Class of 2018",
    "classSeason": "2018",
    "firstBallot": false,
@@ -698,14 +476,17 @@
    "key": "WR:Marvin Harrison (WR, Colts)",
    "name": "Marvin Harrison (WR, Colts)",
    "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6144,
-   "rank": 13,
-   "score": 23,
+   "frozenSeason": "2008",
+   "careerLegacy": 5630,
+   "rank": 10,
+   "score": 100,
    "parts": {
-    "standing": 21,
+    "standing": 36,
     "honours": 2,
-    "records": 0
+    "records": 0,
+    "peak": 24,
+    "longevity": 16,
+    "pre1999": 30
    },
    "records": [],
    "seasonRecords": [],
@@ -715,6 +496,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 146,
+   "nfl": {
+    "elite": 8,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1996
+   },
    "class": "Class of 2016",
    "classSeason": "2016",
    "firstBallot": false,
@@ -723,17 +510,20 @@
    "real": true
   },
   {
-   "key": "DB:Brian Dawkins",
-   "name": "Brian Dawkins",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5386,
-   "rank": 13,
-   "score": 21,
+   "key": "WR:Terrell Owens",
+   "name": "Terrell Owens",
+   "pos": "WR",
+   "frozenSeason": "2010",
+   "careerLegacy": 5379,
+   "rank": 14,
+   "score": 100,
    "parts": {
-    "standing": 21,
+    "standing": 34,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 18
    },
    "records": [],
    "seasonRecords": [],
@@ -742,7 +532,13 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 181,
+   "games": 170,
+   "nfl": {
+    "elite": 9,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1996
+   },
    "class": "Class of 2018",
    "classSeason": "2018",
    "firstBallot": false,
@@ -754,14 +550,17 @@
    "key": "DL:Warren Sapp",
    "name": "Warren Sapp",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 4215,
-   "rank": 31,
-   "score": 13,
+   "frozenSeason": "2007",
+   "careerLegacy": 5015,
+   "rank": 9,
+   "score": 100,
    "parts": {
-    "standing": 0,
-    "honours": 13,
-    "records": 0
+    "standing": 38,
+    "honours": 9,
+    "records": 0,
+    "peak": 8,
+    "longevity": 16,
+    "pre1999": 36
    },
    "records": [],
    "seasonRecords": [],
@@ -771,36 +570,14 @@
    "dpoy": 1,
    "sbmvp": 0,
    "games": 129,
+   "nfl": {
+    "elite": 3,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1995
+   },
    "class": "Class of 2013",
    "classSeason": "2013",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "LB:Derrick Brooks",
-   "name": "Derrick Brooks",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4089,
-   "rank": 26,
-   "score": 13,
-   "parts": {
-    "standing": 0,
-    "honours": 13,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 159,
-   "class": "Class of 2014",
-   "classSeason": "2014",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -810,14 +587,17 @@
    "key": "DB:Ty Law",
    "name": "Ty Law",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4797,
-   "rank": 20,
-   "score": 12,
+   "frozenSeason": "2009",
+   "careerLegacy": 4877,
+   "rank": 9,
+   "score": 100,
    "parts": {
-    "standing": 7,
-    "honours": 5,
-    "records": 0
+    "standing": 38,
+    "honours": 3,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 36
    },
    "records": [],
    "seasonRecords": [],
@@ -827,6 +607,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 142,
+   "nfl": {
+    "elite": 3,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1995
+   },
    "class": "Class of 2019",
    "classSeason": "2019",
    "firstBallot": false,
@@ -835,226 +621,37 @@
    "real": true
   },
   {
-   "key": "LB:Luke Kuechly",
-   "name": "Luke Kuechly",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3411,
-   "rank": 43,
-   "score": 11,
-   "parts": {
-    "standing": 0,
-    "honours": 11,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 118,
-   "class": "Class of 2026",
-   "classSeason": "2026",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Richard Seymour",
-   "name": "Richard Seymour",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 3930,
-   "rank": 41,
-   "score": 7,
-   "parts": {
-    "standing": 0,
-    "honours": 7,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 3,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 155,
-   "class": "Class of 2022",
-   "classSeason": "2022",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Calvin Johnson",
-   "name": "Calvin Johnson",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 5023,
-   "rank": 25,
-   "score": 5,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 5
-   },
-   "records": [],
-   "seasonRecords": [
-    "Best receiving season"
-   ],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 135,
-   "class": "Class of 2021",
-   "classSeason": "2021",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Darrelle Revis",
-   "name": "Darrelle Revis",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3856,
-   "rank": 47,
-   "score": 2,
-   "parts": {
-    "standing": 0,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 142,
-   "class": "Class of 2023",
-   "classSeason": "2023",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "TE:Shannon Sharpe",
-   "name": "Shannon Sharpe",
-   "pos": "TE",
-   "frozenSeason": "2026",
-   "careerLegacy": 3443,
-   "rank": 44,
-   "score": 2,
-   "parts": {
-    "standing": 0,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 65,
-   "class": "Class of 2011",
-   "classSeason": "2011",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "RB:Jerome Bettis",
-   "name": "Jerome Bettis",
+   "key": "RB:Marshall Faulk",
+   "name": "Marshall Faulk",
    "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3189,
-   "rank": 54,
-   "score": 2,
+   "frozenSeason": "2005",
+   "careerLegacy": 4626,
+   "rank": 6,
+   "score": 100,
    "parts": {
-    "standing": 0,
-    "honours": 2,
-    "records": 0
+    "standing": 44,
+    "honours": 16,
+    "records": 0,
+    "peak": 16,
+    "longevity": 12,
+    "pre1999": 48
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 3,
    "dpoy": 0,
    "sbmvp": 0,
    "games": 97,
-   "class": "Class of 2015",
-   "classSeason": "2015",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:John Lynch",
-   "name": "John Lynch",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3148,
-   "rank": 82,
-   "score": 2,
-   "parts": {
-    "standing": 0,
-    "honours": 2,
-    "records": 0
+   "nfl": {
+    "elite": 5,
+    "seasons": 12,
+    "partial": true,
+    "debut": 1994
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 136,
-   "class": "Class of 2021",
-   "classSeason": "2021",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Rod Woodson",
-   "name": "Rod Woodson",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3011,
-   "rank": 90,
-   "score": 2,
-   "parts": {
-    "standing": 0,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 73,
-   "class": "Class of 2009",
-   "classSeason": "2009",
+   "class": "Class of 2011",
+   "classSeason": "2011",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1064,14 +661,17 @@
    "key": "QB:Brett Favre",
    "name": "Brett Favre",
    "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4805,
-   "rank": 33,
-   "score": 0,
+   "frozenSeason": "2010",
+   "careerLegacy": 4550,
+   "rank": 17,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 32,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 6,
+    "longevity": 20,
+    "pre1999": 51
    },
    "records": [],
    "seasonRecords": [],
@@ -1081,6 +681,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 189,
+   "nfl": {
+    "elite": 3,
+    "seasons": 20,
+    "partial": true,
+    "debut": 1991
+   },
    "class": "Class of 2016",
    "classSeason": "2016",
    "firstBallot": false,
@@ -1089,17 +695,20 @@
    "real": true
   },
   {
-   "key": "WR:Isaac Bruce",
-   "name": "Isaac Bruce",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 4612,
-   "rank": 34,
-   "score": 0,
+   "key": "DB:Brian Dawkins",
+   "name": "Brian Dawkins",
+   "pos": "DB",
+   "frozenSeason": "2011",
+   "careerLegacy": 4532,
+   "rank": 19,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 31,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 24
    },
    "records": [],
    "seasonRecords": [],
@@ -1108,194 +717,148 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 157,
-   "class": "Class of 2020",
-   "classSeason": "2020",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "RB:Curtis Martin",
-   "name": "Curtis Martin",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4128,
-   "rank": 28,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
+   "games": 181,
+   "nfl": {
+    "elite": 9,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1996
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 108,
-   "class": "Class of 2012",
-   "classSeason": "2012",
+   "class": "Class of 2018",
+   "classSeason": "2018",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "QB:Warren Moon",
-   "name": "Warren Moon",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3647,
-   "rank": 107,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 3,
-   "class": "Class of 2006",
-   "classSeason": "2006",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "QB:Troy Aikman",
-   "name": "Troy Aikman",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3263,
-   "rank": 184,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 25,
-   "class": "Class of 2006",
-   "classSeason": "2006",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "QB:Steve Young",
-   "name": "Steve Young",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3204,
-   "rank": 192,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 3,
-   "class": "Class of 2005",
-   "classSeason": "2005",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "QB:Dan Marino",
-   "name": "Dan Marino",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3194,
-   "rank": 193,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 11,
-   "class": "Class of 2005",
-   "classSeason": "2005",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "LB:Zach Thomas (LB, Cowboys)",
-   "name": "Zach Thomas (LB, Cowboys)",
+   "key": "LB:Derrick Brooks",
+   "name": "Derrick Brooks",
    "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 3063,
-   "rank": 64,
-   "score": 0,
+   "frozenSeason": "2008",
+   "careerLegacy": 4118,
+   "rank": 17,
+   "score": 100,
    "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
+    "standing": 32,
+    "honours": 9,
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 36
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
+   "rings": 1,
    "mvp": 0,
    "opoy": 0,
-   "dpoy": 0,
+   "dpoy": 1,
    "sbmvp": 0,
-   "games": 136,
-   "class": "Class of 2023",
-   "classSeason": "2023",
+   "games": 159,
+   "nfl": {
+    "elite": 2,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1995
+   },
+   "class": "Class of 2014",
+   "classSeason": "2014",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "DL:Bryant Young",
-   "name": "Bryant Young",
+   "key": "DB:Rod Woodson",
+   "name": "Rod Woodson",
+   "pos": "DB",
+   "frozenSeason": "2003",
+   "careerLegacy": 3541,
+   "rank": 3,
+   "score": 100,
+   "parts": {
+    "standing": 50,
+    "honours": 2,
+    "records": 15,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 63
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 73,
+   "nfl": {
+    "elite": 3,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1987
+   },
+   "class": "Class of 2009",
+   "classSeason": "2009",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "TE:Shannon Sharpe",
+   "name": "Shannon Sharpe",
+   "pos": "TE",
+   "frozenSeason": "2003",
+   "careerLegacy": 3244,
+   "rank": 7,
+   "score": 100,
+   "parts": {
+    "standing": 42,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 65,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1990
+   },
+   "class": "Class of 2011",
+   "classSeason": "2011",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Bruce Smith",
+   "name": "Bruce Smith",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 2972,
-   "rank": 85,
-   "score": 0,
+   "frozenSeason": "2003",
+   "careerLegacy": 2457,
+   "rank": 11,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 36,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1304,37 +867,15 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 131,
-   "class": "Class of 2022",
-   "classSeason": "2022",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "LB:Patrick Willis",
-   "name": "Patrick Willis",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 2918,
-   "rank": 70,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
+   "games": 76,
+   "nfl": {
+    "elite": 1,
+    "seasons": 19,
+    "partial": true,
+    "debut": 1985
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 111,
-   "class": "Class of 2024",
-   "classSeason": "2024",
+   "class": "Class of 2009",
+   "classSeason": "2009",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1344,14 +885,17 @@
    "key": "WR:Tim Brown",
    "name": "Tim Brown",
    "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 2569,
-   "rank": 112,
-   "score": 0,
+   "frozenSeason": "2004",
+   "careerLegacy": 2382,
+   "rank": 37,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 19,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1361,6 +905,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 90,
+   "nfl": {
+    "elite": 1,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1988
+   },
    "class": "Class of 2015",
    "classSeason": "2015",
    "firstBallot": false,
@@ -1372,14 +922,17 @@
    "key": "WR:Jerry Rice",
    "name": "Jerry Rice",
    "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 2564,
-   "rank": 113,
-   "score": 0,
+   "frozenSeason": "2004",
+   "careerLegacy": 2378,
+   "rank": 22,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 29,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 57
    },
    "records": [],
    "seasonRecords": [],
@@ -1389,6 +942,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 92,
+   "nfl": {
+    "elite": 2,
+    "seasons": 20,
+    "partial": true,
+    "debut": 1985
+   },
    "class": "Class of 2010",
    "classSeason": "2010",
    "firstBallot": false,
@@ -1400,14 +959,17 @@
    "key": "RB:Emmitt Smith",
    "name": "Emmitt Smith",
    "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 2514,
-   "rank": 85,
-   "score": 0,
+   "frozenSeason": "2004",
+   "careerLegacy": 2240,
+   "rank": 33,
+   "score": 100,
    "parts": {
-    "standing": 0,
+    "standing": 22,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 57
    },
    "records": [],
    "seasonRecords": [],
@@ -1417,6 +979,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 86,
+   "nfl": {
+    "elite": 1,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1990
+   },
    "class": "Class of 2010",
    "classSeason": "2010",
    "firstBallot": false,
@@ -1425,17 +993,20 @@
    "real": true
   },
   {
-   "key": "DB:Aeneas Williams",
-   "name": "Aeneas Williams",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 2188,
-   "rank": 195,
-   "score": 0,
+   "key": "DL:Bryant Young",
+   "name": "Bryant Young",
+   "pos": "DL",
+   "frozenSeason": "2007",
+   "careerLegacy": 3641,
+   "rank": 24,
+   "score": 99,
    "parts": {
-    "standing": 0,
+    "standing": 27,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 48
    },
    "records": [],
    "seasonRecords": [],
@@ -1444,35 +1015,50 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 81,
-   "class": "Class of 2014",
-   "classSeason": "2014",
+   "games": 131,
+   "nfl": {
+    "elite": 2,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1994
+   },
+   "class": "Class of 2022",
+   "classSeason": "2022",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "LB:Junior Seau",
-   "name": "Junior Seau",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 2096,
-   "rank": 134,
-   "score": 0,
+   "key": "RB:Jerome Bettis",
+   "name": "Jerome Bettis",
+   "pos": "RB",
+   "frozenSeason": "2005",
+   "careerLegacy": 2957,
+   "rank": 28,
+   "score": 99,
    "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
+    "standing": 25,
+    "honours": 2,
+    "records": 0,
+    "peak": 2,
+    "longevity": 16,
+    "pre1999": 54
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
+   "rings": 1,
    "mvp": 0,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 126,
+   "games": 97,
+   "nfl": {
+    "elite": 1,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1993
+   },
    "class": "Class of 2015",
    "classSeason": "2015",
    "firstBallot": false,
@@ -1481,28 +1067,39 @@
    "real": true
   },
   {
-   "key": "DL:Bruce Smith",
-   "name": "Bruce Smith",
+   "key": "DL:Jared Allen",
+   "name": "Jared Allen",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 2042,
-   "rank": 173,
-   "score": 0,
+   "frozenSeason": "2015",
+   "careerLegacy": 6140,
+   "rank": 9,
+   "score": 98,
    "parts": {
-    "standing": 0,
+    "standing": 38,
     "honours": 0,
-    "records": 0
+    "records": 20,
+    "peak": 28,
+    "longevity": 12,
+    "pre1999": 0
    },
-   "records": [],
-   "seasonRecords": [],
+   "records": [
+    "Sacks"
+   ],
+   "seasonRecords": [
+    "Most sacks, season"
+   ],
    "rings": 0,
    "mvp": 0,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 76,
-   "class": "Class of 2009",
-   "classSeason": "2009",
+   "games": 187,
+   "nfl": {
+    "elite": 9,
+    "seasons": 12
+   },
+   "class": "Class of 2025",
+   "classSeason": "2025",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1512,14 +1109,17 @@
    "key": "DL:John Randle",
    "name": "John Randle",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 1884,
-   "rank": 207,
-   "score": 0,
+   "frozenSeason": "2003",
+   "careerLegacy": 2270,
+   "rank": 32,
+   "score": 93,
    "parts": {
-    "standing": 0,
+    "standing": 22,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 6,
+    "longevity": 20,
+    "pre1999": 45
    },
    "records": [],
    "seasonRecords": [],
@@ -1529,92 +1129,14 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 61,
+   "nfl": {
+    "elite": 2,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1990
+   },
    "class": "Class of 2010",
    "classSeason": "2010",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Devin Hester",
-   "name": "Devin Hester",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 1790,
-   "rank": 175,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 156,
-   "class": "Class of 2024",
-   "classSeason": "2024",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Cris Carter",
-   "name": "Cris Carter",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 1714,
-   "rank": 184,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 52,
-   "class": "Class of 2013",
-   "classSeason": "2013",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DB:Deion Sanders",
-   "name": "Deion Sanders",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 1384,
-   "rank": 376,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 51,
-   "class": "Class of 2011",
-   "classSeason": "2011",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1624,14 +1146,17 @@
    "key": "DB:Eric Allen",
    "name": "Eric Allen",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 1267,
-   "rank": 414,
-   "score": 0,
+   "frozenSeason": "2001",
+   "careerLegacy": 1629,
+   "rank": 40,
+   "score": 90,
    "parts": {
-    "standing": 0,
+    "standing": 17,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 51
    },
    "records": [],
    "seasonRecords": [],
@@ -1641,6 +1166,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 48,
+   "nfl": {
+    "elite": 1,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1988
+   },
    "class": "Class of 2025",
    "classSeason": "2025",
    "firstBallot": false,
@@ -1649,17 +1180,20 @@
    "real": true
   },
   {
-   "key": "DB:Darrell Green",
-   "name": "Darrell Green",
+   "key": "DB:Aeneas Williams",
+   "name": "Aeneas Williams",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 957,
-   "rank": 535,
-   "score": 0,
+   "frozenSeason": "2004",
+   "careerLegacy": 2591,
+   "rank": 33,
+   "score": 89,
    "parts": {
-    "standing": 0,
+    "standing": 22,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 45
    },
    "records": [],
    "seasonRecords": [],
@@ -1668,26 +1202,72 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 56,
-   "class": "Class of 2008",
-   "classSeason": "2008",
+   "games": 81,
+   "nfl": {
+    "elite": 1,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1991
+   },
+   "class": "Class of 2014",
+   "classSeason": "2014",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "DB:LeRoy Butler",
-   "name": "LeRoy Butler",
+   "key": "DB:Ronde Barber",
+   "name": "Ronde Barber",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 737,
-   "rank": 643,
-   "score": 0,
+   "frozenSeason": "2012",
+   "careerLegacy": 5496,
+   "rank": 9,
+   "score": 88,
    "parts": {
-    "standing": 0,
+    "standing": 38,
+    "honours": 2,
+    "records": 0,
+    "peak": 16,
+    "longevity": 20,
+    "pre1999": 12
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 222,
+   "nfl": {
+    "elite": 6,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1997
+   },
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Isaac Bruce",
+   "name": "Isaac Bruce",
+   "pos": "WR",
+   "frozenSeason": "2009",
+   "careerLegacy": 4291,
+   "rank": 22,
+   "score": 87,
+   "parts": {
+    "standing": 29,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 36
    },
    "records": [],
    "seasonRecords": [],
@@ -1696,54 +1276,107 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 41,
-   "class": "Class of 2022",
-   "classSeason": "2022",
+   "games": 157,
+   "nfl": {
+    "elite": 1,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1994
+   },
+   "class": "Class of 2020",
+   "classSeason": "2020",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "DL:Cortez Kennedy",
-   "name": "Cortez Kennedy",
+   "key": "DB:John Lynch",
+   "name": "John Lynch",
+   "pos": "DB",
+   "frozenSeason": "2007",
+   "careerLegacy": 3286,
+   "rank": 30,
+   "score": 85,
+   "parts": {
+    "standing": 23,
+    "honours": 2,
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 36
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 136,
+   "nfl": {
+    "elite": 1,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1993
+   },
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Dwight Freeney",
+   "name": "Dwight Freeney",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 652,
-   "rank": 560,
-   "score": 0,
+   "frozenSeason": "2017",
+   "careerLegacy": 5518,
+   "rank": 16,
+   "score": 83,
    "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
+    "standing": 33,
+    "honours": 2,
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
+   "rings": 1,
    "mvp": 0,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 32,
-   "class": "Class of 2012",
-   "classSeason": "2012",
+   "games": 200,
+   "nfl": {
+    "elite": 9,
+    "seasons": 16
+   },
+   "class": "Class of 2024",
+   "classSeason": "2024",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "LB:Kevin Greene",
-   "name": "Kevin Greene",
+   "key": "LB:Junior Seau",
+   "name": "Junior Seau",
    "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 532,
-   "rank": 537,
-   "score": 0,
+   "frozenSeason": "2009",
+   "careerLegacy": 2097,
+   "rank": 66,
+   "score": 83,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1752,26 +1385,35 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 16,
-   "class": "Class of 2016",
-   "classSeason": "2016",
+   "games": 126,
+   "nfl": {
+    "elite": 0,
+    "seasons": 20,
+    "partial": true,
+    "debut": 1990
+   },
+   "class": "Class of 2015",
+   "classSeason": "2015",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "LB:Derrick Thomas",
-   "name": "Derrick Thomas",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 479,
-   "rank": 571,
-   "score": 0,
+   "key": "DB:Deion Sanders",
+   "name": "Deion Sanders",
+   "pos": "DB",
+   "frozenSeason": "2005",
+   "careerLegacy": 1532,
+   "rank": 68,
+   "score": 83,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1780,26 +1422,35 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 16,
-   "class": "Class of 2009",
-   "classSeason": "2009",
+   "games": 51,
+   "nfl": {
+    "elite": 0,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1989
+   },
+   "class": "Class of 2011",
+   "classSeason": "2011",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
    "real": true
   },
   {
-   "key": "RB:Terrell Davis",
-   "name": "Terrell Davis",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 464,
-   "rank": 415,
-   "score": 0,
+   "key": "QB:Steve Young",
+   "name": "Steve Young",
+   "pos": "QB",
+   "frozenSeason": "1999",
+   "careerLegacy": 952,
+   "rank": 229,
+   "score": 83,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1808,9 +1459,15 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 17,
-   "class": "Class of 2017",
-   "classSeason": "2017",
+   "games": 3,
+   "nfl": {
+    "elite": 0,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1985
+   },
+   "class": "Class of 2005",
+   "classSeason": "2005",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1820,14 +1477,17 @@
    "key": "DL:Chris Doleman",
    "name": "Chris Doleman",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 429,
-   "rank": 676,
-   "score": 0,
+   "frozenSeason": "1999",
+   "careerLegacy": 893,
+   "rank": 154,
+   "score": 83,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1837,36 +1497,14 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 13,
+   "nfl": {
+    "elite": 0,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1985
+   },
    "class": "Class of 2012",
    "classSeason": "2012",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "WR:Andre Reed",
-   "name": "Andre Reed",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 399,
-   "rank": 544,
-   "score": 0,
-   "parts": {
-    "standing": 0,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 24,
-   "class": "Class of 2014",
-   "classSeason": "2014",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1876,14 +1514,17 @@
    "key": "DL:Reggie White",
    "name": "Reggie White",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 267,
-   "rank": 818,
-   "score": 0,
+   "frozenSeason": "2000",
+   "careerLegacy": 384,
+   "rank": 426,
+   "score": 83,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 63
    },
    "records": [],
    "seasonRecords": [],
@@ -1893,6 +1534,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 12,
+   "nfl": {
+    "elite": 0,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1985
+   },
    "class": "Class of 2006",
    "classSeason": "2006",
    "firstBallot": false,
@@ -1901,17 +1548,20 @@
    "real": true
   },
   {
-   "key": "RB:Thurman Thomas",
-   "name": "Thurman Thomas",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 168,
-   "rank": 616,
-   "score": 0,
+   "key": "WR:Cris Carter",
+   "name": "Cris Carter",
+   "pos": "WR",
+   "frozenSeason": "2002",
+   "careerLegacy": 1750,
+   "rank": 44,
+   "score": 81,
    "parts": {
-    "standing": 0,
+    "standing": 14,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 45
    },
    "records": [],
    "seasonRecords": [],
@@ -1920,9 +1570,420 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 12,
-   "class": "Class of 2007",
-   "classSeason": "2007",
+   "games": 52,
+   "nfl": {
+    "elite": 1,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1987
+   },
+   "class": "Class of 2013",
+   "classSeason": "2013",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Kevin Greene",
+   "name": "Kevin Greene",
+   "pos": "LB",
+   "frozenSeason": "1999",
+   "careerLegacy": 1355,
+   "rank": 48,
+   "score": 81,
+   "parts": {
+    "standing": 12,
+    "honours": 0,
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 16,
+   "nfl": {
+    "elite": 1,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1985
+   },
+   "class": "Class of 2016",
+   "classSeason": "2016",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:DeMarcus Ware",
+   "name": "DeMarcus Ware",
+   "pos": "LB",
+   "frozenSeason": "2016",
+   "careerLegacy": 6283,
+   "rank": 11,
+   "score": 78,
+   "parts": {
+    "standing": 36,
+    "honours": 2,
+    "records": 0,
+    "peak": 28,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 178,
+   "nfl": {
+    "elite": 10,
+    "seasons": 12
+   },
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Darrell Green",
+   "name": "Darrell Green",
+   "pos": "DB",
+   "frozenSeason": "2002",
+   "careerLegacy": 1128,
+   "rank": 109,
+   "score": 77,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 57
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 56,
+   "nfl": {
+    "elite": 0,
+    "seasons": 20,
+    "partial": true,
+    "debut": 1983
+   },
+   "class": "Class of 2008",
+   "classSeason": "2008",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Dan Marino",
+   "name": "Dan Marino",
+   "pos": "QB",
+   "frozenSeason": "1999",
+   "careerLegacy": 960,
+   "rank": 229,
+   "score": 77,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 57
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 11,
+   "nfl": {
+    "elite": 0,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1983
+   },
+   "class": "Class of 2005",
+   "classSeason": "2005",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Zach Thomas (LB, Cowboys)",
+   "name": "Zach Thomas (LB, Cowboys)",
+   "pos": "LB",
+   "frozenSeason": "2008",
+   "careerLegacy": 3091,
+   "rank": 37,
+   "score": 76,
+   "parts": {
+    "standing": 19,
+    "honours": 0,
+    "records": 15,
+    "peak": 8,
+    "longevity": 16,
+    "pre1999": 18
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 136,
+   "nfl": {
+    "elite": 4,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1996
+   },
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Kurt Warner",
+   "name": "Kurt Warner",
+   "pos": "QB",
+   "frozenSeason": "2009",
+   "careerLegacy": 5575,
+   "rank": 24,
+   "score": 75,
+   "parts": {
+    "standing": 27,
+    "honours": 16,
+    "records": 0,
+    "peak": 14,
+    "longevity": 12,
+    "pre1999": 6
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 2,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 122,
+   "nfl": {
+    "elite": 4,
+    "seasons": 12,
+    "partial": true,
+    "debut": 1998
+   },
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Troy Aikman",
+   "name": "Troy Aikman",
+   "pos": "QB",
+   "frozenSeason": "2000",
+   "careerLegacy": 1304,
+   "rank": 187,
+   "score": 75,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 12,
+    "pre1999": 63
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 25,
+   "nfl": {
+    "elite": 0,
+    "seasons": 12,
+    "partial": true,
+    "debut": 1989
+   },
+   "class": "Class of 2006",
+   "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Derrick Thomas",
+   "name": "Derrick Thomas",
+   "pos": "LB",
+   "frozenSeason": "1999",
+   "careerLegacy": 1215,
+   "rank": 67,
+   "score": 75,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 4,
+    "longevity": 8,
+    "pre1999": 63
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 16,
+   "nfl": {
+    "elite": 1,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1989
+   },
+   "class": "Class of 2009",
+   "classSeason": "2009",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Cortez Kennedy",
+   "name": "Cortez Kennedy",
+   "pos": "DL",
+   "frozenSeason": "2000",
+   "careerLegacy": 934,
+   "rank": 142,
+   "score": 71,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 8,
+    "pre1999": 63
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 32,
+   "nfl": {
+    "elite": 0,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1990
+   },
+   "class": "Class of 2012",
+   "classSeason": "2012",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Curtis Martin",
+   "name": "Curtis Martin",
+   "pos": "RB",
+   "frozenSeason": "2005",
+   "careerLegacy": 3799,
+   "rank": 17,
+   "score": 70,
+   "parts": {
+    "standing": 32,
+    "honours": 0,
+    "records": 0,
+    "peak": 6,
+    "longevity": 8,
+    "pre1999": 24
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 108,
+   "nfl": {
+    "elite": 2,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1995
+   },
+   "class": "Class of 2012",
+   "classSeason": "2012",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Andre Johnson",
+   "name": "Andre Johnson",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 5557,
+   "rank": 22,
+   "score": 69,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 0,
+    "peak": 20,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 192,
+   "nfl": {
+    "elite": 5,
+    "seasons": 14
+   },
+   "class": "Class of 2024",
+   "classSeason": "2024",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1932,14 +1993,17 @@
    "key": "WR:Michael Irvin",
    "name": "Michael Irvin",
    "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 128,
-   "rank": 825,
-   "score": 0,
+   "frozenSeason": "1999",
+   "careerLegacy": 234,
+   "rank": 461,
+   "score": 69,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 12,
+    "pre1999": 57
    },
    "records": [],
    "seasonRecords": [],
@@ -1949,8 +2013,230 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 4,
+   "nfl": {
+    "elite": 0,
+    "seasons": 12,
+    "partial": true,
+    "debut": 1988
+   },
    "class": "Class of 2007",
    "classSeason": "2007",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Champ Bailey",
+   "name": "Champ Bailey",
+   "pos": "DB",
+   "frozenSeason": "2013",
+   "careerLegacy": 5391,
+   "rank": 16,
+   "score": 67,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 213,
+   "nfl": {
+    "elite": 4,
+    "seasons": 15
+   },
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Troy Polamalu",
+   "name": "Troy Polamalu",
+   "pos": "DB",
+   "frozenSeason": "2014",
+   "careerLegacy": 5174,
+   "rank": 18,
+   "score": 67,
+   "parts": {
+    "standing": 31,
+    "honours": 10,
+    "records": 0,
+    "peak": 14,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 156,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Thurman Thomas",
+   "name": "Thurman Thomas",
+   "pos": "RB",
+   "frozenSeason": "2000",
+   "careerLegacy": 179,
+   "rank": 427,
+   "score": 67,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 16,
+    "pre1999": 51
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 12,
+   "nfl": {
+    "elite": 0,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1988
+   },
+   "class": "Class of 2007",
+   "classSeason": "2007",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Brian Urlacher",
+   "name": "Brian Urlacher",
+   "pos": "LB",
+   "frozenSeason": "2012",
+   "careerLegacy": 4599,
+   "rank": 23,
+   "score": 65,
+   "parts": {
+    "standing": 28,
+    "honours": 7,
+    "records": 0,
+    "peak": 14,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 181,
+   "nfl": {
+    "elite": 6,
+    "seasons": 13
+   },
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Warren Moon",
+   "name": "Warren Moon",
+   "pos": "QB",
+   "frozenSeason": "2000",
+   "careerLegacy": 1427,
+   "rank": 127,
+   "score": 65,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 3,
+   "nfl": {
+    "elite": 0,
+    "seasons": 17,
+    "partial": true,
+    "debut": 1984
+   },
+   "class": "Class of 2006",
+   "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Andre Reed",
+   "name": "Andre Reed",
+   "pos": "WR",
+   "frozenSeason": "2000",
+   "careerLegacy": 512,
+   "rank": 261,
+   "score": 65,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 24,
+   "nfl": {
+    "elite": 0,
+    "seasons": 16,
+    "partial": true,
+    "debut": 1985
+   },
+   "class": "Class of 2014",
+   "classSeason": "2014",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -1960,14 +2246,17 @@
    "key": "DL:Charles Haley",
    "name": "Charles Haley",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 123,
-   "rank": 984,
-   "score": 0,
+   "frozenSeason": "1999",
+   "careerLegacy": 249,
+   "rank": 570,
+   "score": 65,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 45
    },
    "records": [],
    "seasonRecords": [],
@@ -1977,6 +2266,12 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 7,
+   "nfl": {
+    "elite": 0,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1986
+   },
    "class": "Class of 2015",
    "classSeason": "2015",
    "firstBallot": false,
@@ -1988,14 +2283,17 @@
    "key": "DB:Steve Atwater",
    "name": "Steve Atwater",
    "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 101,
-   "rank": 1322,
-   "score": 0,
+   "frozenSeason": "1999",
+   "careerLegacy": 168,
+   "rank": 866,
+   "score": 65,
    "parts": {
     "standing": 0,
     "honours": 0,
-    "records": 0
+    "records": 0,
+    "peak": 0,
+    "longevity": 8,
+    "pre1999": 57
    },
    "records": [],
    "seasonRecords": [],
@@ -2005,8 +2303,335 @@
    "dpoy": 0,
    "sbmvp": 0,
    "games": 11,
+   "nfl": {
+    "elite": 0,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1989
+   },
    "class": "Class of 2020",
    "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:LeRoy Butler",
+   "name": "LeRoy Butler",
+   "pos": "DB",
+   "frozenSeason": "2001",
+   "careerLegacy": 940,
+   "rank": 197,
+   "score": 63,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 12,
+    "pre1999": 51
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 41,
+   "nfl": {
+    "elite": 0,
+    "seasons": 12,
+    "partial": true,
+    "debut": 1990
+   },
+   "class": "Class of 2022",
+   "classSeason": "2022",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Edgerrin James",
+   "name": "Edgerrin James",
+   "pos": "RB",
+   "frozenSeason": "2009",
+   "careerLegacy": 5563,
+   "rank": 10,
+   "score": 60,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 148,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Calvin Johnson",
+   "name": "Calvin Johnson",
+   "pos": "WR",
+   "frozenSeason": "2015",
+   "careerLegacy": 4672,
+   "rank": 34,
+   "score": 46,
+   "parts": {
+    "standing": 21,
+    "honours": 0,
+    "records": 5,
+    "peak": 20,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Best receiving season"
+   ],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 135,
+   "nfl": {
+    "elite": 7,
+    "seasons": 9
+   },
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Richard Seymour",
+   "name": "Richard Seymour",
+   "pos": "DL",
+   "frozenSeason": "2012",
+   "careerLegacy": 3895,
+   "rank": 44,
+   "score": 31,
+   "parts": {
+    "standing": 14,
+    "honours": 5,
+    "records": 0,
+    "peak": 0,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 155,
+   "nfl": {
+    "elite": 0,
+    "seasons": 12
+   },
+   "class": "Class of 2022",
+   "classSeason": "2022",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Darrelle Revis",
+   "name": "Darrelle Revis",
+   "pos": "DB",
+   "frozenSeason": "2017",
+   "careerLegacy": 4061,
+   "rank": 40,
+   "score": 27,
+   "parts": {
+    "standing": 17,
+    "honours": 2,
+    "records": 0,
+    "peak": 0,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 142,
+   "nfl": {
+    "elite": 0,
+    "seasons": 11
+   },
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Terrell Davis",
+   "name": "Terrell Davis",
+   "pos": "RB",
+   "frozenSeason": "2001",
+   "careerLegacy": 454,
+   "rank": 295,
+   "score": 24,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 0,
+    "pre1999": 24
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 17,
+   "nfl": {
+    "elite": 0,
+    "seasons": 7,
+    "partial": true,
+    "debut": 1995
+   },
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Luke Kuechly",
+   "name": "Luke Kuechly",
+   "pos": "LB",
+   "frozenSeason": "2019",
+   "careerLegacy": 3095,
+   "rank": 62,
+   "score": 20,
+   "parts": {
+    "standing": 3,
+    "honours": 7,
+    "records": 0,
+    "peak": 10,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 118,
+   "nfl": {
+    "elite": 4,
+    "seasons": 8
+   },
+   "class": "Class of 2026",
+   "classSeason": "2026",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Patrick Willis",
+   "name": "Patrick Willis",
+   "pos": "LB",
+   "frozenSeason": "2014",
+   "careerLegacy": 2530,
+   "rank": 91,
+   "score": 8,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 8,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 111,
+   "nfl": {
+    "elite": 4,
+    "seasons": 8
+   },
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Devin Hester",
+   "name": "Devin Hester",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 1580,
+   "rank": 207,
+   "score": 8,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 156,
+   "nfl": {
+    "elite": 0,
+    "seasons": 11
+   },
+   "class": "Class of 2024",
+   "classSeason": "2024",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -2018,8 +2643,8 @@
    "season": "2005",
    "label": "Class of 2005",
    "members": [
-    "Dan Marino",
-    "Steve Young"
+    "Steve Young",
+    "Dan Marino"
    ]
   },
   {
@@ -2035,8 +2660,8 @@
    "season": "2007",
    "label": "Class of 2007",
    "members": [
-    "Thurman Thomas",
-    "Michael Irvin"
+    "Michael Irvin",
+    "Thurman Thomas"
    ]
   },
   {
@@ -2059,9 +2684,9 @@
    "season": "2010",
    "label": "Class of 2010",
    "members": [
-    "John Randle",
     "Emmitt Smith",
-    "Jerry Rice"
+    "Jerry Rice",
+    "John Randle"
    ]
   },
   {
@@ -2104,19 +2729,19 @@
    "season": "2015",
    "label": "Class of 2015",
    "members": [
+    "Tim Brown",
     "Jerome Bettis",
-    "Charles Haley",
     "Junior Seau",
-    "Tim Brown"
+    "Charles Haley"
    ]
   },
   {
    "season": "2016",
    "label": "Class of 2016",
    "members": [
+    "Brett Favre",
     "Marvin Harrison (WR, Colts)",
-    "Kevin Greene",
-    "Brett Favre"
+    "Kevin Greene"
    ]
   },
   {
@@ -2132,11 +2757,11 @@
    "season": "2018",
    "label": "Class of 2018",
    "members": [
-    "Randy Moss",
+    "Brian Dawkins",
     "Ray Lewis",
+    "Randy Moss",
     "Terrell Owens",
-    "Brian Urlacher",
-    "Brian Dawkins"
+    "Brian Urlacher"
    ]
   },
   {
@@ -2144,38 +2769,38 @@
    "label": "Class of 2019",
    "members": [
     "Ed Reed",
+    "Ty Law",
     "Tony Gonzalez",
-    "Champ Bailey",
-    "Ty Law"
+    "Champ Bailey"
    ]
   },
   {
    "season": "2020",
    "label": "Class of 2020",
    "members": [
+    "Isaac Bruce",
     "Troy Polamalu",
-    "Edgerrin James",
     "Steve Atwater",
-    "Isaac Bruce"
+    "Edgerrin James"
    ]
   },
   {
    "season": "2021",
    "label": "Class of 2021",
    "members": [
-    "Peyton Manning",
     "Charles Woodson",
-    "Calvin Johnson",
-    "John Lynch"
+    "Peyton Manning",
+    "John Lynch",
+    "Calvin Johnson"
    ]
   },
   {
    "season": "2022",
    "label": "Class of 2022",
    "members": [
-    "Richard Seymour",
+    "Bryant Young",
     "LeRoy Butler",
-    "Bryant Young"
+    "Richard Seymour"
    ]
   },
   {
@@ -2184,8 +2809,8 @@
    "members": [
     "Ronde Barber",
     "DeMarcus Ware",
-    "Darrelle Revis",
-    "Zach Thomas (LB, Cowboys)"
+    "Zach Thomas (LB, Cowboys)",
+    "Darrelle Revis"
    ]
   },
   {
@@ -2212,25 +2837,3286 @@
    "season": "2026",
    "label": "Class of 2026",
    "members": [
-    "Larry Fitzgerald",
     "Drew Brees",
+    "Larry Fitzgerald",
     "Luke Kuechly"
    ]
   }
  ],
  "ballot": [
   {
+   "key": "LB:Terrell Suggs",
+   "name": "Terrell Suggs",
+   "pos": "LB",
+   "frozenSeason": "2019",
+   "careerLegacy": 7779,
+   "rank": 3,
+   "score": 100,
+   "parts": {
+    "standing": 50,
+    "honours": 10,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Sacks",
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 241,
+   "nfl": {
+    "elite": 11,
+    "seasons": 17
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 97,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "RB:Adrian Peterson",
+   "name": "Adrian Peterson",
+   "pos": "RB",
+   "frozenSeason": "2021",
+   "careerLegacy": 7240,
+   "rank": 3,
+   "score": 100,
+   "parts": {
+    "standing": 50,
+    "honours": 16,
+    "records": 35,
+    "peak": 26,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Rushing yards",
+    "Rushing TDs"
+   ],
+   "seasonRecords": [
+    "Best rushing season"
+   ],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 184,
+   "nfl": {
+    "elite": 8,
+    "seasons": 15
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 97,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "LB:Jason Taylor",
+   "name": "Jason Taylor",
+   "pos": "LB",
+   "frozenSeason": "2011",
+   "careerLegacy": 6594,
+   "rank": 8,
+   "score": 100,
+   "parts": {
+    "standing": 40,
+    "honours": 7,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 12
+   },
+   "records": [
+    "Sacks"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 194,
+   "nfl": {
+    "elite": 8,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1997
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 97,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "LB:John Abraham",
+   "name": "John Abraham",
+   "pos": "LB",
+   "frozenSeason": "2014",
+   "careerLegacy": 6242,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Sacks",
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 188,
+   "nfl": {
+    "elite": 13,
+    "seasons": 15
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 97,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "TE:Rob Gronkowski",
+   "name": "Rob Gronkowski",
+   "pos": "TE",
+   "frozenSeason": "2021",
+   "careerLegacy": 6182,
+   "rank": 7,
+   "score": 100,
+   "parts": {
+    "standing": 42,
+    "honours": 5,
+    "records": 15,
+    "peak": 28,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 143,
+   "nfl": {
+    "elite": 11,
+    "seasons": 12
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 97,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "LB:Robert Mathis",
+   "name": "Robert Mathis",
+   "pos": "LB",
+   "frozenSeason": "2016",
+   "careerLegacy": 6070,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 2,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 185,
+   "nfl": {
+    "elite": 10,
+    "seasons": 14
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 97,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "QB:Rich Gannon",
+   "name": "Rich Gannon",
+   "pos": "QB",
+   "frozenSeason": "2004",
+   "careerLegacy": 3428,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 12,
+    "records": 0,
+    "peak": 6,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 74,
+   "nfl": {
+    "elite": 2,
+    "seasons": 18,
+    "partial": true,
+    "debut": 1987
+   },
+   "lastSeason": 2004,
+   "eligibleFrom": 2010,
+   "chance": 97,
+   "classesOnBallot": 17
+  },
+  {
+   "key": "QB:Steve McNair",
+   "name": "Steve McNair",
+   "pos": "QB",
+   "frozenSeason": "2007",
+   "careerLegacy": 4575,
+   "rank": 25,
+   "score": 99,
+   "parts": {
+    "standing": 27,
+    "honours": 12,
+    "records": 0,
+    "peak": 2,
+    "longevity": 16,
+    "pre1999": 42
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 116,
+   "nfl": {
+    "elite": 1,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1995
+   },
+   "lastSeason": 2007,
+   "eligibleFrom": 2013,
+   "chance": 97,
+   "classesOnBallot": 14
+  },
+  {
+   "key": "WR:Reggie Wayne",
+   "name": "Reggie Wayne",
+   "pos": "WR",
+   "frozenSeason": "2014",
+   "careerLegacy": 6371,
+   "rank": 12,
+   "score": 88,
+   "parts": {
+    "standing": 35,
+    "honours": 2,
+    "records": 15,
+    "peak": 16,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 206,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 97,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "LB:James Harrison",
+   "name": "James Harrison",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 6190,
+   "rank": 11,
+   "score": 88,
+   "parts": {
+    "standing": 36,
+    "honours": 10,
+    "records": 0,
+    "peak": 22,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 182,
+   "nfl": {
+    "elite": 6,
+    "seasons": 16
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 97,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "TE:Jason Witten",
+   "name": "Jason Witten",
+   "pos": "TE",
+   "frozenSeason": "2020",
+   "careerLegacy": 5748,
+   "rank": 7,
+   "score": 86,
+   "parts": {
+    "standing": 42,
+    "honours": 0,
+    "records": 0,
+    "peak": 24,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 268,
+   "nfl": {
+    "elite": 8,
+    "seasons": 18
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 97,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "WR:Hines Ward",
+   "name": "Hines Ward",
+   "pos": "WR",
+   "frozenSeason": "2011",
+   "careerLegacy": 6558,
+   "rank": 7,
+   "score": 84,
+   "parts": {
+    "standing": 42,
+    "honours": 8,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 6
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 200,
+   "nfl": {
+    "elite": 3,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1998
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 97,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "RB:Frank Gore (RB, Jets)",
+   "name": "Frank Gore (RB, Jets)",
+   "pos": "RB",
+   "frozenSeason": "2020",
+   "careerLegacy": 5675,
+   "rank": 9,
+   "score": 83,
+   "parts": {
+    "standing": 38,
+    "honours": 0,
+    "records": 15,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Rushing yards"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 241,
+   "nfl": {
+    "elite": 4,
+    "seasons": 16
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 97,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "DB:Charles Tillman",
+   "name": "Charles Tillman",
+   "pos": "DB",
+   "frozenSeason": "2015",
+   "careerLegacy": 5288,
+   "rank": 16,
+   "score": 82,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 5,
+    "peak": 28,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most forced fumbles, season"
+   ],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 166,
+   "nfl": {
+    "elite": 11,
+    "seasons": 13
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 97,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "DB:Reggie Nelson",
+   "name": "Reggie Nelson",
+   "pos": "DB",
+   "frozenSeason": "2018",
+   "careerLegacy": 5933,
+   "rank": 9,
+   "score": 81,
+   "parts": {
+    "standing": 38,
+    "honours": 0,
+    "records": 15,
+    "peak": 16,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 177,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2018,
+   "eligibleFrom": 2024,
+   "chance": 96,
+   "classesOnBallot": 3
+  },
+  {
+   "key": "DB:Antoine Bethea",
+   "name": "Antoine Bethea",
+   "pos": "DB",
+   "frozenSeason": "2019",
+   "careerLegacy": 5520,
+   "rank": 13,
+   "score": 81,
+   "parts": {
+    "standing": 34,
+    "honours": 2,
+    "records": 15,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 208,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 96,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DB:DeAngelo Hall",
+   "name": "DeAngelo Hall",
+   "pos": "DB",
+   "frozenSeason": "2017",
+   "careerLegacy": 5744,
+   "rank": 11,
+   "score": 79,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 15,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 169,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 95,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "WR:Steve Smith",
+   "name": "Steve Smith",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 5650,
+   "rank": 20,
+   "score": 79,
+   "parts": {
+    "standing": 30,
+    "honours": 0,
+    "records": 15,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 219,
+   "nfl": {
+    "elite": 4,
+    "seasons": 16
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 95,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "LB:Joey Porter (LB, Cardinals)",
+   "name": "Joey Porter (LB, Cardinals)",
+   "pos": "LB",
+   "frozenSeason": "2011",
+   "careerLegacy": 5206,
+   "rank": 16,
+   "score": 75,
+   "parts": {
+    "standing": 33,
+    "honours": 2,
+    "records": 0,
+    "peak": 24,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 182,
+   "nfl": {
+    "elite": 7,
+    "seasons": 13
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 92,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "RB:Priest Holmes",
+   "name": "Priest Holmes",
+   "pos": "RB",
+   "frozenSeason": "2007",
+   "careerLegacy": 4098,
+   "rank": 20,
+   "score": 75,
+   "parts": {
+    "standing": 30,
+    "honours": 9,
+    "records": 0,
+    "peak": 16,
+    "longevity": 8,
+    "pre1999": 12
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 88,
+   "nfl": {
+    "elite": 4,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1997
+   },
+   "lastSeason": 2007,
+   "eligibleFrom": 2013,
+   "chance": 92,
+   "classesOnBallot": 14
+  },
+  {
+   "key": "LB:Karlos Dansby",
+   "name": "Karlos Dansby",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 4691,
+   "rank": 22,
+   "score": 74,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 15,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 211,
+   "nfl": {
+    "elite": 5,
+    "seasons": 14
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 91,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "WR:Torry Holt",
+   "name": "Torry Holt",
+   "pos": "WR",
+   "frozenSeason": "2009",
+   "careerLegacy": 5401,
+   "rank": 22,
+   "score": 70,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 15,
+    "peak": 18,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 172,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 85,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "DL:Osi Umenyiora",
+   "name": "Osi Umenyiora",
+   "pos": "DL",
+   "frozenSeason": "2014",
+   "careerLegacy": 4628,
+   "rank": 26,
+   "score": 70,
+   "parts": {
+    "standing": 26,
+    "honours": 3,
+    "records": 5,
+    "peak": 24,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most forced fumbles, season"
+   ],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 151,
+   "nfl": {
+    "elite": 8,
+    "seasons": 12
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 85,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "WR:Anquan Boldin",
+   "name": "Anquan Boldin",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 5843,
+   "rank": 17,
+   "score": 68,
+   "parts": {
+    "standing": 32,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 202,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 81,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "DB:Malcolm Jenkins",
+   "name": "Malcolm Jenkins",
+   "pos": "DB",
+   "frozenSeason": "2021",
+   "careerLegacy": 5227,
+   "rank": 16,
+   "score": 68,
+   "parts": {
+    "standing": 33,
+    "honours": 3,
+    "records": 0,
+    "peak": 16,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 195,
+   "nfl": {
+    "elite": 5,
+    "seasons": 13
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 81,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "TE:Vernon Davis",
+   "name": "Vernon Davis",
+   "pos": "TE",
+   "frozenSeason": "2019",
+   "careerLegacy": 4881,
+   "rank": 14,
+   "score": 68,
+   "parts": {
+    "standing": 34,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 194,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 81,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "LB:Thomas Davis",
+   "name": "Thomas Davis",
+   "pos": "LB",
+   "frozenSeason": "2020",
+   "careerLegacy": 4652,
+   "rank": 22,
+   "score": 68,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 15,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 196,
+   "nfl": {
+    "elite": 1,
+    "seasons": 16
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 81,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "TE:Greg Olsen",
+   "name": "Greg Olsen",
+   "pos": "TE",
+   "frozenSeason": "2020",
+   "careerLegacy": 4535,
+   "rank": 17,
+   "score": 68,
+   "parts": {
+    "standing": 32,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 196,
+   "nfl": {
+    "elite": 5,
+    "seasons": 14
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 81,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "DB:Mike Adams",
+   "name": "Mike Adams",
+   "pos": "DB",
+   "frozenSeason": "2019",
+   "careerLegacy": 5460,
+   "rank": 14,
+   "score": 66,
+   "parts": {
+    "standing": 34,
+    "honours": 0,
+    "records": 0,
+    "peak": 12,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 220,
+   "nfl": {
+    "elite": 4,
+    "seasons": 16
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 76,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DB:Eric Weddle",
+   "name": "Eric Weddle",
+   "pos": "DB",
+   "frozenSeason": "2019",
+   "careerLegacy": 5454,
+   "rank": 14,
+   "score": 66,
+   "parts": {
+    "standing": 34,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 201,
+   "nfl": {
+    "elite": 5,
+    "seasons": 13
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 76,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "WR:Antonio Brown",
+   "name": "Antonio Brown",
+   "pos": "WR",
+   "frozenSeason": "2021",
+   "careerLegacy": 5560,
+   "rank": 22,
+   "score": 65,
+   "parts": {
+    "standing": 29,
+    "honours": 2,
+    "records": 0,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 146,
+   "nfl": {
+    "elite": 6,
+    "seasons": 12
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 73,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "LB:Tamba Hali",
+   "name": "Tamba Hali",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 4973,
+   "rank": 19,
+   "score": 65,
+   "parts": {
+    "standing": 31,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 176,
+   "nfl": {
+    "elite": 8,
+    "seasons": 12
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 73,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "DB:Tramon Williams",
+   "name": "Tramon Williams",
+   "pos": "DB",
+   "frozenSeason": "2020",
+   "careerLegacy": 5443,
+   "rank": 14,
+   "score": 64,
+   "parts": {
+    "standing": 34,
+    "honours": 2,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 202,
+   "nfl": {
+    "elite": 3,
+    "seasons": 15
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 70,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "DB:Aqib Talib",
+   "name": "Aqib Talib",
+   "pos": "DB",
+   "frozenSeason": "2019",
+   "careerLegacy": 5166,
+   "rank": 18,
+   "score": 64,
+   "parts": {
+    "standing": 31,
+    "honours": 2,
+    "records": 15,
+    "peak": 4,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 146,
+   "nfl": {
+    "elite": 2,
+    "seasons": 12
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 70,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DL:Justin Smith",
+   "name": "Justin Smith",
+   "pos": "DL",
+   "frozenSeason": "2014",
+   "careerLegacy": 5267,
+   "rank": 16,
+   "score": 63,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 220,
+   "nfl": {
+    "elite": 5,
+    "seasons": 14
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 67,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "RB:Steven Jackson",
+   "name": "Steven Jackson",
+   "pos": "RB",
+   "frozenSeason": "2015",
+   "careerLegacy": 5918,
+   "rank": 7,
+   "score": 62,
+   "parts": {
+    "standing": 42,
+    "honours": 0,
+    "records": 0,
+    "peak": 8,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 160,
+   "nfl": {
+    "elite": 3,
+    "seasons": 12
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 64,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "DB:Richard Sherman",
+   "name": "Richard Sherman",
+   "pos": "DB",
+   "frozenSeason": "2021",
+   "careerLegacy": 5176,
+   "rank": 18,
+   "score": 62,
+   "parts": {
+    "standing": 31,
+    "honours": 2,
+    "records": 15,
+    "peak": 6,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 142,
+   "nfl": {
+    "elite": 2,
+    "seasons": 11
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 64,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "RB:Shaun Alexander",
+   "name": "Shaun Alexander",
+   "pos": "RB",
+   "frozenSeason": "2008",
+   "careerLegacy": 4688,
+   "rank": 20,
+   "score": 62,
+   "parts": {
+    "standing": 30,
+    "honours": 16,
+    "records": 0,
+    "peak": 16,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 123,
+   "nfl": {
+    "elite": 5,
+    "seasons": 9
+   },
+   "lastSeason": 2008,
+   "eligibleFrom": 2014,
+   "chance": 64,
+   "classesOnBallot": 13
+  },
+  {
+   "key": "LB:Clay Matthews",
+   "name": "Clay Matthews",
+   "pos": "LB",
+   "frozenSeason": "2019",
+   "careerLegacy": 4509,
+   "rank": 24,
+   "score": 61,
+   "parts": {
+    "standing": 27,
+    "honours": 2,
+    "records": 0,
+    "peak": 24,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 156,
+   "nfl": {
+    "elite": 8,
+    "seasons": 11
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 61,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "RB:LeSean McCoy",
+   "name": "LeSean McCoy",
+   "pos": "RB",
+   "frozenSeason": "2020",
+   "careerLegacy": 4461,
+   "rank": 25,
+   "score": 61,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 170,
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 61,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "WR:Brandon Marshall",
+   "name": "Brandon Marshall",
+   "pos": "WR",
+   "frozenSeason": "2018",
+   "careerLegacy": 5064,
+   "rank": 24,
+   "score": 59,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 174,
+   "nfl": {
+    "elite": 6,
+    "seasons": 13
+   },
+   "lastSeason": 2018,
+   "eligibleFrom": 2024,
+   "chance": 54,
+   "classesOnBallot": 3
+  },
+  {
+   "key": "RB:Marshawn Lynch",
+   "name": "Marshawn Lynch",
+   "pos": "RB",
+   "frozenSeason": "2019",
+   "careerLegacy": 4543,
+   "rank": 24,
+   "score": 59,
+   "parts": {
+    "standing": 27,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 149,
+   "nfl": {
+    "elite": 5,
+    "seasons": 13
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 54,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DL:Elvis Dumervil",
+   "name": "Elvis Dumervil",
+   "pos": "DL",
+   "frozenSeason": "2017",
+   "careerLegacy": 4421,
+   "rank": 31,
+   "score": 59,
+   "parts": {
+    "standing": 23,
+    "honours": 0,
+    "records": 0,
+    "peak": 24,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 155,
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 54,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "DL:Patrick Kerney",
+   "name": "Patrick Kerney",
+   "pos": "DL",
+   "frozenSeason": "2009",
+   "careerLegacy": 5697,
+   "rank": 15,
+   "score": 57,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 152,
+   "nfl": {
+    "elite": 7,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 46,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "QB:Ben Roethlisberger",
+   "name": "Ben Roethlisberger",
+   "pos": "QB",
+   "frozenSeason": "2021",
+   "careerLegacy": 4996,
+   "rank": 36,
+   "score": 57,
+   "parts": {
+    "standing": 20,
+    "honours": 3,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 249,
+   "nfl": {
+    "elite": 5,
+    "seasons": 18
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 46,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "RB:Jamal Lewis",
+   "name": "Jamal Lewis",
+   "pos": "RB",
+   "frozenSeason": "2009",
+   "careerLegacy": 4624,
+   "rank": 22,
+   "score": 57,
+   "parts": {
+    "standing": 29,
+    "honours": 9,
+    "records": 5,
+    "peak": 10,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Best rushing season"
+   ],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 131,
+   "nfl": {
+    "elite": 4,
+    "seasons": 10
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 46,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "DL:Ryan Kerrigan",
+   "name": "Ryan Kerrigan",
+   "pos": "DL",
+   "frozenSeason": "2021",
+   "careerLegacy": 4546,
+   "rank": 28,
+   "score": 57,
+   "parts": {
+    "standing": 25,
+    "honours": 0,
+    "records": 0,
+    "peak": 24,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 172,
+   "nfl": {
+    "elite": 8,
+    "seasons": 11
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 46,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "LB:Cameron Wake",
+   "name": "Cameron Wake",
+   "pos": "LB",
+   "frozenSeason": "2019",
+   "careerLegacy": 4427,
+   "rank": 25,
+   "score": 57,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 154,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 46,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DB:Terence Newman",
+   "name": "Terence Newman",
+   "pos": "DB",
+   "frozenSeason": "2017",
+   "careerLegacy": 5792,
+   "rank": 10,
+   "score": 56,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 220,
+   "nfl": {
+    "elite": 0,
+    "seasons": 15
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 43,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "LB:Trent Cole",
+   "name": "Trent Cole",
+   "pos": "LB",
+   "frozenSeason": "2016",
+   "careerLegacy": 4165,
+   "rank": 26,
+   "score": 56,
+   "parts": {
+    "standing": 26,
+    "honours": 0,
+    "records": 0,
+    "peak": 18,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 173,
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 43,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "TE:Delanie Walker",
+   "name": "Delanie Walker",
+   "pos": "TE",
+   "frozenSeason": "2019",
+   "careerLegacy": 3973,
+   "rank": 26,
+   "score": 56,
+   "parts": {
+    "standing": 26,
+    "honours": 0,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 171,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 43,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "LB:Shaun Phillips",
+   "name": "Shaun Phillips",
+   "pos": "LB",
+   "frozenSeason": "2014",
+   "careerLegacy": 4026,
+   "rank": 28,
+   "score": 55,
+   "parts": {
+    "standing": 25,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 162,
+   "nfl": {
+    "elite": 8,
+    "seasons": 11
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 39,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "DB:Johnathan Joseph",
+   "name": "Johnathan Joseph",
+   "pos": "DB",
+   "frozenSeason": "2020",
+   "careerLegacy": 5100,
+   "rank": 19,
+   "score": 53,
+   "parts": {
+    "standing": 31,
+    "honours": 0,
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 210,
+   "nfl": {
+    "elite": 1,
+    "seasons": 15
+   },
+   "lastSeason": 2020,
+   "eligibleFrom": 2026,
+   "chance": 33,
+   "classesOnBallot": 1
+  },
+  {
+   "key": "QB:Eli Manning",
+   "name": "Eli Manning",
+   "pos": "QB",
+   "frozenSeason": "2019",
+   "careerLegacy": 4968,
+   "rank": 36,
+   "score": 53,
+   "parts": {
+    "standing": 20,
+    "honours": 13,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 2,
+   "games": 235,
+   "nfl": {
+    "elite": 0,
+    "seasons": 16
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 33,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "DB:Dre' Bly",
+   "name": "Dre' Bly",
+   "pos": "DB",
+   "frozenSeason": "2009",
+   "careerLegacy": 5495,
+   "rank": 13,
+   "score": 52,
+   "parts": {
+    "standing": 34,
+    "honours": 0,
+    "records": 0,
+    "peak": 10,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 159,
+   "nfl": {
+    "elite": 3,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 30,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "DL:Mario Williams (DL, Dolphins)",
+   "name": "Mario Williams (DL, Dolphins)",
+   "pos": "DL",
+   "frozenSeason": "2016",
+   "careerLegacy": 4454,
+   "rank": 29,
+   "score": 52,
+   "parts": {
+    "standing": 24,
+    "honours": 0,
+    "records": 0,
+    "peak": 20,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 156,
+   "nfl": {
+    "elite": 7,
+    "seasons": 11
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 30,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "DL:Aaron Schobel",
+   "name": "Aaron Schobel",
+   "pos": "DL",
+   "frozenSeason": "2009",
+   "careerLegacy": 5403,
+   "rank": 16,
+   "score": 51,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 18,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 129,
+   "nfl": {
+    "elite": 6,
+    "seasons": 9
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 27,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "DL:Jevon Kearse",
+   "name": "Jevon Kearse",
+   "pos": "DL",
+   "frozenSeason": "2009",
+   "careerLegacy": 4845,
+   "rank": 24,
+   "score": 51,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 120,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 27,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "TE:Jared Cook",
+   "name": "Jared Cook",
+   "pos": "TE",
+   "frozenSeason": "2021",
+   "careerLegacy": 4336,
+   "rank": 24,
+   "score": 51,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 8,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 187,
+   "nfl": {
+    "elite": 4,
+    "seasons": 13
+   },
+   "lastSeason": 2021,
+   "eligibleFrom": 2027,
+   "chance": 27,
+   "classesOnBallot": 0
+  },
+  {
+   "key": "DL:Andre Carter (DL, Patriots)",
+   "name": "Andre Carter (DL, Patriots)",
+   "pos": "DL",
+   "frozenSeason": "2013",
+   "careerLegacy": 4361,
+   "rank": 32,
+   "score": 50,
+   "parts": {
+    "standing": 22,
+    "honours": 0,
+    "records": 0,
+    "peak": 12,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 173,
+   "nfl": {
+    "elite": 4,
+    "seasons": 13
+   },
+   "lastSeason": 2013,
+   "eligibleFrom": 2019,
+   "chance": 24,
+   "classesOnBallot": 8
+  },
+  {
+   "key": "TE:Benjamin Watson",
+   "name": "Benjamin Watson",
+   "pos": "TE",
+   "frozenSeason": "2019",
+   "careerLegacy": 4101,
+   "rank": 26,
+   "score": 50,
+   "parts": {
+    "standing": 26,
+    "honours": 0,
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 199,
+   "nfl": {
+    "elite": 2,
+    "seasons": 16
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 24,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "RB:Matt Forte",
+   "name": "Matt Forte",
+   "pos": "RB",
+   "frozenSeason": "2017",
+   "careerLegacy": 5096,
+   "rank": 16,
+   "score": 49,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 12,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 146,
+   "nfl": {
+    "elite": 5,
+    "seasons": 10
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 22,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "DB:Asante Samuel (DB, Falcons)",
+   "name": "Asante Samuel (DB, Falcons)",
+   "pos": "DB",
+   "frozenSeason": "2013",
+   "careerLegacy": 4885,
+   "rank": 21,
+   "score": 49,
+   "parts": {
+    "standing": 29,
+    "honours": 2,
+    "records": 0,
+    "peak": 10,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 153,
+   "nfl": {
+    "elite": 3,
+    "seasons": 11
+   },
+   "lastSeason": 2013,
+   "eligibleFrom": 2019,
+   "chance": 22,
+   "classesOnBallot": 8
+  },
+  {
+   "key": "WR:Donald Driver",
+   "name": "Donald Driver",
+   "pos": "WR",
+   "frozenSeason": "2012",
+   "careerLegacy": 4702,
+   "rank": 34,
+   "score": 49,
+   "parts": {
+    "standing": 21,
+    "honours": 2,
+    "records": 0,
+    "peak": 6,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 196,
+   "nfl": {
+    "elite": 3,
+    "seasons": 14
+   },
+   "lastSeason": 2012,
+   "eligibleFrom": 2018,
+   "chance": 22,
+   "classesOnBallot": 9
+  },
+  {
+   "key": "RB:Ricky Williams",
+   "name": "Ricky Williams",
+   "pos": "RB",
+   "frozenSeason": "2011",
+   "careerLegacy": 4306,
+   "rank": 27,
+   "score": 49,
+   "parts": {
+    "standing": 25,
+    "honours": 0,
+    "records": 0,
+    "peak": 8,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 147,
+   "nfl": {
+    "elite": 3,
+    "seasons": 13
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 22,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "DL:Justin Tuck",
+   "name": "Justin Tuck",
+   "pos": "DL",
+   "frozenSeason": "2015",
+   "careerLegacy": 4088,
+   "rank": 36,
+   "score": 49,
+   "parts": {
+    "standing": 20,
+    "honours": 3,
+    "records": 0,
+    "peak": 18,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 144,
+   "nfl": {
+    "elite": 5,
+    "seasons": 11
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 22,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "TE:Todd Heap",
+   "name": "Todd Heap",
+   "pos": "TE",
+   "frozenSeason": "2012",
+   "careerLegacy": 3872,
+   "rank": 29,
+   "score": 48,
+   "parts": {
+    "standing": 24,
+    "honours": 0,
+    "records": 0,
+    "peak": 12,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 140,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2012,
+   "eligibleFrom": 2018,
+   "chance": 19,
+   "classesOnBallot": 9
+  },
+  {
+   "key": "DB:Earl Thomas",
+   "name": "Earl Thomas",
+   "pos": "DB",
+   "frozenSeason": "2019",
+   "careerLegacy": 5145,
+   "rank": 18,
+   "score": 47,
+   "parts": {
+    "standing": 31,
+    "honours": 2,
+    "records": 0,
+    "peak": 10,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 140,
+   "nfl": {
+    "elite": 4,
+    "seasons": 10
+   },
+   "lastSeason": 2019,
+   "eligibleFrom": 2025,
+   "chance": 17,
+   "classesOnBallot": 2
+  },
+  {
+   "key": "TE:Heath Miller",
+   "name": "Heath Miller",
+   "pos": "TE",
+   "frozenSeason": "2015",
+   "careerLegacy": 4933,
+   "rank": 14,
+   "score": 47,
+   "parts": {
+    "standing": 34,
+    "honours": 3,
+    "records": 0,
+    "peak": 2,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 163,
+   "nfl": {
+    "elite": 1,
+    "seasons": 11
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 17,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "RB:Maurice Jones-Drew",
+   "name": "Maurice Jones-Drew",
+   "pos": "RB",
+   "frozenSeason": "2014",
+   "careerLegacy": 4909,
+   "rank": 18,
+   "score": 47,
+   "parts": {
+    "standing": 31,
+    "honours": 0,
+    "records": 0,
+    "peak": 16,
+    "longevity": 0,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 126,
+   "nfl": {
+    "elite": 6,
+    "seasons": 9
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 17,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "WR:Wes Welker",
+   "name": "Wes Welker",
+   "pos": "WR",
+   "frozenSeason": "2015",
+   "careerLegacy": 4707,
+   "rank": 34,
+   "score": 47,
+   "parts": {
+    "standing": 21,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 175,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 17,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "RB:Thomas Jones",
+   "name": "Thomas Jones",
+   "pos": "RB",
+   "frozenSeason": "2011",
+   "careerLegacy": 4615,
+   "rank": 22,
+   "score": 47,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 0,
+    "peak": 6,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 179,
+   "nfl": {
+    "elite": 2,
+    "seasons": 12
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 17,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "WR:Chad Johnson",
+   "name": "Chad Johnson",
+   "pos": "WR",
+   "frozenSeason": "2011",
+   "careerLegacy": 4955,
+   "rank": 29,
+   "score": 46,
+   "parts": {
+    "standing": 24,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 164,
+   "nfl": {
+    "elite": 5,
+    "seasons": 11
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 15,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "TE:Dallas Clark",
+   "name": "Dallas Clark",
+   "pos": "TE",
+   "frozenSeason": "2013",
+   "careerLegacy": 4102,
+   "rank": 26,
+   "score": 46,
+   "parts": {
+    "standing": 26,
+    "honours": 2,
+    "records": 0,
+    "peak": 10,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 138,
+   "nfl": {
+    "elite": 3,
+    "seasons": 11
+   },
+   "lastSeason": 2013,
+   "eligibleFrom": 2019,
+   "chance": 15,
+   "classesOnBallot": 8
+  }
+ ],
+ "near": [],
+ "watch": [
+  {
+   "key": "DL:Aaron Donald",
+   "name": "Aaron Donald",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7349,
+   "rank": 2,
+   "score": 100,
+   "parts": {
+    "standing": 52,
+    "honours": 16,
+    "records": 0,
+    "peak": 26,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 3,
+   "sbmvp": 0,
+   "games": 162,
+   "nfl": {
+    "elite": 8,
+    "seasons": 13
+   },
+   "projected": true
+  },
+  {
+   "key": "LB:Von Miller",
+   "name": "Von Miller",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7582,
+   "rank": 3,
+   "score": 100,
+   "parts": {
+    "standing": 50,
+    "honours": 8,
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 214,
+   "nfl": {
+    "elite": 10,
+    "seasons": 16
+   },
+   "projected": true
+  },
+  {
+   "key": "QB:Aaron Rodgers",
+   "name": "Aaron Rodgers",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 8806,
+   "rank": 5,
+   "score": 100,
+   "parts": {
+    "standing": 46,
+    "honours": 16,
+    "records": 0,
+    "peak": 24,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 4,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 274,
+   "nfl": {
+    "elite": 8,
+    "seasons": 22
+   },
+   "projected": true
+  },
+  {
+   "key": "TE:Travis Kelce",
+   "name": "Travis Kelce",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 7969,
+   "rank": 2,
+   "score": 100,
+   "parts": {
+    "standing": 52,
+    "honours": 5,
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 202,
+   "nfl": {
+    "elite": 11,
+    "seasons": 14
+   },
+   "projected": true
+  },
+  {
+   "key": "DB:Harrison Smith",
+   "name": "Harrison Smith",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6217,
+   "rank": 6,
+   "score": 92,
+   "parts": {
+    "standing": 44,
+    "honours": 0,
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 217,
+   "nfl": {
+    "elite": 11,
+    "seasons": 15
+   },
+   "projected": true
+  },
+  {
+   "key": "DL:Cameron Jordan",
+   "name": "Cameron Jordan",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7072,
+   "rank": 6,
+   "score": 92,
+   "parts": {
+    "standing": 44,
+    "honours": 0,
+    "records": 0,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 251,
+   "nfl": {
+    "elite": 10,
+    "seasons": 16
+   },
+   "projected": true
+  },
+  {
+   "key": "DL:Myles Garrett",
+   "name": "Myles Garrett",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6644,
+   "rank": 8,
+   "score": 91,
+   "parts": {
+    "standing": 40,
+    "honours": 14,
+    "records": 5,
+    "peak": 28,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most sacks, season"
+   ],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 2,
+   "sbmvp": 0,
+   "games": 137,
+   "nfl": {
+    "elite": 9,
+    "seasons": 10
+   },
+   "projected": true
+  },
+  {
+   "key": "LB:Khalil Mack",
+   "name": "Khalil Mack",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6974,
+   "rank": 9,
+   "score": 89,
+   "parts": {
+    "standing": 38,
+    "honours": 7,
+    "records": 0,
+    "peak": 28,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 189,
+   "nfl": {
+    "elite": 8,
+    "seasons": 13
+   },
+   "projected": true
+  },
+  {
+   "key": "WR:Davante Adams",
+   "name": "Davante Adams",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6783,
+   "rank": 7,
+   "score": 86,
+   "parts": {
+    "standing": 42,
+    "honours": 0,
+    "records": 0,
+    "peak": 28,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 184,
+   "nfl": {
+    "elite": 9,
+    "seasons": 13
+   },
+   "projected": true
+  },
+  {
+   "key": "RB:Derrick Henry",
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6805,
+   "rank": 5,
+   "score": 85,
+   "parts": {
+    "standing": 46,
+    "honours": 7,
+    "records": 0,
+    "peak": 24,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 164,
+   "nfl": {
+    "elite": 7,
+    "seasons": 11
+   },
+   "projected": true
+  },
+  {
+   "key": "OL:Jake Matthews",
+   "name": "Jake Matthews",
+   "pos": "OL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7507,
+   "rank": 2,
+   "score": 83,
+   "parts": {
+    "standing": 52,
+    "honours": 0,
+    "records": 15,
+    "peak": 0,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [
+    "Blocks"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 206,
+   "nfl": {
+    "elite": 0,
+    "seasons": 13
+   },
+   "projected": true
+  },
+  {
+   "key": "WR:Mike Evans",
+   "name": "Mike Evans",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6619,
+   "rank": 9,
+   "score": 82,
+   "parts": {
+    "standing": 38,
+    "honours": 2,
+    "records": 0,
+    "peak": 26,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 183,
+   "nfl": {
+    "elite": 9,
+    "seasons": 13
+   },
+   "projected": true
+  },
+  {
+   "key": "LB:T.J. Watt",
+   "name": "T.J. Watt",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7165,
+   "rank": 7,
+   "score": 81,
+   "parts": {
+    "standing": 42,
+    "honours": 7,
+    "records": 0,
+    "peak": 28,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 145,
+   "nfl": {
+    "elite": 9,
+    "seasons": 10
+   },
+   "projected": true
+  },
+  {
+   "key": "OL:Trent Williams",
+   "name": "Trent Williams",
+   "pos": "OL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6739,
+   "rank": 12,
+   "score": 81,
+   "parts": {
+    "standing": 35,
+    "honours": 0,
+    "records": 0,
+    "peak": 26,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 193,
+   "nfl": {
+    "elite": 9,
+    "seasons": 17
+   },
+   "projected": true
+  },
+  {
+   "key": "LB:Bobby Wagner",
+   "name": "Bobby Wagner",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5312,
+   "rank": 14,
+   "score": 79,
+   "parts": {
+    "standing": 34,
+    "honours": 2,
+    "records": 15,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 219,
+   "nfl": {
+    "elite": 4,
+    "seasons": 15
+   },
+   "projected": true
+  },
+  {
+   "key": "DL:Calais Campbell",
+   "name": "Calais Campbell",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7237,
+   "rank": 5,
+   "score": 78,
+   "parts": {
+    "standing": 46,
+    "honours": 0,
+    "records": 0,
+    "peak": 12,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 289,
+   "nfl": {
+    "elite": 5,
+    "seasons": 19
+   },
+   "projected": true
+  },
+  {
+   "key": "QB:Patrick Mahomes",
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7736,
+   "rank": 10,
+   "score": 78,
+   "parts": {
+    "standing": 36,
+    "honours": 16,
+    "records": 0,
+    "peak": 22,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 2,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 3,
+   "games": 136,
+   "nfl": {
+    "elite": 6,
+    "seasons": 10
+   },
+   "projected": true
+  },
+  {
+   "key": "RB:Christian McCaffrey",
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5919,
+   "rank": 6,
+   "score": 77,
+   "parts": {
+    "standing": 44,
+    "honours": 7,
+    "records": 0,
+    "peak": 22,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 122,
+   "nfl": {
+    "elite": 6,
+    "seasons": 10
+   },
+   "projected": true
+  },
+  {
+   "key": "DL:Danielle Hunter",
+   "name": "Danielle Hunter",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 5806,
+   "rank": 11,
+   "score": 76,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 0,
+    "peak": 28,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 161,
+   "nfl": {
+    "elite": 8,
+    "seasons": 12
+   },
+   "projected": true
+  },
+  {
+   "key": "QB:Matthew Stafford",
+   "name": "Matthew Stafford",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6554,
+   "rank": 15,
+   "score": 75,
+   "parts": {
+    "standing": 33,
+    "honours": 14,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 1,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 249,
+   "nfl": {
+    "elite": 3,
+    "seasons": 18
+   },
+   "projected": true
+  },
+  {
+   "key": "WR:DeAndre Hopkins",
+   "name": "DeAndre Hopkins",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6275,
+   "rank": 12,
+   "score": 75,
+   "parts": {
+    "standing": 35,
+    "honours": 0,
+    "records": 0,
+    "peak": 20,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 195,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "projected": true
+  },
+  {
+   "key": "TE:Zach Ertz",
+   "name": "Zach Ertz",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 5502,
+   "rank": 10,
+   "score": 74,
+   "parts": {
+    "standing": 36,
+    "honours": 2,
+    "records": 0,
+    "peak": 16,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 185,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "projected": true
+  },
+  {
+   "key": "WR:Keenan Allen",
+   "name": "Keenan Allen",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6179,
+   "rank": 13,
+   "score": 74,
+   "parts": {
+    "standing": 34,
+    "honours": 0,
+    "records": 0,
+    "peak": 20,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 181,
+   "nfl": {
+    "elite": 8,
+    "seasons": 14
+   },
+   "projected": true
+  },
+  {
+   "key": "TE:George Kittle",
+   "name": "George Kittle",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 5648,
+   "rank": 8,
+   "score": 72,
+   "parts": {
+    "standing": 40,
+    "honours": 0,
+    "records": 0,
+    "peak": 28,
+    "longevity": 4,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 134,
+   "nfl": {
+    "elite": 8,
+    "seasons": 10
+   },
+   "projected": true
+  },
+  {
+   "key": "OL:Lane Johnson",
+   "name": "Lane Johnson",
+   "pos": "OL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7289,
+   "rank": 4,
+   "score": 71,
+   "parts": {
+    "standing": 48,
+    "honours": 3,
+    "records": 0,
+    "peak": 0,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 171,
+   "nfl": {
+    "elite": 0,
+    "seasons": 14
+   },
+   "projected": true
+  }
+ ],
+ "soon": [
+  {
    "key": "QB:Tom Brady",
    "name": "Tom Brady",
    "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 11122,
-   "rank": 1,
+   "frozenSeason": "2022",
+   "careerLegacy": 9081,
+   "rank": 4,
    "score": 100,
    "parts": {
-    "standing": 60,
-    "honours": 24,
-    "records": 30
+    "standing": 48,
+    "honours": 16,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
    },
    "records": [
     "Passing yards",
@@ -2243,71 +6129,29 @@
    "dpoy": 0,
    "sbmvp": 5,
    "games": 335,
-   "since": "2026",
-   "yearsOnBallot": 1
-  },
-  {
-   "key": "RB:Adrian Peterson",
-   "name": "Adrian Peterson",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7173,
-   "rank": 3,
-   "score": 78,
-   "parts": {
-    "standing": 49,
-    "honours": 24,
-    "records": 5
+   "nfl": {
+    "elite": 11,
+    "seasons": 23
    },
-   "records": [],
-   "seasonRecords": [
-    "Best rushing season"
-   ],
-   "rings": 0,
-   "mvp": 1,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 184,
-   "since": "2026",
-   "yearsOnBallot": 1
-  },
-  {
-   "key": "LB:Terrell Suggs",
-   "name": "Terrell Suggs",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 8620,
-   "rank": 1,
-   "score": 76,
-   "parts": {
-    "standing": 60,
-    "honours": 16,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 241,
-   "since": "2026",
-   "yearsOnBallot": 1
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 97
   },
   {
    "key": "DL:J.J. Watt",
    "name": "J.J. Watt",
    "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7256,
-   "rank": 3,
-   "score": 73,
+   "frozenSeason": "2022",
+   "careerLegacy": 6410,
+   "rank": 9,
+   "score": 92,
    "parts": {
-    "standing": 49,
-    "honours": 24,
-    "records": 0
+    "standing": 38,
+    "honours": 16,
+    "records": 0,
+    "peak": 26,
+    "longevity": 12,
+    "pre1999": 0
    },
    "records": [],
    "seasonRecords": [],
@@ -2317,24 +6161,32 @@
    "dpoy": 3,
    "sbmvp": 0,
    "games": 151,
-   "since": "2026",
-   "yearsOnBallot": 1
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 97
   },
   {
-   "key": "RB:Frank Gore (RB, Jets)",
-   "name": "Frank Gore (RB, Jets)",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7387,
-   "rank": 2,
-   "score": 69,
+   "key": "WR:Julio Jones",
+   "name": "Julio Jones",
+   "pos": "WR",
+   "frozenSeason": "2023",
+   "careerLegacy": 5339,
+   "rank": 22,
+   "score": 88,
    "parts": {
-    "standing": 54,
+    "standing": 29,
     "honours": 0,
-    "records": 15
+    "records": 15,
+    "peak": 28,
+    "longevity": 16,
+    "pre1999": 0
    },
    "records": [
-    "Rushing yards"
+    "Receiving yards"
    ],
    "seasonRecords": [],
    "rings": 0,
@@ -2342,46 +6194,64 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 241,
-   "since": "2026",
-   "yearsOnBallot": 1
-  }
- ],
- "near": [
-  {
-   "key": "LB:Jason Taylor",
-   "name": "Jason Taylor",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7567,
-   "rank": 3,
-   "score": 60,
-   "parts": {
-    "standing": 49,
-    "honours": 11,
-    "records": 0
+   "games": 166,
+   "nfl": {
+    "elite": 9,
+    "seasons": 13
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 194
+   "lastSeason": 2023,
+   "eligibleFrom": 2029,
+   "chance": 97
   },
   {
-   "key": "LB:Robert Mathis",
-   "name": "Robert Mathis",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7167,
-   "rank": 6,
-   "score": 56,
+   "key": "DB:Devin McCourty",
+   "name": "Devin McCourty",
+   "pos": "DB",
+   "frozenSeason": "2022",
+   "careerLegacy": 6060,
+   "rank": 8,
+   "score": 84,
    "parts": {
-    "standing": 39,
+    "standing": 40,
+    "honours": 5,
+    "records": 15,
+    "peak": 8,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 205,
+   "nfl": {
+    "elite": 3,
+    "seasons": 13
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 97
+  },
+  {
+   "key": "DL:Chandler Jones",
+   "name": "Chandler Jones",
+   "pos": "DL",
+   "frozenSeason": "2022",
+   "careerLegacy": 5116,
+   "rank": 18,
+   "score": 84,
+   "parts": {
+    "standing": 31,
     "honours": 2,
-    "records": 15
+    "records": 15,
+    "peak": 28,
+    "longevity": 8,
+    "pre1999": 0
    },
    "records": [
     "Forced fumbles"
@@ -2392,295 +6262,30 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 185
+   "games": 153,
+   "nfl": {
+    "elite": 9,
+    "seasons": 11
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 97
   },
   {
-   "key": "WR:Reggie Wayne",
-   "name": "Reggie Wayne",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6875,
-   "rank": 2,
-   "score": 56,
-   "parts": {
-    "standing": 54,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 206
-  },
-  {
-   "key": "TE:Rob Gronkowski",
-   "name": "Rob Gronkowski",
-   "pos": "TE",
-   "frozenSeason": "2026",
-   "careerLegacy": 7128,
-   "rank": 4,
-   "score": 52,
-   "parts": {
-    "standing": 45,
-    "honours": 7,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 3,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 143
-  },
-  {
-   "key": "QB:Russell Wilson",
-   "name": "Russell Wilson",
-   "pos": "QB",
-   "frozenSeason": "2025",
-   "careerLegacy": 5679,
-   "rank": 3,
-   "score": 51,
-   "parts": {
-    "standing": 49,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 205
-  },
-  {
-   "key": "WR:Hines Ward",
-   "name": "Hines Ward",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6664,
-   "rank": 6,
-   "score": 51,
-   "parts": {
-    "standing": 39,
-    "honours": 12,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 200
-  },
-  {
-   "key": "DL:Jason Pierre-Paul",
-   "name": "Jason Pierre-Paul",
-   "pos": "DL",
-   "frozenSeason": "2025",
-   "careerLegacy": 5034,
-   "rank": 4,
-   "score": 50,
-   "parts": {
-    "standing": 45,
-    "honours": 5,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 182
-  }
- ],
- "watch": [
-  {
-   "key": "DL:Aaron Donald",
-   "name": "Aaron Donald",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7349,
-   "rank": 2,
-   "score": 78,
-   "parts": {
-    "standing": 54,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 3,
-   "sbmvp": 0,
-   "games": 162,
-   "projected": true
-  },
-  {
-   "key": "QB:Aaron Rodgers",
-   "name": "Aaron Rodgers",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 8806,
-   "rank": 2,
-   "score": 78,
-   "parts": {
-    "standing": 54,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 4,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 274,
-   "projected": true
-  },
-  {
-   "key": "OL:Jake Matthews",
-   "name": "Jake Matthews",
-   "pos": "OL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7507,
-   "rank": 2,
-   "score": 69,
-   "parts": {
-    "standing": 54,
-    "honours": 0,
-    "records": 15
-   },
-   "records": [
-    "Blocks"
-   ],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 206,
-   "projected": true
-  },
-  {
-   "key": "TE:Travis Kelce",
-   "name": "Travis Kelce",
-   "pos": "TE",
-   "frozenSeason": "2026",
-   "careerLegacy": 7969,
-   "rank": 1,
-   "score": 67,
-   "parts": {
-    "standing": 60,
-    "honours": 7,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 3,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 202,
-   "projected": true
-  },
-  {
-   "key": "LB:Von Miller",
-   "name": "Von Miller",
+   "key": "LB:Justin Houston",
+   "name": "Justin Houston",
    "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7582,
-   "rank": 2,
-   "score": 66,
+   "frozenSeason": "2023",
+   "careerLegacy": 5044,
+   "rank": 16,
+   "score": 78,
    "parts": {
-    "standing": 54,
-    "honours": 12,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 214,
-   "projected": true
-  },
-  {
-   "key": "QB:Patrick Mahomes",
-   "name": "Patrick Mahomes",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7736,
-   "rank": 5,
-   "score": 66,
-   "parts": {
-    "standing": 42,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 3,
-   "mvp": 2,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 3,
-   "games": 136,
-   "projected": true
-  },
-  {
-   "key": "OL:Joe Thuney",
-   "name": "Joe Thuney",
-   "pos": "OL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7558,
-   "rank": 1,
-   "score": 65,
-   "parts": {
-    "standing": 60,
-    "honours": 5,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 173,
-   "projected": true
-  },
-  {
-   "key": "DL:Myles Garrett",
-   "name": "Myles Garrett",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 6644,
-   "rank": 7,
-   "score": 63,
-   "parts": {
-    "standing": 36,
-    "honours": 22,
-    "records": 5
+    "standing": 33,
+    "honours": 0,
+    "records": 5,
+    "peak": 24,
+    "longevity": 16,
+    "pre1999": 0
    },
    "records": [],
    "seasonRecords": [
@@ -2689,115 +6294,32 @@
    "rings": 0,
    "mvp": 0,
    "opoy": 0,
-   "dpoy": 2,
-   "sbmvp": 0,
-   "games": 137,
-   "projected": true
-  },
-  {
-   "key": "QB:Josh Allen",
-   "name": "Josh Allen",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6712,
-   "rank": 6,
-   "score": 57,
-   "parts": {
-    "standing": 39,
-    "honours": 18,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 1,
-   "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 138,
-   "projected": true
-  },
-  {
-   "key": "RB:Derrick Henry",
-   "name": "Derrick Henry",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6805,
-   "rank": 4,
-   "score": 56,
-   "parts": {
-    "standing": 45,
-    "honours": 11,
-    "records": 0
+   "games": 170,
+   "nfl": {
+    "elite": 8,
+    "seasons": 13
    },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 164,
-   "projected": true
+   "lastSeason": 2023,
+   "eligibleFrom": 2029,
+   "chance": 95
   },
   {
-   "key": "RB:Christian McCaffrey",
-   "name": "Christian McCaffrey",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5919,
-   "rank": 5,
-   "score": 53,
+   "key": "DL:Jason Pierre-Paul",
+   "name": "Jason Pierre-Paul",
+   "pos": "DL",
+   "frozenSeason": "2025",
+   "careerLegacy": 5034,
+   "rank": 20,
+   "score": 77,
    "parts": {
-    "standing": 42,
-    "honours": 11,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 122,
-   "projected": true
-  },
-  {
-   "key": "QB:Lamar Jackson",
-   "name": "Lamar Jackson",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6398,
-   "rank": 10,
-   "score": 51,
-   "parts": {
-    "standing": 27,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 2,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 121,
-   "projected": true
-  },
-  {
-   "key": "OL:Lane Johnson",
-   "name": "Lane Johnson",
-   "pos": "OL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7289,
-   "rank": 4,
-   "score": 50,
-   "parts": {
-    "standing": 45,
-    "honours": 5,
-    "records": 0
+    "standing": 30,
+    "honours": 3,
+    "records": 0,
+    "peak": 24,
+    "longevity": 20,
+    "pre1999": 0
    },
    "records": [],
    "seasonRecords": [],
@@ -2806,1078 +6328,2050 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 171,
-   "projected": true
+   "games": 182,
+   "nfl": {
+    "elite": 7,
+    "seasons": 16
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 94
   },
   {
-   "key": "QB:Matthew Stafford",
-   "name": "Matthew Stafford",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6554,
-   "rank": 9,
-   "score": 50,
+   "key": "TE:Jimmy Graham",
+   "name": "Jimmy Graham",
+   "pos": "TE",
+   "frozenSeason": "2023",
+   "careerLegacy": 5332,
+   "rank": 12,
+   "score": 73,
    "parts": {
-    "standing": 30,
-    "honours": 20,
-    "records": 0
+    "standing": 35,
+    "honours": 0,
+    "records": 0,
+    "peak": 18,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 194,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "lastSeason": 2023,
+   "eligibleFrom": 2029,
+   "chance": 89
+  },
+  {
+   "key": "LB:Lavonte David",
+   "name": "Lavonte David",
+   "pos": "LB",
+   "frozenSeason": "2025",
+   "careerLegacy": 5153,
+   "rank": 16,
+   "score": 69,
+   "parts": {
+    "standing": 33,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
    },
    "records": [],
    "seasonRecords": [],
    "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 215,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 83
+  },
+  {
+   "key": "DL:Carlos Dunlap",
+   "name": "Carlos Dunlap",
+   "pos": "DL",
+   "frozenSeason": "2022",
+   "careerLegacy": 4940,
+   "rank": 22,
+   "score": 67,
+   "parts": {
+    "standing": 29,
+    "honours": 2,
+    "records": 0,
+    "peak": 20,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 196,
+   "nfl": {
+    "elite": 8,
+    "seasons": 13
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 78
+  },
+  {
+   "key": "DB:Patrick Peterson",
+   "name": "Patrick Peterson",
+   "pos": "DB",
+   "frozenSeason": "2023",
+   "careerLegacy": 4999,
+   "rank": 20,
+   "score": 65,
+   "parts": {
+    "standing": 30,
+    "honours": 0,
+    "records": 15,
+    "peak": 4,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 201,
+   "nfl": {
+    "elite": 1,
+    "seasons": 13
+   },
+   "lastSeason": 2023,
+   "eligibleFrom": 2029,
+   "chance": 73
+  },
+  {
+   "key": "QB:Philip Rivers",
+   "name": "Philip Rivers",
+   "pos": "QB",
+   "frozenSeason": "2025",
+   "careerLegacy": 5137,
+   "rank": 30,
+   "score": 63,
+   "parts": {
+    "standing": 23,
+    "honours": 0,
+    "records": 0,
+    "peak": 20,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 247,
+   "nfl": {
+    "elite": 8,
+    "seasons": 22
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 67
+  },
+  {
+   "key": "DB:Tyrann Mathieu",
+   "name": "Tyrann Mathieu",
+   "pos": "DB",
+   "frozenSeason": "2024",
+   "careerLegacy": 5699,
+   "rank": 12,
+   "score": 61,
+   "parts": {
+    "standing": 35,
+    "honours": 2,
+    "records": 0,
+    "peak": 12,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 180,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2024,
+   "eligibleFrom": 2030,
+   "chance": 61
+  },
+  {
+   "key": "RB:Mark Ingram",
+   "name": "Mark Ingram",
+   "pos": "RB",
+   "frozenSeason": "2022",
+   "careerLegacy": 5045,
+   "rank": 16,
+   "score": 59,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 156,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 54
+  },
+  {
+   "key": "DB:Stephon Gilmore",
+   "name": "Stephon Gilmore",
+   "pos": "DB",
+   "frozenSeason": "2024",
+   "careerLegacy": 5315,
+   "rank": 16,
+   "score": 58,
+   "parts": {
+    "standing": 33,
+    "honours": 9,
+    "records": 0,
+    "peak": 0,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 180,
+   "nfl": {
+    "elite": 0,
+    "seasons": 13
+   },
+   "lastSeason": 2024,
+   "eligibleFrom": 2030,
+   "chance": 50
+  },
+  {
+   "key": "QB:Matt Ryan",
+   "name": "Matt Ryan",
+   "pos": "QB",
+   "frozenSeason": "2022",
+   "careerLegacy": 4663,
+   "rank": 46,
+   "score": 57,
+   "parts": {
+    "standing": 13,
+    "honours": 16,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 234,
+   "nfl": {
+    "elite": 3,
+    "seasons": 15
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 46
+  },
+  {
+   "key": "DL:Robert Quinn",
+   "name": "Robert Quinn",
+   "pos": "DL",
+   "frozenSeason": "2022",
+   "careerLegacy": 4276,
+   "rank": 33,
+   "score": 56,
+   "parts": {
+    "standing": 22,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 165,
+   "nfl": {
+    "elite": 7,
+    "seasons": 12
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 43
+  },
+  {
+   "key": "QB:Russell Wilson",
+   "name": "Russell Wilson",
+   "pos": "QB",
+   "frozenSeason": "2025",
+   "careerLegacy": 5679,
+   "rank": 25,
+   "score": 53,
+   "parts": {
+    "standing": 27,
+    "honours": 2,
+    "records": 0,
+    "peak": 4,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 205,
+   "nfl": {
+    "elite": 2,
+    "seasons": 14
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 33
+  },
+  {
+   "key": "TE:Marcedes Lewis",
+   "name": "Marcedes Lewis",
+   "pos": "TE",
+   "frozenSeason": "2025",
+   "careerLegacy": 4296,
+   "rank": 24,
+   "score": 49,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0,
+    "peak": 2,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 282,
+   "nfl": {
+    "elite": 1,
+    "seasons": 20
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 22
+  },
+  {
+   "key": "DB:Tashaun Gipson",
+   "name": "Tashaun Gipson",
+   "pos": "DB",
+   "frozenSeason": "2024",
+   "careerLegacy": 4621,
+   "rank": 27,
+   "score": 47,
+   "parts": {
+    "standing": 25,
+    "honours": 0,
+    "records": 0,
+    "peak": 6,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 182,
+   "nfl": {
+    "elite": 2,
+    "seasons": 13
+   },
+   "lastSeason": 2024,
+   "eligibleFrom": 2030,
+   "chance": 17
+  },
+  {
+   "key": "WR:DeSean Jackson",
+   "name": "DeSean Jackson",
+   "pos": "WR",
+   "frozenSeason": "2022",
+   "careerLegacy": 4410,
+   "rank": 40,
+   "score": 47,
+   "parts": {
+    "standing": 17,
+    "honours": 0,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 183,
+   "nfl": {
+    "elite": 4,
+    "seasons": 15
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 17
+  },
+  {
+   "key": "WR:A.J. Green (WR, Cardinals)",
+   "name": "A.J. Green (WR, Cardinals)",
+   "pos": "WR",
+   "frozenSeason": "2022",
+   "careerLegacy": 4548,
+   "rank": 37,
+   "score": 45,
+   "parts": {
+    "standing": 19,
+    "honours": 0,
+    "records": 0,
+    "peak": 14,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 158,
+   "nfl": {
+    "elite": 6,
+    "seasons": 12
+   },
+   "lastSeason": 2022,
+   "eligibleFrom": 2028,
+   "chance": 14
+  },
+  {
+   "key": "DB:Darius Slay",
+   "name": "Darius Slay",
+   "pos": "DB",
+   "frozenSeason": "2025",
+   "careerLegacy": 4489,
+   "rank": 30,
+   "score": 45,
+   "parts": {
+    "standing": 23,
+    "honours": 2,
+    "records": 0,
+    "peak": 4,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 187,
+   "nfl": {
+    "elite": 1,
+    "seasons": 13
+   },
+   "lastSeason": 2025,
+   "eligibleFrom": 2031,
+   "chance": 14
+  }
+ ],
+ "snubs": [
+  {
+   "key": "LB:Jason Taylor",
+   "name": "Jason Taylor",
+   "pos": "LB",
+   "frozenSeason": "2011",
+   "careerLegacy": 6594,
+   "rank": 8,
+   "score": 100,
+   "parts": {
+    "standing": 40,
+    "honours": 7,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 12
+   },
+   "records": [
+    "Sacks"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 194,
+   "nfl": {
+    "elite": 8,
+    "seasons": 15,
+    "partial": true,
+    "debut": 1997
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 97,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "LB:John Abraham",
+   "name": "John Abraham",
+   "pos": "LB",
+   "frozenSeason": "2014",
+   "careerLegacy": 6242,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 30,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Sacks",
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 188,
+   "nfl": {
+    "elite": 13,
+    "seasons": 15
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 97,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "LB:Robert Mathis",
+   "name": "Robert Mathis",
+   "pos": "LB",
+   "frozenSeason": "2016",
+   "careerLegacy": 6070,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 2,
+    "records": 15,
+    "peak": 28,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 185,
+   "nfl": {
+    "elite": 10,
+    "seasons": 14
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 97,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "QB:Rich Gannon",
+   "name": "Rich Gannon",
+   "pos": "QB",
+   "frozenSeason": "2004",
+   "careerLegacy": 3428,
+   "rank": 11,
+   "score": 100,
+   "parts": {
+    "standing": 36,
+    "honours": 12,
+    "records": 0,
+    "peak": 6,
+    "longevity": 20,
+    "pre1999": 45
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
    "mvp": 1,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 249,
-   "projected": true
+   "games": 74,
+   "nfl": {
+    "elite": 2,
+    "seasons": 18,
+    "partial": true,
+    "debut": 1987
+   },
+   "lastSeason": 2004,
+   "eligibleFrom": 2010,
+   "chance": 97,
+   "classesOnBallot": 17
+  },
+  {
+   "key": "QB:Steve McNair",
+   "name": "Steve McNair",
+   "pos": "QB",
+   "frozenSeason": "2007",
+   "careerLegacy": 4575,
+   "rank": 25,
+   "score": 99,
+   "parts": {
+    "standing": 27,
+    "honours": 12,
+    "records": 0,
+    "peak": 2,
+    "longevity": 16,
+    "pre1999": 42
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 116,
+   "nfl": {
+    "elite": 1,
+    "seasons": 13,
+    "partial": true,
+    "debut": 1995
+   },
+   "lastSeason": 2007,
+   "eligibleFrom": 2013,
+   "chance": 97,
+   "classesOnBallot": 14
+  },
+  {
+   "key": "WR:Reggie Wayne",
+   "name": "Reggie Wayne",
+   "pos": "WR",
+   "frozenSeason": "2014",
+   "careerLegacy": 6371,
+   "rank": 12,
+   "score": 88,
+   "parts": {
+    "standing": 35,
+    "honours": 2,
+    "records": 15,
+    "peak": 16,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 206,
+   "nfl": {
+    "elite": 6,
+    "seasons": 14
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 97,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "LB:James Harrison",
+   "name": "James Harrison",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 6190,
+   "rank": 11,
+   "score": 88,
+   "parts": {
+    "standing": 36,
+    "honours": 10,
+    "records": 0,
+    "peak": 22,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 182,
+   "nfl": {
+    "elite": 6,
+    "seasons": 16
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 97,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "WR:Hines Ward",
+   "name": "Hines Ward",
+   "pos": "WR",
+   "frozenSeason": "2011",
+   "careerLegacy": 6558,
+   "rank": 7,
+   "score": 84,
+   "parts": {
+    "standing": 42,
+    "honours": 8,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 6
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 200,
+   "nfl": {
+    "elite": 3,
+    "seasons": 14,
+    "partial": true,
+    "debut": 1998
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 97,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "DB:Charles Tillman",
+   "name": "Charles Tillman",
+   "pos": "DB",
+   "frozenSeason": "2015",
+   "careerLegacy": 5288,
+   "rank": 16,
+   "score": 82,
+   "parts": {
+    "standing": 33,
+    "honours": 0,
+    "records": 5,
+    "peak": 28,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most forced fumbles, season"
+   ],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 166,
+   "nfl": {
+    "elite": 11,
+    "seasons": 13
+   },
+   "lastSeason": 2015,
+   "eligibleFrom": 2021,
+   "chance": 97,
+   "classesOnBallot": 6
+  },
+  {
+   "key": "DB:Reggie Nelson",
+   "name": "Reggie Nelson",
+   "pos": "DB",
+   "frozenSeason": "2018",
+   "careerLegacy": 5933,
+   "rank": 9,
+   "score": 81,
+   "parts": {
+    "standing": 38,
+    "honours": 0,
+    "records": 15,
+    "peak": 16,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 177,
+   "nfl": {
+    "elite": 5,
+    "seasons": 12
+   },
+   "lastSeason": 2018,
+   "eligibleFrom": 2024,
+   "chance": 96,
+   "classesOnBallot": 3
+  },
+  {
+   "key": "DB:DeAngelo Hall",
+   "name": "DeAngelo Hall",
+   "pos": "DB",
+   "frozenSeason": "2017",
+   "careerLegacy": 5744,
+   "rank": 11,
+   "score": 79,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 15,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 169,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 95,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "WR:Steve Smith",
+   "name": "Steve Smith",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 5650,
+   "rank": 20,
+   "score": 79,
+   "parts": {
+    "standing": 30,
+    "honours": 0,
+    "records": 15,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 219,
+   "nfl": {
+    "elite": 4,
+    "seasons": 16
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 95,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "LB:Joey Porter (LB, Cardinals)",
+   "name": "Joey Porter (LB, Cardinals)",
+   "pos": "LB",
+   "frozenSeason": "2011",
+   "careerLegacy": 5206,
+   "rank": 16,
+   "score": 75,
+   "parts": {
+    "standing": 33,
+    "honours": 2,
+    "records": 0,
+    "peak": 24,
+    "longevity": 16,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 182,
+   "nfl": {
+    "elite": 7,
+    "seasons": 13
+   },
+   "lastSeason": 2011,
+   "eligibleFrom": 2017,
+   "chance": 92,
+   "classesOnBallot": 10
+  },
+  {
+   "key": "RB:Priest Holmes",
+   "name": "Priest Holmes",
+   "pos": "RB",
+   "frozenSeason": "2007",
+   "careerLegacy": 4098,
+   "rank": 20,
+   "score": 75,
+   "parts": {
+    "standing": 30,
+    "honours": 9,
+    "records": 0,
+    "peak": 16,
+    "longevity": 8,
+    "pre1999": 12
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 88,
+   "nfl": {
+    "elite": 4,
+    "seasons": 11,
+    "partial": true,
+    "debut": 1997
+   },
+   "lastSeason": 2007,
+   "eligibleFrom": 2013,
+   "chance": 92,
+   "classesOnBallot": 14
+  },
+  {
+   "key": "LB:Karlos Dansby",
+   "name": "Karlos Dansby",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 4691,
+   "rank": 22,
+   "score": 74,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 15,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [
+    "Tackles"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 211,
+   "nfl": {
+    "elite": 5,
+    "seasons": 14
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 91,
+   "classesOnBallot": 4
+  },
+  {
+   "key": "WR:Torry Holt",
+   "name": "Torry Holt",
+   "pos": "WR",
+   "frozenSeason": "2009",
+   "careerLegacy": 5401,
+   "rank": 22,
+   "score": 70,
+   "parts": {
+    "standing": 29,
+    "honours": 0,
+    "records": 15,
+    "peak": 18,
+    "longevity": 8,
+    "pre1999": 0
+   },
+   "records": [
+    "Receiving yards"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 172,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 85,
+   "classesOnBallot": 12
+  },
+  {
+   "key": "DL:Osi Umenyiora",
+   "name": "Osi Umenyiora",
+   "pos": "DL",
+   "frozenSeason": "2014",
+   "careerLegacy": 4628,
+   "rank": 26,
+   "score": 70,
+   "parts": {
+    "standing": 26,
+    "honours": 3,
+    "records": 5,
+    "peak": 24,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most forced fumbles, season"
+   ],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 151,
+   "nfl": {
+    "elite": 8,
+    "seasons": 12
+   },
+   "lastSeason": 2014,
+   "eligibleFrom": 2020,
+   "chance": 85,
+   "classesOnBallot": 7
+  },
+  {
+   "key": "WR:Anquan Boldin",
+   "name": "Anquan Boldin",
+   "pos": "WR",
+   "frozenSeason": "2016",
+   "careerLegacy": 5843,
+   "rank": 17,
+   "score": 68,
+   "parts": {
+    "standing": 32,
+    "honours": 2,
+    "records": 0,
+    "peak": 14,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 202,
+   "nfl": {
+    "elite": 4,
+    "seasons": 14
+   },
+   "lastSeason": 2016,
+   "eligibleFrom": 2022,
+   "chance": 81,
+   "classesOnBallot": 5
+  },
+  {
+   "key": "LB:Tamba Hali",
+   "name": "Tamba Hali",
+   "pos": "LB",
+   "frozenSeason": "2017",
+   "careerLegacy": 4973,
+   "rank": 19,
+   "score": 65,
+   "parts": {
+    "standing": 31,
+    "honours": 0,
+    "records": 0,
+    "peak": 22,
+    "longevity": 12,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 176,
+   "nfl": {
+    "elite": 8,
+    "seasons": 12
+   },
+   "lastSeason": 2017,
+   "eligibleFrom": 2023,
+   "chance": 73,
+   "classesOnBallot": 4
   }
  ],
+ "nextClass": 2027,
+ "edition": "nfl",
  "ringOfHonor": {
   "49ers": [
    {
     "name": "Terrell Owens",
     "pos": "WR",
-    "careerLegacy": 6461,
-    "score": 30,
+    "careerLegacy": 5379,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Steve Young",
-    "pos": "QB",
-    "careerLegacy": 3204,
-    "score": 0,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2010"
    },
    {
     "name": "Bryant Young",
     "pos": "DL",
-    "careerLegacy": 2972,
-    "score": 0,
+    "careerLegacy": 3641,
+    "score": 99,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2007"
    },
    {
     "name": "Patrick Willis",
     "pos": "LB",
-    "careerLegacy": 2918,
-    "score": 0,
+    "careerLegacy": 2530,
+    "score": 8,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2014"
+   },
+   {
+    "name": "Steve Young",
+    "pos": "QB",
+    "careerLegacy": 952,
+    "score": 83,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "1999"
    },
    {
     "name": "Charles Haley",
     "pos": "DL",
-    "careerLegacy": 123,
-    "score": 0,
+    "careerLegacy": 249,
+    "score": 65,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Frank Gore (RB, Jets)",
-    "pos": "RB",
-    "careerLegacy": 7387,
-    "score": 69,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    }
   ],
   "Bears": [
    {
     "name": "Brian Urlacher",
     "pos": "LB",
-    "careerLegacy": 4978,
-    "score": 24,
+    "careerLegacy": 4599,
+    "score": 65,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2012"
    },
    {
     "name": "Devin Hester",
     "pos": "WR",
-    "careerLegacy": 1790,
-    "score": 0,
+    "careerLegacy": 1580,
+    "score": 8,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Charles Leno Jr.",
-    "pos": "OL",
-    "careerLegacy": 6468,
-    "score": 3,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2016"
    }
   ],
   "Bills": [
    {
     "name": "Andre Reed",
     "pos": "WR",
-    "careerLegacy": 399,
-    "score": 0,
+    "careerLegacy": 512,
+    "score": 65,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2000"
    },
    {
     "name": "Thurman Thomas",
     "pos": "RB",
-    "careerLegacy": 168,
-    "score": 0,
+    "careerLegacy": 179,
+    "score": 67,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Mitch Morse",
-    "pos": "OL",
-    "careerLegacy": 6435,
-    "score": 0,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2000"
    }
   ],
   "Broncos": [
    {
     "name": "DeMarcus Ware",
     "pos": "LB",
-    "careerLegacy": 7425,
-    "score": 47,
+    "careerLegacy": 6283,
+    "score": 78,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2016"
    },
    {
     "name": "Champ Bailey",
     "pos": "DB",
-    "careerLegacy": 6468,
-    "score": 45,
+    "careerLegacy": 5391,
+    "score": 67,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2013"
    },
    {
     "name": "Terrell Davis",
     "pos": "RB",
-    "careerLegacy": 464,
-    "score": 0,
+    "careerLegacy": 454,
+    "score": 24,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Andrew Norwell",
-    "pos": "OL",
-    "careerLegacy": 6634,
-    "score": 19,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2001"
    }
   ],
   "Buccaneers": [
    {
     "name": "Ronde Barber",
     "pos": "DB",
-    "careerLegacy": 6732,
-    "score": 51,
+    "careerLegacy": 5496,
+    "score": 88,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2012"
    },
    {
     "name": "Warren Sapp",
     "pos": "DL",
-    "careerLegacy": 4215,
-    "score": 13,
+    "careerLegacy": 5015,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2007"
    },
    {
     "name": "Derrick Brooks",
     "pos": "LB",
-    "careerLegacy": 4089,
-    "score": 13,
+    "careerLegacy": 4118,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2008"
    },
    {
     "name": "John Lynch",
     "pos": "DB",
-    "careerLegacy": 3148,
-    "score": 2,
+    "careerLegacy": 3286,
+    "score": 85,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Donovan Smith",
-    "pos": "OL",
-    "careerLegacy": 6943,
-    "score": 38,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Ali Marpet",
-    "pos": "OL",
-    "careerLegacy": 6007,
-    "score": 2,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2007"
    }
   ],
   "Cardinals": [
    {
     "name": "Larry Fitzgerald",
     "pos": "WR",
-    "careerLegacy": 8664,
-    "score": 75,
+    "careerLegacy": 6770,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2020"
    }
   ],
   "Chargers": [
    {
     "name": "LaDainian Tomlinson",
     "pos": "RB",
-    "careerLegacy": 8130,
+    "careerLegacy": 7571,
     "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2011"
    },
    {
     "name": "Antonio Gates",
     "pos": "TE",
-    "careerLegacy": 7175,
-    "score": 49,
+    "careerLegacy": 6425,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2018"
    },
    {
     "name": "Junior Seau",
     "pos": "LB",
-    "careerLegacy": 2096,
-    "score": 0,
+    "careerLegacy": 2097,
+    "score": 83,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2009"
    }
   ],
   "Chiefs": [
    {
     "name": "Tony Gonzalez",
     "pos": "TE",
-    "careerLegacy": 7783,
-    "score": 54,
+    "careerLegacy": 6943,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2013"
    },
    {
     "name": "Warren Moon",
     "pos": "QB",
-    "careerLegacy": 3647,
-    "score": 0,
+    "careerLegacy": 1427,
+    "score": 65,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2000"
    },
    {
     "name": "Derrick Thomas",
     "pos": "LB",
-    "careerLegacy": 479,
-    "score": 0,
+    "careerLegacy": 1215,
+    "score": 75,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Eric Fisher",
-    "pos": "OL",
-    "careerLegacy": 6380,
-    "score": 2,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    }
   ],
   "Colts": [
    {
     "name": "Peyton Manning",
     "pos": "QB",
-    "careerLegacy": 8756,
-    "score": 78,
+    "careerLegacy": 8191,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2015"
    },
    {
     "name": "Marvin Harrison (WR, Colts)",
     "pos": "WR",
-    "careerLegacy": 6144,
-    "score": 23,
+    "careerLegacy": 5630,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Dwight Freeney",
-    "pos": "DL",
-    "careerLegacy": 6091,
-    "score": 35,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2008"
    },
    {
     "name": "Edgerrin James",
     "pos": "RB",
-    "careerLegacy": 5807,
-    "score": 36,
+    "careerLegacy": 5563,
+    "score": 60,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2009"
    },
    {
-    "name": "Robert Mathis",
-    "pos": "LB",
-    "careerLegacy": 7167,
-    "score": 56,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "name": "Dwight Freeney",
+    "pos": "DL",
+    "careerLegacy": 5518,
+    "score": 83,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2017"
    },
    {
     "name": "Reggie Wayne",
     "pos": "WR",
-    "careerLegacy": 6875,
-    "score": 56,
+    "careerLegacy": 6371,
+    "score": 88,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2014"
+   },
+   {
+    "name": "Robert Mathis",
+    "pos": "LB",
+    "careerLegacy": 6070,
+    "score": 100,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2016"
    }
   ],
   "Commanders": [
    {
     "name": "Bruce Smith",
     "pos": "DL",
-    "careerLegacy": 2042,
-    "score": 0,
+    "careerLegacy": 2457,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2003"
    },
    {
     "name": "Darrell Green",
     "pos": "DB",
-    "careerLegacy": 957,
-    "score": 0,
+    "careerLegacy": 1128,
+    "score": 77,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Brandon Scherff",
-    "pos": "OL",
-    "careerLegacy": 6576,
-    "score": 9,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2002"
    }
   ],
   "Cowboys": [
    {
-    "name": "Troy Aikman",
-    "pos": "QB",
-    "careerLegacy": 3263,
-    "score": 0,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
     "name": "Emmitt Smith",
     "pos": "RB",
-    "careerLegacy": 2514,
-    "score": 0,
+    "careerLegacy": 2240,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2004"
+   },
+   {
+    "name": "Troy Aikman",
+    "pos": "QB",
+    "careerLegacy": 1304,
+    "score": 75,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2000"
    },
    {
     "name": "Michael Irvin",
     "pos": "WR",
-    "careerLegacy": 128,
-    "score": 0,
+    "careerLegacy": 234,
+    "score": 69,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Jason Witten",
-    "pos": "TE",
-    "careerLegacy": 6983,
-    "score": 42,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Zack Martin",
-    "pos": "OL",
-    "careerLegacy": 6873,
-    "score": 27,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    }
   ],
   "Dolphins": [
    {
-    "name": "Dan Marino",
-    "pos": "QB",
-    "careerLegacy": 3194,
-    "score": 0,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
     "name": "Zach Thomas (LB, Cowboys)",
     "pos": "LB",
-    "careerLegacy": 3063,
-    "score": 0,
+    "careerLegacy": 3091,
+    "score": 76,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2008"
+   },
+   {
+    "name": "Dan Marino",
+    "pos": "QB",
+    "careerLegacy": 960,
+    "score": 77,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "1999"
    },
    {
     "name": "Jason Taylor",
     "pos": "LB",
-    "careerLegacy": 7567,
-    "score": 60,
+    "careerLegacy": 6594,
+    "score": 100,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2011"
    }
   ],
   "Eagles": [
    {
     "name": "Brian Dawkins",
     "pos": "DB",
-    "careerLegacy": 5386,
-    "score": 21,
+    "careerLegacy": 4532,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2011"
    }
   ],
   "Falcons": [
    {
     "name": "John Abraham",
     "pos": "LB",
-    "careerLegacy": 7229,
-    "score": 42,
+    "careerLegacy": 6242,
+    "score": 100,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Matt Ryan",
-    "pos": "QB",
-    "careerLegacy": 6216,
-    "score": 49,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2014"
    }
   ],
   "Giants": [
    {
     "name": "Michael Strahan",
     "pos": "DL",
-    "careerLegacy": 5373,
-    "score": 30,
+    "careerLegacy": 6458,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Justin Pugh",
-    "pos": "OL",
-    "careerLegacy": 6099,
-    "score": 0,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Eli Manning",
-    "pos": "QB",
-    "careerLegacy": 6044,
-    "score": 40,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2007"
    }
   ],
   "Jets": [
    {
     "name": "Curtis Martin",
     "pos": "RB",
-    "careerLegacy": 4128,
-    "score": 0,
+    "careerLegacy": 3799,
+    "score": 70,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2005"
    },
    {
     "name": "Steve Atwater",
     "pos": "DB",
-    "careerLegacy": 101,
-    "score": 0,
+    "careerLegacy": 168,
+    "score": 65,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    }
   ],
   "Lions": [
    {
     "name": "Calvin Johnson",
     "pos": "WR",
-    "careerLegacy": 5023,
-    "score": 5,
+    "careerLegacy": 4672,
+    "score": 46,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2015"
    }
   ],
   "Packers": [
    {
     "name": "Charles Woodson",
     "pos": "DB",
-    "careerLegacy": 9083,
-    "score": 73,
+    "careerLegacy": 8170,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2015"
    },
    {
     "name": "Brett Favre",
     "pos": "QB",
-    "careerLegacy": 4805,
-    "score": 0,
+    "careerLegacy": 4550,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2010"
    },
    {
     "name": "LeRoy Butler",
     "pos": "DB",
-    "careerLegacy": 737,
-    "score": 0,
+    "careerLegacy": 940,
+    "score": 63,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "David Bakhtiari",
-    "pos": "OL",
-    "careerLegacy": 6368,
-    "score": 0,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Corey Linsley",
-    "pos": "OL",
-    "careerLegacy": 6140,
-    "score": 0,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2001"
    }
   ],
   "Panthers": [
    {
     "name": "Julius Peppers",
     "pos": "DL",
-    "careerLegacy": 8154,
-    "score": 75,
+    "careerLegacy": 7576,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2018"
    },
    {
     "name": "Luke Kuechly",
     "pos": "LB",
-    "careerLegacy": 3411,
-    "score": 11,
+    "careerLegacy": 3095,
+    "score": 20,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2019"
    },
    {
     "name": "Kevin Greene",
     "pos": "LB",
-    "careerLegacy": 532,
-    "score": 0,
+    "careerLegacy": 1355,
+    "score": 81,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    },
    {
     "name": "Reggie White",
     "pos": "DL",
-    "careerLegacy": 267,
-    "score": 0,
+    "careerLegacy": 384,
+    "score": 83,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Steve Smith",
-    "pos": "WR",
-    "careerLegacy": 6512,
-    "score": 33,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Cam Newton",
-    "pos": "QB",
-    "careerLegacy": 6127,
-    "score": 47,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2000"
    }
   ],
   "Patriots": [
    {
     "name": "Ty Law",
     "pos": "DB",
-    "careerLegacy": 4797,
-    "score": 12,
+    "careerLegacy": 4877,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Richard Seymour",
-    "pos": "DL",
-    "careerLegacy": 3930,
-    "score": 7,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2009"
    },
    {
     "name": "Darrelle Revis",
     "pos": "DB",
-    "careerLegacy": 3856,
-    "score": 2,
+    "careerLegacy": 4061,
+    "score": 27,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2017"
+   },
+   {
+    "name": "Richard Seymour",
+    "pos": "DL",
+    "careerLegacy": 3895,
+    "score": 31,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2012"
    },
    {
     "name": "Tom Brady",
     "pos": "QB",
-    "careerLegacy": 11122,
+    "careerLegacy": 9081,
     "score": 100,
     "hof": false,
     "why": "6 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2022"
    },
    {
     "name": "Rob Gronkowski",
     "pos": "TE",
-    "careerLegacy": 7128,
-    "score": 52,
+    "careerLegacy": 6182,
+    "score": 100,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "David Andrews",
-    "pos": "OL",
-    "careerLegacy": 6581,
-    "score": 16,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2021"
    },
    {
     "name": "Devin McCourty",
     "pos": "DB",
-    "careerLegacy": 5717,
-    "score": 40,
+    "careerLegacy": 6060,
+    "score": 84,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2022"
    },
    {
     "name": "Julian Edelman",
     "pos": "WR",
-    "careerLegacy": 4400,
-    "score": 14,
+    "careerLegacy": 3644,
+    "score": 26,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2020"
    },
    {
     "name": "Kevin Faulk",
     "pos": "RB",
-    "careerLegacy": 3561,
-    "score": 7,
+    "careerLegacy": 3373,
+    "score": 29,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2011"
    },
    {
     "name": "Patrick Chung",
     "pos": "DB",
-    "careerLegacy": 2940,
-    "score": 7,
+    "careerLegacy": 3325,
+    "score": 13,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2019"
    },
    {
     "name": "Dont'a Hightower",
     "pos": "LB",
-    "careerLegacy": 2683,
-    "score": 7,
+    "careerLegacy": 2645,
+    "score": 13,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2021"
    },
    {
     "name": "Matthew Slater",
     "pos": "WR",
-    "careerLegacy": 1452,
-    "score": 7,
+    "careerLegacy": 1426,
+    "score": 25,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2023"
    },
    {
     "name": "Patrick Pass",
     "pos": "RB",
-    "careerLegacy": 1296,
-    "score": 7,
+    "careerLegacy": 1251,
+    "score": 5,
     "hof": false,
     "why": "3 rings with the club",
-    "frozenSeason": "2026"
+    "frozenSeason": "2007"
    }
   ],
   "Raiders": [
    {
     "name": "Tim Brown",
     "pos": "WR",
-    "careerLegacy": 2569,
-    "score": 0,
+    "careerLegacy": 2382,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2004"
    },
    {
     "name": "Jerry Rice",
     "pos": "WR",
-    "careerLegacy": 2564,
-    "score": 0,
+    "careerLegacy": 2378,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2004"
    },
    {
     "name": "Eric Allen",
     "pos": "DB",
-    "careerLegacy": 1267,
-    "score": 0,
+    "careerLegacy": 1629,
+    "score": 90,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Gabe Jackson",
-    "pos": "OL",
-    "careerLegacy": 6423,
-    "score": 0,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2001"
    }
   ],
   "Rams": [
    {
     "name": "Kurt Warner",
     "pos": "QB",
-    "careerLegacy": 5357,
-    "score": 33,
+    "careerLegacy": 5575,
+    "score": 75,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2009"
    },
    {
     "name": "Marshall Faulk",
     "pos": "RB",
-    "careerLegacy": 4982,
-    "score": 45,
+    "careerLegacy": 4626,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2005"
    },
    {
     "name": "Isaac Bruce",
     "pos": "WR",
-    "careerLegacy": 4612,
-    "score": 0,
+    "careerLegacy": 4291,
+    "score": 87,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2009"
    },
    {
     "name": "Aeneas Williams",
     "pos": "DB",
-    "careerLegacy": 2188,
-    "score": 0,
+    "careerLegacy": 2591,
+    "score": 89,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2004"
    }
   ],
   "Ravens": [
    {
     "name": "Ed Reed",
     "pos": "DB",
-    "careerLegacy": 7983,
-    "score": 82,
+    "careerLegacy": 6749,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2013"
    },
    {
     "name": "Ray Lewis",
     "pos": "LB",
-    "careerLegacy": 6288,
-    "score": 51,
+    "careerLegacy": 5892,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Shannon Sharpe",
-    "pos": "TE",
-    "careerLegacy": 3443,
-    "score": 2,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2012"
    },
    {
     "name": "Rod Woodson",
     "pos": "DB",
-    "careerLegacy": 3011,
-    "score": 2,
+    "careerLegacy": 3541,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2003"
+   },
+   {
+    "name": "Shannon Sharpe",
+    "pos": "TE",
+    "careerLegacy": 3244,
+    "score": 100,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2003"
    },
    {
     "name": "Deion Sanders",
     "pos": "DB",
-    "careerLegacy": 1384,
-    "score": 0,
+    "careerLegacy": 1532,
+    "score": 83,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2005"
    },
    {
     "name": "Terrell Suggs",
     "pos": "LB",
-    "careerLegacy": 8620,
-    "score": 76,
+    "careerLegacy": 7779,
+    "score": 100,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Anquan Boldin",
-    "pos": "WR",
-    "careerLegacy": 6704,
-    "score": 47,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2019"
    }
   ],
   "Saints": [
    {
     "name": "Drew Brees",
     "pos": "QB",
-    "careerLegacy": 7883,
-    "score": 74,
+    "careerLegacy": 5910,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2020"
    }
   ],
   "Seahawks": [
    {
     "name": "John Randle",
     "pos": "DL",
-    "careerLegacy": 1884,
-    "score": 0,
+    "careerLegacy": 2270,
+    "score": 93,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2003"
    },
    {
     "name": "Cortez Kennedy",
     "pos": "DL",
-    "careerLegacy": 652,
-    "score": 0,
+    "careerLegacy": 934,
+    "score": 71,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2000"
    }
   ],
   "Steelers": [
    {
     "name": "Troy Polamalu",
     "pos": "DB",
-    "careerLegacy": 5563,
-    "score": 46,
+    "careerLegacy": 5174,
+    "score": 67,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2014"
    },
    {
     "name": "Jerome Bettis",
     "pos": "RB",
-    "careerLegacy": 3189,
-    "score": 2,
+    "careerLegacy": 2957,
+    "score": 99,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2005"
    },
    {
     "name": "Hines Ward",
     "pos": "WR",
-    "careerLegacy": 6664,
-    "score": 51,
+    "careerLegacy": 6558,
+    "score": 84,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
-   },
-   {
-    "name": "Ben Roethlisberger",
-    "pos": "QB",
-    "careerLegacy": 6561,
-    "score": 38,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2011"
    },
    {
     "name": "James Harrison",
     "pos": "LB",
-    "careerLegacy": 6455,
-    "score": 46,
+    "careerLegacy": 6190,
+    "score": 88,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2017"
    }
   ],
   "Texans": [
    {
     "name": "Andre Johnson",
     "pos": "WR",
-    "careerLegacy": 6413,
-    "score": 27,
+    "careerLegacy": 5557,
+    "score": 69,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2016"
    },
    {
     "name": "J.J. Watt",
     "pos": "DL",
-    "careerLegacy": 7256,
-    "score": 73,
+    "careerLegacy": 6410,
+    "score": 92,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2022"
    }
   ],
   "Vikings": [
    {
     "name": "Jared Allen",
     "pos": "DL",
-    "careerLegacy": 6777,
-    "score": 39,
+    "careerLegacy": 6140,
+    "score": 98,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2015"
    },
    {
     "name": "Randy Moss",
     "pos": "WR",
-    "careerLegacy": 6697,
-    "score": 62,
+    "careerLegacy": 6137,
+    "score": 100,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2012"
    },
    {
     "name": "Cris Carter",
     "pos": "WR",
-    "careerLegacy": 1714,
-    "score": 0,
+    "careerLegacy": 1750,
+    "score": 81,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "2002"
    },
    {
     "name": "Chris Doleman",
     "pos": "DL",
-    "careerLegacy": 429,
-    "score": 0,
+    "careerLegacy": 893,
+    "score": 83,
     "hof": true,
     "why": "Hall of Famer",
-    "frozenSeason": "2026"
+    "frozenSeason": "1999"
    },
    {
     "name": "Adrian Peterson",
     "pos": "RB",
-    "careerLegacy": 7173,
-    "score": 78,
+    "careerLegacy": 7240,
+    "score": 100,
     "hof": false,
     "why": "Career Legacy",
-    "frozenSeason": "2026"
+    "frozenSeason": "2021"
    }
   ]
  }
