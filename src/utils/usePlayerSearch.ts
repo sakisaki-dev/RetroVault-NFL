@@ -15,7 +15,7 @@ import { useGamePool, useOfficialOvr } from '@/utils/useOfficialOvr';
  *   const s = usePlayerSearch(players, { pos });
  *   <CommandInput value={s.query} onValueChange={s.setQuery} />   s.rows, s.more, s.recent, s.featured
  */
-export const SEARCH_LIMIT = 40;
+export const SEARCH_LIMIT = 24;
 export const FEATURED_LIMIT = 24;
 
 export const usePlayerSearch = (

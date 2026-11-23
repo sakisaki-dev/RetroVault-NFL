@@ -305,7 +305,11 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
     if (!m) modelCache.set(pos, (m = buildPositionModel(players, pos)));
     return m;
   };
-  const ctx = useMemo(() => buildContext(players), [players]);
+  // The hero paints first; the comps, metric boards and the sections that read them follow one frame later (they are
+  // ~500 ms of work at 7,000+ players and nothing above the fold needs them)
+  const [lowerReady, setLowerReady] = useState(false);
+  useEffect(() => afterPaint(() => setLowerReady(true)), []);
+  const ctx = useMemo(() => (lowerReady ? buildContext(players) : null), [players, lowerReady]);
   // Every qualifier per board: the Record book chips rank from these lists and their pop-ups show the same order.
   // Built when the Records section mounts (it is far down the page and the build sorts the league for every board)
   const getBook = useMemo(() => {
@@ -328,7 +332,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
   const position = player?.position ?? 'QB';
   const model = useMemo(() => modelOf(position), [modelCache, position]); // eslint-disable-line react-hooks/exhaustive-deps
-  const boards = useMemo(() => cachedBoards(players, position, ctx), [players, position, ctx]);
+  const boards = useMemo(() => (ctx ? cachedBoards(players, position, ctx) : null), [players, position, ctx]);
   // Families (k-means over every qualifier at his position, ~300 ms at 10,000 players) are built after the page's first
   // paint: the hero's family chip and the Families map option appear a moment later, nothing waits for them
   const [famsRaw, setFams] = useState<ReturnType<typeof familiesFor>>(null);
@@ -341,15 +345,15 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const grades = useMemo(() => (player ? playerSkillGrades(players, player) : null), [players, player]);
   // Comps: top 10 in each mode (cards show 3 per mode, the numbered list 10 in the chosen mode, the map 5).
   const compSets = useMemo(
-    () => (player ? (['style', 'level'] as const).map((mode) => ({ mode, comps: similarPlayers(players, player, 10, mode).filter((c) => c.similarity > 0) })) : []),
-    [players, player],
+    () => (player && lowerReady ? (['style', 'level'] as const).map((mode) => ({ mode, comps: similarPlayers(players, player, 10, mode).filter((c) => c.similarity > 0) })) : []),
+    [players, player, lowerReady],
   );
   const topSets = useMemo(() => compSets.map((s) => ({ mode: s.mode, comps: s.comps.slice(0, 3) })), [compSets]);
   // Style needs 4+ shared rates; positions with fewer (OL) fall back to closest overall.
   const listMode: SimilarityMode = model && model.features.length < 4 ? 'level' : mapMode;
   const listComps = compSets.find((s) => s.mode === listMode)?.comps ?? [];
   // Real NFL comps: the Real-life comps lists, and the same players (once each) as a second group on the hexagon list.
-  const realSets = useMemo(() => (player ? realCompSets(players, legends, player) : []), [players, legends, player]);
+  const realSets = useMemo(() => (player && lowerReady ? realCompSets(players, legends, player) : []), [players, legends, player, lowerReady]);
   const realComps = useMemo(() => uniqueRealComps(realSets), [realSets]);
   // Overlay key: "POS:Name" for a league comp, "nfl:POS:Name" for a real one (names can repeat across the two pools).
   const [overlayKey, setOverlayKey] = useState('');
@@ -513,6 +517,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         </aside>
 
         <div key={keyOf(player)} className="min-w-0 space-y-8">
+          {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}
+          {lowerReady && <>
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={`Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
@@ -604,6 +610,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
               <InTheNews player={player} />
             </DdSection>
           )}
+          </>}
         </div>
       </div>
     </div>

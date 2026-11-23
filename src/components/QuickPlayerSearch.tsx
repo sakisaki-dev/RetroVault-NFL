@@ -36,7 +36,7 @@ export const QUICK_SEARCH_EVENT = 'retrovault:quick-search';
 export const openQuickSearch = () => window.dispatchEvent(new Event(QUICK_SEARCH_EVENT));
 
 /** Rows rendered for a query (the rest is "keep typing") */
-const RESULT_LIMIT = 40;
+const RESULT_LIMIT = 24;
 
 const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 
