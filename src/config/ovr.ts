@@ -1,4 +1,5 @@
 import type { Player, Position } from '@/types/player';
+import { IS_NFL } from '@/config/edition';
 
 /**
  * The official OVR (data/y80/formula/OVR.md, ovr.py). One rating everywhere: stats pages and the arcade
@@ -89,7 +90,9 @@ export const ovr = (players: Player[]): Map<string, number> => {
     const sorted = list.map((p) => ({ p, s: leagueScore(p) })).sort((a, b) => a.s - b.s);
     sorted.forEach(({ p }, i) => {
       const pct = sorted.length > 1 ? i / (sorted.length - 1) : 1;
-      out.set(playerKey(p), pyRound(62 + 37 * pct ** 0.85));
+      // NFL edition: ~3,000 real players, most of them depth players. The league's 0.85 exponent would put 28% of them
+      // at 90+; 2.5 makes 90+ the top ~10%, 95+ the top ~5%, and a median player about 68.
+      out.set(playerKey(p), pyRound(62 + 37 * pct ** (IS_NFL ? 2.5 : 0.85)));
     });
   });
   return out;

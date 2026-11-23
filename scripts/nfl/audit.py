@@ -31,8 +31,8 @@ if len(names) < len({p["n"] for p in players}):
 if any(r[1] == "Retired" for r in rows):
     errors.append("a player is Retired (everyone is Active in the NFL edition)")
 market = load("market.json")
-if market and len(market.get("snapshots", [])) != 1:
-    errors.append("market.json should hold exactly one snapshot")
+if market and not any(str(x.get("season")) == "2026" for x in market.get("snapshots", [])):
+    errors.append("market.json has no 2026 snapshot")
 content = load("league/content.json")
 sched = load("league/schedule.json")
 if sched and not sched.get("seasons"):

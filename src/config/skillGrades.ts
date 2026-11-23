@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import type { Player, Position } from '@/types/player';
 import { fmtFixed } from '@/utils/numberFormat';
 import { METRIC_BY_ID, SIM_MIN_GAMES, compFeatures, similarityBaseline, type CompFeature } from './advanced';
@@ -160,7 +161,7 @@ export interface Overall {
 }
 
 /** Official OVR curve (config/ovr.ts): round(62 + 37·(pct/100)^0.85). */
-export const ovrFromPercentile = (pct: number) => Math.round(62 + 37 * (Math.min(100, Math.max(0, pct)) / 100) ** 0.85);
+export const ovrFromPercentile = (pct: number) => Math.round(62 + 37 * (Math.min(100, Math.max(0, pct)) / 100) ** (IS_NFL ? 2.5 : 0.85));
 
 /** Tier label from the grade family, so the letter and the label never disagree. */
 const TIERS: Record<string, string> = { S: 'Generational', A: 'All-Pro', B: 'Pro Bowl', C: 'Starter', D: 'Backup', F: 'Depth chart' };

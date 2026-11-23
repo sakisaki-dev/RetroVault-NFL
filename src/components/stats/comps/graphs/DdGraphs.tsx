@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useEffect, useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import PixelLoader from '@/components/ui/PixelLoader';
@@ -69,7 +70,7 @@ const DdGraphs = ({ player, players, wide }: { player: Player; players: Player[]
     <div className="space-y-3 rv-load-in">
       {!career.hasSeasons && (
         <p className="cg-note">
-          {player.name} {player.status === 'Retired' ? 'retired before the season-end records begin' : 'has no season line yet'} ({span} recorded): his card, Career Legacy and Hall of Fame standing are charted, but there are no
+          {player.name} {player.status === 'Retired' ? 'retired before the season-end records begin' : IS_NFL ? 'has one season in the data' : 'has no season line yet'} ({span} recorded): his card, Career Legacy and Hall of Fame standing are charted, but there are no
           single seasons to break down.
         </p>
       )}

@@ -37,7 +37,7 @@ export const graphMetrics = (pos: Position): GraphMetric[] => {
   const hit = CACHE.get(pos);
   if (hit) return hit;
   const card: GraphMetric[] = [
-    { id: 'ovr', label: 'Official OVR', short: 'OVR', group: 'Card', get: (p) => p.ovr, fmt: int, definition: 'His official OVR at the season end (market snapshot).' },
+    { id: 'ovr', label: 'Official OVR', short: 'OVR', group: 'Card', get: (p) => p.ovr, fmt: int, definition: 'His official OVR at the season end (season-end card).' },
     { id: 'value', label: 'Card value', short: 'Value', group: 'Card', get: (p) => p.value, fmt: (v) => `${shortNum(v)} c`, definition: 'Base card value in coins at the season end.' },
     { id: 'legacy', label: 'Career Legacy', short: 'Legacy', group: 'Card', get: (p) => p.legacy, fmt: int, definition: 'Career Legacy at the season end (re-scaled with the league on every upload).' },
     { id: 'rank', label: 'Legacy rank', short: 'Rank', group: 'Card', get: (p) => p.legacyRank || null, fmt: (v) => `#${int(v)}`, invert: true, definition: 'His Career Legacy rank among every recorded player at the season end.' },

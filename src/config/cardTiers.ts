@@ -1,5 +1,6 @@
 import type { Player } from '@/types/player';
 import { LEGACY_TIERS, isHallOfFamer } from '@/config/stats';
+import { IS_NFL } from '@/config/edition';
 
 /**
  * Collectible card tiers (which player). Pure, so build scripts (scripts/market_snapshot.ts) can use it;
@@ -26,7 +27,19 @@ export const TIERS: { key: Tier; label: string }[] = [
 export const tierLabel = (t: Tier) => TIERS.find((x) => x.key === t)!.label;
 export const tierRank = (t: Tier) => TIERS.findIndex((x) => x.key === t);
 
+/**
+ * NFL edition: tiers by Career Legacy percentile of the ~3,000 real players (the league's OVR cut-offs would make most
+ * of them Epic): Legendary the top 2% (Career Legacy 5,300+), Epic the next 7% (3,300+), Rare the next 20% (1,550+),
+ * Common the rest 71%. Measured on the 2026 build (scripts/nfl/audit.py prints the counts).
+ */
+export const NFL_TIER_MIN = { legendary: 5300, epic: 3300, rare: 1550 } as const;
+
 export const tierFor = (player: Pick<Player, 'careerLegacy'>, ovr: number | null | undefined): Tier => {
+  if (IS_NFL) {
+    if (player.careerLegacy >= NFL_TIER_MIN.legendary) return 'legendary';
+    if (isHallOfFamer(player) || player.careerLegacy >= NFL_TIER_MIN.epic) return 'epic';
+    return player.careerLegacy >= NFL_TIER_MIN.rare ? 'rare' : 'common';
+  }
   if (player.careerLegacy >= LEGENDARY_MIN_LEGACY) return 'legendary';
   if (isHallOfFamer(player) || (ovr != null && ovr >= EPIC_MIN_OVR)) return 'epic';
   if (ovr != null && ovr >= RARE_MIN_OVR) return 'rare';

@@ -8,6 +8,7 @@ import SeasonPanel from './SeasonPanel';
 import { SparkRows } from './Extras';
 import type { Career } from './careerStory';
 import { clubInk, yLabel, type GraphMetric } from './graphKit';
+import { IS_NFL } from '@/config/edition';
 import ShareImageButton from '@/components/share/ShareImageButton';
 import SharePosterFrame from '@/components/share/SharePosterFrame';
 import { shareFileName } from '@/utils/shareImage';
@@ -239,7 +240,7 @@ const CareerHero = ({
             )}
           </div>
           <p className="mt-1 text-[10px] text-muted-foreground">
-            Drag across the chart to scrub seasons{wide ? ' (or hover; arrow keys when focused)' : ''}. Hatched: no season line (first record, idle or an import correction). Hollow dot: a short or live season.
+            Drag across the chart to scrub seasons{wide ? ' (or hover; arrow keys when focused)' : ''}. Hatched: no season line ({IS_NFL ? 'first season in the data or no games' : 'first record, idle or an import correction'}). Hollow dot: a short or live season.
           </p>
           <SparkRows career={career} metrics={metrics} metricId={metric.id} onMetric={onMetric} idx={idx} wide={wide} />
         </div>

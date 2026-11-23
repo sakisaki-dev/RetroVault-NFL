@@ -3,7 +3,9 @@
  * NFL mode runs the same site on real players with their real careers: seasons are real years, there is no coach and
  * no AI-written content, and the browser storage lives under its own "nfl:" namespace.
  */
-export const IS_NFL = import.meta.env.VITE_EDITION === 'nfl';
+export const IS_NFL =
+  (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_EDITION === 'nfl' ||
+  (typeof process !== 'undefined' && process.env?.RV_EDITION === 'nfl'); // build scripts (tsx) set RV_EDITION
 
 /** A season label: "Y98" in the Retro Bowl league, "2026" in the NFL edition. */
 export const seasonLabel = (n: number | string): string => {

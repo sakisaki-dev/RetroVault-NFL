@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, CalendarClock, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
@@ -56,7 +57,7 @@ export interface PlayerDeepDiveProps {
   onCompare?: (a: Player, b: Player) => void;
 }
 
-const SECTIONS = [
+const ALL_SECTIONS = [
   { id: 'dd-ratings', label: 'Skill ratings', short: 'Ratings', icon: Gauge },
   { id: 'dd-who', label: 'Who plays like him', short: 'Comps', icon: Users },
   { id: 'dd-map', label: 'Neighbourhood', short: 'Map', icon: ChartScatter },
@@ -66,6 +67,8 @@ const SECTIONS = [
   { id: 'dd-clock', label: 'Age & clock', short: 'Age', icon: CalendarClock },
   { id: 'dd-records', label: 'Records & awards', short: 'Records', icon: Medal },
 ] as const;
+/** No live save in the NFL edition, so no Age & clock */
+const SECTIONS = IS_NFL ? ALL_SECTIONS.filter((s) => s.id !== 'dd-clock') : ALL_SECTIONS;
 
 const useMedia = (query: string) => {
   const [on, setOn] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia(query).matches);
@@ -460,9 +463,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           </DdSection>
 
           {/* Age & clock from the live save (src/components/clock/DdClock.tsx) */}
-          <DdSection id="dd-clock" index={6} title="Age & clock" icon={CalendarClock} kicker="His age, retirement clock, growth chance and ratings against his ceilings, from the live save. The game's own rules.">
+          {!IS_NFL && <DdSection id="dd-clock" index={6} title="Age & clock" icon={CalendarClock} kicker="His age, retirement clock, growth chance and ratings against his ceilings, from the live save. The game's own rules.">
             <DdClock player={player} players={players} />
-          </DdSection>
+          </DdSection>}
 
           <DdSection id="dd-records" index={7} title="Records & awards" icon={Medal}>
             <DdRecords player={player} book={book} ovr={ovr} onOpenPlayer={(p) => choose(keyOf(p))} />

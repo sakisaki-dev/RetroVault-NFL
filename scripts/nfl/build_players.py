@@ -112,6 +112,7 @@ def main():
     played = defaultdict(set)         # gsis -> {(season, game_id)}
     team_games = defaultdict(lambda: defaultdict(int))  # gsis -> (season, club) -> games
     starts = defaultdict(int)         # OL starts
+    starts_y = defaultdict(lambda: defaultdict(int))  # OL starts by season
     for y in range(FIRST, LAST + 1):
         for r in rows(f"stats_player_week_{y}.csv.gz"):
             pid = r["player_id"]
@@ -136,6 +137,7 @@ def main():
                                   "game_id": gid, "team": r["team"], "opponent_team": r["opponent"]})
             if r["game_type"] == "REG" and n(r, "offense_pct") >= 0.5:
                 starts[pid] += 1
+                starts_y[pid][y] += 1
 
     for ps in base.values():
         if len(ps) > 1:
@@ -152,6 +154,7 @@ def main():
                 now[r["gsis_id"]] = (w, ABBR.get(r["team"], r["team"]), r["status"])
     latest_week = max((v[0] for v in now.values()), default=0)
     players, stints, careers, moved = [], {}, {}, []
+    ends = {}  # key -> season -> the career line at that season's end (for the career graphs)
     (NFL / "games").mkdir(parents=True, exist_ok=True)
     award_rows = [(k, a) for k, lst in awards["awards"].items() for a in lst]
     for p in roster:
@@ -194,6 +197,31 @@ def main():
                       "draft": p.get("draft"), "rookie": p.get("rookie"), "salary": p.get("salary"),
                       "contract": p.get("contract"), "playoffGames": len(L) - len(reg)}
         players.append(rec)
+        # the career as it stood at the end of each season he had played (regular season, awards and rings to date)
+        by_y = defaultdict(list)
+        for r in reg:
+            by_y[int(r["season"])].append(r)
+        cum, line = defaultdict(float), {}
+        for y in sorted(by_season):
+            for r in by_y.get(y, []):
+                for key, col in FIELDS[pos].items():
+                    if key == "tkl":
+                        cum[key] += n(r, "def_tackles_solo") + n(r, "def_tackle_assists")
+                    else:
+                        cum[key] += n(r, col)
+            cum["g"] += len(by_y.get(y, []))
+            if pos == "OL":
+                cum["blk"] += starts_y[pid][y] if pid else 0
+            won = {k: sum(1 for k2, a in award_rows if k2 == k and norm(a["player"]) == nm and a["season"] <= y
+                          and a["season"] in by_season and a["team"] in by_season[a["season"]])
+                   for k in ("mvp", "opoy", "dpoy", "sbmvp", "oroy", "droy")}
+            club_y = max(by_season[y].items(), key=lambda x: x[1])[0]
+            line[y] = {"n": p["display"], "pos": pos, "team": club_y, "g": int(cum["g"]),
+                       **{k: int(round(cum[k])) for k in FIELDS[pos]},
+                       **({"lng": None} if pos in ("WR", "TE") else {}),
+                       "rings": sum(1 for ry in rings if ry <= y), "mvp": won["mvp"], "opoy": won["opoy"],
+                       "dpoy": won["dpoy"], "sbmvp": won["sbmvp"], "roty": won["oroy"] + won["droy"]}
+        ends[p["key"]] = line
 
         # stints: consecutive seasons with the same main club (most games that season); a mid-season trade adds the
         # second club that season too
@@ -219,6 +247,7 @@ def main():
     Y80.mkdir(parents=True, exist_ok=True)
     (Y80 / "players.json").write_text(json.dumps(players, indent=1) + "\n")
     (Y80 / "stints.json").write_text(json.dumps(stints, indent=1) + "\n")
+    (CACHE / "season_ends.json").write_text(json.dumps(ends, separators=(",", ":")))
     (NFL / "careers.json").write_text(json.dumps(careers, separators=(",", ":")) + "\n")
     print(f"current clubs from the {LAST} week {latest_week} roster: {len(moved)} differ from the save "
           f"({sum(1 for m in moved if m[2] == 'FA')} now free agents, {sum(1 for m in moved if m[1] == 'FA')} signed since)")

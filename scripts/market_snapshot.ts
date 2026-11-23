@@ -18,7 +18,7 @@
  * the latest, deltas between); expandMarket() / scripts/market_history.py load() give back the full snapshots.
  */
 import { execFileSync } from 'child_process';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { parseCSV } from '@/utils/csvParser';
 import { normalizeLeague } from '@/config/stats';
 import type { Player, Position } from '@/types/player';
@@ -162,6 +162,18 @@ const main = () => {
     history = expandMarket(JSON.parse(readFileSync(HISTORY, 'utf8'))) as Snap[];
   }
 
+  // NFL edition: one season-end snapshot per past season (the league as it stood then, from the career lines in
+  // data/nfl-cache/season_ends.json via build_league_data.py's RV_NFL_CUT), so the career graphs run from a debut
+  // to now. The CSVs are rebuilt by `npm run nfl:rebuild` before this step.
+  if (process.env.RV_EDITION === 'nfl' && !history.length) {
+    const dir = 'data/nfl-cache/cuts';
+    const years = existsSync(dir) ? readdirSync(dir).map((f) => Number(f.replace('.csv', ''))).filter(Number.isFinite).sort() : [];
+    const rd = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
+    years.forEach((y) => {
+      const pl = compute(readFileSync(`${dir}/${y}.csv`, 'utf8'), null, rd(EXCLUSIONS));
+      history.push({ id: `season-${y}`, label: `${y} season end`, date: `${y + 1}-02-15T00:00:00+00:00`, season: String(y), players: pl } as Snap);
+    });
+  }
   const read = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
   const players = compute(readFileSync(CSV, 'utf8'), read(LEGENDS), read(EXCLUSIONS));
   const now = new Date();

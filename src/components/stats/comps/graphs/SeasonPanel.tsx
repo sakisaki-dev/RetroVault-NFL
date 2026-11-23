@@ -7,14 +7,14 @@ import { ordinal } from '../../analytics/viz';
 import type { Career } from './careerStory';
 import { BOX, fmtRate, groupOf, seasonRates } from './statDefs';
 import { EVENT_LABEL, GlyphIcon, clubInk, shortNum, yLabel } from './graphKit';
-import { seasonLabel } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
 
 const STATUS_NOTE: Record<string, string> = {
-  first: 'First recorded season: no snapshot before it, so no season line',
+  first: IS_NFL ? 'First season in the data: no earlier season to measure it against' : 'First recorded season: no snapshot before it, so no season line',
   idle: 'No games between the two season ends',
-  multi: 'An import correction spans more than one season here: no season line',
+  multi: IS_NFL ? 'More than one season of games: no single season line' : 'An import correction spans more than one season here: no season line',
   short: 'Fewer than 8 games: a small sample, kept out of the percentile pools',
-  live: 'Season in progress (live save); card numbers carried from the last season end',
+  live: IS_NFL ? 'Season in progress (games played so far)' : 'Season in progress (live save); card numbers carried from the last season end',
 };
 
 const PctBar = ({ pct }: { pct: number | undefined }) => {
