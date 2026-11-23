@@ -1,6 +1,7 @@
 import { IS_NFL } from '@/config/edition';
 import type { Player, Position } from '@/types/player';
 import { fmtFixed } from '@/utils/numberFormat';
+import { careerRatingMeta, careerExposure, isCareerQualified, CAREER_QUALIFY } from './ovr';
 import { METRIC_BY_ID, SIM_MIN_GAMES, compFeatures, similarityBaseline, type CompFeature } from './advanced';
 
 /**
@@ -178,10 +179,100 @@ export const VALUE_WEIGHTS: Record<string, Record<string, number>> = {
   DEF: { impactG: 0.35, tklG: 0.2, sackG: 0.15, intG: 0.15, ffG: 0.15 },
   OL: { blocksG: 1 },
 };
-const valueWeight = (pos: Position, id: string) => VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0;
+const valueWeight = (pos: Position, id: string) => (isNoSignal(pos, id) ? 0 : VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0);
 /** Share of the overall that comes from the player's three best traits, so excellence isn't averaged away. */
 export const OVERALL_TOP3_MIX = 0.4;
 
+
+// ---------- NFL edition: career grades on the qualified pool, shrunk rates, no tile without signal ----------
+/*
+ * Owner (2026-11-23: "Achane has hella S ratings and so many people have S ratings"): a career tile is graded against the
+ * QUALIFIED pool at the position (QB 1,500 attempts, RB 500 carries, WR/TE 150 catches, LB/DB/DL 48 games; the same pool
+ * as the career rating), on SHRUNK rates (rate pulled toward the pool mean by n / (n + k), k from scripts/nfl/career_rating.py:
+ * the stat's sampling noise against its between-player signal), and a stat with no signal (k of 5,000 or more: RB and
+ * WR/TE fumbles, DL interceptions) gets no tile ("not enough signal") and no weight. The overall is re-ranked inside the
+ * qualified pool, so S is the top 10% of starters. A season line (this-season grades) keeps the old pools. OL keeps its
+ * single trait on the old pool.
+ */
+const SHRINK: Record<string, Record<string, { stat: string; n: 'att' | 'carries' | 'touches' | 'rec' | 'g' }>> = {
+  QB: { ya: { stat: 'ya', n: 'att' }, cmp: { stat: 'cmp', n: 'att' }, tdPct: { stat: 'td', n: 'att' }, intPct: { stat: 'int', n: 'att' }, rating: { stat: 'ya', n: 'att' } },
+  RB: { ypc: { stat: 'ypc', n: 'carries' }, td16: { stat: 'td_touch', n: 'touches' }, fumRate: { stat: 'fum_touch', n: 'touches' }, ypt: { stat: 'ypt', n: 'touches' } },
+  WR: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' } },
+  TE: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' } },
+  LB: { tklG: { stat: 'tkl_g', n: 'g' }, sackG: { stat: 'sack_g', n: 'g' }, intG: { stat: 'int_g', n: 'g' }, ffG: { stat: 'ff_g', n: 'g' }, impactG: { stat: 'sack_g', n: 'g' } },
+};
+SHRINK.DB = SHRINK.LB;
+SHRINK.DL = SHRINK.LB;
+const NO_SIGNAL_K = 5000;
+const shrinkSpec = (pos: Position, id: string) => (IS_NFL && careerRatingMeta() ? SHRINK[pos]?.[id] : undefined);
+const kOf = (pos: Position, id: string): number | null | undefined => {
+  const s = shrinkSpec(pos, id);
+  return s ? careerRatingMeta()!.k[pos]?.[s.stat] : undefined;
+};
+/** True for a trait whose stat has no between-player signal in the data (NFL career grades): no tile, no weight. */
+export const isNoSignal = (pos: Position, id: string): boolean => {
+  const k = kOf(pos, id);
+  return k !== undefined && (k === null || k >= NO_SIGNAL_K);
+};
+const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g') => {
+  const v = (k: string) => {
+    const x = (p as unknown as Record<string, unknown>)[k];
+    return typeof x === 'number' && Number.isFinite(x) ? x : 0;
+  };
+  return n === 'att' ? v('attempts') : n === 'carries' ? v('rushAtt') : n === 'touches' ? v('rushAtt') + v('receptions') : n === 'rec' ? v('receptions') : v('games');
+};
+const isSeasonSet = (players: Player[]) => players.length > 0 && !!(players[0] as unknown as { __season?: boolean }).__season;
+
+interface CareerCtx {
+  features: CompFeature[];
+  pool: Player[];
+  mean: Map<string, number>;
+  baseline: Map<string, number[]>;
+  /** raw overall percentile of every qualified player, sorted: the overall is re-ranked inside it */
+  overallSorted: number[];
+}
+const careerCache = new WeakMap<readonly Player[], Map<Position, CareerCtx | null>>();
+const shrunkOf = (ctx: Pick<CareerCtx, 'mean'>, pos: Position, f: CompFeature, p: Player): number => {
+  const v = f.get(p);
+  const s = shrinkSpec(pos, f.id);
+  const k = kOf(pos, f.id);
+  if (!s || !Number.isFinite(v) || k == null || k >= NO_SIGNAL_K) return v;
+  const mu = ctx.mean.get(f.id);
+  if (mu == null) return v;
+  const n = exposureOf(p, s.n);
+  return mu + (v - mu) * (n / (n + k));
+};
+const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
+  if (!IS_NFL || !careerRatingMeta() || !CAREER_QUALIFY[pos] || isSeasonSet(players)) return null;
+  let byPos = careerCache.get(players);
+  if (!byPos) careerCache.set(players, (byPos = new Map()));
+  if (byPos.has(pos)) return byPos.get(pos)!;
+  const pool = players.filter((p) => p.position === pos && !p.isRealLegend && isCareerQualified(p));
+  const features = compFeatures(pos);
+  if (pool.length < 12) {
+    byPos.set(pos, null);
+    return null;
+  }
+  const mean = new Map<string, number>();
+  features.forEach((f) => {
+    const v = pool.map(f.get).filter(Number.isFinite);
+    if (v.length) mean.set(f.id, v.reduce((a, b) => a + b, 0) / v.length);
+  });
+  const ctx: CareerCtx = { features, pool, mean, baseline: new Map(), overallSorted: [] };
+  features.forEach((f) =>
+    ctx.baseline.set(f.id, isNoSignal(pos, f.id) ? [] : pool.map((p) => shrunkOf(ctx, pos, f, p)).filter(Number.isFinite).sort((a, b) => a - b)),
+  );
+  ctx.overallSorted = pool
+    .map((p) => overallFor(features, ctx.baseline, features.map((f) => (isNoSignal(pos, f.id) ? null : finiteOrNull(shrunkOf(ctx, pos, f, p)))), pos)?.pct)
+    .filter((x): x is number => typeof x === 'number')
+    .sort((a, b) => a - b);
+  byPos.set(pos, ctx);
+  return ctx;
+};
+const finiteOrNull = (x: number) => (Number.isFinite(x) ? x : null);
+
+/** The qualifier label for a position's career pool ("500 career carries"). */
+export const careerPoolLabel = (pos: Position) => CAREER_QUALIFY[pos]?.label;
 
 /**
  * THE overall (Build-a-Legend header, build panel, results; Player Deep Dive): value-weighted mean percentile
@@ -231,11 +322,31 @@ export interface SkillGrade {
   /** Direction-aware percentile within the position (higher = better), NaN when missing */
   percentile: number;
   grade: GradeStep | null;
+  /** NFL career grades: the stat has no between-player signal, so there is no tile ("not enough signal") */
+  noSignal?: boolean;
 }
 
 /** Every trait of one player: value, percentile and letter grade, plus his overall on the same mapping. */
-export const playerSkillGrades = (players: Player[], player: Player): { traits: SkillGrade[]; overall: Overall | null } => {
+export const playerSkillGrades = (players: Player[], player: Player): { traits: SkillGrade[]; overall: Overall | null; smallSample?: boolean } => {
   const traits = skillTraits(player.position);
+  const cc = careerCtx(players, player.position);
+  if (cc) {
+    const pos = player.position;
+    const rows = traits.map((t): SkillGrade => {
+      const value = t.get(player);
+      if (isNoSignal(pos, t.id)) return { trait: t, value, display: fmtFeature(t, value), percentile: NaN, grade: null, noSignal: true };
+      const percentile = skillPct(t, cc.baseline.get(t.id) ?? [], shrunkOf(cc, pos, t, player));
+      return { trait: t, value, display: fmtFeature(t, value), percentile, grade: gradeFor(percentile) };
+    });
+    const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos);
+    let overall: Overall | null = null;
+    if (raw) {
+      const pct = percentileOf(cc.overallSorted, raw.pct);
+      const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
+      overall = { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
+    }
+    return { traits: rows, overall, smallSample: !isCareerQualified(player) };
+  }
   const baseline = positionBaseline(players, player.position);
   const rows = traits.map((t) => {
     const value = t.get(player);
@@ -269,6 +380,20 @@ const byName = (a: SkillLeader, b: SkillLeader) => a.player.name.localeCompare(b
 /** One trait's leaderboard over the same pool and percentile as its grade, so place, value, pct and grade agree. */
 export const skillBoard = (players: Player[], position: Position, traitId: string): SkillBoard | null => {
   const t = skillTraits(position).find((x) => x.id === traitId);
+  const cc = careerCtx(players, position);
+  if (cc && t) {
+    if (isNoSignal(position, traitId)) return null;
+    const sorted = cc.baseline.get(traitId) ?? [];
+    const entries = cc.pool
+      .map((p) => {
+        const value = t.get(p);
+        const percentile = skillPct(t, sorted, shrunkOf(cc, position, t, p));
+        return { player: p, value, display: fmtFeature(t, value), percentile, grade: gradeFor(percentile) };
+      })
+      .filter((e) => Number.isFinite(e.value))
+      .sort((a, b) => b.percentile - a.percentile || byName(a, b));
+    return { poolLabel: CAREER_QUALIFY[position].label, lowerIsBetter: !!t.lowerIsBetter, entries };
+  }
   const pool = traitPools(players, position).get(traitId);
   if (!t || !pool) return null;
   const sorted = positionBaseline(players, position).get(traitId) ?? [];
@@ -285,10 +410,11 @@ export const skillBoard = (players: Player[], position: Position, traitId: strin
 
 /** Overall skill rating leaderboard for a position: players with ≥ SIM_MIN_GAMES games (the grade baseline). */
 export const overallBoard = (players: Player[], position: Position): SkillBoard => {
-  const entries = similarityBaseline(players, position)
+  const cc = careerCtx(players, position);
+  const entries = (cc ? cc.pool : similarityBaseline(players, position))
     .map((p) => ({ p, o: playerSkillGrades(players, p).overall }))
     .filter((x): x is { p: Player; o: Overall } => !!x.o)
     .map(({ p, o }) => ({ player: p, value: o.rating, display: String(o.rating), percentile: o.pct, grade: o.grade }))
     .sort((a, b) => b.value - a.value || b.percentile - a.percentile || byName(a, b));
-  return { poolLabel: `${SIM_MIN_GAMES}+ games`, lowerIsBetter: false, entries };
+  return { poolLabel: cc ? CAREER_QUALIFY[position].label : `${SIM_MIN_GAMES}+ games`, lowerIsBetter: false, entries };
 };

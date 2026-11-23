@@ -116,7 +116,7 @@ const DdSkills = ({ player, ovr, ovrLabel = 'CAR', traits, overall, players, onO
                     <DdBar pct={t.grade ? t.percentile : null} color={t.grade?.color} label={`${t.trait.name} percentile`} />
                     <div className="flex justify-between text-[11px] text-muted-foreground">
                       <span>{t.trait.label}</span>
-                      <span>{t.grade ? `${ordinal(t.percentile)} pct` : 'no data'}</span>
+                      <span>{t.grade ? `${ordinal(t.percentile)} pct` : t.noSignal ? 'not enough signal' : 'no data'}</span>
                     </div>
                   </div>
                 </button>

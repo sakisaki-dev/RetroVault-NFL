@@ -21,6 +21,7 @@ import { execFileSync } from 'child_process';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { parseCSV } from '@/utils/csvParser';
 import { normalizeLeague } from '@/config/stats';
+import { setCareerRatings } from '@/config/ovr';
 import type { Player, Position } from '@/types/player';
 import { samePlayers, snapshotPlayers, type MarketHistory, type MarketSnapshot } from '@/utils/cardMarket';
 import { compactMarket, expandMarket, type StoredMarket } from '@/utils/marketHistory';
@@ -152,6 +153,8 @@ const localIso = (d: Date) => {
 };
 
 const main = () => {
+  // NFL edition: the precomputed career ratings (scripts/nfl/career_rating.py) set CAR
+  if (existsSync('public/data/nfl/career_rating.json')) setCareerRatings(JSON.parse(readFileSync('public/data/nfl/career_rating.json', 'utf8')));
   const doBackfill = process.argv.includes('--backfill');
   let history: Snap[] = [];
   if (doBackfill) {

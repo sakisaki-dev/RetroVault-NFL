@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLeague } from '@/context/LeagueContext';
 import type { Position } from '@/types/player';
 import { normalizeLeague } from '@/config/stats';
-import { buildGamePool, displayOvr, officialOvrMap, type GamePlayer, type LegendPhoto, type OvrBasis, type SeasonOvrFile } from '@/config/ovr';
+import { buildGamePool, displayOvr, officialOvrMap, setCareerRatings, type CareerRatingFile, type GamePlayer, type LegendPhoto, type OvrBasis, type SeasonOvrFile } from '@/config/ovr';
 import { dataResponse } from '@/utils/dataStore';
+import { IS_NFL } from '@/config/edition';
 
 // ---------- Loaders (one request per page load; 404 / bad JSON resolve to empty) ----------
 
@@ -38,6 +39,7 @@ const normalizeLegend = (raw: unknown): GamePlayer | null => {
 };
 
 let seasonOvrRequest: Promise<SeasonOvrFile | null> | null = null;
+let careerRatingRequest: Promise<unknown> | null = null;
 let legendsRequest: Promise<GamePlayer[]> | null = null;
 let exclusionsRequest: Promise<Set<string>> | null = null;
 
@@ -60,6 +62,16 @@ export const loadSeasonOvr = (): Promise<SeasonOvrFile | null> => {
     (seasonOvrLoaded = d && typeof d === 'object' && (d as SeasonOvrFile).ovr ? (d as SeasonOvrFile) : null),
   );
   return seasonOvrRequest;
+};
+
+/** NFL edition: the precomputed career ratings (scripts/nfl/career_rating.py), registered before any rating is computed. */
+export const loadCareerRatings = (): Promise<unknown> => {
+  if (!IS_NFL) return Promise.resolve(null);
+  careerRatingRequest ??= fetchJson('data/nfl/career_rating.json').then((d) => {
+    setCareerRatings(d as CareerRatingFile | null);
+    return d;
+  });
+  return careerRatingRequest;
 };
 
 /** Fetches /data/legends.json once per page load. Missing file, 404 or bad JSON all resolve to []. */
@@ -123,7 +135,7 @@ export const useGamePool = () => {
 
   useEffect(() => {
     let alive = true;
-    Promise.all([loadLegends(), loadExclusions(), loadSeasonOvr()]).then(([list, ex, so]) => {
+    Promise.all([loadLegends(), loadExclusions(), loadSeasonOvr(), loadCareerRatings()]).then(([list, ex, so]) => {
       resolvedInputs = { legends: list, excluded: ex, seasonOvr: so };
       if (!alive) return;
       setAllLegends(list);

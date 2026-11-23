@@ -77,7 +77,14 @@ M = {
 CAREER_MIN = 2.5
 
 
+def career_qualified(p):
+    """The career pool (the same as the career rating's): QB 1,500 attempts, RB 500 carries, WR / TE 150 catches, LB / DB / DL 48 games."""
+    g = lambda k: p.get(k) or 0
+    return {"QB": g("att") >= 1500, "RB": g("ratt") >= 500, "WR": g("rec") >= 150, "TE": g("rec") >= 150, "LB": g("g") >= 48, "DB": g("g") >= 48, "DL": g("g") >= 48}.get(p["pos"], False)
+
+
 def main():
+    QUAL = {f"{p['pos']}:{p['n']}": career_qualified(p) for p in json.loads((ROOT / "data/y80/players.json").read_text())}
     players = {p["nfl"]["gsis"]: f"{p['pos']}:{p['n']}" for p in json.loads((ROOT / "data/y80/players.json").read_text()) if p.get("nfl") and p["nfl"].get("gsis")}
     pfr = {r["pfr_id"]: r["gsis_id"] for r in rows("players.csv.gz") if r.get("pfr_id") and r.get("gsis_id")}
     S = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))  # key -> season -> sums
@@ -217,8 +224,29 @@ def main():
                 if k.split(":")[0] not in poss:
                     continue
                 v = value(mid, s)
-                if v and v[1] >= mn * mult and v[0] == v[0]:
+                # the career scope ranks the QUALIFIED pool only (the same as the career rating); everyone else is graded
+                # against it with his value shrunk toward the pool mean by n / (n + minimum x 2.5), rank 0 (small sample)
+                if v and v[0] == v[0] and (v[1] >= mn * mult if scope != "c" else QUAL.get(k) and v[1] >= mn):
                     pool.append((k.split(":")[0], k, v[0]))
+            if scope == "c":
+                for pos in poss:
+                    vals = sorted(x[2] for x in pool if x[0] == pos)
+                    if len(vals) < 8:
+                        continue
+                    mean = sum(vals) / len(vals)
+                    inpool = {x[1] for x in pool if x[0] == pos}
+                    for k, s in byk.items():
+                        if k.split(":")[0] != pos or k in inpool:
+                            continue
+                        v = value(mid, s)
+                        if not v or v[0] != v[0] or v[1] < mn:
+                            continue
+                        sv = mean + (v[0] - mean) * v[1] / (v[1] + mn * CAREER_MIN)
+                        below = sum(1 for x in vals if x < sv); ties = sum(1 for x in vals if x == sv)
+                        pct = 100 * (below + ties / 2) / len(vals)
+                        if dirn == "low":
+                            pct = 100 - pct
+                        out.setdefault(k, {}).setdefault(scope, {})[mid] = [round(v[0], 4), round(pct, 1), 0, len(vals)]
             for pos in poss:
                 lst = sorted([x for x in pool if x[0] == pos], key=lambda x: (x[2], x[1]))
                 n = len(lst)

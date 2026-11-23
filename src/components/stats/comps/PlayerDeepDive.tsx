@@ -1,4 +1,5 @@
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import { careerRatingOf } from '@/config/ovr';
 import InTheNews from '@/components/espn/InTheNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
@@ -431,7 +432,13 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const ovr = ovrMap.get(keyOf(player));
   const car = careerOvrMap.get(keyOf(player));
   const seasonShown = ovrBasis.get(keyOf(player)) === 'season' && seasonOvr && ovr != null;
-  const carTitle = car == null ? undefined : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
+  const cr = IS_NFL ? careerRatingOf(keyOf(player)) : undefined;
+  const carTitle =
+    car == null
+      ? undefined
+      : cr
+        ? `CAR ${car}: career rating. 70% efficiency (every rate against that season's league average, shrunk by sample size) plus 30% production and honours (MVP 30, OPOY/DPOY 18, SB MVP 12, ring 10, ROY 2), ranked among qualified ${player.position}s.${cr[5] === 1 ? ' Career totals only: graded on production and honours.' : ` Efficiency ${cr[1]?.toFixed(0)}, production ${cr[2].toFixed(0)}, honours ${cr[3].toFixed(0)}.`}`
+        : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
   // Two ratings (owner, 2026-11-23): SZN = this season alone, CAR = the whole career. A retired player shows CAR only.
   const ovrTitle = IS_NFL
     ? seasonShown

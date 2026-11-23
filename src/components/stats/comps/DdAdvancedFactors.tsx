@@ -1,7 +1,7 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
-import { gradeFor } from '@/config/skillGrades';
+import { careerPoolLabel, gradeFor } from '@/config/skillGrades';
 import { playerKey } from '@/config/ovr';
 import { ordinal } from '../analytics/viz';
 import { DdBar, GradeChip } from './ddParts';
@@ -53,7 +53,7 @@ const DdAdvancedFactors = ({
     });
     return {
       title: m.label,
-      sub: [`${player.position}s`, label, `${m.src}`, `min ${scope === 'c' ? Math.round(m.min * adv.careerMin) : m.min} ${m.min >= 100 ? 'plays' : 'sample'}`, `${rows.length} qualifiers`, m.dir === 'low' ? 'lower is better' : ''].filter(Boolean).join(' · '),
+      sub: [`${player.position}s`, label, `${m.src}`, scope === 'c' ? `qualified starters (${careerPoolLabel(player.position)})` : `min ${m.min} ${m.min >= 100 ? 'plays' : 'sample'}`, `${rows.length} qualifiers`, m.dir === 'low' ? 'lower is better' : ''].filter(Boolean).join(' · '),
       rows,
     };
   };
@@ -87,7 +87,7 @@ const DdAdvancedFactors = ({
                 <button
                   type="button"
                   title={`${m.desc}. Source: ${m.src}. Ranked among ${v[3]} ${player.position}s with the minimum sample.`}
-                  aria-label={`${m.label}: ${fmtAdv(m, v[0])}, ${ordinal(v[1])} percentile, rank ${v[2]} of ${v[3]}. Show the ${player.position} leaderboard`}
+                  aria-label={`${m.label}: ${fmtAdv(m, v[0])}, ${ordinal(v[1])} percentile, ${v[2] > 0 ? `rank ${v[2]} of ${v[3]}` : `small sample, shrunk, against ${v[3]} qualified`}. Show the ${player.position} leaderboard`}
                   className="rbk-chip flex h-full w-full items-center gap-3 rounded-lg border border-line bg-panel/80 p-3 text-left hover:border-gold/40 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
                   {grade ? <GradeChip grade={grade} /> : <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line font-pixel text-[8px] uppercase text-muted-foreground">Style</span>}
@@ -103,7 +103,7 @@ const DdAdvancedFactors = ({
                         {m.dir === 'low' ? ' · lower is better' : ''}
                       </span>
                       <span>
-                        #{v[2]} of {v[3]}
+                        {v[2] > 0 ? `#${v[2]} of ${v[3]}` : `small sample · vs ${v[3]}`}
                       </span>
                     </div>
                   </div>

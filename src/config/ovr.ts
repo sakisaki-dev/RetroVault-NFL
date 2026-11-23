@@ -78,6 +78,46 @@ export const leagueScore = (p: Player): number => {
 };
 
 /**
+ * NFL edition: the precomputed career rating (public/data/nfl/career_rating.json, scripts/nfl/career_rating.py): 70%
+ * efficiency (era-adjusted, reliability-shrunk, fitted weights) + 30% production and honours, as a percentile among the
+ * qualified players at the position. The site only reads it; `ovr()` turns it into the 62-99 rating. Offensive linemen
+ * (no weekly data) and anyone it doesn't list keep the League Score rank below.
+ */
+export interface CareerRatingFile {
+  v: number;
+  /** per position and stat: the reliability constant k (null: no between-player signal) */
+  k: Record<string, Record<string, number | null>>;
+  weights: Record<string, Record<string, number>>;
+  /** key -> [CAR percentile, efficiency pct (null: career totals only), production pct, honours pct, honours points, totals-only flag] */
+  p: Record<string, [number, number | null, number, number, number, number]>;
+}
+let careerRatings: CareerRatingFile | null = null;
+export const setCareerRatings = (f: CareerRatingFile | null | undefined) => {
+  if (f && f.p) careerRatings = f;
+};
+export const careerRatingOf = (key: string) => (IS_NFL ? careerRatings?.p[key] : undefined);
+export const careerRatingMeta = () => (IS_NFL ? careerRatings : null);
+/** The career qualifier thresholds (the pool the career grades are ranked in): QB 1,500 attempts, RB 500 carries, WR / TE 150 catches, LB / DB / DL 48 games. */
+export const CAREER_QUALIFY: Record<string, { field: string; min: number; label: string }> = {
+  QB: { field: 'attempts', min: 1500, label: '1,500 career attempts' },
+  RB: { field: 'rushAtt', min: 500, label: '500 career carries' },
+  WR: { field: 'receptions', min: 150, label: '150 career catches' },
+  TE: { field: 'receptions', min: 150, label: '150 career catches' },
+  LB: { field: 'games', min: 48, label: '48 career games' },
+  DB: { field: 'games', min: 48, label: '48 career games' },
+  DL: { field: 'games', min: 48, label: '48 career games' },
+};
+export const careerExposure = (p: Player): number => {
+  const q = CAREER_QUALIFY[p.position];
+  const v = q ? (p as unknown as Record<string, unknown>)[q.field] : 0;
+  return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+};
+export const isCareerQualified = (p: Player): boolean => {
+  const q = CAREER_QUALIFY[p.position];
+  return !!q && careerExposure(p) >= q.min;
+};
+
+/**
  * OVR (62–99) keyed by playerKey: League Score rank within the position across the pool.
  * pct = i / (n − 1), OVR = round(62 + 37 · pct^0.85).
  */
@@ -96,7 +136,8 @@ export const ovr = (players: Player[]): Map<string, number> => {
       const pct = sorted.length > 1 ? i / (sorted.length - 1) : 1;
       // NFL edition: ~3,000 real players, most of them depth players. The league's 0.85 exponent would put 28% of them
       // at 90+; 2.5 makes 90+ the top ~10%, 95+ the top ~5%, and a median player about 68.
-      out.set(playerKey(p), pyRound(62 + 37 * pct ** (IS_NFL ? 2.5 : 0.85)));
+      const pre = careerRatingOf(playerKey(p));
+      out.set(playerKey(p), pre ? pyRound(62 + 37 * (pre[0] / 100) ** 2.5) : pyRound(62 + 37 * pct ** (IS_NFL ? 2.5 : 0.85)));
     });
   });
   return out;
@@ -158,7 +199,7 @@ const STAT_FIELDS = ['games', 'attempts', 'completions', 'passYds', 'passTD', 'i
  * instead of a false zero. Awards and card numbers stay his own.
  */
 export const seasonPlayerOf = <P extends Player>(p: P, line: Record<string, number>): P => {
-  const out: Record<string, unknown> = { ...p };
+  const out: Record<string, unknown> = { ...p, __season: true }; // marks a season line (the career grades' pools skip it)
   STAT_FIELDS.forEach((f) => {
     if (f in out) out[f] = typeof line[f] === 'number' ? line[f] : f === 'games' ? 0 : Number.NaN;
   });

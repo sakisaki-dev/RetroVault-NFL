@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
-import { foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
+import { careerPoolLabel, foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
+import { careerRatingOf } from '@/config/ovr';
 import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
@@ -84,6 +85,16 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         players={useSeason ? seasonPlayers : players}
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
       />
+      {IS_NFL && !useSeason && (
+        <>
+          {(grades as { smallSample?: boolean }).smallSample && careerPoolLabel(player.position) && (
+            <p className="text-[11px] text-muted-foreground">
+              Small career sample (under {careerPoolLabel(player.position)}): his rates are pulled toward the qualified average in proportion to the sample.
+            </p>
+          )}
+          {careerRatingOf(key)?.[5] === 1 && <p className="text-[11px] text-muted-foreground">Career totals only: there are no weekly efficiency numbers for his career, so his CAR is graded on production and honours.</p>}
+        </>
+      )}
       {IS_NFL && <DdAdvancedFactors player={player} players={players} scope={useSeason ? String(seasonOvr?.season) : 'c'} onOpenPlayer={onOpenPlayer} />}
     </div>
   );
