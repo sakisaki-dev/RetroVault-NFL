@@ -3,6 +3,7 @@ import type { LeagueData, Player } from '@/types/player';
 import { parseCSV } from '@/utils/csvParser';
 import { getPlayerEdits, type PlayerEdit } from '@/utils/indexedDB';
 import { normalizeLeague } from '@/config/stats';
+import { dataText } from '@/utils/dataStore';
 import { loadPlayerExtras, signatureTeamOf } from '@/utils/playerExtras';
 import { IS_NFL } from '@/config/edition';
 import { registerFreeAgents, registerRealNumbers } from '@/utils/gameSprites';
@@ -49,9 +50,9 @@ const clearLegacyKeys = () => {
 };
 
 const fetchLeagueCsv = async (): Promise<string> => {
-  const res = await fetch(LEAGUE_URL, { cache: 'no-cache' });
-  if (!res.ok) throw new Error(`Could not load ${LEAGUE_URL} (${res.status})`);
-  return res.text();
+  const text = await dataText('data/initial-data.csv');
+  if (text == null) throw new Error(`Could not load ${LEAGUE_URL}`);
+  return text;
 };
 
 // Merge player edits from IndexedDB into parsed league data

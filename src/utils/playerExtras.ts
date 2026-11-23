@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { dataJson } from '@/utils/dataStore';
 
 // Optional per-player extras from public/data/player-extras.json (built by scripts/build_league_data.py).
 // Everything here is secondary display info and must never be merged into league career totals.
@@ -142,37 +143,109 @@ const toIndexed = (raw: Partial<PlayerExtras>): IndexedExtras => ({
 
 const EMPTY_INDEXED = toIndexed(EMPTY);
 
+/*
+ * Loading. The CORE extras (data/core/extras.json: banner and legacy teams, real numbers, retired-by, former names,
+ * cards, family, real NFL careers) is what every page needs to dress a player, and it is all the startup fetches. The
+ * HISTORY (data/history/stints.json and franchises.json: the heavy part, about half the old file) loads the first time a
+ * component READS `extras.stints` / `extras.franchises` (the object usePlayerExtras() returns has getters that start the
+ * load and re-render the reader when it lands), so pages that never look at a career (search, the games, the binder) never
+ * pay for it. Both fall back to the old single file data/player-extras.json when the split files aren't there.
+ */
 let cache: IndexedExtras | null = null;
 let inflight: Promise<IndexedExtras> | null = null;
+let history: { stints: Record<string, PlayerStints>; franchises: Record<string, string[]> } | null = null;
+let historyJob: Promise<void> | null = null;
+const historyListeners = new Set<() => void>();
 
-/** Fetches the extras file once per session. Missing file (404) or bad JSON resolves to empty extras. */
+const loadSplit = async (): Promise<Partial<PlayerExtras>> => {
+  const core = await dataJson<Partial<PlayerExtras>>('data/core/extras.json');
+  if (core) return core;
+  // No split files (a checkout that hasn't run scripts/perf/build_core.py): the whole file, stints and all
+  const whole = await dataJson<Partial<PlayerExtras>>('data/player-extras.json');
+  if (whole) {
+    history = { stints: normalizeStints(whole.stints), franchises: reindex<string[]>(whole.franchises) };
+    return { ...whole, stints: {}, franchises: {} };
+  }
+  return EMPTY;
+};
+
+/** Fetches the core extras once per session. Missing file (404) or bad JSON resolves to empty extras. */
 export const loadPlayerExtras = (): Promise<IndexedExtras> => {
   if (cache) return Promise.resolve(cache);
-  if (!inflight) {
-    const url = `${import.meta.env.BASE_URL}data/player-extras.json`;
-    inflight = fetch(url, { cache: 'no-cache' })
-      .then((res) => (res.ok ? (res.json() as Promise<Partial<PlayerExtras>>) : EMPTY))
-      .catch(() => EMPTY)
-      .then((raw) => {
-        cache = toIndexed(raw ?? EMPTY);
-        return cache;
-      });
-  }
+  inflight ??= loadSplit()
+    .catch(() => EMPTY)
+    .then((raw) => {
+      cache = toIndexed(raw ?? EMPTY);
+      return cache;
+    });
   return inflight;
 };
 
-/** React hook: empty extras until loaded, then the indexed file contents. */
+/** Starts loading the career history (idempotent); resolves when it is in. */
+export const loadExtrasHistory = (): Promise<void> => {
+  historyJob ??= (async () => {
+    await loadPlayerExtras(); // the whole-file fallback fills `history` there
+    if (!history) {
+      const [stints, franchises] = await Promise.all([
+        dataJson<Record<string, unknown>>('data/history/stints.json'),
+        dataJson<Record<string, string[]>>('data/history/franchises.json'),
+      ]);
+      history = { stints: normalizeStints(stints ?? {}), franchises: reindex<string[]>(franchises ?? {}) };
+    }
+    historyListeners.forEach((l) => l());
+  })();
+  return historyJob;
+};
+
+const NO_STINTS: Record<string, PlayerStints> = {};
+const NO_FRANCHISES: Record<string, string[]> = {};
+
+/**
+ * React hook: empty extras until loaded, then the indexed file contents. `.stints` and `.franchises` read through
+ * getters (see above): reading one starts the history load and re-renders this component when it arrives.
+ */
 export const usePlayerExtras = (): IndexedExtras => {
-  const [extras, setExtras] = useState<IndexedExtras>(cache ?? EMPTY_INDEXED);
+  const [core, setCore] = useState<IndexedExtras>(cache ?? EMPTY_INDEXED);
+  const [historyIn, setHistoryIn] = useState(!!history);
+  const touched = useRef(false);
   useEffect(() => {
     if (cache) return;
     let alive = true;
-    loadPlayerExtras().then((e) => alive && setExtras(e));
+    loadPlayerExtras().then((e) => alive && setCore(e));
     return () => {
       alive = false;
     };
   }, []);
-  return extras;
+  useEffect(() => {
+    if (!touched.current || historyIn) return;
+    const l = () => setHistoryIn(true);
+    historyListeners.add(l);
+    if (history) setHistoryIn(true);
+    return () => {
+      historyListeners.delete(l);
+    };
+  });
+  return useMemo(() => {
+    const view = { ...core } as IndexedExtras;
+    Object.defineProperty(view, 'stints', {
+      enumerable: true,
+      get: () => {
+        touched.current = true;
+        if (!history) void loadExtrasHistory();
+        return history?.stints ?? NO_STINTS;
+      },
+    });
+    Object.defineProperty(view, 'franchises', {
+      enumerable: true,
+      get: () => {
+        touched.current = true;
+        if (!history) void loadExtrasHistory();
+        return history?.franchises ?? NO_FRANCHISES;
+      },
+    });
+    return view;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [core, historyIn]);
 };
 
 /** A player's reconstructed stints, or undefined when none are on file. */

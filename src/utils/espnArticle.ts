@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * NFL edition: one full ESPN article for the reading sheet. The feed item's links.api.self.href
@@ -225,7 +226,7 @@ export const useEspnIds = (): Record<string, string> | null => {
   useEffect(() => {
     if (idsLoaded) return;
     let alive = true;
-    (idsJob ??= fetch(`${import.meta.env.BASE_URL}data/nfl/espn_ids.json`)
+    (idsJob ??= dataResponse('data/nfl/espn_ids.json')
       .then((r) => (r.ok ? r.json() : {}))
       .catch(() => ({}))
       .then((d) => (idsLoaded = d))).then((d) => alive && setIds(d));

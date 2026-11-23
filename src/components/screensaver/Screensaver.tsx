@@ -46,6 +46,7 @@ import { useSchedule, latestScheduleSeason, type TableRow } from '@/utils/schedu
 import { useLiveSeason, kickoffText, scheduleWeeks, useUpcoming, withUpcoming, type RoundGame } from '@/utils/seasonLive';
 import { useSeasonLeaders, type LeaderRow, type SeasonLeaders } from '@/utils/seasonLeaders';
 import { timeAgo, useEspnNews, type NewsItem } from '@/utils/espnNews';
+import { dataResponse } from '@/utils/dataStore';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -134,7 +135,7 @@ const useWidgetFeed = () => {
   const [w, setW] = useState<WidgetFeed | null | undefined>(undefined);
   useEffect(() => {
     let live = true;
-    widgetReq ??= fetch(`${import.meta.env.BASE_URL}data/widget.json`)
+    widgetReq ??= dataResponse('data/widget.json')
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null);
     widgetReq.then((x) => live && setW(x));

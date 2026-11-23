@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * NFL edition: this season's boards (public/data/league/season_leaders.json, scripts/nfl/season_leaders.py): stat
@@ -23,7 +24,7 @@ export const useSeasonLeaders = (): SeasonLeaders | null | undefined => {
   const [d, setD] = useState<SeasonLeaders | null | undefined>(undefined);
   useEffect(() => {
     let alive = true;
-    (req ??= fetch(`${import.meta.env.BASE_URL}data/league/season_leaders.json`, { cache: 'no-cache' })
+    (req ??= dataResponse('data/league/season_leaders.json')
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null)).then((x) => alive && setD(x));
     return () => {

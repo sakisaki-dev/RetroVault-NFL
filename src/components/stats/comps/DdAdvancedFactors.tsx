@@ -28,7 +28,7 @@ const DdAdvancedFactors = ({
   picker?: boolean;
   onOpenPlayer: (p: Player) => void;
 }) => {
-  const adv = useAdvanced();
+  const adv = useAdvanced(player.position);
   const key = playerKey(player);
   const mine = adv?.p[key];
   const scopes = useMemo(() => (mine ? Object.keys(mine).sort((a, b) => (a === 'c' ? 1 : b === 'c' ? -1 : Number(b) - Number(a))) : []), [mine]);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { findNFLTeam } from './nflTeams';
 import { stadiumWeather } from './stadiumWeather';
 import type { CoachGame, CoachGameBrief, ScheduleSeason, TableRow } from './schedule';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * The Season page's model of the live save state (public/data/league/save_state.json, scripts/save_state.py): typed views of the season lines, the coach's game log and the club records, plus the
@@ -82,7 +83,7 @@ let request: Promise<LiveSeason | null> | null = null;
 
 /** Fetches save_state.json once per page load; null when no save has been imported (no file). */
 export const loadLiveSeason = (): Promise<LiveSeason | null> => {
-  request ??= fetch(`${import.meta.env.BASE_URL}data/league/save_state.json`, { cache: 'no-cache' })
+  request ??= dataResponse('data/league/save_state.json')
     .then((r) => (r.ok ? (r.json() as Promise<LiveSeason>) : null))
     .catch(() => null)
     .then((s) => (cache = s && s.clubs && s.players && Array.isArray(s.coachGames) ? { ...s, newPlayers: s.newPlayers ?? {} } : null));
@@ -500,7 +501,7 @@ export const useLiveSchedule = (): ScheduleSeason | null | undefined => {
   const [v, setV] = useState<ScheduleSeason | null | undefined>(undefined);
   useEffect(() => {
     let alive = true;
-    liveSchedCache ??= fetch(`${import.meta.env.BASE_URL}data/league/live_season.json`, { cache: 'no-cache' })
+    liveSchedCache ??= dataResponse('data/league/live_season.json')
       .then((r) => (r.ok ? (r.json() as Promise<ScheduleSeason>) : null))
       .catch(() => null);
     liveSchedCache.then((d) => alive && setV(d && Array.isArray(d.table) ? d : null));
@@ -625,7 +626,7 @@ export const liveSeasonView = (s: LiveSeason, sched?: ScheduleSeason | null): Se
 export interface UpcomingFile { season: number; games: { week: number; day: string; date: string; time: string; away: string; home: string }[] }
 let upcomingReq: Promise<UpcomingFile | null> | null = null;
 const loadUpcoming = () =>
-  (upcomingReq ??= fetch(`${import.meta.env.BASE_URL}data/league/upcoming.json`, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  (upcomingReq ??= dataResponse('data/league/upcoming.json').then((r) => (r.ok ? r.json() : null)).catch(() => null));
 export const useUpcoming = (): UpcomingFile | null => {
   const [d, setD] = useState<UpcomingFile | null>(null);
   useEffect(() => {

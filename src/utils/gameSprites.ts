@@ -3,6 +3,7 @@ import { numberTables, setKitColors, setNumberTables, setSockTemplate, type KitC
 import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * Retro Bowl's own player sprites (New Star Games' art; the NFL edition's NFL and NFLPA marks) in
@@ -66,6 +67,12 @@ export interface NflSprites {
   anchors?: Record<string, [number, number]>;
   /** The head coach and the coordinators (CoachSprite.tsx) */
   coaches?: NflCoaches;
+  /**
+   * Sharded index (scripts/perf/build_core.py, public/private-sprites/nfl/README.md): core.json carries the active
+   * players, everyone else's entry and anchors are in shards/<i>.json, i = fnv1a("POS:Name") % count. Absent on a full
+   * index.json (every player in `players`).
+   */
+  shards?: { count: number; file: string };
 }
 
 /**
@@ -135,7 +142,7 @@ const loadImage = (src: string) =>
 
 /** JSON from the private folder, or null: a 404, or the dev server's SPA fallback (HTML) when the folder is gone. */
 const privateJson = (path: string): Promise<unknown> =>
-  fetch(PRIVATE_BASE + path, { cache: 'no-cache' })
+  dataResponse(`private-sprites/${path}`)
     .then((r) => (r.ok ? r.text() : null))
     .then((text) => {
       if (!text) return null;
@@ -159,7 +166,7 @@ const validNfl = (d: unknown): d is NflSprites => {
 let looksJob: Promise<RegularSprites['skins']> | null = null;
 /** The site's own locked looks (public data/sprites.json), fetched once. */
 const siteLooks = () =>
-  (looksJob ??= fetch(`${import.meta.env.BASE_URL}data/sprites.json`)
+  (looksJob ??= dataResponse('data/sprites.json')
     .then((r) => (r.ok ? r.json() : {}))
     .catch(() => ({}))
     .then((d: unknown) => (d && typeof d === 'object' ? (d as RegularSprites['skins']) : {})));
@@ -169,7 +176,7 @@ export const loadGameSprites = (): void => {
   if (started || !ENABLED || typeof window === 'undefined') return;
   started = true;
   // the NFL index with the site's locked looks, together, so a locked body (Sherman Brandson) never draws twice
-  Promise.all([privateJson('nfl/index.json'), siteLooks()]).then(([nfl, looks]) => {
+  Promise.all([privateJson('nfl/core.json').then((core) => core ?? privateJson('nfl/index.json')), siteLooks()]).then(([nfl, looks]) => {
     if (validNfl(nfl)) {
       setKitColors((nfl as { kitColors?: KitColors }).kitColors);
       setNumberTables(nfl as Parameters<typeof setNumberTables>[0]);
@@ -189,6 +196,43 @@ export const loadGameSprites = (): void => {
       /* no regular sheets: callers fall back silently */
     });
 };
+
+
+// ---------- Sharded player index (retirees): fetched when a sprite asks for one ----------
+
+const shardsLoaded = new Set<number>();
+const shardJobs = new Map<number, Promise<void>>();
+let shardPublish = 0;
+const shardOfKey = (key: string, count: number) => fnvHash(key) % count;
+
+/**
+ * True when `key`'s sprite entry is available: it is in the index (an active player, or a full index.json) or its shard
+ * has loaded. Otherwise starts that shard's fetch and returns false; the shard's arrival republishes the sprites, so
+ * every GameSprite that asked draws again (until then it draws nothing, the same as before the index loads).
+ */
+const entryReady = (nfl: NflSprites, key: string): boolean => {
+  if (nfl.players[key] || !nfl.shards) return true;
+  const i = shardOfKey(key, nfl.shards.count);
+  if (shardsLoaded.has(i)) return true;
+  if (!shardJobs.has(i)) {
+    shardJobs.set(
+      i,
+      privateJson(`nfl/${nfl.shards.file.replace('{i}', String(i))}`).then((raw) => {
+        const sh = raw as { players?: Record<string, NflSpriteEntry>; anchors?: Record<string, [number, number]> } | null;
+        if (sh?.players) Object.assign(nfl.players, sh.players);
+        if (sh?.anchors) nfl.anchors = Object.assign(nfl.anchors ?? {}, sh.anchors);
+        shardsLoaded.add(i);
+        // one republish for the shards that land together (a list of 40 rows asks for up to 16)
+        window.clearTimeout(shardPublish);
+        shardPublish = window.setTimeout(() => sprites?.nfl && publish({ nfl: { ...sprites.nfl } }), 24);
+      }),
+    );
+  }
+  return false;
+};
+
+/** The key's shard is still loading (draw nothing yet rather than a stand-in he doesn't wear). */
+export const spritePending = (nfl: NflSprites | null, key: string): boolean => !!nfl && !entryReady(nfl, key);
 
 const subscribe = (l: () => void) => {
   listeners.add(l);
@@ -314,7 +358,7 @@ const standinFor = (nfl: NflSprites, key: string, tone?: string): NflSpriteEntry
   const pool = groups ? all.filter((x) => groups.includes(x.skin)) : all;
   const list = pool.length ? pool : all;
   if (!list.length) return null;
-  const x = list[fnv(`${key}|standin`) % list.length];
+  const x = list[fnvHash(`${key}|standin`) % list.length];
   return { uid: x.uid, kits: {}, neutral: x.neutral };
 };
 
@@ -328,6 +372,7 @@ const pickNfl = (
   tone?: string,
   role = 1,
 ): Omit<NflPick, 'cx' | 'foot'> | null => {
+  if (!legend && !entryReady(nfl, key)) return null; // his shard is loading: not a stand-in he doesn't wear
   const e = legend ? nfl.legends?.[key] : nfl.players[key] ?? standinFor(nfl, key, tone);
   if (!e) return null;
   const want = NFL_POSE[action];
@@ -465,7 +510,7 @@ const SHEETS_FOR_TONE: Record<SkinTone, Array<[0 | 1 | 2, number]>> = {
 };
 const ALL_SHEETS: Array<[0 | 1 | 2, number]> = [...SHEETS_FOR_TONE.brown, [1, 0], ...SHEETS_FOR_TONE.pale];
 
-const fnv = (s: string) => {
+const fnvHash = (s: string) => {
   let h = 2166136261;
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
   return h >>> 0;
@@ -481,7 +526,7 @@ export const faceFor = (player: FaceSubject, skinLocks?: Record<string, { skin?:
   const locked = skinLocks?.[player.name]?.skin;
   const tone = isSkinTone(locked) ? locked : isSkinTone(player.spriteSkin) ? player.spriteSkin : null;
   const pool = tone ? SHEETS_FOR_TONE[tone] : ALL_SHEETS;
-  const h = fnv(`${player.position ?? ''}:${player.name}|gameface`);
+  const h = fnvHash(`${player.position ?? ''}:${player.name}|gameface`);
   const [skin, faceY] = pool[h % pool.length];
   return { skin, faceY, faceX: (h >>> 8) % 8, exact: false };
 };

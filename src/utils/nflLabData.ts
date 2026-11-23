@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * NFL edition Team Lab data, each file loaded once on demand:
@@ -66,7 +67,7 @@ export interface NflLabData {
 }
 
 const get = <T,>(path: string): Promise<T | null> =>
-  fetch(`${import.meta.env.BASE_URL}data/${path}`)
+  dataResponse(`data/${path}`)
     .then((r) => (r.ok ? (r.json() as Promise<T>) : null))
     .catch(() => null);
 

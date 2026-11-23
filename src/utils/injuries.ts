@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IS_NFL } from '@/config/edition';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * NFL edition: who is hurt (public/data/nfl/injuries.json, scripts/nfl/injuries.py): IR from the club's reserve /
@@ -18,7 +19,7 @@ let loaded: InjuryFile | null = null;
 const listeners = new Set<() => void>();
 
 const load = () =>
-  (job ??= fetch(`${import.meta.env.BASE_URL}data/nfl/injuries.json`)
+  (job ??= dataResponse('data/nfl/injuries.json')
     .then((r) => (r.ok ? (r.json() as Promise<InjuryFile>) : null))
     .catch(() => null)
     .then((d) => {

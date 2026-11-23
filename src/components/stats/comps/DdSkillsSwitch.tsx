@@ -44,7 +44,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   const useSeason = shown === 'season' && !!season && !!seasonMe;
   const base = useSeason ? season! : career;
   // NFL: the advanced factors of the shown scope count as much as the classic traits (skillGrades.ts foldAdvanced)
-  const adv = useAdvanced();
+  const adv = useAdvanced(player.position);
   const grades = useMemo(
     () => (IS_NFL && adv ? { ...base, overall: foldAdvanced(base.overall, advancedPcts(adv, key, useSeason ? String(seasonOvr?.season) : 'c')) } : base),
     [base, adv, key, useSeason, seasonOvr],

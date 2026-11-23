@@ -184,7 +184,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
 
   const nameKey = player ? normalizeName(player.name) : '';
   const card = extras.cards[nameKey];
-  const careerStints = extras.stints[nameKey];
+  const careerStints = player ? extras.stints[nameKey] : undefined; // read only with a player open: the history loads on that read
   const retired = player ? retiredInfo(player) : undefined;
   const hofTier = player ? getLegacyTier(player.careerLegacy) : null;
 
