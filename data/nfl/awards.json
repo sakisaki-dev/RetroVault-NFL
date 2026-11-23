@@ -1,0 +1,2729 @@
+{
+ "source": {
+  "mvp": "https://en.wikipedia.org/wiki/AP_NFL_Most_Valuable_Player_Award",
+  "opoy": "https://en.wikipedia.org/wiki/AP_NFL_Offensive_Player_of_the_Year_Award",
+  "dpoy": "https://en.wikipedia.org/wiki/AP_NFL_Defensive_Player_of_the_Year_Award",
+  "oroy": "https://en.wikipedia.org/wiki/AP_NFL_Offensive_Rookie_of_the_Year_Award",
+  "droy": "https://en.wikipedia.org/wiki/AP_NFL_Defensive_Rookie_of_the_Year_Award",
+  "sbmvp": "https://en.wikipedia.org/wiki/Super_Bowl_Most_Valuable_Player_Award",
+  "champions": "https://en.wikipedia.org/wiki/List_of_Super_Bowl_champions"
+ },
+ "fetched": "2026-11-23",
+ "awards": {
+  "mvp": [
+   {
+    "season": 1957,
+    "player": "Jim Brown",
+    "team": "Browns",
+    "position": "FB"
+   },
+   {
+    "season": 1958,
+    "player": "Jim Brown",
+    "team": "Browns",
+    "position": "FB"
+   },
+   {
+    "season": 1959,
+    "player": "Johnny Unitas",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1960,
+    "player": "Norm Van Brocklin",
+    "team": "Eagles",
+    "position": "QB"
+   },
+   {
+    "season": 1961,
+    "player": "Paul Hornung",
+    "team": "Packers",
+    "position": "RB"
+   },
+   {
+    "season": 1962,
+    "player": "Jim Taylor",
+    "team": "Packers",
+    "position": "RB"
+   },
+   {
+    "season": 1963,
+    "player": "Y. A. Tittle",
+    "team": "Giants",
+    "position": "QB"
+   },
+   {
+    "season": 1964,
+    "player": "Johnny Unitas",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1965,
+    "player": "Jim Brown",
+    "team": "Browns",
+    "position": "FB"
+   },
+   {
+    "season": 1966,
+    "player": "Bart Starr",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1967,
+    "player": "Johnny Unitas",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1968,
+    "player": "Earl Morrall",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1969,
+    "player": "Roman Gabriel",
+    "team": "Rams",
+    "position": "QB"
+   },
+   {
+    "season": 1970,
+    "player": "John Brodie",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1971,
+    "player": "Alan Page",
+    "team": "Vikings",
+    "position": "DT"
+   },
+   {
+    "season": 1972,
+    "player": "Larry Brown",
+    "team": "Commanders",
+    "position": "RB"
+   },
+   {
+    "season": 1973,
+    "player": "O. J. Simpson",
+    "team": "Bills",
+    "position": "RB"
+   },
+   {
+    "season": 1974,
+    "player": "Ken Stabler",
+    "team": "Raiders",
+    "position": "QB"
+   },
+   {
+    "season": 1975,
+    "player": "Fran Tarkenton",
+    "team": "Vikings",
+    "position": "QB"
+   },
+   {
+    "season": 1976,
+    "player": "Bert Jones",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1977,
+    "player": "Walter Payton",
+    "team": "Bears",
+    "position": "RB"
+   },
+   {
+    "season": 1978,
+    "player": "Terry Bradshaw",
+    "team": "Steelers",
+    "position": "QB"
+   },
+   {
+    "season": 1979,
+    "player": "Earl Campbell",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1980,
+    "player": "Brian Sipe",
+    "team": "Browns",
+    "position": "QB"
+   },
+   {
+    "season": 1981,
+    "player": "Ken Anderson",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 1982,
+    "player": "Mark Moseley",
+    "team": "Commanders",
+    "position": "K"
+   },
+   {
+    "season": 1983,
+    "player": "Joe Theismann",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 1984,
+    "player": "Dan Marino",
+    "team": "Dolphins",
+    "position": "QB"
+   },
+   {
+    "season": 1985,
+    "player": "Marcus Allen",
+    "team": "Raiders",
+    "position": "RB"
+   },
+   {
+    "season": 1986,
+    "player": "Lawrence Taylor",
+    "team": "Giants",
+    "position": "LB"
+   },
+   {
+    "season": 1987,
+    "player": "John Elway",
+    "team": "Broncos",
+    "position": "QB"
+   },
+   {
+    "season": 1988,
+    "player": "Boomer Esiason",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 1989,
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1990,
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1991,
+    "player": "Thurman Thomas",
+    "team": "Bills",
+    "position": "RB"
+   },
+   {
+    "season": 1992,
+    "player": "Steve Young",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1993,
+    "player": "Emmitt Smith",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 1994,
+    "player": "Steve Young",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1995,
+    "player": "Brett Favre",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1996,
+    "player": "Brett Favre",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1997,
+    "player": "Brett Favre",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1997,
+    "player": "Barry Sanders",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1998,
+    "player": "Terrell Davis",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 1999,
+    "player": "Kurt Warner",
+    "team": "Rams",
+    "position": "QB"
+   },
+   {
+    "season": 2000,
+    "player": "Marshall Faulk",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2001,
+    "player": "Kurt Warner",
+    "team": "Rams",
+    "position": "QB"
+   },
+   {
+    "season": 2002,
+    "player": "Rich Gannon",
+    "team": "Raiders",
+    "position": "QB"
+   },
+   {
+    "season": 2003,
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2003,
+    "player": "Steve McNair",
+    "team": "Titans",
+    "position": "QB"
+   },
+   {
+    "season": 2004,
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2005,
+    "player": "Shaun Alexander",
+    "team": "Seahawks",
+    "position": "RB"
+   },
+   {
+    "season": 2006,
+    "player": "LaDainian Tomlinson",
+    "team": "Chargers",
+    "position": "RB"
+   },
+   {
+    "season": 2007,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2008,
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2009,
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2010,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2011,
+    "player": "Aaron Rodgers",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 2012,
+    "player": "Adrian Peterson",
+    "team": "Vikings",
+    "position": "RB"
+   },
+   {
+    "season": 2013,
+    "player": "Peyton Manning",
+    "team": "Broncos",
+    "position": "QB"
+   },
+   {
+    "season": 2014,
+    "player": "Aaron Rodgers",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 2015,
+    "player": "Cam Newton",
+    "team": "Panthers",
+    "position": "QB"
+   },
+   {
+    "season": 2016,
+    "player": "Matt Ryan",
+    "team": "Falcons",
+    "position": "QB"
+   },
+   {
+    "season": 2017,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2018,
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2019,
+    "player": "Lamar Jackson",
+    "team": "Ravens",
+    "position": "QB"
+   },
+   {
+    "season": 2020,
+    "player": "Aaron Rodgers",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 2021,
+    "player": "Aaron Rodgers",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 2022,
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2023,
+    "player": "Lamar Jackson",
+    "team": "Ravens",
+    "position": "QB"
+   },
+   {
+    "season": 2024,
+    "player": "Josh Allen",
+    "team": "Bills",
+    "position": "QB"
+   },
+   {
+    "season": 2025,
+    "player": "Matthew Stafford",
+    "team": "Rams",
+    "position": "QB"
+   }
+  ],
+  "opoy": [
+   {
+    "season": 1972,
+    "player": "Larry Brown",
+    "team": "Commanders",
+    "position": "RB"
+   },
+   {
+    "season": 1973,
+    "player": "O. J. Simpson",
+    "team": "Bills",
+    "position": "RB"
+   },
+   {
+    "season": 1974,
+    "player": "Ken Stabler",
+    "team": "Raiders",
+    "position": "QB"
+   },
+   {
+    "season": 1975,
+    "player": "Fran Tarkenton",
+    "team": "Vikings",
+    "position": "QB"
+   },
+   {
+    "season": 1976,
+    "player": "Bert Jones",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 1977,
+    "player": "Walter Payton",
+    "team": "Bears",
+    "position": "RB"
+   },
+   {
+    "season": 1978,
+    "player": "Earl Campbell",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1979,
+    "player": "Earl Campbell",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1980,
+    "player": "Earl Campbell",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1981,
+    "player": "Ken Anderson",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 1982,
+    "player": "Dan Fouts",
+    "team": "Chargers",
+    "position": "QB"
+   },
+   {
+    "season": 1983,
+    "player": "Joe Theismann",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 1984,
+    "player": "Dan Marino",
+    "team": "Dolphins",
+    "position": "QB"
+   },
+   {
+    "season": 1985,
+    "player": "Marcus Allen",
+    "team": "Raiders",
+    "position": "RB"
+   },
+   {
+    "season": 1986,
+    "player": "Eric Dickerson",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 1987,
+    "player": "Jerry Rice",
+    "team": "49ers",
+    "position": "WR"
+   },
+   {
+    "season": 1988,
+    "player": "Roger Craig",
+    "team": "49ers",
+    "position": "RB"
+   },
+   {
+    "season": 1989,
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1990,
+    "player": "Warren Moon",
+    "team": "Titans",
+    "position": "QB"
+   },
+   {
+    "season": 1991,
+    "player": "Thurman Thomas",
+    "team": "Bills",
+    "position": "RB"
+   },
+   {
+    "season": 1992,
+    "player": "Steve Young",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1993,
+    "player": "Jerry Rice",
+    "team": "49ers",
+    "position": "WR"
+   },
+   {
+    "season": 1994,
+    "player": "Barry Sanders",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1995,
+    "player": "Brett Favre",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1996,
+    "player": "Terrell Davis",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 1997,
+    "player": "Barry Sanders",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1998,
+    "player": "Terrell Davis",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 1999,
+    "player": "Marshall Faulk",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2000,
+    "player": "Marshall Faulk",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2001,
+    "player": "Marshall Faulk",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2002,
+    "player": "Priest Holmes",
+    "team": "Chiefs",
+    "position": "RB"
+   },
+   {
+    "season": 2003,
+    "player": "Jamal Lewis",
+    "team": "Ravens",
+    "position": "RB"
+   },
+   {
+    "season": 2004,
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2005,
+    "player": "Shaun Alexander",
+    "team": "Seahawks",
+    "position": "RB"
+   },
+   {
+    "season": 2006,
+    "player": "LaDainian Tomlinson",
+    "team": "Chargers",
+    "position": "RB"
+   },
+   {
+    "season": 2007,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2008,
+    "player": "Drew Brees",
+    "team": "Saints",
+    "position": "QB"
+   },
+   {
+    "season": 2009,
+    "player": "Chris Johnson",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 2010,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2011,
+    "player": "Drew Brees",
+    "team": "Saints",
+    "position": "QB"
+   },
+   {
+    "season": 2012,
+    "player": "Adrian Peterson",
+    "team": "Vikings",
+    "position": "RB"
+   },
+   {
+    "season": 2013,
+    "player": "Peyton Manning",
+    "team": "Broncos",
+    "position": "QB"
+   },
+   {
+    "season": 2014,
+    "player": "DeMarco Murray",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 2015,
+    "player": "Cam Newton",
+    "team": "Panthers",
+    "position": "QB"
+   },
+   {
+    "season": 2016,
+    "player": "Matt Ryan",
+    "team": "Falcons",
+    "position": "QB"
+   },
+   {
+    "season": 2017,
+    "player": "Todd Gurley",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2018,
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2019,
+    "player": "Michael Thomas",
+    "team": "Saints",
+    "position": "WR"
+   },
+   {
+    "season": 2020,
+    "player": "Derrick Henry",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 2021,
+    "player": "Cooper Kupp",
+    "team": "Rams",
+    "position": "WR"
+   },
+   {
+    "season": 2022,
+    "player": "Justin Jefferson",
+    "team": "Vikings",
+    "position": "WR"
+   },
+   {
+    "season": 2023,
+    "player": "Christian McCaffrey",
+    "team": "49ers",
+    "position": "RB"
+   },
+   {
+    "season": 2024,
+    "player": "Saquon Barkley",
+    "team": "Eagles",
+    "position": "RB"
+   },
+   {
+    "season": 2025,
+    "player": "Jaxon Smith-Njigba",
+    "team": "Seahawks",
+    "position": "WR"
+   }
+  ],
+  "dpoy": [
+   {
+    "season": 1971,
+    "player": "Alan Page",
+    "team": "Vikings",
+    "position": "DT"
+   },
+   {
+    "season": 1972,
+    "player": "Joe Greene",
+    "team": "Steelers",
+    "position": "DT"
+   },
+   {
+    "season": 1973,
+    "player": "Dick Anderson",
+    "team": "Dolphins",
+    "position": "S"
+   },
+   {
+    "season": 1974,
+    "player": "Joe Greene",
+    "team": "Steelers",
+    "position": "DT"
+   },
+   {
+    "season": 1975,
+    "player": "Mel Blount",
+    "team": "Steelers",
+    "position": "CB"
+   },
+   {
+    "season": 1976,
+    "player": "Jack Lambert",
+    "team": "Steelers",
+    "position": "LB"
+   },
+   {
+    "season": 1977,
+    "player": "Harvey Martin",
+    "team": "Cowboys",
+    "position": "DE"
+   },
+   {
+    "season": 1978,
+    "player": "Randy Gradishar",
+    "team": "Broncos",
+    "position": "LB"
+   },
+   {
+    "season": 1979,
+    "player": "Lee Roy Selmon",
+    "team": "Buccaneers",
+    "position": "DE"
+   },
+   {
+    "season": 1980,
+    "player": "Lester Hayes",
+    "team": "Raiders",
+    "position": "CB"
+   },
+   {
+    "season": 1981,
+    "player": "Lawrence Taylor",
+    "team": "Giants",
+    "position": "LB"
+   },
+   {
+    "season": 1982,
+    "player": "Lawrence Taylor",
+    "team": "Giants",
+    "position": "LB"
+   },
+   {
+    "season": 1983,
+    "player": "Doug Betters",
+    "team": "Dolphins",
+    "position": "DE"
+   },
+   {
+    "season": 1984,
+    "player": "Kenny Easley",
+    "team": "Seahawks",
+    "position": "S"
+   },
+   {
+    "season": 1985,
+    "player": "Mike Singletary",
+    "team": "Bears",
+    "position": "LB"
+   },
+   {
+    "season": 1986,
+    "player": "Lawrence Taylor",
+    "team": "Giants",
+    "position": "LB"
+   },
+   {
+    "season": 1987,
+    "player": "Reggie White",
+    "team": "Eagles",
+    "position": "DE"
+   },
+   {
+    "season": 1988,
+    "player": "Mike Singletary",
+    "team": "Bears",
+    "position": "LB"
+   },
+   {
+    "season": 1989,
+    "player": "Keith Millard",
+    "team": "Vikings",
+    "position": "DT"
+   },
+   {
+    "season": 1990,
+    "player": "Bruce Smith",
+    "team": "Bills",
+    "position": "DE"
+   },
+   {
+    "season": 1991,
+    "player": "Pat Swilling",
+    "team": "Saints",
+    "position": "LB"
+   },
+   {
+    "season": 1992,
+    "player": "Cortez Kennedy",
+    "team": "Seahawks",
+    "position": "DT"
+   },
+   {
+    "season": 1993,
+    "player": "Rod Woodson",
+    "team": "Steelers",
+    "position": "CB"
+   },
+   {
+    "season": 1994,
+    "player": "Deion Sanders",
+    "team": "49ers",
+    "position": "CB"
+   },
+   {
+    "season": 1995,
+    "player": "Bryce Paup",
+    "team": "Bills",
+    "position": "LB"
+   },
+   {
+    "season": 1996,
+    "player": "Bruce Smith",
+    "team": "Bills",
+    "position": "DE"
+   },
+   {
+    "season": 1997,
+    "player": "Dana Stubblefield",
+    "team": "49ers",
+    "position": "DT"
+   },
+   {
+    "season": 1998,
+    "player": "Reggie White",
+    "team": "Packers",
+    "position": "DE"
+   },
+   {
+    "season": 1999,
+    "player": "Warren Sapp",
+    "team": "Buccaneers",
+    "position": "DT"
+   },
+   {
+    "season": 2000,
+    "player": "Ray Lewis",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 2001,
+    "player": "Michael Strahan",
+    "team": "Giants",
+    "position": "DE"
+   },
+   {
+    "season": 2002,
+    "player": "Derrick Brooks",
+    "team": "Buccaneers",
+    "position": "LB"
+   },
+   {
+    "season": 2003,
+    "player": "Ray Lewis",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 2004,
+    "player": "Ed Reed",
+    "team": "Ravens",
+    "position": "S"
+   },
+   {
+    "season": 2005,
+    "player": "Brian Urlacher",
+    "team": "Bears",
+    "position": "LB"
+   },
+   {
+    "season": 2006,
+    "player": "Jason Taylor",
+    "team": "Dolphins",
+    "position": "DE"
+   },
+   {
+    "season": 2007,
+    "player": "Bob Sanders",
+    "team": "Colts",
+    "position": "S"
+   },
+   {
+    "season": 2008,
+    "player": "James Harrison",
+    "team": "Steelers",
+    "position": "LB"
+   },
+   {
+    "season": 2009,
+    "player": "Charles Woodson",
+    "team": "Packers",
+    "position": "CB"
+   },
+   {
+    "season": 2010,
+    "player": "Troy Polamalu",
+    "team": "Steelers",
+    "position": "S"
+   },
+   {
+    "season": 2011,
+    "player": "Terrell Suggs",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 2012,
+    "player": "J. J. Watt",
+    "team": "Texans",
+    "position": "DE"
+   },
+   {
+    "season": 2013,
+    "player": "Luke Kuechly",
+    "team": "Panthers",
+    "position": "LB"
+   },
+   {
+    "season": 2014,
+    "player": "J. J. Watt",
+    "team": "Texans",
+    "position": "DE"
+   },
+   {
+    "season": 2015,
+    "player": "J. J. Watt",
+    "team": "Texans",
+    "position": "DE"
+   },
+   {
+    "season": 2016,
+    "player": "Khalil Mack",
+    "team": "Raiders",
+    "position": "DE"
+   },
+   {
+    "season": 2017,
+    "player": "Aaron Donald",
+    "team": "Rams",
+    "position": "DT"
+   },
+   {
+    "season": 2018,
+    "player": "Aaron Donald",
+    "team": "Rams",
+    "position": "DT"
+   },
+   {
+    "season": 2019,
+    "player": "Stephon Gilmore",
+    "team": "Patriots",
+    "position": "CB"
+   },
+   {
+    "season": 2020,
+    "player": "Aaron Donald",
+    "team": "Rams",
+    "position": "DT"
+   },
+   {
+    "season": 2021,
+    "player": "T. J. Watt",
+    "team": "Steelers",
+    "position": "LB"
+   },
+   {
+    "season": 2022,
+    "player": "Nick Bosa",
+    "team": "49ers",
+    "position": "DE"
+   },
+   {
+    "season": 2023,
+    "player": "Myles Garrett",
+    "team": "Browns",
+    "position": "DE"
+   },
+   {
+    "season": 2024,
+    "player": "Patrick Surtain II",
+    "team": "Broncos",
+    "position": "CB"
+   },
+   {
+    "season": 2025,
+    "player": "Myles Garrett",
+    "team": "Browns",
+    "position": "DE"
+   }
+  ],
+  "oroy": [
+   {
+    "season": 1957,
+    "player": "Jim Brown",
+    "team": "Browns",
+    "position": "RB"
+   },
+   {
+    "season": 1958,
+    "player": "Jimmy Orr",
+    "team": "Steelers",
+    "position": "WR"
+   },
+   {
+    "season": 1959,
+    "player": "Boyd Dowler",
+    "team": "Packers",
+    "position": "WR"
+   },
+   {
+    "season": 1960,
+    "player": "Gail Cogdill",
+    "team": "Lions",
+    "position": "WR"
+   },
+   {
+    "season": 1961,
+    "player": "Mike Ditka",
+    "team": "Bears",
+    "position": "TE"
+   },
+   {
+    "season": 1962,
+    "player": "Ron Bull",
+    "team": "Bears",
+    "position": "RB"
+   },
+   {
+    "season": 1963,
+    "player": "Paul Flatley",
+    "team": "Vikings",
+    "position": "WR"
+   },
+   {
+    "season": 1964,
+    "player": "Charley Taylor",
+    "team": "Commanders",
+    "position": "RB"
+   },
+   {
+    "season": 1965,
+    "player": "Gale Sayers",
+    "team": "Bears",
+    "position": "RB"
+   },
+   {
+    "season": 1966,
+    "player": "Johnny Roland",
+    "team": "Cardinals",
+    "position": "RB"
+   },
+   {
+    "season": 1967,
+    "player": "Mel Farr",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1968,
+    "player": "Earl McCullouch",
+    "team": "Lions",
+    "position": "WR"
+   },
+   {
+    "season": 1969,
+    "player": "Calvin Hill",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 1970,
+    "player": "Dennis Shaw",
+    "team": "Bills",
+    "position": "QB"
+   },
+   {
+    "season": 1971,
+    "player": "John Brockington",
+    "team": "Packers",
+    "position": "RB"
+   },
+   {
+    "season": 1972,
+    "player": "Franco Harris",
+    "team": "Steelers",
+    "position": "RB"
+   },
+   {
+    "season": 1973,
+    "player": "Chuck Foreman",
+    "team": "Vikings",
+    "position": "RB"
+   },
+   {
+    "season": 1974,
+    "player": "Don Woods",
+    "team": "Chargers",
+    "position": "RB"
+   },
+   {
+    "season": 1975,
+    "player": "Mike Thomas",
+    "team": "Commanders",
+    "position": "RB"
+   },
+   {
+    "season": 1976,
+    "player": "Sammy White",
+    "team": "Vikings",
+    "position": "WR"
+   },
+   {
+    "season": 1977,
+    "player": "Tony Dorsett",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 1978,
+    "player": "Earl Campbell",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1979,
+    "player": "Ottis Anderson",
+    "team": "Cardinals",
+    "position": "RB"
+   },
+   {
+    "season": 1980,
+    "player": "Billy Sims",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1981,
+    "player": "George Rogers",
+    "team": "Saints",
+    "position": "RB"
+   },
+   {
+    "season": 1982,
+    "player": "Marcus Allen",
+    "team": "Raiders",
+    "position": "RB"
+   },
+   {
+    "season": 1983,
+    "player": "Eric Dickerson",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 1984,
+    "player": "Louis Lipps",
+    "team": "Steelers",
+    "position": "WR"
+   },
+   {
+    "season": 1985,
+    "player": "Eddie Brown",
+    "team": "Bengals",
+    "position": "WR"
+   },
+   {
+    "season": 1986,
+    "player": "Rueben Mayes",
+    "team": "Saints",
+    "position": "RB"
+   },
+   {
+    "season": 1987,
+    "player": "Troy Stradford",
+    "team": "Dolphins",
+    "position": "RB"
+   },
+   {
+    "season": 1988,
+    "player": "John Stephens",
+    "team": "Patriots",
+    "position": "RB"
+   },
+   {
+    "season": 1989,
+    "player": "Barry Sanders",
+    "team": "Lions",
+    "position": "RB"
+   },
+   {
+    "season": 1990,
+    "player": "Emmitt Smith",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 1991,
+    "player": "Leonard Russell",
+    "team": "Patriots",
+    "position": "RB"
+   },
+   {
+    "season": 1992,
+    "player": "Carl Pickens",
+    "team": "Bengals",
+    "position": "WR"
+   },
+   {
+    "season": 1993,
+    "player": "Jerome Bettis",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 1994,
+    "player": "Marshall Faulk",
+    "team": "Colts",
+    "position": "RB"
+   },
+   {
+    "season": 1995,
+    "player": "Curtis Martin",
+    "team": "Patriots",
+    "position": "RB"
+   },
+   {
+    "season": 1996,
+    "player": "Eddie George",
+    "team": "Titans",
+    "position": "RB"
+   },
+   {
+    "season": 1997,
+    "player": "Warrick Dunn",
+    "team": "Buccaneers",
+    "position": "RB"
+   },
+   {
+    "season": 1998,
+    "player": "Randy Moss",
+    "team": "Vikings",
+    "position": "WR"
+   },
+   {
+    "season": 1999,
+    "player": "Edgerrin James",
+    "team": "Colts",
+    "position": "RB"
+   },
+   {
+    "season": 2000,
+    "player": "Mike Anderson",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 2001,
+    "player": "Anthony Thomas",
+    "team": "Bears",
+    "position": "RB"
+   },
+   {
+    "season": 2002,
+    "player": "Clinton Portis",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 2003,
+    "player": "Anquan Boldin",
+    "team": "Cardinals",
+    "position": "WR"
+   },
+   {
+    "season": 2004,
+    "player": "Ben Roethlisberger",
+    "team": "Steelers",
+    "position": "QB"
+   },
+   {
+    "season": 2005,
+    "player": "Cadillac Williams",
+    "team": "Buccaneers",
+    "position": "RB"
+   },
+   {
+    "season": 2006,
+    "player": "Vince Young",
+    "team": "Titans",
+    "position": "QB"
+   },
+   {
+    "season": 2007,
+    "player": "Adrian Peterson",
+    "team": "Vikings",
+    "position": "RB"
+   },
+   {
+    "season": 2008,
+    "player": "Matt Ryan",
+    "team": "Falcons",
+    "position": "QB"
+   },
+   {
+    "season": 2009,
+    "player": "Percy Harvin",
+    "team": "Vikings",
+    "position": "WR"
+   },
+   {
+    "season": 2010,
+    "player": "Sam Bradford",
+    "team": "Rams",
+    "position": "QB"
+   },
+   {
+    "season": 2011,
+    "player": "Cam Newton",
+    "team": "Panthers",
+    "position": "QB"
+   },
+   {
+    "season": 2012,
+    "player": "Robert Griffin III",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 2013,
+    "player": "Eddie Lacy",
+    "team": "Packers",
+    "position": "RB"
+   },
+   {
+    "season": 2014,
+    "player": "Odell Beckham Jr.",
+    "team": "Giants",
+    "position": "WR"
+   },
+   {
+    "season": 2015,
+    "player": "Todd Gurley",
+    "team": "Rams",
+    "position": "RB"
+   },
+   {
+    "season": 2016,
+    "player": "Dak Prescott",
+    "team": "Cowboys",
+    "position": "QB"
+   },
+   {
+    "season": 2017,
+    "player": "Alvin Kamara",
+    "team": "Saints",
+    "position": "RB"
+   },
+   {
+    "season": 2018,
+    "player": "Saquon Barkley",
+    "team": "Giants",
+    "position": "RB"
+   },
+   {
+    "season": 2019,
+    "player": "Kyler Murray",
+    "team": "Cardinals",
+    "position": "QB"
+   },
+   {
+    "season": 2020,
+    "player": "Justin Herbert",
+    "team": "Chargers",
+    "position": "QB"
+   },
+   {
+    "season": 2021,
+    "player": "Ja'Marr Chase",
+    "team": "Bengals",
+    "position": "WR"
+   },
+   {
+    "season": 2022,
+    "player": "Garrett Wilson",
+    "team": "Jets",
+    "position": "WR"
+   },
+   {
+    "season": 2023,
+    "player": "C. J. Stroud",
+    "team": "Texans",
+    "position": "QB"
+   },
+   {
+    "season": 2024,
+    "player": "Jayden Daniels",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 2025,
+    "player": "Tetairoa McMillan",
+    "team": "Panthers",
+    "position": "WR"
+   }
+  ],
+  "droy": [
+   {
+    "season": 1967,
+    "player": "Lem Barney",
+    "team": "Lions",
+    "position": "CB"
+   },
+   {
+    "season": 1968,
+    "player": "Claude Humphrey",
+    "team": "Falcons",
+    "position": "DE"
+   },
+   {
+    "season": 1969,
+    "player": "Joe Greene",
+    "team": "Steelers",
+    "position": "DT"
+   },
+   {
+    "season": 1970,
+    "player": "Bruce Taylor",
+    "team": "49ers",
+    "position": "CB"
+   },
+   {
+    "season": 1971,
+    "player": "Isiah Robertson",
+    "team": "Rams",
+    "position": "LB"
+   },
+   {
+    "season": 1972,
+    "player": "Willie Buchanon",
+    "team": "Packers",
+    "position": "CB"
+   },
+   {
+    "season": 1973,
+    "player": "Wally Chambers",
+    "team": "Bears",
+    "position": "DT"
+   },
+   {
+    "season": 1974,
+    "player": "Jack Lambert",
+    "team": "Steelers",
+    "position": "LB"
+   },
+   {
+    "season": 1975,
+    "player": "Robert Brazile",
+    "team": "Titans",
+    "position": "LB"
+   },
+   {
+    "season": 1976,
+    "player": "Mike Haynes",
+    "team": "Patriots",
+    "position": "CB"
+   },
+   {
+    "season": 1977,
+    "player": "A. J. Duhe",
+    "team": "Dolphins",
+    "position": "DE"
+   },
+   {
+    "season": 1978,
+    "player": "Al Baker",
+    "team": "Lions",
+    "position": "DE"
+   },
+   {
+    "season": 1979,
+    "player": "Jim Haslett",
+    "team": "Bills",
+    "position": "LB"
+   },
+   {
+    "season": 1980,
+    "player": "Buddy Curry",
+    "team": "Falcons",
+    "position": "LB"
+   },
+   {
+    "season": 1980,
+    "player": "Al Richardson",
+    "team": "Falcons",
+    "position": "LB"
+   },
+   {
+    "season": 1981,
+    "player": "Lawrence Taylor",
+    "team": "Giants",
+    "position": "LB"
+   },
+   {
+    "season": 1982,
+    "player": "Chip Banks",
+    "team": "Browns",
+    "position": "LB"
+   },
+   {
+    "season": 1983,
+    "player": "Vernon Maxwell",
+    "team": "Colts",
+    "position": "LB"
+   },
+   {
+    "season": 1984,
+    "player": "Bill Maas",
+    "team": "Chiefs",
+    "position": "DT"
+   },
+   {
+    "season": 1985,
+    "player": "Duane Bickett",
+    "team": "Colts",
+    "position": "LB"
+   },
+   {
+    "season": 1986,
+    "player": "Leslie O'Neal",
+    "team": "Chargers",
+    "position": "DE"
+   },
+   {
+    "season": 1987,
+    "player": "Shane Conlan",
+    "team": "Bills",
+    "position": "LB"
+   },
+   {
+    "season": 1988,
+    "player": "Erik McMillan",
+    "team": "Jets",
+    "position": "S"
+   },
+   {
+    "season": 1989,
+    "player": "Derrick Thomas",
+    "team": "Chiefs",
+    "position": "LB"
+   },
+   {
+    "season": 1990,
+    "player": "Mark Carrier",
+    "team": "Bears",
+    "position": "S"
+   },
+   {
+    "season": 1991,
+    "player": "Mike Croel",
+    "team": "Broncos",
+    "position": "LB"
+   },
+   {
+    "season": 1992,
+    "player": "Dale Carter",
+    "team": "Chiefs",
+    "position": "CB"
+   },
+   {
+    "season": 1993,
+    "player": "Dana Stubblefield",
+    "team": "49ers",
+    "position": "DT"
+   },
+   {
+    "season": 1994,
+    "player": "Tim Bowens",
+    "team": "Dolphins",
+    "position": "DT"
+   },
+   {
+    "season": 1995,
+    "player": "Hugh Douglas",
+    "team": "Jets",
+    "position": "DE"
+   },
+   {
+    "season": 1996,
+    "player": "Simeon Rice",
+    "team": "Cardinals",
+    "position": "DE"
+   },
+   {
+    "season": 1997,
+    "player": "Peter Boulware",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 1998,
+    "player": "Charles Woodson",
+    "team": "Raiders",
+    "position": "CB"
+   },
+   {
+    "season": 1999,
+    "player": "Jevon Kearse",
+    "team": "Titans",
+    "position": "DE"
+   },
+   {
+    "season": 2000,
+    "player": "Brian Urlacher",
+    "team": "Bears",
+    "position": "LB"
+   },
+   {
+    "season": 2001,
+    "player": "Kendrell Bell",
+    "team": "Steelers",
+    "position": "LB"
+   },
+   {
+    "season": 2002,
+    "player": "Julius Peppers",
+    "team": "Panthers",
+    "position": "DE"
+   },
+   {
+    "season": 2003,
+    "player": "Terrell Suggs",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 2004,
+    "player": "Jonathan Vilma",
+    "team": "Jets",
+    "position": "LB"
+   },
+   {
+    "season": 2005,
+    "player": "Shawne Merriman",
+    "team": "Chargers",
+    "position": "LB"
+   },
+   {
+    "season": 2006,
+    "player": "DeMeco Ryans",
+    "team": "Texans",
+    "position": "LB"
+   },
+   {
+    "season": 2007,
+    "player": "Patrick Willis",
+    "team": "49ers",
+    "position": "LB"
+   },
+   {
+    "season": 2008,
+    "player": "Jerod Mayo",
+    "team": "Patriots",
+    "position": "LB"
+   },
+   {
+    "season": 2009,
+    "player": "Brian Cushing",
+    "team": "Texans",
+    "position": "LB"
+   },
+   {
+    "season": 2010,
+    "player": "Ndamukong Suh",
+    "team": "Lions",
+    "position": "DT"
+   },
+   {
+    "season": 2011,
+    "player": "Von Miller",
+    "team": "Broncos",
+    "position": "LB"
+   },
+   {
+    "season": 2012,
+    "player": "Luke Kuechly",
+    "team": "Panthers",
+    "position": "LB"
+   },
+   {
+    "season": 2013,
+    "player": "Sheldon Richardson",
+    "team": "Jets",
+    "position": "DE"
+   },
+   {
+    "season": 2014,
+    "player": "Aaron Donald",
+    "team": "Rams",
+    "position": "DT"
+   },
+   {
+    "season": 2015,
+    "player": "Marcus Peters",
+    "team": "Chiefs",
+    "position": "CB"
+   },
+   {
+    "season": 2016,
+    "player": "Joey Bosa",
+    "team": "Chargers",
+    "position": "DE"
+   },
+   {
+    "season": 2017,
+    "player": "Marshon Lattimore",
+    "team": "Saints",
+    "position": "CB"
+   },
+   {
+    "season": 2018,
+    "player": "Shaquille Leonard",
+    "team": "Colts",
+    "position": "LB"
+   },
+   {
+    "season": 2019,
+    "player": "Nick Bosa",
+    "team": "49ers",
+    "position": "DE"
+   },
+   {
+    "season": 2020,
+    "player": "Chase Young",
+    "team": "Commanders",
+    "position": "DE"
+   },
+   {
+    "season": 2021,
+    "player": "Micah Parsons",
+    "team": "Cowboys",
+    "position": "LB"
+   },
+   {
+    "season": 2022,
+    "player": "Sauce Gardner",
+    "team": "Jets",
+    "position": "CB"
+   },
+   {
+    "season": 2023,
+    "player": "Will Anderson Jr.",
+    "team": "Texans",
+    "position": "DE"
+   },
+   {
+    "season": 2024,
+    "player": "Jared Verse",
+    "team": "Rams",
+    "position": "LB"
+   },
+   {
+    "season": 2025,
+    "player": "Carson Schwesinger",
+    "team": "Browns",
+    "position": "LB"
+   }
+  ],
+  "sbmvp": [
+   {
+    "season": 1966,
+    "superbowl": "I",
+    "player": "Bart Starr",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1967,
+    "superbowl": "II",
+    "player": "Bart Starr",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 1968,
+    "superbowl": "III",
+    "player": "Joe Namath",
+    "team": "Jets",
+    "position": "QB"
+   },
+   {
+    "season": 1969,
+    "superbowl": "IV",
+    "player": "Len Dawson",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 1970,
+    "superbowl": "V",
+    "player": "Chuck Howley",
+    "team": "Cowboys",
+    "position": "LB"
+   },
+   {
+    "season": 1971,
+    "superbowl": "VI",
+    "player": "Roger Staubach",
+    "team": "Cowboys",
+    "position": "QB"
+   },
+   {
+    "season": 1972,
+    "superbowl": "VII",
+    "player": "Jake Scott",
+    "team": "Dolphins",
+    "position": "S"
+   },
+   {
+    "season": 1973,
+    "superbowl": "VIII",
+    "player": "Larry Csonka",
+    "team": "Dolphins",
+    "position": "RB"
+   },
+   {
+    "season": 1974,
+    "superbowl": "IX",
+    "player": "Franco Harris",
+    "team": "Steelers",
+    "position": "RB"
+   },
+   {
+    "season": 1975,
+    "superbowl": "X",
+    "player": "Lynn Swann",
+    "team": "Steelers",
+    "position": "WR"
+   },
+   {
+    "season": 1976,
+    "superbowl": "XI",
+    "player": "Fred Biletnikoff",
+    "team": "Raiders",
+    "position": "WR"
+   },
+   {
+    "season": 1977,
+    "superbowl": "XII",
+    "player": "Harvey Martin",
+    "team": "Cowboys",
+    "position": "DE"
+   },
+   {
+    "season": 1977,
+    "superbowl": "XII",
+    "player": "Randy White",
+    "team": "Cowboys",
+    "position": "DT"
+   },
+   {
+    "season": 1978,
+    "superbowl": "XIII",
+    "player": "Terry Bradshaw",
+    "team": "Steelers",
+    "position": "QB"
+   },
+   {
+    "season": 1979,
+    "superbowl": "XIV",
+    "player": "Terry Bradshaw",
+    "team": "Steelers",
+    "position": "QB"
+   },
+   {
+    "season": 1980,
+    "superbowl": "XV",
+    "player": "Jim Plunkett",
+    "team": "Raiders",
+    "position": "QB"
+   },
+   {
+    "season": 1981,
+    "superbowl": "XVI",
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1982,
+    "superbowl": "XVII",
+    "player": "John Riggins",
+    "team": "Commanders",
+    "position": "RB"
+   },
+   {
+    "season": 1983,
+    "superbowl": "XVIII",
+    "player": "Marcus Allen",
+    "team": "Raiders",
+    "position": "RB"
+   },
+   {
+    "season": 1984,
+    "superbowl": "XIX",
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1985,
+    "superbowl": "XX",
+    "player": "Richard Dent",
+    "team": "Bears",
+    "position": "DE"
+   },
+   {
+    "season": 1986,
+    "superbowl": "XXI",
+    "player": "Phil Simms",
+    "team": "Giants",
+    "position": "QB"
+   },
+   {
+    "season": 1987,
+    "superbowl": "XXII",
+    "player": "Doug Williams",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 1988,
+    "superbowl": "XXIII",
+    "player": "Jerry Rice",
+    "team": "49ers",
+    "position": "WR"
+   },
+   {
+    "season": 1989,
+    "superbowl": "XXIV",
+    "player": "Joe Montana",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1990,
+    "superbowl": "XXV",
+    "player": "Ottis Anderson",
+    "team": "Giants",
+    "position": "RB"
+   },
+   {
+    "season": 1991,
+    "superbowl": "XXVI",
+    "player": "Mark Rypien",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 1992,
+    "superbowl": "XXVII",
+    "player": "Troy Aikman",
+    "team": "Cowboys",
+    "position": "QB"
+   },
+   {
+    "season": 1993,
+    "superbowl": "XXVIII",
+    "player": "Emmitt Smith",
+    "team": "Cowboys",
+    "position": "RB"
+   },
+   {
+    "season": 1994,
+    "superbowl": "XXIX",
+    "player": "Steve Young",
+    "team": "49ers",
+    "position": "QB"
+   },
+   {
+    "season": 1995,
+    "superbowl": "XXX",
+    "player": "Larry Brown",
+    "team": "Cowboys",
+    "position": "CB"
+   },
+   {
+    "season": 1996,
+    "superbowl": "XXXI",
+    "player": "Desmond Howard",
+    "team": "Packers",
+    "position": "KR"
+   },
+   {
+    "season": 1997,
+    "superbowl": "XXXII",
+    "player": "Terrell Davis",
+    "team": "Broncos",
+    "position": "RB"
+   },
+   {
+    "season": 1998,
+    "superbowl": "XXXIII",
+    "player": "John Elway",
+    "team": "Broncos",
+    "position": "QB"
+   },
+   {
+    "season": 1999,
+    "superbowl": "XXXIV",
+    "player": "Kurt Warner",
+    "team": "Rams",
+    "position": "QB"
+   },
+   {
+    "season": 2000,
+    "superbowl": "XXXV",
+    "player": "Ray Lewis",
+    "team": "Ravens",
+    "position": "LB"
+   },
+   {
+    "season": 2001,
+    "superbowl": "XXXVI",
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2002,
+    "superbowl": "XXXVII",
+    "player": "Dexter Jackson",
+    "team": "Buccaneers",
+    "position": "S"
+   },
+   {
+    "season": 2003,
+    "superbowl": "XXXVIII",
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2004,
+    "superbowl": "XXXIX",
+    "player": "Deion Branch",
+    "team": "Patriots",
+    "position": "WR"
+   },
+   {
+    "season": 2005,
+    "superbowl": "XL",
+    "player": "Hines Ward",
+    "team": "Steelers",
+    "position": "WR"
+   },
+   {
+    "season": 2006,
+    "superbowl": "XLI",
+    "player": "Peyton Manning",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2007,
+    "superbowl": "XLII",
+    "player": "Eli Manning",
+    "team": "Giants",
+    "position": "QB"
+   },
+   {
+    "season": 2008,
+    "superbowl": "XLIII",
+    "player": "Santonio Holmes",
+    "team": "Steelers",
+    "position": "WR"
+   },
+   {
+    "season": 2009,
+    "superbowl": "XLIV",
+    "player": "Drew Brees",
+    "team": "Saints",
+    "position": "QB"
+   },
+   {
+    "season": 2010,
+    "superbowl": "XLV",
+    "player": "Aaron Rodgers",
+    "team": "Packers",
+    "position": "QB"
+   },
+   {
+    "season": 2011,
+    "superbowl": "XLVI",
+    "player": "Eli Manning",
+    "team": "Giants",
+    "position": "QB"
+   },
+   {
+    "season": 2012,
+    "superbowl": "XLVII",
+    "player": "Joe Flacco",
+    "team": "Ravens",
+    "position": "QB"
+   },
+   {
+    "season": 2013,
+    "superbowl": "XLVIII",
+    "player": "Malcolm Smith",
+    "team": "Seahawks",
+    "position": "LB"
+   },
+   {
+    "season": 2014,
+    "superbowl": "XLIX",
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2015,
+    "superbowl": "50",
+    "player": "Von Miller",
+    "team": "Broncos",
+    "position": "LB"
+   },
+   {
+    "season": 2016,
+    "superbowl": "LI",
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2017,
+    "superbowl": "LII",
+    "player": "Nick Foles",
+    "team": "Eagles",
+    "position": "QB"
+   },
+   {
+    "season": 2018,
+    "superbowl": "LIII",
+    "player": "Julian Edelman",
+    "team": "Patriots",
+    "position": "WR"
+   },
+   {
+    "season": 2019,
+    "superbowl": "LIV",
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2020,
+    "superbowl": "LV",
+    "player": "Tom Brady",
+    "team": "Buccaneers",
+    "position": "QB"
+   },
+   {
+    "season": 2021,
+    "superbowl": "LVI",
+    "player": "Cooper Kupp",
+    "team": "Rams",
+    "position": "WR"
+   },
+   {
+    "season": 2022,
+    "superbowl": "LVII",
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2023,
+    "superbowl": "LVIII",
+    "player": "Patrick Mahomes",
+    "team": "Chiefs",
+    "position": "QB"
+   },
+   {
+    "season": 2024,
+    "superbowl": "LIX",
+    "player": "Jalen Hurts",
+    "team": "Eagles",
+    "position": "QB"
+   },
+   {
+    "season": 2025,
+    "superbowl": "LX",
+    "player": "Kenneth Walker III",
+    "team": "Seahawks",
+    "position": "RB"
+   }
+  ]
+ },
+ "champions": [
+  {
+   "season": 1966,
+   "superbowl": "I",
+   "winner": "Packers",
+   "loser": "Chiefs",
+   "score": "35-10"
+  },
+  {
+   "season": 1967,
+   "superbowl": "II",
+   "winner": "Packers",
+   "loser": "Raiders",
+   "score": "33-14"
+  },
+  {
+   "season": 1968,
+   "superbowl": "III",
+   "winner": "Jets",
+   "loser": "Colts",
+   "score": "16-7"
+  },
+  {
+   "season": 1969,
+   "superbowl": "IV",
+   "winner": "Chiefs",
+   "loser": "Vikings",
+   "score": "23-7"
+  },
+  {
+   "season": 1970,
+   "superbowl": "V",
+   "winner": "Colts",
+   "loser": "Cowboys",
+   "score": "16-13"
+  },
+  {
+   "season": 1971,
+   "superbowl": "VI",
+   "winner": "Cowboys",
+   "loser": "Dolphins",
+   "score": "24-3"
+  },
+  {
+   "season": 1972,
+   "superbowl": "VII",
+   "winner": "Dolphins",
+   "loser": "Commanders",
+   "score": "14-7"
+  },
+  {
+   "season": 1973,
+   "superbowl": "VIII",
+   "winner": "Dolphins",
+   "loser": "Vikings",
+   "score": "24-7"
+  },
+  {
+   "season": 1974,
+   "superbowl": "IX",
+   "winner": "Steelers",
+   "loser": "Vikings",
+   "score": "16-6"
+  },
+  {
+   "season": 1975,
+   "superbowl": "X",
+   "winner": "Steelers",
+   "loser": "Cowboys",
+   "score": "21-17"
+  },
+  {
+   "season": 1976,
+   "superbowl": "XI",
+   "winner": "Raiders",
+   "loser": "Vikings",
+   "score": "32-14"
+  },
+  {
+   "season": 1977,
+   "superbowl": "XII",
+   "winner": "Cowboys",
+   "loser": "Broncos",
+   "score": "27-10"
+  },
+  {
+   "season": 1978,
+   "superbowl": "XIII",
+   "winner": "Steelers",
+   "loser": "Cowboys",
+   "score": "35-31"
+  },
+  {
+   "season": 1979,
+   "superbowl": "XIV",
+   "winner": "Steelers",
+   "loser": "Rams",
+   "score": "31-19"
+  },
+  {
+   "season": 1980,
+   "superbowl": "XV",
+   "winner": "Raiders",
+   "loser": "Eagles",
+   "score": "27-10"
+  },
+  {
+   "season": 1981,
+   "superbowl": "XVI",
+   "winner": "49ers",
+   "loser": "Bengals",
+   "score": "26-21"
+  },
+  {
+   "season": 1982,
+   "superbowl": "XVII",
+   "winner": "Commanders",
+   "loser": "Dolphins",
+   "score": "27-17"
+  },
+  {
+   "season": 1983,
+   "superbowl": "XVIII",
+   "winner": "Raiders",
+   "loser": "Commanders",
+   "score": "38-9"
+  },
+  {
+   "season": 1984,
+   "superbowl": "XIX",
+   "winner": "49ers",
+   "loser": "Dolphins",
+   "score": "38-16"
+  },
+  {
+   "season": 1985,
+   "superbowl": "XX",
+   "winner": "Bears",
+   "loser": "Patriots",
+   "score": "46-10"
+  },
+  {
+   "season": 1986,
+   "superbowl": "XXI",
+   "winner": "Giants",
+   "loser": "Broncos",
+   "score": "39-20"
+  },
+  {
+   "season": 1987,
+   "superbowl": "XXII",
+   "winner": "Commanders",
+   "loser": "Broncos",
+   "score": "42-10"
+  },
+  {
+   "season": 1988,
+   "superbowl": "XXIII",
+   "winner": "49ers",
+   "loser": "Bengals",
+   "score": "20-16"
+  },
+  {
+   "season": 1989,
+   "superbowl": "XXIV",
+   "winner": "49ers",
+   "loser": "Broncos",
+   "score": "55-10"
+  },
+  {
+   "season": 1990,
+   "superbowl": "XXV",
+   "winner": "Giants",
+   "loser": "Bills",
+   "score": "20-19"
+  },
+  {
+   "season": 1991,
+   "superbowl": "XXVI",
+   "winner": "Commanders",
+   "loser": "Bills",
+   "score": "37-24"
+  },
+  {
+   "season": 1992,
+   "superbowl": "XXVII",
+   "winner": "Cowboys",
+   "loser": "Bills",
+   "score": "52-17"
+  },
+  {
+   "season": 1993,
+   "superbowl": "XXVIII",
+   "winner": "Cowboys",
+   "loser": "Bills",
+   "score": "30-13"
+  },
+  {
+   "season": 1994,
+   "superbowl": "XXIX",
+   "winner": "49ers",
+   "loser": "Chargers",
+   "score": "49-26"
+  },
+  {
+   "season": 1995,
+   "superbowl": "XXX",
+   "winner": "Cowboys",
+   "loser": "Steelers",
+   "score": "27-17"
+  },
+  {
+   "season": 1996,
+   "superbowl": "XXXI",
+   "winner": "Packers",
+   "loser": "Patriots",
+   "score": "35-21"
+  },
+  {
+   "season": 1997,
+   "superbowl": "XXXII",
+   "winner": "Broncos",
+   "loser": "Packers",
+   "score": "31-24"
+  },
+  {
+   "season": 1998,
+   "superbowl": "XXXIII",
+   "winner": "Broncos",
+   "loser": "Falcons",
+   "score": "34-19"
+  },
+  {
+   "season": 1999,
+   "superbowl": "XXXIV",
+   "winner": "Rams",
+   "loser": "Titans",
+   "score": "23-16"
+  },
+  {
+   "season": 2000,
+   "superbowl": "XXXV",
+   "winner": "Ravens",
+   "loser": "Giants",
+   "score": "34-7"
+  },
+  {
+   "season": 2001,
+   "superbowl": "XXXVI",
+   "winner": "Patriots",
+   "loser": "Rams",
+   "score": "20-17"
+  },
+  {
+   "season": 2002,
+   "superbowl": "XXXVII",
+   "winner": "Buccaneers",
+   "loser": "Raiders",
+   "score": "48-21"
+  },
+  {
+   "season": 2003,
+   "superbowl": "XXXVIII",
+   "winner": "Patriots",
+   "loser": "Panthers",
+   "score": "32-29"
+  },
+  {
+   "season": 2004,
+   "superbowl": "XXXIX",
+   "winner": "Patriots",
+   "loser": "Eagles",
+   "score": "24-21"
+  },
+  {
+   "season": 2005,
+   "superbowl": "XL",
+   "winner": "Steelers",
+   "loser": "Seahawks",
+   "score": "21-10"
+  },
+  {
+   "season": 2006,
+   "superbowl": "XLI",
+   "winner": "Colts",
+   "loser": "Bears",
+   "score": "29-17"
+  },
+  {
+   "season": 2007,
+   "superbowl": "XLII",
+   "winner": "Giants",
+   "loser": "Patriots",
+   "score": "17-14"
+  },
+  {
+   "season": 2008,
+   "superbowl": "XLIII",
+   "winner": "Steelers",
+   "loser": "Cardinals",
+   "score": "27-23"
+  },
+  {
+   "season": 2009,
+   "superbowl": "XLIV",
+   "winner": "Saints",
+   "loser": "Colts",
+   "score": "31-17"
+  },
+  {
+   "season": 2010,
+   "superbowl": "XLV",
+   "winner": "Packers",
+   "loser": "Steelers",
+   "score": "31-25"
+  },
+  {
+   "season": 2011,
+   "superbowl": "XLVI",
+   "winner": "Giants",
+   "loser": "Patriots",
+   "score": "21-17"
+  },
+  {
+   "season": 2012,
+   "superbowl": "XLVII",
+   "winner": "Ravens",
+   "loser": "49ers",
+   "score": "34-31"
+  },
+  {
+   "season": 2013,
+   "superbowl": "XLVIII",
+   "winner": "Seahawks",
+   "loser": "Broncos",
+   "score": "43-8"
+  },
+  {
+   "season": 2014,
+   "superbowl": "XLIX",
+   "winner": "Patriots",
+   "loser": "Seahawks",
+   "score": "28-24"
+  },
+  {
+   "season": 2015,
+   "superbowl": "50",
+   "winner": "Broncos",
+   "loser": "Panthers",
+   "score": "24-10"
+  },
+  {
+   "season": 2016,
+   "superbowl": "LI",
+   "winner": "Patriots",
+   "loser": "Falcons",
+   "score": "34-28"
+  },
+  {
+   "season": 2017,
+   "superbowl": "LII",
+   "winner": "Eagles",
+   "loser": "Patriots",
+   "score": "41-33"
+  },
+  {
+   "season": 2018,
+   "superbowl": "LIII",
+   "winner": "Patriots",
+   "loser": "Rams",
+   "score": "13-3"
+  },
+  {
+   "season": 2019,
+   "superbowl": "LIV",
+   "winner": "Chiefs",
+   "loser": "49ers",
+   "score": "31-20"
+  },
+  {
+   "season": 2020,
+   "superbowl": "LV",
+   "winner": "Buccaneers",
+   "loser": "Chiefs",
+   "score": "31-9"
+  },
+  {
+   "season": 2021,
+   "superbowl": "LVI",
+   "winner": "Rams",
+   "loser": "Bengals",
+   "score": "23-20"
+  },
+  {
+   "season": 2022,
+   "superbowl": "LVII",
+   "winner": "Chiefs",
+   "loser": "Eagles",
+   "score": "38-35"
+  },
+  {
+   "season": 2023,
+   "superbowl": "LVIII",
+   "winner": "Chiefs",
+   "loser": "49ers",
+   "score": "25-22"
+  },
+  {
+   "season": 2024,
+   "superbowl": "LIX",
+   "winner": "Eagles",
+   "loser": "Chiefs",
+   "score": "40-22"
+  },
+  {
+   "season": 2025,
+   "superbowl": "LX",
+   "winner": "Seahawks",
+   "loser": "Patriots",
+   "score": "29-13"
+  }
+ ]
+}

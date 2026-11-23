@@ -1,0 +1,781 @@
+3012 real players in the save (2355 on a club, 657 free agents); 2994 matched to nflverse, 2430 with their own sprites
+  matched by: None 18, dob+last 20, dob+name 2812, name 5, name+pos (save dob is a namesake's) 5, name+rookie 152
+
+NOT MATCHED (18)
+  Xavier Newman · OL · Jets · 1999-08-04 · 2022 · 0
+  Jalen Moreno-Cropper · WR · Saints · 2001-05-03 · 2023 · 0
+  Cooper Hodges · OL · FA · 2000-06-13 · 2023 · 0
+  Kaden Prather · WR · Packers · 2002-09-06 · 2025 · 0
+  BJ Adams · CB · FA · 2003-08-17 · 2025 · 0
+  Seth Coleman-Lyles · DL · Dolphins · 2000-12-07 · 2025 · 0
+  Mitch Van Vooren · TE · FA · 2001-01-13 · 2025 · 0
+  Boog Smith · LB · FA · 2002-08-12 · 2025 · 0
+  Matt Jones · LB · FA · 2000-09-09 · 2025 · 0
+  Joseph Vaughn · LB · FA · 2000-08-08 · 2025 · 0
+  Devin Veresuk · LB · Colts · 2001-11-22 · 2025 · 0
+  Mario Williams · WR · Rams · 2003-01-21 · 2025 · 0
+  Wesley Steiner · RB · FA · 2002-02-21 · 2025 · 0
+  Mac Dalena · WR · Bills · 2001-10-04 · 2025 · 0
+  Jalan Gaines · LB · Seahawks · 2001-04-12 · 2025 · 0
+  Jacob Roberts · LB · Vikings · 2001-09-20 · 2024 · 0
+  Marshall Foerner · OL · Buccaneers · 2000-12-31 · 2025 · 0
+  Tyre West · DL · Lions · 2003-01-18 · 2026 · 0
+
+NO SPRITE FILES (582)
+  Kingsley Jonathan · DL · Jets · 100049
+  Shaq Lawson · DL · FA · 100050
+  Daequan Hardy · CB · FA · 100061
+  Te'Cory Couch · CB · Bills · 100064
+  Mike Edwards · OL · FA · 100072
+  Shane Buechele · QB · Bills · 100081
+  Frank Gore Jr. · RB · Bills · 100083
+  Eli Apple · CB · FA · 101039
+  Nik Needham · S · FA · 101043
+  Will Bradley-King · DL · 49ers · 101063
+  Bayron Matos · OL · Colts · 101076
+  Liam Fornadel · OL · Jets · 102072
+  Tyrone Wheatley Jr. · OL · FA · 102082
+  Jarius Monroe · S · Jets · 103063
+  Kendall Sheffield · CB · FA · 103064
+  Jimmy Ciarlo · LB · Bills · 103073
+  Obinna Eze · OL · FA · 103078
+  Anthony Firkser · TE · FA · 103086
+  Reese Taylor · CB · Broncos · 104064
+  Jordan Miller · DL · Broncos · 104066
+  Nick Gargiulo · OL · FA · 104067
+  Will Sherman · OL · Saints · 104076
+  Tanner McCalister · S · Chiefs · 104082
+  Ben DiNucci · QB · FA · 104090
+  Hakeem Butler · WR · Broncos · 104091
+  Keith Taylor · CB · FA · 105058
+  Karsen Barnhart · OL · Packers · 106072
+  Jaret Patterson · RB · Chargers · 106076
+  Jakob Johnson · RB · FA · 107030
+  Tyler Hall · CB · FA · 107034
+  MJ Devonshire · CB · Packers · 107064
+  Janarius Robinson · DL · FA · 107066
+  David Agoha · DL · FA · 107068
+  Carter Bradley · QB · Jaguars · 107079
+  Sincere McCormick · RB · 49ers · 107081
+  Kristian Wilkerson · WR · FA · 107089
+  Sam Mustipher · OL · FA · 108035
+  Damarion Williams · CB · Buccaneers · 108041
+  Daryl Worley · S · FA · 108042
+  Owen Wright · RB · FA · 108082
+  Malik Cunningham · WR · Lions · 108085
+  Cornelius Johnson · WR · Ravens · 108090
+  Scotty Washington · TE · FA · 108091
+  William Kwenkeu · LB · FA · 108092
+  Trey Hill · OL · FA · 109024
+  Devonnsha Maxwell · DL · Falcons · 109047
+  Josh Tupou · DL · Giants · 109050
+  Devin Cochran · OL · Lions · 109069
+  Cole Burgess · WR · FA · 109079
+  Shedrick Jackson · WR · Raiders · 109080
+  Kendric Pryor · WR · Bengals · 109081
+  Lorenzo Thompson · OL · Steelers · 110070
+  Jedrick Wills Jr. · OL · Bears · 110074
+  Tyre Phillips · OL · Browns · 110087
+  Doug Nester · OL · Steelers · 111071
+  Dylan Cook · OL · Steelers · 111077
+  Kyler Baugh · DL · Steelers · 111081
+  Lew Nichols · RB · Steelers · 111082
+  Julius Welschof · LB · Steelers · 111083
+  Lance McCutcheon · WR · Titans · 111084
+  Matt Sokol · TE · FA · 111086
+  Solomon Byrd · DL · Texans · 112064
+  Marcus Harris · DL · Chiefs · 112065
+  David Sharpe · OL · FA · 112074
+  Mark Perry · S · Packers · 112081
+  Brandon Hill · S · FA · 112082
+  Chris Myarick · TE · FA · 112085
+  Xavier Johnson · WR · Bengals · 112088
+  Jawhar Jordan · RB · Texans · 112090
+  Jared Wayne · WR · Texans · 112091
+  Quintez Cephus · WR · FA · 112094
+  Liam Anderson · LB · Bengals · 113071
+  Durell Nchami · DL · Colts · 113085
+  Ben Nikkel · S · Colts · 113086
+  Troy Pride Jr. · CB · FA · 113087
+  Chris Wormley · DL · FA · 113089
+  Steven Jones · OL · Steelers · 114068
+  Kyle Peko · DL · FA · 115055
+  Marlon Davidson · DL · FA · 115065
+  Garret Wallow · LB · 49ers · 115077
+  Leroy Watson IV · OL · FA · 115081
+  Jabari Small · RB · Lions · 115082
+  Joel Wilson · TE · Titans · 115090
+  Chandler Brewer · OL · FA · 115091
+  Eric Scott Jr. · CB · FA · 116035
+  Viliami Fehoko Jr. · DL · FA · 116047
+  Amani Oruwariye · CB · Ravens · 116060
+  Kemon Hall · CB · Buccaneers · 116063
+  Matt Waletzko · OL · Chiefs · 116074
+  Jalen Moreno-Cropper · WR · Saints · 116083
+  Geron Christian · OL · FA · 116086
+  Denzel Mims · WR · Cowboys · 116087
+  Jaden Smith · WR · Cowboys · 116088
+  Jimmy Morrissey · OL · Colts · 117065
+  Alex Johnson · CB · Rams · 117068
+  Casey Rogers · DL · FA · 117070
+  Timmy Horne · DL · Titans · 117072
+  Benton Whitley · DL · Browns · 117076
+  Dylan McMahon · OL · Rams · 118058
+  Jack Driscoll · OL · Steelers · 118074
+  Laekin Vakalahi · OL · Chargers · 118075
+  E.J. Jenkins · TE · Eagles · 118079
+  McCallan Castles · TE · FA · 118080
+  Ricky Stromberg · OL · FA · 119033
+  Saahdiq Charles · OL · Panthers · 119046
+  Haggai Ndubuisi · DL · FA · 119067
+  Michael Wiley · RB · FA · 119081
+  Qwuantrezz Knight · S · Commanders · 120055
+  Jaden Davis · CB · FA · 120071
+  Andre Baccellia · WR · FA · 120087
+  Dan Chisena · WR · Panthers · 120088
+  Tejhaun Palmer · WR · Patriots · 120089
+  Anthony Goodlow · DL · Steelers · 120090
+  Cam Lampkin · CB · Rams · 121063
+  AJ Arcuri · OL · Rams · 121079
+  Tanner Ingle · S · Rams · 121084
+  Nikola Kalinic · TE · Bears · 121086
+  Jack Heflin · DL · Jets · 121092
+  A.J. Green · CB · Dolphins · 121093
+  Drake Nugent · OL · 49ers · 122060
+  Evan Anderson · DL · FA · 122063
+  Jonathan Garvin · DL · Bears · 122069
+  Isaac Alarcon · OL · 49ers · 122073
+  Malik Turner · WR · 49ers · 122084
+  Andrew Farmer II · DL · 49ers · 122086
+  Tyreke Smith · DL · Chiefs · 123069
+  Jamree Kromah · DL · Bears · 124065
+  Byron Cowart · DL · FA · 124066
+  Carl Jones · LB · Ravens · 124068
+  Bill Murray · OL · Rams · 124069
+  Ian Wheeler · RB · Bills · 124075
+  Stephen Carlson · TE · Bears · 124076
+  Maurice Alexander · WR · Bears · 124079
+  Jeremiah Martin · DL · Bears · 124080
+  Nate Lynn · DL · FA · 125068
+  Netane Muti · OL · FA · 125071
+  Jermar Jefferson · RB · FA · 125085
+  Lecitus Smith · OL · FA · 126064
+  Kadeem Telfort · OL · FA · 126073
+  Ricky Lee · OL · Jaguars · 127077
+  Khalid Kareem · LB · Giants · 128069
+  Zion Logue · DL · Bills · 128071
+  Storm Norton · OL · FA · 128078
+  Andrew Stueber · OL · Falcons · 128079
+  Carlos Washington Jr. · RB · Dolphins · 128081
+  Chris Blair · WR · Falcons · 128084
+  Dylan Drummond · WR · Falcons · 128085
+  Ryan Hayes · OL · Panthers · 128087
+  Brandon Parker · OL · 49ers · 128089
+  A.J. Woods · CB · Falcons · 128090
+  Ross Blacklock · DL · FA · 128092
+  D'Shawn Jamison · CB · Steelers · 129039
+  Alex Cook · CB · Rams · 129043
+  Tarron Jackson · DL · FA · 129067
+  Messiah Swinson · TE · Packers · 129085
+  Jacoby Windmon · LB · Steelers · 129090
+  Kyon Barrs · DL · Panthers · 129091
+  Kyle Hergel · OL · Bears · 130064
+  Treyton Welch · TE · Saints · 130083
+  Kevin Austin Jr. · WR · Saints · 130086
+  Jayden Price · CB · Saints · 130089
+  Dante Pettis · WR · Bills · 130090
+  Marcus Banks · S · Buccaneers · 131056
+  Ben Stille · DL · Lions · 131057
+  Jose Ramirez · LB · Eagles · 131063
+  Raiqwon O'Neal · OL · FA · 131073
+  Wande Owens · S · Bills · 200010
+  Stephen Gosnell · WR · Bills · 200011
+  Jalen Kimber · CB · Bengals · 200013
+  Keleki Latu · TE · Bills · 200014
+  Josh Priebe · OL · Dolphins · 201012
+  Theo Wease Jr. · WR · Dolphins · 201014
+  Ethan Robinson · CB · Dolphins · 201017
+  Gottlieb Ayedze · OL · Dolphins · 201018
+  Major Burns · S · Dolphins · 201019
+  Seth Coleman-Lyles · DL · Dolphins · 201020
+  Brandon Crossley · CB · Patriots · 202022
+  Mitch Van Vooren · TE · FA · 202023
+  Jamaal Pritchett · WR · Jets · 203014
+  Quentin Skinner · WR · Bills · 203015
+  Gus Hartwig · OL · FA · 203019
+  Fatorma Mulbah · DL · Dolphins · 203020
+  Paschal Ekeji · DL · Jets · 203021
+  Gee Scott · WR · FA · 203022
+  Johnny Walker · LB · Broncos · 204009
+  Kristian Williams · DL · Broncos · 204010
+  Joe Michalski · OL · Patriots · 204011
+  Jaden Robinson · CB · Broncos · 204012
+  Jordan Turner · LB · FA · 204013
+  Marques Cox · OL · Dolphins · 204014
+  Kyrese Rowan · WR · Broncos · 204015
+  Sean Fresch Jr. · CB · Broncos · 204016
+  Ethan Downs · LB · Chiefs · 205011
+  Melvin Smith Jr. · CB · Chiefs · 205014
+  Tre Watson · TE · Chiefs · 205015
+  Andrew Armstrong · WR · Chiefs · 205016
+  Kam Arnold · LB · Chiefs · 205017
+  Savion Washington · OL · FA · 206015
+  TeRah Edwards · DL · Chargers · 206016
+  Luke Grimm · WR · Chargers · 206017
+  Amar Johnson · RB · Chargers · 206018
+  Josh Kaltenberger · OL · Chargers · 206019
+  Myles Purchase · S · Chargers · 206020
+  Garmon Randolph · LB · Chargers · 206021
+  DJ Uiagalelei · QB · Chargers · 206022
+  Isas Waxter · CB · Chargers · 206023
+  Treven Ma'ae · DL · Raiders · 207013
+  Greedy Vance · CB · Raiders · 207016
+  Marquise Robinson · CB · Ravens · 208019
+  Lucas Scott · RB · Ravens · 208021
+  Xavier Guillory · WR · Ravens · 208022
+  Jacob Bayer · OL · Bengals · 209013
+  Dohnte Meyers · WR · Bengals · 209014
+  Logan Brown · OL · Seahawks · 210015
+  LaMareon James · CB · FA · 210016
+  Ahmani Marshall · RB · Browns · 210018
+  Eugene Asante · LB · Cardinals · 210019
+  Simeon Barrow Jr. · DL · FA · 210020
+  Luke Floriea · WR · Browns · 210021
+  Caden Prieskorn · TE · Panthers · 210022
+  Sebastian Castro · S · Steelers · 211008
+  JJ Galbreath · TE · Steelers · 211009
+  Daryl Porter · CB · Steelers · 211011
+  Doneiko Slaughter · CB · Steelers · 211013
+  Aiden Williams · OL · Steelers · 211014
+  Alijah Huzzie · CB · Texans · 212011
+  Eli Cox · OL · Texans · 212013
+  Reid Holskey · OL · Broncos · 212014
+  Josh Kelly · WR · Texans · 212015
+  K.C. Ossai · LB · Texans · 212016
+  Junior Tafuna · DL · Jets · 212017
+  Ajani Carter · CB · FA · 212019
+  Layne Pryor · TE · Texans · 212020
+  Trey Washington · S · Colts · 213014
+  Rob Carter Jr. · CB · Colts · 213015
+  Wyett Ekeler · CB · FA · 213016
+  Eli Pancol · WR · Colts · 213017
+  Joseph Vaughn · LB · FA · 213018
+  Devin Veresuk · LB · Colts · 213019
+  Branson Combs · LB · Jaguars · 214013
+  Seth Henigan · QB · FA · 214014
+  Ja'Quinden Jackson · RB · Eagles · 214016
+  Jabbar Muhammad · CB · Jaguars · 214017
+  Keivie Rose · DL · Jaguars · 214018
+  Cam'Ron Silmon-Craig · S · Jaguars · 214019
+  Sal Wormley · OL · FA · 214020
+  Drake Dabney · TE · Packers · 215012
+  Keydrain Calligan · CB · Titans · 215017
+  Hal Presley III · WR · FA · 215018
+  Cam Riley · LB · FA · 215019
+  Traeshon Holden · WR · Cowboys · 216014
+  Dalen Cambre · WR · Giants · 217011
+  Trace Ford · LB · Giants · 217012
+  Luke Felix-Fualalo · OL · FA · 218013
+  Hollin Pierce · OL · Eagles · 218015
+  Jake Majors · OL · Eagles · 218016
+  Ja'Corey Brooks · WR · FA · 219008
+  Jacoby Jones · WR · Commanders · 219010
+  T.J. Maguranyanga · DL · Commanders · 219011
+  Robert McDaniel · S · Commanders · 219012
+  Timothy McKay · OL · Commanders · 219013
+  Car'lin Vigers · CB · Commanders · 219014
+  Tyler Cooper · OL · Commanders · 219015
+  Elliott Brown · LB · Cardinals · 220012
+  Jeremiah Byers · OL · Browns · 220013
+  Bryson Green · WR · Cardinals · 220015
+  Wyatt Bowles · OL · Rams · 221008
+  Tru Edwards · WR · Rams · 221009
+  Jamil Muhammad · LB · FA · 221010
+  Bill Norton · DL · Rams · 221011
+  Brennan Presley · WR · Rams · 221012
+  Mark Redman · TE · Rams · 221013
+  Nate Valcarcel · S · Rams · 221014
+  Mario Williams · WR · Rams · 221015
+  Jordan Waters · RB · Rams · 221016
+  Jakob Robinson · CB · 49ers · 222013
+  Derrick Canteen · CB · Titans · 222014
+  Sebastian Valdez · DL · 49ers · 222015
+  Stone Blanton · LB · FA · 222016
+  Mac Dalena · WR · Bills · 223023
+  Montorie Foster Jr. · WR · Seahawks · 223025
+  Bubba Thomas · DL · Seahawks · 223026
+  Jalan Gaines · LB · Seahawks · 223027
+  Deion Hankins · RB · FA · 224010
+  Dontae Manning · CB · Bears · 224012
+  JP Richardson · WR · Bears · 224013
+  Keith Cooper Jr. · DL · Dolphins · 225009
+  Mason Miller · OL · Lions · 225012
+  Jack Conley · OL · Browns · 225013
+  Lawrence Keys III · WR · FA · 225014
+  Tarik Black · WR · Lions · 225015
+  Tay Martin · WR · Lions · 225016
+  Thomas Gordon · TE · Lions · 225017
+  Jamon Johnson · LB · Ravens · 226013
+  Isaiah Neyor · WR · Packers · 226015
+  Will Sheppard · WR · Packers · 226016
+  Tyron Herring · S · Browns · 226017
+  Jakobie Keeney-James · WR · Steelers · 226018
+  Dante Barnett · DL · FA · 226019
+  Anthony Campbell · DL · Packers · 226020
+  Alexander Musch Williams · DL · FA · 227014
+  Dontae Fleming · WR · Vikings · 227016
+  Vershon Lee · OL · Vikings · 227017
+  Bryson Nesbit · TE · Vikings · 227018
+  Zemaiah Vaughn · CB · Vikings · 227019
+  Corey Kiner · RB · Cardinals · 227020
+  Joaquin Davis · WR · Steelers · 227021
+  Jacob Roberts · LB · Vikings · 227023
+  Nick Nash · WR · Commanders · 228011
+  Joshua Simon · TE · Falcons · 228012
+  Tysheem Johnson · CB · FA · 228013
+  Antwane Wells Jr. · WR · Falcons · 228014
+  Keshawn Banks · DL · Falcons · 228015
+  Ja'seem Reed · WR · Panthers · 229016
+  Michael Reid · CB · Saints · 229017
+  Trevian Thomas · S · Jaguars · 229019
+  Anthony Tyus III · RB · Panthers · 229020
+  Montrell Johnson Jr. · RB · FA · 229021
+  Elliott Davison · S · Saints · 230014
+  Easton Kilty · OL · Saints · 230016
+  Hunter Dekkers · QB · Saints · 230017
+  Garrett Greene · WR · Buccaneers · 231012
+  Jack Henderson · S · Steelers · 231013
+  Nash Hutmacher · OL · Buccaneers · 231014
+  Jayson Jones · DL · Buccaneers · 231016
+  Ben Scott · OL · Buccaneers · 231017
+  Desmond Watson · DL · FA · 231018
+  Marshall Foerner · OL · Buccaneers · 231019
+  T. J. Parker · LB · Bills · 300001
+  Toriano Pride Jr. · CB · Bills · 300002
+  Davison Igbinosun · CB · Bills · 300003
+  Jude Bowry · OL · Bills · 300004
+  Skyler Bell · WR · Bills · 300005
+  Kaleb Elarms-Orr · LB · Bills · 300006
+  Jalon Kilgore · S · Bills · 300007
+  Zane Durant · DL · Bills · 300008
+  Ar'maj Reed-Adams · OL · Bills · 300010
+  Kevin Coleman Jr. · WR · Dolphins · 301001
+  Kadyn Proctor · OL · Dolphins · 301002
+  Chris Johnson · CB · Dolphins · 301003
+  Jacob Rodriguez · LB · Dolphins · 301004
+  Caleb Douglas · WR · Dolphins · 301005
+  Will Kacmarek · TE · Dolphins · 301006
+  Chris Bell · WR · FA · 301007
+  Trey Moore · LB · Dolphins · 301008
+  Kyle Louis · LB · Dolphins · 301009
+  Michael Taaffe · S · Dolphins · 301010
+  Seydou Traore · TE · Dolphins · 301011
+  DJ Campbell · OL · Dolphins · 301012
+  Max Llewellyn · DL · Dolphins · 301013
+  Caleb Lomu · OL · Patriots · 302001
+  Gabe Jacas · LB · Patriots · 302002
+  Eli Raridon · TE · Patriots · 302003
+  Karon Prunty · CB · Patriots · 302004
+  Dametrious Crownover · OL · Patriots · 302005
+  Namdi Obiazor · LB · Patriots · 302006
+  Behren Morton · QB · Patriots · 302007
+  Jam Miller · RB · Patriots · 302008
+  Quintayvious Hutchins · LB · Patriots · 302009
+  Omar Cooper Jr. · WR · Jets · 303001
+  Darrell Jackson Jr. · DL · Jets · 303002
+  David Bailey · DL · Jets · 303003
+  Kenyon Sadiq · TE · Jets · 303004
+  D'Angelo Ponds · CB · Jets · 303005
+  Cade Klubnik · QB · Jets · 303006
+  Anez Cooper · OL · Jets · 303007
+  VJ Payne · CB · Jets · 303008
+  Tyler Onyedim · DL · Broncos · 304001
+  Jonah Coleman · RB · Broncos · 304002
+  Kage Casey · OL · Broncos · 304003
+  Justin Joly · TE · Broncos · 304004
+  Miles Scott · S · Broncos · 304005
+  Dallen Bentley · TE · Broncos · 304006
+  Red Murdock · LB · Broncos · 304007
+  R Mason Thomas · DL · Chiefs · 305001
+  Mansoor Delane · CB · Chiefs · 305002
+  Peter Woods · DL · Chiefs · 305003
+  Jadon Canady · CB · Chiefs · 305004
+  Emmett Johnson · RB · Chiefs · 305005
+  Cyrus Allen · WR · Chiefs · 305006
+  Garrett Nussmeier · QB · Chiefs · 305007
+  Akheem Mesidor · LB · Chargers · 306001
+  Jake Slaughter · OL · Chargers · 306002
+  Brenen Thompson · WR · Chargers · 306003
+  Travis Burke · OL · Chargers · 306004
+  Genesis Smith · S · Chargers · 306005
+  Nick Barrett · DL · Chargers · 306006
+  Logan Taylor · OL · Chargers · 306007
+  Alex Harkey · OL · Chargers · 306008
+  Trey Zuhn III · OL · Raiders · 307001
+  Mike Washington Jr. · RB · Raiders · 307002
+  Fernando Mendoza · QB · Raiders · 307003
+  Treydan Stukes · S · Raiders · 307004
+  Keyron Crawford · DL · Raiders · 307005
+  Jermod McCoy · CB · Raiders · 307006
+  Dalton Johnson · S · Raiders · 307007
+  Hezekiah Masses · CB · Raiders · 307008
+  Malik Benson · WR · Raiders · 307009
+  Brandon Cleveland · DL · Raiders · 307010
+  Vega Ioane · OL · Ravens · 308001
+  Zion Young · LB · Ravens · 308002
+  Ja'Kobi Lane · WR · Ravens · 308003
+  Elijah Sarratt · WR · Ravens · 308004
+  Matt Hibner · TE · Ravens · 308005
+  Chandler Rivers · CB · Ravens · 308006
+  Josh Cuevas · TE · Ravens · 308007
+  Adam Randall · RB · Ravens · 308008
+  Rayshaun Benny · DL · Ravens · 308010
+  Evan Beerntsen · OL · Ravens · 308011
+  Brian Parker II · OL · Bengals · 309001
+  Cashius Howell · DL · Bengals · 309002
+  Tacario Davis · CB · Bengals · 309003
+  Connor Lew · OL · Bengals · 309004
+  Colbie Young · WR · Bengals · 309005
+  Jack Endries · TE · Bengals · 309006
+  Landon Robinson · DL · Bengals · 309007
+  Spencer Fano · OL · Browns · 310001
+  KC Concepcion · WR · Browns · 310002
+  Denzel Boston · WR · Browns · 310003
+  Emmanuel McNeil-Warren · S · Browns · 310004
+  Austin Barber · OL · Browns · 310005
+  Parker Brailsford · OL · Browns · 310006
+  Justin Jefferson · LB · Browns · 310007
+  Joe Royer · TE · Browns · 310008
+  Taylen Green · QB · Browns · 310009
+  Carsen Ryan · TE · Browns · 310010
+  Max Iheanachor · OL · Steelers · 311001
+  Germie Bernard · WR · Steelers · 311002
+  Drew Allar · QB · Steelers · 311003
+  Daylen Everette · CB · Steelers · 311004
+  Gennings Dunker · OL · Steelers · 311005
+  Kaden Wetjen · WR · Steelers · 311006
+  Riley Nowakowski · RB · Steelers · 311007
+  Gabriel Rubio · DL · Steelers · 311008
+  Robert Spears-Jennings · S · Steelers · 311009
+  Eli Heidenreich · RB · Steelers · 311010
+  Keylan Rutledge · OL · Texans · 312001
+  Kayden McDonald · DL · Texans · 312002
+  Marlin Klein · TE · Texans · 312003
+  Febechi Nwaiwu · OL · Texans · 312004
+  Wade Woodaz · LB · Texans · 312005
+  Kamari Ramsey · S · Texans · 312006
+  Lewis Bond · WR · Texans · 312007
+  Aiden Fisher · LB · Texans · 312008
+  A. J. Haulcy · S · Colts · 313001
+  George Gumbs Jr. · DL · Colts · 313002
+  CJ Allen · LB · FA · 313003
+  Jalen Farmer · OL · Colts · 313004
+  Bryce Boettcher · LB · Colts · 313005
+  Caden Curry · DL · Colts · 313006
+  Seth McGowan · RB · Colts · 313007
+  Deion Burks · WR · Colts · 313008
+  Nate Boerkircher · TE · Jaguars · 314001
+  Albert Regis · DL · Jaguars · 314002
+  Emmanuel Pregnon · OL · Jaguars · 314003
+  Jalen Huskey · S · Jaguars · 314004
+  Wesley Williams · DL · Jaguars · 314005
+  Tanner Koziol · TE · Jaguars · 314006
+  Josh Cameron · WR · Jaguars · 314007
+  CJ Williams · WR · Jaguars · 314008
+  Zach Durfee · DL · Jaguars · 314009
+  Parker Hughes · LB · Jaguars · 314010
+  Anthony Hill Jr. · LB · Titans · 315001
+  Carnell Tate · WR · Titans · 315002
+  Keldric Faulk · DL · Titans · 315003
+  Fernando Carmona · OL · Titans · 315004
+  Nicholas Singleton · RB · Titans · 315005
+  Jackie Marshall · DL · Titans · 315006
+  Pat Coogan · OL · Titans · 315007
+  Jaren Kanak · TE · Titans · 315008
+  Caleb Downs · CB · Cowboys · 316001
+  Malachi Lawrence · LB · Cowboys · 316002
+  Jaishawn Barham · LB · Cowboys · 316003
+  Drew Shelton · OL · Cowboys · 316004
+  Devin Moore · CB · Cowboys · 316005
+  LT Overton · DL · Cowboys · 316006
+  Anthony Smith · WR · Cowboys · 316007
+  J. C. Davis · OL · Giants · 317001
+  Arvell Reese · LB · Giants · 317002
+  Francis Mauigoa · OL · Giants · 317003
+  Colton Hood · CB · Giants · 317004
+  Malachi Fields · WR · Giants · 317005
+  Bobby Jamison-Travis · DL · Giants · 317006
+  Jack Kelly · LB · Giants · 317007
+  Makai Lemon · WR · Eagles · 318001
+  Eli Stowers · TE · Eagles · 318002
+  Markel Bell · OL · Eagles · 318003
+  Cole Payton · QB · Eagles · 318004
+  Micah Morris · OL · Eagles · 318005
+  Cole Wisniewski · S · Eagles · 318006
+  Uar Bernard · DL · Eagles · 318007
+  Keyshawn James-Newby · LB · Eagles · 318008
+  Sonny Styles · LB · Commanders · 319001
+  Antonio Williams · WR · Commanders · 319002
+  Joshua Josephs · LB · Commanders · 319003
+  Kaytron Allen · RB · Commanders · 319004
+  Matt Gulbin · OL · Commanders · 319005
+  Athan Kaliakmanis · QB · Commanders · 319006
+  Jeremiyah Love · RB · Cardinals · 320001
+  Chase Bisontis · OL · Cardinals · 320002
+  Carson Beck · QB · Cardinals · 320003
+  Kaleb Proctor · DL · FA · 320004
+  Reggie Virgil · WR · Cardinals · 320005
+  Karson Sharar · LB · Cardinals · 320006
+  Jayden Williams · OL · Cardinals · 320007
+  Tim Keenan III · DL · Rams · 321001
+  Ty Simpson · QB · Rams · 321002
+  Max Klare · TE · Rams · 321003
+  Keagen Trost · OL · Rams · 321004
+  CJ Daniels · WR · Rams · 321005
+  Enrique Cruz Jr. · OL · 49ers · 322001
+  De'Zhaun Stribling · WR · 49ers · 322002
+  Romello Height · DL · 49ers · 322003
+  Kaelon Black · RB · 49ers · 322004
+  Gracen Halton · DL · 49ers · 322005
+  Carver Willis · OL · 49ers · 322006
+  Ephesians Prysock · CB · 49ers · 322007
+  Jaden Dugger · LB · 49ers · 322008
+  Emmanuel Henderson Jr. · WR · Seahawks · 323001
+  Jadarian Price · RB · Seahawks · 323002
+  Bud Clark · S · Seahawks · 323003
+  Julian Neal · CB · Seahawks · 323004
+  Beau Stephens · OL · Seahawks · 323005
+  Andre Fuller · CB · Seahawks · 323006
+  Deven Eastern · DL · Seahawks · 323007
+  Michael Dansby · CB · Seahawks · 323008
+  Jordan van den Berg · DL · Bears · 324001
+  Dillon Thieneman · CB · Bears · 324002
+  Logan Jones · OL · Bears · 324003
+  Sam Roush · TE · Bears · 324004
+  Zavion Thomas · WR · Bears · 324005
+  Malik Muhammad · CB · Bears · 324006
+  Keyshaun Elliott · LB · FA · 324007
+  Keith Abney II · CB · Lions · 325001
+  Blake Miller · OL · Lions · 325002
+  Derrick Moore · DL · Lions · 325003
+  Jimmy Rolder · LB · Lions · 325004
+  Kendrick Law · WR · FA · 325005
+  Skyler Gill-Howard · DL · Lions · 325006
+  Tyre West · DL · Lions · 325007
+  Brandon Cisse · CB · Packers · 326001
+  Chris McClellan · DL · Packers · 326002
+  Dani Dennis-Sutton · DL · Packers · 326003
+  Jager Burton · OL · Packers · 326004
+  Domani Jackson · CB · Packers · 326005
+  Caleb Banks · DL · Vikings · 327001
+  Jake Golday · LB · Vikings · 327002
+  Domonique Orange · DL · Vikings · 327003
+  Caleb Tiernan · OL · Vikings · 327004
+  Jakobe Thomas · S · Vikings · 327005
+  Max Bredeson · RB · Vikings · 327006
+  Charles Demmings · CB · Vikings · 327007
+  Demond Claiborne · RB · Vikings · 327008
+  Gavin Gerhardt · OL · Vikings · 327009
+  Harold Perkins Jr. · LB · Falcons · 328001
+  Avieon Terrell · CB · Falcons · 328002
+  Zachariah Branch · WR · Falcons · 328003
+  Kendal Daniels · LB · Falcons · 328004
+  Anterio Thompson · DL · Falcons · 328005
+  Ethan Onianwa · OL · Falcons · 328006
+  Chris Brazzell II · WR · Panthers · 329001
+  Will Lee III · CB · Panthers · 329002
+  Monroe Freeling · OL · Panthers · 329003
+  Lee Hunter · DL · Panthers · 329004
+  Sam Hecht · OL · Panthers · 329005
+  Zakee Wheatley · S · Panthers · 329006
+  Jackson Kuwatch · LB · Panthers · 329007
+  Lorenzo Styles Jr. · S · Saints · 330001
+  Jordyn Tyson · WR · Saints · 330002
+  Christen Miller · DL · Saints · 330003
+  Oscar Delp · TE · Saints · 330004
+  Jeremiah Wright · OL · Saints · 330005
+  Bryce Lance · WR · Saints · 330006
+  Barion Brown · WR · Saints · 330007
+  TJ Hall · CB · Saints · 330008
+  Rueben Bain Jr. · LB · Buccaneers · 331001
+  Josiah Trotter · LB · Buccaneers · 331002
+  Ted Hurst · WR · Buccaneers · 331003
+  Keionte Scott · CB · Buccaneers · 331004
+  DeMonte Capehart · DL · Buccaneers · 331005
+  Billy Schrauth · OL · Buccaneers · 331006
+  Bauer Sharp · TE · Buccaneers · 331007
+
+MEASUREMENTS DIFFER (save vs nflverse: height in, weight lb) (173)
+  Taron Johnson · CB · Raiders · 70 · 71 · 210 · 192
+  Reggie Gilliam · RB · Patriots · 72 · 73 · 244 · 255
+  Ty Johnson · RB · Bills · 71 · 70 · 192 · 210
+  O'Cyrus Torrence · OL · Bills · 77 · 77 · 347 · 330
+  A.J. Epenesa · DL · Eagles · 78 · 78 · 260 · 280
+  Jordan Phillips · DL · FA · 78 · 78 · 341 · 330
+  Durham Smythe · TE · Ravens · 78 · 76 · 246 · 248
+  Austin Jackson · OL · Dolphins · 77 · 77 · 320 · 305
+  David Long Jr. · CB · FA · 71 · 71 · 227 · 196
+  Chop Robinson · DL · Dolphins · 75 · 75 · 254 · 265
+  Brandon Pili · DL · Seahawks · 75 · 75 · 319 · 334
+  Chris Board · LB · FA · 74 · 74 · 244 · 229
+  Joshua Uche · LB · Dolphins · 75 · 75 · 240 · 252
+  Breece Hall · RB · Jets · 73 · 71 · 220 · 217
+  Solomon Thomas · DL · Titans · 74 · 74 · 256 · 285
+  Obinna Eze · OL · FA · 80 · 78 · 325 · 325
+  Jaleel McLaughlin · RB · Broncos · 67 · 69 · 187 · 183
+  Baron Browning · LB · Cardinals · 75 · 75 · 240 · 255
+  Dondrea Tillman · LB · Broncos · 75 · 76 · 270 · 247
+  Jawaan Taylor · OL · Falcons · 77 · 77 · 330 · 312
+  Quentin Johnston · WR · Chargers · 76 · 74 · 215 · 208
+  C.J. Okoye · DL · Ravens · 78 · 78 · 315 · 365
+  Bobby Hart · OL · Seahawks · None · 77 · 334 · 310
+  Zamir White · RB · FA · 72 · 71 · 215 · 227
+  Davante Adams · WR · Rams · 73 · 73 · 215 · 204
+  Dylan Parham · OL · Jets · 75 · 75 · 285 · 311
+  Tyree Wilson · DL · Saints · 78 · 77 · 275 · 263
+  John Jenkins · DL · Ravens · 75 · 75 · 327 · 360
+  Matthew Butler · DL · Dolphins · 75 · 75 · 290 · 305
+  Thayer Munford Jr. · OL · FA · 78 · 77 · 315 · 354
+  Thomas Harper · S · Lions · 70 · 68 · 195 · 195
+  Andrew Vorhees · OL · Ravens · 78 · 78 · 310 · 330
+  Malik Harrison · LB · Steelers · 75 · 75 · 259 · 247
+  David Ojabo · DL · Dolphins · 76 · 76 · 265 · 252
+  Sam Mustipher · OL · FA · 74 · 75 · 332 · 306
+  Malaesala Aumavae-Laulu · OL · Commanders · 77 · 77 · 325 · 344
+  Ben Cleveland · OL · FA · 78 · 78 · 370 · 355
+  Adedayo Odeleye · DL · Cowboys · 77 · 77 · 271 · 285
+  Josh Jones · OL · Seahawks · 77 · 79 · 339 · 339
+  Qadir Ismail · TE · Bears · 78 · 78 · 232 · 245
+  Cody Ford · OL · Bengals · 75 · 75 · 329 · 345
+  Zach Carter · DL · Cardinals · 76 · 76 · 290 · 301
+  Amarius Mims · OL · Bengals · 80 · 80 · 240 · 350
+  Devin Cochran · OL · Lions · 79 · 79 · 310 · 322
+  Jordan Elliott · DL · Titans · 76 · 76 · 303 · 325
+  Elandon Roberts · LB · FA · 73 · 71 · 238 · 235
+  Doug Nester · OL · Steelers · 79 · 78 · 319 · 306
+  Dylan Cook · OL · Steelers · 77 · 78 · 280 · 305
+  Roman Wilson · WR · Steelers · 70 · 72 · 186 · 192
+  Case Keenum · QB · Bears · 73 · 73 · 206 · 220
+  Juice Scruggs · OL · Lions · 75 · 75 · 308 · 320
+  Zack Moss · RB · FA · 69 · 70 · 205 · 220
+  Segun Olubi · LB · Raiders · 72 · 74 · 225 · 220
+  Will Fries · OL · Vikings · 78 · 78 · 305 · 321
+  Isaiah Land · LB · Cowboys · 76 · 76 · 225 · 250
+  Jacob Martin · DL · Titans · 74 · 74 · 242 · 260
+  Eric Johnson II · DL · Vikings · 76 · 76 · 299 · 320
+  Joe Flacco · QB · Bengals · 78 · 78 · 230 · 245
+  Roy Robertson-Harris · DL · FA · 77 · 79 · 290 · 300
+  Ventrell Miller · LB · Jaguars · 72 · 72 · 221 · 232
+  Rayshawn Jenkins · S · FA · 73 · 73 · 200 · 220
+  Tyler Lacy · DL · Lions · 76 · 76 · 285 · 300
+  Jordan Jefferson · DL · Bengals · 74 · 76 · 316 · 317
+  Peter Skoronski · OL · Titans · 76 · 76 · 313 · 330
+  Anthony Kendall · CB · FA · 70 · 70 · 177 · 188
+  Aaron Brewer · OL · Dolphins · 73 · 73 · 274 · 290
+  Teair Tart · DL · Chargers · 74 · 74 · 304 · 315
+  Jabari Small · RB · Lions · 69 · 71 · 198 · 208
+  Hunter Luepke · RB · Cowboys · 73 · 73 · 238 · 250
+  John Stephens Jr. · TE · FA · 77 · 78 · 221 · 240
+  KaVontae Turpin · WR · Cowboys · 69 · 67 · 153 · 158
+  Sean McKeon · TE · Colts · 77 · 77 · 238 · 255
+  DeMarvion Overshown · LB · Cowboys · 74 · 75 · 220 · 235
+  Brock Hoffman · OL · Steelers · 76 · 76 · 302 · 318
+  DaRon Bland · CB · Cowboys · 72 · 74 · 197 · 202
+  Eric Scott Jr. · CB · FA · 72 · 74 · 197 · 202
+  Markquese Bell · S · Cowboys · 75 · 74 · 205 · 217
+  Demarcus Lawrence · LB · Seahawks · 75 · 75 · 265 · 254
+  Kemon Hall · CB · Buccaneers · 71 · 71 · 190 · 202
+  Cooper Beebe · OL · Cowboys · 76 · 75 · 335 · 320
+  Geron Christian · OL · FA · None · 77 · 302 · 335
+  D.J. Davidson · DL · Commanders · 75 · 77 · 327 · 320
+  Jordon Riley · DL · Packers · 77 · 77 · 325 · 338
+  Timmy Horne · DL · Titans · 76 · 76 · 323 · 312
+  D'Andre Swift · RB · Bears · 69 · 68 · 215 · 204
+  Antonio Gibson · RB · FA · 74 · 72 · 220 · 228
+  Michael Wiley · RB · FA · 72 · 70 · 209 · 209
+  Jon Gaines II · OL · Cardinals · 76 · 76 · 303 · 320
+  Paris Johnson Jr. · OL · Cardinals · 78 · 78 · 313 · 325
+  Ezekiel Turner · LB · FA · 74 · 74 · 214 · 225
+  Leki Fotu · DL · Giants · 77 · 77 · 334 · 317
+  Dante Stills · DL · Cardinals · 76 · 76 · 286 · 300
+  Marvin Harrison Jr. · WR · Cardinals · 76 · 75 · 205 · 220
+  Dadrion Taylor-Demerson · S · Cardinals · 70 · 70 · 189 · 200
+  PJ Mustipher · DL · Cardinals · 76 · 76 · 318 · 330
+  Christian Jones · OL · Cardinals · 77 · 77 · 305 · 320
+  Anthony Goodlow · DL · Steelers · None · 77 · 300 · 283
+  Kyren Williams · RB · Rams · 69 · 69 · 194 · 207
+  Puka Nacua · WR · Rams · 74 · 74 · 205 · 216
+  Alaric Jackson · OL · Rams · 79 · 79 · 285 · 338
+  Warren McClendon Jr. · OL · Rams · 76 · 76 · 300 · 315
+  Nick Hampton · LB · Panthers · 75 · 75 · 235 · 250
+  Michael Hoecht · LB · Bills · 76 · 76 · 310 · 267
+  Keir Thomas II · LB · Rams · 74 · 74 · 275 · 260
+  Desjuan Johnson · DL · Rams · 75 · 75 · 252 · 278
+  Cam Lampkin · CB · Rams · 83 · 71 · 176 · 176
+  Cory Durden · DL · Patriots · 76 · 76 · 316 · 305
+  Robert Beal Jr. · DL · Dolphins · 76 · 76 · 250 · 264
+  Tatum Bethune · LB · 49ers · 72 · 72 · 299 · 230
+  Curtis Robinson · LB · Cowboys · 75 · 75 · 235 · 246
+  DeeJay Dallas · RB · Jaguars · 70 · 70 · 214 · 225
+  Colby Parkinson · TE · Rams · 79 · 79 · 251 · 265
+  Uchenna Nwosu · LB · Seahawks · 74 · 74 · 251 · 265
+  Joshua Onujiogu · LB · FA · 74 · 74 · 252 · 265
+  Darrell Taylor · DL · FA · 76 · 76 · 267 · 255
+  Coby Bryant · CB · Bears · 73 · 73 · 193 · 205
+  Dre'Mont Jones · DL · Patriots · 75 · 75 · 281 · 268
+  Mike Morris · DL · Seahawks · 78 · 78 · 295 · 306
+  Byron Murphy II · DL · Seahawks · 71 · 72 · 190 · 306
+  George Fant · OL · FA · 77 · 77 · 316 · 296
+  Michael Jerrell · OL · Falcons · 77 · 77 · 294 · 309
+  Andrew Billings · DL · Cardinals · 73 · 73 · 311 · 340
+  Gervon Dexter Sr. · DL · Bears · 78 · 78 · 312 · 326
+  Dominique Robinson · DL · Texans · 77 · 77 · 253 · 275
+  T.J. Edwards · LB · FA · 73 · 72 · 242 · 228
+  Caleb Williams · QB · Bears · 73 · 73 · 215 · 226
+  Daniel Hardy · DL · Bears · 75 · 74 · 240 · 255
+  Carl Jones · LB · Ravens · 74 · 72 · 230 · 223
+  Bill Murray · OL · Rams · 76 · 76 · 307 · 265
+  Kalif Raymond · WR · Bears · 68 · 69 · 180 · 160
+  James Mitchell · TE · Panthers · 76 · 76 · 246 · 264
+  Levi Onwuzurike · DL · Lions · 75 · 75 · 290 · 304
+  Julian Okwara · DL · Browns · 76 · 76 · 239 · 250
+  Christian Mahogany · OL · FA · 75 · 75 · 319 · 330
+  Robert Rochell · CB · Panthers · 74 · 72 · 195 · 202
+  Johnny Mundt · TE · Eagles · 76 · 76 · 233 · 245
+  Khyiris Tonga · DL · Chiefs · 76 · 74 · 338 · 335
+  Hakeem Adeniji Jr. · OL · Ravens · 76 · 76 · 315 · 302
+  Jalen Redmond · DL · Vikings · 74 · 75 · 291 · 305
+  Levi Drake Rodriguez · DL · Vikings · 76 · 74 · 290 · 307
+  Taki Taimani · DL · Vikings · 73 · 73 · 309 · 324
+  Ricky Lee · OL · Jaguars · 78 · 77 · 305 · 289
+  John FitzPatrick · TE · FA · 79 · 79 · 250 · 262
+  Matt Hennessy · OL · FA · 75 · 76 · 307 · 295
+  Kyle Hinton · OL · Falcons · 74 · 74 · 295 · 315
+  Calais Campbell · DL · Ravens · 80 · 80 · 282 · 307
+  Grady Jarrett · DL · Bears · 72 · 73 · 305 · 294
+  Kentavius Street · DL · Bears · 74 · 74 · 287 · 315
+  Khalid Kareem · LB · Giants · 76 · 76 · 268 · 255
+  Zion Logue · DL · Bills · 78 · 78 · 314 · 325
+  Bralen Trice · LB · Falcons · 76 · 76 · 227 · 274
+  Andrew Stueber · OL · Falcons · 79 · 79 · 318 · 338
+  Chris Blair · WR · Falcons · 74 · 74 · 198 · 215
+  Ronnie Harrison Jr. · LB · Dolphins · None · 74 · 207 · 220
+  Ihmir Smith-Marsette · WR · Cardinals · 73 · 73 · 185 · 200
+  Chandler Zavala · OL · Panthers · 75 · 77 · 322 · 330
+  Jamie Sheriff · LB · Seahawks · 74 · 73 · 265 · 254
+  Ikem Ekwonu · OL · FA · 76 · 76 · 320 · 335
+  Juwan Johnson · TE · Saints · 76 · 76 · 231 · 245
+  Isaiah Foskey · DL · Bengals · 77 · 77 · 265 · 280
+  Justin Herron · OL · FA · 77 · 77 · 290 · 305
+  Devin White · LB · Lions · 72 · 72 · 237 · 252
+  Graham Barton · OL · Buccaneers · 74 · 77 · 313 · 314
+  Raiqwon O'Neal · OL · FA · 76 · 76 · 320 · 305
+  Paschal Ekeji · DL · Jets · None · 76 · 230 · 207
+  Aeneas Peebles · DL · Ravens · None · 72 · 289 · 300
+  Clay Webb · OL · FA · None · 75 · 312 · 290
+  Isaiah Raikes · DL · FA · None · 73 · 310 · 323
+  Alijah Clark · S · Cowboys · None · 73 · 187 · 200
+  Power Echols · LB · FA · None · 72 · 240 · 225
+  Jackson Meeks · WR · Lions · None · 74 · 218 · 235
+  Jack Conley · OL · Browns · None · 79 · 333 · 235
+  Jared Harrison-Hunte · DL · Panthers · None · 76 · 294 · 310

@@ -42,3 +42,7 @@ data/saves/
 
 # Personal Claude Code settings (subagent model): this Mac only
 .claude/settings.local.json
+
+# NFL edition demo: downloaded data and the raw save stay local
+data/nfl-cache/
+data/nfl/games/
