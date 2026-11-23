@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { gameHash, regularGameId, useGameIds } from '@/utils/nflGames';
 import { Flame, Gauge, Medal, Swords, Target, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
@@ -151,6 +152,7 @@ export const PlayerHit = ({ name, pos, playerKey, className, style, children, la
 
 type GameRef = NonNullable<SeasonView['upset']>;
 export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: SeasonStars | null }) => {
+  const ids = useGameIds(true);
   const l = season.league;
   const items: { key: string; kicker: string; icon: typeof Zap; g: GameRef; caption?: string }[] = [];
   if (season.upset) items.push({ key: 'upset', kicker: 'Upset of the year', icon: Zap, g: season.upset, caption: `${season.upset.winner} (${season.upset.winnerRecord}) beat ${season.upset.loser} (${season.upset.loserRecord}) by ${season.upset.margin}` });
@@ -189,7 +191,7 @@ export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: Se
                 <span className="col-start-2 row-start-1 font-pixel text-[9px] text-muted-foreground">@</span>
               </div>
               <StarStrip stars={stars} week={g.week} away={aw} home={hm} />
-              {caption && <p className="relative border-t border-white/10 px-3 py-1.5 text-[11px] text-muted-foreground">{caption}</p>}
+              {caption && <p className="relative flex items-center justify-between gap-2 border-t border-white/10 px-3 py-1.5 text-[11px] text-muted-foreground"><span>{caption}</span>{regularGameId(ids, season.season, g.week, aw, hm) && <a href={gameHash(regularGameId(ids, season.season, g.week, aw, hm)!)} className="flex-shrink-0 font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:underline">Box score</a>}</p>}
             </li>
           );
         })}

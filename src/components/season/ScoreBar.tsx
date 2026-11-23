@@ -52,9 +52,11 @@ interface ScoreBarProps {
   srText: string;
   /** Below the footer: the stars of the game */
   extra?: ReactNode;
+  /** NFL: the Game page's hash for this game */
+  gameHref?: string;
 }
 
-const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, playoff, kicker, aside, srText, extra }: ScoreBarProps) => {
+const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, playoff, kicker, aside, srText, extra, gameHref }: ScoreBarProps) => {
   const played = awayScore !== undefined && homeScore !== undefined;
   const tie = played && awayScore === homeScore;
   return (
@@ -75,7 +77,10 @@ const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, pla
       </div>
       <div className="flex items-center justify-between gap-2 px-2.5 py-1 text-[11px] text-muted-foreground" aria-hidden>
         <span className={cn('font-pixel text-[9px] uppercase tracking-widest', (next || playoff) && 'text-[hsl(var(--gold))]')}>{kicker}</span>
-        {aside && <span className="flex items-center gap-2">{aside}</span>}
+        <span className="flex items-center gap-2">
+          {aside}
+          {gameHref && <a href={gameHref} className="rounded bg-white/10 px-1.5 py-0.5 font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:bg-white/20" aria-hidden={false}>Box score</a>}
+        </span>
       </div>
       {extra}
     </li>

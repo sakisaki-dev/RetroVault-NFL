@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import { keyOf } from '../records';
 import { useGameLog } from '@/utils/gameLogs';
+import { gameHash } from '@/utils/nflGames';
 import { cn } from '@/lib/utils';
 import { RULES, roundShort, abbrOf, avg, dist, fmtDate, fmtN, parseGames, streaksOf, teamHue, teamOf, type Game } from './gameLogModel';
 import './gameLog.css';
@@ -244,7 +245,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
               <div className="gl-pick" aria-live="polite" style={{ '--tc': teamHue(shown.opp) } as React.CSSProperties}>
                 <Logo abbr={shown.opp} size={34} />
                 <div className="min-w-0">
-                  <div className="gl-pick__t">{shown.post ? shown.round : `Week ${shown.week}`} · {shown.home ? 'vs' : 'at'} {teamOf(shown.opp)?.fullName ?? shown.opp} · <Result g={shown} /></div>
+                  <div className="gl-pick__t">{shown.post ? shown.round : `Week ${shown.week}`} · {shown.home ? 'vs' : 'at'} {teamOf(shown.opp)?.fullName ?? shown.opp} · <Result g={shown} />{typeof shown.r.game === 'string' && <> · <a href={gameHash(shown.r.game)} className="text-gold hover:underline">Open game page</a></>}</div>
                   <div className="gl-pick__l">
                     {rule.hasLine ? rule.line.map((c) => <span key={c.id}><em>{c.label}</em> {c.fmt ? c.fmt(shown.r) : fmtN(c.get(shown.r))}</span>) : <span><em>Team</em> {shown.pf} points for, {shown.pa} against</span>}
                     <span className="text-gold"><em>{rule.keyShort}</em> {fmtN(shown.key)}</span>
@@ -378,7 +379,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
               <tbody>
                 {slice.map((g) => (
                   <tr key={g.i} className={cn(g.post && 'gl-post')}>
-                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span></th>
+                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
                     <td><Result g={g} /></td>
                     {rule.line.map((c) => <td key={c.id} className={c.get(g.r) === 0 ? 'opacity-40' : ''}>{c.fmt ? c.fmt(g.r) : fmtN(c.get(g.r))}</td>)}
                     <td className="font-bold text-gold">{fmtN(g.key)}</td>
@@ -394,7 +395,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
               <tbody>
                 {slice.map((g) => (
                   <tr key={g.i} className={cn(g.post && 'gl-post')}>
-                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? g.round : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span></th>
+                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? g.round : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
                     <td><Result g={g} /></td>
                     <td>{fmtDate(g.date)}</td>
                   </tr>
