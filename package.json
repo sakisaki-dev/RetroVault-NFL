@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "rebuild": "python3 scripts/infer_stints.py && python3 scripts/build_league_data.py && npm run -s market && python3 scripts/build_league_data.py --extras && python3 scripts/schedule_content.py && python3 scripts/league_records.py && python3 scripts/career_seasons.py && python3 scripts/hall_of_fame.py && python3 scripts/save_state.py && python3 scripts/build_league_content.py && python3 scripts/build_widget_data.py && python3 scripts/build_app_icons.py --splash && npm run -s audit",
+    "rebuild": "python3 scripts/infer_stints.py && python3 scripts/build_league_data.py && npm run -s market && python3 scripts/build_league_data.py --extras && python3 scripts/schedule_content.py && python3 scripts/league_records.py && python3 scripts/career_seasons.py && python3 scripts/hall_of_fame.py && python3 scripts/save_state.py && python3 scripts/build_league_content.py && python3 scripts/build_widget_data.py && python3 scripts/build_app_icons.py --splash && python3 scripts/perf/build_core.py && npm run -s audit",
     "apply-upload": "python3 scripts/apply_upload.py",
     "update": "python3 scripts/update.py",
     "market": "esbuild scripts/market_snapshot.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/market.cjs --log-level=error && node node_modules/.tmp/market.cjs",
@@ -18,13 +18,14 @@
     "check:sprites": "esbuild scripts/check_sprites.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/check_sprites.cjs --log-level=error && node node_modules/.tmp/check_sprites.cjs",
     "ledger": "python3 scripts/screenshot_ledger.py",
     "save:check": "python3 scripts/save_read.py --check",
-    "nfl:rebuild": "RV_EDITION=nfl python3 scripts/nfl/build_players.py && RV_EDITION=nfl python3 scripts/nfl/prepare.py && for y in $(seq 1999 2025); do RV_EDITION=nfl RV_NFL_CUT=$y python3 scripts/build_league_data.py >/dev/null; done && RV_EDITION=nfl python3 scripts/build_league_data.py && RV_EDITION=nfl python3 scripts/season_ovr.py && RV_EDITION=nfl npm run -s market && RV_EDITION=nfl python3 scripts/build_league_data.py --extras && RV_EDITION=nfl python3 scripts/schedule_content.py && RV_EDITION=nfl python3 scripts/league_records.py && RV_EDITION=nfl python3 scripts/career_seasons.py && RV_EDITION=nfl python3 scripts/hall_of_fame.py && RV_EDITION=nfl python3 scripts/nfl/content.py && python3 scripts/nfl/season_leaders.py && python3 scripts/nfl/injuries.py && python3 scripts/nfl/advanced.py && python3 scripts/nfl/games_public.py && RV_EDITION=nfl python3 scripts/nfl/audit.py",
+    "nfl:rebuild": "RV_EDITION=nfl python3 scripts/nfl/build_players.py && RV_EDITION=nfl python3 scripts/nfl/prepare.py && for y in $(seq 1999 2025); do RV_EDITION=nfl RV_NFL_CUT=$y python3 scripts/build_league_data.py >/dev/null; done && RV_EDITION=nfl python3 scripts/build_league_data.py && RV_EDITION=nfl python3 scripts/season_ovr.py && RV_EDITION=nfl npm run -s market && RV_EDITION=nfl python3 scripts/build_league_data.py --extras && RV_EDITION=nfl python3 scripts/schedule_content.py && RV_EDITION=nfl python3 scripts/league_records.py && RV_EDITION=nfl python3 scripts/career_seasons.py && RV_EDITION=nfl python3 scripts/hall_of_fame.py && RV_EDITION=nfl python3 scripts/nfl/content.py && python3 scripts/nfl/season_leaders.py && python3 scripts/nfl/injuries.py && python3 scripts/nfl/advanced.py && python3 scripts/nfl/games_public.py && python3 scripts/perf/build_core.py && RV_EDITION=nfl python3 scripts/nfl/audit.py",
     "nfl:dev": "VITE_EDITION=nfl vite --port 4174 --host",
     "nfl:build": "VITE_EDITION=nfl vite build",
     "nfl:sprites": "python3 scripts/nfl/sprites.py && python3 scripts/nfl/kit_colors.py && python3 scripts/nfl/jersey_numbers.py && python3 scripts/nfl/silhouettes.py",
     "perf:core": "python3 scripts/perf/build_core.py",
     "perf:synth": "python3 scripts/perf/synth.py /tmp/rv-synth-public --total 10000 && RV_PUBLIC_DIR=/tmp/rv-synth-public python3 scripts/perf/build_core.py",
-    "perf:measure": "node scripts/perf/measure.mjs"
+    "perf:measure": "node scripts/perf/measure.mjs",
+    "perf:check": "python3 scripts/perf/build_core.py --check"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.14",

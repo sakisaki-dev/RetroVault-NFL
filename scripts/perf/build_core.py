@@ -114,7 +114,7 @@ def split_sprites(active: set) -> None:
         dump(SPR / 'nfl' / 'shards' / f'{i}.json', s)
 
 
-def manifest() -> None:
+def manifest(check: bool = False) -> None:
     files = {}
     for base, prefix, skip in ((DATA, 'data', {'nfl/games', 'manifest.json'}), (SPR / 'nfl', 'private-sprites/nfl', None)):
         if not base.exists():
@@ -132,11 +132,22 @@ def manifest() -> None:
         p = PUB / extra
         if p.exists():
             files[extra] = hashlib.sha1(p.read_bytes()).hexdigest()[:8]
+    if check:
+        old = json.loads((DATA / 'manifest.json').read_text()).get('files', {}) if (DATA / 'manifest.json').exists() else {}
+        stale = sorted(k for k in set(files) | set(old) if files.get(k) != old.get(k))
+        if stale:
+            print(f'manifest is stale ({len(stale)} files differ, e.g. {stale[:3]}): run npm run perf:core')
+            sys.exit(1)
+        print(f'manifest ok: {len(files)} files')
+        return
     dump(DATA / 'manifest.json', {'v': 1, 'files': files})
     print(f'manifest: {len(files)} files')
 
 
 if __name__ == '__main__':
+    if '--check' in sys.argv:  # CI / audit: the committed manifest matches the files (the split files themselves are rebuilt, not checked)
+        manifest(check=True)
+        sys.exit(0)
     act = active_keys()
     split_extras()
     split_advanced()
