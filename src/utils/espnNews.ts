@@ -7,7 +7,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
  */
 
 const FEED = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50';
-const CACHE_KEY = 'espn:news:v1';
+const CACHE_KEY = 'espn:news:v2';
 const FRESH_MS = 5 * 60 * 1000;
 
 export interface NewsItem {
@@ -25,9 +25,13 @@ export interface NewsItem {
   athletes: string[];
   /** Our club names for the teams ESPN tagged */
   teams: string[];
+  /** ESPN athlete ids ESPN tagged (public/data/nfl/espn_ids.json maps them to our players) */
+  athleteIds: string[];
+  /** ESPN's content record for the whole article (headline, story HTML, photos, video) */
+  api?: string;
 }
 
-interface RawCat { type: string; description?: string; athlete?: { description?: string }; team?: { description?: string } }
+interface RawCat { type: string; description?: string; athleteId?: number; athlete?: { id?: number; description?: string }; team?: { description?: string } }
 interface RawItem {
   id: number | string;
   type: string;
@@ -49,6 +53,11 @@ export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] =>
         .filter((c) => c.type === 'team')
         .map((c) => findNFLTeam(c.team?.description ?? c.description ?? '')?.name)
         .filter((t): t is string => !!t);
+      const aths: { id: string; name: string }[] = [];
+      cats.filter((c) => c.type === 'athlete').forEach((c) => {
+        const id = String(c.athleteId ?? c.athlete?.id ?? '');
+        if (id && !aths.some((x) => x.id === id)) aths.push({ id, name: c.athlete?.description ?? c.description ?? '' });
+      });
       return {
         id: String(a.id),
         type: a.type,
@@ -58,8 +67,10 @@ export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] =>
         image: img ? { url: img.url, caption: img.caption ?? '', credit: img.credit ?? '' } : undefined,
         href: a.links?.web?.href ?? 'https://www.espn.com/nfl/',
         clipApi: a.type === 'Media' ? a.links?.api?.self?.href : undefined,
-        athletes: [...new Set(cats.filter((c) => c.type === 'athlete').map((c) => c.athlete?.description ?? c.description ?? '').filter(Boolean))],
+        athletes: aths.map((x) => x.name),
         teams: [...new Set(teams)],
+        athleteIds: aths.map((x) => x.id),
+        api: a.type === 'Media' ? undefined : a.links?.api?.self?.href,
       };
     });
 
@@ -127,4 +138,50 @@ export const timeAgo = (iso: string, now = Date.now()): string => {
   if (h < 24) return `${h} h ago`;
   const d = Math.round(h / 24);
   return d === 1 ? 'yesterday' : `${d} days ago`;
+};
+
+/** ESPN's team ids (their news feeds take ?team=<id>), by our club name */
+export const ESPN_TEAM_ID: Record<string, number> = {
+  Falcons: 1, Bills: 2, Bears: 3, Bengals: 4, Browns: 5, Cowboys: 6, Broncos: 7, Lions: 8, Packers: 9, Titans: 10, Colts: 11,
+  Chiefs: 12, Raiders: 13, Rams: 14, Dolphins: 15, Vikings: 16, Patriots: 17, Saints: 18, Giants: 19, Jets: 20, Eagles: 21,
+  Cardinals: 22, Steelers: 23, Chargers: 24, '49ers': 25, Seahawks: 26, Buccaneers: 27, Commanders: 28, Panthers: 29,
+  Jaguars: 30, Ravens: 33, Texans: 34,
+};
+
+const teamFeedCache = new Map<number, Promise<NewsItem[]>>();
+/** One club's latest ESPN items (up to 50, back about two weeks), memoized for the session. */
+export const fetchTeamNews = (club: string): Promise<NewsItem[]> => {
+  const id = ESPN_TEAM_ID[club];
+  if (!id) return Promise.resolve([]);
+  let job = teamFeedCache.get(id);
+  if (!job) {
+    job = fetch(`${FEED}&team=${id}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((raw) => parseNews(raw).sort((a, b) => b.published.localeCompare(a.published)))
+      .catch(() => {
+        teamFeedCache.delete(id);
+        return [] as NewsItem[];
+      });
+    teamFeedCache.set(id, job);
+  }
+  return job;
+};
+
+/** What the headline is about, by rule over ESPN's type and the words: drives the kind label and the scene. */
+export type NewsKind = 'recap' | 'trade' | 'injury' | 'video' | 'betting' | 'fantasy' | 'feature' | 'headline' | 'analysis';
+export const newsKind = (it: Pick<NewsItem, 'type' | 'headline' | 'description'>): NewsKind => {
+  const t = `${it.headline} ${it.description}`.toLowerCase();
+  if (it.type === 'Media') return 'video';
+  if (/\b(odds|betting|best bets|lines and totals|spread|picks?)\b/.test(t)) return 'betting';
+  if (/\b(fantasy|waiver|free agent pickups|start 'em|sit 'em|depth charts?)\b/.test(t)) return 'fantasy';
+  if (/\b(trade[sd]?|acquire[sd]?|releas\w+|waive[sd]?|extension|contract|signs?|agree[sd]?|cut|re-sign\w*)\b/.test(t)) return 'trade';
+  if (/\b(injur\w+|season-ending|out for|ruled out|surgery|torn|sidelined|questionable|doubtful)\b/.test(t)) return 'injury';
+  if (it.type === 'Recap' || /\b(week \d+|takeaways|recap|highlights|blowout|beat|beats|loss to|win over|snap)\b/.test(t)) return 'recap';
+  if (it.type === 'HeadlineNews') return 'headline';
+  if (/\b(inside|how|why|what|rank|power rankings|history|lore|journey|story)\b/.test(t)) return 'feature';
+  return 'analysis';
+};
+export const NEWS_KIND_LABEL: Record<NewsKind, string> = {
+  recap: 'Recap', trade: 'Transactions', injury: 'Injury', video: 'Video', betting: 'Betting', fantasy: 'Fantasy',
+  feature: 'Feature', headline: 'Headline', analysis: 'Analysis',
 };
