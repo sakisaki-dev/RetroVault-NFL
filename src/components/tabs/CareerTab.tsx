@@ -1,3 +1,4 @@
+import DeferredSection from '@/components/ui/DeferredSection';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useLeague } from '@/context/LeagueContext';
@@ -206,13 +207,19 @@ const CareerTab = () => {
 
           <CrowdDivider />
 
-          <RecordBook leaders={leaders} pace={book.pace} onSelect={setSelectedPlayer} />
+          <DeferredSection ids={['efficiency']} minHeight={900}>
+            <RecordBook leaders={leaders} pace={book.pace} onSelect={setSelectedPlayer} />
+          </DeferredSection>
 
-          <PositionLeaders boards={book.boards} data={careerData} onSelect={setSelectedPlayer} />
+          <DeferredSection ids={['leaders']} minHeight={700}>
+            <PositionLeaders boards={book.boards} data={careerData} onSelect={setSelectedPlayer} />
+          </DeferredSection>
 
           <CrowdDivider />
 
-          <StatTables data={careerData} />
+          <DeferredSection ids={['tables']} minHeight={900}>
+            <StatTables data={careerData} />
+          </DeferredSection>
         </div>
       )}
 

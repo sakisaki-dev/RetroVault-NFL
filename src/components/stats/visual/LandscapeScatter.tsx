@@ -257,6 +257,9 @@ const PointMark = ({
   );
 };
 
+/** The most dots the plot draws (see `screen`): today's roster is under it, so every dot shows */
+const MAX_DRAWN = 3500;
+
 /** Pick radius (px): a click or hover anywhere within this of a point counts. */
 const PICK = 30;
 
@@ -512,7 +515,26 @@ const LandscapeScatter = ({
     if (!geo) return [];
     const all = drawOrder.map((pt) => ({ pt, cx: geo.X(pt.x), cy: geo.Y(pt.y), r: geo.radius(pt) }));
     // Zoomed: only what's inside the plot (plus a dot's radius) is drawn and pickable
-    return zoomed ? all.filter((s) => s.cx >= plot[0] - s.r && s.cx <= plot[2] + s.r && s.cy >= plot[1] - s.r && s.cy <= plot[3] + s.r) : all;
+    const inView = zoomed ? all.filter((s) => s.cx >= plot[0] - s.r && s.cx <= plot[2] + s.r && s.cy >= plot[1] - s.r && s.cy <= plot[3] + s.r) : all;
+    // A roster of 10,000 would put ~35,000 SVG nodes on the page (every dot is a focusable group of three): past
+    // MAX_DRAWN dots an even stride through the draw order is kept, always with Hall of Famers, real legends, the
+    // highlighted point and every labelled one. Medians, quadrants and the trend are computed from every point.
+    if (inView.length <= MAX_DRAWN) return inView;
+    const must = new Set<string>([...(geo.labels.map((l) => l.key)), ...(highlightKey ? [highlightKey] : [])]);
+    const isMust = (s: Screen) => must.has(s.pt.key) || !!s.pt.nfl || isHallOfFamer(s.pt.player);
+    const keepN = inView.filter(isMust).length;
+    const room = Math.max(1, MAX_DRAWN - keepN);
+    const rest = inView.filter((s) => !isMust(s)).length;
+    const step = rest / room;
+    let seen = 0;
+    let next = 0;
+    return inView.filter((s) => {
+      if (isMust(s)) return true;
+      const take = seen >= next;
+      seen += 1;
+      if (take) next += step;
+      return take;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geo, drawOrder, zoomed]);
   const screenByKey = useMemo(() => new Map(screen.map((s) => [s.pt.key, s])), [screen]);

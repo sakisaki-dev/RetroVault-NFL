@@ -1,3 +1,4 @@
+import { useProgressiveRows } from '@/hooks/useProgressiveRows';
 import { useMemo, useState } from 'react';
 import FitName from '../FitName';
 import { BarChart3, ListOrdered, Table2 } from 'lucide-react';
@@ -50,7 +51,8 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
     return [...board.rows, ...placed].sort((a, b) => (metric.lowerIsBetter ? a.value - b.value : b.value - a.value));
   }, [board, extras, ctx, metric]);
   const nflCount = merged.length - board.rows.length;
-  const rows = expanded ? merged : merged.slice(0, SHOWN);
+  const rowWindow = useProgressiveRows(merged.length, { initial: 60, step: 100, resetKey: `${metric.id}|${position}|${expanded}` });
+  const rows = expanded ? (asTable ? merged.slice(0, rowWindow.shown) : merged) : merged.slice(0, SHOWN);
   const suffix = metric.suffix ?? '';
 
   return (
@@ -161,6 +163,15 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
                 </td>
               </tr>
             ))}
+            {expanded && asTable && rowWindow.more > 0 && (
+              <tr ref={rowWindow.sentinelRef}>
+                <td colSpan={5} className="py-2 text-center">
+                  <button type="button" onClick={rowWindow.showMore} className="text-xs font-semibold uppercase tracking-wider text-gold hover:underline">
+                    Show more ({rowWindow.more.toLocaleString()} left)
+                  </button>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       )}

@@ -1,4 +1,5 @@
 import type { LeagueData, Player } from '@/types/player';
+import DeferredSection from '@/components/ui/DeferredSection';
 import AnalyticsLab from '../analytics/AnalyticsLab';
 import HiddenGems from '../HiddenGems';
 import LeagueGallery from '../visual/LeagueGallery';
@@ -15,10 +16,18 @@ interface Props {
  */
 const PlayersInsights = ({ data, onSelect }: Props) => (
   <>
-    <AnalyticsLab data={data} onSelect={onSelect} />
-    <LeagueGallery data={data} onSelect={onSelect} />
-    <HiddenGems data={data} onSelect={onSelect} />
-    <LeagueShape data={data} onSelect={onSelect} />
+    <DeferredSection ids={['analytics']} minHeight={720}>
+      <AnalyticsLab data={data} onSelect={onSelect} />
+    </DeferredSection>
+    <DeferredSection ids={['landscape']} minHeight={720}>
+      <LeagueGallery data={data} onSelect={onSelect} />
+    </DeferredSection>
+    <DeferredSection ids={['hidden-gems']} minHeight={520}>
+      <HiddenGems data={data} onSelect={onSelect} />
+    </DeferredSection>
+    <DeferredSection ids={['league-shape']} minHeight={720}>
+      <LeagueShape data={data} onSelect={onSelect} />
+    </DeferredSection>
   </>
 );
 

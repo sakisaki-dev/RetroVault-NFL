@@ -1,3 +1,4 @@
+import { useProgressiveRows } from '@/hooks/useProgressiveRows';
 import { useMemo, useState } from 'react';
 import { Grid3x3 } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
@@ -47,6 +48,8 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
   }, [boards, metrics, players, position]);
 
   const headline = metrics.find((m) => m.id === HEADLINE_METRIC[position]);
+  // The table mounts rows in slices as it scrolls (hooks/useProgressiveRows): a 10,000-player league has thousands of rows
+  const rowWindow = useProgressiveRows(rows.length, { initial: 80, step: 120, resetKey: `${position}|${rows.length}` });
 
   const nflRows = useMemo(
     () =>
@@ -123,7 +126,7 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
               </tr>
             </thead>
             <tbody>
-              {rows.map((p) => {
+              {rows.slice(0, rowWindow.shown).map((p) => {
                 const cells = lookup.get(keyOf(p))!;
                 return (
                   <tr key={keyOf(p)}>
@@ -157,6 +160,15 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
                   </tr>
                 );
               })}
+              {rowWindow.more > 0 && (
+                <tr ref={rowWindow.sentinelRef}>
+                  <td colSpan={metrics.length + 1} className="border-t border-line/40 py-2 text-center">
+                    <button type="button" onClick={rowWindow.showMore} className="text-xs font-semibold uppercase tracking-wider text-gold hover:underline">
+                      Show more ({rowWindow.more.toLocaleString()} left)
+                    </button>
+                  </td>
+                </tr>
+              )}
               {nflRows.length > 0 && (
                 <tr>
                   <th scope="rowgroup" colSpan={metrics.length + 1} className="sticky left-0 border-t-2 border-flag/50 bg-panel-2 px-2 py-1 text-left font-pixel text-[8px] font-normal uppercase text-muted-foreground">

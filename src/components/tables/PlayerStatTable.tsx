@@ -1,3 +1,4 @@
+import { useProgressiveRows } from '@/hooks/useProgressiveRows';
 import { useMemo, useState, type ReactNode } from 'react';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
@@ -167,6 +168,9 @@ function PlayerStatTable<T extends Player>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredPlayers, sort, columns, careerOvrMap, seasonOvr, skillMap]);
 
+  // Rows mount in slices as the table is read (hooks/useProgressiveRows); a new sort, filter or search starts over
+  const rowWindow = useProgressiveRows(sortedPlayers.length, { resetKey: `${sort?.key}|${sort?.dir}|${searchQuery}|${filteredPlayers.length}` });
+
   if (filteredPlayers.length === 0) return null;
 
   const toggleSort = (key: string) =>
@@ -224,7 +228,7 @@ function PlayerStatTable<T extends Player>({
               </tr>
             </thead>
             <tbody>
-              {sortedPlayers.map((player) => {
+              {sortedPlayers.slice(0, rowWindow.shown).map((player) => {
                 const team = getTeam(player);
                 const colors = getTeamColors(team);
                 return (
@@ -290,6 +294,15 @@ function PlayerStatTable<T extends Player>({
                   </tr>
                 );
               })}
+              {rowWindow.more > 0 && (
+                <tr ref={rowWindow.sentinelRef}>
+                  <td colSpan={99} className="py-3 text-center">
+                    <button type="button" onClick={rowWindow.showMore} className="tap-40 text-xs font-semibold uppercase tracking-wider text-gold hover:underline">
+                      Show more ({rowWindow.more.toLocaleString()} left)
+                    </button>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
