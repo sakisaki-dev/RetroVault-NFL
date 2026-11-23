@@ -66,7 +66,8 @@ def season_content(season: str, s: dict) -> dict:
     for wk in weeks:
         for gm in wk.get("games", []):
             a, h, sa, sh = gm["away"], gm["home"], gm["away_score"], gm["home_score"]
-            games.append({"week": wk["week"], "away": a, "home": h, "awayScore": sa, "homeScore": sh})
+            games.append({"week": wk["week"], "away": a, "home": h, "awayScore": sa, "homeScore": sh,
+                          **({"line": gm["line"]} if "line" in gm else {}), **({"roof": 1} if gm.get("roof") else {})})
             for me, them, us, op in ((a, h, sa, sh), (h, a, sh, sa)):
                 r = tally.setdefault(me, {"w": 0, "l": 0, "t": 0, "pf": 0, "pa": 0})
                 r["w" if us > op else "l" if us < op else "t"] += 1
@@ -262,6 +263,7 @@ def season_content(season: str, s: dict) -> dict:
         **({"shootout": game_ref(shootout)} if shootout else {}),
         "games": games,
         "regularSeasonGames": len(reg),
+        **{k: s[k] for k in ("playoffs", "superBowl", "awards") if s.get(k)},
     }
 
 
@@ -329,9 +331,36 @@ def build() -> dict:
     }
 
 
+# NFL edition: schedule.json (read at startup by the club pages and the screensaver) keeps only the recent seasons;
+# every season 1999+ also has its own file (schedule/<year>.json, the Season page loads one when it is picked) and
+# the small seasonIndex lists them with the champion.
+RECENT_FROM = 2018
+
+
+def season_year(y: str) -> int:
+    return int(y.lstrip("Y"))
+
+
 def main() -> None:
     data = build()
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    if SCHEDULES and all(y.isdigit() for y in data["seasons"]):
+        import shutil
+        d = OUT.parent / "schedule"
+        shutil.rmtree(d, ignore_errors=True)
+        d.mkdir()
+        ys = sorted(data["seasons"], key=season_year)
+        rank = {}
+        index = []
+        for y in ys:
+            sc = data["seasons"][y]
+            sc["prevPower"] = {r["abbr"]: rank[r["abbr"]] for r in sc["table"] if r["abbr"] in rank}
+            rank = {r["abbr"]: r["power"] for r in sc["table"]}
+            (d / f"{y}.json").write_text(json.dumps(sc, ensure_ascii=False, separators=(",", ":")) + "\n")
+            index.append({"season": y, "games": len(sc["games"]), **({"superBowl": sc["superBowl"]} if "superBowl" in sc else {})})
+        data["seasonIndex"] = index
+        data["seasons"] = {y: sc for y, sc in data["seasons"].items() if season_year(y) >= RECENT_FROM}
+        data["progression"] = {t: [r for r in rows if season_year(r["season"]) >= RECENT_FROM] for t, rows in data["progression"].items()}
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n")
     n = sum(len(s["games"]) for s in data["seasons"].values())
     print(f"Wrote {OUT.relative_to(ROOT)}: {len(data['seasons'])} seasons, {n} games, "
