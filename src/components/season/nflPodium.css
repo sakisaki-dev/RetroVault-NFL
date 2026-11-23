@@ -1,0 +1,96 @@
+/* The leaders podium's stage (NflSeasonExtras PodiumStage): a night stadium in the leader's club colours. */
+.nsx-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--line) / 0.7);
+  padding: 4.6rem 0.75rem 0;
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--nsx-tint) 26%, transparent), transparent 70%),
+    linear-gradient(180deg, #070b18 0%, #0d1428 55%, #0a1020 100%);
+  isolation: isolate;
+}
+/* the crowd: the game's crowd art painted to the club, or rows of CSS dots */
+.nsx-stage__crowd {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4.2rem;
+  z-index: 0;
+  opacity: 0.9;
+  background:
+    radial-gradient(circle at 3px 3px, color-mix(in srgb, var(--nsx-tint) 70%, #fff 10%) 1.4px, transparent 2px) 0 0 / 9px 8px,
+    linear-gradient(180deg, #05070f, #111a33);
+}
+.nsx-stage__crowd--art {
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  filter: brightness(0.72) saturate(1.05);
+}
+.nsx-stage__stands {
+  position: absolute;
+  inset: 3.6rem 0 auto 0;
+  height: 1rem;
+  z-index: 1;
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+}
+/* floodlight beams from the top corners, crossing over the winner */
+.nsx-stage__beam {
+  position: absolute;
+  top: -10%;
+  width: 46%;
+  height: 120%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(255 248 220 / 0.22), rgb(255 248 220 / 0) 75%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  mix-blend-mode: screen;
+}
+.nsx-stage__beam--l { left: -6%; transform: rotate(-18deg); transform-origin: 50% 0; }
+.nsx-stage__beam--r { right: -6%; transform: rotate(18deg); transform-origin: 50% 0; }
+/* a spotlight pool on the winner's step, in his club's colour */
+.nsx-stage__spot {
+  position: absolute;
+  left: 50%;
+  bottom: 1.2rem;
+  width: 15rem;
+  height: 5rem;
+  transform: translateX(-50%);
+  z-index: 1;
+  background: radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--nsx-tint) 45%, #fff 15%), transparent 70%);
+  opacity: 0.55;
+  filter: blur(2px);
+}
+/* turf under the podium */
+.nsx-stage__turf {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2.4rem;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 2px, transparent 2px 64px),
+    linear-gradient(180deg, #1f6b2e, #144d20);
+  border-top: 2px solid rgb(255 255 255 / 0.25);
+}
+.nsx-stage__turf--art {
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  filter: brightness(0.8);
+}
+.nsx-stage__content {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 0.25rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nsx-stage__beam { animation: nsx-sweep 9s ease-in-out infinite alternate; }
+  .nsx-stage__beam--r { animation-delay: -4.5s; }
+}
+@keyframes nsx-sweep {
+  from { opacity: 0.75; }
+  to { opacity: 1; }
+}
+[data-perf='lite'] .nsx-stage__beam { animation: none; mix-blend-mode: normal; }

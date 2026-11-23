@@ -13,6 +13,7 @@ import SixDegrees from '../games/SixDegrees';
 import OverUnder from '../games/OverUnder';
 import BuildALegend from '../games/BuildALegend';
 import ModeArt from '../games/ModeArt';
+import { ERAS, type Era } from '@/utils/gamePool';
 import { ArcadeButton, Lamp } from '../games/ArcadeUI';
 import { HomeNews } from '../news/WhatChanged';
 import { ArcadeRatingContext, STAT_KEYS, loadGameStat, saveGameStat, useGamePlayers, type ArcadeRating, type GamePlayer } from '../games/gameUtils';
@@ -226,7 +227,9 @@ const GamesTab = () => {
   const [includeLegends, setIncludeLegends] = useState(() => loadGameStat(STAT_KEYS.includeLegends, 1) !== 0);
   // Which rating the games rank by (owner, 2026-11-23): CAR (career, everyone; default) or SZN (this season, actives only)
   const [rating, setRating] = useState<ArcadeRating>(() => (loadGameStat('rating:szn', 0) ? 'szn' : 'car'));
-  const { players, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, rating);
+  // The era a game draws its players from, by career span (all / 2020s / 2010s / 2000s); CAR mode only, SZN is this season
+  const [era, setEra] = useState<Era>(() => ERAS[loadGameStat('era', 0)]?.id ?? 'all');
+  const { players, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, rating, era);
   const [game, setGame] = useState<GameId | null>(null);
   const [last, setLast] = useState<GameId | null>(readLast);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -308,11 +311,30 @@ const GamesTab = () => {
             </span>
           </div>
           <div className="hall-switches">
-            <Lamp label="Players" value={league.length} />
+            <Lamp label="Players" value={IS_NFL ? players.length : league.length} />
             <button type="button" role="switch" aria-checked={rating === 'szn'} className="toggle" onClick={toggleRating} title="Rank by CAR (career OVR, everyone) or SZN (this season's OVR, active players only)">
               <span className="track" aria-hidden="true" />
               {rating === 'szn' ? 'SZN · this season' : 'CAR · career'}
             </button>
+            {IS_NFL && (
+              <div className="hall-era" role="group" aria-label="Era">
+                {ERAS.map((e, i) => (
+                  <button
+                    key={e.id}
+                    type="button"
+                    aria-pressed={era === e.id}
+                    disabled={rating === 'szn'}
+                    title={rating === 'szn' ? 'SZN is this season only' : `Players whose career overlaps ${e.label}`}
+                    onClick={() => {
+                      setEra(e.id);
+                      saveGameStat('era', i);
+                    }}
+                  >
+                    {e.label}
+                  </button>
+                ))}
+              </div>
+            )}
             {!IS_NFL && <button type="button" role="switch" aria-checked={includeLegends && rating !== 'szn'} disabled={rating === 'szn'} className="toggle" onClick={toggleLegends}>
               <span className="track" aria-hidden="true" />
               NFL legends
@@ -458,7 +480,7 @@ const GamesTab = () => {
             {/* Wait for legends.json / exclusions so OVRs are final, and re-mount on data / legends changes */}
             {legendsLoaded ? (
               <ArcadeRatingContext.Provider value={rating}>
-                <div key={`${active.id}-${dataVersion}-${rating}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
+                <div key={`${active.id}-${dataVersion}-${rating}-${era}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
               </ArcadeRatingContext.Provider>
             ) : (
               <PixelLoader label="Warming up" what="the player pool" minHeight={320} />

@@ -100,11 +100,7 @@ def split_sprites(active: set) -> None:
     for f, a in anchors.items():
         if list(a) == DEFAULT_ANCHOR:  # the reader's default (nfl.anchors?.[file] ?? 31.5, 58): drop, lossless
             continue
-        key = uid_owner.get(f.split('_', 1)[0])
-        if key is not None and key not in active:
-            shards[fnv1a(key) % SPRITE_SHARDS]['anchors'][f] = a
-        else:
-            core_anchors[f] = a
+        core_anchors[f] = a  # alias targets can belong to another player's shard, so every exception stays in core (tiny)
     core = dict(d)
     core['players'] = core_players
     core['anchors'] = core_anchors

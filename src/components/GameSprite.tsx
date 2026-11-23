@@ -39,6 +39,12 @@ export interface GameSpriteProps {
   kind?: 'figure' | 'bust' | 'helmet' | 'face' | 'body';
   size?: SpriteSize;
   action?: SpriteAction;
+  /**
+   * NFL edition: the season shown (a career timeline point, a season scene, a game log row). A club with a famous era kit
+   * (src/config/eraKits.ts: 2001 Patriots, 1990s Lions ...) draws it for a season in its span when the player has era
+   * files for that club (index `eras`); with no season he wears the kit of the middle season of his time with the club.
+   */
+  season?: number;
   /** A real NFL legend: his save sprite, for the arcade games only (never league pages or the Collection) */
   legend?: boolean;
   /** A small tag when the kit isn't his club's (an unpainted neutral kit, another club's kit) */
@@ -94,21 +100,21 @@ const useTicker = (on: boolean, fps: number) => {
  * (config/bodyTypes.ts) pixel for pixel (gameKitPaint.ts processSprite, cached per file x club x body). Null until
  * ready; the plain file when there is nothing to do.
  */
-const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string): string | null => {
+const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string, silhouette?: string): string | null => {
   const [out, setOut] = useState<{ key: string; url: string } | null>(null);
-  const plain = !!src && !paint && !rows && !cols && !(number !== undefined && numberClub);
-  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}` : '';
+  const plain = !!src && !paint && !rows && !cols && !silhouette && !(number !== undefined && numberClub);
+  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}|${silhouette ?? ''}` : '';
   useEffect(() => {
     if (!key) return;
     let live = true;
     import('@/utils/gameKitPaint')
-      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub }))
+      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub, silhouette }))
       .then((url) => live && setOut({ key, url }))
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [key, src, paint, rows, cols, cx, foot, number, numberClub]);
+  }, [key, src, paint, rows, cols, cx, foot, number, numberClub, silhouette]);
   if (plain) return src;
   return out && out.key === key ? out.url : null;
 };
@@ -120,7 +126,7 @@ const useProcessed = (src: string | undefined, paint: string | undefined, rows: 
 const px = (extra?: CSSProperties): CSSProperties => ({ imageRendering: 'pixelated', ...extra });
 
 const GameSprite = (props: GameSpriteProps) => {
-  const { player, team, legend = false, showKit = false, peek = false, className, style } = props;
+  const { player, team, season, legend = false, showKit = false, peek = false, className, style } = props;
   const kind = props.kind === 'face' ? 'bust' : props.kind === 'body' || !props.kind ? 'figure' : props.kind;
   const size: SpriteSize = props.size ?? (kind === 'bust' ? sizeOf(props.scale) : sizeOf(props.nflScale ?? props.scale)) ?? 'm';
   const action: SpriteAction = props.action ?? (props.pose ? LEGACY_ACTION[props.pose] ?? 'idle' : 'idle');
@@ -138,16 +144,16 @@ const GameSprite = (props: GameSpriteProps) => {
       const tone = typeof locked === 'string' ? locked : spriteSkin;
       // playstyle: a figure standing idle holds his role's pose (bodyTypes.ts rolePose); busts stand
       const role = kind === 'figure' ? rolePose(position) : 1;
-      return nflSpriteFor(sprites?.nfl ?? null, `${position ?? ''}:${name}`, club, current, kind === 'bust' ? 'idle' : action, legend, tone, role);
+      return nflSpriteFor(sprites?.nfl ?? null, `${position ?? ''}:${name}`, club, current, kind === 'bust' ? 'idle' : action, legend, tone, role, season);
     },
-    [sprites, kind, position, name, club, current, action, legend, spriteSkin],
+    [sprites, kind, position, name, club, current, action, legend, spriteSkin, season],
   );
   // his body (bodyTypes.ts): the stable roll for his position, or his locked look (sprites.json)
   const body = useMemo(
     () => bodyFor(`${position ?? ''}:${name}`, (sprites?.looks ?? sprites?.regular?.skins)?.[name]),
     [sprites, position, name],
   );
-  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub);
+  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub, nfl?.silhouette);
 
   const regular = useMemo(() => {
     const r = sprites?.regular;

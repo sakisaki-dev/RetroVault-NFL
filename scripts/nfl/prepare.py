@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 Y80 = ROOT / "data" / "y80"
 CACHE = ROOT / "data" / "nfl-cache"
-FIRST_SEASON = 2018  # schedules for the Season page
+FIRST_SEASON = 1999  # schedules for the Season page (the first season of the data)
 
 
 def put(name, value):
@@ -31,6 +31,7 @@ def games():
     return rows
 
 
+ROUNDS = {"WC": "Wild card", "DIV": "Divisional", "CON": "Conference", "SB": "Super Bowl"}
 STALE = ["league/stories", "league/tributes", "league/rewind", "league/takes.json", "league/save_state.json",
          "league/live_season.json", "widget.json", "widget-sprites", "transit"]
 
@@ -60,7 +61,10 @@ def main():
 
     # ---- the facts the shared builders read (all empty: everyone is Active on his real club) ----
     put("spreadsheet_parsed.json", [])
-    put("owner_facts.json", {"_about": "NFL edition: no owner facts.", "players": {}, "current_club": "",
+    # players on no 2026 roster who debuted 1999 or later are Retired (build_players.py flags them); everyone else Active
+    retired = {p["n"]: {"status": "Retired"} for p in json.loads((Y80 / "players.json").read_text())
+               if (p.get("nfl") or {}).get("retired")}
+    put("owner_facts.json", {"_about": "NFL edition: only the Retired status of past players.", "players": retired, "current_club": "",
                              "active_rosters": {}, "season_rosters": {}})
     put("records.json", {"note": "NFL edition: no club record board; league records are derived from the careers.",
                          "records": []})
@@ -102,7 +106,12 @@ def main():
                 continue
             a, h = (abbr_alias.get(r[k], r[k]) for k in ("away_team", "home_team"))
             sa, sh = int(float(r["away_score"])), int(float(r["home_score"]))
-            weeks[int(r["week"])].append({"away": a, "away_score": sa, "home": h, "home_score": sh})
+            g = {"away": a, "away_score": sa, "home": h, "home_score": sh}
+            if r["spread_line"] != "":
+                g["line"] = float(r["spread_line"])  # points the home club was favoured by (negative: the visitors)
+            if r["roof"] in ("dome", "closed"):
+                g["roof"] = 1
+            weeks[int(r["week"])].append(g)
             for me, us, op in ((a, sa, sh), (h, sh, sa)):
                 t = tally[me]
                 t["w" if us > op else "l" if us < op else "t"] += 1
@@ -120,7 +129,29 @@ def main():
             rows.sort(key=lambda x: (-(x["w"] + x["t"] / 2) / max(1, x["w"] + x["l"] + x["t"]),
                                      -(tally[teams[x["team"]]["abbr"]]["pf"] - tally[teams[x["team"]]["abbr"]]["pa"]),
                                      x["team"]))
-        seasons[str(yr)] = {"team": "", "abbr": "", "complete": yr < season_now,
+        post = {}
+        for r in allgames:
+            if int(r["season"]) != yr or r["game_type"] == "REG" or r["home_score"] == "":
+                continue
+            g = {"away": abbr_alias.get(r["away_team"], r["away_team"]), "away_score": int(float(r["away_score"])),
+                 "home": abbr_alias.get(r["home_team"], r["home_team"]), "home_score": int(float(r["home_score"]))}
+            if r["spread_line"] != "":
+                g["line"] = float(r["spread_line"])
+            post.setdefault(r["game_type"], []).append(g)
+        rounds = [{"round": ROUNDS[k], "games": sorted(post[k], key=lambda g: (g["home"], g["away"]))}
+                  for k in ("WC", "DIV", "CON", "SB") if k in post]
+        extra = {}
+        ch = next((c for c in awards["champions"] if c["season"] == yr), None)
+        if ch:
+            extra["superBowl"] = {"roman": ch["superbowl"], "winner": ch["winner"], "loser": ch["loser"], "score": ch["score"]}
+        aw = {}
+        for k, rows in awards["awards"].items():
+            for x in rows:
+                if x["season"] == yr:
+                    aw[k] = {kk: x[kk] for kk in ("player", "team", "position")}
+        if aw:
+            extra["awards"] = aw
+        seasons[str(yr)] = {"team": "", "abbr": "", "complete": yr < season_now, "playoffs": rounds, **extra,
                             "weeks": [{"week": w, "games": sorted(gs, key=lambda g: (g["home"], g["away"]))}
                                       for w, gs in sorted(weeks.items())],
                             "standings": dict(sorted(standings.items())),
