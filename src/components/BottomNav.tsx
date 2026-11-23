@@ -27,6 +27,7 @@ import {
   TrendingUp,
   Users,
   type LucideIcon,
+  Newspaper,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { setPerfSetting, suggestLite, usePerfMode, type PerfSetting } from '@/hooks/usePerfMode';
@@ -69,17 +70,19 @@ const TAB_COLOR: Record<string, string> = {
   season: '#ff9a3c',
   lab: '#5fd28a',
   timeline: '#4fb3ff',
+  news: '#4fb3ff',
   office: '#f1c35c',
 };
 const colorOf = (id: string | null | undefined) => (id && TAB_COLOR[id]) || '#f1c35c';
-import { IS_NFL, NFL_HIDDEN_TABS } from '@/config/edition';
+import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 const ALL_MORE = [
   { value: 'season', label: 'Season', blurb: 'Live standings, leaders and the award race', Icon: Radio },
   { value: 'lab', label: 'Team Lab', blurb: 'Build a lineup and get a scouting report', Icon: Users },
   { value: 'timeline', label: 'Timeline', blurb: 'Eras, storylines and what changed', Icon: CalendarRange },
+  { value: 'news', label: 'News', blurb: "Live NFL headlines and video from ESPN", Icon: Newspaper },
   { value: 'office', label: 'Front Office', blurb: "The coach's record, seasons and rivals", Icon: Briefcase },
 ] as const;
-const MORE = ALL_MORE.filter((m) => !IS_NFL || !NFL_HIDDEN_TABS.includes(m.value));
+const MORE = ALL_MORE.filter((m) => (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)));
 
 interface Section {
   id: string;

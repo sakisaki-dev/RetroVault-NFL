@@ -19,7 +19,7 @@ interface HeaderProps {
   onTabChange: (tab: string) => void;
 }
 
-import { IS_NFL, NFL_HIDDEN_TABS } from '@/config/edition';
+import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 
 const ALL_TABS = [
   { value: 'games', label: 'Arcade' },
@@ -29,9 +29,10 @@ const ALL_TABS = [
   { value: 'hof', label: 'Hall of Fame' },
   { value: 'collection', label: 'Collection' },
   { value: 'timeline', label: 'Timeline' },
+  { value: 'news', label: 'News' },
   { value: 'office', label: 'Front Office' },
 ] as const;
-export const NAV_TABS = ALL_TABS.filter((t) => !IS_NFL || !NFL_HIDDEN_TABS.includes(t.value));
+export const NAV_TABS = ALL_TABS.filter((t) => (IS_NFL ? !NFL_HIDDEN_TABS.includes(t.value) : !NFL_ONLY_TABS.includes(t.value)));
 
 /** Header toggle for performance mode: cycles Auto → On → Off (persisted per viewer). */
 const PerfToggle = () => {
