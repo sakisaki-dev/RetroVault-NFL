@@ -35,7 +35,7 @@ const KEYS = ['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'off
 const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 
 /** Market points from the three data files' contents (the same inputs officialOvrMap uses on the site). */
-const compute = (csv: string, legendsJson: string | null, exclusionsJson: string | null, season: Record<string, number> = {}) => {
+const compute = (csv: string, legendsJson: string | null, exclusionsJson: string | null, season: Record<string, number> = {}, advanced: Record<string, number[]> = {}) => {
   const data = parseCSV(csv) as unknown as Record<string, Player[]>;
   const league = normalizeLeague(KEYS.flatMap((k) => data[k] ?? [])).filter((p) => !p.isRealLegend);
   const rawLegends: unknown = legendsJson ? JSON.parse(legendsJson) : [];
@@ -44,7 +44,7 @@ const compute = (csv: string, legendsJson: string | null, exclusionsJson: string
     .map((r) => ({ ...r, name: String(r.name).trim(), isRealLegend: true }) as Player);
   const ex = exclusionsJson ? (JSON.parse(exclusionsJson) as { excludeFromGames?: unknown }).excludeFromGames : [];
   const excluded = new Set(Array.isArray(ex) ? ex.filter((k): k is string => typeof k === 'string') : []);
-  return snapshotPlayers(league, legends, excluded, season);
+  return snapshotPlayers(league, legends, excluded, season, advanced);
 };
 
 const git = (...args: string[]) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
@@ -178,7 +178,17 @@ const main = () => {
   const read = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
   // SZN: the season OVR of the latest completed season (scripts/season_ovr.py runs before this step in npm run rebuild)
   const seasonOvr = read(SEASON_OVR) ? (JSON.parse(read(SEASON_OVR)!) as { ovr?: Record<string, number> }).ovr ?? {} : {};
-  const players = compute(readFileSync(CSV, 'utf8'), read(LEGENDS), read(EXCLUSIONS), seasonOvr);
+  // NFL edition: each player's career advanced percentiles (public/data/nfl/advanced.json, scripts/nfl/advanced.py) join his skill rating
+  const advRaw = read('public/data/nfl/advanced.json');
+  const advanced: Record<string, number[]> = {};
+  if (advRaw && process.env.RV_EDITION === 'nfl') {
+    const f = JSON.parse(advRaw) as { metrics: Record<string, { dir: string }>; p: Record<string, Record<string, Record<string, number[]>>> };
+    Object.entries(f.p).forEach(([k, sc]) => {
+      const c = sc.c;
+      if (c) advanced[k] = Object.entries(c).flatMap(([id, v]) => (f.metrics[id]?.dir === 'style' ? [] : [v[1]]));
+    });
+  }
+  const players = compute(readFileSync(CSV, 'utf8'), read(LEGENDS), read(EXCLUSIONS), seasonOvr, advanced);
   const now = new Date();
   const iso = localIso(now);
   const season = seasonOf(read(SUPER_BOWLS));

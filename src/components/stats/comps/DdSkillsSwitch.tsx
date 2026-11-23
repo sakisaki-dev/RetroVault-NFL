@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
-import { playerSkillGrades } from '@/config/skillGrades';
+import { foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
+import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
 import DdAdvancedFactors from './DdAdvancedFactors';
@@ -41,7 +42,13 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   const season = useMemo(() => (seasonMe ? playerSkillGrades(seasonPlayers, seasonMe) : null), [seasonPlayers, seasonMe]);
 
   const useSeason = shown === 'season' && !!season && !!seasonMe;
-  const grades = useSeason ? season! : career;
+  const base = useSeason ? season! : career;
+  // NFL: the advanced factors of the shown scope count as much as the classic traits (skillGrades.ts foldAdvanced)
+  const adv = useAdvanced();
+  const grades = useMemo(
+    () => (IS_NFL && adv ? { ...base, overall: foldAdvanced(base.overall, advancedPcts(adv, key, useSeason ? String(seasonOvr?.season) : 'c')) } : base),
+    [base, adv, key, useSeason, seasonOvr],
+  );
   const label = seasonOvr ? seasonLabel(seasonOvr.season) : 'This season';
 
   return (

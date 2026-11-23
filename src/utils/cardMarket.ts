@@ -2,7 +2,7 @@ import type { Player } from '@/types/player';
 import { HOF_THRESHOLD, LEGACY_TIERS } from '@/config/stats';
 import { IS_NFL } from '@/config/edition';
 import { officialOvrMap, playerKey } from '@/config/ovr';
-import { playerSkillGrades } from '@/config/skillGrades';
+import { foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
 import { TIERS, tierFor, type Finish, type PrizmCopy, type PrizmParallel, type Tier, type Variant } from '@/config/cardTiers';
 import { AUTOGRAPH_MEAN_MULT } from '@/config/autographs';
 
@@ -48,13 +48,13 @@ import { AUTOGRAPH_MEAN_MULT } from '@/config/autographs';
 
 /**
  * The rating the PRICE reads (owner, 2026-11-23): an active player's card value blends his season rating into his career
- * one, rating = round(CAR_WEIGHT * CAR + SZN_WEIGHT * SZN) = 0.7 CAR + 0.3 SZN; a retired player, or an active one with
+ * one, rating = round(CAR_WEIGHT * CAR + SZN_WEIGHT * SZN) = 0.8 CAR + 0.2 SZN; a retired player, or an active one with
  * no season line, is priced on CAR alone. CAR = the career OVR (config/ovr.ts officialOvrMap), SZN = the season OVR
  * (scripts/season_ovr.py). A point's stored `ovr` stays the career rating (stories cite it); `szn` is the new input.
  */
-// NFL edition (owner, 2026-11-23): 0.8 CAR + 0.2 SZN for an active player
-export const CAR_WEIGHT = IS_NFL ? 0.8 : 0.7;
-export const SZN_WEIGHT = IS_NFL ? 0.2 : 0.3;
+// Owner, 2026-11-23: 0.8 CAR + 0.2 SZN for an active player (both editions; live retrovault-v2 c7c6cec0)
+export const CAR_WEIGHT = 0.8;
+export const SZN_WEIGHT = 0.2;
 export const priceRating = (car: number, szn: number | null | undefined) =>
   szn == null ? car : Math.round(CAR_WEIGHT * car + SZN_WEIGHT * szn);
 
@@ -192,12 +192,13 @@ export const milestoneStats = (p: Player): Record<string, number> => {
  * official OVR over the game pool (league + real NFL players, minus exclusions), skill rating graded against the
  * whole league, Career Legacy from the normalized league. `league` is normalized and has no real legends.
  */
-export const snapshotPlayers = (league: Player[], legends: Player[], excluded: Set<string>, season: Record<string, number> = {}): Record<string, MarketPoint> => {
+export const snapshotPlayers = (league: Player[], legends: Player[], excluded: Set<string>, season: Record<string, number> = {}, advanced: Record<string, number[]> = {}): Record<string, MarketPoint> => {
   const ovrMap = officialOvrMap(league, legends, excluded);
   const pool = league.filter((p) => !excluded.has(playerKey(p)));
   const rows = pool.map((p) => {
     const ovr = ovrMap.get(playerKey(p)) ?? 62;
-    const overall = playerSkillGrades(league, p).overall;
+    // NFL: the career advanced factors are part of the skill rating (skillGrades.ts foldAdvanced; scripts/nfl/advanced.py)
+    const overall = foldAdvanced(playerSkillGrades(league, p).overall, advanced[playerKey(p)] ?? []);
     const szn = p.status === 'Active' ? season[playerKey(p)] : undefined;
     return { p, ovr, szn, tier: tierFor(p, IS_NFL ? priceRating(ovr, szn) : ovr), skill: overall?.rating ?? null, grade: overall?.grade.grade };
   });

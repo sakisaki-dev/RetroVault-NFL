@@ -68,3 +68,7 @@ export const advLeaders = (f: AdvFile, scope: string, metric: string, pos: strin
     .sort((a, b) => a.v[2] - b.v[2] || a.key.localeCompare(b.key))
     .map((e) => ({ ...e, display: fmtAdv(m, e.v[0]) }));
 };
+
+/** His graded (non-style) advanced percentiles in a scope ("2026" or "c"), for the skill grade (skillGrades.ts foldAdvanced). */
+export const advancedPcts = (f: AdvFile | null, key: string, scope: string): number[] =>
+  Object.entries(f?.p[key]?.[scope] ?? {}).flatMap(([id, v]) => (f!.metrics[id]?.dir === 'style' ? [] : [v[1]]));
