@@ -155,7 +155,7 @@ def main():
             if not r["game_id"]:
                 continue
             d = per_game.setdefault(r["game_id"], {})
-            e = d.setdefault((r["team"], norm(r["player_display_name"])), {"name": r["player_display_name"], "gsis": r["player_id"], "pos": r["position"], "v": {}})
+            e = d.setdefault((ALIAS.get(r["team"], r["team"]), norm(r["player_display_name"])), {"name": r["player_display_name"], "gsis": r["player_id"], "pos": r["position"], "v": {}})
             for c, s in PC:
                 if s == "w":
                     v = num(r.get(c))
@@ -164,9 +164,9 @@ def main():
         for k, src in (("pass", "p"), ("rush", "r"), ("rec", "c"), ("def", "d")):
             for r in adv[k]:
                 d = per_game.setdefault(r["game_id"], {})
-                e = d.get((r["team"], norm(r["pfr_player_name"])))
+                e = d.get((ALIAS.get(r["team"], r["team"]), norm(r["pfr_player_name"])))
                 if e is None:
-                    e = d.setdefault((r["team"], norm(r["pfr_player_name"])), {"name": r["pfr_player_name"], "gsis": "", "pos": "", "v": {}})
+                    e = d.setdefault((ALIAS.get(r["team"], r["team"]), norm(r["pfr_player_name"])), {"name": r["pfr_player_name"], "gsis": "", "pos": "", "v": {}})
                 for c in PFR_MAP[src]:
                     v = num(r.get(c))
                     if v:
@@ -174,7 +174,7 @@ def main():
         for r in snaps:
             d = per_game.setdefault(r["game_id"], {})
             os_, ds_ = num(r["offense_snaps"]) or 0, num(r["defense_snaps"]) or 0
-            key = (r["team"], norm(r["player"]))
+            key = (ALIAS.get(r["team"], r["team"]), norm(r["player"]))
             e = d.get(key)
             if e is None:
                 if os_ <= 0 and ds_ <= 0:
@@ -188,12 +188,12 @@ def main():
                 e["v"]["defense_snaps"] = ds_
         teamrows = {}
         for r in tw:
-            teamrows[(r["game_id"], r["team"])] = r
+            teamrows[(r["game_id"], ALIAS.get(r["team"], r["team"]))] = r
         pidx, plist = {}, []
         out_games = []
         for g in sorted(by_season[year], key=lambda g: (g["gameday"], g["gametime"], g["game_id"])):
             gid = g["game_id"]
-            away, home = g["away_team"], g["home_team"]
+            away, home = ALIAS.get(g["away_team"], g["away_team"]), ALIAS.get(g["home_team"], g["home_team"])
             wk = int(g["week"])
             gt = g["game_type"]
             aa, hh = ALIAS.get(away, away), ALIAS.get(home, home)
