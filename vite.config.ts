@@ -8,6 +8,12 @@ import fs from "fs";
 // Pages build included; a checkout without it builds the classic art.
 const PRIVATE_SPRITES = fs.existsSync(path.resolve(__dirname, "public/private-sprites"));
 
+// NFL edition (local demo): ESPN's article API (content.core.api.espn.com) is read through this proxy in dev and preview
+const ESPN_PROXY =
+  process.env.VITE_EDITION === "nfl"
+    ? { "/espn-content": { target: "https://content.core.api.espn.com", changeOrigin: true, rewrite: (p: string) => p.replace(/^\/espn-content/, "") } }
+    : undefined;
+
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   // GitHub Pages serves the site from /RetroVault/; the deploy workflow sets BASE_PATH. Local dev stays at /.
@@ -18,7 +24,9 @@ export default defineConfig(() => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: ESPN_PROXY,
   },
+  preview: { proxy: ESPN_PROXY },
   plugins: [
     react(),
     // Belt and braces: a build that isn't showing the private sprites never ships a copy of them either

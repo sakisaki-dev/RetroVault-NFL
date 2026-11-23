@@ -1,6 +1,7 @@
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import InTheNews from '@/components/espn/InTheNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
+import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
 import {
   POSITIONS,
@@ -72,7 +73,9 @@ const ALL_SECTIONS = [
   { id: 'dd-records', label: 'Records & awards', short: 'Records', icon: Medal },
 ] as const;
 /** No live save in the NFL edition, so no Age & clock */
-const SECTIONS = IS_NFL ? ALL_SECTIONS.filter((s) => s.id !== 'dd-clock') : ALL_SECTIONS;
+const SECTIONS: readonly { id: string; label: string; short: string; icon: typeof Gauge }[] = IS_NFL
+  ? [...ALL_SECTIONS.filter((s) => s.id !== 'dd-clock'), { id: 'dd-news', label: 'In the news', short: 'News', icon: Newspaper }]
+  : ALL_SECTIONS;
 
 const useMedia = (query: string) => {
   const [on, setOn] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia(query).matches);
@@ -501,6 +504,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           <DdSection id="dd-records" index={7} title="Records & awards" icon={Medal}>
             <DdRecords player={player} book={book} ovr={ovr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
+
+          {IS_NFL && (
+            <DdSection id="dd-news" index={8} title="In the news" icon={Newspaper} kicker="The real ESPN articles and clips that tag him, from the latest NFL news and his club's feed.">
+              <InTheNews player={player} />
+            </DdSection>
+          )}
         </div>
       </div>
     </div>
