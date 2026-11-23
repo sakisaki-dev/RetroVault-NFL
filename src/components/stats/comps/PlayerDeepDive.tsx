@@ -22,6 +22,7 @@ import Chips from '../analytics/Chips';
 import { usePrefersReducedMotion } from '../analytics/viz';
 import { buildRecordBook, keyOf } from '../records';
 import CompMap from './CompMap';
+import NeighbourhoodChart from './NeighbourhoodChart';
 import { familiesFor, familyOfPlayer } from '@/config/families';
 import { buildShapeMap } from '../visual/shapeMap';
 import DdAdvanced from './DdAdvanced';
@@ -93,6 +94,7 @@ const useMedia = (query: string) => {
 };
 
 // Per-league caches (weakly keyed, so a new league drops them): all-pairs maps per model + mode, metric boards per context + position.
+const N_NEAR = 30;
 const MAP_CACHE = new WeakMap<PositionModel, Map<SimilarityMode, SimilarityMap>>();
 const cachedMap = (model: PositionModel, mode: SimilarityMode) => {
   let byMode = MAP_CACHE.get(model);
@@ -148,6 +150,8 @@ const MapSection = ({
   setFamView,
   insufficient,
   ovrMap,
+  careerOvrMap,
+  seasonOvrMap,
   mapComps,
   overlay,
   wide,
@@ -163,20 +167,22 @@ const MapSection = ({
   setFamView: (v: boolean) => void;
   insufficient: boolean;
   ovrMap: Map<string, number>;
+  careerOvrMap: Map<string, number>;
+  seasonOvrMap?: Record<string, number> | null;
   mapComps: ReturnType<typeof similarPlayers>;
   overlay: { player: Player } | undefined;
   wide: boolean;
   onPick: (p: Player) => void;
 }) => {
   void players;
-  const simMap = useMemo(() => (model && model.axes >= MIN_RADAR_AXES && model.pool.length >= 3 ? cachedMap(model, mapMode) : null), [model, mapMode]);
+  // the default chart needs no all-pairs map (that O(n^2) MDS is gone from this view)
+  const canMap = !!model && model.axes >= MIN_RADAR_AXES && model.pool.length >= 3;
   // the families map is the costly one: built only once the Families view is chosen
   const famOption = !!fams?.shaped && fams.vectors.length >= 3;
   const shapeMap = useMemo(() => (fams && famView ? shapeCached(fams) : null), [fams, famView]);
-  const shownMap = famView && shapeMap ? shapeMap : simMap;
   return (
     <>
-            {simMap && !insufficient ? (
+            {canMap && !insufficient ? (
               <div className="glass-card space-y-2 p-3 sm:p-4">
                 <Chips
                   label="Map distance"
@@ -194,25 +200,28 @@ const MapSection = ({
                     ...(famOption ? [{ value: 'family' as const, label: 'Families' }] : []),
                   ]}
                 />
-                <CompMap
-                  map={shownMap ?? simMap}
-                  zones={famView && !!shapeMap}
-                  nnLabel={famView && shapeMap ? 'Closest shape' : undefined}
-                  ovrMap={ovrMap}
-                  selectedKey={keyOf(player)}
-                  topComps={mapComps}
-                  overlayKey={overlay && !overlay.player.isRealLegend ? keyOf(overlay.player) : ''}
-                  onPick={onPick}
-                  wide={wide}
-                  focusZoom={wide ? 1.8 : 1.6}
-                />
+                {famView && shapeMap ? (
+                  <CompMap
+                    map={shapeMap}
+                    zones
+                    nnLabel="Closest shape"
+                    ovrMap={ovrMap}
+                    selectedKey={keyOf(player)}
+                    topComps={mapComps}
+                    overlayKey={overlay && !overlay.player.isRealLegend ? keyOf(overlay.player) : ''}
+                    onPick={onPick}
+                    wide={wide}
+                    focusZoom={wide ? 1.8 : 1.6}
+                  />
+                ) : (
+                  <NeighbourhoodChart player={player} model={model} mode={mapMode} ovrMap={ovrMap} careerOvrMap={careerOvrMap} seasonOvr={seasonOvrMap} wide={wide} onPick={onPick} />
+                )}
                 <details className="text-xs text-muted-foreground">
                   <summary className="cursor-pointer font-semibold hover:text-foreground">How this map works</summary>
                   <p className="mt-1.5">
-                    Every league {player.position} is placed by classical multidimensional scaling of the {mapMode === 'style' ? 'style (shape correlation)' : 'level + style'} distance between
-                    each pair, using the same z-scored rates as the comps ({model.features.map((f) => f.label).join(', ')}). The two axes keep {Math.round(simMap.explained * 100)}% of the
-                    spread; they have no units. Dot size = official OVR, gold ring = Hall of Famer, faded = under {SIM_MIN_GAMES} games, grey lines join nearest neighbours, gold lines run
-                    to his top 5 comps. Drag to pan, pinch or use the buttons to zoom; Tab through dots and press Enter to dive into a player.
+                    His {N_NEAR} nearest careers (by the same {mapMode === 'style' ? 'style (shape correlation)' : 'level + style'} score the comps use, over {model.features.map((f) => f.label).join(', ')}) are the squares,
+                    in club colours with a gold rim for Hall of Famers; the faint blue pixels are where the rest of the position sits (darker = more players), dashed lines are the position medians.
+                    Pick the axes with the presets or the X and Y menus; the filters (era, active or retired, starters) apply to the whole chart and to who counts as a neighbour. Tap a square for his card.
                   </p>
                   <p className="mt-1.5">
                     Families: places every {player.position} by play-style shape instead (his style percentiles with his overall level taken out, so how he plays, not how good
@@ -547,7 +556,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             index={2}
             title="Neighbourhood"
             icon={ChartScatter}
-            kicker="Zoomed in on him among every league player at his position. Closer = plays more alike."
+            kicker="His closest comparable careers over the rest of his position. Closer = plays more alike."
           >
             <DeferredSection ids={[]} minHeight={560}>
               <MapSection
@@ -561,6 +570,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
                 setFamView={setFamView}
                 insufficient={insufficient}
                 ovrMap={ovrMap}
+                careerOvrMap={careerOvrMap}
+                seasonOvrMap={seasonOvr?.ovr}
                 mapComps={mapComps}
                 overlay={overlay}
                 wide={wide}
