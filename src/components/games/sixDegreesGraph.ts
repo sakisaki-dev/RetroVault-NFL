@@ -1,7 +1,8 @@
 import { playerKey, type GamePlayer } from '@/config/ovr';
 import { matchPlayerByName, type LeagueContent } from '@/utils/leagueContent';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { normalizeName as extrasKey, type IndexedExtras } from '@/utils/playerExtras';
+import { IS_NFL } from '@/config/edition';
+import { getStints, normalizeName as extrasKey, type IndexedExtras } from '@/utils/playerExtras';
 
 /**
  * "Six Degrees of Ikarras": a graph over the league's own players (real NFL legends excluded).
@@ -125,7 +126,7 @@ const joinFacts = (facts: LinkFact[]) => {
   const parts: string[] = [];
   sorted.forEach((f) => {
     if (f.kind !== 'team') parts.push(f.text);
-    else if (f === teams[0]) parts.push(teams.length > 1 ? `Both ${teams.map((t) => t.text.replace(/^Both /, '')).join(' & ')}` : f.text);
+    else if (f === teams[0]) parts.push(teams.length > 1 ? (teams.every((t) => t.text.startsWith('Teammates')) ? teams.map((t) => t.text).join('; ') : `Both ${teams.map((t) => t.text.replace(/^Both /, '')).join(' & ')}`) : f.text);
   });
   return parts.join(', ');
 };
@@ -180,7 +181,39 @@ export const buildSixDegreesGraph = ({ players, content, extras }: SixDegInput):
     if (!prev || (prev.how && !how)) row.members.set(playerKey(p), { p, how });
     teams.set(t.id, row);
   };
+  // NFL: teammates are real overlaps. A player with stints joins a club only for the seasons he was there; two are linked
+  // when their stays share a season ("Teammates on the Bills, 2019-2021"), so a 2003 Patriot never meets a 2023 one.
+  const stays = new Map<string, { name: string; list: { p: GamePlayer; from: number; to: number }[] }>();
+  const withStints = new Set<string>();
+  if (IS_NFL) {
+    nodes.forEach((p) => {
+      const st = getStints(extras, p.name)?.stints;
+      if (!st?.length) return;
+      withStints.add(playerKey(p));
+      st.forEach((s) => {
+        const t = findNFLTeam(s.team);
+        if (!t) return;
+        const row = stays.get(t.id) ?? { name: t.name, list: [] };
+        row.list.push({ p, from: s.from, to: s.to });
+        stays.set(t.id, row);
+      });
+    });
+    stays.forEach(({ name, list }) => {
+      list.sort((a, b) => a.from - b.from);
+      for (let i = 0; i < list.length; i++)
+        for (let j = i + 1; j < list.length && list[j].from <= list[i].to; j++) {
+          const a = list[i];
+          const b = list[j];
+          const from = Math.max(a.from, b.from);
+          const to = Math.min(a.to, b.to);
+          link(a.p, b.p, { kind: 'team', label: name, text: `Teammates on the ${name}, ${from === to ? from : `${from}-${to}`}` });
+        }
+    });
+  }
   nodes.forEach((p) => {
+    if (withStints.has(playerKey(p))) {
+      return; // his clubs are the stays above (the card's former / legacy club is a stint already)
+    }
     join(p, p.team);
     join(p, p.bannerTeam);
     join(p, notesFor.get(playerKey(p))?.team);

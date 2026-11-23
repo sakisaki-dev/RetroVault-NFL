@@ -305,3 +305,10 @@
   .arcade .hall-rays { transform: none; }
   .arcade .gamebar::after { display: none; }
 }
+
+/* Era filter (NFL): a segmented row beside the rating switch */
+.arcade .hall-era { display: inline-flex; min-height: 36px; border: 1px solid #333; border-radius: 999px; background: #000; padding: 2px; gap: 2px; }
+.arcade .hall-era button { font-family: var(--f-pixel); font-size: 10px; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border-radius: 999px; }
+.arcade .hall-era button[aria-pressed='true'] { background: var(--turf-deep); color: var(--gold); }
+.arcade .hall-era button:disabled { opacity: 0.4; cursor: not-allowed; }
+.arcade .hall-era button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }

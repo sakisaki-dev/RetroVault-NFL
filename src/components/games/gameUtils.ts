@@ -1,9 +1,11 @@
 import { IS_NFL } from '@/config/edition';
-import { createContext, useContext, useMemo, type CSSProperties } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import type { Player, Position } from '@/types/player';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { leagueScore, playerKey, type GamePlayer } from '@/config/ovr';
 import { useGamePool } from '@/utils/useOfficialOvr';
+import { inEra, loadGamePool, type Era } from '@/utils/gamePool';
+import { usePlayerExtras } from '@/utils/playerExtras';
 
 // The official OVR lives in src/config/ovr.ts (shared with the stats pages); re-exported for the games.
 export { leagueScore, ovr, playerKey, pyRound, type GamePlayer, type LegendPhoto } from '@/config/ovr';
@@ -416,15 +418,28 @@ export const ArcadeRatingContext = createContext<ArcadeRating>('car');
 /** "CAR" or "SZN": the label for any rating a game prints */
 export const useRatingTag = (): 'CAR' | 'SZN' => (useContext(ArcadeRatingContext) === 'szn' ? 'SZN' : 'CAR');
 
-export const useGamePlayers = (includeLegends: boolean, rating: 'car' | 'szn' = 'car') => {
+export const useGamePlayers = (includeLegends: boolean, rating: 'car' | 'szn' = 'car', era: Era = 'all') => {
   const { league, legends, careerOvrMap, ovrMap: shownMap, seasonOvr, ovrBasis, loaded, dataVersion } = useGamePool();
+  const extras = usePlayerExtras();
+  // Players beyond the core league (retirees from the history load), fetched only when CAR mode needs them
+  const [more, setMore] = useState<GamePlayer[]>([]);
+  useEffect(() => {
+    let alive = true;
+    loadGamePool(rating, era).then((m) => alive && setMore((prev) => (prev.length === 0 && m.length === 0 ? prev : m)));
+    return () => {
+      alive = false;
+    };
+  }, [rating, era]);
   // The arcade picks one rating explicitly (owner, 2026-11-23). CAR (default): the career OVR across everyone, active and
   // retired, real legends included. SZN: this season's OVR, active league players who played it only (no legends).
   const szn = rating === 'szn';
-  const players = useMemo<GamePlayer[]>(
-    () => (szn ? league.filter((p) => ovrBasis.get(playerKey(p)) === 'season') : includeLegends ? [...league, ...legends] : league),
-    [szn, includeLegends, league, legends, ovrBasis],
-  );
+  const players = useMemo<GamePlayer[]>(() => {
+    if (szn) return league.filter((p) => ovrBasis.get(playerKey(p)) === 'season'); // this season: actives only, no era row
+    const have = new Set(league.map(playerKey));
+    const all = [...league, ...more.filter((p) => !have.has(playerKey(p)))];
+    const pool = includeLegends ? [...all, ...legends] : all;
+    return era === 'all' ? pool : pool.filter((p) => isLegend(p) || inEra(p, era, extras));
+  }, [szn, includeLegends, league, legends, ovrBasis, more, era, extras]);
   const ovrMap = szn ? shownMap : careerOvrMap;
   return { players, league, legends, ovrMap, rating, seasonOvr, legendsLoaded: loaded, dataVersion };
 };
