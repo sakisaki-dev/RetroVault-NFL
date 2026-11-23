@@ -32,6 +32,8 @@ import { reducedMotion } from '@/utils/motion';
 import { SeasonStoryDesk, openSeasonStory } from './SeasonStory';
 import RivalryFilesRow from '@/components/rivalry/RivalryFilesRow';
 import { peekProps } from '@/components/peek/peekProps';
+import { IS_NFL } from '@/config/edition';
+import NflSpotlight from './NflSpotlight';
 
 /**
  * "What changed": the generated headlines in content.json (scripts/build_league_content.py build_headlines(), rules
@@ -233,6 +235,7 @@ export const pickSpotlight = (players: Player[], headlines: Headline[], edition:
   const picked = editionShuffle(inNews, edition, 'home-spotlight-news').slice(0, Math.min(2, n));
   const top = [...players]
     .sort((a, b) => (b.careerLegacy || 0) - (a.careerLegacy || 0) || a.name.localeCompare(b.name))
+    .filter((p) => !IS_NFL || (!!p.team && p.team !== 'FA' && p.status === 'Active')) // NFL: players on a club, with a 2026 game log
     .slice(0, 24)
     .filter((p) => !picked.includes(p));
   return [...picked, ...editionShuffle(top, edition, 'home-spotlight')].slice(0, n);
@@ -250,6 +253,7 @@ export const Spotlight = ({
   onPlayer: (p: Player) => void;
 }) => {
   if (!picks.length) return null;
+  if (IS_NFL) return <NflSpotlight picks={picks} headlines={headlines} notes={notes} onPlayer={onPlayer} />;
   return (
     <section className="wc wc-spot" aria-labelledby="wc-spot-title">
       <h2 id="wc-spot-title" className="wc-spot__title">

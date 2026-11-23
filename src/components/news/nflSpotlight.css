@@ -1,0 +1,55 @@
+/* The NFL Spotlight: hero tiles (NflSpotlight.tsx). Club colours via --tc / --tc2. */
+.wc-spot { container-type: inline-size; }
+.nsp-grid { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 760px) { .nsp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.nsp {
+  --tc: #ffc83d; --tc2: #2b3760;
+  position: relative; display: flex; flex-direction: column; width: 100%; min-height: 380px; overflow: hidden; text-align: left;
+  border: 1px solid color-mix(in srgb, var(--tc) 45%, #2b3760); border-radius: 12px; color: #f1f4ff; cursor: pointer;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 55%, #0b1020) 0%, #0b1020 62%);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 0.35);
+  transition: transform 140ms ease-out, border-color 140ms ease-out;
+}
+.nsp:hover { transform: translateY(-2px); border-color: #ffc83d; }
+.nsp:focus-visible { outline: 3px solid #ffc83d; outline-offset: 2px; }
+/* the light cone from the top, scanlines like the LED boards */
+.nsp__rays { position: absolute; inset: 0; pointer-events: none;
+  background: conic-gradient(from 180deg at 50% -8%, transparent 0 40%, rgb(255 255 255 / 0.16) 47%, transparent 54% 100%),
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.14) 0 1px, transparent 1px 3px); }
+.nsp__num { position: absolute; top: 4px; right: 8px; font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size: 150px; font-weight: 800; line-height: 0.9;
+  color: color-mix(in srgb, var(--tc2) 55%, transparent); opacity: 0.55; letter-spacing: -4px; pointer-events: none; }
+.nsp__logo { position: absolute; top: 10px; left: 10px; opacity: 0.95; filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.5)); }
+.nsp__stage { position: relative; display: flex; justify-content: center; height: 176px; margin-top: 30px; }
+.nsp__sprite { position: relative; z-index: 1; transform: translateY(8px); }
+.nsp__ped { position: absolute; bottom: 0; left: 50%; width: 170px; height: 34px; transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--tc2) 80%, #fff) 0%, var(--tc) 55%, #05080f 100%);
+  box-shadow: 0 0 0 3px #05080f, 0 0 0 5px var(--tc2), 0 10px 18px rgb(0 0 0 / 0.5); }
+.nsp__body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px; background: linear-gradient(180deg, transparent, rgb(5 8 15 / 0.72) 28%); }
+.nsp__top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.nsp__team { font-size: 12px; color: #c7d0ee; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nsp__name { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size: 30px; font-weight: 800; line-height: 1; text-transform: uppercase; text-shadow: 0 2px 0 rgb(0 0 0 / 0.5); }
+.nsp__why { font-size: 12px; line-height: 1.35; color: #e7ecff; }
+.nsp__why b { display: block; margin-bottom: 2px; font-family: var(--font-pixel); font-size: 8px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: #ffc83d; }
+.nsp__led { display: flex; gap: 6px; padding: 6px 8px; border-radius: 6px; background: #05080f; box-shadow: inset 0 0 0 1px rgb(255 200 61 / 0.25); }
+.nsp__cell { overflow: hidden; display: flex; flex: 1; flex-direction: column; align-items: center; min-width: 0; }
+.nsp__cell i { font-family: var(--font-pixel); font-style: normal; font-size: 13px; color: #ffc83d; white-space: nowrap; text-shadow: 0 0 6px rgb(255 200 61 / 0.7); font-variant-numeric: tabular-nums; }
+.nsp__cell em { font-family: var(--font-pixel); font-style: normal; font-size: 6px; letter-spacing: 0.1em; color: #8a94b8; margin-top: 2px; }
+.nsp__last { font-size: 11px; color: #c7d0ee; line-height: 1.35; }
+.nsp__last b { font-family: var(--font-pixel); font-size: 8px; font-weight: 400; color: #8a94b8; }
+.nsp__last u { text-decoration: none; font-family: var(--font-pixel); font-size: 9px; padding: 1px 4px; border-radius: 3px; background: #1d2742; }
+.nsp__last u[data-r='W'] { color: #3ddc84; }
+.nsp__last u[data-r='L'] { color: #ff5a61; }
+.nsp__spark { display: flex; align-items: flex-end; gap: 2px; height: 26px; }
+.nsp__spark i { flex: 1; max-width: 14px; background: var(--tc2); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18); }
+.nsp__spark i[data-last] { background: #ffc83d; box-shadow: 0 0 6px rgb(255 200 61 / 0.7); }
+@container (max-width: 759px) {
+  .nsp { min-height: 200px; display: grid; grid-template-columns: 124px minmax(0, 1fr); grid-template-rows: auto; }
+  .nsp__stage { height: 150px; margin-top: 20px; grid-row: 1; }
+  .nsp__sprite { transform: translateY(4px) scale(0.85); transform-origin: bottom center; }
+  .nsp__ped { width: 110px; }
+  .nsp__num { font-size: 96px; }
+  .nsp__body { background: linear-gradient(90deg, transparent, rgb(5 8 15 / 0.6) 14%); padding-left: 6px; }
+  .nsp__name { font-size: 24px; }
+  .nsp__logo { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .nsp { transition: none; } .nsp:hover { transform: none; } }
