@@ -451,6 +451,9 @@ export interface RoundGame {
   weather?: Weather | null;
   /** NFL edition: kickoff for a game still to play, "Thu · 8:15 PM ET" */
   kickoff?: string;
+  /** NFL edition: points the home club was favoured by, and a covered stadium */
+  line?: number;
+  roof?: boolean;
 }
 
 export type SeasonView = Omit<ScheduleSeason, 'coachGames' | 'table'> & {
@@ -478,7 +481,7 @@ const wlt = (gs: LogGame[]) => {
 /** schedule.json's games grouped by week. */
 export const scheduleWeeks = (season: Pick<ScheduleSeason, 'games'>): { week: number; games: RoundGame[] }[] => {
   const m = new Map<number, RoundGame[]>();
-  for (const g of season.games ?? []) m.set(g.week, [...(m.get(g.week) ?? []), { away: g.away, home: g.home, awayScore: g.awayScore, homeScore: g.homeScore }]);
+  for (const g of season.games ?? []) m.set(g.week, [...(m.get(g.week) ?? []), { away: g.away, home: g.home, awayScore: g.awayScore, homeScore: g.homeScore, line: g.line, roof: !!g.roof }]);
   return [...m.entries()].sort((a, b) => a[0] - b[0]).map(([week, games]) => ({ week, games }));
 };
 

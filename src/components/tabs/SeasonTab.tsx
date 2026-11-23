@@ -3,13 +3,14 @@ import { BarChart3, History, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
-import { scheduleSeasons, useSchedule } from '@/utils/schedule';
+import { scheduleSeasons, useSchedule, useScheduleSeason } from '@/utils/schedule';
 import { SEASON_WEEKS, awardRaces, leaderBoards, liveSeasonView, recordText, scheduleWeeks, seasonEntries, useLiveSchedule, useLiveSeason, useUpcoming, withUpcoming, type LiveSeason, type SeasonView } from '@/utils/seasonLive';
 import { ClubSplits, SeasonScoreboard } from '@/components/season/SeasonScoreboard';
 import { NotableGames, NumbersStrip, WeeklyChart } from '@/components/season/SeasonByNumbers';
 import { GameLog, GameRecords, LeagueTable, NoScores, SectionTitle } from '@/components/season/SeasonGames';
 import { AwardRaces, InjuryReport, NflInjuryReport, Leaders, type PlayerLookup } from '@/components/season/LivePanels';
 import { HeadToHeadGrid } from '@/components/season/scheduleParts';
+import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo, StandingsBanners } from '@/components/season/NflSeason';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import '@/components/season/season.css';
@@ -83,10 +84,14 @@ const SeasonTab = () => {
   const liveId = live && !past.some((p) => p.season === seasonLabel(live.season)) ? seasonLabel(live.season) : null;
   const liveView = useMemo(() => (live ? liveSeasonView(live, liveSched ?? past.find((p) => p.season === seasonLabel(live.season))) : null), [live, liveSched, past]);
   const options = useMemo(() => {
-    const ids = past.map((p) => p.season).filter((id) => id !== liveId);
+    const ids = [...new Set([...past.map((p) => p.season), ...(schedule?.seasonIndex ?? []).map((p) => p.season)])].filter((id) => id !== liveId);
     return [...(liveId ? [liveId] : []), ...ids].sort((a, b) => seasonNum(b) - seasonNum(a));
-  }, [past, liveId]);
-  const [picked, setPicked] = useState<string | null>(null);
+  }, [past, liveId, schedule]);
+  // a deep link, #season?y=2003
+  const [picked, setPicked] = useState<string | null>(() => new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('y'));
+  const wanted = picked && options.includes(picked) ? picked : options[0] ?? null;
+  // the shown season's own file (NFL: one per season, loaded when picked)
+  const fetched = useScheduleSeason(schedule, wanted);
 
   const upcoming = useUpcoming(); // a hook: before the early return below
   if (live === undefined || liveSched === undefined || !schedule) {
@@ -95,7 +100,8 @@ const SeasonTab = () => {
 
   const shown = picked && options.includes(picked) ? picked : options[0] ?? null;
   const isLive = !!shown && shown === liveId && !!live && !!liveView;
-  const pastSeason = past.find((p) => p.season === shown);
+  const pastSeason = past.find((p) => p.season === shown) ?? fetched ?? undefined;
+  const loadingSeason = !isLive && !pastSeason && fetched === undefined;
   const season: SeasonView | null = isLive
     ? liveView
     : pastSeason
@@ -141,8 +147,14 @@ const SeasonTab = () => {
           )}
         </div>
 
-        {season ? (
+        {loadingSeason ? (
+          <PixelLoader label="Season" what={`the ${shown} season`} minHeight="40vh" className="justify-start pt-[8vh]" />
+        ) : season ? (
           <>
+            {IS_NFL && <SeasonJumbo season={season} players={[...players.values()]} live={isLive || !season.superBowl} />}
+            {IS_NFL && <PlayoffBracket season={season} />}
+            {IS_NFL && <StandingsBanners season={season} />}
+            {IS_NFL && <PowerLadder season={season} />}
             {!IS_NFL && (
               <>
                 <SeasonScoreboard season={season} status={isLive ? liveStatus(season) : undefined} badge={isLive ? perfectWatch(live!, season) : undefined} />
@@ -161,7 +173,7 @@ const SeasonTab = () => {
                 <WeeklyChart season={season} />
               </div>
             )}
-            <LeagueTable season={season} />
+            {IS_NFL ? <FullTable season={season} /> : <LeagueTable season={season} />}
             {!isLive && (
               <div className="space-y-2">
                 <SectionTitle icon={Trophy}>Notable games</SectionTitle>

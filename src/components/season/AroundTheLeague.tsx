@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Globe2 } from 'lucide-react';
+import { Globe2, Warehouse } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { RoundGame, SeasonView } from '@/utils/seasonLive';
 import ScoreBar, { WeatherIcons } from './ScoreBar';
@@ -14,6 +14,10 @@ import { SectionTitle } from './SeasonGames';
 const GameBar = ({ g, week, coach }: { g: RoundGame; week: number; coach: boolean }) => {
   const played = g.awayScore !== undefined && g.homeScore !== undefined;
   const tie = played && g.awayScore === g.homeScore;
+  // the closing line (NFL): the favourite and the points; an upset is a win by the underdog of 3 or more points
+  const fav = g.line ? (g.line > 0 ? g.home : g.away) : null;
+  const upset = played && !tie && fav !== null && Math.abs(g.line!) >= 3 && (g.homeScore! > g.awayScore! ? g.home : g.away) !== fav;
+  const lineText = fav ? `${fav} −${Math.abs(g.line!)}` : null;
   return (
     <ScoreBar
       away={g.away}
@@ -23,7 +27,16 @@ const GameBar = ({ g, week, coach }: { g: RoundGame; week: number; coach: boolea
       coach={coach}
       upcoming={!played}
       kicker={`Week ${week} · ${played ? `Final${tie ? ' · Tie' : ''}` : 'To play'}${!played && g.kickoff ? ` · ${g.kickoff}` : ''}`}
-      aside={played ? <span className="tabular-nums">{g.awayScore! + g.homeScore!} combined</span> : g.weather ? <WeatherIcons w={g.weather} /> : null}
+      aside={
+        played ? (
+          <>
+            {g.roof && <Warehouse className="h-3 w-3" aria-label="Covered stadium" />}
+            {lineText && <span className="tabular-nums" title="Closing spread">Line {lineText}</span>}
+            {upset && <span className="rounded bg-[hsl(var(--gold)/0.2)] px-1 font-pixel text-[8px] uppercase text-[hsl(var(--gold))]">Upset</span>}
+            <span className="tabular-nums">{g.awayScore! + g.homeScore!} pts</span>
+          </>
+        ) : g.weather ? <WeatherIcons w={g.weather} /> : null
+      }
       srText={played ? `${g.away} ${g.awayScore} at ${g.home} ${g.homeScore}` : `${g.away} at ${g.home}, to play`}
     />
   );

@@ -167,8 +167,13 @@ export interface ScheduleSeason {
   upset?: GameRef;
   blowout?: GameRef;
   shootout?: GameRef;
-  games: { week: number; away: string; home: string; awayScore: number; homeScore: number }[];
+  games: { week: number; away: string; home: string; awayScore: number; homeScore: number; /** NFL: points the home club was favoured by */ line?: number; roof?: 1 }[];
   regularSeasonGames: number;
+  /** NFL edition: the playoff rounds (abbreviations), the Super Bowl, the AP award winners and last season's power ranks */
+  playoffs?: { round: string; games: { away: string; away_score: number; home: string; home_score: number; line?: number }[] }[];
+  superBowl?: { roman: string; winner: string; loser: string; score: string };
+  awards?: Record<string, { player: string; team: string; position: string }>;
+  prevPower?: Record<string, number>;
 }
 
 export interface HeadToHead {
@@ -196,6 +201,8 @@ export interface GameRecord {
 
 export interface Schedule {
   seasons: Record<string, ScheduleSeason>;
+  /** NFL edition: every season with its own file (schedule/<year>.json), newest data lazily loaded */
+  seasonIndex?: { season: string; games: number; superBowl?: ScheduleSeason['superBowl'] }[];
   headToHead: Record<string, HeadToHead>;
   records: GameRecord[];
   /** Every club's row for each season with weekly scores, oldest first (missing seasons are simply absent) */
@@ -223,6 +230,36 @@ export const latestScheduleSeason = (s: Schedule): ScheduleSeason | null => sche
 
 /** A club's season in one line: record and point differential ("15-2, +119"). */
 export const formLine = (row: Pick<TableRow, 'record' | 'diff'>) => `${row.record}, ${row.diff > 0 ? '+' : ''}${row.diff}`;
+
+const seasonFiles = new Map<string, Promise<ScheduleSeason | null>>();
+/** One season's file (NFL edition, schedule/<year>.json); memoized. */
+export const loadScheduleSeason = (id: string): Promise<ScheduleSeason | null> => {
+  let p = seasonFiles.get(id);
+  if (!p) {
+    p = fetch(`${import.meta.env.BASE_URL}data/league/schedule/${id}.json`, { cache: 'no-cache' })
+      .then((r) => (r.ok ? (r.json() as Promise<ScheduleSeason>) : null))
+      .catch(() => null);
+    seasonFiles.set(id, p);
+  }
+  return p;
+};
+
+/** The shown season's full content: from the startup file when it holds it, else its own file. `undefined` while loading. */
+export const useScheduleSeason = (schedule: Schedule | null, id: string | null): ScheduleSeason | null | undefined => {
+  const inline = id && schedule ? schedule.seasons[id] : undefined;
+  const [loaded, setLoaded] = useState<{ id: string; s: ScheduleSeason | null } | null>(null);
+  useEffect(() => {
+    if (!id || inline) return;
+    let cancelled = false;
+    loadScheduleSeason(id).then((s) => !cancelled && setLoaded({ id, s }));
+    return () => {
+      cancelled = true;
+    };
+  }, [id, inline]);
+  if (!id) return null;
+  if (inline) return inline;
+  return loaded && loaded.id === id ? loaded.s : undefined;
+};
 
 export const useSchedule = () => {
   const [schedule, setSchedule] = useState<Schedule | null>(null);
