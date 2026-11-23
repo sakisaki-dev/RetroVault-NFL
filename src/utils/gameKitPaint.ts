@@ -349,7 +349,56 @@ const paintPolo = (px: Uint8ClampedArray, w: number, h: number, color: string, m
   }
 };
 
+/**
+ * NFL edition SILHOUETTE (the runtime twin of scripts/nfl/silhouettes.py, for a player the sprite index has no entry for):
+ * the head (rows above 27, columns 16-47) is replaced by the outline of a game face template (`head`: its alpha), blacked out
+ * in a club-tinted near-black with a 1px light rim, no features; bare skin below the neck is blacked out too. The kit and
+ * number are already painted. Owner: never a random face.
+ */
+const silhouetteize = (px: Uint8ClampedArray, w: number, h: number, head: Uint8ClampedArray, training: boolean) => {
+  if (w < 48 || h < 40) return;
+  const at = (x: number, y: number) => (y * w + x) * 4;
+  const skinish = (r: number, g: number, b: number) => r > b + 20 && r > 60 && r + g + b < 600;
+  const cnt = new Map<number, number>();
+  for (let y = 8; y < 29; y++)
+    for (let x = 20; x < 44; x++) {
+      const i = at(x, y);
+      if (px[i + 3] && skinish(px[i], px[i + 1], px[i + 2])) {
+        const k = (px[i] << 16) | (px[i + 1] << 8) | px[i + 2];
+        cnt.set(k, (cnt.get(k) ?? 0) + 1);
+      }
+    }
+  const skin = new Set([...cnt].filter(([, n]) => n >= 3).map(([k]) => k));
+  const votes = new Map<number, number>();
+  for (let y = 36; y < 40; y++)
+    for (let x = 26; x < 38; x++) {
+      const i = at(x, y);
+      if (px[i + 3] === 255) votes.set((px[i] << 16) | (px[i + 1] << 8) | px[i + 2], (votes.get((px[i] << 16) | (px[i + 1] << 8) | px[i + 2]) ?? 0) + 1);
+    }
+  const jk = [...votes].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 0x283c64;
+  const j: RGB = [(jk >> 16) & 255, (jk >> 8) & 255, jk & 255];
+  const night: RGB = training ? [38, 40, 48] : [Math.floor(j[0] * 0.22 + 8), Math.floor(j[1] * 0.22 + 8), Math.floor(j[2] * 0.22 + 8)];
+  const rim: RGB = training ? [150, 156, 175] : [Math.min(255, Math.floor(j[0] * 0.45 + 120)), Math.min(255, Math.floor(j[1] * 0.45 + 120)), Math.min(255, Math.floor(j[2] * 0.45 + 120))];
+  for (let y = 0; y < 27; y++) for (let x = 16; x < 48; x++) px[at(x, y) + 3] = 0;
+  const on = (x: number, y: number) => y >= 0 && y < 27 && x >= 16 && x < 48 && head[y * 32 + (x - 16)] > 0;
+  for (let y = 0; y < 27; y++)
+    for (let x = 16; x < 48; x++) {
+      if (!on(x, y)) continue;
+      const edge = !on(x, y - 1) || !on(x - 1, y) || !on(x + 1, y);
+      const c = edge ? rim : night;
+      const i = at(x, y);
+      [px[i], px[i + 1], px[i + 2], px[i + 3]] = [c[0], c[1], c[2], 255];
+    }
+  for (let y = 27; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const i = at(x, y);
+      if (px[i + 3] && skin.has((px[i] << 16) | (px[i + 1] << 8) | px[i + 2])) [px[i], px[i + 1], px[i + 2]] = night;
+    }
+};
+
 export interface SpriteJob {
+  /** NFL edition: draw the figure as a silhouette with this game face template's head outline (a file URL; silhouetteize) */
+  silhouette?: string;
   /** Paint the neutral kit into this club's home kit */
   paint?: string;
   /** Paint a coach's white polo: a CSS colour and his outfit mask (paintPolo) */
@@ -377,11 +426,11 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
   const rows = job.rows ?? 0;
   const cols = job.cols ?? 0;
   const num = job.number !== undefined && job.numberClub ? job.number : undefined;
-  if (!job.paint && !job.polo && !rows && !cols && num === undefined) return Promise.resolve(src);
-  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}|${num ?? ''}`;
+  if (!job.paint && !job.polo && !rows && !cols && num === undefined && !job.silhouette) return Promise.resolve(src);
+  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}|${num ?? ''}|${job.silhouette ?? ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
-  const job2 = loadImage(src).then((img) => {
+  const job2 = Promise.all([loadImage(src), job.silhouette ? loadImage(job.silhouette) : null]).then(([img, headImg]) => {
     const c = document.createElement('canvas');
     const w = (c.width = img.naturalWidth);
     const h = (c.height = img.naturalHeight);
@@ -396,6 +445,19 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
       else paintPixels(data.data, w, h, to);
     }
     if (num !== undefined) numberize(data.data, w, h, num, job.numberClub!);
+    if (job.silhouette && headImg) {
+      const hc = document.createElement('canvas');
+      hc.width = 64;
+      hc.height = 64;
+      const hx = hc.getContext('2d');
+      if (hx) {
+        hx.drawImage(headImg, 0, 0);
+        const hd = hx.getImageData(16, 0, 32, 27).data;
+        const alpha = new Uint8ClampedArray(32 * 27);
+        for (let i = 0; i < alpha.length; i++) alpha[i] = hd[i * 4 + 3];
+        silhouetteize(data.data, w, h, alpha, job.paint === 'Training');
+      }
+    }
     if (job.polo) paintPolo(data.data, w, h, job.polo.color, job.polo.mask);
     if (rows || cols) {
       const shaped = reshape(new Uint32Array(data.data.buffer), w, h, job.cx ?? 31.5, job.foot ?? 58, rows, cols);

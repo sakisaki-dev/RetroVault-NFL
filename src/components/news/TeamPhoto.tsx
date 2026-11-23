@@ -65,16 +65,16 @@ const TeamPhoto = ({ season, winner, players, featured }: Props) => {
         </span>
         <div className="tp-row tp-row--back" aria-hidden="true">
           {back.map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} kind="figure" size="m" peek />
+            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
         </div>
         <div className="tp-row tp-row--front" aria-hidden="true">
           {front.slice(0, mid).map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} kind="figure" size="m" peek />
+            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
-          <GameSprite player={star} team={team.name} kind="figure" size="l" action="celebrate" className="tp-star" peek />
+          <GameSprite player={star} team={team.name} season={year} kind="figure" size="l" action="celebrate" className="tp-star" peek />
           {front.slice(mid).map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} kind="figure" size="m" peek />
+            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
         </div>
         {withCoach && <CoachSprite who="head" team={team.name} size="m" className="tp-coach" />}
