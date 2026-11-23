@@ -51,7 +51,9 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
   const reduced = usePrefersReducedMotion();
   // The sub-tab being switched to lights up at once (the switch itself renders as a transition; see hashRoute)
   const { target } = useHubRoute();
-  const lit = target?.tab === 'career' && target.sub ? target.sub : sub;
+  const litSub = target?.tab === 'career' && target.sub ? target.sub : sub;
+  // a game opens from the Teams, Season and Deep Dive pages and sits under Teams
+  const lit = litSub === 'game' ? 'teams' : litSub;
   const sorted = useMemo(() => [...players].sort((a, b) => b.careerLegacy - a.careerLegacy), [players]);
 
   // Track the site header height (published by Header on <html>) and our own bar height.

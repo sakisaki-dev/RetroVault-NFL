@@ -29,6 +29,8 @@ import {
 import { usePlayerExtras } from '@/utils/playerExtras';
 import { useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
+import { IS_NFL } from '@/config/edition';
+import { StrengthStrip, SuperBowlStrip } from '../teams/nfl/TeamStrips';
 
 type ConferenceFilter = 'all' | 'AFC' | 'NFC';
 type DivisionFilter = 'all' | (typeof DIVISIONS)[number];
@@ -185,7 +187,13 @@ const TeamRankingsTab = () => {
       </header>
 
       {/* League overview: power ranking + dynasty timeline */}
-      {teams.length > 0 && (
+      {IS_NFL && teams.length > 0 && (
+        <div className="space-y-4">
+          {superBowls.length > 0 && <SuperBowlStrip superBowls={superBowls} openable={openable} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />}
+          <StrengthStrip teams={teams} records={records} superBowls={superBowls} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />
+        </div>
+      )}
+      {!IS_NFL && teams.length > 0 && (
         <div className="grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-7 min-w-0">
             <PowerRanking teams={teams} records={records} lastSeason={lastSeason} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />

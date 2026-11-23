@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Crown, LayoutGrid, ListOrdered, Medal, Minus, Star, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { IS_NFL } from '@/config/edition';
+import { gameHash, playoffGameId, useGameIds } from '@/utils/nflGames';
 import { PlayerHit, StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -100,7 +102,7 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
 
 type PGame = NonNullable<SeasonView['playoffs']>[number]['games'][number];
 
-const BracketGame = ({ g, final, seeds }: { g: PGame; final?: boolean; seeds: Map<string, number> }) => {
+const BracketGame = ({ g, final, seeds, href }: { g: PGame; final?: boolean; seeds: Map<string, number>; href?: string }) => {
   const rows = [
     { t: g.away, s: g.away_score, w: g.away_score > g.home_score },
     { t: g.home, s: g.home_score, w: g.home_score > g.away_score },
@@ -117,12 +119,14 @@ const BracketGame = ({ g, final, seeds }: { g: PGame; final?: boolean; seeds: Ma
           <span className={cn('font-display text-base font-bold tabular-nums', r.w ? lampText : 'text-foreground/55')}>{r.s}</span>
         </div>
       ))}
+      {href && <a href={href} className="block bg-white/10 px-2 py-0.5 text-center font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:bg-white/20">Box score</a>}
       {upset && <p className="bg-[hsl(var(--gold)/0.18)] px-2 py-0.5 text-center font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))]">Upset · line {fav} −{Math.abs(g.line!)}</p>}
     </li>
   );
 };
 
 export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
+  const ids = useGameIds(IS_NFL);
   const rounds = season.playoffs ?? [];
   if (!rounds.length) return null;
   const sb = season.superBowl;
@@ -138,7 +142,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
               <p className={cn('mb-2 text-center font-pixel text-[9px] uppercase tracking-widest', r.round === 'Super Bowl' ? 'text-[hsl(var(--gold))]' : 'text-white/70')}>{r.round}</p>
               <ul className="flex flex-1 flex-col justify-around gap-2">
                 {r.games.map((g) => (
-                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} />
+                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} href={(() => { const id = playoffGameId(ids, season.season, g.away, g.home); return id ? gameHash(id) : undefined; })()} />
                 ))}
               </ul>
             </div>

@@ -13,7 +13,7 @@ import CrowdDivider from '../stats/visual/CrowdDivider';
 import '../stats/visual/statsArena.css';
 import { HEADLINE_IDS, LEADER_IDS, buildRecordBook, pickBoards } from '../stats/records';
 import StatsHub from '../stats/hub/StatsHub';
-import { ClockPage, GraphsPage, HeadToHead, PlayerDeepDive, PlayersInsights, TeamRankingsTab, ViewLoading, prefetchStatsSub } from '../stats/hub/lazyViews';
+import { ClockPage, GamePage, GraphsPage, HeadToHead, PlayerDeepDive, PlayersInsights, TeamRankingsTab, ViewLoading, prefetchStatsSub } from '../stats/hub/lazyViews';
 import { buildHash, useHubRoute, type StatsSub } from '../stats/hub/hashRoute';
 import { reducedMotion } from '@/utils/motion';
 import { usePhone } from '@/hooks/usePhone';
@@ -226,6 +226,7 @@ const CareerTab = () => {
       <Suspense fallback={<ViewLoading label={sub} />}>
       <div key={sub} className={sub === 'players' ? undefined : 'rv-view-in'}>
       {sub === 'teams' && <TeamRankingsTab />}
+      {sub === 'game' && <GamePage gameId={route.q?.id} />}
 
       {/* Graph Builder full page (src/components/stats/graph); the URL's gx / gy / pos… are the chart. */}
       {sub === 'graphs' && <GraphsPage data={careerData} onSelect={setSelectedPlayer} />}

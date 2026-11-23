@@ -237,7 +237,7 @@ const seasonFiles = new Map<string, Promise<ScheduleSeason | null>>();
 export const loadScheduleSeason = (id: string): Promise<ScheduleSeason | null> => {
   let p = seasonFiles.get(id);
   if (!p) {
-    p = fetch(`${import.meta.env.BASE_URL}data/league/schedule/${id}.json`, { cache: 'no-cache' })
+    p = dataResponse(`data/league/schedule/${id}.json`)
       .then((r) => (r.ok ? (r.json() as Promise<ScheduleSeason>) : null))
       .catch(() => null);
     seasonFiles.set(id, p);

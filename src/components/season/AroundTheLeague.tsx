@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import type { RoundGame, SeasonView } from '@/utils/seasonLive';
 import ScoreBar, { WeatherIcons } from './ScoreBar';
 import { SectionTitle } from './SeasonGames';
+import { IS_NFL } from '@/config/edition';
+import { gameHash, regularGameId, useGameIds } from '@/utils/nflGames';
 import { StarStrip, type SeasonStars } from './NflSeasonExtras';
 
 /**
@@ -12,7 +14,7 @@ import { StarStrip, type SeasonStars } from './NflSeasonExtras';
  * stadium's weather. From schedule.json's games (past) or the save's league games (live). Rules only.
  */
 
-const GameBar = ({ g, week, coach, stars }: { g: RoundGame; week: number; coach: boolean; stars: SeasonStars | null }) => {
+const GameBar = ({ g, week, coach, stars, gameId }: { g: RoundGame; week: number; coach: boolean; stars: SeasonStars | null; gameId?: string }) => {
   const played = g.awayScore !== undefined && g.homeScore !== undefined;
   const tie = played && g.awayScore === g.homeScore;
   // the closing line (NFL): the favourite and the points; an upset is a win by the underdog of 3 or more points
@@ -26,6 +28,7 @@ const GameBar = ({ g, week, coach, stars }: { g: RoundGame; week: number; coach:
       awayScore={g.awayScore}
       homeScore={g.homeScore}
       coach={coach}
+      gameHref={played && gameId ? gameHash(gameId) : undefined}
       upcoming={!played}
       kicker={`Week ${week} · ${played ? `Final${tie ? ' · Tie' : ''}` : 'To play'}${!played && g.kickoff ? ` · ${g.kickoff}` : ''}`}
       aside={
@@ -46,6 +49,7 @@ const GameBar = ({ g, week, coach, stars }: { g: RoundGame; week: number; coach:
 
 const AroundTheLeague = ({ season, stars = null }: { season: SeasonView; stars?: SeasonStars | null }) => {
   const weeks = season.weeks ?? [];
+  const ids = useGameIds(IS_NFL);
   const lastPlayed = [...weeks].reverse().find((w) => w.games.some((g) => g.awayScore !== undefined))?.week;
   const [pick, setPick] = useState<number | null>(null);
   const bar = useRef<HTMLDivElement | null>(null);
@@ -83,7 +87,7 @@ const AroundTheLeague = ({ season, stars = null }: { season: SeasonView; stars?:
       </div>
       <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {week.games.map((g) => (
-          <GameBar key={`${g.away}-${g.home}`} stars={stars} g={g} week={week.week} coach={[g.away, g.home].some((t) => t === season.coachTeam || t === season.coachAbbr)} />
+          <GameBar key={`${g.away}-${g.home}`} gameId={regularGameId(ids, season.season, week.week, g.away, g.home)} stars={stars} g={g} week={week.week} coach={[g.away, g.home].some((t) => t === season.coachTeam || t === season.coachAbbr)} />
         ))}
       </ul>
     </div>

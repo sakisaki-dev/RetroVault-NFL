@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { gameHash, regularGameId, useGameIds } from '@/utils/nflGames';
 import { Flame, Gauge, Medal, Swords, Target, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
@@ -17,6 +18,7 @@ import { keyOfPlayer } from '@/utils/playerSearch';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './nflPodium.css';
+import { dataResponse } from '@/utils/dataStore';
 
 /**
  * NFL Season page extras: each game's star performer (public/data/league/stars/<year>.json, scripts/nfl/game_stars.py,
@@ -32,7 +34,7 @@ const cache = new Map<string, Promise<SeasonStars | null>>();
 export const loadStars = (year: string) => {
   let p = cache.get(year);
   if (!p) {
-    p = fetch(`${import.meta.env.BASE_URL}data/league/stars/${year}.json`, { cache: 'no-cache' })
+    p = dataResponse(`data/league/stars/${year}.json`)
       .then((r) => (r.ok ? (r.json() as Promise<SeasonStars>) : null))
       .catch(() => null);
     cache.set(year, p);
@@ -151,6 +153,7 @@ export const PlayerHit = ({ name, pos, playerKey, className, style, children, la
 
 type GameRef = NonNullable<SeasonView['upset']>;
 export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: SeasonStars | null }) => {
+  const ids = useGameIds(true);
   const l = season.league;
   const items: { key: string; kicker: string; icon: typeof Zap; g: GameRef; caption?: string }[] = [];
   if (season.upset) items.push({ key: 'upset', kicker: 'Upset of the year', icon: Zap, g: season.upset, caption: `${season.upset.winner} (${season.upset.winnerRecord}) beat ${season.upset.loser} (${season.upset.loserRecord}) by ${season.upset.margin}` });
@@ -189,7 +192,7 @@ export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: Se
                 <span className="col-start-2 row-start-1 font-pixel text-[9px] text-muted-foreground">@</span>
               </div>
               <StarStrip stars={stars} week={g.week} away={aw} home={hm} />
-              {caption && <p className="relative border-t border-white/10 px-3 py-1.5 text-[11px] text-muted-foreground">{caption}</p>}
+              {caption && <p className="relative flex items-center justify-between gap-2 border-t border-white/10 px-3 py-1.5 text-[11px] text-muted-foreground"><span>{caption}</span>{regularGameId(ids, season.season, g.week, aw, hm) && <a href={gameHash(regularGameId(ids, season.season, g.week, aw, hm)!)} className="flex-shrink-0 font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:underline">Box score</a>}</p>}
             </li>
           );
         })}
@@ -268,7 +271,7 @@ interface Awards {
   through?: number;
 }
 let awardsReq: Promise<Awards | null> | null = null;
-const loadAwards = () => (awardsReq ??= fetch(`${import.meta.env.BASE_URL}data/league/season_leaders.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+const loadAwards = () => (awardsReq ??= dataResponse('data/league/season_leaders.json').then((r) => (r.ok ? r.json() : null)).catch(() => null));
 
 const STAT_TABS: { id: string; label: string; unit: string }[] = [
   { id: 'passing', label: 'Pass yards', unit: 'yds' },
