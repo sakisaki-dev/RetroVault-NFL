@@ -1,7 +1,7 @@
 {
  "source": "https://en.wikipedia.org/wiki/List_of_Pro_Football_Hall_of_Fame_inductees",
  "fetched": "2026-11-23",
- "count": 388,
+ "count": 387,
  "inductees": [
   {
    "name": "Sammy Baugh",
@@ -48,14 +48,11 @@
   {
    "name": "Bert Bell",
    "class": 1963,
-   "role": "player",
+   "role": "coach",
    "also_roles": [
-    "coach",
     "contributor"
    ],
-   "positions": [
-    "Team co-owner"
-   ],
+   "positions": [],
    "teams": [
     "Eagles",
     "Steelers"
@@ -166,14 +163,11 @@
   {
    "name": "Joseph Carr",
    "class": 1963,
-   "role": "player",
+   "role": "coach",
    "also_roles": [
-    "coach",
     "contributor"
    ],
-   "positions": [
-    "NFL president"
-   ],
+   "positions": [],
    "teams": [],
    "primary_teams": [],
    "defunct_teams": [
@@ -489,7 +483,7 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Offensive end",
+    "E",
     "S",
     "K"
    ],
@@ -760,11 +754,11 @@
    "class": 1963,
    "role": "player",
    "also_roles": [
-    "coach"
+    "coach",
+    "contributor"
    ],
    "positions": [
-    "HB",
-    "1st NFL president"
+    "HB"
    ],
    "teams": [
     "Giants",
@@ -1795,11 +1789,9 @@
   {
    "name": "Hugh \"Shorty\" Ray",
    "class": 1966,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "Technical advisor on rules, Supervisor of officials"
-   ],
+   "positions": [],
    "teams": [],
    "primary_teams": [],
    "defunct_teams": [],
@@ -1852,8 +1844,8 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Center Two-Way Performer",
-    "Linebacker Two-Way Performer"
+    "C",
+    "LB"
    ],
    "teams": [
     "Eagles"
@@ -2867,6 +2859,8 @@
    "primary_teams": [],
    "defunct_teams": [
     "Brooklyn Dodgers/ Tigers",
+    "Fleet City Blue Jackets",
+    "New York Yankees",
     "New York Yankees (AAFC)"
    ],
    "years_active": [
@@ -2885,30 +2879,7 @@
      "team_raw": "New York Yankees (AAFC)",
      "franchise": null,
      "years": "1946–1947"
-    }
-   ]
-  },
-  {
-   "name": "Frank \"Bruiser\" Kinard",
-   "class": 1971,
-   "role": "player",
-   "also_roles": [],
-   "positions": [
-    "T"
-   ],
-   "teams": [],
-   "primary_teams": [],
-   "defunct_teams": [
-    "Fleet City Blue Jackets",
-    "New York Yankees"
-   ],
-   "years_active": [
-    1945,
-    1947
-   ],
-   "premodern_era": true,
-   "wikipedia_title": "Frank Kinard",
-   "teams_detail": [
+    },
     {
      "team_raw": "Fleet City Blue Jackets",
      "franchise": null,
@@ -3533,7 +3504,7 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Offensive end"
+    "E"
    ],
    "teams": [
     "Browns"
@@ -3873,7 +3844,7 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Defensive middle guard"
+    "MG"
    ],
    "teams": [
     "Browns"
@@ -4626,7 +4597,8 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Tackle, Guard"
+    "T",
+    "G"
    ],
    "teams": [
     "Bears"
@@ -4813,7 +4785,7 @@
    "positions": [
     "WR",
     "HB",
-    "kickoff",
+    "KR",
     "PR"
    ],
    "teams": [
@@ -4945,7 +4917,7 @@
    "also_roles": [],
    "positions": [
     "OT",
-    "Defensive lineman"
+    "DL"
    ],
    "teams": [
     "Browns"
@@ -5834,7 +5806,7 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "Outside linebacker"
+    "LB"
    ],
    "teams": [
     "Steelers"
@@ -6476,14 +6448,11 @@
   {
    "name": "Al Davis",
    "class": 1992,
-   "role": "player",
+   "role": "coach",
    "also_roles": [
-    "coach",
     "contributor"
    ],
-   "positions": [
-    "AFL commissioner"
-   ],
+   "positions": [],
    "teams": [
     "Raiders"
    ],
@@ -9268,7 +9237,9 @@
    "role": "player",
    "also_roles": [],
    "positions": [
-    "GuardCenterTackle"
+    "G",
+    "C",
+    "T"
    ],
    "teams": [
     "Titans"
@@ -10219,11 +10190,9 @@
   {
    "name": "Ed Sabol",
    "class": 2011,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "Founder of NFL Films"
-   ],
+   "positions": [],
    "teams": [],
    "primary_teams": [],
    "defunct_teams": [],
@@ -11148,13 +11117,9 @@
   {
    "name": "Bill Polian",
    "class": 2015,
-   "role": "player",
-   "also_roles": [
-    "contributor"
-   ],
-   "positions": [
-    "Team president"
-   ],
+   "role": "contributor",
+   "also_roles": [],
+   "positions": [],
    "teams": [
     "Bills",
     "Panthers",
@@ -11789,11 +11754,9 @@
   {
    "name": "Jerry Jones",
    "class": 2017,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "Team owner, president, general manager"
-   ],
+   "positions": [],
    "teams": [
     "Cowboys"
    ],
@@ -12371,13 +12334,9 @@
   {
    "name": "Gil Brandt",
    "class": 2019,
-   "role": "player",
-   "also_roles": [
-    "contributor"
-   ],
-   "positions": [
-    "VP of player personnel"
-   ],
+   "role": "contributor",
+   "also_roles": [],
+   "positions": [],
    "teams": [
     "Cowboys"
    ],
@@ -13056,11 +13015,9 @@
   {
    "name": "Steve Sabol",
    "class": 2020,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "NFL Films co-founder"
-   ],
+   "positions": [],
    "teams": [],
    "primary_teams": [],
    "defunct_teams": [],
@@ -13266,14 +13223,9 @@
   {
    "name": "George Young",
    "class": 2020,
-   "role": "player",
-   "also_roles": [
-    "contributor"
-   ],
-   "positions": [
-    "Director of player personnel",
-    "Senior vice president of football operations"
-   ],
+   "role": "contributor",
+   "also_roles": [],
+   "positions": [],
    "teams": [
     "Dolphins",
     "Giants"
@@ -13485,11 +13437,9 @@
   {
    "name": "Bill Nunn",
    "class": 2021,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "Scout"
-   ],
+   "positions": [],
    "teams": [
     "Steelers"
    ],
@@ -13668,12 +13618,9 @@
   {
    "name": "Art McNally",
    "class": 2022,
-   "role": "player",
+   "role": "contributor",
    "also_roles": [],
-   "positions": [
-    "Supervisor of officials",
-    "Supervisor of officiating"
-   ],
+   "positions": [],
    "teams": [],
    "primary_teams": [],
    "defunct_teams": [],

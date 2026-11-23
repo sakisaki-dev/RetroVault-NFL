@@ -24,12 +24,14 @@ DEFUNCT = ("yankees", "yanks", "canton", "bulldogs", "milwaukee", "rock island",
 NONPLAYER = {"coach", "general manager", "team owner", "team owner/founder", "team administrator", "personnel administrator",
              "nfl commissioner", "nfl co-organizer", "afl co-founder", "founder", "owner", "contributor", "administrator",
              "league founder", "commissioner", "co-founder"}
+NONPLAYER_RE = re.compile(r"president|owner|commissioner|founder|officia|scout|personnel|vice|advisor|administrator|director|executive|general manager|organizer")
 PLAYER_POS = {
     "quarterback": "QB", "running back": "RB", "fullback": "FB", "halfback": "HB", "wide receiver": "WR", "flanker": "WR",
     "tight end": "TE", "linebacker": "LB", "middle linebacker": "LB", "defensive end": "DE", "defensive tackle": "DT",
     "nose tackle": "NT", "cornerback": "CB", "safety": "S", "free safety": "S", "defensive back": "DB", "offensive tackle": "OT",
     "tackle": "T", "guard": "G", "center": "C", "placekicker": "K", "kicker": "K", "punter": "P", "end": "E",
-    "kick returner": "KR", "kickoff returner": "KR", "punt returner": "PR", "return specialist": "KR", "kickoff/punt returner": "KR",
+    "outside linebacker": "LB", "defensive lineman": "DL", "offensive lineman": "OL", "defensive middle guard": "MG",
+    "offensive end": "E", "kickoff": "KR", "kick returner": "KR", "kickoff returner": "KR", "punt returner": "PR", "return specialist": "KR", "kickoff/punt returner": "KR",
 }
 
 def franchise(raw):
@@ -53,11 +55,13 @@ def split_pos(raw):
     t = squash(raw); pre = "Pre-Modern Era" in t
     t = re.sub(r"Pre-Modern Era: Two-Way Performer", "/", t)
     t = re.sub(r"\s+(?=Punter|Kicker)", "/", t)
-    toks = [x.strip() for x in re.split(r"/", t) if x.strip()]
+    t = re.sub(r"Two-Way Performer", "", t)
+    t = re.sub(r"(?<=[a-z])(?=[A-Z])", "/", t)  # GuardCenterTackle (cell had line breaks)
+    toks = [x.strip() for x in re.split(r"[/,]", t) if x.strip()]
     pos, roles = [], set()
     for x in toks:
         k = x.lower()
-        if k in NONPLAYER or "coach" in k and k not in PLAYER_POS:
+        if k in NONPLAYER or ("coach" in k and k not in PLAYER_POS) or NONPLAYER_RE.search(k):
             roles.add("coach" if "coach" in k else "contributor")
         elif k in PLAYER_POS:
             pos.append(PLAYER_POS[k]); roles.add("player")
@@ -88,7 +92,7 @@ def main():
         try:
             c0 = r[0]; name = re.sub(r"[†‡§¶*^]+", "", squash(c0["t"])).strip()
             cls = int(re.search(r"\d{4}", r[1]["t"]).group())
-            key = (c0["links"][0] if c0["links"] else name, cls)
+            key = (re.sub(r"[^a-z]", "", name.lower()), cls)
             d = people.setdefault(key, {"name": name, "class": cls, "wikipedia_title": c0["links"][0] if c0["links"] else None,
                                         "_pos": [], "_pre": False, "_roles": set(), "teams_detail": [], **{"_f": {}}})
             d["_f"].update(person_flags(squash(c0["t"])))
