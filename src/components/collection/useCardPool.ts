@@ -4,6 +4,8 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { usePlayerExtras, withSignatureTeam } from '@/utils/playerExtras';
 import { useGamePool } from '@/utils/useOfficialOvr';
+import { IS_NFL } from '@/config/edition';
+import { priceRating } from '@/utils/cardMarket';
 import { playerKey, type GamePlayer } from '@/config/ovr';
 import { faceStatsFor, type FaceStat } from './cardStats';
 import { groupByTier, packOdds, tierFor, tierLabel, tierRank, type Tier, type TierPool } from '@/utils/collection';
@@ -43,7 +45,7 @@ const hintFor = (tier: Tier) => `${tierLabel(tier)} · ${fmtPct(STANDARD.tiers[t
  * (by franchise, then position and name). Real NFL legends are not collectible; they stay in the games only.
  */
 export const useCardPool = () => {
-  const { league, ovrMap, loaded } = useGamePool();
+  const { league, careerOvrMap: ovrMap, seasonOvr, loaded } = useGamePool();
   const { numberFor, retiredInfo } = useJerseyNumbers();
   const extras = usePlayerExtras();
 
@@ -54,7 +56,9 @@ export const useCardPool = () => {
     (pulled: Player, setNo = 0): CardInfo => {
       const p = leagueByKey.get(playerKey(pulled)) ?? pulled;
       const ovr = ovrMap.get(playerKey(p)) ?? null;
-      const tier = tierFor(p, ovr);
+      // NFL: the tier follows the rating the price reads (0.8 CAR + 0.2 SZN for an active player)
+      const szn = p.status === 'Active' ? seasonOvr?.ovr[playerKey(p)] : undefined;
+      const tier = tierFor(p, IS_NFL && ovr != null ? priceRating(ovr, szn) : ovr);
       const dressed = withSignatureTeam(extras, p as GamePlayer);
       return {
         key: playerKey(p),
@@ -71,7 +75,7 @@ export const useCardPool = () => {
         stats: faceStats(p),
       };
     },
-    [leagueByKey, ovrMap, numberFor, retiredInfo, faceStats, extras],
+    [leagueByKey, ovrMap, seasonOvr, numberFor, retiredInfo, faceStats, extras],
   );
 
   const cards = useMemo<CardInfo[]>(() => {

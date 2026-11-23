@@ -1,4 +1,4 @@
-import { IS_NFL } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, CalendarClock, ChartScatter, Gauge, LineChart, Medal, Milestone, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
@@ -14,6 +14,7 @@ import {
   type SimilarityMode,
 } from '@/config/advanced';
 import { playerSkillGrades } from '@/config/skillGrades';
+import DdSkillsSwitch from './DdSkillsSwitch';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { cn } from '@/lib/utils';
 import Chips from '../analytics/Chips';
@@ -121,7 +122,7 @@ const pctIn = (vals: number[], v: number) => {
  */
 const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey, onPlayerChange, onCompare }: PlayerDeepDiveProps) => {
   const players = useMemo(() => (data ? leaguePlayers(data) : (playersProp ?? []).filter((p) => !p.isRealLegend)), [data, playersProp]);
-  const { ovrMap, legends } = useGamePool();
+  const { ovrMap, careerOvrMap, legends, seasonOvr, ovrBasis } = useGamePool();
   const wide = useMedia('(min-width: 768px)');
   const reduced = usePrefersReducedMotion();
   const sorted = useMemo(() => [...players].sort((a, b) => b.careerLegacy - a.careerLegacy), [players]);
@@ -283,6 +284,23 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const prev = idx > 0 ? ladder[idx - 1] : null;
   const next = idx >= 0 && idx < ladder.length - 1 ? ladder[idx + 1] : null;
   const ovr = ovrMap.get(keyOf(player));
+  const car = careerOvrMap.get(keyOf(player));
+  const seasonShown = ovrBasis.get(keyOf(player)) === 'season' && seasonOvr && ovr != null;
+  const carTitle = car == null ? undefined : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
+  // Two ratings (owner, 2026-11-23): SZN = this season alone, CAR = the whole career. A retired player shows CAR only.
+  const ovrTitle = IS_NFL
+    ? seasonShown
+      ? `How OVR works. SZN ${ovr}: his ${seasonLabel(seasonOvr.season)} season so far ranked within ${player.position}s: per-game production and efficiency (EPA where it applies), scaled by how much he plays (snap share), with small samples pulled toward the position's floor so a few good games do not make a 99. CAR ${car ?? '–'}: his whole career ranked within the position. Price and card tier read 0.8 CAR + 0.2 SZN.`
+      : `How OVR works. ${carTitle ?? ''} No ${seasonLabel(seasonOvr?.season ?? 2026)} games, so there is no SZN${player.status === 'Active' ? '' : ' (retired players are rated on their career alone)'}.`
+    : seasonShown
+    ? `SZN ${ovr}: season OVR for Y${seasonOvr.season}${seasonOvr.live ? ' so far' : ''}, his season line ranked within ${player.position}s who played it (small samples shrunk toward the position mean).`
+    : car == null
+      ? undefined
+      : player.status === 'Active'
+        ? `${carTitle} No games in Y${seasonOvr?.season ?? ''}, so there is no season OVR.`
+        : `${carTitle} Retired players have no season OVR; their past seasons appear in the career graphs.`;
+  const ovrLabel = seasonShown ? 'SZN' : 'CAR';
+  const ovrAlt = seasonShown && car != null ? { label: 'CAR', value: car, title: carTitle } : null;
   const insufficient = !hasSimilarityData(player);
   const compare = onCompare ?? openInHeadToHead;
   const vals = posValues.get(position)!;
@@ -331,6 +349,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         player={player}
         options={sorted}
         ovr={ovr}
+        ovrTitle={ovrTitle}
+        ovrLabel={ovrLabel}
+        ovrAlt={ovrAlt}
         wide={wide}
         onChoose={(k) => choose(k, { scroll: false })}
         onRandom={random}
@@ -361,7 +382,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={`Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
-            {grades && <DdSkills player={player} ovr={ovr} traits={grades.traits} overall={grades.overall} players={players} onOpenPlayer={(p) => choose(keyOf(p))} />}
+            <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 
           <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
