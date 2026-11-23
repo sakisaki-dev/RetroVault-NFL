@@ -7,7 +7,7 @@ import { tierLabel, tierRank, finishRank, FINISHES } from '@/config/cardTiers';
 import { useOfficialOvr } from '@/utils/useOfficialOvr';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { bannerTeamOf } from '@/utils/playerExtras';
-import { findNFLTeam } from '@/utils/nflTeams';
+import { findNFLTeam, NFL_TEAMS } from '@/utils/nflTeams';
 import { useGameSprites, type SpriteAction } from '@/utils/gameSprites';
 import { useLeagueContent, type SuperBowlEntry, type SeasonStoryIndexEntry, type HotTakesIndexEntry } from '@/utils/leagueContent';
 import { useClubRecords, entryName, type ClubRecordRow } from '@/components/stats/clubRecords';
@@ -15,7 +15,6 @@ import { useHallOfFame } from '@/utils/hallOfFame';
 import { useRafters } from '@/utils/rafters';
 import { useCollection } from '@/utils/collection';
 import { isLite, usePerfMode } from '@/hooks/usePerfMode';
-import { useLiveSeason } from '@/utils/seasonLive';
 import { useMarket } from '@/utils/useMarket';
 import { fetchSaverWeather, isNightRest, useSaverFx, useSaverNight, useSaverPlace, useSaverSleep, weatherKind, windForce, windLabel, type SaverWeather } from '@/utils/screensaver';
 import { Music, Flame, Cloud, CloudFog, CloudLightning, CloudRain, CloudSnow, Moon, Sun } from 'lucide-react';
@@ -42,7 +41,11 @@ import { trackTimes, useNowPlaying, useSpotifyConnected, type NowPlaying } from 
 import { PixelCup } from '@/components/frontoffice/PixelCup';
 import { busState, departures, hm, useBusSetting, useRoute } from '@/utils/bus';
 import './screensaver.css';
-import { seasonLabel } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
+import { useSchedule, latestScheduleSeason, type TableRow } from '@/utils/schedule';
+import { useLiveSeason, kickoffText, scheduleWeeks, useUpcoming, withUpcoming, type RoundGame } from '@/utils/seasonLive';
+import { useSeasonLeaders, type LeaderRow, type SeasonLeaders } from '@/utils/seasonLeaders';
+import { timeAgo, useEspnNews, type NewsItem } from '@/utils/espnNews';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -77,6 +80,10 @@ type Scene =
   | { kind: 'rewind'; entry: SeasonRewindIndexEntry; from: number }
   | { kind: 'trophies'; club: string; years: number[] }
   | { kind: 'stunt'; club: string }
+  | { kind: 'nflrow'; kick: string; title: string; sub?: string; items: { p: Player; line: string }[]; club: string; roll: number }
+  | { kind: 'nflscores'; kick: string; title: string; sub: string; games: RoundGame[] }
+  | { kind: 'nflstand'; season: string; tables: { conf: string; rows: { seed: number | null; row: TableRow; div: boolean }[] }[] }
+  | { kind: 'nflnews'; item: NewsItem; players: Player[]; roll: number }
   | { kind: 'pa' };
 
 interface CoachStint { club: string; years: number[]; seasons: number; titles: number; w: number; l: number; t: number }
@@ -929,7 +936,7 @@ const ChampsScene = ({ bowl }: { bowl: SuperBowlEntry }) => {
       <span className="sv-champs__rays" aria-hidden="true" />
       <Particles kind="confetti" count={80} colors={[w ? `hsl(${w.primaryColor})` : '#ffc63e', w ? `hsl(${w.secondaryColor})` : '#ffffff', '#ffc63e', '#ffffff']} />
       <div className="sv-champs__body">
-        <p className="sv-kick">Super Bowl {bowl.roman} · Y{bowl.year}</p>
+        <p className="sv-kick">Super Bowl {bowl.roman} · {seasonLabel(bowl.year)}</p>
         <div className="sv-champs__logo">{w && <TeamLogo team={w.name} size={300} decorative />}</div>
         <h2 className="sv-title">{w?.fullName ?? bowl.winner}</h2>
         <p className="sv-champs__score">
@@ -1826,6 +1833,92 @@ const NowPlayingCard = ({ np }: { np: NowPlaying }) => {
   );
 };
 
+
+// ---------- NFL edition scenes (real data): scores, the playoff picture, news ----------
+
+const NflScoresScene = ({ kick, title, sub, games }: { kick: string; title: string; sub: string; games: RoundGame[] }) => (
+  <div className="sv-nfl">
+    <div className="sv-nfl__board">
+      <p className="sv-kick">{kick}</p>
+      <h2 className="sv-title sv-nfl__title">{title}</h2>
+      <p className="sv-sub sv-sub--dim">{sub}</p>
+      <ul className="sv-nfl__grid sv-nfl__grid--scores">
+        {games.map((g) => {
+          const played = g.awayScore !== undefined && g.homeScore !== undefined;
+          const a = findNFLTeam(g.away);
+          const h = findNFLTeam(g.home);
+          return (
+            <li key={`${g.away}-${g.home}`} style={{ '--c1': a ? `hsl(${a.primaryColor})` : '#888', '--c2': h ? `hsl(${h.primaryColor})` : '#888' } as CSSProperties}>
+              <span className="sv-nfl__team">
+                <TeamLogo team={a?.name ?? g.away} size={34} decorative />
+                <i>{a?.abbreviation ?? g.away}</i>
+              </span>
+              <b className={played && g.awayScore! > g.homeScore! ? 'sv-nfl__win' : undefined}>{played ? g.awayScore : ''}</b>
+              <span className="sv-nfl__at">{played ? 'FINAL' : '@'}</span>
+              <b className={played && g.homeScore! > g.awayScore! ? 'sv-nfl__win' : undefined}>{played ? g.homeScore : ''}</b>
+              <span className="sv-nfl__team sv-nfl__team--home">
+                <i>{h?.abbreviation ?? g.home}</i>
+                <TeamLogo team={h?.name ?? g.home} size={34} decorative />
+              </span>
+              {!played && g.kickoff && <small>{g.kickoff}</small>}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </div>
+);
+
+const NflStandScene = ({ season, tables }: { season: string; tables: { conf: string; rows: { seed: number | null; row: TableRow; div: boolean }[] }[] }) => (
+  <div className="sv-nfl">
+    <div className="sv-nfl__board">
+      <p className="sv-kick">Playoff picture · {season}</p>
+      <h2 className="sv-title sv-nfl__title">Standings by conference</h2>
+      <p className="sv-sub sv-sub--dim">Seeds by record, then point differential. Division leaders take the top four.</p>
+      <div className="sv-nfl__cols">
+        {tables.map((t) => (
+          <ol key={t.conf} className="sv-nfl__stand">
+            <li className="sv-nfl__conf">{t.conf}</li>
+            {t.rows.map(({ seed, row, div }) => (
+              <li key={row.team} className={seed ? 'sv-nfl__in' : 'sv-nfl__out'} style={{ '--c1': findNFLTeam(row.team) ? `hsl(${findNFLTeam(row.team)!.primaryColor})` : '#888' } as CSSProperties}>
+                <em>{seed ?? ''}</em>
+                <TeamLogo team={row.team} size={30} decorative />
+                <span>{row.team}</span>
+                {div && <u title="Division leader">DIV</u>}
+                <b>{row.record}</b>
+                <small>{row.diff > 0 ? '+' : ''}{row.diff}</small>
+              </li>
+            ))}
+          </ol>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const NflNewsScene = ({ item, players, roll, sprites }: { item: NewsItem; players: Player[]; roll: number; sprites: boolean }) => {
+  const club = (players[0] && bannerTeamOf(players[0])) || item.teams[0] || 'Bills';
+  return (
+    <Stadium club={club} roll={roll}>
+      <div className="sv-nfl-news">
+        {item.image && (
+          <figure className="sv-nfl-news__photo">
+            <img src={item.image.url} alt="" />
+            {item.image.credit && <figcaption>{item.image.credit}</figcaption>}
+          </figure>
+        )}
+        <div className="sv-nfl-news__text">
+          <p className="sv-kick">NFL news · ESPN · {timeAgo(item.published)}</p>
+          <h2 className="sv-title">{item.headline}</h2>
+          {item.description && item.description !== item.headline && <p className="sv-sub">{item.description}</p>}
+          {players.length > 0 && <Row items={players.slice(0, 3).map((p) => ({ p, line: p.position }))} sprites={sprites} />}
+        </div>
+      </div>
+    </Stadium>
+  );
+};
+
+
 const Screensaver = ({ onClose }: { onClose: () => void }) => {
   const { getAllPlayers, dataVersion } = useLeague();
   const ovrMap = useOfficialOvr();
@@ -1844,6 +1937,11 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   const spotifyOn = useSpotifyConnected();
   const paClub = useCurrentClub() ?? 'Eagles';
   const rootRef = useRef<HTMLDivElement>(null);
+  // NFL edition: this season's real boards, the schedule and ESPN's headlines
+  const leaders = useSeasonLeaders();
+  const schedule = useSchedule();
+  const upcoming = useUpcoming();
+  const news = useEspnNews();
 
   const players = useMemo(
     () => getAllPlayers().filter((p) => !p.isRealLegend).sort((a, b) => b.careerLegacy - a.careerLegacy),
@@ -1859,7 +1957,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     const t = window.setTimeout(() => setWaited(true), 4_000);
     return () => window.clearTimeout(t);
   }, []);
-  const ready = players.length > 0 && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
+  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
   const scenes = useMemo<Scene[]>(() => {
     if (!ready) return [];
     const spot = shuffle(players.slice(0, 80)).map((p): Scene => ({ kind: 'spotlight', player: p, roll: Math.random() }));
@@ -1993,7 +2091,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       .map(({ era, players: ps }): Scene => ({ kind: 'dynasty', era, players: ps }));
     // stadium flyovers (every club with stadium figures), Season Rewind playback (the cards in threes), the trophy room
     // (each club Skura won with) and card stunts (the clubs he coached)
-    const clubNames = Object.keys(live?.clubs ?? {}).filter((c) => findNFLTeam(c));
+    const clubNames = IS_NFL ? NFL_TEAMS.map((t) => t.name) : Object.keys(live?.clubs ?? {}).filter((c) => findNFLTeam(c));
     const flyovers = shuffle(clubNames).map((club): Scene => ({ kind: 'flyover', club, roll: Math.random() }));
     const rewinds = shuffle(
       (content?.seasonRewindIndex ?? []).flatMap((entry) => Array.from({ length: Math.ceil(entry.count / 3) }, (_, k): Scene => ({ kind: 'rewind', entry, from: k * 3 }))),
@@ -2005,8 +2103,69 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     ).map((x): Scene => ({ kind: 'trophies', club: x.club, years: x.years }));
     const stunts = shuffle([...stints.keys()]).map((club): Scene => ({ kind: 'stunt', club }));
     // the PA comes round a few times a run while Spotify is connected (skipped when nothing is playing)
+    // ---- NFL edition: real boards from this season's games, the schedule and ESPN's headlines ----
+    const nflDecks: Scene[][] = [];
+    if (IS_NFL) {
+      const items = (rows: LeaderRow[], fmt: (v: number) => string = (v) => v.toLocaleString()) =>
+        rows.map(([k, v, line]) => ({ p: byKeyP.get(k), line: `${fmt(v)} · ${line}` })).filter((x): x is { p: Player; line: string } => !!x.p);
+      const row = (kick: string, title: string, rs: { p: Player; line: string }[], sub?: string): Scene[] =>
+        rs.length >= 1 ? [{ kind: 'nflrow', kick, title, sub, items: rs, club: clubOf(rs[0].p)?.name ?? 'Bills', roll: Math.random() }] : [];
+      const L = leaders as SeasonLeaders | null | undefined;
+      if (L) {
+        const yr = String(L.season);
+        const lead = (key: keyof SeasonLeaders['leaders'], title: string, unit: string) =>
+          row(`Stat leaders · ${yr}`, title, items(L.leaders[key], (v) => `${v.toLocaleString()} ${unit}`), `Through week ${L.through}`);
+        nflDecks.push(
+          shuffle([
+            ...lead('passing', 'Passing yards', 'yds'),
+            ...lead('rushing', 'Rushing yards', 'yds'),
+            ...lead('receiving', 'Receiving yards', 'yds'),
+            ...lead('sacks', 'Sacks', 'sacks'),
+            ...lead('interceptions', 'Interceptions', 'INT'),
+          ]),
+          row(`Fantasy · PPR · ${yr}`, 'Fantasy points leaders', items(L.fantasy.slice(0, 6), (v) => `${v} pts`), `Through week ${L.through}`),
+          shuffle(
+            (Object.keys(L.awards) as (keyof SeasonLeaders['awards'])[]).flatMap((a) => {
+              const name = { MVP: 'Most Valuable Player', OPOY: 'Offensive Player of the Year', DPOY: 'Defensive Player of the Year', OROY: 'Offensive Rookie of the Year', DROY: 'Defensive Rookie of the Year' }[a];
+              return row(`Award race · projected · ${yr}`, name, items(L.awards[a], (v) => `${v}`), 'A simple rule over this season so far, not a vote');
+            }),
+          ),
+          shuffle([
+            ...row(`Rookie class of ${yr}`, 'Top offensive rookies', items(L.rookies.offense, (v) => `${v} pts`), `Through week ${L.through}`),
+            ...row(`Rookie class of ${yr}`, 'Top defensive rookies', items(L.rookies.defense, (v) => `${v} pts`), 'Sacks, interceptions, tackles and turnovers'),
+          ]),
+          [
+            ...row(`Player of the week · week ${L.potw.week}`, 'Best offensive games', L.potw.offense.map(([k, , opp, , line]) => ({ p: byKeyP.get(k), line: `vs ${opp} · ${line}` })).filter((x): x is { p: Player; line: string } => !!x.p)),
+            ...row(`Player of the week · week ${L.potw.week}`, 'Best defensive games', L.potw.defense.map(([k, , opp, , line]) => ({ p: byKeyP.get(k), line: `vs ${opp} · ${line}` })).filter((x): x is { p: Player; line: string } => !!x.p)),
+          ],
+        );
+      }
+      const ss = schedule ? latestScheduleSeason(schedule) : null;
+      if (ss) {
+        const weeks = withUpcoming(scheduleWeeks(ss), upcoming);
+        const played = [...weeks].reverse().find((w) => w.games.some((g) => g.awayScore !== undefined));
+        const next = weeks.find((w) => w.games.every((g) => g.awayScore === undefined));
+        const out: Scene[] = [];
+        if (played) out.push({ kind: 'nflscores', kick: `Scoreboard · ${ss.season}`, title: `Week ${played.week} results`, sub: 'Final scores around the league', games: played.games });
+        if (next) out.push({ kind: 'nflscores', kick: `Coming up · ${ss.season}`, title: `Week ${next.week} schedule`, sub: 'Kickoff times Eastern', games: next.games });
+        nflDecks.push(out);
+        const tables = ['AFC', 'NFC'].map((conf) => {
+          const rows = ss.table.filter((r) => r.conference === conf).sort((a, b) => b.pct - a.pct || b.diff - a.diff);
+          const champs = rows.filter((r) => r.divisionRank === 1);
+          const wild = rows.filter((r) => !champs.includes(r)).slice(0, 3);
+          const rest = rows.filter((r) => !champs.includes(r) && !wild.includes(r)).slice(0, 2);
+          return { conf, rows: [...champs.map((row, i) => ({ seed: i + 1, row, div: true })), ...wild.map((row, i) => ({ seed: i + 5, row, div: false })), ...rest.map((row) => ({ seed: null, row, div: false }))] };
+        });
+        if (tables.every((t) => t.rows.length >= 7)) nflDecks.push([{ kind: 'nflstand', season: ss.season, tables }]);
+      }
+      const stories = news.items
+        .filter((i) => i.image)
+        .slice(0, 6)
+        .map((item): Scene => ({ kind: 'nflnews', item, roll: Math.random(), players: item.athletes.map((n) => byName.get(n)).filter((x): x is Player => !!x) }));
+      nflDecks.push(stories);
+    }
     const pas: Scene[] = spotifyOn ? [{ kind: 'pa' }, { kind: 'pa' }, { kind: 'pa' }] : [];
-    const decks = [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters].filter((d) => d.length);
+    const decks = (IS_NFL ? [spot, ...nflDecks, pas, flyovers, cardScenes, duels, champs, recs, lineups, dyks, takeScenes, rising, farewell, chases, market, gauntlet] : [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters]).filter((d) => d.length);
     const out: Scene[] = [];
     for (let i = 0; out.length < 60 && decks.some((d) => i < d.length); i++) decks.forEach((d) => d[i] && out.push(d[i]));
     return out;
@@ -2149,6 +2308,14 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
 
   const render = (s: Scene) => {
     switch (s.kind) {
+      case 'nflrow':
+        return <RowScene kick={s.kick} title={s.title} sub={s.sub} items={s.items} sprites={sprites} roll={s.roll} club={s.club} />;
+      case 'nflscores':
+        return <NflScoresScene kick={s.kick} title={s.title} sub={s.sub} games={s.games} />;
+      case 'nflstand':
+        return <NflStandScene season={s.season} tables={s.tables} />;
+      case 'nflnews':
+        return <NflNewsScene item={s.item} players={s.players} roll={s.roll} sprites={sprites} />;
       case 'spotlight':
         return <SpotlightScene player={s.player} roll={s.roll} rank={rankOf.get(playerKey(s.player)) ?? 0} number={numberFor(s.player)} ovr={ovrMap.get(playerKey(s.player)) ?? null} sprites={sprites} />;
       case 'card':

@@ -636,7 +636,7 @@ export const useUpcoming = (): UpcomingFile | null => {
   return d;
 };
 
-const kickoffText = (g: { day: string; date: string; time: string }) => {
+export const kickoffText = (g: { day: string; date: string; time: string }) => {
   const [h, m] = g.time.split(':').map(Number);
   const [, mo, da] = g.date.split('-').map(Number);
   const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][mo - 1];
