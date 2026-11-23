@@ -53,7 +53,11 @@ def build() -> dict:
             ends[y] = s  # the last snapshot of a season wins
     seasons = sorted(ends)
     sovr = season_ovr.history_ratings()  # {season: {key: season OVR}}; the first season has no line
-    keys = sorted({k for y in seasons for k in ends[y]["players"]})
+    import os
+    careers_only = set()   # NFL: careers from Wikipedia with no weekly lines have no seasons (only the live snapshot holds them)
+    if os.environ.get("RV_EDITION") == "nfl":
+        careers_only = {f"{q['pos']}:{q['n']}" for q in json.loads((SRC / "players.json").read_text()) if (q.get("nfl") or {}).get("careerOnly")}
+    keys = sorted({k for y in seasons for k in ends[y]["players"]} - careers_only)
     players: dict[str, dict] = {}
     for k in keys:
         pos = k.split(":")[0]

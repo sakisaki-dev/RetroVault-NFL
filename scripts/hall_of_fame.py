@@ -64,12 +64,12 @@ CAREER_POINTS, SEASON_POINTS = 15, 5
 # a season rating (SZN) of ELITE_SZN or more; longevity counts seasons from his debut; a pre-1999 career (nfl.partial)
 # stretches his Career Legacy by the seasons the data is missing, flagged `partial`.
 NFL_W = {
-    "stand_max": 54, "stand_decay": 0.65,  # standing: rank 1 = stand_max, -3 x decay a place to rank 10, then -decay a place
-    "elite": 2, "elite_top": 2, "elite_cap": 28, "elite_szn": 93, "elite_top_szn": 97,
-    "long_from": 9, "long_pts": 4, "long_cap": 20,
-    "pre_pts": 6, "pre_cap": 45,           # pre-1999 seasons of a partial career, credited by debut year (flagged)
+    "stand_max": 57, "stand_decay": 0.63,  # standing: rank 1 = stand_max, -3 x decay a place to rank 10, then -decay a place
+    "elite": 2, "elite_top": 2, "elite_cap": 13, "elite_szn": 93, "elite_top_szn": 97,
+    "long_from": 7, "long_pts": 9, "long_cap": 20,
+    "pre_pts": 7, "pre_cap": 44,           # pre-1999 seasons of a partial career, credited by debut year (flagged)
     "ped_top10": 18, "ped_r1": 12, "ped_r2": 6,   # a partial career's draft capital (the seasons the data lacks)
-    "hon_scale": 0.4, "hon_cap": 40,
+    "hon_scale": 0.59, "hon_cap": 39,
     "partial_rate": 0.6, "partial_cap": 2.5,
 }
 
@@ -198,6 +198,23 @@ def compute() -> dict:
     cs_rows = json.loads(CAREER_SEASONS.read_text())["players"] if NFL and CAREER_SEASONS.exists() else {}
     cs_from = {}
 
+    def career_only(k: str) -> bool:
+        return bool((key[k].get("nfl") or {}).get("careerOnly"))
+
+    def last_year(k: str) -> int:
+        return int((key[k].get("nfl") or {}).get("last") or 0)
+
+    elite_share: dict[int, tuple[float, float]] = {}   # rank bucket -> (elite, top-elite seasons per season played), from 1999-on careers
+
+    def bucket(rank: int) -> int:
+        return 0 if rank <= 3 else 1 if rank <= 10 else 2 if rank <= 25 else 3 if rank <= 60 else 4
+
+    def est_elite(rank: int, span: int) -> tuple[int, int]:
+        """A career before the weekly data has no season ratings: the elite seasons a player of that standing and length
+        shows in the 1999-on careers (the median share of his seasons, by all-time rank bucket), flagged `est`."""
+        a, b = elite_share.get(bucket(rank), (0.0, 0.0))
+        return round(a * span), round(b * span)
+
     def debut(k: str) -> int:
         n = (key[k].get("nfl") or {})
         return int(n.get("debut") or n.get("rookie") or 0)
@@ -211,6 +228,7 @@ def compute() -> dict:
             return legacy
         return legacy * min(NFL_W['partial_cap'], 1 + NFL_W['partial_rate'] * (1999 - d) / max(1, seen))
 
+    classic_keys = [k for k in key if career_only(k)] if NFL else []
     seen_n: dict[str, int] = {}
     for y in seasons:
         for k in ends[y]:
@@ -265,7 +283,9 @@ def compute() -> dict:
             if pos not in poss:
                 continue
             mine = (v.get("s") or {}).get(f) or 0
-            if mine and all(((v2.get("s") or {}).get(f) or 0) <= mine for k2, v2 in snap.items() if k2.split(":")[0] in poss):
+            rivals = list(snap.items()) + ([(k2, ends[seasons[-1]][k2]) for k2 in classic_keys
+                                            if last_year(k2) <= at and k2 not in snap and k2 in ends[seasons[-1]]] if NFL else [])
+            if mine and all(((v2.get("s") or {}).get(f) or 0) <= mine for k2, v2 in rivals if k2.split(":")[0] in poss):
                 held.append(label)
         # a season record he held when he retired: his best season among those up to `at` tops every other then
         seasons_held = []
@@ -278,10 +298,14 @@ def compute() -> dict:
         rec_pts = CAREER_POINTS * len(held) + SEASON_POINTS * len(seasons_held)
         extra, nfl, parts_x = 0, {}, {}
         if NFL:
-            e1, e2 = elite_seasons(k, at)
             d = debut(k)
             pn = key[k].get("nfl") or {}
-            span = at - (d or max(1999, at - seen_n.get(k, 1) + 1)) + 1
+            if career_only(k):   # no season lines: his last season stands for `at`, his peak is estimated from standing
+                span = last_year(k) - d + 1
+                e1, e2 = est_elite(rank, span)
+            else:
+                e1, e2 = elite_seasons(k, at)
+                span = at - (d or max(1999, at - seen_n.get(k, 1) + 1)) + 1
             f = {"rank": rank, "e1": e1, "e2": e2, "hon_raw": hon_raw, "held": len(held), "sheld": len(seasons_held),
                  "span": span, "pre": max(0, 1999 - d) if pn.get("partial") and d else 0, "ped": draft_tier(pn.get("draft"))}
             _FEAT[k] = f
@@ -289,10 +313,10 @@ def compute() -> dict:
             standing, honours, rec_pts = sc["standing"], sc["honours"], sc["records"]
             extra = sc["peak"] + sc["longevity"] + sc["pre1999"]
             parts_x = {"peak": sc["peak"], "longevity": sc["longevity"], "pre1999": sc["pre1999"]}
-            nfl = {"elite": e1, "seasons": span}
+            nfl = {"elite": e1, "seasons": span, **({"est": True} if career_only(k) else {})}
             if pn.get("partial"):
                 nfl.update(partial=True, debut=pn.get("debut"))
-        return {"key": k, "name": name, "pos": pos, "frozenSeason": lab(at), "careerLegacy": round(legacy),
+        return {"key": k, "name": name, "pos": pos, "frozenSeason": lab(last_year(k) if NFL and career_only(k) else at), "careerLegacy": round(legacy),
                 "rank": rank, "score": min(100, standing + honours + rec_pts + extra),
                 "parts": {"standing": standing, "honours": honours, "records": rec_pts,
                           **parts_x}, "records": held,
@@ -305,11 +329,15 @@ def compute() -> dict:
     # none, he retired before he was recorded. His case is the first season-end snapshot from then on. One retired
     # before he was ever recorded joins the ballot the season he was added (a veteran, never "first ballot").
     retired, eligible_from, veteran = {}, {}, set()
+    deferred = []
     for k, p in key.items():
         if status(p, sheet) != "Retired":
             continue
         present = [y for y in seasons if k in ends[y]]
         if not present:
+            continue
+        if NFL and career_only(k):   # a career from Wikipedia, no seasons in the snapshots: his case is the latest snapshot (final career)
+            deferred.append(k)
             continue
         # seasons his games went up; a lone rise between the first two recorded seasons is the first import being
         # corrected (God Johnson 216 -> 234), not a season played
@@ -337,6 +365,20 @@ def compute() -> dict:
             eligible_from[k] = at             # retired before he was recorded
             if at != first:
                 veteran.add(k)
+
+    if NFL and deferred:
+        # the elite share of a season by standing, from the retirees whose seasons are on record (a career of 6+ seasons)
+        shares: dict[int, list] = {}
+        for k, c in retired.items():
+            f = _FEAT.get(k)
+            if c and f and f["span"] >= 6:
+                shares.setdefault(bucket(f["rank"]), []).append((f["e1"] / f["span"], f["e2"] / f["span"]))
+        for b, rows in shares.items():
+            rows.sort()
+            elite_share[b] = (rows[len(rows) // 2][0], sorted(r[1] for r in rows)[len(rows) // 2])
+        for k in deferred:
+            retired[k] = case(k, seasons[-1])
+            eligible_from[k] = last_year(k)
 
     global _RETIRED
     _RETIRED = retired

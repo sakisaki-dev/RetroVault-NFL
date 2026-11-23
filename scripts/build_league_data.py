@@ -382,6 +382,12 @@ def write_player_extras():
         out["realNumbers"] = {f"{q['pos']}:{q['n']}": int(q["nfl"]["number"]) for q in
                               json.loads((SRC / "players.json").read_text())
                               if (q.get("nfl") or {}).get("number") not in (None, "") and str(q["nfl"]["number"]).isdigit()}
+    if NFL:  # careers from Wikipedia (scripts/nfl/fetch_classics.py): debut, last season, no weekly lines (c), stats the page lacks (m), games estimated (e)
+        out["classics"] = {f"{q['pos']}:{q['n']}": {"d": q["nfl"]["debut"], "l": q["nfl"]["last"],
+                                                    **({"c": 1} if q["nfl"].get("careerOnly") else {}),
+                                                    **({"m": q["nfl"]["missing"]} if q["nfl"].get("missing") else {}),
+                                                    **({"e": 1} if q["nfl"].get("gEst") else {})}
+                           for q in json.loads((SRC / "players.json").read_text()) if (q.get("nfl") or {}).get("source") == "wikipedia"}
     sheet = {(r["n"], r["pos"]): r for r in json.loads((SRC / "spreadsheet_parsed.json").read_text())}
     out["signatureTeams"] = signature_teams(json.loads((SRC / "players.json").read_text()),
                                             json.loads((SRC / "teams.json").read_text()), stints, sheet)
@@ -492,6 +498,19 @@ def main():
         if f and p.get("tt") and abs(f(p) - p["tt"]) > 0.05:
             print(f"warn: {p['n']} ({p['pos']}) sheet TT {p['tt']} vs formula {f(p):.2f}")
 
+    # NFL edition: a Wikipedia career lacks some stats for its era (tackles before the 1990s: nfl.missing). The cell stays blank in the
+    # CSV and True Talent is scored on the stats that exist: the present terms are re-normalised by the share the missing terms carry in
+    # complete careers of the position (players with 50+ games), never a zero and never an imputed stat.
+    TERMS = {"LB": {"tkl": 0.4, "int": 10, "sck": 10, "ff": 10}, "DB": {"tkl": 0.1512, "int": 12.6, "sck": 2.5241, "ff": 3.78},
+             "DL": {"tkl": 0.55, "sck": 5.5, "ff": 2.75}}
+    share = {}
+    if NFL:
+        for pos_, terms in TERMS.items():
+            full = [q for q in players if q["pos"] == pos_ and (q.get("g") or 0) >= 50 and not (q.get("nfl") or {}).get("missing")
+                    and all(q.get(k) is not None for k in terms)]
+            tot = sum(TT_FORMULAS[pos_](q) for q in full) or 1
+            for k, w in terms.items():
+                share[(pos_, k)] = sum(w * (q.get(k) or 0) for q in full) / tot
     estimated = []
     estimated_fields = []
     out = {pos: [] for pos in ("QB", "RB", "WR", "TE", "OL", "LB", "DB", "DL")}
@@ -511,7 +530,9 @@ def main():
             if note:
                 estimated.append(f"{p['n']} ({note})")
         else:
-            tt = TT_FORMULAS[p["pos"]](p)
+            miss = [k for k in ((p.get("nfl") or {}).get("missing") or []) if p.get(k) is None and (p["pos"], k) in share]
+            filled = {**p, **{k: 0 for k in miss}} if miss else p
+            tt = TT_FORMULAS[p["pos"]](filled) / max(0.2, 1 - sum(share[(p["pos"], k)] for k in miss)) if miss else TT_FORMULAS[p["pos"]](p)
 
         team_key = TEAM_FIXES.get(p["n"], p.get("team", ""))
         if team_key == "CUR":

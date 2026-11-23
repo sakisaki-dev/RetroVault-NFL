@@ -49,3 +49,8 @@ interactive (first screen drawn and the main thread idle). Sections below the fo
 `scripts/perf/measure.mjs` (headless Chrome over CDP: bytes, requests, interactive time, blocking, heap, typing latency,
 scroll-through), `serve.mjs` (static server with gzip), `synth.py` (synthetic roster), `compare.mjs` (median table),
 `build_core.py` (the split and the manifest).
+
+## Classics (career-only players)
+
+Career-only players' per-player data lives where all retirees' data does: the CSV row (career totals, blank = not recorded), history stints, game-log
+files (none for them), sprite shards. The only core addition is `classics` in `data/core/extras.json` (about 200 short entries). No lazy file of their own.
