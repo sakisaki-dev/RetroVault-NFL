@@ -50,6 +50,8 @@ export interface PlayerExtras {
   signatureTeams: Record<string, string>;
   /** NFL edition: "POS:Name" -> his real jersey number */
   realNumbers?: Record<string, number>;
+  /** NFL edition: careers from Wikipedia, "POS:Name" -> {d debut, l last season, c no weekly lines, m stats the page lacks, e games estimated} */
+  classics?: Record<string, ClassicNote>;
   /**
    * player name -> where he is best known when that differs from his banner (an active player traded away from his
    * best years): the club that retires a Hall of Famer's number. Absent = his banner club.
@@ -57,6 +59,15 @@ export interface PlayerExtras {
   legacyTeams?: Record<string, string>;
   /** player name -> the clubs that retired his number (owner), the first numbering him; absent = his best-known club */
   retiredBy?: Record<string, string[]>;
+}
+
+/** A career taken from Wikipedia (scripts/nfl/fetch_classics.py): debut, last season, `c` = no weekly data at all, `m` = stats the page lacks, `e` = games estimated. */
+export interface ClassicNote {
+  d: number;
+  l: number;
+  c?: 1;
+  m?: string[];
+  e?: 1;
 }
 
 const EMPTY: PlayerExtras = { realNflCareer: {}, cards: {}, formerNames: {}, family: {}, franchises: {}, stints: {}, signatureTeams: {}, legacyTeams: {}, retiredBy: {} };
@@ -100,6 +111,7 @@ export interface IndexedExtras {
   stints: Record<string, PlayerStints>;
   signatureTeams: Record<string, string>;
   realNumbers?: Record<string, number>;
+  classics?: Record<string, ClassicNote>;
   legacyTeams: Record<string, string>;
   retiredBy: Record<string, string[]>;
 }
@@ -134,6 +146,7 @@ const toIndexed = (raw: Partial<PlayerExtras>): IndexedExtras => ({
   franchises: reindex<string[]>(raw.franchises),
   stints: normalizeStints(raw.stints),
   realNumbers: raw.realNumbers,
+  classics: raw.classics,
   signatureTeams: Object.fromEntries(Object.entries(reindex<unknown>(raw.signatureTeams)).filter((e): e is [string, string] => typeof e[1] === 'string')),
   legacyTeams: Object.fromEntries(Object.entries(reindex<unknown>(raw.legacyTeams)).filter((e): e is [string, string] => typeof e[1] === 'string')),
   retiredBy: Object.fromEntries(
@@ -306,3 +319,7 @@ export const getFamilyTies = (extras: IndexedExtras, playerName: string): Family
   });
   return ties;
 };
+
+/** The Wikipedia-career note of a player (pre-1999 careers), if he has one. */
+export const classicNoteOf = (extras: IndexedExtras, player: { name: string; position: string }): ClassicNote | undefined =>
+  extras.classics?.[`${player.position}:${player.name}`];
