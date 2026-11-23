@@ -4,6 +4,7 @@ import type { Player } from '@/types/player';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { fetchTeamNews, useEspnNews, type NewsItem } from '@/utils/espnNews';
+import { namesPlayer } from '@/utils/newsMentions';
 import { useEspnIds } from '@/utils/espnArticle';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { ArticleReader } from './ArticleReader';
@@ -46,7 +47,7 @@ const InTheNews = ({ player }: { player: Player }) => {
     return [...general, ...(teamItems?.items ?? [])].filter((i) => !seen.has(i.id) && !!seen.add(i.id)).sort((a, b) => b.published.localeCompare(a.published));
   }, [general, teamItems]);
   const featured = useMemo(
-    () => pool.filter((i) => (espnId && i.athleteIds.includes(espnId)) || i.athletes.some((n) => n === player.name)),
+    () => pool.filter((i) => (espnId && i.athleteIds.includes(espnId)) || i.athletes.some((n) => n === player.name) || namesPlayer(`${i.headline}. ${i.description}`, player)),
     [pool, espnId, player.name],
   );
   const around = useMemo(() => (featured.length ? [] : (teamItems?.items ?? []).filter((i) => i.type !== 'Media').slice(0, 6)), [featured, teamItems]);
@@ -63,7 +64,7 @@ const InTheNews = ({ player }: { player: Player }) => {
         <>
           <p className="en-dd__sub">
             {featured.length
-              ? `${featured.length} ESPN ${featured.length === 1 ? 'piece tags' : 'pieces tag'} ${player.name} from the latest NFL news${club ? ` and the ${club}'s feed` : ''}.`
+              ? `${featured.length} ESPN ${featured.length === 1 ? 'piece names' : 'pieces name'} ${player.name} from the latest NFL news${club ? ` and the ${club}'s feed` : ''}.`
               : `ESPN hasn't tagged ${player.name} in its latest items. Around the ${club}:`}
           </p>
           <ul className="ss-list ss-list--more">

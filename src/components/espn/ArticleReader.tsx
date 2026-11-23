@@ -4,10 +4,11 @@ import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import { FeatureSheet, type SheetPiece } from '@/components/news/FeatureSheet';
 import PixelLoader from '@/components/ui/PixelLoader';
-import { useArticle, type ArticleBlock, type ArticleVideo } from '@/utils/espnArticle';
+import { articleText, useArticle, type ArticleBlock, type ArticleVideo } from '@/utils/espnArticle';
 import { NEWS_KIND_LABEL, timeAgo, type NewsItem } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
-import { SCENE_KIND, kindOf, openDeepDive, useNewsPlayers } from './newsData';
+import { focusOf, mentionsOf } from '@/utils/newsMentions';
+import { SCENE_KIND, kindOf, openDeepDive, useTaggedPlayers } from './newsData';
 import './espn.css';
 
 /**
@@ -86,8 +87,13 @@ interface Props {
 export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) => {
   const { article, loading, error, retry } = useArticle(item);
   const lookup = useMemo(() => (item ? [item] : []), [item]);
-  const tagged = useNewsPlayers(lookup, players);
-  const cast = item ? tagged.get(item.id) ?? [] : [];
+  const tagged = useTaggedPlayers(lookup, players);
+  const mentions = useMemo(
+    () => (item ? mentionsOf({ headline: item.headline, description: item.description, body: article ? articleText(article) : undefined, tagged: tagged.get(item.id) ?? [], teams: item.teams }, players) : []),
+    [item, article, tagged, players],
+  );
+  const cast = mentions.slice(0, 12).map((m) => m.player);
+  const focus = focusOf(mentions, 3);
   const close = () => onClose();
 
   if (!item) return <FeatureSheet piece={null} onClose={close} players={players} onPlayer={openDeepDive} />;
@@ -151,7 +157,13 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     players: names,
     teams: item.teams,
     hero,
-    scene: { kind: SCENE_KIND[kind], players: names, teams: item.teams.slice(0, 2) },
+    scene: {
+      kind: SCENE_KIND[kind],
+      players: focus.map(keyOfPlayer),
+      teams: item.teams.slice(0, 2),
+      // two focus players square up (vs), three line up; one stands on the turf
+      art: focus.length === 2 ? { scene: 'vs' } : focus.length >= 3 ? { scene: 'lineup' } : undefined,
+    },
     position: `Story ${at + 1} of ${order.length}`,
     sourcesNote: '',
     after: (

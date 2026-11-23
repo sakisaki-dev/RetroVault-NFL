@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { dataJson } from '@/utils/dataStore';
 import { dataResponse } from '@/utils/dataStore';
 
 /**
@@ -217,6 +218,10 @@ export const useArticle = (item: { id: string; api?: string; type: string; headl
     },
   };
 };
+
+/** The story's plain text (for the name scan) */
+export const articleText = (a: Article): string =>
+  a.blocks.map((b) => (b.t === 'html' ? b.html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"') : '')).join('\n');
 
 let idsJob: Promise<Record<string, string>> | null = null;
 let idsLoaded: Record<string, string> | null = null;

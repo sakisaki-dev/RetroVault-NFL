@@ -4,6 +4,7 @@ import type { StoryKind } from '@/utils/leagueContent';
 import { useEspnIds } from '@/utils/espnArticle';
 import { newsKind, type NewsItem, type NewsKind } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
+import { mentionsOf } from '@/utils/newsMentions';
 import { normalizeName } from '@/utils/playerExtras';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 
@@ -14,7 +15,7 @@ export const SCENE_KIND: Record<NewsKind, StoryKind> = {
 };
 
 /** The card players ESPN tagged on each item: by ESPN athlete id (espn_ids.json), else by name. Best Career Legacy wins a shared name. */
-export const useNewsPlayers = (items: NewsItem[], players: Player[]) => {
+export const useTaggedPlayers = (items: NewsItem[], players: Player[]) => {
   const ids = useEspnIds();
   const byKey = useMemo(() => new Map(players.map((p) => [keyOfPlayer(p), p])), [players]);
   const byName = useMemo(() => {
@@ -42,6 +43,19 @@ export const useNewsPlayers = (items: NewsItem[], players: Player[]) => {
 };
 
 /** Open a player's Deep Dive (the hash route; any open sheet closes itself first) */
+/** Per item: everyone ESPN tagged plus anyone its headline or description names, best focus first (the feed shows the top 1-2). */
+export const useNewsPlayers = (items: NewsItem[], players: Player[]) => {
+  const tagged = useTaggedPlayers(items, players);
+  return useMemo(() => {
+    const out = new Map<string, Player[]>();
+    items.forEach((it) => {
+      const m = mentionsOf({ headline: it.headline, description: it.description, tagged: tagged.get(it.id) ?? [], teams: it.teams }, players);
+      out.set(it.id, m.map((x) => x.player));
+    });
+    return out;
+  }, [items, tagged, players]);
+};
+
 export const openDeepDive = (p: Player) => {
   window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: keyOfPlayer(p) });
 };
