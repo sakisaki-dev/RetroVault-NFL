@@ -47,3 +47,5 @@ data/saves/
 data/nfl-cache/
 data/nfl/games/
 data/saves
+data/nfl/cuts/
+data/nfl/season_ends.json

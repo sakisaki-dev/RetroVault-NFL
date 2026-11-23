@@ -18,6 +18,7 @@ by name, season and club; OL "blocks" = starts (50%+ of the offense's snaps, 201
 import csv
 import gzip
 import json
+import os
 import re
 import unicodedata
 from collections import defaultdict
@@ -28,6 +29,15 @@ CACHE = ROOT / "data" / "nfl-cache"
 NFL = ROOT / "data" / "nfl"
 Y80 = ROOT / "data" / "y80"
 FIRST, LAST = 1999, 2026
+LEGEND_MIN_GAMES = 16  # beyond the save: every player who debuted 1999 or later with this many career games, or any award
+SNAPS_FROM = 2013       # offensive linemen have no weekly stat lines: their games come from snap counts, which start here
+# Hall of Famers who debuted before 1999 (data only from 1999 on, so their lines are partial, nfl.partial = true): off until
+# the owner decides. Set RV_INCLUDE_PRE1999_HOF=1 (needs data/nfl/hof.json)
+INCLUDE_PRE1999_HOF = os.environ.get("RV_INCLUDE_PRE1999_HOF", "1") != "0"  # owner: "partial stats is fine" (on); 0 turns it off
+# nflverse position -> Retro Vault position group (the save's, as scripts/nfl/match.py)
+RV_POS = {"QB": "QB", "RB": "RB", "FB": "RB", "HB": "RB", "WR": "WR", "TE": "TE", "OL": "OL", "T": "OL", "G": "OL", "C": "OL",
+          "OT": "OL", "OG": "OL", "DL": "DL", "DE": "DL", "DT": "DL", "NT": "DL", "LB": "LB", "ILB": "LB", "OLB": "LB",
+          "MLB": "LB", "DB": "DB", "CB": "DB", "S": "DB", "SS": "DB", "FS": "DB"}
 
 ABBR = {"BUF": "Bills", "MIA": "Dolphins", "NE": "Patriots", "NYJ": "Jets", "DEN": "Broncos", "KC": "Chiefs",
         "LAC": "Chargers", "SD": "Chargers", "LV": "Raiders", "OAK": "Raiders", "BAL": "Ravens", "CIN": "Bengals",
@@ -82,11 +92,163 @@ def rows(name):
         return list(csv.DictReader(fh))
 
 
+def legend_rows(roster, awards):
+    """Every player who debuted 1999 or later (complete careers in the data) with LEGEND_MIN_GAMES regular-season games
+    or any Wikipedia award, beyond the save's players: roster rows in match.py's shape (uid "l<gsis digits>").
+    Offensive linemen have no weekly stat lines, so only those who debuted when snap counts exist (2013) qualify."""
+    have = {p.get("gsis") for p in roster}
+    nv = {r["gsis_id"]: r for r in rows("players.csv.gz") if r["gsis_id"]}
+    gsis_of = {r["pfr_id"]: g for g, r in nv.items() if r["pfr_id"]}
+    games = defaultdict(set)                       # gsis -> {(season, game_id)} regular season
+    first = {}                                     # gsis -> first season with any game
+    seasons_team = defaultdict(lambda: defaultdict(set))   # gsis -> season -> {club abbr}
+    last_game = {}                                 # gsis -> (season, week, team)
+    for y in range(FIRST, LAST + 1):
+        p = CACHE / f"stats_player_week_{y}.csv.gz"
+        if not p.exists():
+            continue
+        with gzip.open(p, "rt", encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                pid = r["player_id"]
+                first.setdefault(pid, y)
+                seasons_team[pid][y].add(r["team"])
+                if r["season_type"] == "REG":
+                    games[pid].add((y, r["game_id"]))
+                    w = int(r["week"] or 0)
+                    if (y, w) >= last_game.get(pid, (0, 0, ""))[:2]:
+                        last_game[pid] = (y, w, r["team"])
+        sp = CACHE / f"snap_counts_{y}.csv.gz"
+        if sp.exists():
+            with gzip.open(sp, "rt", encoding="utf-8") as fh:
+                for r in csv.DictReader(fh):
+                    pid = gsis_of.get(r["pfr_player_id"])
+                    if not pid or n(r, "offense_snaps") + n(r, "defense_snaps") + n(r, "st_snaps") <= 0:
+                        continue
+                    first.setdefault(pid, y)
+                    seasons_team[pid][y].add(r["team"])
+                    if r["game_type"] == "REG":
+                        games[pid].add((y, r["game_id"]))
+                        w = int(r["week"] or 0)
+                        if (y, w) >= last_game.get(pid, (0, 0, ""))[:2]:
+                            last_game[pid] = (y, w, r["team"])
+    hof_names = set()
+    hp = NFL / "hof.json"
+    if INCLUDE_PRE1999_HOF and hp.exists():
+        hof_names = {norm(e["name"]) for e in json.loads(hp.read_text())["inductees"] if e.get("role") == "player"}
+    award_by = defaultdict(list)
+    for k, lst in awards["awards"].items():
+        for a in lst:
+            if a["season"] >= FIRST:
+                award_by[norm(a["player"])].append((a["season"], a["team"]))
+
+    def num(v):
+        try:
+            return int(v)
+        except (TypeError, ValueError):
+            return None
+
+    out = []
+    for pid, r in nv.items():
+        if pid in have or pid not in first:
+            continue
+        pos = RV_POS.get(r["position"])
+        if not pos:
+            continue
+        fy, rk, dy = first[pid], num(r["rookie_season"]), num(r["draft_year"])
+        awarded = any(a[0] in seasons_team[pid] and any(ABBR.get(t, t) == a[1] for t in seasons_team[pid][a[0]])
+                      for a in award_by.get(norm(r["display_name"]), []))
+        early = bool(rk and 1988 <= rk <= 1998 or dy and 1988 <= dy <= 1998 or fy <= 2000 and not ((rk or 0) >= 1999 or (dy or 0) >= 1999))
+        partial = False
+        if early:
+            # debuted before 1999: a partial (1999-on) career. Only with INCLUDE_PRE1999_HOF, and only real Hall of Famers.
+            # a real Hall of Famer, or someone with a Wikipedia award in 1999 or later
+            if not (INCLUDE_PRE1999_HOF and (norm(r["display_name"]) in hof_names or awarded) and (rk or 0) < 1999 and (games.get(pid) or awarded)):
+                continue
+            partial = True
+        debut = rk if rk and rk >= 1999 else fy
+        if pos == "OL" and (debut < SNAPS_FROM or partial):
+            continue
+        g = len(games.get(pid, ()))
+        if g < LEGEND_MIN_GAMES and not awarded and not partial:
+            continue
+        lg = last_game.get(pid)
+        club = ABBR.get(lg[2], lg[2]) if lg else "FA"
+        dob = r["birth_date"]
+        spos = {"CB": "CB", "S": "S", "SS": "S", "FS": "S"}.get(r["position"], pos)
+        out.append({"uid": "l" + re.sub(r"\D", "", pid), "name": r["display_name"], "pos": pos, "spos": spos, "club": club,
+                    "number": r["jersey_number"] or None, "age": None, "dob": dob, "rookie": str(debut),
+                    "height": inches(r["height"]), "weight": num(r["weight"]), "salary": None, "contract": None,
+                    "sprites": 0, "match": "legend", "gsis": pid, "pfr": r["pfr_id"], "espn": r["espn_id"],
+                    "nv_name": r["display_name"], "nv_pos": r["position"], "nv_height": inches(r["height"]),
+                    "nv_weight": num(r["weight"]), "draft": [r["draft_year"], r["draft_round"], r["draft_pick"], r["draft_team"]],
+                    "legend": True, "partial": partial, "debut": (rk if rk and rk not in (1974, 1987) else dy) if partial else None, "games": g, "lastSeason": lg[0] if lg else None})
+    out.sort(key=lambda p: (-p["games"], p["gsis"]))
+    return out
+
+
+def inches(h):
+    m = re.match(r"(\d+)'\s*(\d+)", str(h or ""))
+    if m:
+        return int(m.group(1)) * 12 + int(m.group(2))
+    try:
+        return int(float(h))
+    except (TypeError, ValueError):
+        return None
+
+
+def apply_nicknames(players):
+    """players.json `nick`: data/nfl/nicknames.json (nfl-wiki: players[] with nicknames, position, teams, era_hint), matched by
+    normalised name. Namesakes: the position when the entry has one, then a club he played for (stints) or the era hint
+    overlapping his seasons, then the one with the most games. Plus data/nfl/nicknames_infobox.json {gsis: nick} (the first
+    paragraph of his own page, scripts/nfl/fetch_nicknames_lead.py). The first nickname listed is his `nick`."""
+    path = NFL / "nicknames.json"
+    stints = json.loads((Y80 / "stints.json").read_text()) if (Y80 / "stints.json").exists() else {}
+    by = defaultdict(list)
+    for p in players:
+        by[norm(p["n"].split(" (")[0])].append(p)
+
+    def span(p):
+        runs = (stints.get(p["n"]) or {}).get("stints", [])
+        return min((r["from"] for r in runs), default=0), max((r["to"] for r in runs), default=0), {r["team"] for r in runs}
+
+    given = 0
+    entries = json.loads(path.read_text()).get("players", []) if path.exists() else []
+    for e in entries:
+        cands = [p for p in by.get(norm(e["name"]), []) if p["g"] > 0]
+        pos = e.get("position")
+        if pos:
+            g = RV_POS.get(pos.split(",")[0].split("/")[0].strip().upper())
+            fit = [p for p in cands if p["pos"] == g]
+            cands = fit or ([] if g and len(cands) > 1 else cands)
+        if len(cands) > 1:
+            teams = set(e.get("teams") or [])
+            yrs = (e.get("era_hint") or {}).get("years")
+            def score(p):
+                lo, hi, clubs = span(p)
+                return ((1 if teams & clubs else 0) + (1 if yrs and lo <= yrs[1] and hi >= yrs[0] else 0), p["g"])
+            cands = [max(cands, key=score)]
+        if cands and not cands[0].get("nick") and e.get("nicknames"):
+            cands[0]["nick"] = e["nicknames"][0]
+            given += 1
+    lead = NFL / "nicknames_infobox.json"
+    own = json.loads(lead.read_text()) if lead.exists() else {}
+    for p in players:
+        nick = own.get((p.get("nfl") or {}).get("gsis"))
+        if nick and not p.get("nick"):
+            p["nick"] = nick
+            given += 1
+    print(f"nicknames: {given} players")
+
+
 def main():
     roster = json.loads((NFL / "roster.json").read_text())["players"]
     awards = json.loads((NFL / "awards.json").read_text())
-    want = {p["gsis"]: p for p in roster if p.get("gsis")}
-    by_pfr = {p["pfr"]: p for p in roster if p.get("pfr")}
+    legends = legend_rows(roster, awards)
+    print(f"{len(legends)} retired and past players beyond the save (debut {FIRST}+, {LEGEND_MIN_GAMES}+ games or an award)")
+    save_n = len(roster)
+    allp = roster + legends
+    want = {p["gsis"]: p for p in allp if p.get("gsis")}
+    by_pfr = {p["pfr"]: p for p in allp if p.get("pfr")}
 
     # names: Retro Vault keys stints, extras and banners by name, so a name two players share gets his club (and
     # position when that doesn't separate them): "Justin Jefferson (LB, Browns)"
@@ -145,6 +307,20 @@ def main():
             if logs.get(top.get("gsis")):
                 top["display"] = top["name"]
                 top["key"] = f"{top['pos']}:{top['name']}"
+    # past players: the plain name unless a save player (or a better-known namesake) has it; stable keys for the save's
+    taken = {norm(p["name"]) for p in roster}
+    used = {p["display"] for p in roster}
+    for p in legends:  # most career games first
+        if norm(p["name"]) not in taken and p["name"] not in used:
+            p["display"] = p["name"]
+            taken.add(norm(p["name"]))
+        else:
+            tag = f"{p['pos']}, {p['club']}"
+            p["display"] = f"{p['name']} ({tag})"
+            if p["display"] in used:
+                p["display"] = f"{p['name']} ({tag} {p['uid'][-3:]})"
+        used.add(p["display"])
+        p["key"] = f"{p['pos']}:{p['display']}"
     # his club now: the latest week of the current season's roster that lists him on a club (cut players drop off)
     now = {}
     for r in rows(f"roster_{LAST}.csv"):
@@ -157,15 +333,21 @@ def main():
     ends = {}  # key -> season -> the career line at that season's end (for the career graphs)
     (NFL / "games").mkdir(parents=True, exist_ok=True)
     award_rows = [(k, a) for k, lst in awards["awards"].items() for a in lst]
-    for p in roster:
+    award_by = defaultdict(list)   # normalised name -> [(kind, season, club)]
+    for k, a in award_rows:
+        award_by[norm(a["player"])].append((k, a["season"], a["team"]))
+    for p in allp:
         pos = p["pos"]
         pid = p.get("gsis")
         L = sorted(logs.get(pid, []), key=lambda r: (int(r["season"]), r["season_type"] != "REG", int(r["week"])))
         reg = [r for r in L if r["season_type"] == "REG"]
         cur = now.get(pid)
         club = cur[1] if cur and cur[0] >= latest_week - 1 else "FA"  # off every roster the last two weeks: free agent
+        retired = bool(p.get("legend")) and club == "FA"
+        if retired:
+            club = p["club"]  # a past player keeps his last club
         rec = {"n": p["display"], "pos": pos, "team": club, "g": len(reg)}
-        if club != p["club"]:
+        if not p.get("legend") and club != p["club"]:
             moved.append((p["display"], p["club"], club))
         for key, col in FIELDS[pos].items():
             if key == "tkl":
@@ -187,15 +369,23 @@ def main():
         rec["rings"] = len(rings)
         mine = defaultdict(int)
         nm = norm(p["name"])
-        for k, a in award_rows:
-            if norm(a["player"]) == nm and a["season"] in by_season and a["team"] in by_season[a["season"]]:
-                mine[k] += 1
+        mine_rows = [(k, ys, t) for k, ys, t in award_by.get(nm, []) if ys in by_season and t in by_season[ys]]
+        for k, ys, t in mine_rows:
+            mine[k] += 1
         rec.update({"mvp": mine["mvp"], "opoy": mine["opoy"], "dpoy": mine["dpoy"], "sbmvp": mine["sbmvp"],
                     "roty": mine["oroy"] + mine["droy"]})
         rec["nfl"] = {"gsis": pid, "uid": p["uid"], "number": p.get("number"), "age": p.get("age"), "dob": p.get("dob"),
                       "height": p.get("nv_height") or p.get("height"), "weight": p.get("nv_weight") or p.get("weight"),
                       "draft": p.get("draft"), "rookie": p.get("rookie"), "salary": p.get("salary"),
                       "contract": p.get("contract"), "playoffGames": len(L) - len(reg)}
+        if p.get("legend"):
+            if p.get("partial"):
+                rec["nfl"]["partial"] = True
+                rec["nfl"]["debut"] = p.get("debut")
+                 # debuted before 1999: only the 1999-on seasons are counted
+            rec["nfl"]["past"] = True          # debuted 1999 or later, beyond the save (build_players.legend_rows)
+            if retired:
+                rec["nfl"]["retired"] = True   # on no 2026 roster: Retired (prepare.py writes the status fact)
         players.append(rec)
         # the career as it stood at the end of each season he had played (regular season, awards and rings to date)
         by_y = defaultdict(list)
@@ -212,8 +402,7 @@ def main():
             cum["g"] += len(by_y.get(y, []))
             if pos == "OL":
                 cum["blk"] += starts_y[pid][y] if pid else 0
-            won = {k: sum(1 for k2, a in award_rows if k2 == k and norm(a["player"]) == nm and a["season"] <= y
-                          and a["season"] in by_season and a["team"] in by_season[a["season"]])
+            won = {k: sum(1 for k2, ys, t in mine_rows if k2 == k and ys <= y)
                    for k in ("mvp", "opoy", "dpoy", "sbmvp", "oroy", "droy")}
             club_y = max(by_season[y].items(), key=lambda x: x[1])[0]
             line[y] = {"n": p["display"], "pos": pos, "team": club_y, "g": int(cum["g"]),
@@ -244,10 +433,11 @@ def main():
                                              for r in L], "cols": ["season", "week", "type", "team", "opp", "game"] + LOG},
                 separators=(",", ":")))
 
+    apply_nicknames(players)
     Y80.mkdir(parents=True, exist_ok=True)
     (Y80 / "players.json").write_text(json.dumps(players, indent=1) + "\n")
     (Y80 / "stints.json").write_text(json.dumps(stints, indent=1) + "\n")
-    (CACHE / "season_ends.json").write_text(json.dumps(ends, separators=(",", ":")))
+    (NFL / "season_ends.json").write_text(json.dumps(ends, separators=(",", ":")))
     (NFL / "careers.json").write_text(json.dumps(careers, separators=(",", ":")) + "\n")
     print(f"current clubs from the {LAST} week {latest_week} roster: {len(moved)} differ from the save "
           f"({sum(1 for m in moved if m[2] == 'FA')} now free agents, {sum(1 for m in moved if m[1] == 'FA')} signed since)")
