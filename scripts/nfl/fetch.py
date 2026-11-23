@@ -33,6 +33,7 @@ FILES: list[tuple[str, str, bool]] = [  # (release tag, asset, changes in season
     ("nextgen_stats", "ngs_passing.csv.gz", True),
     ("nextgen_stats", "ngs_receiving.csv.gz", True),
     ("nextgen_stats", "ngs_rushing.csv.gz", True),
+    ("depth_charts", f"depth_charts_{NOW}.csv.gz", True),  # Team Lab "Load the club": the latest snapshot's starters
 ]
 for y in range(FIRST, NOW + 1):
     cur = y == NOW

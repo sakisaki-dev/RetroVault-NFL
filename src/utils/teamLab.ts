@@ -135,7 +135,7 @@ const DEF_RATES: { id: string; stat: string }[] = [
   { id: 'ffG', stat: 'forcedFumbles' },
 ];
 
-const buildProfiles = (league: Player[], pool: Player[], ovrMap: Map<string, number>) => {
+export const buildProfiles = (league: Player[], pool: Player[], ovrMap: Map<string, number>) => {
   const legacySorted = league.map((p) => p.careerLegacy).filter((x) => Number.isFinite(x) && x > 0).sort((a, b) => a - b);
   const sackSorted = league
     .filter((p) => p.position === 'QB' && num(p, 'attempts') >= 100)
@@ -480,7 +480,7 @@ export const rng = (seed: number) => {
   };
 };
 
-const pickDistinct = <X>(list: X[], n: number, r: () => number): X[] => {
+export const pickDistinct = <X>(list: X[], n: number, r: () => number): X[] => {
   const copy = [...list];
   const out: X[] = [];
   while (out.length < n && copy.length) out.push(copy.splice(Math.floor(r() * copy.length), 1)[0]);
