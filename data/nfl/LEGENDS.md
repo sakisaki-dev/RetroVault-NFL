@@ -22,8 +22,14 @@ Where the fields are:
   `scripts/hall_of_fame.py` uses `hof.json` (members = real inductees who are players here, class year, site HOF score
   beside; the ballot and watch list use the site rules for the rest). `scripts/nfl/fetch_nicknames_lead.py` (first paragraph of each
   notable player's Wikipedia page) writes `nicknames_infobox.json` {gsis: nick}. build_players reads both if present.
-- Partial careers (ON by default; owner: "partial stats is fine"; `RV_INCLUDE_PRE1999_HOF=0` turns it off): real Hall of
-  Famers who debuted before 1999 and played in 1999 or later, plus pre-1999 debuts with a Wikipedia award in 1999 or later,
-  are included with their 1999-on stats only: `nfl.partial: true`, `nfl.debut` = debut year when known. Career totals, CAR and
-  the HOF score are computed from that partial line. UI label: "Stats from 1999 (debuted 1996)" (omit the bracket when
-  `debut` is null), shown beside the career numbers and the CAR; OL are not included (no pre-2013 lineman games).
+- Classics (pre-1999 careers from Wikipedia; `scripts/nfl/fetch_classics.py` -> `data/nfl/classics.json`, read by `build_players.py` through
+  `scripts/nfl/classics.py`; pages cached in `data/nfl/wiki_cache/`, git-ignored). nflverse starts in 1999, so every earlier career was partial or
+  missing. Each player's article gives his career totals (the Career row of the regular-season table, else the infobox), clubs and years (infobox
+  career history, NFL clubs only), Super Bowl titles and draft; MVP / OPOY / DPOY / SB MVP / rookie awards come from `awards.json` by season and club.
+  Scope: (a) the 56 partial-career players already here (full career replaces the 1999-on line, their weekly lines and game logs stay, the pre-1999
+  amount is a baseline under every season line), (b) every Hall of Fame player inductee whose career began in 1970 or later, (c) every AP MVP / OPOY /
+  DPOY / OROY / DROY / SB MVP since 1970. 144 added (7,441 players). `nfl.source: "wikipedia"`, `debut`, `last`, `wiki`; `careerOnly: true` = no weekly
+  data at all (no season lines, no game log, not in career_seasons.json); `lines1999: true` = weekly lines from 1999; `missing: [...]` = stats the page
+  does not carry for his era (pre-1990s tackles): the CSV cell is blank, True Talent and the skill grades use the stats that exist (never a zero, never
+  imputed); `gEst: true` = games estimated from his seasons (no games figure on the page). The site's core extras carry `classics` (`d`, `l`, `c`, `m`,
+  `e`) and the Deep Dive shows one note for them.

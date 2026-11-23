@@ -15,12 +15,13 @@ import { getStints, type IndexedExtras } from '@/utils/playerExtras';
  */
 
 export type GameMode = 'car' | 'szn';
-export type Era = 'all' | '2020s' | '2010s' | '2000s';
+export type Era = 'all' | '2020s' | '2010s' | '2000s' | '1970s-90s';
 export const ERAS: { id: Era; label: string; from: number; to: number }[] = [
-  { id: 'all', label: 'All eras', from: 1999, to: 9999 },
+  { id: 'all', label: 'All eras', from: 1970, to: 9999 },
   { id: '2020s', label: '2020s', from: 2020, to: 2029 },
   { id: '2010s', label: '2010s', from: 2010, to: 2019 },
-  { id: '2000s', label: '2000s', from: 1999, to: 2009 },
+  { id: '2000s', label: '2000s', from: 2000, to: 2009 },
+  { id: '1970s-90s', label: '1970s–90s', from: 1970, to: 1999 },
 ];
 export const eraById = (id: string): (typeof ERAS)[number] => ERAS.find((e) => e.id === id) ?? ERAS[0];
 

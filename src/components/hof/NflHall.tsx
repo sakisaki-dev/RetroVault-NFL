@@ -143,7 +143,7 @@ const NflHall = ({
           Hall of <span className="hof-metal-text pr-1" style={{ textShadow: 'none' }}>Fame</span>
         </h1>
         <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
-          The real Pro Football Hall of Fame: inductees who played in 1999 or later. {items.length} enshrined here, then the ballot, the snubs and the players on track.
+          The real Pro Football Hall of Fame: inductees whose careers started in 1970 or later, career totals from Wikipedia. {items.length} enshrined here, then the ballot, the snubs and the players on track.
         </p>
         <p className="mx-auto mt-2 max-w-lg text-xs text-muted-foreground">
           <span className="mr-1.5 inline-block rounded-sm bg-gold px-1.5 py-0.5 align-middle font-pixel text-[9px] uppercase text-night">Bar {hof.bar}</span>
@@ -163,7 +163,7 @@ const NflHall = ({
       </header>
 
       <section id="hof-canton" aria-labelledby="hof-canton-title" className="mb-10 scroll-mt-24">
-        <HallHeading id="hof-canton-title" kicker={`Canton · ${items.length} enshrined`} title="The busts" sub="Newest class first. A pre-1999 career shows only its 1999-and-later line." />
+        <HallHeading id="hof-canton-title" kicker={`Canton · ${items.length} enshrined`} title="The busts" sub="Newest class first. Careers before 1999 are career totals only (no season lines)." />
         {byClass.slice(0, classes).map(([season, list]) => (
           <div key={season} className="mb-6">
             <h3 className="mb-2 flex items-baseline gap-2 border-b border-line pb-1 font-display text-xl font-extrabold uppercase italic text-gold">

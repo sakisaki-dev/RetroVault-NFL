@@ -19,12 +19,12 @@ class Node(HTMLParser):
     rowspan/colspan) and list items (text + links). Footnote <sup>, <style> and hidden spans are dropped."""
     def __init__(s):
         super().__init__(convert_charrefs=True)
-        s.section = ""; s.h = None; s.tables = []; s.tstack = []; s.items = []; s.istack = []
+        s.hpath = {}; s.section = ""; s.h = None; s.tables = []; s.tstack = []; s.items = []; s.istack = []
         s.skip = 0; s.cell = None
     def handle_starttag(s, t, a):
         a = dict(a)
         if t in ("h2", "h3", "h4"): s.h = {"lvl": int(t[1]), "t": ""}
-        elif t == "table": s.tstack.append({"sec": s.section, "rows": []})
+        elif t == "table": s.tstack.append({"sec": s.section, "path": " > ".join(s.hpath[k] for k in sorted(s.hpath)), "rows": []})
         elif t == "tr" and s.tstack: s.tstack[-1]["rows"].append([])
         elif t in ("td", "th") and s.tstack and s.tstack[-1]["rows"]:
             c = {"t": "", "links": [], "bold": [], "rs": int(re.sub(r"\D", "", a.get("rowspan", "1")) or 1),
@@ -41,7 +41,8 @@ class Node(HTMLParser):
     _inb = False
     def handle_endtag(s, t):
         if t in ("h2", "h3", "h4") and s.h:
-            s.section = re.sub(r"\[.*", "", s.h["t"]).strip(); s.h = None
+            s.section = re.sub(r"\[.*", "", s.h["t"]).strip()
+            s.hpath = {k: v for k, v in s.hpath.items() if k < s.h["lvl"]}; s.hpath[s.h["lvl"]] = s.section; s.h = None
         elif t == "table" and s.tstack: s.tables.append(s.tstack.pop()); s.cell = None
         elif t in ("td", "th"): s.cell = None
         elif t == "li" and s.istack: s.items.append(s.istack.pop())

@@ -37,6 +37,7 @@ import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
 import { DdSection } from './ddParts';
+import { classicNoteOf, usePlayerExtras } from '@/utils/playerExtras';
 import { afterPaint } from '@/hooks/useDeferredStage';
 import DeferredSection from '@/components/ui/DeferredSection';
 import { MIN_RADAR_AXES, buildPositionModel, buildSimilarityMap, type PositionModel, type SimilarityMap } from './compModel';
@@ -339,6 +340,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   // The Neighbourhood can also show the families map (play-style shape, level removed) with its zones.
   const [famView, setFamView] = useState(false);
 
+  const extras = usePlayerExtras();
+  const classic = IS_NFL && player ? classicNoteOf(extras, player) : undefined;
   const position = player?.position ?? 'QB';
   const model = useMemo(() => modelOf(position), [modelCache, position]); // eslint-disable-line react-hooks/exhaustive-deps
   const boards = useMemo(() => (ctx ? cachedBoards(players, position, ctx) : null), [players, position, ctx]);
@@ -516,6 +519,16 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
       {/* Mobile: sticky section chips */}
       <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background/90 px-4 py-1.5 backdrop-blur lg:hidden">{nav}</div>
+
+      {classic && (
+        <p className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-xs leading-snug text-gold/90" data-testid="dd-classic-note">
+          Season-by-season data starts in 1999; career totals from Wikipedia
+          {classic.d ? ` (${classic.d}${classic.l && classic.l !== classic.d ? `–${classic.l}` : ''})` : ''}.
+          {classic.c ? ' No weekly data exists for this career, so there are no season graphs or game log.' : ' Graphs and the game log run from 1999.'}
+          {classic.m?.length ? ' Graded on the stats that exist: ' + classic.m.join(', ') + ' were not recorded in his era (never counted as zero).' : ''}
+          {classic.e ? ' Games are estimated from his seasons.' : ''}
+        </p>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[12.5rem_minmax(0,1fr)]">
         <aside className="hidden lg:block">
