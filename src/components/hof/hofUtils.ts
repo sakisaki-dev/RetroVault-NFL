@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import type { CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
@@ -60,7 +61,7 @@ export const careerLine = (p: Player): { label: string; value: number }[] => {
       return [{ label: 'Rush yds', value: p.rushYds }, { label: 'Rush TD', value: p.rushTD }, { label: 'Rec yds', value: p.recYds }, { label: 'Rec TD', value: p.recTD }, g];
     case 'WR':
     case 'TE':
-      return [{ label: 'Catches', value: p.receptions }, { label: 'Rec yds', value: p.recYds }, { label: 'Rec TD', value: p.recTD }, { label: 'Long', value: p.longest }, g];
+      return [{ label: 'Catches', value: p.receptions }, { label: 'Rec yds', value: p.recYds }, { label: 'Rec TD', value: p.recTD }, ...(IS_NFL ? [] : [{ label: 'Long', value: p.longest }]), g];
     case 'OL':
       return [{ label: 'Blocks', value: p.blocks }, g];
     default:

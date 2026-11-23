@@ -13,11 +13,11 @@
    "name": "Aaron Rodgers",
    "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 6421,
-   "rank": 2,
+   "careerLegacy": 8436,
+   "rank": 1,
    "score": 100,
    "parts": {
-    "standing": 54,
+    "standing": 60,
     "honours": 24,
     "records": 30
    },
@@ -39,7 +39,7 @@
    "name": "Derrick Henry",
    "pos": "RB",
    "frozenSeason": "2026",
-   "careerLegacy": 7586,
+   "careerLegacy": 7287,
    "rank": 1,
    "score": 100,
    "parts": {
@@ -63,11 +63,37 @@
    "projected": true
   },
   {
+   "key": "QB:Patrick Mahomes",
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7435,
+   "rank": 2,
+   "score": 88,
+   "parts": {
+    "standing": 54,
+    "honours": 24,
+    "records": 10
+   },
+   "records": [],
+   "seasonRecords": [
+    "Best passing season",
+    "Most TD passes, season"
+   ],
+   "rings": 3,
+   "mvp": 2,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 3,
+   "games": 136,
+   "projected": true
+  },
+  {
    "key": "LB:Von Miller",
    "name": "Von Miller",
    "pos": "LB",
    "frozenSeason": "2026",
-   "careerLegacy": 7519,
+   "careerLegacy": 7249,
    "rank": 1,
    "score": 87,
    "parts": {
@@ -92,7 +118,7 @@
    "name": "T.J. Watt",
    "pos": "LB",
    "frozenSeason": "2026",
-   "careerLegacy": 7104,
+   "careerLegacy": 6839,
    "rank": 2,
    "score": 85,
    "parts": {
@@ -115,37 +141,11 @@
    "projected": true
   },
   {
-   "key": "QB:Patrick Mahomes",
-   "name": "Patrick Mahomes",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5795,
-   "rank": 3,
-   "score": 83,
-   "parts": {
-    "standing": 49,
-    "honours": 24,
-    "records": 10
-   },
-   "records": [],
-   "seasonRecords": [
-    "Best passing season",
-    "Most TD passes, season"
-   ],
-   "rings": 3,
-   "mvp": 2,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 3,
-   "games": 136,
-   "projected": true
-  },
-  {
    "key": "TE:Travis Kelce",
    "name": "Travis Kelce",
    "pos": "TE",
    "frozenSeason": "2026",
-   "careerLegacy": 8662,
+   "careerLegacy": 8343,
    "rank": 1,
    "score": 82,
    "parts": {
@@ -170,7 +170,7 @@
    "name": "Davante Adams",
    "pos": "WR",
    "frozenSeason": "2026",
-   "careerLegacy": 6970,
+   "careerLegacy": 6691,
    "rank": 1,
    "score": 80,
    "parts": {
@@ -197,7 +197,7 @@
    "name": "Myles Garrett",
    "pos": "DL",
    "frozenSeason": "2026",
-   "careerLegacy": 6682,
+   "careerLegacy": 6454,
    "rank": 3,
    "score": 76,
    "parts": {
@@ -222,7 +222,7 @@
    "name": "Harrison Smith",
    "pos": "DB",
    "frozenSeason": "2026",
-   "careerLegacy": 7985,
+   "careerLegacy": 7668,
    "rank": 1,
    "score": 75,
    "parts": {
@@ -247,7 +247,7 @@
    "name": "Jake Matthews",
    "pos": "OL",
    "frozenSeason": "2026",
-   "careerLegacy": 6851,
+   "careerLegacy": 6581,
    "rank": 2,
    "score": 69,
    "parts": {
@@ -268,11 +268,57 @@
    "projected": true
   },
   {
+   "key": "QB:Josh Allen",
+   "name": "Josh Allen",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6386,
+   "rank": 3,
+   "score": 67,
+   "parts": {
+    "standing": 49,
+    "honours": 18,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 138,
+   "projected": true
+  },
+  {
+   "key": "QB:Lamar Jackson",
+   "name": "Lamar Jackson",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6096,
+   "rank": 5,
+   "score": 66,
+   "parts": {
+    "standing": 42,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 2,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 121,
+   "projected": true
+  },
+  {
    "key": "OL:Joe Thuney",
    "name": "Joe Thuney",
    "pos": "OL",
    "frozenSeason": "2026",
-   "careerLegacy": 6936,
+   "careerLegacy": 6679,
    "rank": 1,
    "score": 65,
    "parts": {
@@ -295,7 +341,7 @@
    "name": "Matthew Stafford",
    "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 4654,
+   "careerLegacy": 6260,
    "rank": 4,
    "score": 65,
    "parts": {
@@ -318,7 +364,7 @@
    "name": "Christian McCaffrey",
    "pos": "RB",
    "frozenSeason": "2026",
-   "careerLegacy": 6602,
+   "careerLegacy": 6340,
    "rank": 2,
    "score": 65,
    "parts": {
@@ -341,7 +387,7 @@
    "name": "Cooper Kupp",
    "pos": "WR",
    "frozenSeason": "2026",
-   "careerLegacy": 5192,
+   "careerLegacy": 5027,
    "rank": 7,
    "score": 64,
    "parts": {
@@ -362,34 +408,11 @@
    "projected": true
   },
   {
-   "key": "QB:Lamar Jackson",
-   "name": "Lamar Jackson",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4457,
-   "rank": 6,
-   "score": 63,
-   "parts": {
-    "standing": 39,
-    "honours": 24,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 2,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 121,
-   "projected": true
-  },
-  {
    "key": "LB:Bobby Wagner",
    "name": "Bobby Wagner",
    "pos": "LB",
    "frozenSeason": "2026",
-   "careerLegacy": 5267,
+   "careerLegacy": 5075,
    "rank": 4,
    "score": 62,
    "parts": {
@@ -414,7 +437,7 @@
    "name": "Calais Campbell",
    "pos": "DL",
    "frozenSeason": "2026",
-   "careerLegacy": 7283,
+   "careerLegacy": 7001,
    "rank": 1,
    "score": 60,
    "parts": {
@@ -437,7 +460,7 @@
    "name": "Khalil Mack",
    "pos": "LB",
    "frozenSeason": "2026",
-   "careerLegacy": 6915,
+   "careerLegacy": 6661,
    "rank": 3,
    "score": 60,
    "parts": {
@@ -456,57 +479,11 @@
    "projected": true
   },
   {
-   "key": "QB:Josh Allen",
-   "name": "Josh Allen",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 4602,
-   "rank": 5,
-   "score": 60,
-   "parts": {
-    "standing": 42,
-    "honours": 18,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 1,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 138,
-   "projected": true
-  },
-  {
-   "key": "QB:Sean Clifford",
-   "name": "Sean Clifford",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 10048,
-   "rank": 1,
-   "score": 60,
-   "parts": {
-    "standing": 60,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 2,
-   "projected": true
-  },
-  {
    "key": "RB:Saquon Barkley",
    "name": "Saquon Barkley",
    "pos": "RB",
    "frozenSeason": "2026",
-   "careerLegacy": 5453,
+   "careerLegacy": 5249,
    "rank": 4,
    "score": 58,
    "parts": {
@@ -529,7 +506,7 @@
    "name": "Mike Evans",
    "pos": "WR",
    "frozenSeason": "2026",
-   "careerLegacy": 6793,
+   "careerLegacy": 6534,
    "rank": 2,
    "score": 56,
    "parts": {
@@ -552,7 +529,7 @@
    "name": "Kevin Byard III",
    "pos": "DB",
    "frozenSeason": "2026",
-   "careerLegacy": 6548,
+   "careerLegacy": 6288,
    "rank": 2,
    "score": 54,
    "parts": {
@@ -575,7 +552,7 @@
    "name": "Cameron Jordan",
    "pos": "DL",
    "frozenSeason": "2026",
-   "careerLegacy": 7118,
+   "careerLegacy": 6840,
    "rank": 2,
    "score": 54,
    "parts": {
@@ -594,11 +571,34 @@
    "projected": true
   },
   {
+   "key": "OL:Lane Johnson",
+   "name": "Lane Johnson",
+   "pos": "OL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6445,
+   "rank": 3,
+   "score": 54,
+   "parts": {
+    "standing": 49,
+    "honours": 5,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 171,
+   "projected": true
+  },
+  {
    "key": "TE:George Kittle",
    "name": "George Kittle",
    "pos": "TE",
    "frozenSeason": "2026",
-   "careerLegacy": 6198,
+   "careerLegacy": 5943,
    "rank": 2,
    "score": 54,
    "parts": {

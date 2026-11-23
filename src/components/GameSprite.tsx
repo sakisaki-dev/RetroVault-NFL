@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
 import { reducedMotion } from '@/utils/motion';
@@ -164,6 +165,7 @@ const GameSprite = (props: GameSpriteProps) => {
 
   const kitTag = (() => {
     if (!showKit || !nfl) return null;
+    if (IS_NFL && !player.team) return 'FA'; // free agent: drawn in his last club's kit
     if (nfl.kit === 'neutral') return 'Away';
     const want = findNFLTeam(club || current)?.id;
     const drawn = findNFLTeam(nfl.kit);

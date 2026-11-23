@@ -22,7 +22,7 @@ const GameBar = ({ g, week, coach }: { g: RoundGame; week: number; coach: boolea
       homeScore={g.homeScore}
       coach={coach}
       upcoming={!played}
-      kicker={`Week ${week} · ${played ? `Final${tie ? ' · Tie' : ''}` : 'To play'}`}
+      kicker={`Week ${week} · ${played ? `Final${tie ? ' · Tie' : ''}` : 'To play'}${!played && g.kickoff ? ` · ${g.kickoff}` : ''}`}
       aside={played ? <span className="tabular-nums">{g.awayScore! + g.homeScore!} combined</span> : g.weather ? <WeatherIcons w={g.weather} /> : null}
       srText={played ? `${g.away} ${g.awayScore} at ${g.home} ${g.homeScore}` : `${g.away} at ${g.home}, to play`}
     />

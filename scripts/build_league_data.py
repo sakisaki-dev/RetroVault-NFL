@@ -55,13 +55,21 @@ def tt_rb(p):
     return 0.027 * (g(p, "ryds") + g(p, "recyds")) + 1.35 * (g(p, "rtd") + g(p, "rectd") - g(p, "fum")) + 0.18 * g(p, "g")
 
 
+def lng(p, typical):
+    """Longest reception. The NFL weekly data has none, so every player with games gets the same typical value
+    (WR 55, TE 45 yards): the term then ranks nobody, instead of scoring every receiver 0 on it."""
+    return (typical if g(p, "g") else 0) if NFL else g(p, "lng")
+
+
 def tt_wr(p):
-    return 0.25 * g(p, "rec") + 0.015 * g(p, "yds") + g(p, "td") - 1.5 * g(p, "fum") + 0.05 * g(p, "lng") + 0.125 * g(p, "g")
+    return 0.25 * g(p, "rec") + 0.015 * g(p, "yds") + g(p, "td") - 1.5 * g(p, "fum") + 0.05 * lng(p, 55) + 0.125 * g(p, "g")
 
 
 def tt_te(p):
     ypr = g(p, "yds") / g(p, "rec") if g(p, "rec") else 0
-    return 0.056 * g(p, "yds") + 1.47 * g(p, "td") - 3.5 * g(p, "fum") + 0.07 * g(p, "lng") + 0.035 * g(p, "g") + 28 * ypr
+    if NFL and g(p, "rec"):
+        ypr = (g(p, "yds") + 11.5 * 20) / (g(p, "rec") + 20)  # a 1-catch cameo's yards per catch is noise: regress it
+    return 0.056 * g(p, "yds") + 1.47 * g(p, "td") - 3.5 * g(p, "fum") + 0.07 * lng(p, 45) + 0.035 * g(p, "g") + 28 * ypr
 
 
 def tt_ol(p):
@@ -119,6 +127,16 @@ def fill_from_sheet(shot, sheet_row):
 def tt_qb(p):
     """Exact sheet formula (max error 0.004 on every sheet QB, legends included)."""
     att, ints = g(p, "att"), g(p, "int")
+    if NFL and att:
+        # Real careers include 1-attempt cameos: their yards per attempt and completion % are noise that the sheet
+        # formula multiplies by 40 and 45. Regress the rates toward the league median with 150 attempts of it, and the
+        # TD:INT ratio with 3 interceptions of it, so small samples land near average (big samples are unchanged).
+        k = 150
+        ypa = (g(p, "yds") + 6.16 * k) / (att + k)
+        pct = (g(p, "cmp") + 0.647 * k) / (att + k)
+        tdint = (g(p, "td") + 5.82 * 3) / (ints + 3)
+        return (0.0016 * g(p, "yds") + 0.4 * g(p, "td") - 0.25 * ints - 0.12 * g(p, "sck")
+                + 0.006 * g(p, "ryds") + 1.5 * g(p, "rtd") + 40 * ypa + 45 * pct + 20 * tdint)
     return (0.0016 * g(p, "yds") + 0.4 * g(p, "td") - 0.25 * ints - 0.12 * g(p, "sck")
             + 0.006 * g(p, "ryds") + 1.5 * g(p, "rtd")
             + (40 * g(p, "yds") / att + 45 * g(p, "cmp") / att if att else 0)

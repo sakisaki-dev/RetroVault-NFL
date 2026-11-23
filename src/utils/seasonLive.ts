@@ -449,6 +449,8 @@ export interface RoundGame {
   awayScore?: number;
   homeScore?: number;
   weather?: Weather | null;
+  /** NFL edition: kickoff for a game still to play, "Thu · 8:15 PM ET" */
+  kickoff?: string;
 }
 
 export type SeasonView = Omit<ScheduleSeason, 'coachGames' | 'table'> & {
@@ -616,4 +618,35 @@ export const liveSeasonView = (s: LiveSeason, sched?: ScheduleSeason | null): Se
     regularSeasonGames: games.filter((g) => g.opp).length,
     live,
   };
+};
+
+// ---------- NFL edition: the games still to play (public/data/league/upcoming.json, from games.csv) ----------
+
+export interface UpcomingFile { season: number; games: { week: number; day: string; date: string; time: string; away: string; home: string }[] }
+let upcomingReq: Promise<UpcomingFile | null> | null = null;
+const loadUpcoming = () =>
+  (upcomingReq ??= fetch(`${import.meta.env.BASE_URL}data/league/upcoming.json`, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+export const useUpcoming = (): UpcomingFile | null => {
+  const [d, setD] = useState<UpcomingFile | null>(null);
+  useEffect(() => {
+    let alive = true;
+    loadUpcoming().then((x) => alive && setD(x));
+    return () => { alive = false; };
+  }, []);
+  return d;
+};
+
+const kickoffText = (g: { day: string; date: string; time: string }) => {
+  const [h, m] = g.time.split(':').map(Number);
+  const [, mo, da] = g.date.split('-').map(Number);
+  const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][mo - 1];
+  return `${g.day} ${mon} ${da} · ${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ET`;
+};
+
+/** A season's played weeks plus the games still to play (each with its kickoff), merged by week. */
+export const withUpcoming = (weeks: { week: number; games: RoundGame[] }[], up: UpcomingFile | null) => {
+  if (!up) return weeks;
+  const m = new Map(weeks.map((w) => [w.week, [...w.games]]));
+  up.games.forEach((g) => m.set(g.week, [...(m.get(g.week) ?? []), { away: g.away, home: g.home, kickoff: kickoffText(g) }]));
+  return [...m.entries()].sort((a, b) => a[0] - b[0]).map(([week, games]) => ({ week, games }));
 };

@@ -125,6 +125,13 @@ def main():
                                       for w, gs in sorted(weeks.items())],
                             "standings": dict(sorted(standings.items())),
                             "coachOpponents": [], "coachPlayoffs": [], "opponentTotals": {}}
+    # ---- the games still to play this season (kickoff day and time, Eastern), for the Season page ----
+    up = [{"week": int(r["week"]), "day": r["weekday"][:3], "date": r["gameday"], "time": r["gametime"],
+           "away": abbr_alias.get(r["away_team"], r["away_team"]), "home": abbr_alias.get(r["home_team"], r["home_team"])}
+          for r in allgames if int(r["season"]) == season_now and r["game_type"] == "REG" and r["home_score"] == ""]
+    up.sort(key=lambda g: (g["week"], g["date"], g["time"], g["home"]))
+    (ROOT / "public" / "data" / "league" / "upcoming.json").write_text(json.dumps(
+        {"season": season_now, "games": up}, separators=(",", ":")) + "\n")
     put("schedules.json", {"_about": "NFL edition: every league game by week from nflverse games.csv.", "seasons": seasons})
     print(f"prepare: season {season_now}, {len(sbs)} Super Bowls, schedules {sorted(seasons)}")
 

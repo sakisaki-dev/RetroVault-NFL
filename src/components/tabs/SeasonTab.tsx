@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
 import { scheduleSeasons, useSchedule } from '@/utils/schedule';
-import { SEASON_WEEKS, awardRaces, leaderBoards, liveSeasonView, recordText, scheduleWeeks, seasonEntries, useLiveSchedule, useLiveSeason, type LiveSeason, type SeasonView } from '@/utils/seasonLive';
+import { SEASON_WEEKS, awardRaces, leaderBoards, liveSeasonView, recordText, scheduleWeeks, seasonEntries, useLiveSchedule, useLiveSeason, useUpcoming, withUpcoming, type LiveSeason, type SeasonView } from '@/utils/seasonLive';
 import { ClubSplits, SeasonScoreboard } from '@/components/season/SeasonScoreboard';
 import { NotableGames, NumbersStrip, WeeklyChart } from '@/components/season/SeasonByNumbers';
 import { GameLog, GameRecords, LeagueTable, NoScores, SectionTitle } from '@/components/season/SeasonGames';
@@ -95,7 +95,12 @@ const SeasonTab = () => {
   const shown = picked && options.includes(picked) ? picked : options[0] ?? null;
   const isLive = !!shown && shown === liveId && !!live && !!liveView;
   const pastSeason = past.find((p) => p.season === shown);
-  const season: SeasonView | null = isLive ? liveView : pastSeason ? { ...pastSeason, weeks: scheduleWeeks(pastSeason) } : null;
+  const upcoming = useUpcoming();
+  const season: SeasonView | null = isLive
+    ? liveView
+    : pastSeason
+      ? { ...pastSeason, weeks: IS_NFL && upcoming && String(upcoming.season) === pastSeason.season ? withUpcoming(scheduleWeeks(pastSeason), upcoming) : scheduleWeeks(pastSeason) }
+      : null;
   const span = past.length ? `${past[past.length - 1].season}–${past[0].season}` : '';
 
   return (

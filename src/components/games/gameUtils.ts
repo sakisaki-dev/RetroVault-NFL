@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useMemo, type CSSProperties } from 'react';
 import type { Player, Position } from '@/types/player';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
@@ -158,7 +159,7 @@ export const getStatLine = (p: Player): StatItem[] => {
         { label: 'Receptions', value: fmt(num(p, 'receptions')) },
         { label: 'Rec Yds', value: fmt(num(p, 'recYds')) },
         { label: 'Rec TD', value: fmt(num(p, 'recTD')) },
-        { label: 'Longest', value: fmt(num(p, 'longest')) },
+        ...(IS_NFL ? [] : [{ label: 'Longest', value: fmt(num(p, 'longest')) }]),
       ];
     case 'OL':
       return [{ label: 'Blocks', value: fmt(num(p, 'blocks')) }];
@@ -218,7 +219,7 @@ export const getScoutLine = (p: Player): ScoutStat[] => {
         { label: 'TD', value: opt(p, 'recTD') },
         { label: 'Avg', value: ratio(num(p, 'recYds'), num(p, 'receptions'), 1) },
         { label: 'Fum', value: opt(p, 'fumbles') },
-        { label: 'Long', value: opt(p, 'longest') },
+        ...(IS_NFL ? [] : [{ label: 'Long', value: opt(p, 'longest') }]),
       ];
     case 'OL':
       return [gp, { label: 'Blocks', value: opt(p, 'blocks') }, { label: 'Blk/Gm', value: ratio(num(p, 'blocks'), num(p, 'games'), 2) }];
@@ -262,7 +263,7 @@ export const getRateScoutLine = (p: Player): ScoutStat[] => {
         { label: 'Yds/G', value: pg('recYds', 1) },
         { label: 'TD/G', value: pg('recTD', 2) },
         { label: 'Avg', value: ratio(num(p, 'recYds'), num(p, 'receptions'), 1) },
-        { label: 'Long', value: opt(p, 'longest') },
+        ...(IS_NFL ? [] : [{ label: 'Long', value: opt(p, 'longest') }]),
       ];
     case 'OL':
       return [{ label: 'Blk/G', value: pg('blocks', 2) }];

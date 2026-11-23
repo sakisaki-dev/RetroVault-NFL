@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { Clock, Radar, Search, Shield, Sparkles, Star } from 'lucide-react';
 import InLeague from '@/components/InLeague';
@@ -21,11 +21,11 @@ import PlayerDetailCard from './PlayerDetailCard';
 import { warmPlayerCard } from './player/warmPlayerCard';
 import TeamLogo from './brand/TeamLogo';
 import GameSprite from './GameSprite';
-import { matchPlayer } from './PlayerSearchSelect';
 import { openInCompFinder } from './stats/comps/compFinderLink';
 import { parseHash } from './stats/hub/hashRoute';
 import { isPhone, usePhone } from '@/hooks/usePhone';
-import { pushRecent, readRecent } from '@/utils/playerSearch';
+import { buildSearchIndex, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
+import { IS_NFL } from '@/config/edition';
 import { PEEK_ACTION_EVENT, peekProps } from '@/components/peek/peekProps';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
 import './quickSearch.css';
@@ -34,6 +34,9 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 /** Fired by the header's search button (and anything else) to open the quick search. */
 export const QUICK_SEARCH_EVENT = 'retrovault:quick-search';
 export const openQuickSearch = () => window.dispatchEvent(new Event(QUICK_SEARCH_EVENT));
+
+/** Rows rendered for a query (the rest is "keep typing") */
+const RESULT_LIMIT = 40;
 
 const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 
@@ -201,6 +204,7 @@ const QuickSearchPhone = () => {
     const hof = league.filter((p) => isHallOfFamer(p)).sort((a, b) => b.careerLegacy - a.careerLegacy).slice(0, 8);
     return [
       { id: 'club', label: `${findNFLTeam(currentClub)?.name ?? currentClub ?? 'Club'} roster`, players: club },
+      ...(IS_NFL ? [{ id: 'top', label: 'Top players', players: [...league].sort((a, b) => b.careerLegacy - a.careerLegacy).slice(0, 12) }] : []),
       { id: 'hof', label: 'Hall of Fame', players: hof },
     ];
   }, [league, ovrMap, currentClub]);
@@ -269,47 +273,47 @@ const QuickSearchDialog = () => {
     }
   }, [open]);
 
-  // Search text per player (what cmdk filters on); the item value maps back to the player
-  const searchText = useMemo(() => {
-    const m = new Map<string, Player>();
-    [...league, ...legends].forEach((p) => {
-      const text = `${p.name} ${p.nickname ?? ''} ${extras.formerNames[normalizeName(p.name)] ?? ''} ${p.position} ${bannerTeamOf(p)} ${p.team || ''} ${findNFLTeam(bannerTeamOf(p))?.fullName ?? ''} ${playerKey(p)}`;
-      m.set(text, p);
-    });
-    return m;
-  }, [league, legends, extras]);
-  const textOf = useMemo(() => new Map([...searchText.entries()].map(([t, p]) => [playerKey(p), t])), [searchText]);
-  const byKey = useMemo(() => new Map([...searchText.values()].map((p) => [playerKey(p), p])), [searchText]);
-
-  // Empty query: recently scouted, the current club, the Hall's best. With a query: everyone, league first.
-  const groups = useMemo(() => {
+  // Our own ranked matching (utils/playerSearch.ts): cmdk's filter would score every one of ~3,000 players on each
+  // keystroke and render them all. The query is deferred, at most RESULT_LIMIT rows render, and the rest is "keep typing".
+  const deferredQuery = useDeferredValue(query);
+  const index = useMemo(() => buildSearchIndex([...league, ...legends], { ovr: ovrMap, formerNames: extras.formerNames }), [league, legends, ovrMap, extras]);
+  const byKey = index.byKey;
+  const { groups, more } = useMemo(() => {
     const ovrOf = (p: Player) => ovrMap.get(playerKey(p)) ?? 0;
     const byOvr = (a: Player, b: Player) => ovrOf(b) - ovrOf(a) || a.name.localeCompare(b.name);
     const inPos = (p: Player) => pos === 'ALL' || p.position === pos;
-    if (!query.trim()) {
-      const rec = recent.map((k) => byKey.get(k)).filter((p): p is Player => !!p && inPos(p));
+    if (!deferredQuery.trim()) {
+      const rec = recent.map((k) => byKey.get(k)?.p).filter((p): p is Player => !!p && inPos(p));
       const clubId = findNFLTeam(currentClub)?.id;
-      const club = clubId ? league.filter((p) => findNFLTeam(p.team)?.id === clubId && p.status !== 'Retired' && inPos(p)).sort(byOvr) : [];
+      const club = clubId ? league.filter((p) => findNFLTeam(p.team)?.id === clubId && p.status !== 'Retired' && inPos(p)).sort(byOvr).slice(0, 12) : [];
       const hof = league
         .filter((p) => isHallOfFamer(p) && inPos(p))
         .sort((a, b) => b.careerLegacy - a.careerLegacy)
-        .slice(0, pos === 'ALL' ? 8 : 20);
-      return [
-        { id: 'recent', label: 'Recently scouted', Icon: Clock, players: rec },
-        { id: 'club', label: `Your ${findNFLTeam(currentClub)?.name ?? currentClub}`, Icon: Sparkles, players: club },
-        { id: 'hof', label: 'Hall of Fame', Icon: Star, players: hof },
-      ].filter((g) => g.players.length);
+        .slice(0, pos === 'ALL' ? 8 : 12);
+      const top = IS_NFL ? league.filter(inPos).sort((a, b) => b.careerLegacy - a.careerLegacy).slice(0, 8) : [];
+      return {
+        groups: [
+          { id: 'recent', label: 'Recently scouted', Icon: Clock, players: rec },
+          { id: 'club', label: `Your ${findNFLTeam(currentClub)?.name ?? currentClub}`, Icon: Sparkles, players: club },
+          { id: 'top', label: 'Top players', Icon: Star, players: top },
+          { id: 'hof', label: 'Hall of Fame', Icon: Star, players: hof },
+        ].filter((g) => g.players.length),
+        more: 0,
+      };
     }
-    return [
-      { id: 'league', label: 'League players', Icon: Search, players: league.filter(inPos).sort(byOvr) },
-      { id: 'nfl', label: 'Real NFL players', Icon: Star, players: legends.filter(inPos).sort(byOvr) },
-    ].filter((g) => g.players.length);
-  }, [query, pos, recent, byKey, league, legends, ovrMap, currentClub]);
+    const keep = pos === 'ALL' ? undefined : inPos;
+    const hits = searchPlayers(index, deferredQuery, RESULT_LIMIT + 1, keep);
+    const shown = hits.slice(0, RESULT_LIMIT).map((e) => e.p);
+    return {
+      groups: [{ id: 'results', label: 'Players', Icon: Search, players: shown }].filter((g) => g.players.length),
+      more: hits.length > RESULT_LIMIT ? 1 : 0,
+    };
+  }, [deferredQuery, pos, recent, byKey, index, league, ovrMap, currentClub]);
 
   // Clubs matching the query lead the results; a pick opens its team page (Stats › Teams)
-  const clubs = useMemo(() => (pos === 'ALL' ? searchTeams(query) : []), [query, pos]);
+  const clubs = useMemo(() => (pos === 'ALL' ? searchTeams(deferredQuery) : []), [deferredQuery, pos]);
 
-  const activePlayer = active.startsWith('team ') ? null : searchText.get(active) ?? [...searchText.entries()].find(([t]) => t.toLowerCase() === active.toLowerCase())?.[1] ?? groups[0]?.players[0] ?? null;
+  const activePlayer = active.startsWith('team ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
 
   const choose = (p: Player, deepDive = false) => {
     pushRecent(playerKey(p));
@@ -324,7 +328,7 @@ const QuickSearchDialog = () => {
         <DialogContent data-peek-ok className="qs-root top-[6%] max-h-[calc(var(--safe-h)-3rem)] w-[calc(100vw-1rem)] max-w-xl translate-y-0 gap-0 overflow-hidden p-0 sm:top-[8%]">
           <DialogTitle className="sr-only">Look up a player</DialogTitle>
           <Command
-            filter={matchPlayer}
+            shouldFilter={false}
             value={active}
             onValueChange={setActive}
             className="bg-transparent"
@@ -422,8 +426,7 @@ const QuickSearchDialog = () => {
                       return (
                         <CommandItem
                           key={`${g.id}:${key}`}
-                          value={textOf.get(key) ?? key}
-                          keywords={[p.name]}
+                          value={key}
                           onSelect={() => choose(p)}
                           onPointerDown={() => warmPlayerCard(p)}
                           {...peekProps(p)}
@@ -436,6 +439,7 @@ const QuickSearchDialog = () => {
                     })}
                   </CommandGroup>
                 ))}
+                {more > 0 && <p className="px-3 py-2 text-center font-pixel text-[9px] uppercase text-muted-foreground">Top {RESULT_LIMIT} shown, keep typing to narrow it</p>}
               </CommandList>
             </div>
 

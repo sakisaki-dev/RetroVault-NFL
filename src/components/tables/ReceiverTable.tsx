@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useMemo, useState } from 'react';
 import type { WRPlayer, TEPlayer } from '@/types/player';
 import TeamOverridesDialog from '../TeamOverridesDialog';
@@ -14,13 +15,15 @@ interface ReceiverTableProps {
   searchQuery?: string;
 }
 
-const COLUMNS: StatColumn<Receiver>[] = [
+const ALL_COLUMNS: StatColumn<Receiver>[] = [
   { key: 'games', label: 'GP', tip: 'Games played', get: (p) => p.games },
   { key: 'receptions', label: 'Rec', tip: 'Receptions', get: (p) => p.receptions },
   { key: 'recYds', label: 'Rec Yds', tip: 'Receiving yards', get: (p) => p.recYds },
   { key: 'recTD', label: 'Rec TD', tip: 'Receiving touchdowns', get: (p) => p.recTD },
   { key: 'longest', label: 'Long', tip: 'Longest reception (yards)', get: (p) => p.longest },
 ];
+/** The NFL weekly data has no longest reception */
+const COLUMNS = IS_NFL ? ALL_COLUMNS.filter((c) => c.key !== 'longest') : ALL_COLUMNS;
 
 const ReceiverTable = ({ players, position, title, searchQuery = '' }: ReceiverTableProps) => {
   const [teamOverrides, setTeamOverrides] = useState(() => loadTeamOverrides());

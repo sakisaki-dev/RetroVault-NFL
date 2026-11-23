@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
@@ -307,6 +308,13 @@ const pickNfl = (
   if (kitName && kitUid !== undefined && poses.length) {
     const pose = poses.includes(1) ? 1 : poses[0];
     return { src: nflFile(e.uid, kitUid, pose), kit: kitName, pose };
+  }
+  // He has no sprite in his club's kit and no neutral to paint (a free agent whose last club the save never drew him
+  // for): one of the game's stand-in looks painted into the club's kit, so he still wears it
+  if (IS_NFL && team && !legend) {
+    const st = standinFor(nfl, key, tone);
+    const pose = st && (st.neutral.includes(want) ? want : st.neutral[0]);
+    if (st && pose !== undefined) return { src: nflFile(st.uid, 800, pose), kit: team, paint: team, pose };
   }
   if (neutralPose !== undefined) return { src: nflFile(e.uid, 800, neutralPose), kit: 'neutral', pose: neutralPose };
   return null;

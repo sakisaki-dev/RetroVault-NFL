@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import type { Player } from '@/types/player';
 import { passerRating } from '@/config/advanced';
 
@@ -67,7 +68,7 @@ export const careerTotals = (p: Player): StatItem[] => {
         s('receptions', 'REC', 'Receptions', p.receptions),
         s('recYds', 'REC YDS', 'Receiving yards', p.recYds),
         s('recTD', 'REC TD', 'Receiving touchdowns', p.recTD),
-        s('longest', 'LNG', 'Longest reception', p.longest),
+        ...(IS_NFL ? [] : [s('longest', 'LNG', 'Longest reception', p.longest)]),
         s('fumbles', 'FUM', 'Fumbles', p.fumbles),
       ];
     case 'OL':
