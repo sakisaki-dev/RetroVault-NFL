@@ -27,6 +27,7 @@ interface Summary {
 }
 
 const best = (c: PackCard) => c.tier === 'legendary' || isAuto(c) || isPrizmChase(c) || isThrowback(c) || c.finish === 'holo';
+const rare = (c: PackCard) => (isAuto(c) ? 8 : 0) + (isPrizmChase(c) ? 6 : 0) + (isThrowback(c) ? 3 : 0) + (c.finish === 'holo' ? 3 : 0) + (c.tier === 'legendary' ? 1 : 0);
 const why = (c: PackCard) =>
   isAuto(c) ? 'Autograph' : isPrizmChase(c) ? `Prizm ${c.prizm!.c}` : c.tier === 'legendary' ? 'Legendary' : c.finish === 'holo' ? 'Holo' : isThrowback(c) ? 'Throwback' : '';
 
@@ -52,7 +53,7 @@ const OpenAll = ({
   const [sum, setSum] = useState<Summary | null>(null);
   const counts = types.map((t) => ({ t, n: packCount(state, t) })).filter((x) => x.n > 0);
   const total = counts.reduce((a, x) => a + x.n, 0);
-  if (total < 2) return null;
+  if (total < 2 && !sum && !busy && !ask) return null; // the summary outlives the packs it opened
 
   const run = async (list: PackType[]) => {
     setAsk(null);
@@ -74,11 +75,11 @@ const OpenAll = ({
   };
 
   const tierCounts = (s: Summary) => TIERS.map(({ key }) => ({ key, n: s.cards.filter((c) => c.tier === key).length })).filter((x) => x.n);
-  const bestPulls = (s: Summary) => s.cards.filter(best).sort((a, b) => tierRank(b.tier) - tierRank(a.tier) || (isAuto(b) ? 1 : 0) - (isAuto(a) ? 1 : 0)).slice(0, 36);
+  const bestPulls = (s: Summary) => s.cards.filter(best).sort((a, b) => rare(b) - rare(a) || tierRank(b.tier) - tierRank(a.tier)).slice(0, 36);
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2" aria-label="Open many packs at once">
+      <div className={cn('flex flex-wrap items-center gap-2', total < 2 && !busy && 'hidden')} aria-label="Open many packs at once">
         {counts.length > 1 &&
           counts
             .filter((x) => x.n > 1)
