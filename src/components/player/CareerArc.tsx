@@ -1,3 +1,4 @@
+import { seasonLabel } from '@/config/edition';
 import type { CSSProperties } from 'react';
 import { ArrowRight, Flag, Shirt, Sparkles, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -22,7 +23,7 @@ const LikelyTag = () => (
 
 const RingChip = ({ ring }: { ring: ArcRing }) => {
   const likely = ring.evidence === 'likely';
-  const detail = `Super Bowl ${ring.roman}, Y${ring.year}${ring.opponent ? ` vs ${ring.opponent}` : ''}${ring.score ? ` (${ring.score})` : ''}`;
+  const detail = `Super Bowl ${ring.roman}, ${seasonLabel(ring.year)}${ring.opponent ? ` vs ${ring.opponent}` : ''}${ring.score ? ` (${ring.score})` : ''}`;
   const why = `${detail}. ${likely ? 'Likely: ' : 'Confirmed: '}${ring.reason}.`;
   // Hover shows the reason (title); a tap opens it in a popover, since phones have no hover
   return (

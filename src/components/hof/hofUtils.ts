@@ -1,4 +1,4 @@
-import { IS_NFL } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
 import type { CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
@@ -35,7 +35,7 @@ export const yearsOf = (stints?: PlayerStints) => {
   if (!list.length) return null;
   const from = Math.min(...list.map((s) => s.from));
   const to = Math.max(...list.map((s) => s.to));
-  return from === to ? `Y${from}` : `Y${from}–Y${to}`;
+  return from === to ? seasonLabel(from) : IS_NFL ? `${from}–${to}` : `Y${from}–Y${to}`;
 };
 
 export const POS_NAMES: Record<string, string> = {

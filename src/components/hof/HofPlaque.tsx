@@ -1,3 +1,4 @@
+import { IS_NFL, seasonLabel } from '@/config/edition';
 import { useMemo, useRef } from 'react';
 import { Clapperboard, IdCard } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -232,7 +233,7 @@ const HofPlaque = ({
                             {s.team}
                           </span>
                           <span style={{ color: PLAQUE_MUTED }}>
-                            {s.from === s.to ? `Y${s.from}` : `Y${s.from}–Y${s.to}`}
+                            {s.from === s.to ? seasonLabel(s.from) : IS_NFL ? `${s.from}–${s.to}` : `Y${s.from}–Y${s.to}`}
                             {s.rings.length ? ` · ${s.rings.length} ring${s.rings.length === 1 ? '' : 's'}` : ''}
                           </span>
                         </li>

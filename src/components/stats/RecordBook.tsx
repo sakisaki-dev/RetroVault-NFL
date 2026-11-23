@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useState } from 'react';
 import { Crown, Gauge } from 'lucide-react';
 import { efficiencyTakeaway, recordsTakeaway } from './takeaways';
@@ -236,9 +237,9 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
               : `${beaten} of ${tracked} club records have been beaten somewhere in the league.`
         }
       >
-        The league&apos;s best career and single-season marks. Under each, the club line is the game&apos;s own record board, which only counts
-        games played for Skura&apos;s club: gold when it is still the best anywhere, red when someone in the league has beaten it. Career strips run
-        from #5 to the record. Seasons cover every season since {clubFile?.seasonsFrom ?? 'the first snapshot'} for the players tracked then.
+        {IS_NFL
+          ? 'The NFL\'s best career and single-season marks since 1999, from every player\'s game log. Career strips run from #5 to the record.'
+          : "The league's best career and single-season marks. Under each, the club line is the game's own record board, which only counts games played for Skura's club: gold when it is still the best anywhere, red when someone in the league has beaten it. Career strips run from #5 to the record."}{' '} Seasons cover every season since {clubFile?.seasonsFrom ?? 'the first snapshot'} for the players tracked then.
       </SectionIntro>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Career or season records">
         <button type="button" className={chip(scope === 'career')} aria-pressed={scope === 'career'} onClick={() => setScope('career')}>
