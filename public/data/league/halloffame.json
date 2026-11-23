@@ -3,178 +3,227 @@
  "bar": 65,
  "cap": 3,
  "season": "2026",
- "members": [],
- "classes": [],
- "ballot": [],
- "near": [],
- "watch": [
+ "members": [
   {
-   "key": "QB:Aaron Rodgers",
-   "name": "Aaron Rodgers",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 8436,
-   "rank": 1,
-   "score": 100,
-   "parts": {
-    "standing": 60,
-    "honours": 24,
-    "records": 30
-   },
-   "records": [
-    "Passing yards",
-    "Passing TDs"
-   ],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 4,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 274,
-   "projected": true
-  },
-  {
-   "key": "RB:Derrick Henry",
-   "name": "Derrick Henry",
+   "key": "RB:LaDainian Tomlinson",
+   "name": "LaDainian Tomlinson",
    "pos": "RB",
    "frozenSeason": "2026",
-   "careerLegacy": 7287,
+   "careerLegacy": 8130,
    "rank": 1,
    "score": 100,
    "parts": {
     "standing": 60,
-    "honours": 11,
-    "records": 35
-   },
-   "records": [
-    "Rushing yards",
-    "Rushing TDs"
-   ],
-   "seasonRecords": [
-    "Best rushing season"
-   ],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 164,
-   "projected": true
-  },
-  {
-   "key": "QB:Patrick Mahomes",
-   "name": "Patrick Mahomes",
-   "pos": "QB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7435,
-   "rank": 2,
-   "score": 88,
-   "parts": {
-    "standing": 54,
     "honours": 24,
-    "records": 10
-   },
-   "records": [],
-   "seasonRecords": [
-    "Best passing season",
-    "Most TD passes, season"
-   ],
-   "rings": 3,
-   "mvp": 2,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 3,
-   "games": 136,
-   "projected": true
-  },
-  {
-   "key": "LB:Von Miller",
-   "name": "Von Miller",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 7249,
-   "rank": 1,
-   "score": 87,
-   "parts": {
-    "standing": 60,
-    "honours": 12,
-    "records": 15
-   },
-   "records": [
-    "Sacks"
-   ],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 214,
-   "projected": true
-  },
-  {
-   "key": "LB:T.J. Watt",
-   "name": "T.J. Watt",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6839,
-   "rank": 2,
-   "score": 85,
-   "parts": {
-    "standing": 54,
-    "honours": 11,
     "records": 20
    },
    "records": [
-    "Forced fumbles"
+    "Rushing TDs"
    ],
    "seasonRecords": [
-    "Most forced fumbles, season"
+    "Most rushing TDs, season"
    ],
    "rings": 0,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 170,
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Ed Reed",
+   "name": "Ed Reed",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7983,
+   "rank": 2,
+   "score": 82,
+   "parts": {
+    "standing": 54,
+    "honours": 13,
+    "records": 15
+   },
+   "records": [
+    "Interceptions"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
    "mvp": 0,
    "opoy": 0,
    "dpoy": 1,
    "sbmvp": 0,
-   "games": 145,
-   "projected": true
+   "games": 172,
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
   },
   {
-   "key": "TE:Travis Kelce",
-   "name": "Travis Kelce",
-   "pos": "TE",
+   "key": "QB:Peyton Manning",
+   "name": "Peyton Manning",
+   "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 8343,
+   "careerLegacy": 8756,
+   "rank": 3,
+   "score": 78,
+   "parts": {
+    "standing": 49,
+    "honours": 24,
+    "records": 5
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most TD passes, season"
+   ],
+   "rings": 2,
+   "mvp": 5,
+   "opoy": 2,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 250,
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Larry Fitzgerald",
+   "name": "Larry Fitzgerald",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 8664,
    "rank": 1,
-   "score": 82,
+   "score": 75,
    "parts": {
     "standing": 60,
-    "honours": 7,
+    "honours": 0,
     "records": 15
    },
    "records": [
     "Receiving yards"
    ],
    "seasonRecords": [],
-   "rings": 3,
+   "rings": 0,
    "mvp": 0,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 202,
-   "projected": true
+   "games": 263,
+   "class": "Class of 2026",
+   "classSeason": "2026",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
   },
   {
-   "key": "WR:Davante Adams",
-   "name": "Davante Adams",
-   "pos": "WR",
+   "key": "DL:Julius Peppers",
+   "name": "Julius Peppers",
+   "pos": "DL",
    "frozenSeason": "2026",
-   "careerLegacy": 6691,
+   "careerLegacy": 8154,
    "rank": 1,
-   "score": 80,
+   "score": 75,
    "parts": {
     "standing": 60,
+    "honours": 0,
+    "records": 15
+   },
+   "records": [
+    "Sacks"
+   ],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 261,
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Drew Brees",
+   "name": "Drew Brees",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7883,
+   "rank": 4,
+   "score": 74,
+   "parts": {
+    "standing": 45,
+    "honours": 24,
+    "records": 5
+   },
+   "records": [],
+   "seasonRecords": [
+    "Best passing season"
+   ],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 2,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 287,
+   "class": "Class of 2026",
+   "classSeason": "2026",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Charles Woodson",
+   "name": "Charles Woodson",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 9083,
+   "rank": 1,
+   "score": 73,
+   "parts": {
+    "standing": 60,
+    "honours": 13,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 235,
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Randy Moss",
+   "name": "Randy Moss",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6697,
+   "rank": 5,
+   "score": 62,
+   "parts": {
+    "standing": 42,
     "honours": 0,
     "records": 20
    },
@@ -189,49 +238,2103 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 184,
-   "projected": true
+   "games": 195,
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
   },
   {
-   "key": "DL:Myles Garrett",
-   "name": "Myles Garrett",
-   "pos": "DL",
+   "key": "TE:Tony Gonzalez",
+   "name": "Tony Gonzalez",
+   "pos": "TE",
    "frozenSeason": "2026",
-   "careerLegacy": 6454,
+   "careerLegacy": 7783,
+   "rank": 2,
+   "score": 54,
+   "parts": {
+    "standing": 54,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 237,
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Ronde Barber",
+   "name": "Ronde Barber",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6732,
    "rank": 3,
-   "score": 76,
+   "score": 51,
    "parts": {
     "standing": 49,
-    "honours": 22,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 222,
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Ray Lewis",
+   "name": "Ray Lewis",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6288,
+   "rank": 10,
+   "score": 51,
+   "parts": {
+    "standing": 27,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 2,
+   "sbmvp": 1,
+   "games": 184,
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "TE:Antonio Gates",
+   "name": "Antonio Gates",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 7175,
+   "rank": 3,
+   "score": 49,
+   "parts": {
+    "standing": 49,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 234,
+   "class": "Class of 2025",
+   "classSeason": "2025",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:DeMarcus Ware",
+   "name": "DeMarcus Ware",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7425,
+   "rank": 4,
+   "score": 47,
+   "parts": {
+    "standing": 45,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 178,
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Troy Polamalu",
+   "name": "Troy Polamalu",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5563,
+   "rank": 9,
+   "score": 46,
+   "parts": {
+    "standing": 30,
+    "honours": 16,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 156,
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Champ Bailey",
+   "name": "Champ Bailey",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6468,
+   "rank": 4,
+   "score": 45,
+   "parts": {
+    "standing": 45,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 213,
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Marshall Faulk",
+   "name": "Marshall Faulk",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4982,
+   "rank": 13,
+   "score": 45,
+   "parts": {
+    "standing": 21,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 3,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 97,
+   "class": "Class of 2011",
+   "classSeason": "2011",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Jared Allen",
+   "name": "Jared Allen",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6777,
+   "rank": 6,
+   "score": 39,
+   "parts": {
+    "standing": 39,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 187,
+   "class": "Class of 2025",
+   "classSeason": "2025",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Edgerrin James",
+   "name": "Edgerrin James",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5807,
+   "rank": 7,
+   "score": 36,
+   "parts": {
+    "standing": 36,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 148,
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Dwight Freeney",
+   "name": "Dwight Freeney",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6091,
+   "rank": 8,
+   "score": 35,
+   "parts": {
+    "standing": 33,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 200,
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Kurt Warner",
+   "name": "Kurt Warner",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5357,
+   "rank": 19,
+   "score": 33,
+   "parts": {
+    "standing": 9,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 2,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 122,
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Terrell Owens",
+   "name": "Terrell Owens",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6461,
+   "rank": 9,
+   "score": 30,
+   "parts": {
+    "standing": 30,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 170,
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Michael Strahan",
+   "name": "Michael Strahan",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 5373,
+   "rank": 15,
+   "score": 30,
+   "parts": {
+    "standing": 17,
+    "honours": 13,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 129,
+   "class": "Class of 2014",
+   "classSeason": "2014",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Andre Johnson",
+   "name": "Andre Johnson",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6413,
+   "rank": 10,
+   "score": 27,
+   "parts": {
+    "standing": 27,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 192,
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Brian Urlacher",
+   "name": "Brian Urlacher",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4978,
+   "rank": 17,
+   "score": 24,
+   "parts": {
+    "standing": 13,
+    "honours": 11,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 181,
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Marvin Harrison (WR, Colts)",
+   "name": "Marvin Harrison (WR, Colts)",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6144,
+   "rank": 13,
+   "score": 23,
+   "parts": {
+    "standing": 21,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 146,
+   "class": "Class of 2016",
+   "classSeason": "2016",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Brian Dawkins",
+   "name": "Brian Dawkins",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 5386,
+   "rank": 13,
+   "score": 21,
+   "parts": {
+    "standing": 21,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 181,
+   "class": "Class of 2018",
+   "classSeason": "2018",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Warren Sapp",
+   "name": "Warren Sapp",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 4215,
+   "rank": 31,
+   "score": 13,
+   "parts": {
+    "standing": 0,
+    "honours": 13,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 129,
+   "class": "Class of 2013",
+   "classSeason": "2013",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Derrick Brooks",
+   "name": "Derrick Brooks",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4089,
+   "rank": 26,
+   "score": 13,
+   "parts": {
+    "standing": 0,
+    "honours": 13,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 159,
+   "class": "Class of 2014",
+   "classSeason": "2014",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Ty Law",
+   "name": "Ty Law",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4797,
+   "rank": 20,
+   "score": 12,
+   "parts": {
+    "standing": 7,
+    "honours": 5,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 142,
+   "class": "Class of 2019",
+   "classSeason": "2019",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Luke Kuechly",
+   "name": "Luke Kuechly",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3411,
+   "rank": 43,
+   "score": 11,
+   "parts": {
+    "standing": 0,
+    "honours": 11,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 118,
+   "class": "Class of 2026",
+   "classSeason": "2026",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Richard Seymour",
+   "name": "Richard Seymour",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 3930,
+   "rank": 41,
+   "score": 7,
+   "parts": {
+    "standing": 0,
+    "honours": 7,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 155,
+   "class": "Class of 2022",
+   "classSeason": "2022",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Calvin Johnson",
+   "name": "Calvin Johnson",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 5023,
+   "rank": 25,
+   "score": 5,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
     "records": 5
    },
    "records": [],
    "seasonRecords": [
-    "Most sacks, season"
+    "Best receiving season"
    ],
    "rings": 0,
    "mvp": 0,
    "opoy": 0,
-   "dpoy": 2,
+   "dpoy": 0,
    "sbmvp": 0,
-   "games": 137,
-   "projected": true
+   "games": 135,
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
   },
   {
-   "key": "DB:Harrison Smith",
-   "name": "Harrison Smith",
+   "key": "DB:Darrelle Revis",
+   "name": "Darrelle Revis",
    "pos": "DB",
    "frozenSeason": "2026",
-   "careerLegacy": 7668,
+   "careerLegacy": 3856,
+   "rank": 47,
+   "score": 2,
+   "parts": {
+    "standing": 0,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 142,
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "TE:Shannon Sharpe",
+   "name": "Shannon Sharpe",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 3443,
+   "rank": 44,
+   "score": 2,
+   "parts": {
+    "standing": 0,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 65,
+   "class": "Class of 2011",
+   "classSeason": "2011",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Jerome Bettis",
+   "name": "Jerome Bettis",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3189,
+   "rank": 54,
+   "score": 2,
+   "parts": {
+    "standing": 0,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 97,
+   "class": "Class of 2015",
+   "classSeason": "2015",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:John Lynch",
+   "name": "John Lynch",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3148,
+   "rank": 82,
+   "score": 2,
+   "parts": {
+    "standing": 0,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 136,
+   "class": "Class of 2021",
+   "classSeason": "2021",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Rod Woodson",
+   "name": "Rod Woodson",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3011,
+   "rank": 90,
+   "score": 2,
+   "parts": {
+    "standing": 0,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 73,
+   "class": "Class of 2009",
+   "classSeason": "2009",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Brett Favre",
+   "name": "Brett Favre",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4805,
+   "rank": 33,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 189,
+   "class": "Class of 2016",
+   "classSeason": "2016",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Isaac Bruce",
+   "name": "Isaac Bruce",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 4612,
+   "rank": 34,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 157,
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Curtis Martin",
+   "name": "Curtis Martin",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 4128,
+   "rank": 28,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 108,
+   "class": "Class of 2012",
+   "classSeason": "2012",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Warren Moon",
+   "name": "Warren Moon",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3647,
+   "rank": 107,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 3,
+   "class": "Class of 2006",
+   "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Troy Aikman",
+   "name": "Troy Aikman",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3263,
+   "rank": 184,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 25,
+   "class": "Class of 2006",
+   "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Steve Young",
+   "name": "Steve Young",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3204,
+   "rank": 192,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 3,
+   "class": "Class of 2005",
+   "classSeason": "2005",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "QB:Dan Marino",
+   "name": "Dan Marino",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3194,
+   "rank": 193,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 11,
+   "class": "Class of 2005",
+   "classSeason": "2005",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Zach Thomas (LB, Cowboys)",
+   "name": "Zach Thomas (LB, Cowboys)",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 3063,
+   "rank": 64,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 136,
+   "class": "Class of 2023",
+   "classSeason": "2023",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Bryant Young",
+   "name": "Bryant Young",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 2972,
+   "rank": 85,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 131,
+   "class": "Class of 2022",
+   "classSeason": "2022",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Patrick Willis",
+   "name": "Patrick Willis",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 2918,
+   "rank": 70,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 111,
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Tim Brown",
+   "name": "Tim Brown",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 2569,
+   "rank": 112,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 90,
+   "class": "Class of 2015",
+   "classSeason": "2015",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Jerry Rice",
+   "name": "Jerry Rice",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 2564,
+   "rank": 113,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 92,
+   "class": "Class of 2010",
+   "classSeason": "2010",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Emmitt Smith",
+   "name": "Emmitt Smith",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 2514,
+   "rank": 85,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 86,
+   "class": "Class of 2010",
+   "classSeason": "2010",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Aeneas Williams",
+   "name": "Aeneas Williams",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 2188,
+   "rank": 195,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 81,
+   "class": "Class of 2014",
+   "classSeason": "2014",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Junior Seau",
+   "name": "Junior Seau",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 2096,
+   "rank": 134,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 126,
+   "class": "Class of 2015",
+   "classSeason": "2015",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Bruce Smith",
+   "name": "Bruce Smith",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 2042,
+   "rank": 173,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 76,
+   "class": "Class of 2009",
+   "classSeason": "2009",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:John Randle",
+   "name": "John Randle",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 1884,
+   "rank": 207,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 61,
+   "class": "Class of 2010",
+   "classSeason": "2010",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Devin Hester",
+   "name": "Devin Hester",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 1790,
+   "rank": 175,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 156,
+   "class": "Class of 2024",
+   "classSeason": "2024",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Cris Carter",
+   "name": "Cris Carter",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 1714,
+   "rank": 184,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 52,
+   "class": "Class of 2013",
+   "classSeason": "2013",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Deion Sanders",
+   "name": "Deion Sanders",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 1384,
+   "rank": 376,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 51,
+   "class": "Class of 2011",
+   "classSeason": "2011",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Eric Allen",
+   "name": "Eric Allen",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 1267,
+   "rank": 414,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 48,
+   "class": "Class of 2025",
+   "classSeason": "2025",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Darrell Green",
+   "name": "Darrell Green",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 957,
+   "rank": 535,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 56,
+   "class": "Class of 2008",
+   "classSeason": "2008",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:LeRoy Butler",
+   "name": "LeRoy Butler",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 737,
+   "rank": 643,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 41,
+   "class": "Class of 2022",
+   "classSeason": "2022",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Cortez Kennedy",
+   "name": "Cortez Kennedy",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 652,
+   "rank": 560,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 32,
+   "class": "Class of 2012",
+   "classSeason": "2012",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Kevin Greene",
+   "name": "Kevin Greene",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 532,
+   "rank": 537,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 16,
+   "class": "Class of 2016",
+   "classSeason": "2016",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "LB:Derrick Thomas",
+   "name": "Derrick Thomas",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 479,
+   "rank": 571,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 16,
+   "class": "Class of 2009",
+   "classSeason": "2009",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Terrell Davis",
+   "name": "Terrell Davis",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 464,
+   "rank": 415,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 17,
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Chris Doleman",
+   "name": "Chris Doleman",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 429,
+   "rank": 676,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 13,
+   "class": "Class of 2012",
+   "classSeason": "2012",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Andre Reed",
+   "name": "Andre Reed",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 399,
+   "rank": 544,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 24,
+   "class": "Class of 2014",
+   "classSeason": "2014",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Reggie White",
+   "name": "Reggie White",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 267,
+   "rank": 818,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 12,
+   "class": "Class of 2006",
+   "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "RB:Thurman Thomas",
+   "name": "Thurman Thomas",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 168,
+   "rank": 616,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 12,
+   "class": "Class of 2007",
+   "classSeason": "2007",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "WR:Michael Irvin",
+   "name": "Michael Irvin",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 128,
+   "rank": 825,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 4,
+   "class": "Class of 2007",
+   "classSeason": "2007",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Charles Haley",
+   "name": "Charles Haley",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 123,
+   "rank": 984,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 7,
+   "class": "Class of 2015",
+   "classSeason": "2015",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DB:Steve Atwater",
+   "name": "Steve Atwater",
+   "pos": "DB",
+   "frozenSeason": "2026",
+   "careerLegacy": 101,
+   "rank": 1322,
+   "score": 0,
+   "parts": {
+    "standing": 0,
+    "honours": 0,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 11,
+   "class": "Class of 2020",
+   "classSeason": "2020",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  }
+ ],
+ "classes": [
+  {
+   "season": "2005",
+   "label": "Class of 2005",
+   "members": [
+    "Dan Marino",
+    "Steve Young"
+   ]
+  },
+  {
+   "season": "2006",
+   "label": "Class of 2006",
+   "members": [
+    "Reggie White",
+    "Troy Aikman",
+    "Warren Moon"
+   ]
+  },
+  {
+   "season": "2007",
+   "label": "Class of 2007",
+   "members": [
+    "Thurman Thomas",
+    "Michael Irvin"
+   ]
+  },
+  {
+   "season": "2008",
+   "label": "Class of 2008",
+   "members": [
+    "Darrell Green"
+   ]
+  },
+  {
+   "season": "2009",
+   "label": "Class of 2009",
+   "members": [
+    "Rod Woodson",
+    "Bruce Smith",
+    "Derrick Thomas"
+   ]
+  },
+  {
+   "season": "2010",
+   "label": "Class of 2010",
+   "members": [
+    "John Randle",
+    "Emmitt Smith",
+    "Jerry Rice"
+   ]
+  },
+  {
+   "season": "2011",
+   "label": "Class of 2011",
+   "members": [
+    "Marshall Faulk",
+    "Shannon Sharpe",
+    "Deion Sanders"
+   ]
+  },
+  {
+   "season": "2012",
+   "label": "Class of 2012",
+   "members": [
+    "Chris Doleman",
+    "Cortez Kennedy",
+    "Curtis Martin"
+   ]
+  },
+  {
+   "season": "2013",
+   "label": "Class of 2013",
+   "members": [
+    "Warren Sapp",
+    "Cris Carter"
+   ]
+  },
+  {
+   "season": "2014",
+   "label": "Class of 2014",
+   "members": [
+    "Michael Strahan",
+    "Derrick Brooks",
+    "Aeneas Williams",
+    "Andre Reed"
+   ]
+  },
+  {
+   "season": "2015",
+   "label": "Class of 2015",
+   "members": [
+    "Jerome Bettis",
+    "Charles Haley",
+    "Junior Seau",
+    "Tim Brown"
+   ]
+  },
+  {
+   "season": "2016",
+   "label": "Class of 2016",
+   "members": [
+    "Marvin Harrison (WR, Colts)",
+    "Kevin Greene",
+    "Brett Favre"
+   ]
+  },
+  {
+   "season": "2017",
+   "label": "Class of 2017",
+   "members": [
+    "LaDainian Tomlinson",
+    "Kurt Warner",
+    "Terrell Davis"
+   ]
+  },
+  {
+   "season": "2018",
+   "label": "Class of 2018",
+   "members": [
+    "Randy Moss",
+    "Ray Lewis",
+    "Terrell Owens",
+    "Brian Urlacher",
+    "Brian Dawkins"
+   ]
+  },
+  {
+   "season": "2019",
+   "label": "Class of 2019",
+   "members": [
+    "Ed Reed",
+    "Tony Gonzalez",
+    "Champ Bailey",
+    "Ty Law"
+   ]
+  },
+  {
+   "season": "2020",
+   "label": "Class of 2020",
+   "members": [
+    "Troy Polamalu",
+    "Edgerrin James",
+    "Steve Atwater",
+    "Isaac Bruce"
+   ]
+  },
+  {
+   "season": "2021",
+   "label": "Class of 2021",
+   "members": [
+    "Peyton Manning",
+    "Charles Woodson",
+    "Calvin Johnson",
+    "John Lynch"
+   ]
+  },
+  {
+   "season": "2022",
+   "label": "Class of 2022",
+   "members": [
+    "Richard Seymour",
+    "LeRoy Butler",
+    "Bryant Young"
+   ]
+  },
+  {
+   "season": "2023",
+   "label": "Class of 2023",
+   "members": [
+    "Ronde Barber",
+    "DeMarcus Ware",
+    "Darrelle Revis",
+    "Zach Thomas (LB, Cowboys)"
+   ]
+  },
+  {
+   "season": "2024",
+   "label": "Class of 2024",
+   "members": [
+    "Julius Peppers",
+    "Dwight Freeney",
+    "Andre Johnson",
+    "Patrick Willis",
+    "Devin Hester"
+   ]
+  },
+  {
+   "season": "2025",
+   "label": "Class of 2025",
+   "members": [
+    "Antonio Gates",
+    "Jared Allen",
+    "Eric Allen"
+   ]
+  },
+  {
+   "season": "2026",
+   "label": "Class of 2026",
+   "members": [
+    "Larry Fitzgerald",
+    "Drew Brees",
+    "Luke Kuechly"
+   ]
+  }
+ ],
+ "ballot": [
+  {
+   "key": "QB:Tom Brady",
+   "name": "Tom Brady",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 11122,
    "rank": 1,
-   "score": 75,
+   "score": 100,
    "parts": {
     "standing": 60,
+    "honours": 24,
+    "records": 30
+   },
+   "records": [
+    "Passing yards",
+    "Passing TDs"
+   ],
+   "seasonRecords": [],
+   "rings": 7,
+   "mvp": 3,
+   "opoy": 2,
+   "dpoy": 0,
+   "sbmvp": 5,
+   "games": 335,
+   "since": "2026",
+   "yearsOnBallot": 1
+  },
+  {
+   "key": "RB:Adrian Peterson",
+   "name": "Adrian Peterson",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7173,
+   "rank": 3,
+   "score": 78,
+   "parts": {
+    "standing": 49,
+    "honours": 24,
+    "records": 5
+   },
+   "records": [],
+   "seasonRecords": [
+    "Best rushing season"
+   ],
+   "rings": 0,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 184,
+   "since": "2026",
+   "yearsOnBallot": 1
+  },
+  {
+   "key": "LB:Terrell Suggs",
+   "name": "Terrell Suggs",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 8620,
+   "rank": 1,
+   "score": 76,
+   "parts": {
+    "standing": 60,
+    "honours": 16,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 241,
+   "since": "2026",
+   "yearsOnBallot": 1
+  },
+  {
+   "key": "DL:J.J. Watt",
+   "name": "J.J. Watt",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7256,
+   "rank": 3,
+   "score": 73,
+   "parts": {
+    "standing": 49,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 3,
+   "sbmvp": 0,
+   "games": 151,
+   "since": "2026",
+   "yearsOnBallot": 1
+  },
+  {
+   "key": "RB:Frank Gore (RB, Jets)",
+   "name": "Frank Gore (RB, Jets)",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7387,
+   "rank": 2,
+   "score": 69,
+   "parts": {
+    "standing": 54,
     "honours": 0,
     "records": 15
    },
    "records": [
-    "Interceptions"
+    "Rushing yards"
    ],
    "seasonRecords": [],
    "rings": 0,
@@ -239,7 +2342,214 @@
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 217,
+   "games": 241,
+   "since": "2026",
+   "yearsOnBallot": 1
+  }
+ ],
+ "near": [
+  {
+   "key": "LB:Jason Taylor",
+   "name": "Jason Taylor",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7567,
+   "rank": 3,
+   "score": 60,
+   "parts": {
+    "standing": 49,
+    "honours": 11,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 1,
+   "sbmvp": 0,
+   "games": 194
+  },
+  {
+   "key": "LB:Robert Mathis",
+   "name": "Robert Mathis",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7167,
+   "rank": 6,
+   "score": 56,
+   "parts": {
+    "standing": 39,
+    "honours": 2,
+    "records": 15
+   },
+   "records": [
+    "Forced fumbles"
+   ],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 185
+  },
+  {
+   "key": "WR:Reggie Wayne",
+   "name": "Reggie Wayne",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6875,
+   "rank": 2,
+   "score": 56,
+   "parts": {
+    "standing": 54,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 206
+  },
+  {
+   "key": "TE:Rob Gronkowski",
+   "name": "Rob Gronkowski",
+   "pos": "TE",
+   "frozenSeason": "2026",
+   "careerLegacy": 7128,
+   "rank": 4,
+   "score": 52,
+   "parts": {
+    "standing": 45,
+    "honours": 7,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 3,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 143
+  },
+  {
+   "key": "QB:Russell Wilson",
+   "name": "Russell Wilson",
+   "pos": "QB",
+   "frozenSeason": "2025",
+   "careerLegacy": 5679,
+   "rank": 3,
+   "score": 51,
+   "parts": {
+    "standing": 49,
+    "honours": 2,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 205
+  },
+  {
+   "key": "WR:Hines Ward",
+   "name": "Hines Ward",
+   "pos": "WR",
+   "frozenSeason": "2026",
+   "careerLegacy": 6664,
+   "rank": 6,
+   "score": 51,
+   "parts": {
+    "standing": 39,
+    "honours": 12,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 200
+  },
+  {
+   "key": "DL:Jason Pierre-Paul",
+   "name": "Jason Pierre-Paul",
+   "pos": "DL",
+   "frozenSeason": "2025",
+   "careerLegacy": 5034,
+   "rank": 4,
+   "score": 50,
+   "parts": {
+    "standing": 45,
+    "honours": 5,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 182
+  }
+ ],
+ "watch": [
+  {
+   "key": "DL:Aaron Donald",
+   "name": "Aaron Donald",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 7349,
+   "rank": 2,
+   "score": 78,
+   "parts": {
+    "standing": 54,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 3,
+   "sbmvp": 0,
+   "games": 162,
+   "projected": true
+  },
+  {
+   "key": "QB:Aaron Rodgers",
+   "name": "Aaron Rodgers",
+   "pos": "QB",
+   "frozenSeason": "2026",
+   "careerLegacy": 8806,
+   "rank": 2,
+   "score": 78,
+   "parts": {
+    "standing": 54,
+    "honours": 24,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 4,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 274,
    "projected": true
   },
   {
@@ -247,7 +2557,7 @@
    "name": "Jake Matthews",
    "pos": "OL",
    "frozenSeason": "2026",
-   "careerLegacy": 6581,
+   "careerLegacy": 7507,
    "rank": 2,
    "score": 69,
    "parts": {
@@ -268,34 +2578,57 @@
    "projected": true
   },
   {
-   "key": "QB:Josh Allen",
-   "name": "Josh Allen",
-   "pos": "QB",
+   "key": "TE:Travis Kelce",
+   "name": "Travis Kelce",
+   "pos": "TE",
    "frozenSeason": "2026",
-   "careerLegacy": 6386,
-   "rank": 3,
+   "careerLegacy": 7969,
+   "rank": 1,
    "score": 67,
    "parts": {
-    "standing": 49,
-    "honours": 18,
+    "standing": 60,
+    "honours": 7,
     "records": 0
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
-   "mvp": 1,
+   "rings": 3,
+   "mvp": 0,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 138,
+   "games": 202,
    "projected": true
   },
   {
-   "key": "QB:Lamar Jackson",
-   "name": "Lamar Jackson",
+   "key": "LB:Von Miller",
+   "name": "Von Miller",
+   "pos": "LB",
+   "frozenSeason": "2026",
+   "careerLegacy": 7582,
+   "rank": 2,
+   "score": 66,
+   "parts": {
+    "standing": 54,
+    "honours": 12,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 1,
+   "games": 214,
+   "projected": true
+  },
+  {
+   "key": "QB:Patrick Mahomes",
+   "name": "Patrick Mahomes",
    "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 6096,
+   "careerLegacy": 7736,
    "rank": 5,
    "score": 66,
    "parts": {
@@ -305,12 +2638,12 @@
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
+   "rings": 3,
    "mvp": 2,
-   "opoy": 0,
+   "opoy": 1,
    "dpoy": 0,
-   "sbmvp": 0,
-   "games": 121,
+   "sbmvp": 3,
+   "games": 136,
    "projected": true
   },
   {
@@ -318,7 +2651,7 @@
    "name": "Joe Thuney",
    "pos": "OL",
    "frozenSeason": "2026",
-   "careerLegacy": 6679,
+   "careerLegacy": 7558,
    "rank": 1,
    "score": 65,
    "parts": {
@@ -337,26 +2670,74 @@
    "projected": true
   },
   {
-   "key": "QB:Matthew Stafford",
-   "name": "Matthew Stafford",
+   "key": "DL:Myles Garrett",
+   "name": "Myles Garrett",
+   "pos": "DL",
+   "frozenSeason": "2026",
+   "careerLegacy": 6644,
+   "rank": 7,
+   "score": 63,
+   "parts": {
+    "standing": 36,
+    "honours": 22,
+    "records": 5
+   },
+   "records": [],
+   "seasonRecords": [
+    "Most sacks, season"
+   ],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 2,
+   "sbmvp": 0,
+   "games": 137,
+   "projected": true
+  },
+  {
+   "key": "QB:Josh Allen",
+   "name": "Josh Allen",
    "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 6260,
-   "rank": 4,
-   "score": 65,
+   "careerLegacy": 6712,
+   "rank": 6,
+   "score": 57,
    "parts": {
-    "standing": 45,
-    "honours": 20,
+    "standing": 39,
+    "honours": 18,
     "records": 0
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 1,
+   "rings": 0,
    "mvp": 1,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 249,
+   "games": 138,
+   "projected": true
+  },
+  {
+   "key": "RB:Derrick Henry",
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "frozenSeason": "2026",
+   "careerLegacy": 6805,
+   "rank": 4,
+   "score": 56,
+   "parts": {
+    "standing": 45,
+    "honours": 11,
+    "records": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 164,
    "projected": true
   },
   {
@@ -364,11 +2745,11 @@
    "name": "Christian McCaffrey",
    "pos": "RB",
    "frozenSeason": "2026",
-   "careerLegacy": 6340,
-   "rank": 2,
-   "score": 65,
+   "careerLegacy": 5919,
+   "rank": 5,
+   "score": 53,
    "parts": {
-    "standing": 54,
+    "standing": 42,
     "honours": 11,
     "records": 0
    },
@@ -383,191 +2764,26 @@
    "projected": true
   },
   {
-   "key": "WR:Cooper Kupp",
-   "name": "Cooper Kupp",
-   "pos": "WR",
+   "key": "QB:Lamar Jackson",
+   "name": "Lamar Jackson",
+   "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 5027,
-   "rank": 7,
-   "score": 64,
+   "careerLegacy": 6398,
+   "rank": 10,
+   "score": 51,
    "parts": {
-    "standing": 36,
-    "honours": 23,
-    "records": 5
-   },
-   "records": [],
-   "seasonRecords": [
-    "Best receiving season"
-   ],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 1,
-   "games": 130,
-   "projected": true
-  },
-  {
-   "key": "LB:Bobby Wagner",
-   "name": "Bobby Wagner",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5075,
-   "rank": 4,
-   "score": 62,
-   "parts": {
-    "standing": 45,
-    "honours": 2,
-    "records": 15
-   },
-   "records": [
-    "Tackles"
-   ],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 219,
-   "projected": true
-  },
-  {
-   "key": "DL:Calais Campbell",
-   "name": "Calais Campbell",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 7001,
-   "rank": 1,
-   "score": 60,
-   "parts": {
-    "standing": 60,
-    "honours": 0,
+    "standing": 27,
+    "honours": 24,
     "records": 0
    },
    "records": [],
    "seasonRecords": [],
    "rings": 0,
-   "mvp": 0,
+   "mvp": 2,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 289,
-   "projected": true
-  },
-  {
-   "key": "LB:Khalil Mack",
-   "name": "Khalil Mack",
-   "pos": "LB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6661,
-   "rank": 3,
-   "score": 60,
-   "parts": {
-    "standing": 49,
-    "honours": 11,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 1,
-   "sbmvp": 0,
-   "games": 189,
-   "projected": true
-  },
-  {
-   "key": "RB:Saquon Barkley",
-   "name": "Saquon Barkley",
-   "pos": "RB",
-   "frozenSeason": "2026",
-   "careerLegacy": 5249,
-   "rank": 4,
-   "score": 58,
-   "parts": {
-    "standing": 45,
-    "honours": 13,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 114,
-   "projected": true
-  },
-  {
-   "key": "WR:Mike Evans",
-   "name": "Mike Evans",
-   "pos": "WR",
-   "frozenSeason": "2026",
-   "careerLegacy": 6534,
-   "rank": 2,
-   "score": 56,
-   "parts": {
-    "standing": 54,
-    "honours": 2,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 183,
-   "projected": true
-  },
-  {
-   "key": "DB:Kevin Byard III",
-   "name": "Kevin Byard III",
-   "pos": "DB",
-   "frozenSeason": "2026",
-   "careerLegacy": 6288,
-   "rank": 2,
-   "score": 54,
-   "parts": {
-    "standing": 54,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 174,
-   "projected": true
-  },
-  {
-   "key": "DL:Cameron Jordan",
-   "name": "Cameron Jordan",
-   "pos": "DL",
-   "frozenSeason": "2026",
-   "careerLegacy": 6840,
-   "rank": 2,
-   "score": 54,
-   "parts": {
-    "standing": 54,
-    "honours": 0,
-    "records": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 251,
+   "games": 121,
    "projected": true
   },
   {
@@ -575,11 +2791,11 @@
    "name": "Lane Johnson",
    "pos": "OL",
    "frozenSeason": "2026",
-   "careerLegacy": 6445,
-   "rank": 3,
-   "score": 54,
+   "careerLegacy": 7289,
+   "rank": 4,
+   "score": 50,
    "parts": {
-    "standing": 49,
+    "standing": 45,
     "honours": 5,
     "records": 0
    },
@@ -594,28 +2810,1075 @@
    "projected": true
   },
   {
-   "key": "TE:George Kittle",
-   "name": "George Kittle",
-   "pos": "TE",
+   "key": "QB:Matthew Stafford",
+   "name": "Matthew Stafford",
+   "pos": "QB",
    "frozenSeason": "2026",
-   "careerLegacy": 5943,
-   "rank": 2,
-   "score": 54,
+   "careerLegacy": 6554,
+   "rank": 9,
+   "score": 50,
    "parts": {
-    "standing": 54,
-    "honours": 0,
+    "standing": 30,
+    "honours": 20,
     "records": 0
    },
    "records": [],
    "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
+   "rings": 1,
+   "mvp": 1,
    "opoy": 0,
    "dpoy": 0,
    "sbmvp": 0,
-   "games": 134,
+   "games": 249,
    "projected": true
   }
  ],
- "ringOfHonor": {}
+ "ringOfHonor": {
+  "49ers": [
+   {
+    "name": "Terrell Owens",
+    "pos": "WR",
+    "careerLegacy": 6461,
+    "score": 30,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Steve Young",
+    "pos": "QB",
+    "careerLegacy": 3204,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Bryant Young",
+    "pos": "DL",
+    "careerLegacy": 2972,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Patrick Willis",
+    "pos": "LB",
+    "careerLegacy": 2918,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Charles Haley",
+    "pos": "DL",
+    "careerLegacy": 123,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Frank Gore (RB, Jets)",
+    "pos": "RB",
+    "careerLegacy": 7387,
+    "score": 69,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Bears": [
+   {
+    "name": "Brian Urlacher",
+    "pos": "LB",
+    "careerLegacy": 4978,
+    "score": 24,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Devin Hester",
+    "pos": "WR",
+    "careerLegacy": 1790,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Charles Leno Jr.",
+    "pos": "OL",
+    "careerLegacy": 6468,
+    "score": 3,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Bills": [
+   {
+    "name": "Andre Reed",
+    "pos": "WR",
+    "careerLegacy": 399,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Thurman Thomas",
+    "pos": "RB",
+    "careerLegacy": 168,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Mitch Morse",
+    "pos": "OL",
+    "careerLegacy": 6435,
+    "score": 0,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Broncos": [
+   {
+    "name": "DeMarcus Ware",
+    "pos": "LB",
+    "careerLegacy": 7425,
+    "score": 47,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Champ Bailey",
+    "pos": "DB",
+    "careerLegacy": 6468,
+    "score": 45,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Terrell Davis",
+    "pos": "RB",
+    "careerLegacy": 464,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Andrew Norwell",
+    "pos": "OL",
+    "careerLegacy": 6634,
+    "score": 19,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Buccaneers": [
+   {
+    "name": "Ronde Barber",
+    "pos": "DB",
+    "careerLegacy": 6732,
+    "score": 51,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Warren Sapp",
+    "pos": "DL",
+    "careerLegacy": 4215,
+    "score": 13,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Derrick Brooks",
+    "pos": "LB",
+    "careerLegacy": 4089,
+    "score": 13,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "John Lynch",
+    "pos": "DB",
+    "careerLegacy": 3148,
+    "score": 2,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Donovan Smith",
+    "pos": "OL",
+    "careerLegacy": 6943,
+    "score": 38,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Ali Marpet",
+    "pos": "OL",
+    "careerLegacy": 6007,
+    "score": 2,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Cardinals": [
+   {
+    "name": "Larry Fitzgerald",
+    "pos": "WR",
+    "careerLegacy": 8664,
+    "score": 75,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Chargers": [
+   {
+    "name": "LaDainian Tomlinson",
+    "pos": "RB",
+    "careerLegacy": 8130,
+    "score": 100,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Antonio Gates",
+    "pos": "TE",
+    "careerLegacy": 7175,
+    "score": 49,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Junior Seau",
+    "pos": "LB",
+    "careerLegacy": 2096,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Chiefs": [
+   {
+    "name": "Tony Gonzalez",
+    "pos": "TE",
+    "careerLegacy": 7783,
+    "score": 54,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Warren Moon",
+    "pos": "QB",
+    "careerLegacy": 3647,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Derrick Thomas",
+    "pos": "LB",
+    "careerLegacy": 479,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Eric Fisher",
+    "pos": "OL",
+    "careerLegacy": 6380,
+    "score": 2,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Colts": [
+   {
+    "name": "Peyton Manning",
+    "pos": "QB",
+    "careerLegacy": 8756,
+    "score": 78,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Marvin Harrison (WR, Colts)",
+    "pos": "WR",
+    "careerLegacy": 6144,
+    "score": 23,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Dwight Freeney",
+    "pos": "DL",
+    "careerLegacy": 6091,
+    "score": 35,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Edgerrin James",
+    "pos": "RB",
+    "careerLegacy": 5807,
+    "score": 36,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Robert Mathis",
+    "pos": "LB",
+    "careerLegacy": 7167,
+    "score": 56,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Reggie Wayne",
+    "pos": "WR",
+    "careerLegacy": 6875,
+    "score": 56,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Commanders": [
+   {
+    "name": "Bruce Smith",
+    "pos": "DL",
+    "careerLegacy": 2042,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Darrell Green",
+    "pos": "DB",
+    "careerLegacy": 957,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Brandon Scherff",
+    "pos": "OL",
+    "careerLegacy": 6576,
+    "score": 9,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Cowboys": [
+   {
+    "name": "Troy Aikman",
+    "pos": "QB",
+    "careerLegacy": 3263,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Emmitt Smith",
+    "pos": "RB",
+    "careerLegacy": 2514,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Michael Irvin",
+    "pos": "WR",
+    "careerLegacy": 128,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Jason Witten",
+    "pos": "TE",
+    "careerLegacy": 6983,
+    "score": 42,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Zack Martin",
+    "pos": "OL",
+    "careerLegacy": 6873,
+    "score": 27,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Dolphins": [
+   {
+    "name": "Dan Marino",
+    "pos": "QB",
+    "careerLegacy": 3194,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Zach Thomas (LB, Cowboys)",
+    "pos": "LB",
+    "careerLegacy": 3063,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Jason Taylor",
+    "pos": "LB",
+    "careerLegacy": 7567,
+    "score": 60,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Eagles": [
+   {
+    "name": "Brian Dawkins",
+    "pos": "DB",
+    "careerLegacy": 5386,
+    "score": 21,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Falcons": [
+   {
+    "name": "John Abraham",
+    "pos": "LB",
+    "careerLegacy": 7229,
+    "score": 42,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Matt Ryan",
+    "pos": "QB",
+    "careerLegacy": 6216,
+    "score": 49,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Giants": [
+   {
+    "name": "Michael Strahan",
+    "pos": "DL",
+    "careerLegacy": 5373,
+    "score": 30,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Justin Pugh",
+    "pos": "OL",
+    "careerLegacy": 6099,
+    "score": 0,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Eli Manning",
+    "pos": "QB",
+    "careerLegacy": 6044,
+    "score": 40,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Jets": [
+   {
+    "name": "Curtis Martin",
+    "pos": "RB",
+    "careerLegacy": 4128,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Steve Atwater",
+    "pos": "DB",
+    "careerLegacy": 101,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Lions": [
+   {
+    "name": "Calvin Johnson",
+    "pos": "WR",
+    "careerLegacy": 5023,
+    "score": 5,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Packers": [
+   {
+    "name": "Charles Woodson",
+    "pos": "DB",
+    "careerLegacy": 9083,
+    "score": 73,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Brett Favre",
+    "pos": "QB",
+    "careerLegacy": 4805,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "LeRoy Butler",
+    "pos": "DB",
+    "careerLegacy": 737,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "David Bakhtiari",
+    "pos": "OL",
+    "careerLegacy": 6368,
+    "score": 0,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Corey Linsley",
+    "pos": "OL",
+    "careerLegacy": 6140,
+    "score": 0,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Panthers": [
+   {
+    "name": "Julius Peppers",
+    "pos": "DL",
+    "careerLegacy": 8154,
+    "score": 75,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Luke Kuechly",
+    "pos": "LB",
+    "careerLegacy": 3411,
+    "score": 11,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Kevin Greene",
+    "pos": "LB",
+    "careerLegacy": 532,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Reggie White",
+    "pos": "DL",
+    "careerLegacy": 267,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Steve Smith",
+    "pos": "WR",
+    "careerLegacy": 6512,
+    "score": 33,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Cam Newton",
+    "pos": "QB",
+    "careerLegacy": 6127,
+    "score": 47,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Patriots": [
+   {
+    "name": "Ty Law",
+    "pos": "DB",
+    "careerLegacy": 4797,
+    "score": 12,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Richard Seymour",
+    "pos": "DL",
+    "careerLegacy": 3930,
+    "score": 7,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Darrelle Revis",
+    "pos": "DB",
+    "careerLegacy": 3856,
+    "score": 2,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Tom Brady",
+    "pos": "QB",
+    "careerLegacy": 11122,
+    "score": 100,
+    "hof": false,
+    "why": "6 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Rob Gronkowski",
+    "pos": "TE",
+    "careerLegacy": 7128,
+    "score": 52,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "David Andrews",
+    "pos": "OL",
+    "careerLegacy": 6581,
+    "score": 16,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Devin McCourty",
+    "pos": "DB",
+    "careerLegacy": 5717,
+    "score": 40,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Julian Edelman",
+    "pos": "WR",
+    "careerLegacy": 4400,
+    "score": 14,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Kevin Faulk",
+    "pos": "RB",
+    "careerLegacy": 3561,
+    "score": 7,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Patrick Chung",
+    "pos": "DB",
+    "careerLegacy": 2940,
+    "score": 7,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Dont'a Hightower",
+    "pos": "LB",
+    "careerLegacy": 2683,
+    "score": 7,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Matthew Slater",
+    "pos": "WR",
+    "careerLegacy": 1452,
+    "score": 7,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Patrick Pass",
+    "pos": "RB",
+    "careerLegacy": 1296,
+    "score": 7,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Raiders": [
+   {
+    "name": "Tim Brown",
+    "pos": "WR",
+    "careerLegacy": 2569,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Jerry Rice",
+    "pos": "WR",
+    "careerLegacy": 2564,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Eric Allen",
+    "pos": "DB",
+    "careerLegacy": 1267,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Gabe Jackson",
+    "pos": "OL",
+    "careerLegacy": 6423,
+    "score": 0,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Rams": [
+   {
+    "name": "Kurt Warner",
+    "pos": "QB",
+    "careerLegacy": 5357,
+    "score": 33,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Marshall Faulk",
+    "pos": "RB",
+    "careerLegacy": 4982,
+    "score": 45,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Isaac Bruce",
+    "pos": "WR",
+    "careerLegacy": 4612,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Aeneas Williams",
+    "pos": "DB",
+    "careerLegacy": 2188,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Ravens": [
+   {
+    "name": "Ed Reed",
+    "pos": "DB",
+    "careerLegacy": 7983,
+    "score": 82,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Ray Lewis",
+    "pos": "LB",
+    "careerLegacy": 6288,
+    "score": 51,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Shannon Sharpe",
+    "pos": "TE",
+    "careerLegacy": 3443,
+    "score": 2,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Rod Woodson",
+    "pos": "DB",
+    "careerLegacy": 3011,
+    "score": 2,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Deion Sanders",
+    "pos": "DB",
+    "careerLegacy": 1384,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Terrell Suggs",
+    "pos": "LB",
+    "careerLegacy": 8620,
+    "score": 76,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Anquan Boldin",
+    "pos": "WR",
+    "careerLegacy": 6704,
+    "score": 47,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Saints": [
+   {
+    "name": "Drew Brees",
+    "pos": "QB",
+    "careerLegacy": 7883,
+    "score": 74,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Seahawks": [
+   {
+    "name": "John Randle",
+    "pos": "DL",
+    "careerLegacy": 1884,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Cortez Kennedy",
+    "pos": "DL",
+    "careerLegacy": 652,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Steelers": [
+   {
+    "name": "Troy Polamalu",
+    "pos": "DB",
+    "careerLegacy": 5563,
+    "score": 46,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Jerome Bettis",
+    "pos": "RB",
+    "careerLegacy": 3189,
+    "score": 2,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Hines Ward",
+    "pos": "WR",
+    "careerLegacy": 6664,
+    "score": 51,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Ben Roethlisberger",
+    "pos": "QB",
+    "careerLegacy": 6561,
+    "score": 38,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "James Harrison",
+    "pos": "LB",
+    "careerLegacy": 6455,
+    "score": 46,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Texans": [
+   {
+    "name": "Andre Johnson",
+    "pos": "WR",
+    "careerLegacy": 6413,
+    "score": 27,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "J.J. Watt",
+    "pos": "DL",
+    "careerLegacy": 7256,
+    "score": 73,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ],
+  "Vikings": [
+   {
+    "name": "Jared Allen",
+    "pos": "DL",
+    "careerLegacy": 6777,
+    "score": 39,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Randy Moss",
+    "pos": "WR",
+    "careerLegacy": 6697,
+    "score": 62,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Cris Carter",
+    "pos": "WR",
+    "careerLegacy": 1714,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Chris Doleman",
+    "pos": "DL",
+    "careerLegacy": 429,
+    "score": 0,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2026"
+   },
+   {
+    "name": "Adrian Peterson",
+    "pos": "RB",
+    "careerLegacy": 7173,
+    "score": 78,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
+   }
+  ]
+ }
 }

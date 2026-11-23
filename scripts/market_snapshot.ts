@@ -164,10 +164,10 @@ const main = () => {
   }
 
   // NFL edition: one season-end snapshot per past season (the league as it stood then, from the career lines in
-  // data/nfl-cache/season_ends.json via build_league_data.py's RV_NFL_CUT), so the career graphs run from a debut
+  // data/nfl/season_ends.json via build_league_data.py's RV_NFL_CUT), so the career graphs run from a debut
   // to now. The CSVs are rebuilt by `npm run nfl:rebuild` before this step.
   if (process.env.RV_EDITION === 'nfl' && !history.length) {
-    const dir = 'data/nfl-cache/cuts';
+    const dir = 'data/nfl/cuts';
     const years = existsSync(dir) ? readdirSync(dir).map((f) => Number(f.replace('.csv', ''))).filter(Number.isFinite).sort() : [];
     const rd = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
     years.forEach((y) => {

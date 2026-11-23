@@ -11,6 +11,8 @@ import type { LabFile, DepthFile } from '@/utils/nflLabData';
 import {
   BENCH_SIZE,
   RATING_SOURCES,
+  keysOf,
+  usesCarFallback,
   callSheet,
   clubDistribution,
   identityOf,
@@ -55,6 +57,7 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
     const rows = [...dist.clubs.map((c) => ({ abbr: c.abbr, team: c.score.team.raw, grade: c.score.team.grade, score: c.score.team.score })), { abbr: '', team: score.team.raw, grade: score.team.grade, score: score.team.score }];
     return rows.sort((a, b) => b.team - a.team);
   }, [score, dist]);
+  const carFallback = useMemo(() => keysOf(lineup).flatMap((k) => { const pr = ctx.profiles.get(k); return pr && usesCarFallback(pr, src) ? [pr.name] : []; }), [ctx, lineup, src]);
   if (!score) return null;
   const rank = ranking.findIndex((r) => r.abbr === '') + 1;
   const near = ranking.slice(Math.max(0, Math.min(rank - 3, ranking.length - 5)), Math.max(0, Math.min(rank - 3, ranking.length - 5)) + 5);
@@ -62,7 +65,7 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
     <div className="lab-analysis nfl-report">
       <Card title="Unit ratings" className="lab-order-1" icon={<TrendingUp className="h-5 w-5 text-gold" aria-hidden="true" />}>
         <p className="mb-3 text-xs text-muted-foreground">
-          Each score is a percentile against {BENCH_SIZE} random {lineup.off} / {lineup.def} lineups of today's depth-chart starters: 80 means better than 80% of possible teams. Offense {Math.round(UNIT_WEIGHTS.team.offense * 100)}%, defense {Math.round(UNIT_WEIGHTS.team.defense * 100)}%, star power {Math.round(UNIT_WEIGHTS.team.star * 100)}% of the team grade. Ratings: {RATING_SOURCES.find((r) => r.id === src)?.label}.
+          Each score is a percentile against {BENCH_SIZE} random {lineup.off} / {lineup.def} lineups of today's depth-chart starters: 80 means better than 80% of possible teams. Offense {Math.round(UNIT_WEIGHTS.team.offense * 100)}%, defense {Math.round(UNIT_WEIGHTS.team.defense * 100)}%, star power {Math.round(UNIT_WEIGHTS.team.star * 100)}% of the team grade. Ratings: {RATING_SOURCES.find((r) => r.id === src)?.label}.{carFallback.length > 0 && ` No 2026 snaps, so rated on CAR: ${carFallback.slice(0, 6).join(', ')}${carFallback.length > 6 ? ` and ${carFallback.length - 6} more` : ''}.`}
         </p>
         <div className="space-y-4">
           {GROUPS.map((g) => (

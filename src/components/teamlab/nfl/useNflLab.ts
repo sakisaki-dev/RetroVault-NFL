@@ -10,10 +10,10 @@ import { NFL_TEAMS } from '@/utils/nflTeams';
 /** Everything the NFL Team Lab reads: the profiles, the real data files, the injuries and the schedule. */
 export const useNflLab = () => {
   const { careerData, getAllPlayers } = useLeague();
-  const { ovrMap, loaded } = useGamePool();
+  const { ovrMap, careerOvrMap, seasonOvr, loaded } = useGamePool();
   const league = useMemo(() => getAllPlayers(), [getAllPlayers]);
   const ready = !!careerData && loaded && league.length > 0;
-  const base = useMemo<NflCtx | null>(() => (ready ? createNflCtx(league, ovrMap) : null), [ready, league, ovrMap]);
+  const base = useMemo<NflCtx | null>(() => (ready ? createNflCtx(league, ovrMap, { car: careerOvrMap, szn: seasonOvr?.ovr ?? {} }) : null), [ready, league, ovrMap, careerOvrMap, seasonOvr]);
   const data = useNflLabData();
   const ctx = useMemo(() => (base && data?.depth ? withStarters(base, data.depth) : base), [base, data]);
   const list = useInjuryList();
