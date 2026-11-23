@@ -215,7 +215,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Alijah Clark": {
    "uid": "216012",
@@ -664,7 +665,8 @@
    "neutral": [
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Benjamin Morrison": {
    "uid": "231002",
@@ -795,7 +797,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Brandon Hill": {
    "uid": "112082",
@@ -2564,7 +2567,8 @@
     1,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Derwin James Jr.": {
    "uid": "106049",
@@ -2706,7 +2710,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Donte Jackson": {
    "uid": "111059",
@@ -3009,7 +3014,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Eric Stokes": {
    "uid": "126040",
@@ -3550,7 +3556,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Jack Jones": {
    "uid": "107028",
@@ -3729,7 +3736,8 @@
    "neutral": [
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Jalen Mills": {
    "uid": "102049",
@@ -5290,7 +5298,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Keyon Martin": {
    "uid": "208014",
@@ -5545,7 +5554,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Lance Robinson": {
    "uid": "109057",
@@ -5652,7 +5662,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Mac McWilliams": {
    "uid": "218004",
@@ -5899,7 +5910,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Markquese Bell": {
    "uid": "116037",
@@ -5946,7 +5958,8 @@
    "neutral": [
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Marshon Lattimore": {
    "uid": "130035",
@@ -6389,7 +6402,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:NaJee Thompson": {
    "uid": "127043",
@@ -6442,7 +6456,8 @@
    "neutral": [
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Nate Wiggins": {
    "uid": "108060",
@@ -7106,7 +7121,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Robert Longerbeam": {
    "uid": "208010",
@@ -7131,7 +7147,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Robert Rochell": {
    "uid": "126033",
@@ -8221,7 +8238,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Tyrone Broden": {
    "uid": "223016",
@@ -8240,7 +8258,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Tyson Campbell": {
    "uid": "114044",
@@ -8311,7 +8330,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Will Harris": {
    "uid": "125047",
@@ -8363,7 +8383,8 @@
    "neutral": [
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DB:Xavier McKinney": {
    "uid": "117051",
@@ -8666,7 +8687,8 @@
    "neutral": [
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Alfred Collins": {
    "uid": "222002",
@@ -9268,7 +9290,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Byron Cowart": {
    "uid": "124066",
@@ -10077,7 +10100,8 @@
    "neutral": [
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Dante Stills": {
    "uid": "120059",
@@ -10515,7 +10539,8 @@
     1,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Deven Eastern": {
    "uid": "323007",
@@ -10536,7 +10561,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Devonte Wyatt": {
    "uid": "126022",
@@ -10933,7 +10959,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Felix Anudike-Uzomah": {
    "uid": "105042",
@@ -11703,7 +11730,8 @@
    "neutral": [
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Jeremiah Pharms Jr.": {
    "uid": "102031",
@@ -12205,7 +12233,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Justin Eboigbe": {
    "uid": "106062",
@@ -12369,7 +12398,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Keldric Faulk": {
    "uid": "315003",
@@ -12597,7 +12627,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Kurt Hinish": {
    "uid": "112057",
@@ -12662,7 +12693,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Kyonte Hamilton": {
    "uid": "212008",
@@ -13780,7 +13812,8 @@
     3,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Patrick Johnson": {
    "uid": "118023",
@@ -14282,7 +14315,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Shaq Lawson": {
    "uid": "100050",
@@ -14398,7 +14432,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Skyler Gill-Howard": {
    "uid": "325006",
@@ -14804,7 +14839,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Truman Jones": {
    "uid": "105060",
@@ -14944,7 +14980,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "DL:Tyree Wilson": {
    "uid": "107049",
@@ -16170,7 +16207,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Cameron Brown": {
    "uid": "117030",
@@ -17076,7 +17114,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Devin White": {
    "uid": "131033",
@@ -17400,7 +17439,8 @@
     2,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Emany Johnson": {
    "uid": "116079",
@@ -17479,7 +17519,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Ezekiel Turner": {
    "uid": "120041",
@@ -17965,7 +18006,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Jacob Rodriguez": {
    "uid": "301004",
@@ -18122,7 +18164,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Jalen Graham": {
    "uid": "122037",
@@ -18296,7 +18339,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Jamin Davis": {
    "uid": "119025",
@@ -18859,7 +18903,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Josey Jewell": {
    "uid": "104027",
@@ -19159,7 +19204,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Kamu Grugier-Hill": {
    "uid": "129022",
@@ -20764,7 +20810,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "LB:Swayze Bozeman": {
    "uid": "105065",
@@ -21603,7 +21650,8 @@
     3,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Aireontae Ersery": {
    "uid": "212002",
@@ -22112,7 +22160,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Beau Stephens": {
    "uid": "323005",
@@ -24325,7 +24374,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Gennings Dunker": {
    "uid": "311005",
@@ -24419,7 +24469,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Graham Barton": {
    "uid": "131053",
@@ -24550,7 +24601,8 @@
    "neutral": [
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Hunter Nourzad": {
    "uid": "105056",
@@ -24722,7 +24774,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Jack Driscoll": {
    "uid": "118074",
@@ -25197,7 +25250,8 @@
    "neutral": [
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Jeremiah Wright": {
    "uid": "330005",
@@ -25299,7 +25353,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Joe Thuney": {
    "uid": "105041",
@@ -25841,7 +25896,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Kayode Awosika": {
    "uid": "125055",
@@ -26301,7 +26357,8 @@
    "neutral": [
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Lloyd Cushenberry III": {
    "uid": "104034",
@@ -26372,7 +26429,8 @@
     3,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Lucas Niang": {
    "uid": "105071",
@@ -26405,7 +26463,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Luke Fortner": {
    "uid": "114018",
@@ -26592,7 +26651,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Marquis Hayes": {
    "uid": "120075",
@@ -26608,7 +26668,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Mason Cole": {
    "uid": "111018",
@@ -27018,7 +27079,8 @@
     1,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Mike McGlinchey": {
    "uid": "104073",
@@ -27107,7 +27169,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Nate Davis": {
    "uid": "124020",
@@ -27812,7 +27875,8 @@
     1,
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Sam Cosmi": {
    "uid": "119072",
@@ -27870,7 +27934,8 @@
    "neutral": [
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Sean Rhyan": {
    "uid": "126050",
@@ -28241,7 +28306,8 @@
    "neutral": [
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Torricelli Simpkins III": {
    "uid": "230011",
@@ -28533,7 +28599,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Tyler Guyton": {
    "uid": "116072",
@@ -28865,7 +28932,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "OL:Wyatt Milum": {
    "uid": "214003",
@@ -29406,7 +29474,8 @@
     1,
     4
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "QB:Case Keenum": {
    "uid": "112001",
@@ -29799,7 +29868,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "QB:J.J. McCarthy": {
    "uid": "127062",
@@ -30711,7 +30781,8 @@
     1,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "QB:Shane Buechele": {
    "uid": "100081",
@@ -32076,7 +32147,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "RB:Demond Claiborne": {
    "uid": "327008",
@@ -32403,7 +32475,8 @@
     3,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "RB:Isaac Guerendo": {
    "uid": "122075",
@@ -32506,7 +32579,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "RB:JaMycal Hasty": {
    "uid": "102005",
@@ -33588,7 +33662,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "RB:Mike Boone": {
    "uid": "112004",
@@ -33640,7 +33715,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "RB:Najee Harris": {
    "uid": "111004",
@@ -34856,7 +34932,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:C.J. Uzomah": {
    "uid": "103015",
@@ -35837,7 +35914,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:Ja'Tavion Sanders": {
    "uid": "129084",
@@ -36471,7 +36549,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:Leonard Taylor (TE, FA)": {
    "uid": "114017",
@@ -36685,7 +36764,8 @@
    "neutral": [
     3
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:Messiah Swinson": {
    "uid": "129085",
@@ -36694,7 +36774,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:Michael Mayer": {
    "uid": "107018",
@@ -36736,7 +36817,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "TE:Mitchell Evans": {
    "uid": "229007",
@@ -38336,7 +38418,8 @@
     2,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Bub Means": {
    "uid": "130084",
@@ -38792,7 +38875,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Courtland Sutton": {
    "uid": "104012",
@@ -39499,7 +39583,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Elic Ayomanor": {
    "uid": "215006",
@@ -39695,7 +39780,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:George Pickens": {
    "uid": "111011",
@@ -39774,7 +39860,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Hollywood Brown": {
    "uid": "120008",
@@ -40097,7 +40184,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Jaelon Darden": {
    "uid": "110076",
@@ -40243,7 +40331,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Jalen Nailor": {
    "uid": "127013",
@@ -40678,7 +40767,8 @@
    "neutral": [
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:John Metchie III": {
    "uid": "112013",
@@ -41352,7 +41442,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:LaJohntay Wester": {
    "uid": "208008",
@@ -41439,7 +41530,8 @@
    "neutral": [
     1
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Lewis Bond": {
    "uid": "312007",
@@ -41479,7 +41571,8 @@
    "neutral": [
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Luke Grimm": {
    "uid": "206017",
@@ -41547,7 +41640,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Mack Hollins": {
    "uid": "128010",
@@ -41704,7 +41798,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Marquez Valdes-Scantling": {
    "uid": "105012",
@@ -41976,7 +42071,8 @@
    "neutral": [
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Nick Westbrook-Ikhine": {
    "uid": "115015",
@@ -42922,7 +43018,8 @@
     1,
     2
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Travis Hunter": {
    "uid": "214001",
@@ -43086,7 +43183,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Tutu Atwell": {
    "uid": "121009",
@@ -43362,7 +43460,8 @@
     4,
     5
    ],
-   "silhouette": true
+   "silhouette": true,
+   "training": true
   },
   "WR:Xavier Legette": {
    "uid": "129060",

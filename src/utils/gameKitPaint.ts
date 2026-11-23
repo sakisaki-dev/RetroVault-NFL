@@ -72,6 +72,15 @@ const shade = ([r, g, b]: RGB, f: number): RGB =>
  * (scripts/widget_sprites.py), so the widget paints exactly like the site.
  */
 export const paletteFor = (team: string) => {
+  if (team === 'Training') {
+    // the neutral dark training kit: charcoal jersey, grey pants and socks
+    const c = (r: number, g: number, b: number): RGB => [r, g, b];
+    return {
+      jersey: { [BASE]: c(52, 56, 66), [SHADE]: c(34, 37, 45), [TRIM]: c(150, 156, 170) } as Record<number, RGB>,
+      pants: { [BASE]: c(122, 127, 140), [SHADE]: c(92, 97, 108), [TRIM]: c(150, 156, 170) } as Record<number, RGB>,
+      socks: { [BASE]: c(92, 97, 108), [SHADE]: c(60, 64, 74), [TRIM]: c(150, 156, 170) } as Record<number, RGB>,
+    };
+  }
   const u = homeUniform(team);
   const jersey = rgbOf(u.jersey);
   const pants = rgbOf(u.pants);

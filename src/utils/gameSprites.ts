@@ -360,7 +360,8 @@ const pickNfl = (
       return { src: nflFile(e.uid, nfl.clubs[from], pose), kit: team, paint: `${team}<${from}`, pose };
     }
   }
-  if (neutralPose !== undefined) return { src: nflFile(e.uid, 800, neutralPose), kit: 'neutral', pose: neutralPose };
+  // NFL edition: no club to wear (a free agent never on a roster): the neutral dark training kit, never plain white
+  if (neutralPose !== undefined) return IS_NFL && !legend && !(e as { training?: boolean }).training ? { src: nflFile(e.uid, 800, neutralPose), kit: 'neutral', paint: 'Training', pose: neutralPose } : { src: nflFile(e.uid, 800, neutralPose), kit: 'neutral', pose: neutralPose };
   return null;
 };
 

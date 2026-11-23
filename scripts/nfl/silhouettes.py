@@ -128,7 +128,18 @@ def main():
                 stage.append(("club-any", min(pool, key=lambda k: abs(byk[k]["nfl"]["height"] - ht) * 3 + abs(byk[k]["nfl"]["weight"] - wt) * 0.4)))
         return stage[0] if stage else None
 
-    templates = sorted(s["uid"] for s in ix["standins"] if s["neutral"] == [1, 2, 3, 4, 5])
+    # head outlines only from templates whose head (rows above the shoulders) is within one pixel of the real players'
+    # median size (owner, 2026-11-23: the silhouette heads looked oversized: long hair and big afros made them wider)
+    def head_box(path):
+        al = np.asarray(Image.open(path).convert("RGBA"))[:27, :, 3] > 0
+        ys, xs = np.where(al)
+        return int(xs.max() - xs.min() + 1), int(ys.max() - ys.min() + 1)
+
+    real_boxes = [head_box(SPR / f"{e['uid']}_800.png") for e in have.values() if not e.get("silhouette") and not e.get("shot") and 1 in e["neutral"]]
+    mw, mh = (int(np.median([b[0] for b in real_boxes])), int(np.median([b[1] for b in real_boxes])))
+    all_t = [s["uid"] for s in ix["standins"] if s["neutral"] == [1, 2, 3, 4, 5]]
+    templates = sorted(u for u in all_t if abs(head_box(SPR / f"{u}_800.png")[0] - mw) <= 1 and abs(head_box(SPR / f"{u}_800.png")[1] - mh) <= 1)
+    print(f"head templates within 1 px of {mw} x {mh}: {len(templates)} of {len(all_t)}")
     made = collections.Counter()
     for key, p in sorted(byk.items()):
         if key in have and not have[key].get("assigned"):
@@ -166,11 +177,24 @@ def main():
                     for x in range(64):
                         if a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) in skin:
                             a[y, x, :3] = night
+                # a neutral dark training kit (owner: no white kits): charcoal jersey and grey pants, number in light grey
+                tone = {(0xBF, 0xBF, 0xBF): [(52, 56, 66), (122, 127, 140), (92, 97, 108)], (0x8F, 0x8F, 0x8F): [(34, 37, 45), (92, 97, 108), (60, 64, 74)], (0xFB, 0xFF, 0xFD): [(150, 156, 170), (150, 156, 170), (150, 156, 170)]}
+                for y in range(27, 59):
+                    band = 0 if y < 41 else 1 if y < 49 else 2
+                    for x in range(64):
+                        c = tuple(int(v) for v in a[y, x, :3])
+                        if a[y, x, 3] and c in tone:
+                            a[y, x, :3] = tone[c][band]
+                num = nums.get(key) or (p.get("nfl") or {}).get("number")
+                if num:
+                    for (y, x) in J.glyph_cells(font, int(num)) or []:
+                        if a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) in ((52, 56, 66), (34, 37, 45)):
+                            a[y, x, :3] = (176, 182, 196) if y in (34, 35) else (214, 219, 230)
                 out = fname(uid, "800", pose)
                 Image.fromarray(a).save(out)
                 ix["anchors"][out.name] = P.anchor(out)
                 poses.append(pose)
-            have[key] = {"uid": uid, "kits": {}, "neutral": sorted(poses), "silhouette": True}
+            have[key] = {"uid": uid, "kits": {}, "neutral": sorted(poses), "silhouette": True, "training": True}
             made["neutral"] += 1
             continue
         choice = pick(key, p, club)
