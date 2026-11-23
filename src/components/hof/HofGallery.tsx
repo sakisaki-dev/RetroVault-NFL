@@ -34,7 +34,7 @@ const chip = (on: boolean) =>
     on ? 'border-gold bg-gold/15 text-gold' : 'border-line bg-card text-muted-foreground hover:text-chalk',
   );
 
-const GalleryTile = memo(function GalleryTile({ item, years, index, onOpen }: { item: GalleryItem; years: string | null; index: number; onOpen: (key: string) => void }) {
+export const GalleryTile = memo(function GalleryTile({ item, years, index, onOpen }: { item: GalleryItem; years: string | null; index: number; onOpen: (key: string) => void }) {
   const { member, club, number } = item;
   const { first, last } = splitPlayerName(member.name);
   const team = findNFLTeam(club);

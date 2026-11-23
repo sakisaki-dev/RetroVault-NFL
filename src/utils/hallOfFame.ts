@@ -48,6 +48,8 @@ export interface HofCase {
   dpoy: number;
   sbmvp: number;
   games: number;
+  /** NFL edition: elite seasons, seasons from his debut and, for a pre-1999 career, the debut year (stats from 1999 only) */
+  nfl?: { elite: number; seasons: number; partial?: boolean; debut?: number | null };
 }
 
 export interface HofMember extends HofCase {
@@ -63,6 +65,12 @@ export interface HofBallotEntry extends HofCase {
   /** Season he became eligible ("Y90") */
   since?: string;
   yearsOnBallot?: number;
+  /** NFL edition: his last season, the first class he can be voted into (last + 6), a read-out of his chances (1-97)
+   *  and the classes already held since he qualified (ballot and snubs) */
+  lastSeason?: number;
+  eligibleFrom?: number;
+  chance?: number;
+  classesOnBallot?: number;
 }
 
 export interface HofWatchEntry extends HofCase {
@@ -96,6 +104,12 @@ export interface HallOfFameData {
   ballot: HofBallotEntry[];
   near: HofBallotEntry[];
   watch: HofWatchEntry[];
+  /** NFL edition: retired, not yet eligible (with `eligibleFrom`), and eligible for 3+ classes over the bar still out */
+  soon: HofBallotEntry[];
+  snubs: HofBallotEntry[];
+  /** NFL edition: the class being voted on next */
+  nextClass?: number;
+  edition?: string;
   /** Club nickname -> its ring, Hall of Famers first */
   ringOfHonor: Record<string, RingOfHonorEntry[]>;
 }
@@ -128,8 +142,18 @@ const toCase = (r: Record<string, unknown>): HofCase | null => {
     dpoy: num(r.dpoy),
     sbmvp: num(r.sbmvp),
     games: num(r.games),
+    nfl: isObj(r.nfl)
+      ? { elite: num(r.nfl.elite), seasons: num(r.nfl.seasons), partial: r.nfl.partial === true || undefined, debut: typeof r.nfl.debut === 'number' ? r.nfl.debut : null }
+      : undefined,
   };
 };
+
+const nflEntry = (b: Record<string, unknown>) => ({
+  lastSeason: typeof b.lastSeason === 'number' ? b.lastSeason : undefined,
+  eligibleFrom: typeof b.eligibleFrom === 'number' ? b.eligibleFrom : undefined,
+  chance: typeof b.chance === 'number' ? b.chance : undefined,
+  classesOnBallot: typeof b.classesOnBallot === 'number' ? b.classesOnBallot : undefined,
+});
 
 const cases = <T,>(v: unknown, extra: (r: Record<string, unknown>, c: HofCase) => T): T[] =>
   arr(v).flatMap((r) => {
@@ -164,7 +188,11 @@ export const normalizeHallOfFame = (raw: unknown): HallOfFameData => {
       yearsOnBallot: num(m.yearsOnBallot, 1),
     })),
     classes: arr(r.classes).flatMap((c) => (str(c.season) ? [{ season: str(c.season), label: str(c.label) || str(c.season), members: strs(c.members) }] : [])),
-    ballot: cases(r.ballot, (b, c) => ({ ...c, since: str(b.since) || undefined, yearsOnBallot: typeof b.yearsOnBallot === 'number' ? b.yearsOnBallot : undefined })),
+    ballot: cases(r.ballot, (b, c) => ({ ...c, since: str(b.since) || undefined, yearsOnBallot: typeof b.yearsOnBallot === 'number' ? b.yearsOnBallot : undefined, ...nflEntry(b) })),
+    soon: cases(r.soon, (b, c) => ({ ...c, ...nflEntry(b) })),
+    snubs: cases(r.snubs, (b, c) => ({ ...c, ...nflEntry(b) })),
+    nextClass: typeof r.nextClass === 'number' ? r.nextClass : undefined,
+    edition: str(r.edition) || undefined,
     near: cases(r.near, (b, c) => ({ ...c, since: str(b.since) || undefined, yearsOnBallot: typeof b.yearsOnBallot === 'number' ? b.yearsOnBallot : undefined })),
     watch: cases(r.watch, (_w, c) => ({ ...c, projected: true as const })),
     ringOfHonor: ring,
