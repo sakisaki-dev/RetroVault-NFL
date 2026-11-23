@@ -330,7 +330,12 @@ export const useJerseyNumbers = () => {
   const index = useMemo(() => {
     if (cached && cached.source === getAllPlayers && cached.version === dataVersion && cached.extras === extras) return cached.index;
     const homes = withHomeClubs(getAllPlayers(), extras);
-    const built = buildJerseyIndexWithAlso(homes.players, homes.also);
+    // NFL edition: a real number overwrites the generated one below, so only the players WITHOUT a real number (and Hall
+    // of Famers, whose retired number comes out of the index) are assigned: at 10,000 players the hash-shuffled
+    // assignment for everyone was most of the jersey index's cost
+    const real = IS_NFL ? extras?.realNumbers : undefined;
+    const need = real ? homes.players.filter((p) => real[jerseyKey(p)] === undefined || isHallOfFamer({ careerLegacy: p.careerLegacy ?? 0, inducted: p.inducted })) : homes.players;
+    const built = buildJerseyIndexWithAlso(need, homes.also);
     if (IS_NFL && extras?.realNumbers) {
       const numbers = new Map(built.numbers);
       Object.entries(extras.realNumbers).forEach(([k, n]) => numbers.set(k, n));

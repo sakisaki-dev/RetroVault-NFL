@@ -94,7 +94,7 @@ const loadPage = async (browser, pg, { warmOf } = {}) => {
     requests: rest.length, kb: Math.round(bytes(rest) / 1024), spriteRequests: sprites.length, spriteKb: Math.round(bytes(sprites) / 1024),
     data: rest.filter((q) => /\/data\/|index\.json|\.json$|\.csv$|\.bin$/.test(q.url)).map((q) => [q.url.replace(BASE, ''), Math.round(q.enc / 1024), Math.round(q.dec / 1024)]),
     jsKb: Math.round(rest.filter((q) => /\.js$/.test(q.url)).reduce((s, q) => s + q.enc, 0) / 1024),
-    heapMb: mb(heap.usedSize), errors: [...new Set(errors)].slice(0, 5),
+    heapMb: mb(heap.usedSize), domNodes: await page.evaluate('document.getElementsByTagName("*").length'), errors: [...new Set(errors)].slice(0, 5),
   };
   if (!warmOf) return { page, res };
   return { page, res };
@@ -151,7 +151,7 @@ try {
     if (only && !only.includes(pg.id)) continue;
     const { page, res } = await loadPage(browser, pg);
     result.pages[pg.id] = res;
-    process.stderr.write(`${pg.id}: tti ${res.ttiMs} ms, ${res.requests} req, ${res.kb} KB (+${res.spriteRequests} sprites ${res.spriteKb} KB), heap ${res.heapMb} MB, blocking ${res.blockingMs} ms ${res.ok ? '' : 'NOT INTERACTIVE'} ${res.errors.join('|')}\n`);
+    process.stderr.write(`${pg.id}: tti ${res.ttiMs} ms, ${res.requests} req, ${res.kb} KB (+${res.spriteRequests} sprites ${res.spriteKb} KB), heap ${res.heapMb} MB, ${res.domNodes} nodes, blocking ${res.blockingMs} ms ${res.ok ? '' : 'NOT INTERACTIVE'} ${res.errors.join('|')}\n`);
     if (pg.id === 'arcade') {
       const files = res.data.map((d) => d[0]).filter((f) => /\.(json|csv)$/.test(f));
       result.parse = await parseTimes(page, files.map((f) => '/' + f));

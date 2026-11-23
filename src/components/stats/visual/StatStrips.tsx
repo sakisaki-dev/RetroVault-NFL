@@ -8,7 +8,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import MetricLabel from '../analytics/MetricLabel';
 import { VIZ, fmtNum, fmtPlus, ordinal } from '../analytics/viz';
 import { keyOf } from '../records';
-import { GOLD, niceTicks, swarm, teamMark, useWidth } from './chartKit';
+import { GOLD, niceTicks, swarm, teamMark, thinForSwarm, useWidth } from './chartKit';
 import { ChartTip } from './chartParts';
 import { peekProps } from '@/components/peek/peekProps';
 
@@ -35,11 +35,15 @@ interface Strip {
 
 const fmtV = (b: MetricBoard, v: number) => `${fmtNum(v, b.metric.decimals)}${b.metric.suffix ?? ''}`;
 
+/** A strip draws at most this many dots (the best two, the worst and every Hall of Famer always); today's boards are under it */
+const MAX_STRIP_DOTS = 600;
+
 const buildStrip = (board: MetricBoard, width: number): Strip => {
   const vals = board.rows.map((r) => r.value);
   const { ticks, domain } = niceTicks(Math.min(...vals, board.mean), Math.max(...vals, board.mean), width < 480 ? 4 : 6);
   const x = (v: number) => PAD_X + ((v - domain[0]) / (domain[1] - domain[0] || 1)) * (width - PAD_X * 2);
-  const ordered = [...board.rows].sort((a, b) => a.value - b.value);
+  const named = new Set([...board.rows.slice(0, 2), board.rows[board.rows.length - 1]].filter(Boolean));
+  const ordered = thinForSwarm([...board.rows].sort((a, b) => a.value - b.value), MAX_STRIP_DOTS, (r) => named.has(r) || isHallOfFamer(r.player));
   const dys = swarm(
     ordered.map((r) => ({ cx: x(r.value) })),
     R,

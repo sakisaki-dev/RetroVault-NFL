@@ -407,15 +407,25 @@ export const plusIndex = (value: number, mean: number, lowerIsBetter = false) =>
 /** Mid-rank percentile among qualifiers: best = 100, worst = 0, ties share a value. */
 const percentiles = (values: number[], lowerIsBetter: boolean) => {
   const len = values.length;
+  if (len <= 1) return values.map(() => 100);
+  // Sort once and count below / equal by binary search: O(n log n), not O(n^2) (a 2,500-player position took seconds)
+  const sorted = Float64Array.from(values).sort();
+  const lowerBound = (v: number) => {
+    let lo = 0, hi = len;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (sorted[mid] < v) lo = mid + 1; else hi = mid; }
+    return lo;
+  };
+  const upperBound = (v: number) => {
+    let lo = 0, hi = len;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (sorted[mid] <= v) lo = mid + 1; else hi = mid; }
+    return lo;
+  };
   return values.map((v) => {
-    if (len <= 1) return 100;
-    let below = 0;
-    let equal = 0;
-    values.forEach((o) => {
-      if (lowerIsBetter ? o > v : o < v) below += 1;
-      else if (o === v) equal += 1;
-    });
-    return ((below + (equal - 1) / 2) / (len - 1)) * 100;
+    const lo = lowerBound(v);
+    const hi = upperBound(v);
+    const below = lowerIsBetter ? len - hi : lo;
+    const equal = hi - lo;
+    return (below + (equal - 1) / 2) / (len - 1) * 100;
   });
 };
 

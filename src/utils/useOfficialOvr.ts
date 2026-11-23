@@ -81,19 +81,49 @@ export const loadExclusions = (): Promise<Set<string>> => {
 // ---------- Hooks ----------
 
 /**
+ * The derived pool, computed once per set of inputs (identity): legends on the league's factors, the game pool, the career
+ * OVR map and the displayed one. Every useGamePool() caller shares it (a component mounting later gets it for free).
+ */
+let poolMemo: { args: unknown[]; value: ReturnType<typeof computePool> } | null = null;
+const computePool = (allLeague: GamePlayer[], allLegends: GamePlayer[], excluded: Set<string>, loaded: boolean, seasonOvr: SeasonOvrFile | null) => {
+  // Legends arrive with raw True Talent only: put them on the league's position factors and derive Dominance,
+  // Career Legacy and TPG the same way as league players (legends never influence the factors)
+  const scaledLegends = allLegends.length ? (normalizeLeague([...allLeague, ...allLegends]).slice(allLeague.length) as GamePlayer[]) : allLegends;
+  const { league, legends } = buildGamePool(allLeague, scaledLegends, excluded);
+  /** The CAREER rating (card market, collectible tiers) */
+  const careerOvrMap = loaded ? officialOvrMap(allLeague, scaledLegends, excluded) : new Map<string, number>();
+  /** The DISPLAYED rating: season OVR for active players, career for retirees (config/ovr.ts displayOvr) */
+  const shown = displayOvr([...allLeague, ...scaledLegends], careerOvrMap, seasonOvr);
+  return { scaledLegends, league, legends, careerOvrMap, shown };
+};
+const sharedPool = (allLeague: GamePlayer[], allLegends: GamePlayer[], excluded: Set<string>, loaded: boolean, seasonOvr: SeasonOvrFile | null) => {
+  const args = [allLeague, allLegends, excluded, loaded, seasonOvr];
+  if (poolMemo && poolMemo.args.every((a, i) => a === args[i])) return poolMemo.value;
+  const value = computePool(allLeague, allLegends, excluded, loaded, seasonOvr);
+  poolMemo = { args, value };
+  return value;
+};
+
+/**
  * The game pool from context + legends.json − game-exclusions.json, plus the official OVR map over it.
  * `loaded` turns true once both files have resolved (OVRs before that would shift, so the map is empty).
  */
+const NO_LEGENDS: GamePlayer[] = [];
+const NO_EXCLUSIONS = new Set<string>();
+/** The three small files once they have all resolved (a component mounting later starts from them, no empty first render) */
+let resolvedInputs: { legends: GamePlayer[]; excluded: Set<string>; seasonOvr: SeasonOvrFile | null } | null = null;
+
 export const useGamePool = () => {
   const { getAllPlayers, dataVersion } = useLeague();
-  const [allLegends, setAllLegends] = useState<GamePlayer[]>([]);
-  const [excluded, setExcluded] = useState<Set<string>>(() => new Set());
-  const [seasonOvr, setSeasonOvr] = useState<SeasonOvrFile | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [allLegends, setAllLegends] = useState<GamePlayer[]>(resolvedInputs?.legends ?? NO_LEGENDS);
+  const [excluded, setExcluded] = useState<Set<string>>(resolvedInputs?.excluded ?? NO_EXCLUSIONS);
+  const [seasonOvr, setSeasonOvr] = useState<SeasonOvrFile | null>(resolvedInputs?.seasonOvr ?? null);
+  const [loaded, setLoaded] = useState(!!resolvedInputs);
 
   useEffect(() => {
     let alive = true;
     Promise.all([loadLegends(), loadExclusions(), loadSeasonOvr()]).then(([list, ex, so]) => {
+      resolvedInputs = { legends: list, excluded: ex, seasonOvr: so };
       if (!alive) return;
       setAllLegends(list);
       setExcluded(ex);
@@ -106,24 +136,9 @@ export const useGamePool = () => {
   }, []);
 
   const allLeague = useMemo<GamePlayer[]>(() => getAllPlayers(), [getAllPlayers]);
-  // Legends arrive with raw True Talent only: put them on the league's position factors and derive Dominance,
-  // Career Legacy and TPG the same way as league players (legends never influence the factors)
-  const scaledLegends = useMemo(
-    () => (allLegends.length ? (normalizeLeague([...allLeague, ...allLegends]).slice(allLeague.length) as GamePlayer[]) : allLegends),
-    [allLeague, allLegends],
-  );
-  const { league, legends } = useMemo(() => buildGamePool(allLeague, scaledLegends, excluded), [allLeague, scaledLegends, excluded]);
-  /** The CAREER rating (card market, collectible tiers) */
-  const careerOvrMap = useMemo(
-    () => (loaded ? officialOvrMap(allLeague, scaledLegends, excluded) : new Map<string, number>()),
-    [loaded, allLeague, scaledLegends, excluded],
-  );
-  /** The DISPLAYED rating: season OVR for active players, career for retirees (config/ovr.ts displayOvr) */
-  const shown = useMemo(
-    () => displayOvr([...allLeague, ...scaledLegends], careerOvrMap, seasonOvr),
-    [allLeague, scaledLegends, careerOvrMap, seasonOvr],
-  );
-
+  // One computation for every caller (42 components read this hook): the inputs are the same objects everywhere, so a
+  // single-slot memo at module level turns 42 pool builds into one
+  const { league, legends, careerOvrMap, shown } = sharedPool(allLeague, allLegends, excluded, loaded, seasonOvr);
   return { league, legends, ovrMap: shown.ovr, careerOvrMap, ovrBasis: shown.basis as Map<string, OvrBasis>, seasonOvr, loaded, dataVersion };
 };
 

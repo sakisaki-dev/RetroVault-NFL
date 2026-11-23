@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import type { LeagueData, Player } from '@/types/player';
 import { parseCSV } from '@/utils/csvParser';
 import { getPlayerEdits, type PlayerEdit } from '@/utils/indexedDB';
@@ -222,20 +222,25 @@ export const LeagueProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     rebuildDataFromStorage();
   }, [rebuildDataFromStorage]);
 
-  const getAllPlayers = useCallback((): Player[] => {
-    if (!careerData) return [];
-
-    return [
-      ...careerData.quarterbacks,
-      ...careerData.runningbacks,
-      ...careerData.widereceivers,
-      ...careerData.tightends,
-      ...careerData.offensiveline,
-      ...careerData.linebackers,
-      ...careerData.defensivebacks,
-      ...careerData.defensiveline,
-    ];
-  }, [careerData]);
+  // One flattened array per load, shared by every caller (useGamePool, the jersey index, the search index and the caches
+  // keyed on it all compare it by identity, so it must not be rebuilt per call)
+  const allPlayers = useMemo<Player[]>(
+    () =>
+      careerData
+        ? [
+            ...careerData.quarterbacks,
+            ...careerData.runningbacks,
+            ...careerData.widereceivers,
+            ...careerData.tightends,
+            ...careerData.offensiveline,
+            ...careerData.linebackers,
+            ...careerData.defensivebacks,
+            ...careerData.defensiveline,
+          ]
+        : [],
+    [careerData],
+  );
+  const getAllPlayers = useCallback((): Player[] => allPlayers, [allPlayers]);
 
   return (
     <LeagueContext.Provider

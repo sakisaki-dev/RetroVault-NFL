@@ -104,12 +104,40 @@ export const marginText = (b: RecordBoardData) => {
   return gap <= 0 ? 'Tied for the lead' : `+${formatDecimal(gap, b.decimals)} over #2`;
 };
 
-/** Deterministic beeswarm: place dots in value order at the smallest vertical offset that doesn't collide. */
+/**
+ * At most `max` of `sorted` (already in value order): every item `keep` names plus an even stride through the rest, so
+ * the drawn distribution keeps its shape. A swarm of thousands of dots is unreadable and slow (SVG nodes, collision
+ * search); today's boards are below the cap and draw every player.
+ */
+export const thinForSwarm = <T,>(sorted: T[], max: number, keep: (item: T) => boolean): T[] => {
+  if (sorted.length <= max) return sorted;
+  const must = new Set(sorted.filter(keep));
+  const room = Math.max(1, max - must.size);
+  const rest = sorted.filter((it) => !must.has(it));
+  const step = rest.length / room;
+  const pick = new Set<T>(must);
+  for (let i = 0; i < room && Math.floor(i * step) < rest.length; i += 1) pick.add(rest[Math.floor(i * step)]);
+  return sorted.filter((it) => pick.has(it));
+};
+
+/**
+ * Deterministic beeswarm: place dots in value order at the smallest vertical offset that doesn't collide.
+ * Dots arrive sorted by cx (value order), so only the placed dots within one diameter to the left can collide: a
+ * sliding window keeps it O(n x window) instead of O(n^2) (10,000 players took 10 s). Unsorted input falls back to
+ * scanning every placed dot, which gives the same answer.
+ */
 export const swarm = (xs: { cx: number }[], r: number) => {
   const placed: { cx: number; dy: number }[] = [];
   const d = r * 2 + 1;
-  return xs.map(({ cx }) => {
-    const near = placed.filter((p) => Math.abs(p.cx - cx) < d);
+  let from = 0; // placed[from..] are the only dots that can be within d to the left of the next one
+  let sorted = true;
+  return xs.map(({ cx }, i) => {
+    if (sorted && i > 0 && cx < xs[i - 1].cx) sorted = false;
+    let near: { cx: number; dy: number }[];
+    if (sorted) {
+      while (from < placed.length && cx - placed[from].cx >= d) from += 1;
+      near = placed.slice(from);
+    } else near = placed.filter((p) => Math.abs(p.cx - cx) < d);
     for (let k = 0; ; k += 1) {
       const dy = k === 0 ? 0 : (k % 2 ? 1 : -1) * Math.ceil(k / 2) * r;
       if (near.every((p) => (p.cx - cx) ** 2 + (p.dy - dy) ** 2 >= d * d)) {

@@ -48,9 +48,19 @@ interface Dot {
   dy: number;
 }
 
+/**
+ * A row draws at most this many dots (the best by value, plus every Hall of Famer): a 10,000-player league would stack
+ * thousands of near-zero careers into one column (and thousands of SVG nodes). Today's biggest position is under it, so
+ * the current picture is unchanged; the median and the counts still come from every player.
+ */
+const MAX_DOTS = 700;
+
 interface Row {
   pos: Position;
   dots: Dot[];
+  /** Players at this position with a value (dots may be a subset) */
+  total: number;
+  totalHof: number;
   top: number;
   height: number;
   median: number;
@@ -130,8 +140,11 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
     let top = TOP_H;
     const rows: Row[] = [];
     POSITIONS.forEach((pos) => {
-      const list = base.vals.filter((x0) => x0.p.position === pos).sort((a, b) => a.v - b.v || a.p.name.localeCompare(b.p.name));
-      if (!list.length) return;
+      const everyone = base.vals.filter((x0) => x0.p.position === pos).sort((a, b) => a.v - b.v || a.p.name.localeCompare(b.p.name));
+      if (!everyone.length) return;
+      const totalHof = everyone.filter((it) => isHallOfFamer(it.p)).length;
+      const cut = everyone.length - MAX_DOTS;
+      const list = cut > 0 ? everyone.filter((it, i) => i >= cut || isHallOfFamer(it.p)) : everyone;
       const cxs = list.map((it) => ({ cx: x(it.v) }));
       const dys = swarm(cxs, R);
       const span = Math.max(...dys.map(Math.abs), 0);
@@ -140,8 +153,10 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
         pos,
         top,
         height: h,
+        total: everyone.length,
+        totalHof,
         median: quantile(
-          list.map((it) => it.v),
+          everyone.map((it) => it.v),
           50,
         ),
         dots: list.map((it, i) => ({ key: keyOf(it.p), player: it.p, value: it.v, hof: isHallOfFamer(it.p), cx: cxs[i].cx, dy: dys[i] })),
@@ -166,7 +181,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
   const hoverRow = hover ? rows.find((r) => r.pos === hover.player.position) : null;
 
   const summary = rows
-    .map((r) => `${r.pos}: median ${fmtNum(r.median, m.decimals)}, ${r.dots.filter((d) => d.hof).length} of ${r.dots.length} in the Hall`)
+    .map((r) => `${r.pos}: median ${fmtNum(r.median, m.decimals)}, ${r.totalHof} of ${r.total} in the Hall`)
     .join('; ');
 
   return (

@@ -84,7 +84,11 @@ export const leagueScore = (p: Player): number => {
 export const ovr = (players: Player[]): Map<string, number> => {
   const out = new Map<string, number>();
   const groups = new Map<Position, Player[]>();
-  players.forEach((p) => groups.set(p.position, [...(groups.get(p.position) ?? []), p]));
+  players.forEach((p) => {
+    const g = groups.get(p.position);
+    if (g) g.push(p);
+    else groups.set(p.position, [p]);
+  });
   groups.forEach((list) => {
     // Stable sort, lowest first (ties keep pool order, as Python's sorted does)
     const sorted = list.map((p) => ({ p, s: leagueScore(p) })).sort((a, b) => a.s - b.s);
