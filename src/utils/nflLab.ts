@@ -1,6 +1,12 @@
 import type { Player, Position } from '@/types/player';
 import { playerKey } from '@/config/ovr';
 import { gradeFor, percentileOf, type GradeStep } from '@/config/skillGrades';
+
+/** A percentile on the lab's 1-99 scale: a hard 0 (a pass rush a hair under the 32 clubs, a lineup below all 500 random ones) read as "nothing"; the last place is 1. */
+const pctOf = (sorted: number[], v: number) => {
+  const x = percentileOf(sorted, v);
+  return Number.isFinite(x) ? Math.min(99, Math.max(1, x)) : x;
+};
 import { findNFLTeam } from '@/utils/nflTeams';
 import { DEFENSE_TERMS, OFFENSE_TERMS, OFFENSE_UNITS, DEFENSE_UNITS, ALL_UNITS, UNIT_LABELS, UNIT_WEIGHTS, buildProfiles, pickDistinct, rng, ordinal, type PlayerProfile, type UnitId } from '@/utils/teamLab';
 import type { DepthFile, LabFile } from '@/utils/nflLabData';
@@ -14,29 +20,24 @@ import type { InjuryCode } from '@/utils/injuries';
  *  - Units: the same ten (passing, run, protection, explosive, red zone, ball security / pass rush, coverage, run
  *    defense, playmaking) plus star power, scored against 500 random lineups of today's depth-chart starters of the same
  *    formations, then rolled up to Offense, Defense and Team.
- *  - Rating source: every rating the lab reads goes through `ratingOf` (OVR today; SZN / CAR plug in there).
+ *  - Rating source: every rating the lab reads goes through `ratingOf`: SZN (2026 season, the default; a player with no 2026
+ *    snaps falls back to his CAR and is marked) or CAR (the whole career). There is no bare OVR. The 32 clubs' rankings, the
+ *    unit grades, the head-to-head and the dream team all follow it.
  *  - Real matchups (pass rush vs protection, receivers vs coverage, run game vs run defense) read the recency-weighted
  *    per-game numbers in lab.json and rank them against the 32 clubs' real starting lineups.
  */
 
 // ---------- Rating source (one switch point) ----------
 
-export type RatingSource = 'ovr' | 'szn' | 'car';
+export type RatingSource = 'szn' | 'car';
 export const RATING_SOURCES: { id: RatingSource; label: string; note: string; ready: boolean }[] = [
-  { id: 'ovr', label: 'OVR', note: 'The card OVR (62–99)', ready: true },
-  { id: 'szn', label: 'SZN', note: 'This season only: coming soon', ready: false },
-  { id: 'car', label: 'CAR', note: 'Career: coming soon', ready: false },
+  { id: 'szn', label: 'SZN', note: 'This season (2026): a player with no 2026 snaps uses his CAR', ready: true },
+  { id: 'car', label: 'CAR', note: 'Career: his whole career ranked within the position', ready: true },
 ];
-/** The rating the lab uses for a player. The only place a rating is read, so a new source switches here. */
-export const ratingOf = (p: PlayerProfile, src: RatingSource = 'ovr'): number => {
-  switch (src) {
-    case 'szn':
-    case 'car':
-    case 'ovr':
-    default:
-      return p.ovr;
-  }
-};
+/** True when SZN is asked for but he has no 2026 snaps, so his CAR stands in. */
+export const usesCarFallback = (p: PlayerProfile, src: RatingSource = 'szn'): boolean => src === 'szn' && p.szn == null && p.car != null;
+/** The rating the lab uses for a player. The only place a rating is read, so a source switches here. */
+export const ratingOf = (p: PlayerProfile, src: RatingSource = 'szn'): number => (src === 'car' ? p.car ?? p.ovr : p.szn ?? p.car ?? p.ovr);
 const ovrN = (p: PlayerProfile, src: RatingSource) => ((ratingOf(p, src) - 62) / 37) * 100;
 
 // ---------- Slots and formations ----------
@@ -192,9 +193,14 @@ const groupByPos = (list: PlayerProfile[]) => {
   m.forEach((arr) => arr.sort((a, b) => b.ovr - a.ovr || b.overallPct - a.overallPct || a.name.localeCompare(b.name)));
   return m;
 };
-export const createNflCtx = (league: Player[], ovrMap: Map<string, number>): NflCtx => {
+export const createNflCtx = (league: Player[], ovrMap: Map<string, number>, ratings?: { car: Map<string, number>; szn: Record<string, number> }): NflCtx => {
   const players = league.filter((p) => !p.isRealLegend);
   const profiles = buildProfiles(players, players, ovrMap);
+  // the two ratings (owner, 2026-11-23): SZN only for an active player who played this season; CAR for everyone
+  profiles.forEach((pr, key) => {
+    pr.car = ratings?.car.get(key) ?? pr.ovr;
+    pr.szn = pr.player.status === 'Active' ? ratings?.szn[key] ?? null : null;
+  });
   const all = [...profiles.values()];
   return { league: players, profiles, byPos: groupByPos(all), regulars: groupByPos(all.filter((p) => p.player.games >= 16)), benchCache: new Map() };
 };
@@ -388,12 +394,12 @@ const benchFor = (ctx: NflCtx, off: OffForm, def: DefForm, src: RatingSource): B
   }
   const sorted = (xs: number[]) => xs.filter(Number.isFinite).sort((a, b) => a - b);
   const units = Object.fromEntries(ALL_UNITS.map((u) => [u, sorted(rows.map((x) => x[u]))])) as Record<UnitId, number[]>;
-  const scored = rows.map((raws) => Object.fromEntries(ALL_UNITS.map((u) => [u, percentileOf(units[u], raws[u])])) as Record<UnitId, number>);
+  const scored = rows.map((raws) => Object.fromEntries(ALL_UNITS.map((u) => [u, pctOf(units[u], raws[u])])) as Record<UnitId, number>);
   const offRaw = scored.map(rollOffense);
   const defRaw = scored.map(rollDefense);
   const offense = sorted(offRaw);
   const defense = sorted(defRaw);
-  const team = sorted(scored.map((s, i) => rollTeam(percentileOf(offense, offRaw[i]), percentileOf(defense, defRaw[i]), s.star)));
+  const team = sorted(scored.map((s, i) => rollTeam(pctOf(offense, offRaw[i]), pctOf(defense, defRaw[i]), s.star)));
   const b = { units, offense, defense, team };
   ctx.benchCache.set(k, b);
   return b;
@@ -433,29 +439,29 @@ const leadersFor = (l: NLineup, sp: SP, u: UnitId): string[] => {
     out.push(`${best.position} ${best.name}: ${st.display} ${st.label}`);
     if (out.length === 2) break;
   }
-  if (u === 'protection') return [`OL ${ordinal(wmean(idsOf(l, 'OL').map((id) => ({ v: olQ(sp[id], 'ovr'), w: 1 }))))} percentile quality`, ...out].slice(0, 2);
+  if (u === 'protection') return [`OL ${ordinal(wmean(idsOf(l, 'OL').map((id) => ({ v: olQ(sp[id], 'szn'), w: 1 }))))} percentile quality`, ...out].slice(0, 2);
   return out;
 };
 
-export const scoreN = (ctx: NflCtx, l: NLineup, src: RatingSource = 'ovr', detail = false): NScore | null => {
+export const scoreN = (ctx: NflCtx, l: NLineup, src: RatingSource = 'szn', detail = false): NScore | null => {
   const sp = spOf(ctx, l);
   if (!sp) return null;
   const bench = benchFor(ctx, l.off, l.def, src);
   const raws = unitRaws(l, sp, src);
   const units = {} as Record<UnitId, NUnit>;
   ALL_UNITS.forEach((u) => {
-    const score = percentileOf(bench.units[u], raws[u]);
+    const score = pctOf(bench.units[u], raws[u]);
     units[u] = { id: u, label: UNIT_LABELS[u], raw: raws[u], score, grade: gradeOf(score), leaders: detail ? leadersFor(l, sp, u) : [] };
   });
   const scores = Object.fromEntries(ALL_UNITS.map((u) => [u, units[u].score])) as Record<UnitId, number>;
   const oRaw = rollOffense(scores);
   const dRaw = rollDefense(scores);
-  const offense = { raw: oRaw, score: percentileOf(bench.offense, oRaw), grade: gradeOf(0) };
-  const defense = { raw: dRaw, score: percentileOf(bench.defense, dRaw), grade: gradeOf(0) };
+  const offense = { raw: oRaw, score: pctOf(bench.offense, oRaw), grade: gradeOf(0) };
+  const defense = { raw: dRaw, score: pctOf(bench.defense, dRaw), grade: gradeOf(0) };
   offense.grade = gradeOf(offense.score);
   defense.grade = gradeOf(defense.score);
   const tRaw = rollTeam(offense.score, defense.score, scores.star);
-  const tScore = percentileOf(bench.team, tRaw);
+  const tScore = pctOf(bench.team, tRaw);
   return { units, offense, defense, team: { raw: tRaw, score: tScore, grade: gradeOf(tScore) } };
 };
 
@@ -480,7 +486,7 @@ export interface Indices {
 }
 const KEYS: (keyof Indices)[] = ['rush', 'qbSk', 'olQ', 'recv', 'cov', 'rbYds', 'rbYpc', 'runD'];
 
-export const indicesOf = (ctx: NflCtx, lab: LabFile, l: NLineup, src: RatingSource = 'ovr'): Indices | null => {
+export const indicesOf = (ctx: NflCtx, lab: LabFile, l: NLineup, src: RatingSource = 'szn'): Indices | null => {
   const sp = spOf(ctx, l);
   if (!sp) return null;
   const d = (id: string) => lab.p[sp[id].key]?.d;
@@ -509,7 +515,7 @@ export interface Dist {
 }
 let distCache: { key: unknown; dist: Dist } | null = null;
 /** The 32 clubs' real starting lineups scored and indexed once (memoised per data load). */
-export const clubDistribution = (ctx: NflCtx, depth: DepthFile, lab: LabFile, injured: Map<string, InjuryCode>, src: RatingSource = 'ovr'): Dist => {
+export const clubDistribution = (ctx: NflCtx, depth: DepthFile, lab: LabFile, injured: Map<string, InjuryCode>, src: RatingSource = 'szn'): Dist => {
   if (distCache && distCache.key === ctx) return distCache.dist;
   const clubs = Object.keys(depth.clubs)
     .map((abbr) => {
@@ -524,7 +530,7 @@ export const clubDistribution = (ctx: NflCtx, depth: DepthFile, lab: LabFile, in
   distCache = { key: ctx, dist };
   return dist;
 };
-const pctIn = (dist: Dist, k: keyof Indices, v: number) => percentileOf(dist.sorted[k], v);
+const pctIn = (dist: Dist, k: keyof Indices, v: number) => pctOf(dist.sorted[k], v);
 
 export interface RealMatchup {
   id: string;
@@ -670,7 +676,7 @@ export const randomN = (ctx: NflCtx, off: OffForm, def: DefForm, seed: number): 
 };
 
 /** Best rating at every slot, then swaps that raise the team score (bounded). */
-export const autoDraftN = (ctx: NflCtx, off: OffForm, def: DefForm, src: RatingSource = 'ovr'): NLineup => {
+export const autoDraftN = (ctx: NflCtx, off: OffForm, def: DefForm, src: RatingSource = 'szn'): NLineup => {
   let l = emptyNLineup(off, def);
   const used = new Set<string>();
   const slots = activeSlots(l);

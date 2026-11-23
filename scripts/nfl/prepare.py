@@ -61,7 +61,10 @@ def main():
 
     # ---- the facts the shared builders read (all empty: everyone is Active on his real club) ----
     put("spreadsheet_parsed.json", [])
-    put("owner_facts.json", {"_about": "NFL edition: no owner facts.", "players": {}, "current_club": "",
+    # players on no 2026 roster who debuted 1999 or later are Retired (build_players.py flags them); everyone else Active
+    retired = {p["n"]: {"status": "Retired"} for p in json.loads((Y80 / "players.json").read_text())
+               if (p.get("nfl") or {}).get("retired")}
+    put("owner_facts.json", {"_about": "NFL edition: only the Retired status of past players.", "players": retired, "current_club": "",
                              "active_rosters": {}, "season_rosters": {}})
     put("records.json", {"note": "NFL edition: no club record board; league records are derived from the careers.",
                          "records": []})

@@ -477,9 +477,9 @@ def main():
     global OUT
     cut = os.environ.get("RV_NFL_CUT") if NFL else None  # NFL edition: the league as it stood at the end of a season
     if cut:
-        ends = json.loads((ROOT / "data" / "nfl-cache" / "season_ends.json").read_text())
+        ends = json.loads((ROOT / "data" / "nfl" / "season_ends.json").read_text())
         players = [line[cut] for line in ends.values() if cut in line]
-        OUT = ROOT / "data" / "nfl-cache" / "cuts" / f"{cut}.csv"
+        OUT = ROOT / "data" / "nfl" / "cuts" / f"{cut}.csv"
     else:
         players = json.loads((SRC / "players.json").read_text())
     sheet = json.loads((SRC / "spreadsheet_parsed.json").read_text())
