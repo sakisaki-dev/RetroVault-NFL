@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { IS_NFL } from '@/config/edition';
 import { Plane, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
@@ -46,7 +47,9 @@ import PixelLoader from '@/components/ui/PixelLoader';
  * grades, an identity, strengths/weaknesses, a call sheet, upgrade targets, comparable dynasties and a head-to-head.
  * The engine is utils/teamLab. The lineup lives in the hash (#lab?t=…) so builds are linkable.
  */
-const TeamLabTab = () => {
+const NflTeamLab = lazy(() => import('./nfl/NflTeamLab'));
+
+const RetroTeamLab = () => {
   const { route, navigate } = useHubRoute();
   const [includeLegends, setIncludeLegends] = useLegendsToggle();
   const { ctx, legendKeys, presets, club } = useTeamLabContext(includeLegends);
@@ -280,5 +283,15 @@ const TeamLabTab = () => {
     </div>
   );
 };
+
+/** The NFL edition has its own lab (real 11-man lineups, fantasy: ./nfl); the Retro Bowl lab stays as it was. */
+const TeamLabTab = () =>
+  IS_NFL ? (
+    <Suspense fallback={<PixelLoader label="Team Lab" what="the league" minHeight="60vh" className="container justify-start pt-[14vh]" />}>
+      <NflTeamLab />
+    </Suspense>
+  ) : (
+    <RetroTeamLab />
+  );
 
 export default TeamLabTab;
