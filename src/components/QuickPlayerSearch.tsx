@@ -24,7 +24,7 @@ import GameSprite from './GameSprite';
 import { openInCompFinder } from './stats/comps/compFinderLink';
 import { parseHash } from './stats/hub/hashRoute';
 import { isPhone, usePhone } from '@/hooks/usePhone';
-import { buildSearchIndex, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
+import { buildSearchIndex, pooledIndex, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { IS_NFL } from '@/config/edition';
 import { PEEK_ACTION_EVENT, peekProps } from '@/components/peek/peekProps';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
@@ -276,7 +276,7 @@ const QuickSearchDialog = () => {
   // Our own ranked matching (utils/playerSearch.ts): cmdk's filter would score every one of ~3,000 players on each
   // keystroke and render them all. The query is deferred, at most RESULT_LIMIT rows render, and the rest is "keep typing".
   const deferredQuery = useDeferredValue(query);
-  const index = useMemo(() => buildSearchIndex([...league, ...legends], { ovr: ovrMap, formerNames: extras.formerNames }), [league, legends, ovrMap, extras]);
+  const index = useMemo(() => pooledIndex(league, legends, { ovr: ovrMap, formerNames: extras.formerNames }), [league, legends, ovrMap, extras]);
   const byKey = index.byKey;
   const { groups, more } = useMemo(() => {
     const ovrOf = (p: Player) => ovrMap.get(playerKey(p)) ?? 0;

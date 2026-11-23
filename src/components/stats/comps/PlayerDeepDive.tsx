@@ -36,6 +36,7 @@ import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
 import { DdSection } from './ddParts';
+import { afterPaint } from '@/hooks/useDeferredStage';
 import DeferredSection from '@/components/ui/DeferredSection';
 import { MIN_RADAR_AXES, buildPositionModel, buildSimilarityMap, type PositionModel, type SimilarityMap } from './compModel';
 import { onCompFinderRequest, openInHeadToHead, takeCompFinderRequest, takeDeepDiveSection } from './compFinderLink';
@@ -328,7 +329,11 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const position = player?.position ?? 'QB';
   const model = useMemo(() => modelOf(position), [modelCache, position]); // eslint-disable-line react-hooks/exhaustive-deps
   const boards = useMemo(() => cachedBoards(players, position, ctx), [players, position, ctx]);
-  const fams = useMemo(() => familiesFor(players, position), [players, position]);
+  // Families (k-means over every qualifier at his position, ~300 ms at 10,000 players) are built after the page's first
+  // paint: the hero's family chip and the Families map option appear a moment later, nothing waits for them
+  const [famsRaw, setFams] = useState<ReturnType<typeof familiesFor>>(null);
+  useEffect(() => afterPaint(() => setFams(familiesFor(players, position))), [players, position]);
+  const fams = famsRaw && famsRaw.position === position ? famsRaw : null;
   // The Families option and the hero's family link exist when the position has shaped families; the map itself is built
   // when the Neighbourhood section mounts (MapSection), the families map only once it is asked for
   const famAvail = !!fams?.shaped && fams.vectors.length >= 3;

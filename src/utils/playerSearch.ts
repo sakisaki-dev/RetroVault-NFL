@@ -86,6 +86,15 @@ export const buildSearchIndex = (
   return index;
 };
 
+let pooled: { league: readonly Player[]; legends: readonly Player[]; ovr: unknown; index: SearchIndex } | null = null;
+/** The index over league + legends (the header search), kept for as long as its inputs are the same arrays. */
+export const pooledIndex = (league: readonly Player[], legends: readonly Player[], opts: { ovr?: Map<string, number>; formerNames?: Record<string, string> } = {}): SearchIndex => {
+  if (pooled && pooled.league === league && pooled.legends === legends && pooled.ovr === opts.ovr) return pooled.index;
+  const index = buildSearchIndex(legends.length ? [...league, ...legends] : league, opts);
+  pooled = { league, legends, ovr: opts.ovr, index };
+  return index;
+};
+
 /** Levenshtein distance with an early exit once every cell of a row is over `max`. */
 const within = (a: string, b: string, max: number): boolean => {
   if (Math.abs(a.length - b.length) > max) return false;

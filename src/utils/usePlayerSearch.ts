@@ -1,8 +1,8 @@
-import { useDeferredValue, useMemo, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
-import { buildSearchIndex, keyOfPlayer, readRecent, searchPlayers } from '@/utils/playerSearch';
+import { buildSearchIndex, keyOfPlayer, pooledIndex, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { usePlayerExtras } from '@/utils/playerExtras';
-import { useOfficialOvr } from '@/utils/useOfficialOvr';
+import { useGamePool, useOfficialOvr } from '@/utils/useOfficialOvr';
 
 /**
  * THE fast path for every player search and picker (owner: "all searches like those in the Deep Dive and Head to Head
@@ -54,4 +54,29 @@ export const usePlayerSearch = (
   }, [deferred, index, pos, limit]);
 
   return { query, setQuery, searching: !!deferred.trim(), rows, more, recent, featured, index };
+};
+
+/**
+ * Builds the search index once the page has settled (an idle slot after the league and the ratings are in), so the first
+ * keystroke in the header search or any picker finds it ready (at 10,000 players building it is ~50 ms, which was the
+ * slow first key). Mount once, in the header; the index is cached per player array and ratings map, so every
+ * usePlayerSearch after it reuses the same one.
+ */
+export const useWarmPlayerSearch = () => {
+  const { league, legends, ovrMap, loaded } = useGamePool();
+  const extras = usePlayerExtras();
+  useEffect(() => {
+    if (!loaded || ovrMap.size === 0) return;
+    const run = () => {
+      pooledIndex(league, legends, { ovr: ovrMap, formerNames: extras.formerNames });
+      buildSearchIndex(league, { ovr: ovrMap, formerNames: extras.formerNames });
+    };
+    const w = window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (h: number) => void };
+    if (w.requestIdleCallback) {
+      const h = w.requestIdleCallback(run, { timeout: 2500 });
+      return () => w.cancelIdleCallback?.(h);
+    }
+    const t = window.setTimeout(run, 600);
+    return () => window.clearTimeout(t);
+  }, [loaded, league, legends, ovrMap, extras.formerNames]);
 };

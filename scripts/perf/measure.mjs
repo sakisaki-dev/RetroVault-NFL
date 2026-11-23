@@ -35,12 +35,14 @@ const INIT = `
       const hit = new RegExp(marker, ci ? 'i' : '').test(t);
       return hit && (!sel || document.querySelector(sel));
     };
-    let calm = 0, last = performance.now();
+    let calm = 0, last = performance.now(), markerAt = 0;
     while (performance.now() - t0 < timeout) {
       await new Promise((r) => setTimeout(r, 0));
       const now = performance.now(), gap = now - last; last = now;
-      calm = gap < 40 && up() ? calm + 1 : 0;
-      if (calm >= 6) return { at: performance.now(), ok: true };
+      const isUp = up();
+      if (isUp && !markerAt) markerAt = now;
+      calm = gap < 40 && isUp ? calm + 1 : 0;
+      if (calm >= 6) return { at: performance.now(), ok: true, markerAt };
     }
     return { at: performance.now(), ok: false };
   };
@@ -54,7 +56,7 @@ const loadPage = async (browser, pg, { warmOf } = {}) => {
   const reqs = new Map();
   let inflight = 0, lastNet = Date.now();
   const onReq = (p) => { reqs.set(p.requestId, { url: p.request.url, enc: 0, dec: 0, t: p.timestamp }); inflight++; lastNet = Date.now(); };
-  const onFin = (p) => { const r = reqs.get(p.requestId); if (r) { r.enc = p.encodedDataLength; } inflight--; lastNet = Date.now(); };
+  const onFin = (p) => { const r = reqs.get(p.requestId); if (r) { r.enc = p.encodedDataLength; r.end = p.timestamp; } inflight--; lastNet = Date.now(); };
   const onData = (p) => { const r = reqs.get(p.requestId); if (r) r.dec += p.dataLength; };
   const onCache = (p) => { const r = reqs.get(p.requestId); if (r) r.cached = true; };
   page.on('Network.requestWillBeSent', onReq);
@@ -90,8 +92,9 @@ const loadPage = async (browser, pg, { warmOf } = {}) => {
   const rest = list.filter((q) => !sprites.includes(q));
   const bytes = (a) => a.reduce((s, q) => s + (q.cached ? 0 : q.enc), 0);
   const res = {
-    page: pg.id, ok: r.ok, ttiMs: Math.round(tti), blockingMs: Math.round(lt.ms), longTasks: lt.n,
+    page: pg.id, ok: r.ok, ttiMs: Math.round(tti), contentMs: Math.round(r.markerAt || 0), blockingMs: Math.round(lt.ms), longTasks: lt.n,
     requests: rest.length, kb: Math.round(bytes(rest) / 1024), spriteRequests: sprites.length, spriteKb: Math.round(bytes(sprites) / 1024),
+    timeline: process.env.TIMELINE ? [...rest].sort((a, b) => a.t - b.t).map((q) => [q.url.replace(BASE, '').slice(0, 60), Math.round((q.t - rest[0].t) * 1000), Math.round(((q.end ?? q.t) - rest[0].t) * 1000)]) : undefined,
     data: rest.filter((q) => /\/data\/|index\.json|\.json$|\.csv$|\.bin$/.test(q.url)).map((q) => [q.url.replace(BASE, ''), Math.round(q.enc / 1024), Math.round(q.dec / 1024)]),
     jsKb: Math.round(rest.filter((q) => /\.js$/.test(q.url)).reduce((s, q) => s + q.enc, 0) / 1024),
     heapMb: mb(heap.usedSize), domNodes: await page.evaluate('document.getElementsByTagName("*").length'), errors: [...new Set(errors)].slice(0, 5),
@@ -151,7 +154,7 @@ try {
     if (only && !only.includes(pg.id)) continue;
     const { page, res } = await loadPage(browser, pg);
     result.pages[pg.id] = res;
-    process.stderr.write(`${pg.id}: tti ${res.ttiMs} ms, ${res.requests} req, ${res.kb} KB (+${res.spriteRequests} sprites ${res.spriteKb} KB), heap ${res.heapMb} MB, ${res.domNodes} nodes, blocking ${res.blockingMs} ms ${res.ok ? '' : 'NOT INTERACTIVE'} ${res.errors.join('|')}\n`);
+    process.stderr.write(`${pg.id}: tti ${res.ttiMs} ms (content ${res.contentMs}), ${res.requests} req, ${res.kb} KB (+${res.spriteRequests} sprites ${res.spriteKb} KB), heap ${res.heapMb} MB, ${res.domNodes} nodes, blocking ${res.blockingMs} ms ${res.ok ? '' : 'NOT INTERACTIVE'} ${res.errors.join('|')}\n`);
     if (pg.id === 'arcade') {
       const files = res.data.map((d) => d[0]).filter((f) => /\.(json|csv)$/.test(f));
       result.parse = await parseTimes(page, files.map((f) => '/' + f));
@@ -173,6 +176,17 @@ try {
       await sleep(500);
       result.typing.deepdive = await typing(page, '[role="dialog"] input, [cmdk-input], [role="listbox"] input, [data-radix-popper-content-wrapper] input', 'patrick mahomes', '[cmdk-item]');
       result.typing.deepdive.opened = opened;
+    }
+    if (pg.id === 'stats' || pg.id === 'deepdive') {
+      // read the whole page: scroll to the bottom in steps; what the deferred sections cost when they mount
+      const sc = await page.evaluate(`(async () => {
+        const lt0 = window.__lt; const t0 = performance.now();
+        for (let i = 1; i <= 16; i++) { window.scrollTo(0, (i / 16) * document.documentElement.scrollHeight); await new Promise((r) => setTimeout(r, 250)); }
+        await window.__idle('.', '', false, 8000);
+        return { blockingMs: Math.round(window.__lt - lt0), ms: Math.round(performance.now() - t0 - 4000), nodes: document.getElementsByTagName('*').length };
+      })()`);
+      result.pages[pg.id].scroll = sc;
+      process.stderr.write(`  scroll through: +${sc.blockingMs} ms blocking, ${sc.nodes} nodes\n`);
     }
     await page.dispose();
   }
