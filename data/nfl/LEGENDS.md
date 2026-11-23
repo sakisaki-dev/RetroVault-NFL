@@ -22,7 +22,8 @@ Where the fields are:
   `scripts/hall_of_fame.py` uses `hof.json` (members = real inductees who are players here, class year, site HOF score
   beside; the ballot and watch list use the site rules for the rest). `scripts/nfl/fetch_nicknames.py` (first paragraph of each
   notable player's Wikipedia page) writes `nicknames_infobox.json` {gsis: nick}. build_players reads both if present.
-- Flag `RV_INCLUDE_PRE1999_HOF=1` (default off): also include real Hall of Famers who debuted before 1999 with their 1999-on
-  stats only, marked `nfl.partial: true` (43 players: Peyton Manning, Brett Favre, Ray Lewis ...).
-
-Nothing here is loaded at startup by itself; `public/data/initial-data.csv` simply has more rows.
+- Partial careers (ON by default; owner: "partial stats is fine"; `RV_INCLUDE_PRE1999_HOF=0` turns it off): real Hall of
+  Famers who debuted before 1999 and played in 1999 or later, plus pre-1999 debuts with a Wikipedia award in 1999 or later,
+  are included with their 1999-on stats only: `nfl.partial: true`, `nfl.debut` = debut year when known. Career totals, CAR and
+  the HOF score are computed from that partial line. UI label: "Stats from 1999 (debuted 1996)" (omit the bracket when
+  `debut` is null), shown beside the career numbers and the CAR; OL are not included (no pre-2013 lineman games).

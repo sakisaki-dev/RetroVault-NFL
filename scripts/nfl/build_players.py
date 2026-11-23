@@ -33,7 +33,7 @@ LEGEND_MIN_GAMES = 16  # beyond the save: every player who debuted 1999 or later
 SNAPS_FROM = 2013       # offensive linemen have no weekly stat lines: their games come from snap counts, which start here
 # Hall of Famers who debuted before 1999 (data only from 1999 on, so their lines are partial, nfl.partial = true): off until
 # the owner decides. Set RV_INCLUDE_PRE1999_HOF=1 (needs data/nfl/hof.json)
-INCLUDE_PRE1999_HOF = os.environ.get("RV_INCLUDE_PRE1999_HOF") == "1"
+INCLUDE_PRE1999_HOF = os.environ.get("RV_INCLUDE_PRE1999_HOF", "1") != "0"  # owner: "partial stats is fine" (on); 0 turns it off
 # nflverse position -> Retro Vault position group (the save's, as scripts/nfl/match.py)
 RV_POS = {"QB": "QB", "RB": "RB", "FB": "RB", "HB": "RB", "WR": "WR", "TE": "TE", "OL": "OL", "T": "OL", "G": "OL", "C": "OL",
           "OT": "OL", "OG": "OL", "DL": "DL", "DE": "DL", "DT": "DL", "NT": "DL", "LB": "LB", "ILB": "LB", "OLB": "LB",
@@ -155,20 +155,21 @@ def legend_rows(roster, awards):
         if not pos:
             continue
         fy, rk, dy = first[pid], num(r["rookie_season"]), num(r["draft_year"])
+        awarded = any(a[0] in seasons_team[pid] and any(ABBR.get(t, t) == a[1] for t in seasons_team[pid][a[0]])
+                      for a in award_by.get(norm(r["display_name"]), []))
         early = bool(rk and 1988 <= rk <= 1998 or dy and 1988 <= dy <= 1998 or fy <= 2000 and not ((rk or 0) >= 1999 or (dy or 0) >= 1999))
         partial = False
         if early:
             # debuted before 1999: a partial (1999-on) career. Only with INCLUDE_PRE1999_HOF, and only real Hall of Famers.
-            if not (INCLUDE_PRE1999_HOF and norm(r["display_name"]) in hof_names and (rk or 0) < 1999):
+            # a real Hall of Famer, or someone with a Wikipedia award in 1999 or later
+            if not (INCLUDE_PRE1999_HOF and (norm(r["display_name"]) in hof_names or awarded) and (rk or 0) < 1999 and (games.get(pid) or awarded)):
                 continue
             partial = True
         debut = rk if rk and rk >= 1999 else fy
         if pos == "OL" and (debut < SNAPS_FROM or partial):
             continue
         g = len(games.get(pid, ()))
-        awarded = any(a[0] in seasons_team[pid] and any(ABBR.get(t, t) == a[1] for t in seasons_team[pid][a[0]])
-                      for a in award_by.get(norm(r["display_name"]), []))
-        if g < LEGEND_MIN_GAMES and not awarded:
+        if g < LEGEND_MIN_GAMES and not awarded and not partial:
             continue
         lg = last_game.get(pid)
         club = ABBR.get(lg[2], lg[2]) if lg else "FA"
@@ -180,7 +181,7 @@ def legend_rows(roster, awards):
                     "sprites": 0, "match": "legend", "gsis": pid, "pfr": r["pfr_id"], "espn": r["espn_id"],
                     "nv_name": r["display_name"], "nv_pos": r["position"], "nv_height": inches(r["height"]),
                     "nv_weight": num(r["weight"]), "draft": [r["draft_year"], r["draft_round"], r["draft_pick"], r["draft_team"]],
-                    "legend": True, "partial": partial, "games": g, "lastSeason": lg[0] if lg else None})
+                    "legend": True, "partial": partial, "debut": (rk if rk and rk not in (1974, 1987) else dy) if partial else None, "games": g, "lastSeason": lg[0] if lg else None})
     out.sort(key=lambda p: (-p["games"], p["gsis"]))
     return out
 
@@ -372,7 +373,9 @@ def main():
                       "contract": p.get("contract"), "playoffGames": len(L) - len(reg)}
         if p.get("legend"):
             if p.get("partial"):
-                rec["nfl"]["partial"] = True  # debuted before 1999: only the 1999-on seasons are counted
+                rec["nfl"]["partial"] = True
+                rec["nfl"]["debut"] = p.get("debut")
+                 # debuted before 1999: only the 1999-on seasons are counted
             rec["nfl"]["past"] = True          # debuted 1999 or later, beyond the save (build_players.legend_rows)
             if retired:
                 rec["nfl"]["retired"] = True   # on no 2026 roster: Retired (prepare.py writes the status fact)

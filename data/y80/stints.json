@@ -53041,6 +53041,28 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Peyton Manning": {
+  "stints": [
+   {
+    "team": "Colts",
+    "from": 1999,
+    "to": 2010,
+    "rings": [
+     2006
+    ]
+   },
+   {
+    "team": "Broncos",
+    "from": 2012,
+    "to": 2015,
+    "rings": [
+     2015
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Ben Roethlisberger": {
   "stints": [
    {
@@ -53144,6 +53166,50 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Tony Gonzalez": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 1999,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2009,
+    "to": 2013,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Charles Woodson": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 1999,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Packers",
+    "from": 2006,
+    "to": 2012,
+    "rings": [
+     2010
+    ]
+   },
+   {
+    "team": "Raiders",
+    "from": 2013,
+    "to": 2015,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Eli Manning": {
   "stints": [
    {
@@ -53184,6 +53250,20 @@
     "from": 2022,
     "to": 2022,
     "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Ronde Barber": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 1999,
+    "to": 2012,
+    "rings": [
+     2002
+    ]
    }
   ],
   "confidence": "confirmed",
@@ -53727,6 +53807,21 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Hines Ward": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 1999,
+    "to": 2011,
+    "rings": [
+     2005,
+     2008
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Dwight Freeney": {
   "stints": [
    {
@@ -54001,6 +54096,54 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Randy Moss": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 1999,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2005,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2007,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Brandon Carr": {
   "stints": [
    {
@@ -54053,6 +54196,42 @@
     "team": "Saints",
     "from": 2020,
     "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jason Taylor": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2011,
+    "to": 2011,
     "rings": []
    }
   ],
@@ -54245,6 +54424,30 @@
     "team": "Lions",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Brett Favre": {
+  "stints": [
+   {
+    "team": "Packers",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2009,
+    "to": 2010,
     "rings": []
    }
   ],
@@ -54524,6 +54727,21 @@
     "from": 2018,
     "to": 2018,
     "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Ray Lewis": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 1999,
+    "to": 2012,
+    "rings": [
+     2000,
+     2012
+    ]
    }
   ],
   "confidence": "confirmed",
@@ -54834,6 +55052,24 @@
     "team": "49ers",
     "from": 2022,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Brian Dawkins": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 1999,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2009,
+    "to": 2011,
     "rings": []
    }
   ],
@@ -56003,6 +56239,42 @@
     "team": "Texans",
     "from": 2023,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Terrell Owens": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Eagles",
+    "from": 2004,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2006,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2010,
+    "to": 2010,
     "rings": []
    }
   ],
@@ -57333,6 +57605,20 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Derrick Brooks": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 1999,
+    "to": 2008,
+    "rings": [
+     2002
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Quintin Mikell": {
   "stints": [
    {
@@ -57593,6 +57879,24 @@
     "team": "Bills",
     "from": 2017,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Isaac Bruce": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2008,
+    "to": 2009,
     "rings": []
    }
   ],
@@ -59542,6 +59846,20 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Marvin Harrison (WR, Colts)": {
+  "stints": [
+   {
+    "team": "Colts",
+    "from": 1999,
+    "to": 2008,
+    "rings": [
+     2006
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Alge Crumpler": {
   "stints": [
    {
@@ -60774,6 +61092,45 @@
     "team": "Jaguars",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Ty Law": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 1999,
+    "to": 2004,
+    "rings": [
+     2001,
+     2003
+    ]
+   },
+   {
+    "team": "Jets",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2006,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2009,
+    "to": 2009,
     "rings": []
    }
   ],
@@ -62539,6 +62896,44 @@
     "team": "Ravens",
     "from": 2019,
     "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "John Lynch": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 1999,
+    "to": 2003,
+    "rings": [
+     2002
+    ]
+   },
+   {
+    "team": "Broncos",
+    "from": 2004,
+    "to": 2007,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Zach Thomas (LB, Cowboys)": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2008,
+    "to": 2008,
     "rings": []
    }
   ],
@@ -64390,6 +64785,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Bryant Young": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Deltha O'Neal": {
   "stints": [
    {
@@ -65061,6 +65468,40 @@
     "from": 2022,
     "to": 2023,
     "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Warren Sapp": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 1999,
+    "to": 2003,
+    "rings": [
+     2002
+    ]
+   },
+   {
+    "team": "Raiders",
+    "from": 2004,
+    "to": 2007,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Michael Strahan": {
+  "stints": [
+   {
+    "team": "Giants",
+    "from": 1999,
+    "to": 2007,
+    "rings": [
+     2007
+    ]
    }
   ],
   "confidence": "confirmed",
@@ -66138,6 +66579,30 @@
     "team": "Panthers",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Junior Seau": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 1999,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2003,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2006,
+    "to": 2009,
     "rings": []
    }
   ],
@@ -67430,6 +67895,30 @@
     "team": "Commanders",
     "from": 2023,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Kurt Warner": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 1999,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2005,
+    "to": 2009,
     "rings": []
    }
   ],
@@ -69628,6 +70117,24 @@
     "rings": [
      2023
     ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Steve McNair": {
+  "stints": [
+   {
+    "team": "Titans",
+    "from": 1999,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2006,
+    "to": 2007,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -73019,6 +73526,18 @@
     "team": "Browns",
     "from": 2002,
     "to": 2009,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Curtis Martin": {
+  "stints": [
+   {
+    "team": "Jets",
+    "from": 1999,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -78762,6 +79281,32 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jerome Bettis": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 1999,
+    "to": 2005,
+    "rings": [
+     2005
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Marshall Faulk": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 1999,
+    "to": 2005,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Wali Rainer": {
   "stints": [
    {
@@ -81606,6 +82151,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jerry Rice": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2001,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Rudi Johnson": {
   "stints": [
    {
@@ -82660,6 +83235,24 @@
     "team": "Giants",
     "from": 2021,
     "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Tim Brown": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 1999,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2004,
+    "to": 2004,
     "rings": []
    }
   ],
@@ -83962,6 +84555,32 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Priest Holmes": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 1999,
+    "to": 2000,
+    "rings": [
+     2000
+    ]
+   },
+   {
+    "team": "Chiefs",
+    "from": 2001,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Dat Nguyen": {
   "stints": [
    {
@@ -85014,6 +85633,24 @@
     "team": "Vikings",
     "from": 2004,
     "to": 2005,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Emmitt Smith": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 1999,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2003,
+    "to": 2004,
     "rings": []
    }
   ],
@@ -88901,6 +89538,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Aeneas Williams": {
+  "stints": [
+   {
+    "team": "Cardinals",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2001,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "LaVar Arrington": {
   "stints": [
    {
@@ -92387,6 +93042,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Bruce Smith": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2000,
+    "to": 2003,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Terrelle Smith": {
   "stints": [
    {
@@ -93734,6 +94407,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Rich Gannon": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 1999,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Cletidus Hunt": {
   "stints": [
    {
@@ -94264,6 +94949,26 @@
     "team": "Bears",
     "from": 2025,
     "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Rod Woodson": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 1999,
+    "to": 2001,
+    "rings": [
+     2000
+    ]
+   },
+   {
+    "team": "Raiders",
+    "from": 2002,
+    "to": 2003,
     "rings": []
    }
   ],
@@ -99751,6 +100456,32 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Shannon Sharpe": {
+  "stints": [
+   {
+    "team": "Broncos",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2000,
+    "to": 2001,
+    "rings": [
+     2000
+    ]
+   },
+   {
+    "team": "Broncos",
+    "from": 2002,
+    "to": 2003,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jed Weaver": {
   "stints": [
    {
@@ -102499,6 +103230,24 @@
     "team": "Cowboys",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "John Randle": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2001,
+    "to": 2003,
     "rings": []
    }
   ],
@@ -106113,6 +106862,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Darrell Green": {
+  "stints": [
+   {
+    "team": "Commanders",
+    "from": 1999,
+    "to": 2002,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Mike Maslowski": {
   "stints": [
    {
@@ -109083,6 +109844,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Cris Carter": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 1999,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Kevin Lewis": {
   "stints": [
    {
@@ -109955,6 +110734,30 @@
     "team": "Cardinals",
     "from": 1999,
     "to": 2002,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Deion Sanders": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2004,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -112461,6 +113264,18 @@
     "team": "Falcons",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Eric Allen": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 1999,
+    "to": 2001,
     "rings": []
    }
   ],
@@ -118099,6 +118914,18 @@
     "team": "Saints",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "LeRoy Butler": {
+  "stints": [
+   {
+    "team": "Packers",
+    "from": 1999,
+    "to": 2001,
     "rings": []
    }
   ],
@@ -127267,6 +128094,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Cortez Kennedy": {
+  "stints": [
+   {
+    "team": "Seahawks",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Lyle West": {
   "stints": [
    {
@@ -135041,6 +135880,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Troy Aikman": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jason Bostic": {
   "stints": [
    {
@@ -136374,6 +137225,24 @@
    {
     "team": "Patriots",
     "from": 1999,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Andre Reed": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2000,
     "to": 2000,
     "rings": []
    }
@@ -145553,6 +146422,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Terrell Davis": {
+  "stints": [
+   {
+    "team": "Broncos",
+    "from": 1999,
+    "to": 2001,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Deon Humphrey": {
   "stints": [
    {
@@ -146987,6 +147868,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Kevin Greene": {
+  "stints": [
+   {
+    "team": "Panthers",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Lenzie Jackson": {
   "stints": [
    {
@@ -147029,6 +147922,18 @@
     "team": "Bears",
     "from": 1999,
     "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Derrick Thomas": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 1999,
+    "to": 1999,
     "rings": []
    }
   ],
@@ -148467,6 +149372,120 @@
     "team": "Panthers",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Chris Doleman": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Thurman Thomas": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Reggie White": {
+  "stints": [
+   {
+    "team": "Panthers",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Steve Atwater": {
+  "stints": [
+   {
+    "team": "Jets",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Dan Marino": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Charles Haley": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Michael Irvin": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Warren Moon": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Steve Young": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 1999,
     "rings": []
    }
   ],

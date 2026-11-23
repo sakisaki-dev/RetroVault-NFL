@@ -137,29 +137,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 121,
-    "mark": "121",
+    "value": 139,
+    "mark": "139",
     "top": [
+     {
+      "value": 139,
+      "mark": "139",
+      "player": "Randy Moss",
+      "pos": "WR",
+      "team": "Minnesota Vikings"
+     },
+     {
+      "value": 127,
+      "mark": "127",
+      "player": "Terrell Owens",
+      "pos": "WR",
+      "team": "San Francisco 49ers"
+     },
      {
       "value": 121,
       "mark": "121",
       "player": "Davante Adams",
       "pos": "WR",
       "team": "Los Angeles Rams"
-     },
-     {
-      "value": 121,
-      "mark": "121",
-      "player": "Larry Fitzgerald",
-      "pos": "WR",
-      "team": "Arizona Cardinals"
-     },
-     {
-      "value": 116,
-      "mark": "116",
-      "player": "Antonio Gates",
-      "pos": "TE",
-      "team": "Los Angeles Chargers"
      }
     ],
     "basis": "career cards",
@@ -353,18 +353,18 @@
       "team": "Baltimore Ravens"
      },
      {
+      "value": 60,
+      "mark": "60",
+      "player": "Charles Woodson",
+      "pos": "DB",
+      "team": "Green Bay Packers"
+     },
+     {
       "value": 52,
       "mark": "52",
       "player": "Champ Bailey",
       "pos": "DB",
       "team": "Denver Broncos"
-     },
-     {
-      "value": 51,
-      "mark": "51",
-      "player": "Asante Samuel (DB, Falcons)",
-      "pos": "DB",
-      "team": "New England Patriots"
      }
     ],
     "basis": "career cards",
@@ -440,6 +440,7 @@
       "mark": "5,477 yds",
       "player": "Peyton Manning",
       "pos": "QB",
+      "team": "Broncos",
       "season": "2013"
      },
      {
@@ -475,6 +476,7 @@
       "mark": "55",
       "player": "Peyton Manning",
       "pos": "QB",
+      "team": "Broncos",
       "season": "2013"
      },
      {
@@ -562,6 +564,7 @@
       "mark": "23",
       "player": "Randy Moss",
       "pos": "WR",
+      "team": "Patriots",
       "season": "2007"
      },
      {
@@ -655,17 +658,17 @@
      {
       "value": 27,
       "mark": "27",
+      "player": "Priest Holmes",
+      "pos": "RB",
+      "team": "Chiefs",
+      "season": "2003"
+     },
+     {
+      "value": 27,
+      "mark": "27",
       "player": "Shaun Alexander",
       "pos": "RB",
       "team": "Seahawks",
-      "season": "2005"
-     },
-     {
-      "value": 20,
-      "mark": "20",
-      "player": "Larry Johnson",
-      "pos": "RB",
-      "team": "Chiefs",
       "season": "2005"
      }
     ],
