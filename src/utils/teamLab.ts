@@ -103,6 +103,9 @@ export interface PlayerProfile {
   position: Position;
   team: string;
   ovr: number;
+  /** NFL edition: his CAR (career rating) and SZN (the 2026 season rating; null = no 2026 snaps), filled by createNflCtx */
+  car?: number;
+  szn?: number | null;
   /** Overall skill percentile (skillGrades overallFor), shrunk; drives the slot letter */
   overallPct: number;
   grade: GradeStep | null;

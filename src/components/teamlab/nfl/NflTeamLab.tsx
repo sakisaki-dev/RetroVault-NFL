@@ -54,7 +54,7 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
   const [lineup, setLineup] = useState<NLineup>(() => emptyNLineup());
   const [loaded, setLoaded] = useState<{ club: string; skipped: Skipped[]; filled: string[] } | null>(null);
   const [anyPlayer, setAnyPlayer] = useState(false);
-  const [src, setSrc] = useState<RatingSource>('ovr');
+  const [src, setSrc] = useState<RatingSource>('szn');
   const [kit, setKit] = useState('');
   const auto = useRef(false);
   const depth = data?.depth ?? null;
