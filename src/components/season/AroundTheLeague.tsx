@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { RoundGame, SeasonView } from '@/utils/seasonLive';
 import ScoreBar, { WeatherIcons } from './ScoreBar';
 import { SectionTitle } from './SeasonGames';
+import { StarStrip, type SeasonStars } from './NflSeasonExtras';
 
 /**
  * "Around the league": pick a week, see every game as the original lower-third score bar (both clubs' colours and
@@ -11,7 +12,7 @@ import { SectionTitle } from './SeasonGames';
  * stadium's weather. From schedule.json's games (past) or the save's league games (live). Rules only.
  */
 
-const GameBar = ({ g, week, coach }: { g: RoundGame; week: number; coach: boolean }) => {
+const GameBar = ({ g, week, coach, stars }: { g: RoundGame; week: number; coach: boolean; stars: SeasonStars | null }) => {
   const played = g.awayScore !== undefined && g.homeScore !== undefined;
   const tie = played && g.awayScore === g.homeScore;
   // the closing line (NFL): the favourite and the points; an upset is a win by the underdog of 3 or more points
@@ -37,12 +38,13 @@ const GameBar = ({ g, week, coach }: { g: RoundGame; week: number; coach: boolea
           </>
         ) : g.weather ? <WeatherIcons w={g.weather} /> : null
       }
+      extra={played ? <StarStrip stars={stars} week={week} away={g.away} home={g.home} /> : undefined}
       srText={played ? `${g.away} ${g.awayScore} at ${g.home} ${g.homeScore}` : `${g.away} at ${g.home}, to play`}
     />
   );
 };
 
-const AroundTheLeague = ({ season }: { season: SeasonView }) => {
+const AroundTheLeague = ({ season, stars = null }: { season: SeasonView; stars?: SeasonStars | null }) => {
   const weeks = season.weeks ?? [];
   const lastPlayed = [...weeks].reverse().find((w) => w.games.some((g) => g.awayScore !== undefined))?.week;
   const [pick, setPick] = useState<number | null>(null);
@@ -81,7 +83,7 @@ const AroundTheLeague = ({ season }: { season: SeasonView }) => {
       </div>
       <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {week.games.map((g) => (
-          <GameBar key={`${g.away}-${g.home}`} g={g} week={week.week} coach={[g.away, g.home].some((t) => t === season.coachTeam || t === season.coachAbbr)} />
+          <GameBar key={`${g.away}-${g.home}`} stars={stars} g={g} week={week.week} coach={[g.away, g.home].some((t) => t === season.coachTeam || t === season.coachAbbr)} />
         ))}
       </ul>
     </div>

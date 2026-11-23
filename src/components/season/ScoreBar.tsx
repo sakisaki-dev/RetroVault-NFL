@@ -50,9 +50,11 @@ interface ScoreBarProps {
   /** Footer, right */
   aside?: ReactNode;
   srText: string;
+  /** Below the footer: the stars of the game */
+  extra?: ReactNode;
 }
 
-const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, playoff, kicker, aside, srText }: ScoreBarProps) => {
+const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, playoff, kicker, aside, srText, extra }: ScoreBarProps) => {
   const played = awayScore !== undefined && homeScore !== undefined;
   const tie = played && awayScore === homeScore;
   return (
@@ -75,6 +77,7 @@ const ScoreBar = ({ away, home, awayScore, homeScore, coach, upcoming, next, pla
         <span className={cn('font-pixel text-[9px] uppercase tracking-widest', (next || playoff) && 'text-[hsl(var(--gold))]')}>{kicker}</span>
         {aside && <span className="flex items-center gap-2">{aside}</span>}
       </div>
+      {extra}
     </li>
   );
 };

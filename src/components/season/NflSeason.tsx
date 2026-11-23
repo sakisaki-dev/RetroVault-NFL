@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Crown, LayoutGrid, ListOrdered, Medal, Minus, Star, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import GameSprite from '@/components/GameSprite';
+import { StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
-import type { Player } from '@/types/player';
 import type { SeasonView } from '@/utils/seasonLive';
 import type { PlayerLookup } from './LivePanels';
 import { BOARD_BG, LampGrid, color, lampText, signed } from './seasonGamesUi';
@@ -19,23 +18,15 @@ import { LeagueTable, SectionTitle } from './SeasonGames';
 const nick = (team: string) => findNFLTeam(team)?.name ?? team;
 const FIELD = 'linear-gradient(180deg, hsl(142 38% 17%), hsl(142 42% 12%))';
 
-/** Finds a player by name (award positions are the AP's: DT, CB, S…; the site's are DL, DB). */
-const byName = (name: string, pos: string, all: Player[]) => {
-  const same = all.filter((p) => p.name === name);
-  if (same.length <= 1) return same[0];
-  const fam = (x: string) => ({ DT: 'DL', DE: 'DL', EDGE: 'DL', OLB: 'LB', ILB: 'LB', CB: 'DB', S: 'DB', FS: 'DB', SS: 'DB', T: 'OL', G: 'OL', C: 'OL' }[x] ?? x);
-  return same.find((p) => p.position === fam(pos)) ?? same[0];
-};
-
 const AWARD_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'Offensive POY', dpoy: 'Defensive POY', oroy: 'Offensive ROY', droy: 'Defensive ROY', sbmvp: 'Super Bowl MVP' };
 
-const AwardPlate = ({ kind, a, p, big }: { kind: string; a: { player: string; team: string; position: string }; p?: Player; big?: boolean }) => (
+const AwardPlate = ({ kind, a, big }: { kind: string; a: { player: string; team: string; position: string }; big?: boolean }) => (
   <li
     className={cn('relative flex min-w-0 items-end gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.7)] px-2 pt-1.5', big ? 'col-span-2 sm:col-span-3 lg:col-span-1 lg:row-span-2 lg:flex-col lg:items-center lg:px-3 lg:pt-3' : '')}
     style={{ background: `linear-gradient(135deg, ${color(a.team, 0.45)}, hsl(228 55% 6%) 75%)` }}
   >
     <div className={cn('flex-shrink-0 self-end', big && 'lg:order-2')} style={{ marginBottom: big ? -6 : -4 }}>
-      {p ? <GameSprite player={p} team={a.team} size={big ? 'l' : 'm'} action={kind === 'mvp' || kind === 'sbmvp' ? 'celebrate' : undefined} /> : <TeamLogo team={a.team} decorative className={big ? 'mb-3 h-20 w-20' : 'mb-2 h-10 w-10'} />}
+      <StarSprite name={a.player} pos={a.position} team={a.team} size={big ? 'l' : 'm'} celebrate={kind === 'mvp' || kind === 'sbmvp'} />
     </div>
     <div className={cn('min-w-0 flex-1 pb-2', big && 'lg:order-1 lg:text-center')}>
       <p className="flex items-center gap-1 font-pixel text-[9px] uppercase tracking-wider text-[hsl(var(--gold))] lg:justify-[inherit]">
@@ -50,7 +41,7 @@ const AwardPlate = ({ kind, a, p, big }: { kind: string; a: { player: string; te
   </li>
 );
 
-export const SeasonJumbo = ({ season, players, live }: { season: SeasonView; players: Player[]; live: boolean }) => {
+export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolean }) => {
   const sb = season.superBowl;
   const aw = season.awards ?? {};
   const kinds = ['mvp', 'opoy', 'dpoy', 'oroy', 'droy', 'sbmvp'].filter((k) => aw[k]);
@@ -92,7 +83,7 @@ export const SeasonJumbo = ({ season, players, live }: { season: SeasonView; pla
         {kinds.length > 0 ? (
           <ul className="grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-[1.25fr_1fr_1fr]" aria-label="AP award winners">
             {kinds.map((k, i) => (
-              <AwardPlate key={k} kind={k} a={aw[k]} p={byName(aw[k].player, aw[k].position, players)} big={i === 0} />
+              <AwardPlate key={k} kind={k} a={aw[k]} big={i === 0} />
             ))}
           </ul>
         ) : (
@@ -107,7 +98,7 @@ export const SeasonJumbo = ({ season, players, live }: { season: SeasonView; pla
 
 type PGame = NonNullable<SeasonView['playoffs']>[number]['games'][number];
 
-const BracketGame = ({ g, final }: { g: PGame; final?: boolean }) => {
+const BracketGame = ({ g, final, seeds }: { g: PGame; final?: boolean; seeds: Map<string, number> }) => {
   const rows = [
     { t: g.away, s: g.away_score, w: g.away_score > g.home_score },
     { t: g.home, s: g.home_score, w: g.home_score > g.away_score },
@@ -118,6 +109,7 @@ const BracketGame = ({ g, final }: { g: PGame; final?: boolean }) => {
     <li className={cn('overflow-hidden rounded-md border bg-black/55 backdrop-blur-sm', final ? 'border-[hsl(var(--gold))] shadow-[0_0_18px_hsl(var(--gold)/0.35)]' : 'border-white/15')}>
       {rows.map((r) => (
         <div key={r.t} className="flex items-center gap-1.5 px-2 py-1" style={{ background: `linear-gradient(90deg, ${color(r.t, r.w ? 0.55 : 0.12)}, transparent 85%)` }}>
+          {seeds.has(r.t) && <span className="w-3 text-center font-pixel text-[8px] text-white/60" title="Playoff seed">{seeds.get(r.t)}</span>}
           <TeamLogo team={r.t} decorative className="h-5 w-5 flex-shrink-0" />
           <span className={cn('flex-1 truncate font-display text-sm font-bold uppercase', !r.w && 'text-foreground/55')}>{r.t}</span>
           <span className={cn('font-display text-base font-bold tabular-nums', r.w ? lampText : 'text-foreground/55')}>{r.s}</span>
@@ -132,6 +124,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
   const rounds = season.playoffs ?? [];
   if (!rounds.length) return null;
   const sb = season.superBowl;
+  const seeds = useMemo(() => playoffSeeds(season), [season]);
   return (
     <div className="space-y-2">
       <SectionTitle icon={Trophy}>Road to the Super Bowl</SectionTitle>
@@ -143,7 +136,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
               <p className={cn('mb-2 text-center font-pixel text-[9px] uppercase tracking-widest', r.round === 'Super Bowl' ? 'text-[hsl(var(--gold))]' : 'text-white/70')}>{r.round}</p>
               <ul className="flex flex-1 flex-col justify-around gap-2">
                 {r.games.map((g) => (
-                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} />
+                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} />
                 ))}
               </ul>
             </div>
@@ -157,13 +150,16 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
           )}
         </div>
       </div>
+      {seeds.size > 0 && <p className="text-[11px] text-muted-foreground">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</p>}
     </div>
   );
 };
 
 /* ---------------- Division banners ---------------- */
 
-export const StandingsBanners = ({ season }: { season: SeasonView }) => {
+export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upcoming?: { away: string; home: string }[] }) => {
+  const seeds = useMemo(() => playoffSeeds(season), [season]);
+  const tags = useMemo<Map<string, Clinch>>(() => (!season.playoffs?.length && upcoming ? clinchTags(season, upcoming) : new Map()), [season, upcoming]);
   const made = useMemo(() => {
     const s = new Set<string>();
     for (const r of season.playoffs ?? []) for (const g of r.games) (s.add(g.away), s.add(g.home));
@@ -200,6 +196,8 @@ export const StandingsBanners = ({ season }: { season: SeasonView }) => {
                     <li key={r.abbr} className={cn('flex items-center gap-1.5 rounded px-1.5 py-1', i === 0 ? 'bg-black/40' : '')}>
                       <TeamLogo team={r.team} decorative className="h-5 w-5 flex-shrink-0" />
                       <span className={cn('min-w-0 flex-1 truncate text-[13px] font-semibold uppercase', done && !post && 'text-foreground/50')}>{r.team}</span>
+                      {seeds.has(r.abbr) && <span className="rounded bg-black/50 px-1 font-pixel text-[8px] text-[hsl(var(--gold))]" title="Playoff seed">#{seeds.get(r.abbr)}</span>}
+                      {tags.get(r.abbr) && <span className={cn('rounded px-1 font-pixel text-[7px] uppercase', tags.get(r.abbr) === 'out' ? 'bg-black/40 text-foreground/45' : 'bg-[hsl(var(--gold)/0.22)] text-[hsl(var(--gold))]')} title="Clinched or eliminated by the games left">{tags.get(r.abbr) === 'div' ? 'Div' : tags.get(r.abbr) === 'in' ? 'In' : 'Out'}</span>}
                       {champ ? <Trophy className="h-3.5 w-3.5 text-[hsl(var(--gold))]" aria-label="Champion" /> : done && post ? <Star className="h-3 w-3 fill-[hsl(var(--gold))] text-[hsl(var(--gold))]" aria-label="Made the playoffs" /> : done ? <span className="font-pixel text-[7px] uppercase text-foreground/40">out</span> : null}
                       <span className="w-[52px] text-right text-xs tabular-nums text-foreground/90">{r.record}</span>
                       <span className="w-8 text-right text-[11px] tabular-nums text-muted-foreground">{signed(r.diff)}</span>
@@ -211,7 +209,8 @@ export const StandingsBanners = ({ season }: { season: SeasonView }) => {
           </li>
         ))}
       </ul>
-      {old && <p className="text-[11px] text-muted-foreground">Divisions are shown as aligned today; before 2002 the league had different divisions.</p>}
+      {old && <p className="text-[11px] text-muted-foreground">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
+      {tags.size > 0 && <p className="text-[11px] text-muted-foreground">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
     </div>
   );
 };

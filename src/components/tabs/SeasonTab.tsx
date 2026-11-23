@@ -11,6 +11,7 @@ import { GameLog, GameRecords, LeagueTable, NoScores, SectionTitle } from '@/com
 import { AwardRaces, InjuryReport, NflInjuryReport, Leaders, type PlayerLookup } from '@/components/season/LivePanels';
 import { HeadToHeadGrid } from '@/components/season/scheduleParts';
 import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo, StandingsBanners } from '@/components/season/NflSeason';
+import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import '@/components/season/season.css';
@@ -94,6 +95,7 @@ const SeasonTab = () => {
   const fetched = useScheduleSeason(schedule, wanted);
 
   const upcoming = useUpcoming(); // a hook: before the early return below
+  const stars = useSeasonStars(IS_NFL ? wanted : null);
   if (live === undefined || liveSched === undefined || !schedule) {
     return <PixelLoader label="Season" what="the season" minHeight="60vh" className="container justify-start pt-[14vh]" />;
   }
@@ -151,9 +153,10 @@ const SeasonTab = () => {
           <PixelLoader label="Season" what={`the ${shown} season`} minHeight="40vh" className="justify-start pt-[8vh]" />
         ) : season ? (
           <>
-            {IS_NFL && <SeasonJumbo season={season} players={[...players.values()]} live={isLive || !season.superBowl} />}
+            {IS_NFL && <SeasonJumbo season={season} live={isLive || !season.superBowl} />}
             {IS_NFL && <PlayoffBracket season={season} />}
-            {IS_NFL && <StandingsBanners season={season} />}
+            {IS_NFL && <StandingsBanners season={season} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
+            {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
             {IS_NFL && <PowerLadder season={season} />}
             {!IS_NFL && (
               <>
@@ -162,7 +165,7 @@ const SeasonTab = () => {
                 <GameLog season={season} />
               </>
             )}
-            <AroundTheLeague season={season} />
+            <AroundTheLeague season={season} stars={stars} />
             {isLive && <LiveSections.Players s={live!} lookup={lookup} />}
             {/* a finished season the save still holds (pulled after its Super Bowl): its award ratings and leaders, final */}
             {!isLive && live && shown === seasonLabel(live.season) && <LiveSections.Players s={live} lookup={lookup} final />}
@@ -176,8 +179,8 @@ const SeasonTab = () => {
             {IS_NFL ? <FullTable season={season} /> : <LeagueTable season={season} />}
             {!isLive && (
               <div className="space-y-2">
-                <SectionTitle icon={Trophy}>Notable games</SectionTitle>
-                <NotableGames season={season} />
+                {!IS_NFL && <SectionTitle icon={Trophy}>Notable games</SectionTitle>}
+                {IS_NFL ? <HighlightReel season={season} stars={stars} /> : <NotableGames season={season} />}
               </div>
             )}
             {isLive && <LiveSections.Injuries s={live!} />}
