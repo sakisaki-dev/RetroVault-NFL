@@ -10,6 +10,7 @@ import { IS_NFL } from '@/config/edition';
  *   #stats/teams                 Stats sub-tab (players, teams, graphs, h2h, deepdive)
  *   #stats/players/leaders       ...plus a section id to scroll to inside the sub-tab
  *   #stats/deepdive?p=QB:Name    Player Deep Dive with a player preselected
+ *   #stats/game?id=<game id>     One game in depth (NFL edition: box score, rosters, advanced stats)
  *   #stats/graphs?gx=ya&gy=intPct&pos=QB    Graph Builder on a shared chart (stats/graph/graphConfig);
  *                                            the old #stats/players?gx=… links land there too
  *   #lab?t=<lineup>              Team Lab with a lineup (utils/teamLab encodeLineup)
@@ -18,7 +19,7 @@ import { IS_NFL } from '@/config/edition';
  * Unknown hashes are ignored (the current page stays), so plain in-page anchors keep working.
  */
 
-export const STATS_SUBS = ['players', 'teams', 'graphs', 'h2h', 'deepdive', 'clock'] as const;
+export const STATS_SUBS = ['players', 'teams', 'graphs', 'h2h', 'deepdive', 'clock', 'game'] as const;
 export type StatsSub = (typeof STATS_SUBS)[number];
 
 /** Internal tab ids (as used by Header / Index) → hash names. */
