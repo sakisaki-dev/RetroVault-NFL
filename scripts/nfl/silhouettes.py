@@ -339,6 +339,7 @@ def main():
 
     ix["players"].update(new_entries)
     ix["players"] = dict(sorted(ix["players"].items()))
+    ix["silhouetteHeads"] = templates  # the runtime silhouette's head outlines (src/utils/gameSprites.ts silhouetteFallback)
     if painter is not None:
         ix["eraKits"] = {c: {"id": v["id"], "label": v["label"], "from": v["from"], "to": v["to"]} for c, v in painter.pal.items()}
     ix["anchors"] = {k: v for k, v in sorted(store.anchors.items()) if v != L.DEFAULT_ANCHOR}  # the site's default is the same

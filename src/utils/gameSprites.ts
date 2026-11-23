@@ -71,6 +71,8 @@ export interface NflSprites {
   /** file → [centre x of his legs, last row of his feet] in the 64 x 64 frame (scripts/private_nfl_sprites.py); a file
    * not listed stands at the body template's own [31.5, 58] (scripts/nfl/spritelib.py leaves those out) */
   anchors?: Record<string, [number, number]>;
+  /** NFL edition: game face templates whose head outline fits (uids of `standins`), for the runtime silhouette */
+  silhouetteHeads?: string[];
   /** NFL edition: club → its era kit and the seasons it was worn (src/config/eraKits.ts) */
   eraKits?: Record<string, { id: string; label: string; from: number; to: number }>;
   /** NFL edition: a file name the paths use → the file that holds the same image (identical sprites are stored once) */
@@ -247,6 +249,8 @@ export interface NflPick {
   /** Club to paint the neutral kit into (gameKitPaint.ts); unset = draw src as is */
   paint?: string;
   pose: number;
+  /** NFL edition: a runtime silhouette: the game face template file whose head outline replaces the donor's head (gameKitPaint.ts) */
+  silhouette?: string;
   /** NFL edition: the club's era kit this file is drawn in (its label, e.g. "2001 Patriots"); the number is already his */
   era?: string;
   /** NFL edition: the club whose number colours to draw his real number in, set when the drawn number must be redone */
@@ -338,6 +342,36 @@ const standinFor = (nfl: NflSprites, key: string, tone?: string): NflSpriteEntry
   return { uid: x.uid, kits: {}, neutral: x.neutral };
 };
 
+const DONORS = new WeakMap<NflSprites, Record<string, NflSpriteEntry[]>>();
+/**
+ * NFL edition, the last resort: a player with no entry in the index (the owner banned random looks) is drawn as a
+ * silhouette at runtime, the same look scripts/nfl/silhouettes.py bakes: a real player's neutral body of his position
+ * (stable by his key) painted into his club's kit, his number in the game's font, the head replaced by the blacked-out
+ * outline of a game face template with a 1px rim (gameKitPaint.ts silhouetteize). No club: the dark training kit.
+ */
+const silhouetteFallback = (nfl: NflSprites, key: string, target: string | undefined, action: SpriteAction, role: number): Omit<NflPick, 'cx' | 'foot'> | null => {
+  const heads = nfl.silhouetteHeads;
+  if (!heads?.length) return null;
+  let by = DONORS.get(nfl);
+  if (!by) {
+    by = {};
+    for (const [k, e] of Object.entries(nfl.players)) {
+      if ((e as { silhouette?: boolean }).silhouette || !e.neutral.length) continue;
+      (by[k.split(':')[0]] ??= []).push(e);
+    }
+    DONORS.set(nfl, by);
+  }
+  const all = Object.values(by).flat();
+  const list = by[key.split(':')[0]]?.length ? by[key.split(':')[0]] : all;
+  if (!list.length) return null;
+  const d = list[fnv(`${key}|donor`) % list.length];
+  const want = action === 'idle' && role !== NFL_POSE.idle ? role : NFL_POSE[action];
+  const pose = d.neutral.includes(want) ? want : d.neutral.includes(1) ? 1 : d.neutral[0];
+  const team = target ? findNFLTeam(target)?.name : undefined;
+  const head = heads[fnv(`${key}|head`) % heads.length];
+  return { src: nflFile(d.uid, 800, pose), kit: team ?? 'neutral', paint: team ?? 'Training', pose, silhouette: nflFile(head, 800, pose) };
+};
+
 const pickNfl = (
   nfl: NflSprites,
   key: string,
@@ -349,6 +383,7 @@ const pickNfl = (
   role = 1,
   season?: number,
 ): Omit<NflPick, 'cx' | 'foot'> | null => {
+  if (IS_NFL && !legend && !nfl.players[key]) return silhouetteFallback(nfl, key, club || current, action, role);
   const e = legend ? nfl.legends?.[key] : nfl.players[key] ?? standinFor(nfl, key, tone);
   if (!e) return null;
   const want = NFL_POSE[action];
