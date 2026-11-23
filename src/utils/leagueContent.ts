@@ -1267,6 +1267,13 @@ export const normalizeName = (name: string) =>
  * the name inside parentheses ("God Johnson (Mason Earl III)").
  */
 export const matchPlayerByName = <T extends { name: string }>(name: string, players: T[]): T | undefined => {
+  // a "POS:Name" key (the NFL news tags players by ESPN id) picks that exact player, never a namesake at another position
+  const key = /^([A-Z]{1,4}):(.+)$/.exec(name);
+  if (key) {
+    const hit = players.find((p) => p.name === key[2] && (p as unknown as { position?: string }).position === key[1]);
+    if (hit) return hit;
+    name = key[2];
+  }
   const target = normalizeName(name);
   if (!target) return undefined;
   const exact = players.find((p) => normalizeName(p.name) === target);
