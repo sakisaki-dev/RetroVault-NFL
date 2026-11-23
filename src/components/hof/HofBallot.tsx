@@ -47,9 +47,9 @@ const Row = ({ row, bar, note }: { row: BallotRow; bar: number; note: string }) 
 };
 
 /** The Ballot (eligible retirees waiting and near misses), then Future Hall of Famers (the active watch list). */
-const HofBallot = ({ ballot, near, watch, bar, cap, season }: { ballot: BallotRow[]; near: BallotRow[]; watch: BallotRow[]; bar: number; cap: number; season?: string }) => (
-  <div className="mb-10 grid gap-8 lg:grid-cols-2">
-    <section aria-labelledby="hof-ballot-title">
+const HofBallot = ({ ballot, near, watch, bar, cap, season, watchOnly = false }: { watchOnly?: boolean; ballot: BallotRow[]; near: BallotRow[]; watch: BallotRow[]; bar: number; cap: number; season?: string }) => (
+  <div className={watchOnly ? "mb-10" : "mb-10 grid gap-8 lg:grid-cols-2"}>
+    {!watchOnly && (<section aria-labelledby="hof-ballot-title">
       <HallHeading
         id="hof-ballot-title"
         kicker={season ? `The ballot · ${season}` : 'The ballot'}
@@ -84,7 +84,7 @@ const HofBallot = ({ ballot, near, watch, bar, cap, season }: { ballot: BallotRo
           </ul>
         </>
       )}
-    </section>
+    </section>)}
 
     <section aria-labelledby="hof-future-title">
       <HallHeading id="hof-future-title" kicker="The watch" title="Future Hall of Famers" sub={`Their Hall of Fame Score today. Eligible when they retire; ${bar} and over is on track.`} />

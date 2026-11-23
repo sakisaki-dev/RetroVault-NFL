@@ -5,6 +5,7 @@ import { useSchedule, latestScheduleSeason } from '@/utils/schedule';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { color } from './seasonGamesUi';
 import './season.css';
+import { seasonLabel } from '@/config/edition';
 
 /**
  * The Timeline's pointer to the Season page, which is the home of the season data (standings, power rankings, game
@@ -18,7 +19,7 @@ const SeasonLink = () => {
   const club = live?.club ?? last?.coachTeam;
   const c = live ? live.clubs[live.club] : null;
   const line = live
-    ? `Y${live.season} live, week ${Math.min(live.week, SEASON_WEEKS)} of ${SEASON_WEEKS}${c ? ` · ${live.club} ${recordText(c)}` : ''}`
+    ? `${seasonLabel(live.season)} live, week ${Math.min(live.week, SEASON_WEEKS)} of ${SEASON_WEEKS}${c ? ` · ${live.club} ${recordText(c)}` : ''}`
     : last
       ? `${last.season} final · ${last.coachTeam} ${last.coachRecord.record}`
       : 'Standings, game logs and records';

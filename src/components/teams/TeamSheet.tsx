@@ -30,6 +30,7 @@ import {
   type FranchiseStop,
   type TeamSummary,
 } from './teamStats';
+import { seasonLabel } from '@/config/edition';
 
 /** Franchise legends shown before "Show all" */
 const LEGENDS_SHOWN = 8;
@@ -44,8 +45,8 @@ const TABS: { key: TabKey; label: string }[] = [
 
 const stopYears = (l: FranchiseStop, last: number) => {
   if (l.approx) return null;
-  if (last && l.from > last) return `Joins for Y${l.from}`;
-  return l.from === l.to ? `Y${l.from}` : `Y${l.from}–${l.to}`;
+  if (last && l.from > last) return `Joins for ${seasonLabel(l.from)}`;
+  return l.from === l.to ? `${seasonLabel(l.from)}` : `${seasonLabel(l.from)}–${l.to}`;
 };
 
 const isHof = (p: Player) => isHallOfFamer(p);

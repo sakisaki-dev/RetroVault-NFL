@@ -1,5 +1,6 @@
 import { formatYearRuns } from '@/utils/leagueContent';
 import { liftForDarkBg } from '@/utils/teamColors';
+import { seasonLabel } from '@/config/edition';
 
 interface TitlesTimelineProps {
   teamName: string;
@@ -27,11 +28,11 @@ const TitlesTimeline = ({ teamName, primary, titleYears, lossYears, coachedYears
       <div
         className="relative rounded-lg border border-border bg-secondary/25 px-2 pt-3 pb-1"
         role="img"
-        aria-label={`${teamName} Super Bowl timeline, Y1 to Y${years}. ${titleYears.length} titles${lossYears.length ? `, ${lossYears.length} losses` : ''}${coachedYears.length ? `, you coached ${coachedYears.length} seasons here` : ''}. Details listed below.`}
+        aria-label={`${teamName} Super Bowl timeline, Y1 to ${seasonLabel(years)}. ${titleYears.length} titles${lossYears.length ? `, ${lossYears.length} losses` : ''}${coachedYears.length ? `, you coached ${coachedYears.length} seasons here` : ''}. Details listed below.`}
       >
         <div className="flex h-14 items-end gap-px" aria-hidden="true">
           {Array.from({ length: years }, (_, i) => i + 1).map((y) => (
-            <span key={y} className="relative flex h-full min-w-0 flex-1 flex-col justify-end" title={`Y${y}${won.has(y) ? ': won the Super Bowl' : lost.has(y) ? ': lost the Super Bowl' : ''}${coached.has(y) ? ' (you coached)' : ''}`}>
+            <span key={y} className="relative flex h-full min-w-0 flex-1 flex-col justify-end" title={`${seasonLabel(y)}${won.has(y) ? ': won the Super Bowl' : lost.has(y) ? ': lost the Super Bowl' : ''}${coached.has(y) ? ' (you coached)' : ''}`}>
               {won.has(y) ? (
                 <span className="block h-full rounded-t-[2px] bg-gold shadow-[0_0_6px_hsl(var(--gold)/0.5)]" />
               ) : lost.has(y) ? (

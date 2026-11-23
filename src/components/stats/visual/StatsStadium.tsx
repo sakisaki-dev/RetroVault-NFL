@@ -16,6 +16,7 @@ import TeamLogo from '../../brand/TeamLogo';
 import CountUp from '../../brand/CountUp';
 import { clubStyle } from './clubTone';
 import './statsStadium.css';
+import { seasonLabel } from '@/config/edition';
 
 /*
  * The Stats › Players opener (owner, 2026-11-17: "change this part to be more immersive", the header and headline cards):
@@ -81,7 +82,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
 
       {/* The jumbotron: the page title and the league's counts */}
       <div className="ss__tron">
-        <p className="ss__kick">League Hub · Players{season ? ` · Y${season}` : ''}</p>
+        <p className="ss__kick">League Hub · Players{season ? ` · ${seasonLabel(season)}` : ''}</p>
         <h1 id="stats-title" className="ss__title">
           Stats <span>&amp;</span> Records
         </h1>

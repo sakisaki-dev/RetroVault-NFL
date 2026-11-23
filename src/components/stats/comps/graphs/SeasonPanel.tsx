@@ -7,6 +7,7 @@ import { ordinal } from '../../analytics/viz';
 import type { Career } from './careerStory';
 import { BOX, fmtRate, groupOf, seasonRates } from './statDefs';
 import { EVENT_LABEL, GlyphIcon, clubInk, shortNum, yLabel } from './graphKit';
+import { seasonLabel } from '@/config/edition';
 
 const STATUS_NOTE: Record<string, string> = {
   first: 'First recorded season: no snapshot before it, so no season line',
@@ -161,7 +162,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
       {career.live && idx === career.points.length - 1 && (
         <p className="cg-note">
           Age {career.live.age} in Y{career.live.season}. Stars {career.live.starsNow / 2} now, ceiling {career.live.starsMax / 2}.{' '}
-          {career.live.finalSeason <= career.live.season ? 'This is his final season by the game’s clock.' : `Final season by the game’s clock: Y${career.live.finalSeason}.`}
+          {career.live.finalSeason <= career.live.season ? 'This is his final season by the game’s clock.' : `Final season by the game’s clock: ${seasonLabel(career.live.finalSeason)}.`}
         </p>
       )}
     </div>

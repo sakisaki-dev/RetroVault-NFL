@@ -360,6 +360,10 @@ def write_player_extras():
     out["franchises"] = franchise_history(json.loads((SRC / "players.json").read_text()),
                                           json.loads((SRC / "teams.json").read_text()), cards, stints)
     out["stints"] = stints
+    if NFL:  # his real jersey number (the NFL edition keeps the game's own numbers, not the site's assignment)
+        out["realNumbers"] = {f"{q['pos']}:{q['n']}": int(q["nfl"]["number"]) for q in
+                              json.loads((SRC / "players.json").read_text())
+                              if (q.get("nfl") or {}).get("number") not in (None, "") and str(q["nfl"]["number"]).isdigit()}
     sheet = {(r["n"], r["pos"]): r for r in json.loads((SRC / "spreadsheet_parsed.json").read_text())}
     out["signatureTeams"] = signature_teams(json.loads((SRC / "players.json").read_text()),
                                             json.loads((SRC / "teams.json").read_text()), stints, sheet)

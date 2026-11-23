@@ -7,6 +7,7 @@ import { VIZ } from '../../analytics/viz';
 import { BOX, groupOf, seasonRates } from './statDefs';
 import type { SeasonPoint } from './careerModel';
 import type { EventKind } from './careerStory';
+import { seasonLabel } from '@/config/edition';
 
 /** One chartable metric over his seasons (the hero's chips, the comparison overlay). */
 export interface GraphMetric {
@@ -130,7 +131,7 @@ export const EVENT_LABEL: Record<EventKind, string> = {
 };
 
 /** "Y87" */
-export const yLabel = (y: number) => `Y${y}`;
+export const yLabel = (y: number) => `${seasonLabel(y)}`;
 
 /** Linear scale with nice padded bounds. */
 export const linear = (d0: number, d1: number, r0: number, r1: number) => {

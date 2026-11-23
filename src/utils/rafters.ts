@@ -6,6 +6,7 @@ import { findNFLTeam, getNFLTeamById, type NFLTeam } from './nflTeams';
 import { franchiseKey, useJerseyNumbers, type RetiredNumber } from './jerseys';
 import { normalizeName, usePlayerExtras, type IndexedExtras } from './playerExtras';
 import { useHallOfFame, type RingOfHonorEntry } from './hallOfFame';
+import { seasonLabel } from '@/config/edition';
 
 /**
  * The rafters: every club's retired numbers (utils/jerseys, the site's one retired-number rule: a Hall of Famer's
@@ -41,7 +42,7 @@ const yearsAt = (extras: IndexedExtras, name: string, clubId: string): { years?:
   if (c?.approx) return { rings };
   const from = Math.min(...here.map((s) => s.from));
   const to = Math.max(...here.map((s) => s.to));
-  return { years: from === to ? `Y${from}` : `Y${from}–${to}`, rings };
+  return { years: from === to ? `${seasonLabel(from)}` : `${seasonLabel(from)}–${to}`, rings };
 };
 
 export const useRafters = () => {

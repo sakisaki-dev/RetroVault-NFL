@@ -19,6 +19,7 @@ import { LeagueProvider } from '@/context/LeagueContext';
 import { onCompFinderRequest, onHeadToHeadRequest } from '@/components/stats/comps/compFinderLink';
 import { HubRouteContext, useHashRoute } from '@/components/stats/hub/hashRoute';
 import { Helmet } from 'react-helmet-async';
+import { IS_NFL } from '@/config/edition';
 import { decodeProgress, importProgress } from '@/utils/deviceSync';
 
 // Every tab is its own chunk, loaded the first time it is opened (the Collection one carries the card art and
@@ -96,7 +97,7 @@ const IndexContent = () => {
   return (
     <>
       <Helmet>
-        <title>Retro Vault — League Hub</title>
+        <title>{IS_NFL ? 'Retro Vault NFL — League Hub' : 'Retro Vault — League Hub'}</title>
         <meta
           name="description"
           content="Retro Vault is the league hub for your Retro Bowl franchise: career stats, team pages, records and the Hall of Fame."
@@ -128,9 +129,9 @@ const IndexContent = () => {
         <PullToSearch />
         <BottomNav activeTab={target.tab} onTabChange={(tab) => navigate({ tab })} onRoute={(to) => navigate(to)} />
         <AddToHomeScreen />
-        <CeremonyHost />
-        <TributeHost />
-        <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />
+        {!IS_NFL && <CeremonyHost />}
+        {!IS_NFL && <TributeHost />}
+        {!IS_NFL && <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />}
         <QuickPlayerSearch />
         <PlayerPeekLayer />
         <ScreensaverHost />

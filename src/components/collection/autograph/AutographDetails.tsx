@@ -1,10 +1,11 @@
 import { PACKS, finishLabel, packOdds, type Finish, type PackType } from '@/utils/collection';
 import { autographValue, eraOf, fmtMult, identity, inkRowOf, parallelOf, serialStr, PRESTIGE, type AutographRoll, type AutographSnapshot } from '@/config/autographs';
 import { FINISH_MULTIPLIER, autographPrice, fmtCoins } from '@/utils/cardMarket';
+import { seasonLabel } from '@/config/edition';
 
 const eraYears = (id: AutographRoll['era']) => {
   const e = eraOf(id);
-  return e.to >= 9999 ? `Y${e.from} on` : `Y${e.from}–${e.to}`;
+  return e.to >= 9999 ? `${seasonLabel(e.from)} on` : `${seasonLabel(e.from)}–${e.to}`;
 };
 
 /** "Standard 1 in 33" per pack type: the Autograph variant's chance per card (packOdds), for the empty state and the rules. */

@@ -72,12 +72,14 @@ const TAB_COLOR: Record<string, string> = {
   office: '#f1c35c',
 };
 const colorOf = (id: string | null | undefined) => (id && TAB_COLOR[id]) || '#f1c35c';
-const MORE = [
+import { IS_NFL, NFL_HIDDEN_TABS } from '@/config/edition';
+const ALL_MORE = [
   { value: 'season', label: 'Season', blurb: 'Live standings, leaders and the award race', Icon: Radio },
   { value: 'lab', label: 'Team Lab', blurb: 'Build a lineup and get a scouting report', Icon: Users },
   { value: 'timeline', label: 'Timeline', blurb: 'Eras, storylines and what changed', Icon: CalendarRange },
   { value: 'office', label: 'Front Office', blurb: "The coach's record, seasons and rivals", Icon: Briefcase },
 ] as const;
+const MORE = ALL_MORE.filter((m) => !IS_NFL || !NFL_HIDDEN_TABS.includes(m.value));
 
 interface Section {
   id: string;
@@ -98,7 +100,7 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
       { id: 'graphs', label: 'Graphs', Icon: ChartScatter, sub: 'graphs' },
       { id: 'h2h', label: 'Head-to-Head', Icon: Swords, sub: 'h2h' },
       { id: 'deepdive', label: 'Deep Dive', Icon: Radar, sub: 'deepdive' },
-      { id: 'clock', label: 'The Clock', Icon: Hourglass, sub: 'clock' },
+      ...(IS_NFL ? [] : [{ id: 'clock', label: 'The Clock', Icon: Hourglass, sub: 'clock' as const }]),
     ],
   },
   collection: {
@@ -124,6 +126,8 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
     ],
   },
 };
+
+if (IS_NFL) SECTIONS.hof.items = SECTIONS.hof.items.filter((i) => i.id === 'future');
 
 const HOLD_MS = 450;
 /** Space between a menu and the bar (px); index.css .bnav-pop uses the same */

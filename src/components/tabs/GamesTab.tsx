@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import '../games/arcade.css';
 import '../games/arcadeHall.css';
@@ -117,7 +118,7 @@ const GAMES: GameDef[] = [
   },
   {
     id: 'sixdeg',
-    title: 'Six Degrees of Ikarras',
+    title: IS_NFL ? 'Six Degrees of the NFL' : 'Six Degrees of Ikarras',
     pitch: 'Link two players through clubs, eras and lineages.',
     rule: 'Connect the start player to the target through teammates, eras, family and lineages. Every link is a stroke and hints cost one. Beat par to keep the streak.',
     color: '#5ce0c6',
@@ -300,11 +301,11 @@ const GamesTab = () => {
           </div>
           <div className="hall-switches">
             <Lamp label="Players" value={league.length} />
-            <button type="button" role="switch" aria-checked={includeLegends} className="toggle" onClick={toggleLegends}>
+            {!IS_NFL && <button type="button" role="switch" aria-checked={includeLegends} className="toggle" onClick={toggleLegends}>
               <span className="track" aria-hidden="true" />
               NFL legends
               {includeLegends && legends.length > 0 && <b className="num hall-toggle-n">{legends.length}</b>}
-            </button>
+            </button>}
           </div>
         </div>
       </div>

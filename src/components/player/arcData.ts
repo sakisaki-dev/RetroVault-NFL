@@ -3,6 +3,7 @@ import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { matchPlayerByName, type LeagueContent, type PlayerNote, type SuperBowlEntry } from '@/utils/leagueContent';
 import type { PlayerCardExtras, PlayerStints } from '@/utils/playerExtras';
 import type { RetiredNumber } from '@/utils/jerseys';
+import { seasonLabel } from '@/config/edition';
 
 /**
  * Career Arc: a player's path through eras, franchises, titles and honors, assembled only from data the
@@ -124,7 +125,7 @@ const stintsFromCareer = (career: PlayerStints, sbs: SuperBowlEntry[], retiredTe
     const last = i === n - 1;
     let tag: string | undefined;
     if (last && retiredTeam && teamKey(retiredTeam) === teamKey(st.team)) tag = 'Retired here';
-    else if (traded) tag = `Joins for Y${st.from}`;
+    else if (traded) tag = `Joins for ${seasonLabel(st.from)}`;
     else if (career.approx) tag = 'Years unknown';
     else if (st.from === st.to) tag = 'One season';
     return {
@@ -235,7 +236,7 @@ export const buildCareerArc = ({ player, content, card, retired, hofTier, stints
     const ys = yearsIn(cardTeam);
     addStint(leadingTeam(cardTeam), {
       source: 'Card: current team',
-      arrival: traded ? `Traded${ys.length ? ` · Y${ys[0]}` : ''}` : undefined,
+      arrival: traded ? `Traded${ys.length ? ` · ${seasonLabel(ys[0])}` : ''}` : undefined,
       tag: /in progress/i.test(cardTeam) ? 'Season in progress' : undefined,
       years: ys,
     });
@@ -250,7 +251,7 @@ export const buildCareerArc = ({ player, content, card, retired, hofTier, stints
     addStint(m[2], { source: 'Player note', arrival: m[1] === 'joined' ? 'Joined' : undefined });
   }
   for (const m of allText.matchAll(/\btraded to the\s+([A-Z][\w.]+)(?:[^;]*?Y(\d+))?/g)) {
-    addStint(m[1], { source: 'Player note', arrival: `Traded${m[2] ? ` · Y${m[2]}` : ''}` });
+    addStint(m[1], { source: 'Player note', arrival: `Traded${m[2] ? ` · ${seasonLabel(m[2])}` : ''}` });
   }
 
   // The game's Hall of Fame lists the team he retired with: always his last stop
@@ -289,7 +290,7 @@ export const buildCareerArc = ({ player, content, card, retired, hofTier, stints
       [...named, ...byYear].forEach((sb) => {
         if (rings.length >= totalRings || has(sb.year) || !sb.winner) return;
         if (!franchiseKeys().has(teamKey(sb.winner))) return;
-        rings.push(ringFrom(sb, 'confirmed', `Named in his player notes (${sb.roman}, Y${sb.year})`));
+        rings.push(ringFrom(sb, 'confirmed', `Named in his player notes (${sb.roman}, ${seasonLabel(sb.year)})`));
       });
     });
   });
@@ -330,7 +331,7 @@ export const buildCareerArc = ({ player, content, card, retired, hofTier, stints
         label: teamName(r.team),
         team: findNFLTeam(r.team),
         evidence: 'likely',
-        source: `Implied by the Y${r.year} title`,
+        source: `Implied by the ${seasonLabel(r.year)} title`,
         years: [],
         rings: [],
       };
@@ -370,5 +371,5 @@ export const buildCareerArc = ({ player, content, card, retired, hofTier, stints
 export const stintYears = (s: ArcStint): string | null => {
   const ys = [...new Set([...s.rings.map((r) => r.year), ...s.years])].sort((a, b) => a - b);
   if (!ys.length) return null;
-  return ys.length === 1 ? `Y${ys[0]}` : `Y${ys[0]}–${ys[ys.length - 1]}`;
+  return ys.length === 1 ? `${seasonLabel(ys[0])}` : `${seasonLabel(ys[0])}–${ys[ys.length - 1]}`;
 };

@@ -18,6 +18,7 @@ import HofRafters from '../hof/HofRafters';
 import HofLegends from '../hof/HofLegends';
 import { Laurel, MedalCoin, RibbonBanner } from '../hof/hofParts';
 import { roman } from '../hof/hofUtils';
+import { IS_NFL } from '@/config/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
 
 const keyOf = (p: Pick<Player, 'name' | 'position'>) => `${p.position}:${p.name}`;
@@ -130,6 +131,31 @@ const HallOfFameTab = () => {
     return (
       <div className="container py-16 text-center text-muted-foreground" aria-live="polite">
         The Hall of Fame file could not be loaded.
+      </div>
+    );
+  }
+
+  if (IS_NFL) {
+    return (
+      <div className="container overflow-x-hidden py-6 sm:py-8">
+        <header className="hof-hall mb-8 px-12 pb-6 pt-6 text-center sm:px-20 sm:pt-8">
+          <span aria-hidden="true" className="hof-rays" />
+          <span aria-hidden="true" className="hof-arch" />
+          <span className="relative mx-auto grid h-14 w-14 place-items-center" aria-hidden="true">
+            <Laurel size={56} color="hsl(43 90% 62%)" className="absolute inset-0" />
+            <Crown className="relative h-5 w-5 text-gold" strokeWidth={2.2} />
+          </span>
+          <p className="mt-1 font-pixel text-[10px] uppercase tracking-[0.3em] text-gold">The watch</p>
+          <h1 className="mt-1 font-display text-[42px] font-extrabold uppercase italic leading-[0.95] text-chalk sm:text-6xl" style={{ textShadow: '3px 3px 0 #000' }}>
+            Hall of <span className="hof-metal-text pr-1" style={{ textShadow: 'none' }}>Fame</span> watch
+          </h1>
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
+            <span className="mr-1.5 inline-block rounded-sm bg-gold px-1.5 py-0.5 align-middle font-pixel text-[9px] uppercase text-night">Bar {hof.bar}</span>
+            Nobody is enshrined yet: every player is active. Each Hall of Fame Score is his case today.
+          </p>
+        </header>
+        <HofBallot watchOnly ballot={[]} near={[]} watch={ballotRows(hof.watch, true)} bar={hof.bar} cap={hof.cap} season={hof.season} />
+        <PlayerDetailCard player={cardPlayer} onClose={() => setCardPlayer(null)} />
       </div>
     );
   }

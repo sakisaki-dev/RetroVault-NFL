@@ -29999,17 +29999,14 @@
    ]
   },
   "QB:Fernando Mendoza": {
-   "uid": "900072",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "307003",
+   "kits": {
+    "Raiders": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "QB:Gardner Minshew": {
    "uid": "113002",
@@ -31246,17 +31243,14 @@
    "neutral": []
   },
   "QB:Ty Simpson": {
-   "uid": "900046",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "321002",
+   "kits": {
+    "Rams": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "QB:Tyler Huntley": {
    "uid": "108001",
@@ -32906,17 +32900,14 @@
    ]
   },
   "RB:Jadarian Price": {
-   "uid": "900224",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "323002",
+   "kits": {
+    "Seahawks": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "RB:Jahmyr Gibbs": {
    "uid": "125005",
@@ -33190,17 +33181,14 @@
    ]
   },
   "RB:Jeremiyah Love": {
-   "uid": "900052",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "320001",
+   "kits": {
+    "Cardinals": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "RB:Jeremy McNichols": {
    "uid": "119080",
@@ -33262,17 +33250,14 @@
    ]
   },
   "RB:Jonah Coleman": {
-   "uid": "900226",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "304002",
+   "kits": {
+    "Broncos": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "RB:Jonathan Taylor": {
    "uid": "113007",
@@ -33969,7 +33954,7 @@
    ]
   },
   "RB:Montrell Johnson Jr.": {
-   "uid": "900210",
+   "uid": "900224",
    "kits": {},
    "neutral": [
     1,
@@ -35758,17 +35743,14 @@
    "pool": "generic"
   },
   "TE:Eli Raridon": {
-   "uid": "900214",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "302003",
+   "kits": {
+    "Patriots": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "TE:Eli Stowers": {
    "uid": "900050",
@@ -36708,17 +36690,14 @@
    ]
   },
   "TE:Kenyon Sadiq": {
-   "uid": "900107",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "303004",
+   "kits": {
+    "Jets": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "TE:Kevin Rader": {
    "uid": "115017",
@@ -37038,7 +37017,7 @@
    "pool": "generic"
   },
   "TE:Messiah Swinson": {
-   "uid": "900225",
+   "uid": "900214",
    "kits": {},
    "neutral": [
     1,
@@ -38347,17 +38326,14 @@
    "pool": "generic"
   },
   "WR:Antonio Williams": {
-   "uid": "900076",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "319002",
+   "kits": {
+    "Commanders": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Antwane Wells Jr.": {
    "uid": "900081",
@@ -38647,17 +38623,14 @@
    ]
   },
   "WR:Bryce Lance": {
-   "uid": "900226",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "330006",
+   "kits": {
+    "Saints": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Bryce Oliver": {
    "uid": "115088",
@@ -38749,17 +38722,14 @@
    "pool": "generic"
   },
   "WR:Caleb Douglas": {
-   "uid": "900223",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "301005",
+   "kits": {
+    "Dolphins": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Calvin Austin III": {
    "uid": "111008",
@@ -38788,17 +38758,14 @@
    "neutral": []
   },
   "WR:Carnell Tate": {
-   "uid": "900036",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "315002",
+   "kits": {
+    "Titans": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Casey Washington": {
    "uid": "128083",
@@ -38935,7 +38902,7 @@
    ]
   },
   "WR:Chris Bell": {
-   "uid": "900227",
+   "uid": "900226",
    "kits": {},
    "neutral": [
     1,
@@ -39077,7 +39044,7 @@
    "neutral": []
   },
   "WR:Colbie Young": {
-   "uid": "900035",
+   "uid": "900076",
    "kits": {},
    "neutral": [
     1,
@@ -39324,7 +39291,7 @@
    ]
   },
   "WR:Dante Pettis": {
-   "uid": "900041",
+   "uid": "900035",
    "kits": {},
    "neutral": [
     1,
@@ -39551,7 +39518,7 @@
    "neutral": []
   },
   "WR:Deion Burks": {
-   "uid": "900224",
+   "uid": "900227",
    "kits": {},
    "neutral": [
     1,
@@ -39605,17 +39572,14 @@
    ]
   },
   "WR:Denzel Boston": {
-   "uid": "900001",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "310003",
+   "kits": {
+    "Browns": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Denzel Mims": {
    "uid": "900204",
@@ -40049,7 +40013,7 @@
    ]
   },
   "WR:Garrett Greene": {
-   "uid": "900210",
+   "uid": "900223",
    "kits": {},
    "neutral": [
     1,
@@ -40108,17 +40072,14 @@
    ]
   },
   "WR:Germie Bernard": {
-   "uid": "900087",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "311002",
+   "kits": {
+    "Steelers": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Greg Dortch": {
    "uid": "120009",
@@ -40152,7 +40113,7 @@
    ]
   },
   "WR:Hakeem Butler": {
-   "uid": "900033",
+   "uid": "900041",
    "kits": {},
    "neutral": [
     1,
@@ -40165,7 +40126,7 @@
    "pool": "generic"
   },
   "WR:Hal Presley III": {
-   "uid": "900047",
+   "uid": "900033",
    "kits": {},
    "neutral": [
     1,
@@ -40323,7 +40284,7 @@
    ]
   },
   "WR:JP Richardson": {
-   "uid": "900215",
+   "uid": "900224",
    "kits": {},
    "neutral": [
     1,
@@ -40349,17 +40310,14 @@
    "pool": "generic"
   },
   "WR:Ja'Kobi Lane": {
-   "uid": "900077",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "308003",
+   "kits": {
+    "Ravens": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Ja'Marr Chase": {
    "uid": "109008",
@@ -40479,7 +40437,7 @@
    ]
   },
   "WR:Jacoby Jones": {
-   "uid": "900086",
+   "uid": "900087",
    "kits": {},
    "neutral": [
     1,
@@ -41203,17 +41161,14 @@
    ]
   },
   "WR:Jordyn Tyson": {
-   "uid": "900222",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "330002",
+   "kits": {
+    "Saints": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Josh Ali": {
    "uid": "128008",
@@ -41255,7 +41210,7 @@
    ]
   },
   "WR:Josh Kelly": {
-   "uid": "900207",
+   "uid": "900215",
    "kits": {},
    "neutral": [
     1,
@@ -41412,17 +41367,14 @@
    ]
   },
   "WR:KC Concepcion": {
-   "uid": "900206",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "310002",
+   "kits": {
+    "Browns": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:KaVontae Turpin": {
    "uid": "116015",
@@ -41905,7 +41857,7 @@
    ]
   },
   "WR:Luke Floriea": {
-   "uid": "900003",
+   "uid": "900001",
    "kits": {},
    "neutral": [
     1,
@@ -41918,7 +41870,7 @@
    "pool": "generic"
   },
   "WR:Luke Grimm": {
-   "uid": "900085",
+   "uid": "900086",
    "kits": {},
    "neutral": [
     1,
@@ -42008,17 +41960,14 @@
    ]
   },
   "WR:Makai Lemon": {
-   "uid": "900035",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "318001",
+   "kits": {
+    "Eagles": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Malachi Corley": {
    "uid": "103088",
@@ -42041,20 +41990,17 @@
    ]
   },
   "WR:Malachi Fields": {
-   "uid": "900213",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "317005",
+   "kits": {
+    "Giants": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Malik Benson": {
-   "uid": "900227",
+   "uid": "900207",
    "kits": {},
    "neutral": [
     1,
@@ -42067,7 +42013,7 @@
    "pool": "generic"
   },
   "WR:Malik Cunningham": {
-   "uid": "900204",
+   "uid": "900206",
    "kits": {},
    "neutral": [
     1,
@@ -42522,17 +42468,14 @@
    "neutral": []
   },
   "WR:Omar Cooper Jr.": {
-   "uid": "900051",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "303001",
+   "kits": {
+    "Jets": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Parker Washington": {
    "uid": "114013",
@@ -42644,7 +42587,7 @@
    ]
   },
   "WR:Quintez Cephus": {
-   "uid": "900226",
+   "uid": "900213",
    "kits": {},
    "neutral": [
     1,
@@ -42978,7 +42921,7 @@
    ]
   },
   "WR:Shedrick Jackson": {
-   "uid": "900220",
+   "uid": "900222",
    "kits": {},
    "neutral": [
     1,
@@ -43173,17 +43116,14 @@
    "pool": "generic"
   },
   "WR:Ted Hurst": {
-   "uid": "900213",
-   "kits": {},
-   "neutral": [
-    1,
-    2,
-    3,
-    4,
-    5
-   ],
-   "assigned": true,
-   "pool": "generic"
+   "uid": "331003",
+   "kits": {
+    "Buccaneers": [
+     1
+    ]
+   },
+   "neutral": [],
+   "shot": true
   },
   "WR:Tee Higgins": {
    "uid": "109009",
@@ -103130,6 +103070,86 @@
    58
   ],
   "231015_800_p3.png": [
+   31.5,
+   58
+  ],
+  "301005_001.png": [
+   31.5,
+   58
+  ],
+  "302003_002.png": [
+   33.0,
+   58
+  ],
+  "303001_003.png": [
+   29.5,
+   58
+  ],
+  "303004_003.png": [
+   31.5,
+   58
+  ],
+  "304002_004.png": [
+   31.5,
+   58
+  ],
+  "307003_007.png": [
+   31.5,
+   58
+  ],
+  "308003_008.png": [
+   32.5,
+   58
+  ],
+  "310002_010.png": [
+   31.5,
+   58
+  ],
+  "310003_010.png": [
+   29.5,
+   58
+  ],
+  "311002_011.png": [
+   32.5,
+   58
+  ],
+  "315002_015.png": [
+   31.5,
+   58
+  ],
+  "317005_017.png": [
+   31.5,
+   58
+  ],
+  "318001_018.png": [
+   32.5,
+   58
+  ],
+  "319002_019.png": [
+   29.5,
+   58
+  ],
+  "320001_020.png": [
+   31.5,
+   58
+  ],
+  "321002_021.png": [
+   31.5,
+   58
+  ],
+  "323002_023.png": [
+   32.5,
+   58
+  ],
+  "330002_030.png": [
+   31.5,
+   58
+  ],
+  "330006_030.png": [
+   31.5,
+   58
+  ],
+  "331003_031.png": [
    31.5,
    58
   ],

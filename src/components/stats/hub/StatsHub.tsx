@@ -10,7 +10,9 @@ import { buildHash, lastNavKind, useHubRoute, type StatsSub } from './hashRoute'
 import { EDGE_PX, scrollsSideways } from '@/hooks/useSwipeToDismiss';
 import { dur, ease, reducedMotion } from '@/utils/motion';
 
-const SUB_TABS: { id: StatsSub; label: string; short: string; Icon: typeof Users; blurb: string }[] = [
+import { IS_NFL } from '@/config/edition';
+
+const ALL_SUB_TABS: { id: StatsSub; label: string; short: string; Icon: typeof Users; blurb: string }[] = [
   { id: 'players', label: 'Players', short: 'Players', Icon: Users, blurb: 'Records, full stat tables, advanced analytics and leaders' },
   { id: 'teams', label: 'Teams', short: 'Teams', Icon: Building2, blurb: 'Every franchise and its roster' },
   { id: 'graphs', label: 'Graphs', short: 'Graphs', Icon: ChartScatter, blurb: 'Graph Builder: any stat against any stat' },
@@ -18,6 +20,8 @@ const SUB_TABS: { id: StatsSub; label: string; short: string; Icon: typeof Users
   { id: 'deepdive', label: 'Deep Dive', short: 'Dive', Icon: Radar, blurb: 'One player, every angle: style, comps and more' },
   { id: 'clock', label: 'The Clock', short: 'Clock', Icon: Hourglass, blurb: 'Farewell Tour, prospects and age curves from the live save' },
 ];
+
+const SUB_TABS = ALL_SUB_TABS.filter((t) => !IS_NFL || t.id !== 'clock');
 
 interface Props {
   sub: StatsSub;

@@ -47,6 +47,7 @@
  * (years: "Y1–15", your_teams, key_players, your_result, your_team).
  */
 import { useEffect, useState } from 'react';
+import { seasonLabel } from '@/config/edition';
 
 export const CONTENT_URL = `${import.meta.env.BASE_URL}data/league/content.json`;
 export const CONTENT_STORAGE_KEY = 'retroVault:content';
@@ -1292,7 +1293,7 @@ export const formatYearRuns = (years: number[]) => {
   for (let i = 0; i < sorted.length; i++) {
     let j = i;
     while (j + 1 < sorted.length && sorted[j + 1] === sorted[j] + 1) j++;
-    runs.push(j > i ? `Y${sorted[i]}–${sorted[j]}` : `Y${sorted[i]}`);
+    runs.push(j > i ? `${seasonLabel(sorted[i])}–${sorted[j]}` : `${seasonLabel(sorted[i])}`);
     i = j;
   }
   return runs.join(', ');

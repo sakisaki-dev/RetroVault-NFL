@@ -1,5 +1,6 @@
 import { createContext, startTransition, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { overlayOnTop } from '@/utils/overlayHistory';
+import { IS_NFL } from '@/config/edition';
 
 /**
  * Tiny hash router for the single-page hub. The URL hash mirrors the visible page so tabs are linkable
@@ -23,7 +24,7 @@ export type StatsSub = (typeof STATS_SUBS)[number];
 /** Internal tab ids (as used by Header / Index) → hash names. */
 const TAB_TO_HASH: Record<string, string> = { career: 'stats' };
 const HASH_TO_TAB: Record<string, string> = { stats: 'career', arcade: 'games' };
-const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'hof', 'collection', 'timeline', 'office']);
+const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'hof', 'collection', ...(IS_NFL ? [] : ['timeline', 'office'])]);
 
 /** Legacy section anchors from the old one-page Stats layout → where they live now. */
 const LEGACY_SECTIONS: Record<string, { sub: StatsSub; section?: string }> = {

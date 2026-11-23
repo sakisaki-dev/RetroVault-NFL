@@ -7,6 +7,7 @@ import { liftForDarkBg } from '@/utils/teamColors';
 import { openDeepDiveAt } from '../compFinderLink';
 import { groupOf } from './statDefs';
 import { shortNum } from './graphKit';
+import { seasonLabel } from '@/config/edition';
 
 /**
  * The player card's way into the career graphs: his card value at each season end as a sparkline coloured by club,
@@ -46,7 +47,7 @@ const CareerGraphsPreview = ({ player, onNavigate }: { player: Player; onNavigat
           Open the graphs
         </button>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="mt-1 block h-14 w-full" preserveAspectRatio="none" role="img" aria-label={`Card value by season, Y${pts[0].year} to Y${last.year}: ${shortNum(pts[0].value)} to ${shortNum(last.value)} coins`}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-1 block h-14 w-full" preserveAspectRatio="none" role="img" aria-label={`Card value by season, ${seasonLabel(pts[0].year)} to ${seasonLabel(last.year)}: ${shortNum(pts[0].value)} to ${shortNum(last.value)} coins`}>
         {pts.slice(1).map((p, i) => {
           const t = findNFLTeam(clubOf(p.year));
           return <line key={p.year} x1={x(i)} y1={y(pts[i].value)} x2={x(i + 1)} y2={y(p.value)} stroke={t ? liftForDarkBg(t.primaryColor, 58) : 'hsl(225 30% 70%)'} strokeWidth={2.5} strokeLinecap="round" vectorEffect="non-scaling-stroke" />;

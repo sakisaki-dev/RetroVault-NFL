@@ -1,3 +1,4 @@
+import { IS_NFL } from '@/config/edition';
 import { useCallback, useMemo } from 'react';
 import type { Player, Position } from '@/types/player';
 import { useLeague } from '@/context/LeagueContext';
@@ -330,6 +331,11 @@ export const useJerseyNumbers = () => {
     if (cached && cached.source === getAllPlayers && cached.version === dataVersion && cached.extras === extras) return cached.index;
     const homes = withHomeClubs(getAllPlayers(), extras);
     const built = buildJerseyIndexWithAlso(homes.players, homes.also);
+    if (IS_NFL && extras?.realNumbers) {
+      const numbers = new Map(built.numbers);
+      Object.entries(extras.realNumbers).forEach(([k, n]) => numbers.set(k, n));
+      built.numbers = numbers;
+    }
     cached = { source: getAllPlayers, version: dataVersion, extras, index: built };
     return built;
   }, [getAllPlayers, dataVersion, extras]);

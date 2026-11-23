@@ -4,6 +4,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { getReadableTextOn } from '@/utils/teamColors';
 import type { SuperBowlEntry } from '@/utils/leagueContent';
 import { teamKeyFor } from './teamStats';
+import { seasonLabel } from '@/config/edition';
 
 interface DynastyGridProps {
   superBowls: SuperBowlEntry[];
@@ -37,15 +38,15 @@ const DynastyGrid = ({ superBowls, openable, onOpen, highlight, onHighlight }: D
             <span className="font-pixel text-[8px] uppercase text-muted-foreground tabular-nums">
               Y{start}–{start + 9}
             </span>
-            <ol className="grid grid-cols-10 gap-[3px]" aria-label={`Champions Y${start} to Y${start + 9}`}>
+            <ol className="grid grid-cols-10 gap-[3px]" aria-label={`Champions ${seasonLabel(start)} to ${seasonLabel(start + 9)}`}>
               {Array.from({ length: 10 }, (_, j) => start + j).map((year) => {
                 const sb = byYear.get(year);
                 const team = findNFLTeam(sb?.winner);
                 const key = teamKeyFor(sb?.winner);
                 const mine = sb?.yourResult === 'won';
                 const label = sb?.winner
-                  ? `Y${year}: ${team?.fullName ?? sb.winner}${sb.loser ? ` beat the ${sb.loser}` : ''}${sb.score ? ` ${sb.score}` : ''}${mine ? ', your title' : ''}`
-                  : `Y${year}: no champion recorded`;
+                  ? `${seasonLabel(year)}: ${team?.fullName ?? sb.winner}${sb.loser ? ` beat the ${sb.loser}` : ''}${sb.score ? ` ${sb.score}` : ''}${mine ? ', your title' : ''}`
+                  : `${seasonLabel(year)}: no champion recorded`;
                 const bg = team ? `hsl(${team.primaryColor})` : 'hsl(var(--secondary))';
                 const fg = team ? getReadableTextOn(team.primaryColor) : 'hsl(var(--muted-foreground))';
                 const dim = highlight != null && highlight !== key;

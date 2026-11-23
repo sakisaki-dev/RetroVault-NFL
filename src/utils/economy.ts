@@ -43,6 +43,7 @@ import {
   type Variant,
   type VariantCard,
 } from '@/utils/collection';
+import { seasonLabel } from '@/config/edition';
 
 /**
  * The Collection economy: coins become the trading currency (shards stay exactly as they were: claims and finish
@@ -321,7 +322,7 @@ export const collectionSets = (input: {
         .filter(([, v]) => v.stints.some((st) => clubOf(st.team) === club && st.rings?.includes(sb.year)))
         .map(([name]) => byName.get(name)?.key)
         .filter((k): k is string => !!k);
-      return { id: `sb:${sb.year}`, kind: 'champion' as const, title: `Y${sb.year} ${sb.winner}`, sub: `Super Bowl ${sb.roman} champions`, team: club ?? undefined, members: [...new Set(members)].sort() };
+      return { id: `sb:${sb.year}`, kind: 'champion' as const, title: `${seasonLabel(sb.year)} ${sb.winner}`, sub: `Super Bowl ${sb.roman} champions`, team: club ?? undefined, members: [...new Set(members)].sort() };
     })
     .filter((s) => s.members.length >= SET_MIN_MEMBERS)
     .reverse();

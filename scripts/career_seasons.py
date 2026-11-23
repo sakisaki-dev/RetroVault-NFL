@@ -38,7 +38,7 @@ GROUP = {"LB": "DEF", "DB": "DEF", "DL": "DEF"}
 
 
 def season_num(label) -> int:
-    m = re.match(r"Y(\d+)", str(label or ""))
+    m = re.match(r"Y?(\d+)", str(label or ""))
     return int(m.group(1)) if m else 0
 
 

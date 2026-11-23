@@ -42,6 +42,7 @@ import { trackTimes, useNowPlaying, useSpotifyConnected, type NowPlaying } from 
 import { PixelCup } from '@/components/frontoffice/PixelCup';
 import { busState, departures, hm, useBusSetting, useRoute } from '@/utils/bus';
 import './screensaver.css';
+import { seasonLabel } from '@/config/edition';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -86,7 +87,7 @@ const spans = (years: number[]) => {
   for (let i = 0; i < ys.length; i++) {
     let j = i;
     while (j + 1 < ys.length && ys[j + 1] === ys[j] + 1) j++;
-    out.push(j > i ? `Y${ys[i]}–${ys[j]}` : `Y${ys[i]}`);
+    out.push(j > i ? `${seasonLabel(ys[i])}–${ys[j]}` : `${seasonLabel(ys[i])}`);
     i = j;
   }
   return out.join(', ');

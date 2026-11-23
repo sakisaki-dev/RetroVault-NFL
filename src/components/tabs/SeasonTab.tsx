@@ -14,6 +14,7 @@ import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import '@/components/season/season.css';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { IS_NFL, seasonLabel } from '@/config/edition';
 
 /**
  * The Season page. Its backbone is the design that lived on the Timeline as "Season games" (scoreboard, club splits,
@@ -79,8 +80,8 @@ const SeasonTab = () => {
 
   const past = useMemo(() => (schedule ? scheduleSeasons(schedule) : []), [schedule]);
   // once a season-complete import has written the season's weekly scores, it is a finished season, not a live one
-  const liveId = live && !past.some((p) => p.season === `Y${live.season}`) ? `Y${live.season}` : null;
-  const liveView = useMemo(() => (live ? liveSeasonView(live, liveSched ?? past.find((p) => p.season === `Y${live.season}`)) : null), [live, liveSched, past]);
+  const liveId = live && !past.some((p) => p.season === seasonLabel(live.season)) ? seasonLabel(live.season) : null;
+  const liveView = useMemo(() => (live ? liveSeasonView(live, liveSched ?? past.find((p) => p.season === seasonLabel(live.season))) : null), [live, liveSched, past]);
   const options = useMemo(() => {
     const ids = past.map((p) => p.season).filter((id) => id !== liveId);
     return [...(liveId ? [liveId] : []), ...ids].sort((a, b) => seasonNum(b) - seasonNum(a));
@@ -106,7 +107,9 @@ const SeasonTab = () => {
               Season <span className="text-muted-foreground">{shown ?? ''}</span>
             </h1>
             <p className="text-xs text-muted-foreground">
-              {isLive
+              {IS_NFL
+                ? 'Every score of the NFL season: the games by week, the league by the numbers, the table and the games that stood out.'
+                : isLive
                 ? "The season in progress, read from the game's save: the coached club's scoreboard, the award race, the leaders and the table."
                 : "Every score of the season: the coached club's scoreboard, the league by the numbers, the table and the games that stood out."}
             </p>
@@ -135,13 +138,17 @@ const SeasonTab = () => {
 
         {season ? (
           <>
-            <SeasonScoreboard season={season} status={isLive ? liveStatus(season) : undefined} badge={isLive ? perfectWatch(live!, season) : undefined} />
-            <ClubSplits season={season} />
-            <GameLog season={season} />
+            {!IS_NFL && (
+              <>
+                <SeasonScoreboard season={season} status={isLive ? liveStatus(season) : undefined} badge={isLive ? perfectWatch(live!, season) : undefined} />
+                <ClubSplits season={season} />
+                <GameLog season={season} />
+              </>
+            )}
             <AroundTheLeague season={season} />
             {isLive && <LiveSections.Players s={live!} lookup={lookup} />}
             {/* a finished season the save still holds (pulled after its Super Bowl): its award ratings and leaders, final */}
-            {!isLive && live && shown === `Y${live.season}` && <LiveSections.Players s={live} lookup={lookup} final />}
+            {!isLive && live && shown === seasonLabel(live.season) && <LiveSections.Players s={live} lookup={lookup} final />}
             {season.league && (
               <div className="space-y-2">
                 <SectionTitle icon={BarChart3}>{season.season} by the numbers</SectionTitle>
@@ -163,7 +170,15 @@ const SeasonTab = () => {
         )}
       </section>
 
-      {(schedule.records.length > 0 || Object.keys(schedule.headToHead).length > 0 || !!live?.coachHistory?.length) && (
+      {(schedule.records.length > 0 && IS_NFL) && (
+        <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">
+          <h2 id="alltime-heading" className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide">
+            <History className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> Game records
+          </h2>
+          <GameRecords records={schedule.records} />
+        </section>
+      )}
+      {!IS_NFL && (schedule.records.length > 0 || Object.keys(schedule.headToHead).length > 0 || !!live?.coachHistory?.length) && (
         <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">
           <div>
             <h2 id="alltime-heading" className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide">

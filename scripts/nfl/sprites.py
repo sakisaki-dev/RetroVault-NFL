@@ -86,6 +86,25 @@ def main() -> None:
             put(name)
         players[key] = {"uid": uid, "kits": dict(kits), "neutral": neutral}
 
+    # real sprites cut from screenshots for players the backup lacks (data/nfl/shot-sprites/<uid>.png: pose 1 in his
+    # current club's home kit); whatever is in the folder is used, ahead of the stand-in
+    shots = ROOT / "data" / "nfl" / "shot-sprites"
+    shot_idx = json.loads((shots / "index.json").read_text()) if (shots / "index.json").exists() else {}
+    club_uid = {name: uid for uid, name in clubs.items()}
+    still = []
+    for m in missing:
+        suid = shot_idx.get(m["key"])
+        club = m["team"]
+        if suid and (shots / f"{suid}.png").exists() and club in club_uid:
+            name = P.sprite_name(m["uid"] or suid, club_uid[club], 1)
+            shutil.copy2(shots / f"{suid}.png", OUT / name)
+            anchors[name] = P.anchor(OUT / name)
+            players[m["key"]] = {"uid": m["uid"] or suid, "kits": {club: [1]}, "neutral": [], "shot": True}
+        else:
+            still.append(m)
+    print(f"screenshot sprites used: {len(missing) - len(still)}")
+    missing = still
+
     # stand-in pool: the game's generic templates (900xxx uids, not in this save's players) with all five neutral
     # poses. The save has no skin group for them, so it is read from the sprite itself: the median brightness of the
     # skin pixels of the head, matched to the nearest group of the real players' own sprites (0 dark, 1 mix, 2 light)

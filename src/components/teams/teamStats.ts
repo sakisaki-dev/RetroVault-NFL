@@ -3,6 +3,7 @@ import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { isHallOfFamer } from '@/config/stats';
 import { normalizeName, type PlayerStints, type StintConfidence } from '@/utils/playerExtras';
 import type { SuperBowlEntry } from '@/utils/leagueContent';
+import { seasonLabel } from '@/config/edition';
 
 /** A player's time with one franchise, from the reconstructed career stints. */
 export interface FranchiseStop {
@@ -343,4 +344,4 @@ export const positionStrength = (franchise: Player[], league: Player[]): Positio
 
 /** "Y20–26, Y51–53" from coaching stints */
 export const tenureText = (stints: { firstYear: number; lastYear: number }[]) =>
-  stints.map((s) => (s.firstYear === s.lastYear ? `Y${s.firstYear}` : `Y${s.firstYear}–${s.lastYear}`)).join(', ');
+  stints.map((s) => (s.firstYear === s.lastYear ? `${seasonLabel(s.firstYear)}` : `${seasonLabel(s.firstYear)}–${s.lastYear}`)).join(', ');
