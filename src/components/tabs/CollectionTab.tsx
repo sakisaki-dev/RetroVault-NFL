@@ -24,6 +24,7 @@ import { KIT_SOURCE, displayWithKit } from '@/components/collection/kits';
 import ShardWorkshop from '@/components/collection/ShardWorkshop';
 import DailyDraw from '@/components/collection/DailyDraw';
 import Exchange from '@/components/collection/economy/Exchange';
+import OpenAll from '@/components/collection/OpenAll';
 import SellDuplicates from '@/components/collection/economy/SellDuplicates';
 import { activeCosmetic } from '@/utils/economy';
 import AutographsSection from '@/components/collection/autograph/AutographsSection';
@@ -586,6 +587,15 @@ const CollectionTab = () => {
           ) : (
             <p className="text-sm text-muted-foreground">No packs. Win them in the Arcade, take the daily draw or buy one in the Exchange.</p>
           )}
+          <OpenAll
+            state={state}
+            types={shelf}
+            disabled={!loaded || !cards.length}
+            tierPool={tierPool}
+            freeze={freeze}
+            byKey={byKey}
+            onCard={(c) => openCard(c, [c])}
+          />
         </div>
       </section>
 

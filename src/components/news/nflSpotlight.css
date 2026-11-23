@@ -19,11 +19,14 @@
 .nsp__num { position: absolute; top: 4px; right: 8px; font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size: 150px; font-weight: 800; line-height: 0.9;
   color: color-mix(in srgb, var(--tc2) 55%, transparent); opacity: 0.55; letter-spacing: -4px; pointer-events: none; }
 .nsp__logo { position: absolute; top: 10px; left: 10px; opacity: 0.95; filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.5)); }
-.nsp__stage { position: relative; display: flex; justify-content: center; height: 176px; margin-top: 30px; }
-.nsp__sprite { position: relative; z-index: 1; transform: translateY(8px); }
-.nsp__ped { position: absolute; bottom: 0; left: 50%; width: 170px; height: 34px; transform: translateX(-50%); border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--tc2) 80%, #fff) 0%, var(--tc) 55%, #05080f 100%);
-  box-shadow: 0 0 0 3px #05080f, 0 0 0 5px var(--tc2), 0 10px 18px rgb(0 0 0 / 0.5); }
+.nsp__stage { position: relative; display: flex; justify-content: center; height: 198px; margin-top: 22px; }
+/* The sprite's 192 px box has his cleats on row 59 (177 px): the pedestal's top face is centred on that line, under him */
+.nsp__sprite { position: relative; z-index: 1; }
+.nsp__ped { position: absolute; z-index: 0; top: 177px; left: 50%; width: 176px; height: 36px; margin: -18px 0 0 -88px; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--tc2) 70%, #fff) 0%, var(--tc) 62%, color-mix(in srgb, var(--tc) 50%, #05080f) 100%);
+  box-shadow: 0 0 0 2px #05080f, 0 6px 0 2px var(--tc2), 0 12px 0 2px #05080f, 0 16px 16px rgb(0 0 0 / 0.5); }
+/* a soft contact shadow under the cleats */
+.nsp__ped::after { content: ''; position: absolute; left: 50%; top: 50%; width: 70px; height: 14px; transform: translate(-50%, -30%); border-radius: 50%; background: radial-gradient(ellipse, rgb(0 0 0 / 0.55), transparent 70%); }
 .nsp__body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px; background: linear-gradient(180deg, transparent, rgb(5 8 15 / 0.72) 28%); }
 .nsp__top { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .nsp__team { font-size: 12px; color: #c7d0ee; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -44,9 +47,9 @@
 .nsp__spark i[data-last] { background: #ffc83d; box-shadow: 0 0 6px rgb(255 200 61 / 0.7); }
 @container (max-width: 759px) {
   .nsp { min-height: 200px; display: grid; grid-template-columns: 124px minmax(0, 1fr); grid-template-rows: auto; }
-  .nsp__stage { height: 150px; margin-top: 20px; grid-row: 1; }
-  .nsp__sprite { transform: translateY(4px) scale(0.85); transform-origin: bottom center; }
-  .nsp__ped { width: 110px; }
+  .nsp__stage { height: 190px; margin-top: 12px; grid-row: 1; width: 124px; }
+  .nsp__sprite { transform: scale(0.78); transform-origin: 50% 177px; margin-top: -30px; }
+  .nsp__ped { top: 147px; width: 108px; height: 24px; margin: -12px 0 0 -54px; }
   .nsp__num { font-size: 96px; }
   .nsp__body { background: linear-gradient(90deg, transparent, rgb(5 8 15 / 0.6) 14%); padding-left: 6px; }
   .nsp__name { font-size: 24px; }
