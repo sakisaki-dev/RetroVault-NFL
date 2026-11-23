@@ -78,6 +78,9 @@ const getByIndex = (row: string[], index: number): string => {
   return (row[index] ?? '').trim();
 };
 
+/** A blank cell is a stat the source does not carry (NFL: tackles before the 1990s), not a zero: NaN, so rates skip it. */
+const parseStat = (val: string | undefined): number => (val == null || val.trim() === '' ? NaN : parseNum(val));
+
 const parseNum = (val: string): number => {
   if (!val || val.trim() === '') return 0;
   const cleaned = val.replace(/["',]/g, '').trim();
@@ -276,10 +279,10 @@ const parseDefensive = <T extends 'LB' | 'DB' | 'DL'>(
   return {
     position,
     ...base,
-    tackles: parseNum(getField(row, header, 'Tackles')),
+    tackles: parseStat(getField(row, header, 'Tackles')),
     interceptions: parseNum(getField(row, header, 'INT')),
-    sacks: parseNum(getField(row, header, 'Sacks')),
-    forcedFumbles: parseNum(getField(row, header, 'FF')),
+    sacks: parseStat(getField(row, header, 'Sacks')),
+    forcedFumbles: parseStat(getField(row, header, 'FF')),
   };
 };
 

@@ -32,11 +32,11 @@
       "team": "New Orleans Saints"
      },
      {
-      "value": 68508,
-      "mark": "68,508 yds",
-      "player": "Aaron Rodgers",
+      "value": 71940,
+      "mark": "71,940 yds",
+      "player": "Peyton Manning",
       "pos": "QB",
-      "team": "Pittsburgh Steelers"
+      "team": "Indianapolis Colts"
      }
     ],
     "basis": "career cards",
@@ -96,9 +96,16 @@
    },
    "scope": "career",
    "league": {
-    "value": 17493,
-    "mark": "17,493 yds",
+    "value": 22895,
+    "mark": "22,895 yds",
     "top": [
+     {
+      "value": 22895,
+      "mark": "22,895 yds",
+      "player": "Jerry Rice",
+      "pos": "WR",
+      "team": "San Francisco 49ers"
+     },
      {
       "value": 17493,
       "mark": "17,493 yds",
@@ -107,18 +114,11 @@
       "team": "Arizona Cardinals"
      },
      {
-      "value": 14727,
-      "mark": "14,727 yds",
-      "player": "Steve Smith",
+      "value": 15934,
+      "mark": "15,934 yds",
+      "player": "Terrell Owens",
       "pos": "WR",
-      "team": "Carolina Panthers"
-     },
-     {
-      "value": 14345,
-      "mark": "14,345 yds",
-      "player": "Reggie Wayne",
-      "pos": "WR",
-      "team": "Indianapolis Colts"
+      "team": "San Francisco 49ers"
      }
     ],
     "basis": "career cards",
@@ -137,29 +137,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 139,
-    "mark": "139",
+    "value": 197,
+    "mark": "197",
     "top": [
      {
-      "value": 139,
-      "mark": "139",
+      "value": 197,
+      "mark": "197",
+      "player": "Jerry Rice",
+      "pos": "WR",
+      "team": "San Francisco 49ers"
+     },
+     {
+      "value": 156,
+      "mark": "156",
       "player": "Randy Moss",
       "pos": "WR",
       "team": "Minnesota Vikings"
      },
      {
-      "value": 127,
-      "mark": "127",
+      "value": 153,
+      "mark": "153",
       "player": "Terrell Owens",
       "pos": "WR",
       "team": "San Francisco 49ers"
-     },
-     {
-      "value": 121,
-      "mark": "121",
-      "player": "Davante Adams",
-      "pos": "WR",
-      "team": "Los Angeles Rams"
      }
     ],
     "basis": "career cards",
@@ -178,29 +178,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 16000,
-    "mark": "16,000 yds",
+    "value": 18355,
+    "mark": "18,355 yds",
     "top": [
+     {
+      "value": 18355,
+      "mark": "18,355 yds",
+      "player": "Emmitt Smith",
+      "pos": "RB",
+      "team": "Dallas Cowboys"
+     },
+     {
+      "value": 16726,
+      "mark": "16,726 yds",
+      "player": "Walter Payton",
+      "pos": "RB",
+      "team": "Chicago Bears"
+     },
      {
       "value": 16000,
       "mark": "16,000 yds",
       "player": "Frank Gore (RB, Jets)",
       "pos": "RB",
       "team": "San Francisco 49ers"
-     },
-     {
-      "value": 14921,
-      "mark": "14,921 yds",
-      "player": "Adrian Peterson",
-      "pos": "RB",
-      "team": "Minnesota Vikings"
-     },
-     {
-      "value": 13811,
-      "mark": "13,811 yds",
-      "player": "Derrick Henry",
-      "pos": "RB",
-      "team": "Baltimore Ravens"
      }
     ],
     "basis": "career cards",
@@ -219,9 +219,16 @@
    },
    "scope": "career",
    "league": {
-    "value": 145,
-    "mark": "145",
+    "value": 164,
+    "mark": "164",
     "top": [
+     {
+      "value": 164,
+      "mark": "164",
+      "player": "Emmitt Smith",
+      "pos": "RB",
+      "team": "Dallas Cowboys"
+     },
      {
       "value": 145,
       "mark": "145",
@@ -235,13 +242,6 @@
       "player": "Derrick Henry",
       "pos": "RB",
       "team": "Baltimore Ravens"
-     },
-     {
-      "value": 120,
-      "mark": "120",
-      "player": "Adrian Peterson",
-      "pos": "RB",
-      "team": "Minnesota Vikings"
      }
     ],
     "basis": "career cards",
@@ -260,29 +260,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 1866,
-    "mark": "1,866",
+    "value": 2059,
+    "mark": "2,059",
     "top": [
+     {
+      "value": 2059,
+      "mark": "2,059",
+      "player": "Ray Lewis",
+      "pos": "LB",
+      "team": "Baltimore Ravens"
+     },
+     {
+      "value": 2049,
+      "mark": "2,049",
+      "player": "Randy Gradishar",
+      "pos": "LB",
+      "team": "Denver Broncos"
+     },
      {
       "value": 1866,
       "mark": "1,866",
       "player": "Bobby Wagner",
       "pos": "LB",
       "team": "Seattle Seahawks"
-     },
-     {
-      "value": 1577,
-      "mark": "1,577",
-      "player": "Lavonte David",
-      "pos": "LB",
-      "team": "Tampa Bay Buccaneers"
-     },
-     {
-      "value": 1534,
-      "mark": "1,534",
-      "player": "Demario Davis",
-      "pos": "LB",
-      "team": "New York Jets"
      }
     ],
     "basis": "career cards",
@@ -301,29 +301,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 159,
-    "mark": "159",
+    "value": 200,
+    "mark": "200",
     "top": [
      {
-      "value": 159,
-      "mark": "159",
-      "player": "Julius Peppers",
+      "value": 200,
+      "mark": "200",
+      "player": "Bruce Smith",
       "pos": "DL",
-      "team": "Carolina Panthers"
+      "team": "Buffalo Bills"
      },
      {
-      "value": 140,
-      "mark": "140",
-      "player": "Von Miller",
-      "pos": "LB",
-      "team": "Dallas Cowboys"
+      "value": 198,
+      "mark": "198",
+      "player": "Reggie White",
+      "pos": "DL",
+      "team": "Green Bay Packers"
      },
      {
-      "value": 139,
-      "mark": "139",
-      "player": "DeMarcus Ware",
+      "value": 160,
+      "mark": "160",
+      "player": "Kevin Greene",
       "pos": "LB",
-      "team": "Dallas Cowboys"
+      "team": "Los Angeles Rams"
      }
     ],
     "basis": "career cards",
@@ -342,29 +342,29 @@
    },
    "scope": "career",
    "league": {
-    "value": 64,
-    "mark": "64",
+    "value": 71,
+    "mark": "71",
     "top": [
+     {
+      "value": 71,
+      "mark": "71",
+      "player": "Rod Woodson",
+      "pos": "DB",
+      "team": "Pittsburgh Steelers"
+     },
+     {
+      "value": 65,
+      "mark": "65",
+      "player": "Charles Woodson",
+      "pos": "DB",
+      "team": "Green Bay Packers"
+     },
      {
       "value": 64,
       "mark": "64",
       "player": "Ed Reed",
       "pos": "DB",
       "team": "Baltimore Ravens"
-     },
-     {
-      "value": 60,
-      "mark": "60",
-      "player": "Charles Woodson",
-      "pos": "DB",
-      "team": "Green Bay Packers"
-     },
-     {
-      "value": 52,
-      "mark": "52",
-      "player": "Champ Bailey",
-      "pos": "DB",
-      "team": "Denver Broncos"
      }
     ],
     "basis": "career cards",
@@ -403,9 +403,9 @@
      {
       "value": 48,
       "mark": "48",
-      "player": "John Abraham",
+      "player": "Jason Taylor",
       "pos": "LB",
-      "team": "Atlanta Falcons"
+      "team": "Miami Dolphins"
      }
     ],
     "basis": "career cards",

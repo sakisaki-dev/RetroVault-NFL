@@ -25,6 +25,9 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import classics as classics_mod  # noqa: E402
 CACHE = ROOT / "data" / "nfl-cache"
 NFL = ROOT / "data" / "nfl"
 Y80 = ROOT / "data" / "y80"
@@ -227,8 +230,10 @@ def apply_nicknames(players):
                 lo, hi, clubs = span(p)
                 return ((1 if teams & clubs else 0) + (1 if yrs and lo <= yrs[1] and hi >= yrs[0] else 0), p["g"])
             cands = [max(cands, key=score)]
-        if cands and not cands[0].get("nick") and e.get("nicknames"):
-            cands[0]["nick"] = e["nicknames"][0]
+        # a nickname that is another person's full name ("David W. Gibson") is a list-parsing slip, not a nickname
+        nicks = [x for x in (e.get("nicknames") or []) if not re.fullmatch(r"[A-Z][a-z]+ [A-Z]\.? ?[A-Z][a-z]+", x)]
+        if cands and not cands[0].get("nick") and nicks:
+            cands[0]["nick"] = nicks[0]
             given += 1
     lead = NFL / "nicknames_infobox.json"
     own = json.loads(lead.read_text()) if lead.exists() else {}
@@ -244,6 +249,14 @@ def main():
     roster = json.loads((NFL / "roster.json").read_text())["players"]
     awards = json.loads((NFL / "awards.json").read_text())
     legends = legend_rows(roster, awards)
+    # pre-1999 careers from Wikipedia (scripts/nfl/fetch_classics.py): the full career replaces a partial (1999-on) line, and
+    # players with no weekly data at all join as career-only rows (after the others, so none takes a name from a player already here)
+    cl = classics_mod.load()
+    for p in legends:
+        e = cl["partial"].get((norm(p["name"]), p["pos"])) if p.get("partial") else None
+        if e:
+            p["classic"] = e
+    legends = legends + classics_mod.new_rows(cl["new"])
     print(f"{len(legends)} retired and past players beyond the save (debut {FIRST}+, {LEGEND_MIN_GAMES}+ games or an award)")
     save_n = len(roster)
     allp = roster + legends
@@ -268,6 +281,7 @@ def main():
 
     games = {r["game_id"]: r for r in rows("games.csv.gz")}
     sb = {int(g["season"]): g for g in games.values() if g["game_type"] == "SB" and g["home_score"]}
+    champ_name = {c["season"]: c["winner"] for c in awards["champions"]}   # every Super Bowl winner since 1966, by club nickname
     champ = {y: (g["home_team"] if int(g["home_score"]) > int(g["away_score"]) else g["away_team"]) for y, g in sb.items()}
 
     logs = defaultdict(list)          # gsis -> game rows
@@ -366,10 +380,23 @@ def main():
         for y, w in champ.items():
             if any(r["game_id"] == sb[y]["game_id"] and r["team"] == w for r in L):
                 rings.append(y)
-        rec["rings"] = len(rings)
+        ce = p.get("classic")
+        # a Wikipedia career (full, from the infobox's clubs and years): the seasons before the weekly data take their clubs from it
+        season_clubs = {y: set(c_) for y, c_ in by_season.items()}
+        if ce:
+            first_seen = min(by_season) if by_season else 9999
+            for cc in ce["clubs"]:
+                for y in cc["years"]:
+                    if y < first_seen:
+                        season_clubs.setdefault(y, set()).add(cc["team"])
+            for y in ce["ringYears"]:
+                if y < first_seen and ce["rings"] > len(rings):
+                    rings.append(y)
+            rings = sorted(set(rings))
+        rec["rings"] = max(len(rings), ce["rings"]) if ce else len(rings)
         mine = defaultdict(int)
         nm = norm(p["name"])
-        mine_rows = [(k, ys, t) for k, ys, t in award_by.get(nm, []) if ys in by_season and t in by_season[ys]]
+        mine_rows = [(k, ys, t) for k, ys, t in award_by.get(nm, []) if ys in season_clubs and t in season_clubs[ys]]
         for k, ys, t in mine_rows:
             mine[k] += 1
         rec.update({"mvp": mine["mvp"], "opoy": mine["opoy"], "dpoy": mine["dpoy"], "sbmvp": mine["sbmvp"],
@@ -378,20 +405,54 @@ def main():
                       "height": p.get("nv_height") or p.get("height"), "weight": p.get("nv_weight") or p.get("weight"),
                       "draft": p.get("draft"), "rookie": p.get("rookie"), "salary": p.get("salary"),
                       "contract": p.get("contract"), "playoffGames": len(L) - len(reg)}
+        base, missing, g_est = {}, [], False
+        if ce:
+            # the Wikipedia career (data/nfl/classics.json): his full career totals. A partial player keeps his weekly lines from 1999
+            # and the difference becomes the baseline of every season line, so a line never reads below the career before it.
+            st = ce["stats"]
+            first_seen = min(by_season) if by_season else 9999
+            for k in ["g"] + list(FIELDS[pos]) + (["blk"] if pos == "OL" else []):
+                full = st.get(k)
+                have = rec.get(k) or 0
+                if full is None:
+                    if k == "g":
+                        full = have + classics_mod.games_estimate([y for y in ce["years"] if y < first_seen])
+                        g_est = True
+                    else:
+                        if k != "lng":
+                            missing.append(k)
+                        if not by_season:
+                            rec[k] = None
+                        continue
+                full = int(full + 0.5)
+                base[k] = max(0, full - have)
+                rec[k] = have + base[k]
         if p.get("legend"):
-            if p.get("partial"):
+            if p.get("partial") and not ce:
                 rec["nfl"]["partial"] = True
                 rec["nfl"]["debut"] = p.get("debut")
                  # debuted before 1999: only the 1999-on seasons are counted
             rec["nfl"]["past"] = True          # debuted 1999 or later, beyond the save (build_players.legend_rows)
             if retired:
                 rec["nfl"]["retired"] = True   # on no 2026 roster: Retired (prepare.py writes the status fact)
+        if ce:
+            rec["nfl"].update(source="wikipedia", debut=min(ce["years"]), last=max(ce["years"]), rookie=str(min(ce["years"])),
+                              wiki=ce["title"], draft=p.get("draft") or ce.get("draft"))
+            if not by_season:
+                rec["nfl"]["careerOnly"] = True    # no weekly data at all: career totals only, no seasons, no game log
+            else:
+                rec["nfl"]["lines1999"] = True     # weekly lines and game logs from 1999; the career before it from Wikipedia
+            if missing:
+                rec["nfl"]["missing"] = sorted(set(missing))   # stats Wikipedia does not carry for his era (tackles before the 1990s...)
+            if g_est:
+                rec["nfl"]["gEst"] = True          # games estimated from his seasons (no games figure on the page)
+            rec["nfl"]["retired"] = True
         players.append(rec)
         # the career as it stood at the end of each season he had played (regular season, awards and rings to date)
         by_y = defaultdict(list)
         for r in reg:
             by_y[int(r["season"])].append(r)
-        cum, line = defaultdict(float), {}
+        cum, line = defaultdict(float, base), {}
         for y in sorted(by_season):
             for r in by_y.get(y, []):
                 for key, col in FIELDS[pos].items():
@@ -415,16 +476,24 @@ def main():
         # stints: consecutive seasons with the same main club (most games that season); a mid-season trade adds the
         # second club that season too
         runs = []
-        for y in sorted(by_season):
-            for club, cnt in sorted(by_season[y].items(), key=lambda x: -x[1]):
-                if runs and runs[-1]["team"] == club and runs[-1]["to"] in (y, y - 1):
-                    runs[-1]["to"] = y
+        order = {}  # season -> clubs, the most games first (a Wikipedia season has no games: the infobox's order)
+        for y in sorted(season_clubs):
+            order[y] = [c_ for c_, _n in sorted(by_season[y].items(), key=lambda x: -x[1])] if y in by_season else \
+                [cc["team"] for cc in ce["clubs"] if y in cc["years"]] if ce else []
+        for y in sorted(order):
+            for club in order[y]:
+                for r_ in runs:
+                    if r_["team"] == club and r_["to"] in (y, y - 1):
+                        r_["to"] = y
+                        break
                 else:
                     runs.append({"team": club, "from": y, "to": y})
-        for s in runs:
-            s["rings"] = [y for y in rings if s["from"] <= y <= s["to"] and ABBR.get(champ[y]) == s["team"]]
+        for s_ in runs:
+            s_["rings"] = [y for y in rings if s_["from"] <= y <= s_["to"] and (ABBR.get(champ[y]) if y in champ else champ_name.get(y)) == s_["team"]]
         stints[p["display"]] = {"stints": runs, "confidence": "confirmed",
-                                "evidence": "Games played for each club, season by season (nflverse)."}
+                                "evidence": ("Clubs and years from his Wikipedia infobox." if not by_season else
+                                             "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox.")
+                                if ce else "Games played for each club, season by season (nflverse)."}
         careers[p["key"]] = {str(y): dict(c) for y, c in sorted(by_season.items())}
         if L:
             (NFL / "games" / (re.sub(r"[^a-z0-9]+", "-", p["key"].lower()).strip("-") + ".json")).write_text(json.dumps(
