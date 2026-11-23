@@ -8,7 +8,7 @@ import { SEASON_WEEKS, awardRaces, leaderBoards, liveSeasonView, recordText, sch
 import { ClubSplits, SeasonScoreboard } from '@/components/season/SeasonScoreboard';
 import { NotableGames, NumbersStrip, WeeklyChart } from '@/components/season/SeasonByNumbers';
 import { GameLog, GameRecords, LeagueTable, NoScores, SectionTitle } from '@/components/season/SeasonGames';
-import { AwardRaces, InjuryReport, Leaders, type PlayerLookup } from '@/components/season/LivePanels';
+import { AwardRaces, InjuryReport, NflInjuryReport, Leaders, type PlayerLookup } from '@/components/season/LivePanels';
 import { HeadToHeadGrid } from '@/components/season/scheduleParts';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
@@ -88,6 +88,7 @@ const SeasonTab = () => {
   }, [past, liveId]);
   const [picked, setPicked] = useState<string | null>(null);
 
+  const upcoming = useUpcoming(); // a hook: before the early return below
   if (live === undefined || liveSched === undefined || !schedule) {
     return <PixelLoader label="Season" what="the season" minHeight="60vh" className="container justify-start pt-[14vh]" />;
   }
@@ -95,7 +96,6 @@ const SeasonTab = () => {
   const shown = picked && options.includes(picked) ? picked : options[0] ?? null;
   const isLive = !!shown && shown === liveId && !!live && !!liveView;
   const pastSeason = past.find((p) => p.season === shown);
-  const upcoming = useUpcoming();
   const season: SeasonView | null = isLive
     ? liveView
     : pastSeason
@@ -169,6 +169,7 @@ const SeasonTab = () => {
               </div>
             )}
             {isLive && <LiveSections.Injuries s={live!} />}
+            {IS_NFL && !isLive && <NflInjuryReport lookup={lookup} season={Number(season.season)} />}
           </>
         ) : (
           <NoScores season={shown ?? 'This season'} available={options} onSeason={setPicked} />

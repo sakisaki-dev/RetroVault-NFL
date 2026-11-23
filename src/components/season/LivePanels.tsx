@@ -13,6 +13,7 @@ import type { AwardRace, LeaderBoard, RatingPart, SeasonEntry, SeasonRating } fr
 import { BOARD_BG, LampGrid, color } from './seasonGamesUi';
 import { SectionTitle, Toggle } from './SeasonGames';
 import { peekKeyProps } from '@/components/peek/peekProps';
+import { useInjuryList, type InjuryCode } from '@/utils/injuries';
 
 /**
  * The live season's player sections, slotted into the Season page's backbone (SeasonGames.tsx) in its own idiom:
@@ -356,6 +357,82 @@ export const InjuryReport = ({ entries }: { entries: SeasonEntry[] }) => {
           <Cross className="h-4 w-4 flex-shrink-0 text-[hsl(145_63%_52%)]" aria-hidden />
           No player in the save has an injury week left.
         </p>
+      )}
+    </div>
+  );
+};
+
+/* ---------------- NFL edition: the league's real injury report ---------------- */
+
+const HURT: Record<InjuryCode, { label: string; ink: string; rank: number }> = {
+  IR: { label: 'IR', ink: 'hsl(0 78% 62%)', rank: 0 },
+  Out: { label: 'OUT', ink: 'hsl(0 78% 62%)', rank: 1 },
+  Doubtful: { label: 'DOUBTFUL', ink: 'hsl(24 95% 58%)', rank: 2 },
+  Questionable: { label: 'QUEST.', ink: 'hsl(40 95% 58%)', rank: 3 },
+};
+
+/**
+ * The real injury report (scripts/nfl/injuries.py: the club reserve / injured lists and the latest week's official
+ * report): each player a card on his club's colour with his sprite, the status as an LED lamp, and the body part the
+ * report names. Filter by status; the first rows show, the rest behind a button.
+ */
+export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; season: number }) => {
+  const list = useInjuryList();
+  const [only, setOnly] = useState<InjuryCode | 'all'>('all');
+  const [all, setAll] = useState(false);
+  if (!list || list.season !== season) return null;
+  const rows = list.entries
+    .map((e) => ({ ...e, p: lookup(e.key) }))
+    .filter((e) => e.p && (only === 'all' || e.code === only))
+    .sort((a, b) => HURT[a.code].rank - HURT[b.code].rank || (b.p!.careerLegacy ?? 0) - (a.p!.careerLegacy ?? 0) || a.key.localeCompare(b.key));
+  const counts = (c: InjuryCode) => list.entries.filter((e) => e.code === c && lookup(e.key)).length;
+  const shown = all ? rows : rows.slice(0, 24);
+  return (
+    <div className="space-y-2">
+      <SectionTitle icon={HeartPulse}>Injury report · week {list.week}</SectionTitle>
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by status">
+        {(['all', 'IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => (
+          <button
+            key={c}
+            type="button"
+            aria-pressed={only === c}
+            onClick={() => setOnly(c)}
+            className={cn('rounded-full border px-2.5 py-1 font-pixel text-[9px] uppercase tracking-wider', only === c ? 'border-[hsl(var(--gold))] bg-[hsl(var(--gold)/0.15)] text-[hsl(var(--gold))]' : 'border-border/50 text-muted-foreground')}
+          >
+            {c === 'all' ? `All ${list.entries.filter((e) => lookup(e.key)).length}` : `${HURT[c].label} ${counts(c)}`}
+          </button>
+        ))}
+      </div>
+      <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+        {shown.map((e) => {
+          const p = e.p!;
+          const club = p.bannerTeam || p.team;
+          const h = HURT[e.code];
+          return (
+            <li key={e.key} {...peekKeyProps(e.key)} className="relative flex min-h-[72px] items-center gap-3 overflow-hidden rounded-lg border border-border/40 px-3 py-2 text-sm" style={{ background: `linear-gradient(100deg, ${color(club)}33, hsl(222 47% 9% / 0.9) 55%)` }}>
+              <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: color(club) }} />
+              <span className="relative h-[54px] w-[44px] flex-shrink-0 overflow-hidden">
+                <GameSprite player={{ name: p.name, position: p.position, team: p.team, bannerTeam: p.bannerTeam }} team={club} kind="bust" size="s" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <PlayerStrip name={p.name} position={p.position} team={club} size="sm" />
+                <p className="mt-1 truncate text-[11px] capitalize text-muted-foreground">
+                  {p.position} · {p.team === 'FA' ? 'Free agent' : p.team}
+                  {e.part ? ` · ${e.part}` : ''}
+                </p>
+              </div>
+              <span className="flex flex-shrink-0 items-center gap-1.5 rounded-sm bg-black/60 px-1.5 py-1 font-pixel text-[9px] tracking-widest" style={{ color: h.ink, boxShadow: `inset 0 0 0 1px ${h.ink}55` }}>
+                <i aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: h.ink, boxShadow: `0 0 6px ${h.ink}` }} />
+                {h.label}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      {rows.length > 24 && (
+        <button type="button" onClick={() => setAll(!all)} className="rounded-md border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
+          {all ? 'Show fewer' : `Show all ${rows.length}`}
+        </button>
       )}
     </div>
   );

@@ -44,8 +44,8 @@ export const useInjury = (key: string | undefined): { code: InjuryCode; part: st
 };
 
 /** Everyone listed, for the Season page's injury report. */
-export const useInjuryList = (): { week: number; entries: Array<{ key: string; code: InjuryCode; part: string }> } | null => {
+export const useInjuryList = (): { season: number; week: number; entries: Array<{ key: string; code: InjuryCode; part: string }> } | null => {
   useInjury(undefined);
   if (!IS_NFL || !loaded) return null;
-  return { week: loaded.week, entries: Object.entries(loaded.p).map(([key, [code, part]]) => ({ key, code, part })) };
+  return { season: loaded.season, week: loaded.week, entries: Object.entries(loaded.p).map(([key, [code, part]]) => ({ key, code, part })) };
 };
