@@ -7,7 +7,7 @@ import { reducedMotion } from '@/utils/motion';
 import { scheduleSeasons, useSchedule, type ScheduleSeason, type TableRow, type TeamSeasonRow } from '@/utils/schedule';
 import TeamLogo from '../timeline/TeamLogo';
 import SectionIntro from '../stats/SectionIntro';
-import { ClubLadder, StockBoard } from './PowerBoards';
+import { ClubLadder } from './PowerBoards';
 
 /**
  * Stats → Teams: advanced team stats from the weekly league scores (public/data/league/schedule.json, built by
@@ -993,7 +993,7 @@ const TeamAdvanced = () => {
         </h2>
         {!multi ? (
           <p className="glass-card p-4 text-sm text-muted-foreground">
-            Each club's season-by-season charts and the risers and fallers appear once a second season of weekly scores is uploaded (only {season.season} so far).
+            Each club's season-by-season charts appear once a second season of weekly scores is uploaded (only {season.season} so far).
           </p>
         ) : (
           <>
@@ -1002,10 +1002,6 @@ const TeamAdvanced = () => {
             ) : (
               <p className="glass-card p-4 text-sm text-muted-foreground">No club has a season of weekly scores yet.</p>
             )}
-            <h3 className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide text-gold">
-              <TrendingUp className="h-4 w-4" aria-hidden /> Risers and fallers
-            </h3>
-            <StockBoard progression={progression} season={season.season} clubs={season.table.length || 32} onTrack={track} />
           </>
         )}
       </section>
