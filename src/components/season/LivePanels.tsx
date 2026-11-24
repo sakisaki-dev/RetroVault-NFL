@@ -13,6 +13,7 @@ import type { AwardRace, LeaderBoard, RatingPart, SeasonEntry, SeasonRating } fr
 import { BOARD_BG, LampGrid, color } from './seasonGamesUi';
 import { SectionTitle, Toggle } from './SeasonGames';
 import { peekKeyProps } from '@/components/peek/peekProps';
+import './nflLocker.css';
 import { useInjuryList, type InjuryCode } from '@/utils/injuries';
 
 /**
@@ -387,9 +388,24 @@ export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; seas
     .sort((a, b) => HURT[a.code].rank - HURT[b.code].rank || (b.p!.careerLegacy ?? 0) - (a.p!.careerLegacy ?? 0) || a.key.localeCompare(b.key));
   const counts = (c: InjuryCode) => list.entries.filter((e) => e.code === c && lookup(e.key)).length;
   const shown = all ? rows : rows.slice(0, 24);
+  const total = list.entries.filter((e) => lookup(e.key)).length;
   return (
     <div className="space-y-2">
       <SectionTitle icon={HeartPulse}>Injury report · week {list.week}</SectionTitle>
+      <div className="nsl" role="region" aria-label="Injury report">
+        <div className="nsl__banner">
+          <span className="nsl__count">{total}</span>
+          <span className="nsl__title">Players on the report</span>
+          <span className="nsl__lamps">
+            {(['IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => (
+              <span key={c} className="nsl__lamp" style={{ color: HURT[c].ink }}>
+                <i aria-hidden style={{ background: HURT[c].ink, boxShadow: `0 0 6px ${HURT[c].ink}` }} />
+                {HURT[c].label} {counts(c)}
+              </span>
+            ))}
+          </span>
+        </div>
+        <div className="nsl__body">
       <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by status">
         {(['all', 'IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => (
           <button
@@ -399,7 +415,7 @@ export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; seas
             onClick={() => setOnly(c)}
             className={cn('rounded-full border px-2.5 py-1 font-pixel text-[9px] uppercase tracking-wider', only === c ? 'border-[hsl(var(--gold))] bg-[hsl(var(--gold)/0.15)] text-[hsl(var(--gold))]' : 'border-border/50 text-muted-foreground')}
           >
-            {c === 'all' ? `All ${list.entries.filter((e) => lookup(e.key)).length}` : `${HURT[c].label} ${counts(c)}`}
+            {c === 'all' ? `All ${total}` : `${HURT[c].label} ${counts(c)}`}
           </button>
         ))}
       </div>
@@ -409,7 +425,7 @@ export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; seas
           const club = p.bannerTeam || p.team;
           const h = HURT[e.code];
           return (
-            <li key={e.key} {...peekKeyProps(e.key)} className="relative flex min-h-[72px] items-center gap-3 overflow-hidden rounded-lg border border-border/40 px-3 py-2 text-sm" style={{ background: `linear-gradient(100deg, ${color(club)}33, hsl(222 47% 9% / 0.9) 55%)` }}>
+            <li key={e.key} {...peekKeyProps(e.key)} className="nsl__row relative flex min-h-[72px] items-center gap-3 overflow-hidden rounded-lg border border-border/40 px-3 py-2 text-sm" style={{ background: `linear-gradient(100deg, ${color(club)}33, hsl(222 47% 9% / 0.9) 55%)` }}>
               <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: color(club) }} />
               <span className="relative h-[54px] w-[44px] flex-shrink-0 overflow-hidden">
                 <GameSprite player={{ name: p.name, position: p.position, team: p.team, bannerTeam: p.bannerTeam }} team={club} kind="bust" size="s" />
@@ -434,6 +450,8 @@ export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; seas
           {all ? 'Show fewer' : `Show all ${rows.length}`}
         </button>
       )}
+        </div>
+      </div>
     </div>
   );
 };
