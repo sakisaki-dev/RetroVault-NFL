@@ -1,5 +1,5 @@
 import { displayName } from '@/utils/displayName';
-import { useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { Clock, Radar, Radio, Search, Shield, Sparkles, Star } from 'lucide-react';
 import InLeague from '@/components/InLeague';
@@ -15,7 +15,8 @@ import { useJerseyNumbers } from '@/utils/jerseys';
 import { useSkillRatings } from '@/utils/useSkillRatings';
 import { getTeamColors } from '@/utils/teamColors';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { openTeamPage, searchTeams } from '@/utils/teamSearch';
+import { openTeamPage } from '@/utils/teamSearch';
+import { clubsOfQuery } from '@/utils/gameFinder';
 import { openGame } from '@/utils/nflGames';
 import { MeetingItem, useMeetings } from './search/GameMeetings';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
@@ -319,9 +320,27 @@ const QuickSearchDialog = () => {
   }, [deferredQuery, pos, recent, byKey, index, league, ovrMap, currentClub]);
 
   // Clubs matching the query lead the results; a pick opens its team page (Stats › Teams)
-  const clubs = useMemo(() => (pos === 'ALL' ? searchTeams(deferredQuery) : []), [deferredQuery, pos]);
+  const clubs = useMemo(() => (pos === 'ALL' ? clubsOfQuery(deferredQuery) : []), [deferredQuery, pos]);
 
   const meetings = useMeetings(deferredQuery);
+
+  // Typing never scrolls the list (cmdk scrolls its selected item into view when the groups reorder): reset to the
+  // top on every query change, and for a moment after it while cmdk re-selects. Arrow keys still scroll the active row.
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const typedAt = useRef(0);
+  const toTop = () => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  };
+  const onQuery = (v: string) => {
+    typedAt.current = performance.now();
+    setActive('');
+    setQuery(v);
+  };
+  useLayoutEffect(() => {
+    toTop();
+    const id = requestAnimationFrame(toTop);
+    return () => cancelAnimationFrame(id);
+  }, [deferredQuery, meetings.length, clubs.length, pos]);
 
   const activePlayer = active.startsWith('team ') || active.startsWith('game ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
 
@@ -359,7 +378,7 @@ const QuickSearchDialog = () => {
               </div>
               <CommandInput
                 value={query}
-                onValueChange={setQuery}
+                onValueChange={onQuery}
                 placeholder="Who are we scouting? A player or a club"
                 className="h-12 font-display text-lg tracking-wide placeholder:font-sans placeholder:text-sm"
               />
@@ -382,8 +401,8 @@ const QuickSearchDialog = () => {
             </div>
 
             <div>
-              <CommandList className="max-h-[min(26rem,calc(var(--dvh)*0.55))] overscroll-contain p-1.5">
-                <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">No player or club by that name in the vault.</CommandEmpty>
+              <CommandList ref={listRef} onScroll={() => performance.now() - typedAt.current < 600 && toTop()} className="max-h-[min(26rem,calc(var(--dvh)*0.55))] overscroll-contain p-1.5">
+                <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">No players or games match <b>{query.trim()}</b>.</CommandEmpty>
                 {clubs.length > 0 && (
                   <CommandGroup
                     heading={

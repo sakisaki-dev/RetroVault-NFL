@@ -9,8 +9,7 @@ import { useSkillRatings } from '@/utils/useSkillRatings';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
-import { searchTeams } from '@/utils/teamSearch';
-import type { Meeting } from '@/utils/gameFinder';
+import { clubsOfQuery, type Meeting } from '@/utils/gameFinder';
 import { MeetingButton, useMeetings } from './GameMeetings';
 import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { useSwipeToDismiss } from '@/hooks/useSwipeToDismiss';
@@ -191,7 +190,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
   const index = useMemo(() => buildSearchIndex(players, { ovr: ovrMap, formerNames: extras.formerNames }), [players, ovrMap, extras]);
   const keep = useMemo(() => (pos === 'ALL' ? undefined : (p: Player) => p.position === pos), [pos]);
   const groups = useMemo((): SheetGroup[] => {
-    if (query.trim()) return [{ id: 'results', label: 'Results', players: searchPlayers(index, query, LIMIT, keep).map((e) => e.p) }];
+    if (query.trim()) return [{ id: 'results', label: 'Results', players: searchPlayers(index, query, LIMIT, keep).map((e) => e.p) }].filter((g) => g.players.length);
     const recent = readRecent()
       .map((k) => index.byKey.get(k)?.p)
       .filter((p): p is Player => !!p && (!keep || keep(p)));
@@ -203,7 +202,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     });
     return [{ id: 'recent', label: 'Recent', players: recent }, ...more].filter((g) => g.players.length);
   }, [query, index, keep, suggestions]);
-  const clubs = useMemo(() => (onPickTeam && pos === 'ALL' ? searchTeams(query) : []), [onPickTeam, pos, query]);
+  const clubs = useMemo(() => (onPickTeam && pos === 'ALL' ? clubsOfQuery(query) : []), [onPickTeam, pos, query]);
   const meetings = useMeetings(onPickGame ? query : '');
   const firstPlayer = query.trim() ? groups[0]?.players[0] ?? null : null;
   useLayoutEffect(() => {
@@ -260,7 +259,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
       <p className="ss-empty">
         {query.trim() ? (
           <>
-            No player matches <b>{query.trim()}</b>
+            No players or games match <b>{query.trim()}</b>
             {pos !== 'ALL' ? ` at ${pos}` : ''}.
           </>
         ) : (
@@ -393,9 +392,12 @@ const Sheet = ({
   useEffect(() => {
     const html = document.documentElement;
     const prev = html.style.overflow;
+    const prevBody = document.body.style.overflow;
     html.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
     return () => {
       html.style.overflow = prev;
+      document.body.style.overflow = prevBody;
     };
   }, []);
 
@@ -437,6 +439,12 @@ const Sheet = ({
   };
 
   const stale = query !== deferredQuery || pos !== deferredPos;
+
+  // Typing never scrolls the list: it stays at the top while the groups (Teams, Games, Players) change
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  useLayoutEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [query, deferredQuery, pos]);
 
   return (
     <div ref={rootRef} className="ss-root" data-state={open ? 'open' : 'closed'}>
@@ -524,7 +532,7 @@ const Sheet = ({
             ))}
           </div>
         </div>
-        <div className={cn('ss-scroll', stale && 'is-stale')} onTouchStart={onListTouchStart} onTouchMove={onListTouchMove}>
+        <div ref={scrollRef} className={cn('ss-scroll', stale && 'is-stale')} onTouchStart={onListTouchStart} onTouchMove={onListTouchMove}>
           <Results
             query={deferredQuery}
             pos={deferredPos}
