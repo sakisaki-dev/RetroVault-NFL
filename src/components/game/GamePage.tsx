@@ -15,11 +15,14 @@ import { hslOf } from '../season/seasonGamesUi';
 import { liftForDarkBg } from '@/utils/teamColors';
 import {
   atsOf, compareRows, podiumOf, fmtDate, hasNgs, hasPfr, hasSnaps, impact, leadersFor, missingFor, played, recapOf, roofLabel, roundLabel, sitePos, snaps,
-  lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, type Side, type Star, type Unit,
+  lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, roman, superBowlNumber, type Side, type Star, type Unit,
 } from './gameModel';
 import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, type Linker } from './gameSections';
+import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, LedDigits, CrowdDivider, ClubStrip } from '@/components/arcade';
+import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
+import './gameKit.css';
 import { displayName } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
 
@@ -55,14 +58,13 @@ const InView = ({ children, className, minH = 90 }: { children: ReactNode; class
   );
 };
 
-const Section = ({ id, icon: Icon, title, kicker, children, className }: { id: string; icon: typeof Users; title: string; kicker?: string; children: ReactNode; className?: string }) => (
+const Section = ({ id, icon: Icon, title, kicker, children, className, g }: { id: string; icon: typeof Users; title: string; kicker?: string; children: ReactNode; className?: string; g?: GameDetail }) => (
   <section id={id} aria-labelledby={`${id}-h`} className={cn('space-y-3', className)}>
-    <div className="flex items-end justify-between gap-3 border-b border-[hsl(var(--line)/0.6)] pb-1.5">
-      <h2 id={`${id}-h`} className="flex items-center gap-2 font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">
-        <Icon className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> {title}
-      </h2>
-      {kicker && <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">{kicker}</span>}
-    </div>
+    <SectionHeader
+      title={<span id={`${id}-h`} className="gm-sech"><Icon className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> {title}</span>}
+      kicker={kicker}
+      right={g ? <span className="gm-sech__clubs"><ClubBadge club={g.away} size="sm" /><ClubBadge club={g.home} size="sm" /></span> : undefined}
+    />
     {children}
   </section>
 );
@@ -102,27 +104,27 @@ const Compare = ({ g }: { g: GameDetail }) => {
   const shown = rows.filter((r) => r.a || r.h || r.id === 'sk');
   if (!shown.length) return null;
   return (
-    <div className="gm-compare" style={{ ['--ca' as string]: liftForDarkBg(toneOf(g.away), 46), ['--ch' as string]: liftForDarkBg(toneOf(g.home), 46) }}>
+    <PixelPanel screen className="gm-compare" pad="sm" style={{ ['--ca' as string]: clubPlate(g.away).fill, ['--ch' as string]: clubPlate(g.home).fill }}>
       <div className="gm-compare__head">
-        <span className="flex items-center gap-1.5"><TeamLogo team={g.away} decorative className="h-5 w-5" /> {abbrOf(g.away)}</span>
-        <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">Tale of the tape</span>
-        <span className="flex items-center gap-1.5">{abbrOf(g.home)} <TeamLogo team={g.home} decorative className="h-5 w-5" /></span>
+        <ClubBadge club={g.away} />
+        <span className="ax-kicker">Tale of the tape</span>
+        <ClubBadge club={g.home} />
       </div>
       {shown.map((r) => {
-        const mx = Math.max(Math.abs(r.a), Math.abs(r.h), 0.0001);
         const aBetter = r.lowerBetter ? r.a < r.h : r.a > r.h;
         const hBetter = r.lowerBetter ? r.h < r.a : r.h > r.a;
+        const tot = Math.abs(r.a) + Math.abs(r.h);
+        const pa = tot ? Math.max(4, Math.min(96, (Math.abs(r.a) / tot) * 100)) : 50;
         return (
           <div key={r.id} className="gm-cmp">
-            <span className={cn('gm-cmp__n', aBetter && 'is-better')}>{r.sa ?? Math.round(r.a)}</span>
-            <span className="gm-cmp__bar gm-cmp__bar--a" aria-hidden><i style={{ width: `${Math.max(3, (Math.abs(r.a) / mx) * 100)}%`, opacity: aBetter ? 1 : 0.55 }} /></span>
-            <span className="gm-cmp__l">{r.label}</span>
-            <span className="gm-cmp__bar gm-cmp__bar--h" aria-hidden><i style={{ width: `${Math.max(3, (Math.abs(r.h) / mx) * 100)}%`, opacity: hBetter ? 1 : 0.55 }} /></span>
-            <span className={cn('gm-cmp__n', hBetter && 'is-better')}>{r.sh ?? Math.round(r.h)}</span>
+            <span className={cn('gm-cmp__n', aBetter && 'is-better')}><LedDigits value={r.sa ?? Math.round(r.a)} dot={2} color="amber" /></span>
+            <span className="gm-cmp__l">{r.label}{r.lowerBetter ? ' (lower wins)' : ''}</span>
+            <span className={cn('gm-cmp__n gm-cmp__n--h', hBetter && 'is-better')}><LedDigits value={r.sh ?? Math.round(r.h)} dot={2} color="amber" /></span>
+            <span className="gm-cmp__seg" aria-hidden><i className="a" style={{ width: `${pa}%` }} /><i className="h" style={{ width: `${100 - pa}%` }} /></span>
           </div>
         );
       })}
-    </div>
+    </PixelPanel>
   );
 };
 
@@ -248,8 +250,8 @@ const kickerLine = (g: GameDetail, top: GamePlayer[]): string | null => {
   return k ? `${displayName(k.name)} (${k.side === 0 ? abbrOf(g.away) : abbrOf(g.home)}) went ${v(k.s, 'fg_made')}/${v(k.s, 'fg_att')} on field goals.` : null;
 };
 
-const GamePodium = ({ g, link }: { g: GameDetail; link: Linker }) => {
-  const top = useMemo(() => podiumOf(g), [g]);
+const GamePodium = ({ g, link, champions }: { g: GameDetail; link: Linker; champions?: Side }) => {
+  const top = useMemo(() => (champions === undefined ? podiumOf(g) : podiumOf({ ...g, players: g.players.filter((p) => p.side === champions) })), [g, champions]);
   if (top.length < 1) return null;
   const order = [top[1], top[0], top[2]].map((p, i) => (p ? { p, rank: [2, 1, 3][i] } : null));
   const winner = winnerOf(g);
@@ -265,7 +267,7 @@ const GamePodium = ({ g, link }: { g: GameDetail; link: Linker }) => {
             return (
               <li key={p.gsis + p.name} className={cn('gm-pod__col', r === 1 && 'is-first')}>
                 <SpriteOf p={p} g={g} size="m" celebrate={r === 1 || winner === p.side} />
-                <div className="nsx-step gm-pod__step" style={{ minHeight: [92, 118, 84][r - 1], background: `linear-gradient(180deg, hsl(${toneOf(abbr)} / 0.8), rgb(8 12 26 / 0.96) 90%), #0b1020` }}>
+                <div className="nsx-step gm-pod__step" style={{ minHeight: [92, 118, 84][r - 1], ...clubVars(abbr) }}>
                   <span className="gm-pod__rank">{r}</span>
                   <NameStrip p={p} g={g} link={link} className="gm-pod__name" />
                   <span className="gm-pod__team"><TeamLogo team={abbr} decorative className="h-3.5 w-3.5" /> {abbrOf(abbr)} · {p.pos}</span>
@@ -289,22 +291,18 @@ const Performers = ({ g, link }: { g: GameDetail; link: Linker }) => (
       const abbr = s === 0 ? g.away : g.home;
       const rows = g.players.filter((p) => p.side === s && score(p) > 0 && lineOf(p)).sort((a, b) => score(b) - score(a)).slice(0, 4);
       return (
-        <div key={s} className="gm-perf__club" style={{ ['--tc' as string]: toneOf(abbr) }}>
+        <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-perf__club" style={{ ['--tc' as string]: toneOf(abbr) }}>
           <p className="gm-perf__head"><TeamLogo team={abbr} decorative className="h-6 w-6" /> <span>{findNFLTeam(abbr)?.fullName ?? abbr}</span></p>
           <ul>
-            {rows.map((p) => {
-              const href = link(p);
-              const body = (
-                <>
-                  <span className="gm-perf__bust"><SpriteOf p={p} g={g} kind="bust" /></span>
-                  <span className="gm-perf__txt"><b>{displayName(p.name)}</b><span className="gm-perf__line">{lineOf(p)}</span></span>
-                </>
-              );
-              return <li key={p.gsis + p.name}>{href ? <a href={href} className="gm-perf__row" title={`${displayName(p.name)}: open Deep Dive`}>{body}</a> : <span className="gm-perf__row">{body}</span>}</li>;
-            })}
+            {rows.map((p, i) => (
+              <li key={p.gsis + p.name} className={cn('gm-perf__row', i === 0 && 'is-top')}>
+                <span className="gm-perf__floor"><SpriteOf p={p} g={g} size="m" celebrate={i === 0} /></span>
+                <span className="gm-perf__txt"><NameStrip p={p} g={g} link={link} className="gm-perf__n" /><span className="gm-perf__line">{p.pos} · {lineOf(p)}</span></span>
+              </li>
+            ))}
             {!rows.length && <li className="gm-perf__none">No stat lines recorded for this club.</li>}
           </ul>
-        </div>
+        </PixelPanel>
       );
     })}
   </div>
@@ -556,6 +554,53 @@ const Missing = ({ g }: { g: GameDetail }) => {
   );
 };
 
+/* ---------------- Super Bowl ---------------- */
+
+const CONFETTI = Array.from({ length: 46 }, (_, i) => ({ x: (i * 37) % 100, d: (i * 13) % 17 / 10, t: 3.2 + ((i * 7) % 9) / 3, r: (i * 53) % 90, k: i % 3 }));
+
+const Confetti = ({ club }: { club: string }) => {
+  const t = findNFLTeam(club);
+  const cols = [t ? `hsl(${t.primaryColor})` : '#f5c542', t ? `hsl(${t.secondaryColor})` : '#fff', '#ffd54a'];
+  return (
+    <div className="gm-confetti" aria-hidden>
+      {CONFETTI.map((c, i) => <i key={i} style={{ left: `${c.x}%`, top: `${(c.x * 7) % 60}%`, background: cols[c.k], animationDelay: `${-c.d}s`, animationDuration: `${c.t}s`, transform: `rotate(${c.r}deg)` }} />)}
+    </div>
+  );
+};
+
+const SuperBowlBanner = ({ g }: { g: GameDetail }) => {
+  const w = winnerOf(g);
+  const champ = w === null ? g.home : w === 0 ? g.away : g.home;
+  const t = findNFLTeam(champ);
+  return (
+    <div className="gm-sbban">
+      <Marquee
+        className="gm-sbban__m"
+        kicker={`${g.season} season finale`}
+        title={`Super Bowl ${roman(superBowlNumber(g.season))}`}
+        right={w !== null ? <span className="gm-sbban__champ"><PixelCup band={t?.primaryColor ?? '43 100% 62%'} className="gm-sbban__cup" /><ClubBadge club={champ} size="sm" /></span> : undefined}
+      />
+      {w !== null && <Confetti club={champ} />}
+    </div>
+  );
+};
+
+/** The champions' three best on a podium under the cup. */
+const Champions = ({ g, link }: { g: GameDetail; link: Linker }) => {
+  const w = winnerOf(g);
+  if (w === null) return null;
+  const champ = w === 0 ? g.away : g.home;
+  const t = findNFLTeam(champ);
+  return (
+    <Section g={g} id="gm-champs" icon={Trophy} title={`${teamName(champ)}: world champions`} kicker="The title team's stars">
+      <div className="gm-champs">
+        <span className="gm-champs__cup"><PixelCup band={t?.primaryColor ?? '43 100% 62%'} spark={1} className="gm-champs__svg" /></span>
+        <div className="gm-champs__pod"><GamePodium g={g} link={link} champions={w} /></div>
+      </div>
+    </Section>
+  );
+};
+
 const GameView = ({ g }: { g: GameDetail }) => {
   const { getAllPlayers } = useLeague();
   // nflverse lines carry no suffix ("James Cook"); the sheet does ("James Cook III"): exact key first, else the one suffixed match
@@ -577,6 +622,7 @@ const GameView = ({ g }: { g: GameDetail }) => {
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);
   const done = played(g);
+  const sb = g.type === 'SB' && done;
   const advOk = hasPfr(g) || hasNgs(g);
   const snapOk = hasSnaps(g);
   const away = teamName(g.away);
@@ -610,48 +656,53 @@ const GameView = ({ g }: { g: GameDetail }) => {
         <span className="gm-kicker">{kickerOf(g)}</span>
       </nav>
 
+      {sb && <SuperBowlBanner g={g} />}
       <Stadium g={g} link={link} />
 
       {done ? (
         <>
           {recapOf(g).length > 0 && (
-            <Section id="gm-recap" icon={ScrollText} title="How it was won" kicker="From the box score">
+            <Section g={g} id="gm-recap" icon={ScrollText} title="How it was won" kicker="From the box score">
               <Recap g={g} />
             </Section>
           )}
           <div className="gm-duo">
             {g.players.length > 0 && (
-              <Section id="gm-stars" icon={Trophy} title="Stars of the game" className="gm-duo__a">
+              <Section g={g} id="gm-stars" icon={Trophy} title="Stars of the game" className="gm-duo__a">
                 <GamePodium g={g} link={link} />
               </Section>
             )}
             {g.team && (
-              <Section id="gm-tape" icon={Gauge} title="Tale of the tape" className="gm-duo__b">
+              <Section g={g} id="gm-tape" icon={Gauge} title="Tale of the tape" className="gm-duo__b">
                 <Compare g={g} />
               </Section>
             )}
           </div>
+          {sb && <Champions g={g} link={link} />}
+          <CrowdDivider />
           <QbDuel g={g} link={link} />
           <Efficiency g={g} />
+          <CrowdDivider />
           <div className="gm-grid">
             <div className="gm-stack"><GroundGame g={g} link={link} /><PassRush g={g} link={link} /></div>
             <div className="gm-stack"><AirAttack g={g} link={link} /><Fantasy g={g} link={link} /></div>
           </div>
           <SpecialTeams g={g} />
+          <CrowdDivider />
           {g.players.length > 0 && (
-            <Section id="gm-players" icon={Users} title="Top performers" kicker="By club">
+            <Section g={g} id="gm-players" icon={Users} title="Top performers" kicker="By club">
               <Performers g={g} link={link} />
             </Section>
           )}
 
           {tabs.length > 0 && (
             <section id="gm-deeper" aria-label="More of the game's data" className="space-y-3">
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">Dig deeper</h2>
+              <SectionHeader title="Dig deeper" kicker="Every player, every stat" />
               <div role="group" aria-label="Dig deeper" className="gm-deeper">
                 {tabs.map((t) => (
-                  <button key={t.id} type="button" aria-pressed={deep === t.id} onClick={() => setDeep(deep === t.id ? null : t.id)}>
-                    <t.icon className="h-4 w-4" aria-hidden /> {t.label} <small>{t.sub}</small>
-                  </button>
+                  <PixelChip key={t.id} pressed={deep === t.id} onClick={() => setDeep(deep === t.id ? null : t.id)} icon={<t.icon className="h-4 w-4" aria-hidden />}>
+                    {t.label}{t.sub && <small>{t.sub}</small>}
+                  </PixelChip>
                 ))}
               </div>
               {deep === 'coaches' && (

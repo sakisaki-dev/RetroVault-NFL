@@ -7,6 +7,7 @@ import type { GameDetail, GamePlayer, Stat } from '@/utils/nflGames';
 import { useGameSprites } from '@/utils/gameSprites';
 import { hslOf } from '../season/seasonGamesUi';
 import { displayName } from '@/utils/displayName';
+import { PixelPanel, ClubStrip, clubVars } from '@/components/arcade';
 import { liftForDarkBg } from '@/utils/teamColors';
 import { score, sitePos, unitOf, v, impact, type Side } from './gameModel';
 
@@ -27,12 +28,19 @@ const f1 = (x: number, d = 1) => (Number.isInteger(x) && d === 1 ? String(x) : x
 
 export const NameStrip = ({ p, g, link, children, className }: { p: GamePlayer; g: GameDetail; link: Linker; children?: ReactNode; className?: string }) => {
   const href = link(p);
-  const cls = cn('gm-strip', className);
-  const tone = toneOf(clubOf(g, p.side));
-  const light = parseFloat(tone.split(/\s+/)[2]) > 55;
-  const st = { ['--tc' as string]: tone, ...(light ? { color: '#0b1020', textShadow: 'none' } : {}) };
   const body = children ?? displayName(p.name);
-  return href ? <a href={href} className={cls} style={st} title={`${displayName(p.name)}: open Deep Dive`}>{body}</a> : <span className={cls} style={st}>{body}</span>;
+  return (
+    <ClubStrip
+      club={clubOf(g, p.side)}
+      logo={false}
+      size="sm"
+      className={cn('gm-strip', className)}
+      title={`${displayName(p.name)}${href ? ': open Deep Dive' : ''}`}
+      {...(href ? { onClick: () => { window.location.hash = href; } } : {})}
+    >
+      {body}
+    </ClubStrip>
+  );
 };
 
 export const SpriteOf = ({ p, g, size = 's', celebrate, kind = 'figure' }: { p: GamePlayer; g: GameDetail; size?: 's' | 'm' | 'l'; celebrate?: boolean; kind?: 'figure' | 'bust' }) => {
@@ -43,10 +51,10 @@ export const SpriteOf = ({ p, g, size = 's', celebrate, kind = 'figure' }: { p: 
 };
 
 const Card = ({ title, kicker, children, className }: { title: string; kicker?: string; children: ReactNode; className?: string }) => (
-  <section className={cn('gm-card', className)} aria-label={title}>
+  <PixelPanel as="section" aria-label={title} className={cn('gm-card', className)} pad="sm">
     <header className="gm-card__head"><h2>{title}</h2>{kicker && <span>{kicker}</span>}</header>
     {children}
-  </section>
+  </PixelPanel>
 );
 
 const side2 = (g: GameDetail) => ([0, 1] as Side[]).map((s) => ({ s, abbr: clubOf(g, s), tone: toneOf(clubOf(g, s)) }));
@@ -98,7 +106,7 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const qh = qbOf(g, 1);
   if (!qa || !qh) return null;
   const head = (p: GamePlayer, side: Side) => (
-    <div className={cn('gm-qb__who', side === 1 && 'is-home')} style={sideStyle(toneOf(clubOf(g, side)))}>
+    <div className={cn('gm-qb__who', side === 1 && 'is-home')} style={{ ...sideStyle(toneOf(clubOf(g, side))), ...clubVars(clubOf(g, side)) }}>
       <span className="gm-qb__spr"><SpriteOf p={p} g={g} size="m" /></span>
       <span className="gm-qb__id">
         <small>{abbrOf(clubOf(g, side))} · {side === 0 ? 'Away' : 'Home'}</small>
@@ -144,10 +152,10 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
 const Clubs = ({ g, render }: { g: GameDetail; render: (s: Side) => ReactNode }) => (
   <div className="gm-clubs">
     {side2(g).map(({ s, abbr, tone }) => (
-      <div key={s} className="gm-clubs__col" style={sideStyle(tone)}>
+      <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-clubs__col" style={sideStyle(tone)}>
         <p className="gm-clubs__head"><TeamLogo team={abbr} decorative className="h-5 w-5" /> {abbrOf(abbr)}</p>
         {render(s)}
-      </div>
+      </PixelPanel>
     ))}
   </div>
 );
@@ -170,6 +178,7 @@ export const GroundGame = ({ g, link }: { g: GameDetail; link: Linker }) => {
         const c = v(p.s, 'carries');
         return (
           <div key={p.gsis + p.name} className="gm-lb">
+            <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>
             <NameStrip p={p} g={g} link={link} className="gm-lb__n" />
             <Bar pct={(Math.max(0, v(p.s, 'rushing_yards')) / max) * 100} label={`${v(p.s, 'rushing_yards')} yds`} />
             <span className="gm-lb__d">{bits([`${c} car`, `${(v(p.s, 'rushing_yards') / c).toFixed(1)} ypc`, v(p.s, 'rushing_tds') ? `${v(p.s, 'rushing_tds')} TD` : '',
@@ -195,7 +204,7 @@ export const AirAttack = ({ g, link }: { g: GameDetail; link: Linker }) => {
           const t = v(p.s, 'targets');
           return (
             <div key={p.gsis + p.name} className={cn('gm-lb', i === 0 && 'is-top')}>
-              {i === 0 && <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>}
+              <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>
               <NameStrip p={p} g={g} link={link} className="gm-lb__n" />
               <Bar pct={(t / total) * 100} label={`${Math.round((t / total) * 100)}%`} />
               <span className="gm-lb__d">{bits([`${t} tgt`, `${v(p.s, 'receptions')} rec`, `${v(p.s, 'receiving_yards')} yds`, v(p.s, 'receiving_tds') ? `${v(p.s, 'receiving_tds')} TD` : '',
@@ -283,7 +292,7 @@ export const Fantasy = ({ g, link }: { g: GameDetail; link: Linker }) => {
     <Card title="Fantasy" kicker="Top PPR scores">
       <ol className="gm-fan">
         {top.map((p, i) => (
-          <li key={p.gsis + p.name} style={sideStyle(toneOf(clubOf(g, p.side)))}>
+          <li key={p.gsis + p.name} style={{ ...sideStyle(toneOf(clubOf(g, p.side))), ...clubVars(clubOf(g, p.side)) }}>
             <span className="gm-fan__r">{i + 1}</span>
             <span className="gm-fan__bust"><SpriteOf p={p} g={g} kind="bust" /></span>
             <span className="gm-fan__who"><NameStrip p={p} g={g} link={link} className="gm-lb__n" /><Bar pct={(v(p.s, 'fantasy_points_ppr') / max) * 100} /></span>
