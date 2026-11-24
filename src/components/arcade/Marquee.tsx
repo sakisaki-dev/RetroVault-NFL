@@ -25,7 +25,6 @@ export const Marquee = ({ title, kicker, right, club, as: Tag = 'h2', className 
       <Tag className="ax-marquee__title">{title}</Tag>
     </div>
     {right && <div className="ax-marquee__right">{right}</div>}
-    <span className="ax-marquee__bulbs" aria-hidden="true" />
   </header>
 );
 export default Marquee;

@@ -264,7 +264,6 @@ export const Efficiency = ({ g }: { g: GameDetail }) => {
   if (tiles.length < 3) return null;
   return (
     <section className="gm-led" aria-label="Efficiency" style={{ ['--ca' as string]: liftTone(g.away), ['--ch' as string]: liftTone(g.home) }}>
-      <header><span>{abbrOf(g.away)}</span><h2>Efficiency</h2><span>{abbrOf(g.home)}</span></header>
       <div className="gm-led__grid">
         {tiles.map((t) => (
           <div key={t.label} className="gm-led__tile">

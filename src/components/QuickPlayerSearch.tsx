@@ -17,7 +17,7 @@ import { getTeamColors } from '@/utils/teamColors';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openTeamPage, searchTeams } from '@/utils/teamSearch';
 import { openGame } from '@/utils/nflGames';
-import { MeetingRow, meetingLabel, useMeetings } from './search/GameMeetings';
+import { MeetingItem, useMeetings } from './search/GameMeetings';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import { useCurrentClub } from '@/utils/club';
 import PlayerDetailCard from './PlayerDetailCard';
@@ -431,18 +431,14 @@ const QuickSearchDialog = () => {
                     className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
                   >
                     {meetings.map((m) => (
-                      <CommandItem
+                      <MeetingItem
                         key={`game:${m.id}`}
-                        value={`game ${m.id}`}
-                        aria-label={meetingLabel(m)}
-                        onSelect={() => {
+                        m={m}
+                        onOpen={() => {
                           setOpen(false);
                           openGame(m.id);
                         }}
-                        className="my-1 cursor-pointer overflow-hidden rounded-lg border border-line/60 p-0 data-[selected=true]:bg-[hsl(var(--gold)/0.16)] data-[selected=true]:text-foreground"
-                      >
-                        <MeetingRow m={m} />
-                      </CommandItem>
+                      />
                     ))}
                   </CommandGroup>
                 )}

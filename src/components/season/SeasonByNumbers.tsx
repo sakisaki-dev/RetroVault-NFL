@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { GameRef, ScheduleSeason, TableRow } from '@/utils/schedule';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { BOARD_BG, BoardTile, LampGrid, ScoreSide, color, pct, rate, signed } from './seasonGamesUi';
+import './sx.css';
 
 /**
  * "Season by the numbers" (league-wide tiles and the weekly scoring chart) and the season's notable games as
@@ -25,9 +26,13 @@ export const NumbersStrip = ({ season }: { season: ScheduleSeason }) => {
     { label: 'Ties', value: l.ties.length, sub: `${l.games} games, ${l.points.toLocaleString()} points` },
   ];
   return (
-    <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7">
+    <dl className="sx-plaques sx-plaques--7">
       {tiles.map((t, i) => (
-        <BoardTile key={t.label} label={t.label} value={t.value} sub={t.sub} className={cn(i === tiles.length - 1 && 'col-span-2 sm:col-span-1')} />
+        <div key={t.label} className={cn('sx-plaque', i === tiles.length - 1 && 'col-span-2 md:col-span-1')} style={{ ['--ax-c1' as string]: 'hsl(var(--gold))' }}>
+          <dt className="sx-plaque__k">{t.label}</dt>
+          <dd className="sx-plaque__v">{t.value}</dd>
+          <dd className="sx-plaque__sub">{t.sub}</dd>
+        </div>
       ))}
     </dl>
   );
@@ -51,7 +56,7 @@ const useWidth = <T extends HTMLElement>(fallback: number) => {
 };
 
 const AVG_INK = 'hsl(var(--sky))';
-const HIGH_INK = 'hsl(var(--gold) / 0.45)';
+const HIGH_INK = 'hsl(var(--gold) / 0.9)';
 
 export const WeeklyChart = ({ season }: { season: ScheduleSeason }) => {
   const weeks = season.league?.weeks ?? [];
