@@ -48,6 +48,7 @@ import { canGoBackInApp } from '../hub/hashRoute';
 import { usePageSwipeBack } from '@/hooks/usePageSwipeBack';
 import { mergeRefs } from '@/hooks/useSwipeToDismiss';
 import './deepDive.css';
+import { displayName } from '@/utils/displayName';
 
 type Select = (p: Player) => void;
 
@@ -235,7 +236,7 @@ const MapSection = ({
             ) : (
               <p className="glass-card p-4 text-sm text-muted-foreground">
                 {insufficient
-                  ? `Not enough of ${player.name}'s rates are on record to place him on the map.`
+                  ? `Not enough of ${displayName(player.name)}'s rates are on record to place him on the map.`
                   : `${player.position}s have ${model.features.length === 1 ? `a single style rate (${model.features[0].label})` : 'too few style rates'}, so there is no 2-D map for this position.`}
               </p>
             )}

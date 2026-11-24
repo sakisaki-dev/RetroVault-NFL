@@ -4,6 +4,7 @@ import TeamLogo from '../brand/TeamLogo';
 import { tenureText, type FranchiseRecord, type TeamSummary } from './teamStats';
 import type { CoachedSummary } from '@/utils/frontOffice';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 interface TeamCardProps {
   summary: TeamSummary;
@@ -38,7 +39,7 @@ const TeamCard = ({ summary, record, onOpen, coached, onHighlight }: TeamCardPro
       onClick={onOpen}
       onMouseEnter={() => onHighlight?.(summary.key)}
       onMouseLeave={() => onHighlight?.(null)}
-      aria-label={`${summary.label}${t ? `, ${t.conference} ${t.division}` : ''}. Power rank ${record?.powerRank ?? '—'}. ${titlesText(titles)}, ${record?.appearances ?? 0} Super Bowl appearances, ${record?.hof.length ?? 0} Hall of Famers${best ? `, best player ${best.name}` : ''}.${coachedLine ? ` ${coachedLine}.` : ''} Open team page`}
+      aria-label={`${summary.label}${t ? `, ${t.conference} ${t.division}` : ''}. Power rank ${record?.powerRank ?? '—'}. ${titlesText(titles)}, ${record?.appearances ?? 0} Super Bowl appearances, ${record?.hof.length ?? 0} Hall of Famers${best ? `, best player ${displayName(best.name)}` : ''}.${coachedLine ? ` ${coachedLine}.` : ''} Open team page`}
       className="hover-lift group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 text-left shadow-card"
       style={{
         background: `linear-gradient(155deg, hsl(${primary}) 0%, hsl(${primary}) 52%, hsl(${secondary}) 135%)`,
@@ -98,7 +99,7 @@ const TeamCard = ({ summary, record, onOpen, coached, onHighlight }: TeamCardPro
         {best && (
           <p className="flex min-w-0 items-baseline gap-1.5 rounded-md bg-black/30 px-2 py-1 text-xs text-white" {...peekProps(best)}>
             <span className="font-pixel text-[7px] uppercase text-gold shrink-0">Icon</span>
-            <span className="min-w-0 truncate font-semibold">{best.name}</span>
+            <span className="min-w-0 truncate font-semibold">{displayName(best.name)}</span>
             <span className="shrink-0 opacity-75">
               {best.position} · {Math.round(best.careerLegacy || 0).toLocaleString()}
             </span>

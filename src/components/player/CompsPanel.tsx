@@ -8,6 +8,7 @@ import { fmtNum } from '@/components/stats/analytics/viz';
 import { openInCompFinder } from '@/components/stats/comps/compFinderLink';
 import { headlineStats } from './statLines';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   player: Player;
@@ -48,11 +49,11 @@ const CompsPanel = ({ player, players, numberFor, onSelect, onNavigate }: Props)
           const smallSample = (comp as { smallSample?: boolean }).smallSample;
           const theirs = headlineStats(c);
           return (
-            <li key={`${c.position}:${c.name}`} className="pc-enter" style={{ '--i': i } as CSSProperties}>
+            <li key={`${c.position}:${displayName(c.name)}`} className="pc-enter" style={{ '--i': i } as CSSProperties}>
               <div className="pc-tile group relative flex h-full w-full flex-col overflow-hidden text-left transition-transform focus-within:ring-2 focus-within:ring-[color:var(--tc-accent)] hover:-translate-y-0.5">
                 <ProPlayerBanner
                   size="compact"
-                  name={c.name}
+                  name={displayName(c.name)}
                   position={c.position}
                   team={findNFLTeam(c.team) ?? c.team}
                   number={numberFor(c)}
@@ -74,8 +75,8 @@ const CompsPanel = ({ player, players, numberFor, onSelect, onNavigate }: Props)
                         <th scope="col" className="text-left font-normal">
                           <span className="sr-only">Stat</span>
                         </th>
-                        <th scope="col" className="text-right font-normal">{c.name.split(' ').slice(-1)[0]}</th>
-                        <th scope="col" className="pl-3 text-right font-normal">{player.name.split(' ').slice(-1)[0]}</th>
+                        <th scope="col" className="text-right font-normal">{displayName(c.name).split(' ').slice(-1)[0]}</th>
+                        <th scope="col" className="pl-3 text-right font-normal">{displayName(player.name).split(' ').slice(-1)[0]}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -97,7 +98,7 @@ const CompsPanel = ({ player, players, numberFor, onSelect, onNavigate }: Props)
                     onClick={() => onSelect(c)}
                     className="mt-auto inline-flex items-center gap-1 pt-1 text-xs font-semibold text-[color:var(--tc-accent)] after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
                   >
-                    Open {c.name}&rsquo;s card
+                    Open {displayName(c.name)}&rsquo;s card
                     <span className="sr-only"> ({Math.round(similarity)} similarity)</span>
                     <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </button>

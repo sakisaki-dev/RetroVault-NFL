@@ -2557,8 +2557,8 @@
    "real": true
   },
   {
-   "key": "WR:Marvin Harrison (WR, Colts)",
-   "name": "Marvin Harrison (WR, Colts)",
+   "key": "WR:Marvin Harrison",
+   "name": "Marvin Harrison",
    "pos": "WR",
    "frozenSeason": "2008",
    "careerLegacy": 6264,
@@ -5831,7 +5831,7 @@
     "Brett Favre",
     "Ken Stabler",
     "Kevin Greene",
-    "Marvin Harrison (WR, Colts)",
+    "Marvin Harrison",
     "Orlando Pace"
    ]
   },
@@ -7408,8 +7408,8 @@
    "classesOnBallot": 4
   },
   {
-   "key": "RB:Frank Gore (RB, Jets)",
-   "name": "Frank Gore (RB, Jets)",
+   "key": "RB:Frank Gore",
+   "name": "Frank Gore",
    "pos": "RB",
    "frozenSeason": "2020",
    "careerLegacy": 5675,
@@ -7839,8 +7839,8 @@
    "classesOnBallot": 12
   },
   {
-   "key": "LB:Joey Porter (LB, Cardinals)",
-   "name": "Joey Porter (LB, Cardinals)",
+   "key": "LB:Joey Porter",
+   "name": "Joey Porter",
    "pos": "LB",
    "frozenSeason": "2011",
    "careerLegacy": 5021,
@@ -8005,8 +8005,8 @@
    "classesOnBallot": 6
   },
   {
-   "key": "DB:Asante Samuel (DB, Falcons)",
-   "name": "Asante Samuel (DB, Falcons)",
+   "key": "DB:Asante Samuel",
+   "name": "Asante Samuel",
    "pos": "DB",
    "frozenSeason": "2013",
    "careerLegacy": 4772,
@@ -8634,8 +8634,8 @@
    "classesOnBallot": 2
   },
   {
-   "key": "DL:Andre Carter (DL, Patriots)",
-   "name": "Andre Carter (DL, Patriots)",
+   "key": "DL:Andre Carter",
+   "name": "Andre Carter",
    "pos": "DL",
    "frozenSeason": "2013",
    "careerLegacy": 4389,
@@ -13079,7 +13079,7 @@
     "frozenSeason": "2015"
    },
    {
-    "name": "Marvin Harrison (WR, Colts)",
+    "name": "Marvin Harrison",
     "pos": "WR",
     "careerLegacy": 6264,
     "score": 72,

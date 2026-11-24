@@ -3,6 +3,7 @@ import type { Player } from '@/types/player';
 import { IS_NFL } from '@/config/edition';
 import { useInjury } from '@/utils/injuries';
 import './inLeague.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Active tag (owner: "add in a little in the league rn indicator for the players that are", "An active tag"): a
@@ -20,7 +21,7 @@ type Subject = Pick<Player, 'status' | 'team'> & { isRealLegend?: boolean; name?
  * part is only in its tooltip. Same places as Active; never on a card face.
  */
 export const InjuredTag = ({ player, label = true, className }: { player: Subject; label?: boolean; className?: string }) => {
-  const hurt = useInjury(IS_NFL && player.name && player.position && !player.isRealLegend ? `${player.position}:${player.name}` : undefined);
+  const hurt = useInjury(IS_NFL && player.name && player.position && !player.isRealLegend ? `${player.position}:${displayName(player.name)}` : undefined);
   if (!hurt) return null;
   const warm = hurt.code === 'Doubtful' || hurt.code === 'Questionable';
   const text = hurt.code === 'Questionable' ? 'Quest.' : hurt.code === 'Doubtful' ? 'Doubtful' : hurt.code;

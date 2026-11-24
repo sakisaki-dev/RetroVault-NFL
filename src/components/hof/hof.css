@@ -823,3 +823,53 @@
   background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--hof-club) 45%, transparent));
   opacity: 0.6;
 }
+
+/* ---- Header showpiece: gold-lit busts under a steel truss over a crowd (after the Rafters) ---- */
+.hof-show { position: relative; margin: 18px -12px 0; text-align: center; }
+@media (min-width: 640px) { .hof-show { margin-left: -40px; margin-right: -40px; } }
+.hof-teaser {
+  display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px;
+  max-width: 100%; margin: 0 auto 10px; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid hsl(43 90% 62% / 0.4); background: hsl(43 90% 62% / 0.08);
+  font-size: 12px; color: hsl(var(--chalk));
+}
+.hof-teaser:hover { background: hsl(43 90% 62% / 0.18); }
+.hof-teaser:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.hof-teaser__k { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; color: hsl(var(--gold)); }
+.hof-show__stage { position: relative; padding-top: 30px; overflow: hidden; background: linear-gradient(180deg, rgb(0 0 0 / 0.35), transparent 70%); }
+.hof-show__truss {
+  position: absolute; inset: 0 0 auto 0; height: 26px;
+  border-top: 8px solid #2d2c39; box-shadow: 0 2px 0 #000;
+  background:
+    repeating-linear-gradient(60deg, transparent 0 12px, rgb(110 108 130 / 0.8) 12px 14px),
+    repeating-linear-gradient(-60deg, transparent 0 12px, rgb(110 108 130 / 0.8) 12px 14px);
+}
+.hof-show__row { position: relative; z-index: 1; display: flex; justify-content: center; align-items: flex-end; gap: 2px; padding: 0 6px; margin: 0; list-style: none; }
+.hof-show__row > li { min-width: 0; flex: 0 1 auto; }
+.hof-show__bust { position: relative; display: flex; flex-direction: column; align-items: center; padding: 2px 2px 0; }
+.hof-show__bust:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; border-radius: 6px; }
+.hof-show__cone {
+  position: absolute; top: -30px; left: 50%; width: 88px; height: 128px; transform: translateX(-50%); pointer-events: none;
+  background: linear-gradient(180deg, hsl(45 100% 70% / 0.34), transparent 90%);
+  clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+}
+.hof-show__fig { position: relative; display: block; line-height: 0; filter: drop-shadow(0 0 8px hsl(45 100% 65% / 0.45)); }
+.hof-show__plinth { display: block; width: 100%; min-width: 44px; height: 8px; margin-top: -2px; border-radius: 2px; background: linear-gradient(180deg, #fff1b8, #e3a92b 55%, #8f5d0c); box-shadow: 0 2px 0 #000; }
+.hof-show__name { position: relative; margin-top: 3px; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-display); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.hof-show__crowd {
+  display: block; height: 22px; margin-top: 4px;
+  background:
+    radial-gradient(circle at 10px 14px, #0a0814 8px, transparent 9px) 0 0 / 22px 22px,
+    radial-gradient(circle at 21px 20px, #0d0a19 9px, transparent 10px) 0 0 / 22px 22px,
+    #16112a;
+}
+@media (max-width: 479px) {
+  .hof-show__cone { width: 60px; }
+  .hof-show__fig { transform: scale(0.78); transform-origin: bottom center; margin-top: -14px; }
+  .hof-show__plinth { min-width: 0; }
+  .hof-show__name { font-size: 10px; max-width: 44px; }
+}
+@media (max-width: 479px) {
+  .hof-show__row > li:first-child, .hof-show__row > li:last-child { display: none; }
+  .hof-show__row { gap: 6px; }
+}

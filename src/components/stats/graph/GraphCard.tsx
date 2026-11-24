@@ -7,6 +7,7 @@ import { buildGraph, type GraphConfig, type GraphPreset } from './graphConfig';
 import { graphSummary } from './graphText';
 import type { GraphDeps } from './graphStats';
 import { GraphLegend, GraphPlot, GraphTable } from './GraphParts';
+import { displayName } from '@/utils/displayName';
 
 type Mark = 'dots' | 'logos';
 const ALL = 'ALL';
@@ -50,7 +51,7 @@ const GraphCard = ({
         <div className="flex flex-wrap items-center justify-between gap-2">
           {choices.length > 1 ? (
             <Chips
-              label={`${preset.name}: players shown`}
+              label={`${displayName(preset.name)}: players shown`}
               value={pos}
               onChange={setPos}
               options={[{ value: ALL as Position | typeof ALL, label: 'All' }, ...choices.map((p) => ({ value: p as Position | typeof ALL, label: p }))]}

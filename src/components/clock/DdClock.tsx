@@ -7,6 +7,7 @@ import { DECLINE_AGE, ROOKIE_AGE, baseMaxAge, buildClock, growthSeasons, halfSta
 import { RatingBars, StarRow, clubVars, starText } from './clockParts';
 import './clock.css';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Deep Dive › Age & clock: one player's age from the live save, his retirement clock, his growth chance, ratings now
@@ -46,7 +47,7 @@ const PositionCurve = ({ me, peers }: { me: ClockPlayer; peers: ClockPlayer[] })
         width={w}
         height={h}
         role="img"
-        aria-label={`${me.pos}s on a club, average stars by age: ${bins.map((b) => `${b.label}: ${(b.avg / 2).toFixed(1)}`).join('; ')}. ${me.name} at ${me.age}: ${starText(mine)}.`}
+        aria-label={`${me.pos}s on a club, average stars by age: ${bins.map((b) => `${b.label}: ${(b.avg / 2).toFixed(1)}`).join('; ')}. ${displayName(me.name)} at ${me.age}: ${starText(mine)}.`}
         className="block max-w-full"
       >
         <rect x={sx(DECLINE_AGE - 0.5)} y={m.top} width={Math.max(0, m.left + pw - sx(DECLINE_AGE - 0.5))} height={ph} fill="hsl(354 90% 65%)" opacity={0.08} />
@@ -69,7 +70,7 @@ const PositionCurve = ({ me, peers }: { me: ClockPlayer; peers: ClockPlayer[] })
         <path d={line} fill="none" stroke={VIZ.bar} strokeWidth={2.5} />
         <circle cx={sx(me.age)} cy={sy(mine)} r={7} fill={teamMark(me.team)} stroke={GOLD} strokeWidth={2} />
         <text x={sx(me.age) + (sx(me.age) > m.left + pw * 0.7 ? -11 : 11)} y={sy(mine) - 10} textAnchor={sx(me.age) > m.left + pw * 0.7 ? 'end' : 'start'} fontSize={12} fontWeight={700} fill={VIZ.ink} paintOrder="stroke" stroke="hsl(226 40% 11%)" strokeWidth={3}>
-          {me.name.split(' ').slice(-1)[0]} · {me.age}
+          {displayName(me.name).split(' ').slice(-1)[0]} · {me.age}
         </text>
       </svg>
       <p className="mt-1 text-xs text-muted-foreground">
@@ -82,7 +83,7 @@ const PositionCurve = ({ me, peers }: { me: ClockPlayer; peers: ClockPlayer[] })
 const DdClock = ({ player, players }: { player: Player; players: Player[] }) => {
   const state = useSaveState();
   const all = useMemo(() => (state ? buildClock(state, players) : []), [state, players]);
-  const me = all.find((c) => c.key === `${player.position}:${player.name}`);
+  const me = all.find((c) => c.key === `${player.position}:${displayName(player.name)}`);
   if (state === undefined) return <PixelLoader variant="inline" size="sm" label="Save" what="the save" />;
   if (!state || !me) {
     return (

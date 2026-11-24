@@ -8,6 +8,7 @@ import type { CoachInfo } from '@/utils/leagueContent';
 import { usePhone } from '@/hooks/usePhone';
 import CoachStand from './CoachStand';
 import { staggerStyle, teamVars, yearSpan } from './shared';
+import { displayName } from '@/utils/displayName';
 
 const readName = () => {
   try {
@@ -209,7 +210,7 @@ const CoachHeader = ({ resume, franchiseCount, stintCount, coach, facts = null }
                 </span>
               )}
             </div>
-            {coach?.name ? <FixedName name={coach.name} /> : <CoachName />}
+            {coach?.name ? <FixedName name={displayName(coach.name)} /> : <CoachName />}
             {/* Owner: no age or morale on the coach (the game's coach age runs past 100; morale is never shown) */}
             {coach && (coach.stars != null || coach.gamesPlayed != null) && (
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">

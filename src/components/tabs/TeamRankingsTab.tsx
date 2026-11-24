@@ -32,6 +32,7 @@ import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
 import { StrengthStrip, SuperBowlStrip } from '../teams/nfl/TeamStrips';
+import { displayName } from '@/utils/displayName';
 
 type ConferenceFilter = 'all' | 'AFC' | 'NFC';
 type DivisionFilter = 'all' | (typeof DIVISIONS)[number];
@@ -274,7 +275,7 @@ const TeamRankingsTab = () => {
               .sort((a, b) => (b.careerLegacy || 0) - (a.careerLegacy || 0))
               .slice(0, allFa ? undefined : 12)
               .map((p) => (
-                <li key={`${p.name}-${p.position}`}>
+                <li key={`${displayName(p.name)}-${p.position}`}>
                   <button
                     type="button"
                     {...peekProps(p)}
@@ -283,7 +284,7 @@ const TeamRankingsTab = () => {
                   >
                     <PositionBadge position={p.position} />
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-medium">{p.name}</span>
+                      <span className="block truncate font-medium">{displayName(p.name)}</span>
                       <span className="block text-xs text-muted-foreground">{p.games} GP</span>
                     </span>
                     <span className="font-mono text-sm tabular-nums text-muted-foreground">

@@ -24,6 +24,7 @@ import { useFlipFaces } from './useFlipFaces';
 import { FINISH_ICON, FINISH_TEXT } from './rarityIcons';
 import type { CardInfo } from './useCardPool';
 import { dur, ease } from '@/utils/motion';
+import { displayName } from '@/utils/displayName';
 
 /*
  * Swipe browser: a full-screen carousel over the binder's current filter and sort (owned cards only). One large card
@@ -655,7 +656,7 @@ const CardBrowser = ({ open, list, owned, display, total, covered = false, focus
           {cur && combo && (
             <div className="cbw__info">
               {combos.length > 1 && (
-                <ul className="cbw__dots" aria-label={`${cur.player.name}'s variants and finishes`}>
+                <ul className="cbw__dots" aria-label={`${displayName(cur.player.name)}'s variants and finishes`}>
                   {combos.map((x, j) => {
                     const on = x.variant === combo.variant && x.finish === combo.finish;
                     const groupStart = j > 0 && combos[j - 1].variant !== x.variant;
@@ -676,7 +677,7 @@ const CardBrowser = ({ open, list, owned, display, total, covered = false, focus
                   })}
                 </ul>
               )}
-              <p className="cbw__name">{cur.player.name}</p>
+              <p className="cbw__name">{displayName(cur.player.name)}</p>
               <p className="cbw__team">
                 {cur.player.position} · {cur.cardTeam}
                 {cur.ovr != null && <> · CAR {cur.ovr}</>}

@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { playerKey, type GamePlayer } from '@/config/ovr';
 import { matchPlayerByName, type LeagueContent } from '@/utils/leagueContent';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -44,7 +45,8 @@ const KIND_ORDER: LinkKind[] = ['family', 'lineage', 'team', 'era'];
 
 const isReal = (p: GamePlayer) => p.isRealLegend === true;
 
-const lastName = (name: string) => {
+const lastName = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
   const tail = parts[parts.length - 1] ?? '';
   // "Mason Earl III" -> "Earl"

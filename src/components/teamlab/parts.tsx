@@ -4,6 +4,7 @@ import type { GradeStep } from '@/config/skillGrades';
 import type { PlayerProfile } from '@/utils/teamLab';
 import { getTeamColors } from '@/utils/teamColors';
 import TeamLogo from '@/components/brand/TeamLogo';
+import { displayName } from '@/utils/displayName';
 
 /** Letter grade chip: the letter is always printed, the colour only reinforces it. */
 export const GradeChip = ({ grade, size = 'md', label }: { grade: GradeStep | null; size?: 'sm' | 'md' | 'lg'; label?: string }) => (
@@ -52,7 +53,7 @@ export const PlayerChip = ({ p, right, className }: { p: PlayerProfile; right?: 
       style={{ ...style, boxShadow: 'inset 3px 0 0 var(--pc)', background: 'linear-gradient(100deg, color-mix(in srgb, var(--pc) 28%, transparent), transparent 75%)' }}
     >
       <span className="shrink-0 rounded bg-black/40 px-1 py-0.5 font-pixel text-[8px] text-gold">{p.position}</span>
-      <span className="min-w-0 flex-1 truncate font-display text-[15px] font-bold uppercase italic tracking-wide text-chalk">{p.name}</span>
+      <span className="min-w-0 flex-1 truncate font-display text-[15px] font-bold uppercase italic tracking-wide text-chalk">{displayName(p.name)}</span>
       {p.team ? <TeamLogo team={p.team} size={18} decorative /> : null}
       <span className="shrink-0 rounded border border-[color:var(--pc)] bg-black/50 px-1 font-display text-xs font-extrabold tabular-nums text-chalk">
         {p.ovr}

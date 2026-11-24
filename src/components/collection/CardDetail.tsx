@@ -53,6 +53,7 @@ import ShareImageButton from '@/components/share/ShareImageButton';
 import SharePosterFrame from '@/components/share/SharePosterFrame';
 import { shareFileName } from '@/utils/shareImage';
 import { displayOf, readCollection } from '@/utils/collection';
+import { displayName } from '@/utils/displayName';
 
 export interface CardDetailTarget {
   info: CardInfo;
@@ -727,7 +728,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                   className="cd__nav cd__nav--prev"
                   onClick={() => go(prev, -1)}
                   disabled={!prev || !onNavigate}
-                  aria-label={prev ? `Previous card: ${prev.player.name}` : 'Previous card'}
+                  aria-label={prev ? `Previous card: ${displayName(prev.player.name)}` : 'Previous card'}
                   hidden={!list.length}
                 >
                   <ChevronLeft className="h-6 w-6" aria-hidden="true" />
@@ -795,7 +796,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                   className="cd__nav cd__nav--next"
                   onClick={() => go(next, 1)}
                   disabled={!next || !onNavigate}
-                  aria-label={next ? `Next card: ${next.player.name}` : 'Next card'}
+                  aria-label={next ? `Next card: ${displayName(next.player.name)}` : 'Next card'}
                   hidden={!list.length}
                 >
                   <ChevronRight className="h-6 w-6" aria-hidden="true" />
@@ -816,7 +817,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                       </span>
                     )}
                   </p>
-                  <DialogTitle className="font-display text-4xl uppercase italic leading-none">{info.player.name}</DialogTitle>
+                  <DialogTitle className="font-display text-4xl uppercase italic leading-none">{displayName(info.player.name)}</DialogTitle>
                   <DialogDescription className="mt-1.5">
                     {variantLabel(variant)} · {finishLabel(finish)}
                     {worn && worn.kind !== 'home' ? ` · ${kitName(worn.uniform)}` : ''}
@@ -827,7 +828,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                     className="mt-3"
                     shareKey={`${info.key}:${variant}:${finish}:${kit ?? ''}:${prizm ? `${prizm.c}${prizm.n}` : ''}:${variant === 'auto' && target?.auto?.key === info.key ? target.auto.finish : ''}`}
                     fileName={shareFileName(info.player.name, variantLabel(variant), finishLabel(finish))}
-                    title={`${info.player.name} · ${variantLabel(variant)} · ${finishLabel(finish)}`}
+                    title={`${displayName(info.player.name)} · ${variantLabel(variant)} · ${finishLabel(finish)}`}
                     poster={() => (
                       <SharePosterFrame width={340}>
                         <div className="shr-card">
@@ -849,7 +850,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                           />
                         </div>
                         <div className="shr-cap">
-                          <p className="shr-cap__name">{info.player.name}</p>
+                          <p className="shr-cap__name">{displayName(info.player.name)}</p>
                           <p className="shr-cap__line">
                             {tierLabel(tier)} · {variantLabel(variant)} · {finishLabel(finish)}
                             {worn && worn.kind !== 'home' ? ` · ${kitName(worn.uniform)}` : ''}
@@ -869,7 +870,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                         <AutographCarousel
                           autos={myAutos}
                           size="thumb"
-                          label={`${info.player.name} autographs, swipe to browse`}
+                          label={`${displayName(info.player.name)} autographs, swipe to browse`}
                           selectedId={(chosenAuto ?? bestAuto(myAutos.filter((a) => a.finish === finish)) ?? bestAuto(myAutos))?.id}
                           onSelect={(a) => {
                             setPickedAuto(a);
@@ -1080,7 +1081,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                 {!target?.preview &&
                   (panelReady ? (
                     <div ref={marketRef} className={cn('contents', panelLate && 'cd-market--late')}>
-                      <CardValue cardKey={info.key} name={info.player.name} finish={finish} variant={variant} ownedFinish={vEntry?.best} player={info.player} kit={kit} prizm={prizm} />
+                      <CardValue cardKey={info.key} name={displayName(info.player.name)} finish={finish} variant={variant} ownedFinish={vEntry?.best} player={info.player} kit={kit} prizm={prizm} />
                     </div>
                   ) : (
                     <div className="cd-market-ph" style={{ minHeight: marketHeights.get(info.key) ?? marketHeights.get('') ?? 480 }} aria-hidden="true" />

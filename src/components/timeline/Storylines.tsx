@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import MiniMarkdown from './MiniMarkdown';
 import ClubStrip from '@/components/brand/ClubStrip';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { displayName } from '@/utils/displayName';
 
 interface StorylinesProps {
   storylines: Storyline[];
@@ -46,7 +47,7 @@ const Storylines = ({ storylines, edition, players, onPlayerSelect }: Storylines
                   size="sm"
                   onClick={() => onPlayerSelect(p)}
                   ariaLabel={`${name}: open player card`}
-                  playerKey={`${p.position}:${p.name}`}
+                  playerKey={`${p.position}:${displayName(p.name)}`}
                 />
               ) : (
                 <span className="rounded-md bg-secondary/50 px-2 py-0.5 text-xs">{name}</span>

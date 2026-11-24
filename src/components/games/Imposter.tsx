@@ -13,6 +13,7 @@ import { buildTraits, levelFor, makeImposterRound, type ImposterRound } from './
 import { Hud, HudStat, Pips, prefersReducedMotion, teamLook, useRevealClock } from './rosterKit';
 import HowToStrip from './HowToStrip';
 import './imposter.css';
+import { displayName } from '@/utils/displayName';
 
 const BEST_KEY = 'imposter:best';
 const LEVEL_NAMES = { 1: 'Rookie', 2: 'Pro', 3: 'All-Pro' } as const;
@@ -20,7 +21,8 @@ const RECENT_FAMILIES = 3;
 /** Streak where the next level starts (see levelFor) */
 const NEXT_LEVEL_AT = { 1: 5, 2: 12 } as const;
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.lastIndexOf(' ');
   return i > 0 ? [name.slice(0, i), name.slice(i + 1)] : ['', name];
 };
@@ -218,7 +220,7 @@ const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<str
                   onClick={() => tap(key)}
                   disabled={!!pick}
                   aria-pressed={!pick ? suspect === key : undefined}
-                  aria-label={`${i + 1}: ${p.name}, ${POSITION_NAMES[p.position]}, ${look.name}. ${suspect === key ? 'Tap again to accuse' : 'Put under the light'}`}
+                  aria-label={`${i + 1}: ${displayName(p.name)}, ${POSITION_NAMES[p.position]}, ${look.name}. ${suspect === key ? 'Tap again to accuse' : 'Put under the light'}`}
                 >
                   <span className="imp-placard" aria-hidden="true">
                     {i + 1}
@@ -257,7 +259,7 @@ const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<str
                     </span>
                   )}
                 </button>
-                <button type="button" className="imp-scout" onClick={() => setScouting(p)} aria-label={`Scout ${p.name}: open full career stats`}>
+                <button type="button" className="imp-scout" onClick={() => setScouting(p)} aria-label={`Scout ${displayName(p.name)}: open full career stats`}>
                   <ScoutIcon />
                 </button>
                 {pick && (
@@ -282,7 +284,7 @@ const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<str
             >
               {suspectPlayer ? (
                 <>
-                  Accuse <span className="imp-accuse-name">{suspectPlayer.name}</span>
+                  Accuse <span className="imp-accuse-name">{displayName(suspectPlayer.name)}</span>
                 </>
               ) : (
                 'Pick a suspect'
@@ -305,11 +307,11 @@ const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<str
               </span>
             </div>
             <p className="imp-verdict-line">
-              <b style={teamLook(imposter).vars}>{imposter.name}</b> was the imposter: {trait.explain(imposter)}.
+              <b style={teamLook(imposter).vars}>{displayName(imposter.name)}</b> was the imposter: {trait.explain(imposter)}.
             </p>
             {!correct && accused && (
               <p className="imp-verdict-line muted">
-                You accused <b style={teamLook(accused).vars}>{accused.name}</b>, but he fits: {trait.explain(accused)}.
+                You accused <b style={teamLook(accused).vars}>{displayName(accused.name)}</b>, but he fits: {trait.explain(accused)}.
               </p>
             )}
             <ArcadeButton tone="go" wide onClick={nextRound} autoFocus>

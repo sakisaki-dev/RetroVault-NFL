@@ -11,6 +11,7 @@ import { fmtDate, starsOf } from '@/components/game/gameModel';
 import { teamKeyFor, POWER_WEIGHTS, type FranchiseRecord, type TeamSummary } from '../teamStats';
 import StripRail from './StripRail';
 import '@/components/game/game.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * NFL Teams page, the two long bars: the Super Bowl timeline (one tile per season, the champion's colours, score and
@@ -74,7 +75,7 @@ const GamePreview = ({ id, kicker, fallback }: { id: string; kicker: string; fal
           <p className="ts-pop__row"><span>{fmtDate(g.date)}</span><span>{g.stadium}</span></p>
           {(g.temp !== undefined || g.roof) && <p className="ts-pop__row"><span>Conditions</span><span>{[g.roof === 'outdoors' ? null : g.roof, g.temp !== undefined ? `${Math.round(g.temp)}°F` : null, g.wind ? `${Math.round(g.wind)} mph wind` : null].filter(Boolean).join(' · ') || 'Outdoors'}</span></p>}
           {g.awayQb && g.homeQb && <p className="ts-pop__row"><span>QBs</span><span>{g.awayQb} / {g.homeQb}</span></p>}
-          {star && <p className="ts-pop__row"><span>Game ball</span><span>{star.player.name}</span></p>}
+          {star && <p className="ts-pop__row"><span>Game ball</span><span>{displayName(star.player.name)}</span></p>}
           {star && star.line && <p className="ts-pop__row"><span /><span>{star.line}</span></p>}
           {!done && g.spread !== undefined && <p className="ts-pop__row"><span>Line</span><span>{g.spread}</span></p>}
         </>

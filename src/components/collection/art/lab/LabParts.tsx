@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { createContext, memo, startTransition, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -91,7 +92,7 @@ export const PlayerPicker = memo(({ players, value, onPick }: PickerProps) => {
         aria-autocomplete="list"
         aria-activedescendant={open && hits[hi] ? `${listId}-${hi}` : undefined}
         aria-label="Player"
-        placeholder={value ? `${value.player.name} · ${value.player.position}` : 'Search players'}
+        placeholder={value ? `${displayName(value.player.name)} · ${value.player.position}` : 'Search players'}
         value={q}
         onChange={(e) => {
           setQ(e.target.value);
@@ -133,7 +134,7 @@ export const PlayerPicker = memo(({ players, value, onPick }: PickerProps) => {
               }}
               onMouseEnter={() => setHi(i)}
             >
-              <b>{c.player.name}</b>
+              <b>{displayName(c.player.name)}</b>
               <span>
                 {c.player.position} · {c.franchise} · {c.ovr ?? '–'}
               </span>

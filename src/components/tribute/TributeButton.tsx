@@ -2,6 +2,7 @@ import { BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { tributeEntryOf, useLeagueContent } from '@/utils/leagueContent';
 import { openTribute, prefetchTributeView } from './openTribute';
+import { displayName } from '@/utils/displayName';
 
 /**
  * "Tribute": opens a player's Player Tribute (the fifth AI lane) when he has one; renders nothing otherwise. Used by
@@ -20,7 +21,7 @@ const TributeButton = ({ playerKey, className, label = 'Tribute', onOpen }: { pl
         onOpen?.();
         openTribute(entry.key);
       }}
-      aria-label={`Read the tribute to ${entry.name}`}
+      aria-label={`Read the tribute to ${displayName(entry.name)}`}
       className={cn(
         'inline-flex items-center justify-center gap-1.5 rounded-md font-display font-bold uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
         className,

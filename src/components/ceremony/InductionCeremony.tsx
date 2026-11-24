@@ -13,6 +13,7 @@ import type { RetiredNumber } from '@/utils/jerseys';
 import type { CeremonyVariant } from '@/utils/hallOfFameWatch';
 import { signatureStats, type Speech } from './speech';
 import './ceremony.css';
+import { displayName } from '@/utils/displayName';
 
 export interface CeremonyInductee {
   key: string;
@@ -87,7 +88,7 @@ const RetiredBanner = ({ retired, player }: { retired: RetiredNumber; player: Pl
     <div className="cer__rafter">
       <div className="cer__retired" style={style} role="img" aria-label={`Number ${retired.number} retired by the ${retired.teamLabel}`}>
         <span className="cer__retired-num">{retired.number}</span>
-        <span className="cer__retired-name">{player.name}</span>
+        <span className="cer__retired-name">{displayName(player.name)}</span>
         <span className="cer__retired-team">
           {retired.teamLabel}
           {retired.years ? ` · ${retired.years}` : ''}
@@ -122,7 +123,7 @@ const InducteeStage = ({ inductee, statsLive, titleId }: { inductee: CeremonyInd
         <div className="cer__rise">
           <ProPlayerBanner
             size="hero"
-            name={player.name}
+            name={displayName(player.name)}
             nickname={player.nickname}
             position={player.position}
             team={player.team}
@@ -298,7 +299,7 @@ const InductionCeremony = ({ inductees, classLabel, onClose }: InductionCeremony
             <h2 id={titleId} className="cer__class">
               {classLabel}
               <span className="sr-only">
-                {`: ${current.player.name}, ${isRing ? 'Ring of Honor' : 'Hall of Fame'}${total > 1 ? `, ${index + 1} of ${total}` : ''}`}
+                {`: ${displayName(current.player.name)}, ${isRing ? 'Ring of Honor' : 'Hall of Fame'}${total > 1 ? `, ${index + 1} of ${total}` : ''}`}
               </span>
             </h2>
             <div className="cer__curtain" aria-hidden="true">
@@ -335,7 +336,7 @@ const InductionCeremony = ({ inductees, classLabel, onClose }: InductionCeremony
         </button>
       </div>
       <p className="sr-only" aria-live="polite">
-        {`${current.player.name}${total > 1 ? `, inductee ${index + 1} of ${total}` : ''}`}
+        {`${displayName(current.player.name)}${total > 1 ? `, inductee ${index + 1} of ${total}` : ''}`}
       </p>
     </div>,
     document.body,

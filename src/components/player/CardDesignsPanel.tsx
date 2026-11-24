@@ -24,6 +24,7 @@ import { useCardPool } from '@/components/collection/useCardPool';
 import { FINISH_ICON } from '@/components/collection/rarityIcons';
 import './cardDesigns.css';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
 const BEST_FINISH: Finish = FINISHES[FINISHES.length - 1].key;
 const share = <K extends string>(w: Record<K, number>, k: K) => w[k] / Object.values<number>(w).reduce((a, b) => a + b, 0);
@@ -92,7 +93,7 @@ const CardDesignsPanel = ({ player }: { player: Player }) => {
   }, [info, owned, tierPool]);
 
   if (!loaded && !cards.length) return <PixelLoader size="sm" label="Cards" what="cards" minHeight={220} />;
-  if (!info) return <p className="py-8 text-center text-sm text-muted-foreground">{player.name} has no collectible card.</p>;
+  if (!info) return <p className="py-8 text-center text-sm text-muted-foreground">{displayName(player.name)} has no collectible card.</p>;
 
   const ownedCount = rows.filter((r) => r.owned).length;
   const rarest = rows.find((r) => r.rarest)!;
@@ -109,7 +110,7 @@ const CardDesignsPanel = ({ player }: { player: Player }) => {
         </span>
       </div>
 
-      <ul className="cdz__row" data-no-swipe-x aria-label={`${player.name}'s card designs`}>
+      <ul className="cdz__row" data-no-swipe-x aria-label={`${displayName(player.name)}'s card designs`}>
         {rows.map((r) => {
           const FIcon = FINISH_ICON[r.finish];
           const pin = shown && shown.variant === r.v;

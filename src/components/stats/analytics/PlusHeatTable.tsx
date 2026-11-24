@@ -9,6 +9,7 @@ import MetricLabel from './MetricLabel';
 import { VIZ, fmtNum, fmtPlus, plusFill } from './viz';
 import { keyOf } from '../records';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   players: Player[];
@@ -137,7 +138,7 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
                         onClick={() => onSelect(p)}
                         className="block w-full truncate text-left text-xs font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:text-sm"
                       >
-                        {p.name}
+                        {displayName(p.name)}
                       </button>
                     </th>
                     {metrics.map((m) => {
@@ -186,7 +187,7 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
                       className="flex w-full items-center gap-1 truncate text-left text-xs font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:text-sm"
                     >
                       <span className="shrink-0 rounded-sm bg-flag/80 px-0.5 font-pixel text-[6px] text-night">NFL</span>
-                      <span className="truncate">{p.name}</span>
+                      <span className="truncate">{displayName(p.name)}</span>
                     </button>
                   </th>
                   {metrics.map((m) => {

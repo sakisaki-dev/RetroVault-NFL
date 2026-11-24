@@ -21,8 +21,9 @@ import { Laurel, MedalCoin, RibbonBanner } from '../hof/hofParts';
 import { roman } from '../hof/hofUtils';
 import { IS_NFL } from '@/config/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
-const keyOf = (p: Pick<Player, 'name' | 'position'>) => `${p.position}:${p.name}`;
+const keyOf = (p: Pick<Player, 'name' | 'position'>) => `${p.position}:${displayName(p.name)}`;
 const shortClass = (label: string, season: string) => (/inaugural/i.test(label) ? 'Inaugural' : season);
 
 // Gold confetti for the newest class's reveal: fixed positions, one short fall (hof.css .hof-confetti)
@@ -107,7 +108,7 @@ const HallOfFameTab = () => {
 
   const openRing = useCallback(
     (e: RingOfHonorEntry) => {
-      const key = `${e.pos}:${e.name}`;
+      const key = `${e.pos}:${displayName(e.name)}`;
       if (byKey.has(key)) setOpenKey(key);
       else {
         const p = players.get(key);
@@ -261,10 +262,10 @@ const HallOfFameTab = () => {
                   type="button"
                   onClick={() => setOpenKey(i.member.key)}
                   className="block w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-                  aria-label={`${i.member.name}, Hall of Fame Score ${i.member.score}${i.member.firstBallot ? ', first ballot' : i.member.veteran ? ', veteran' : ''}. Open plaque`}
+                  aria-label={`${displayName(i.member.name)}, Hall of Fame Score ${i.member.score}${i.member.firstBallot ? ', first ballot' : i.member.veteran ? ', veteran' : ''}. Open plaque`}
                 >
                   <span className="relative block rounded-xl p-[3px] shadow-glow" style={{ background: 'linear-gradient(135deg, #fff1b8, #e3a92b 30%, #fff3c2 50%, #c88a17 75%, #8f5d0c)' }}>
-                    <ProPlayerBanner size="compact" name={i.member.name} position={i.member.pos} team={i.club} number={i.number} hallOfFamer interactive />
+                    <ProPlayerBanner size="compact" name={displayName(i.member.name)} position={i.member.pos} team={i.club} number={i.number} hallOfFamer interactive />
                   </span>
                   <span className="mt-3 flex items-center gap-3 px-1">
                     <MedalCoin score={i.member.score} size={46} />

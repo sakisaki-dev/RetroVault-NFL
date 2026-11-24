@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import TeamLogo from '@/components/brand/TeamLogo';
 import { getReadableTextOn, liftForDarkBg } from '@/utils/teamColors';
 import { stintYears, type ArcRing, type ArcStint, type CareerArcData } from './arcData';
+import { displayName } from '@/utils/displayName';
 
 const NEUTRAL = '226 33% 34%';
 
@@ -121,9 +122,9 @@ const CareerArc = ({ arc, headingId }: Props) => {
       {eras.length > 0 && (
         <ul className="flex flex-wrap gap-1.5" aria-label="Eras">
           {eras.map((e) => (
-            <li key={e.name} className="arc-era" title={e.source}>
+            <li key={displayName(e.name)} className="arc-era" title={e.source}>
               <Sparkles className="h-3 w-3 text-[color:var(--tc-accent)]" aria-hidden="true" />
-              <span className="font-semibold text-chalk">{e.name}</span>
+              <span className="font-semibold text-chalk">{displayName(e.name)}</span>
               {e.start != null && (
                 <span className="font-pixel text-[9px] text-muted-foreground">
                   {e.approx ? '~' : ''}Y{e.start}

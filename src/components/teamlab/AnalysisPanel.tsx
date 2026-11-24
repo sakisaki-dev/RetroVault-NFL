@@ -22,6 +22,7 @@ import {
 } from '@/utils/teamLab';
 import { Card, GradeChip, PlayerChip, ScoreBar } from './parts';
 import CallSheet from './CallSheet';
+import { displayName } from '@/utils/displayName';
 
 const GROUPS: { title: string; units: UnitId[] }[] = [
   { title: 'Offense', units: OFFENSE_UNITS },
@@ -138,7 +139,7 @@ const AnalysisPanel = ({ analysis: a, upgrades, ranking, onUpgrade, clubName, co
       {upgrades && (
         <Card title="Who to upgrade" className="lab-order-3" icon={<ArrowUpRight className="h-5 w-5 text-gold" aria-hidden="true" />}>
           <p className="mb-2 text-sm text-muted-foreground">
-            Weakest slot: <span className="font-semibold text-chalk">{upgrades.current.position} {upgrades.current.name}</span> (skill grade{' '}
+            Weakest slot: <span className="font-semibold text-chalk">{upgrades.current.position} {displayName(upgrades.current.name)}</span> (skill grade{' '}
             {upgrades.current.grade?.grade ?? '—'}, {ordinal(upgrades.current.overallPct)} percentile at his position).
           </p>
           {upgrades.options.length === 0 ? (
@@ -180,7 +181,7 @@ const AnalysisPanel = ({ analysis: a, upgrades, ranking, onUpgrade, clubName, co
                 <li key={c.preset.id} className="lab-comp" style={{ '--cc': t ? `hsl(${t.primaryColor})` : 'hsl(var(--line))' } as CSSProperties}>
                   <span className="lab-comp-logo">{c.preset.team && <TeamLogo team={c.preset.team} size={34} decorative />}</span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate font-display text-[15px] font-bold uppercase italic text-chalk">{c.preset.name}</span>
+                    <span className="block truncate font-display text-[15px] font-bold uppercase italic text-chalk">{displayName(c.preset.name)}</span>
                     <span className="block text-[11px] text-muted-foreground">
                       {Math.round(c.match)}% unit match · team {Math.round(c.team.score)}
                     </span>
@@ -213,7 +214,7 @@ const AnalysisPanel = ({ analysis: a, upgrades, ranking, onUpgrade, clubName, co
               >
                 <span className="w-6 font-display font-bold tabular-nums text-gold">{i + 1}</span>
                 <span className="min-w-0 flex-1 truncate text-chalk">
-                  {r.name}
+                  {displayName(r.name)}
                   {r.isCurrent && <span className="ml-1 text-xs text-gold">(you)</span>}
                 </span>
                 <span className="tabular-nums text-muted-foreground">{r.teamRaw.toFixed(1)}</span>
@@ -228,7 +229,7 @@ const AnalysisPanel = ({ analysis: a, upgrades, ranking, onUpgrade, clubName, co
                 {ranking.map((r, i) => (
                   <li key={r.id} className={cn('flex gap-2', r.isCurrent && 'text-gold')}>
                     <span className="w-5 tabular-nums">{i + 1}</span>
-                    <span className="min-w-0 flex-1 truncate">{r.name}</span>
+                    <span className="min-w-0 flex-1 truncate">{displayName(r.name)}</span>
                     <span className="tabular-nums text-muted-foreground">{r.teamRaw.toFixed(1)}</span>
                   </li>
                 ))}

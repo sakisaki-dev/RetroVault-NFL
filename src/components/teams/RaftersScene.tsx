@@ -8,6 +8,7 @@ import type { RafterBanner } from '@/utils/rafters';
 import type { RingOfHonorEntry } from '@/utils/hallOfFame';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './rafters.css';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   team: NFLTeam | null;
@@ -257,7 +258,7 @@ const RaftersScene = ({ team, banners, ring, onOpen, onRing, title, headingId = 
           {banners.map((b, i) => {
             const s = spread(b.r.number, i);
             const pos = b.r.position ? POSITION_NAMES[b.r.position as Position] ?? b.r.position : undefined;
-            const label = `Number ${b.r.number}, ${b.r.name}${pos ? `, ${pos}` : ''}${b.years ? `, ${b.years}` : ''}${b.rings ? `, ${ringsText(b.rings)}` : ''}${b.hof ? ', Hall of Famer' : ''}`;
+            const label = `Number ${b.r.number}, ${displayName(b.r.name)}${pos ? `, ${pos}` : ''}${b.years ? `, ${b.years}` : ''}${b.rings ? `, ${ringsText(b.rings)}` : ''}${b.hof ? ', Hall of Famer' : ''}`;
             const cloth = (
               <span className="rafter__cloth" aria-hidden="true">
                 <span className="rafter__kick">{b.hof ? 'Hall of Fame' : 'Retired'}</span>
@@ -272,7 +273,7 @@ const RaftersScene = ({ team, banners, ring, onOpen, onRing, title, headingId = 
               </span>
             );
             return (
-              <li key={`${b.r.number}-${b.r.name}`} className="rafter" style={{ '--wire': `${s.wire}px`, '--tilt': `${s.tilt}deg`, '--dur': `${s.dur}s`, '--delay': `${s.delay}s` } as CSSProperties}>
+              <li key={`${b.r.number}-${displayName(b.r.name)}`} className="rafter" style={{ '--wire': `${s.wire}px`, '--tilt': `${s.tilt}deg`, '--dur': `${s.dur}s`, '--delay': `${s.delay}s` } as CSSProperties}>
                 <span className="rafter__cone" aria-hidden="true" />
                 <Pendulum>
                 <span className="rafter__wire rafter__wire--l" aria-hidden="true" />
@@ -306,18 +307,18 @@ const RaftersScene = ({ team, banners, ring, onOpen, onRing, title, headingId = 
           <span className="rafters__ring-k">Ring of Honor</span>
           <ul className="rafters__ring-list" aria-label={`${team?.name ?? 'Club'} Ring of Honor`} data-no-swipe-x>
             {ring.map((e, i) => (
-              <li key={`${e.pos}:${e.name}`}>
+              <li key={`${e.pos}:${displayName(e.name)}`}>
                 {i > 0 && (
                   <span className="rafters__dot" aria-hidden="true">
                     ·
                   </span>
                 )}
                 {onRing ? (
-                  <button type="button" onClick={() => onRing(e)} {...peekKeyProps(`${e.pos}:${e.name}`)} className={cn(e.hof && 'is-hof')}>
-                    {e.name}
+                  <button type="button" onClick={() => onRing(e)} {...peekKeyProps(`${e.pos}:${displayName(e.name)}`)} className={cn(e.hof && 'is-hof')}>
+                    {displayName(e.name)}
                   </button>
                 ) : (
-                  <span className={cn(e.hof && 'is-hof')}>{e.name}</span>
+                  <span className={cn(e.hof && 'is-hof')}>{displayName(e.name)}</span>
                 )}
               </li>
             ))}

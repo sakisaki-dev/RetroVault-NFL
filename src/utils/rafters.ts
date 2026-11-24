@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { useCallback, useMemo } from 'react';
 import type { Player } from '@/types/player';
 import { useLeague } from '@/context/LeagueContext';
@@ -26,7 +27,8 @@ export interface RafterBanner {
   player?: Player;
 }
 
-const surname = (name: string) => {
+const surname = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.trim().split(/\s+/);
   const suffix = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
   const last = parts.length > 1 && suffix.test(parts[parts.length - 1]) ? parts.slice(-2).join(' ') : parts[parts.length - 1];

@@ -19,6 +19,7 @@ import { PeakChart, VolumeRate } from './Bars';
 import CompareOverlay from './CompareOverlay';
 import { BestSeasons, ClubSplits } from './Extras';
 import './careerGraphs.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Deep Dive's career graphs (lazy-loaded): the timeline hero with its season cursor, then the trophy shelf, the
@@ -63,14 +64,14 @@ const DdGraphs = ({ player, players, wide }: { player: Player; players: Player[]
 
   if (!ready) return <PixelLoader label="Charting" what="the career graphs" minHeight={wide ? 420 : 520} />;
   if (!file) return <p className="glass-card p-4 text-sm text-muted-foreground">The season-by-season file isn&rsquo;t built yet (npm run rebuild writes it).</p>;
-  if (!career) return <p className="glass-card p-4 text-sm text-muted-foreground">{player.name} has no season-end snapshots on record, so there is nothing to chart yet.</p>;
+  if (!career) return <p className="glass-card p-4 text-sm text-muted-foreground">{displayName(player.name)} has no season-end snapshots on record, so there is nothing to chart yet.</p>;
   const pts = career.points;
   const span = `${yLabel(pts[0].year)}–${yLabel(pts[pts.length - 1].year)}`;
   return (
     <div className="space-y-3 rv-load-in">
       {!career.hasSeasons && (
         <p className="cg-note">
-          {player.name} {player.status === 'Retired' ? 'retired before the season-end records begin' : IS_NFL ? 'has one season in the data' : 'has no season line yet'} ({span} recorded): his card, Career Legacy and Hall of Fame standing are charted, but there are no
+          {displayName(player.name)} {player.status === 'Retired' ? 'retired before the season-end records begin' : IS_NFL ? 'has one season in the data' : 'has no season line yet'} ({span} recorded): his card, Career Legacy and Hall of Fame standing are charted, but there are no
           single seasons to break down.
         </p>
       )}

@@ -6,6 +6,7 @@ import { connectSpotify, disconnectSpotify, spotifyAvailable, useSpotifyConnecte
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { NIGHT_FROM, NIGHT_TO, SAVER_IDLE_CHOICES, SAVER_SLEEP_CHOICES, forgetSaverPlace, requestSaverPlace, setSaverIdle, setSaverNight, setSaverSleep, startScreensaver, useSaverIdle, useSaverNight, useSaverPlace, useSaverSleep } from '@/utils/screensaver';
+import { displayName } from '@/utils/displayName';
 
 type Tab = 'timing' | 'weather' | 'bus' | 'music';
 const TAB_KEY = 'rv:saver:menu';
@@ -222,7 +223,7 @@ const ScreensaverButton = ({ season }: { season: string | number }) => {
                   <option value="">Off</option>
                   {pts.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.name} → {p.toward}
+                      {displayName(p.name)} → {p.toward}
                     </option>
                   ))}
                 </select>
@@ -235,7 +236,7 @@ const ScreensaverButton = ({ season }: { season: string | number }) => {
                       <option value="">Don't show</option>
                       {pts.slice(from + 1).map((p) => (
                         <option key={p.id} value={p.id}>
-                          {p.name}
+                          {displayName(p.name)}
                         </option>
                       ))}
                     </select>

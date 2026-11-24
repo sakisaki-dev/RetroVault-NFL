@@ -5,6 +5,7 @@ import { isHallOfFamer } from '@/config/stats';
 import PlayerSearchSelect from '../../PlayerSearchSelect';
 import TeamLogo from '../../brand/TeamLogo';
 import { keyOf } from '../records';
+import { displayName } from '@/utils/displayName';
 
 const chip =
   'inline-flex h-9 items-center gap-1.5 rounded-full border border-line bg-panel px-3 text-sm font-semibold transition-colors hover:border-gold/60 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold';
@@ -13,7 +14,7 @@ const PickChip = ({ p, onChoose }: { p: Player; onChoose: (key: string) => void 
   <li>
     <button type="button" className={chip} onClick={() => onChoose(keyOf(p))}>
       {p.team && <TeamLogo team={p.team} size={18} decorative backed />}
-      {p.name}
+      {displayName(p.name)}
       <span className="font-pixel text-[8px] text-muted-foreground">{p.position}</span>
     </button>
   </li>

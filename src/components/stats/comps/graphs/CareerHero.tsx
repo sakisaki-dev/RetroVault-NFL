@@ -14,6 +14,7 @@ import SharePosterFrame from '@/components/share/SharePosterFrame';
 import { shareFileName } from '@/utils/shareImage';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { findNFLTeam } from '@/utils/nflTeams';
+import { displayName } from '@/utils/displayName';
 
 /** Metric chips, grouped (Card · Season · Rates), in one scrolling row. */
 export const MetricChips = ({ metrics, value, onChange, label }: { metrics: GraphMetric[]; value: string; onChange: (id: string) => void; label: string }) => {
@@ -87,7 +88,7 @@ const TimelinePoster = ({ player, career, metric }: { player: Player; career: Ca
       <div className="shr-graph__head">
         {team && <TeamLogo team={team} size={44} decorative />}
         <div className="min-w-0">
-          <p className="shr-graph__name">{player.name}</p>
+          <p className="shr-graph__name">{displayName(player.name)}</p>
           <p className="shr-graph__sub">
             {POSITION_NAMES[player.position] ?? player.position} · Career timeline · {metric.label} · {yLabel(pts[0].year)}–{yLabel(pts[pts.length - 1].year)}
           </p>
@@ -194,9 +195,9 @@ const CareerHero = ({
         <p className="min-w-0 flex-1 text-[11px] text-muted-foreground">{metric.definition}</p>
         <ShareImageButton
           className="min-h-[32px] self-center"
-          shareKey={`${player.position}:${player.name}:${metric.id}:${career.points.length}:${career.points[career.points.length - 1]?.year ?? ''}`}
+          shareKey={`${player.position}:${displayName(player.name)}:${metric.id}:${career.points.length}:${career.points[career.points.length - 1]?.year ?? ''}`}
           fileName={shareFileName(player.name, 'timeline', metric.short)}
-          title={`${player.name} · Career timeline · ${metric.label}`}
+          title={`${displayName(player.name)} · Career timeline · ${metric.label}`}
           poster={() => <TimelinePoster player={player} career={career} metric={metric} />}
         />
       </div>
@@ -215,7 +216,7 @@ const CareerHero = ({
             data-no-swipe-x
             role="slider"
             tabIndex={0}
-            aria-label={`${player.name} season cursor`}
+            aria-label={`${displayName(player.name)} season cursor`}
             aria-valuemin={career.points[0].year}
             aria-valuemax={career.points[n - 1].year}
             aria-valuenow={p.year}

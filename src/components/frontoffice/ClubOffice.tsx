@@ -26,6 +26,7 @@ import {
 import CapSheet, { Stars } from './CapSheet';
 import { Desk, Lamp, PickToken, inkOf } from './board';
 import { Coach, Facility, PixelIcon, SafeSign, WarnSign, type PixelIconId } from './pixelArt';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The club office: the coached club's cap sheet, coordinators, front desk, facilities and the game's lifetime counters,
@@ -106,14 +107,14 @@ const StaffCard = ({ c, s, season, team }: { c: OfficeStaff; s: Strength; season
   // Retro Bowl's own sprite of him in the club's polo (private sprites), else the pixel-art coach
   const sprite = useHasCoachSprite(c.name);
   return (
-    <article className="fo-staffcard" aria-label={`${c.role === 'OC' ? 'Offensive' : 'Defensive'} coordinator ${c.name}`}>
+    <article className="fo-staffcard" aria-label={`${c.role === 'OC' ? 'Offensive' : 'Defensive'} coordinator ${displayName(c.name)}`}>
       <div className="flex gap-2.5">
         <span className={cn('fo-staffcard__figure', sprite && 'has-sprite')} aria-hidden="true">
-          {sprite ? <CoachSprite who={c.name} team={team} size="m" /> : <Coach ink={ink} dark={dark} px={3} />}
+          {sprite ? <CoachSprite who={displayName(c.name)} team={team} size="m" /> : <Coach ink={ink} dark={dark} px={3} />}
         </span>
         <div className="min-w-0 flex-1">
           <p className="fo-label">{c.role === 'OC' ? 'Offensive coord.' : 'Defensive coord.'}</p>
-          <h4 className="fo-staffcard__name">{c.name}</h4>
+          <h4 className="fo-staffcard__name">{displayName(c.name)}</h4>
           <Stars half={c.rating} />
           <div className="mt-1.5 flex flex-wrap gap-1">
             <span className={cn('fo-stamp', c.contract <= 1 && 'is-red')}>
@@ -425,7 +426,7 @@ interface ClubOfficeProps {
 const ClubOffice = ({ players, onPlayerSelect, coachName }: ClubOfficeProps) => {
   const state = useOfficeState();
   const rows = useMemo(() => (state ? capRows(state) : []), [state]);
-  const byKey = useMemo(() => new Map(players.map((p) => [`${p.position}:${p.name}`, p])), [players]);
+  const byKey = useMemo(() => new Map(players.map((p) => [`${p.position}:${displayName(p.name)}`, p])), [players]);
   if (!state || !rows.length) return null;
   const team = findNFLTeam(state.club);
   const playerFor = (r: CapRow) => byKey.get(r.key);

@@ -16,6 +16,7 @@ import './kits.css';
 import AutographCanvas from './autograph/AutographCanvas';
 import { useAutographFor } from './autograph/sample';
 import { autographValue, fmtMult, inkRowOf, parallelOf, serialStr } from '@/config/autographs';
+import { displayName } from '@/utils/displayName';
 
 /** Firework bursts: [left %, top %, delay s]; Legendary fires a second volley. */
 const VOLLEY = [
@@ -419,7 +420,7 @@ const Walkout = ({ card, info, total, beats, step, reduced, badge, onAdvance, on
 
       <p className="sr-only" role="status">
         {reached('flip')
-          ? `${tierLabel(card.tier)}! ${info.player.name}, ${variantLabel(card.variant)}${twisted ? '. Twist: it is a Holo!' : ''}${kitShown && uniform ? (throwback ? `. Throwback kit: ${uniform.label}!` : `. Alternate kit: ${uniform.label}`) : ''}${parShown && par ? `. Prizm ${prizmInfo(par.c).label} parallel, ${prizmSerial(par)}${parChase ? '!' : ''}` : ''}${signed && auto ? `. And an autograph: ${parallelOf(auto.roll.parallel).label} ${serialStr(auto.roll)}!` : ''}`
+          ? `${tierLabel(card.tier)}! ${displayName(info.player.name)}, ${variantLabel(card.variant)}${twisted ? '. Twist: it is a Holo!' : ''}${kitShown && uniform ? (throwback ? `. Throwback kit: ${uniform.label}!` : `. Alternate kit: ${uniform.label}`) : ''}${parShown && par ? `. Prizm ${prizmInfo(par.c).label} parallel, ${prizmSerial(par)}${parChase ? '!' : ''}` : ''}${signed && auto ? `. And an autograph: ${parallelOf(auto.roll.parallel).label} ${serialStr(auto.roll)}!` : ''}`
           : `${tierLabel(card.tier)} walkout`}
       </p>
 

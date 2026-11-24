@@ -41,6 +41,7 @@ import {
   type PlayerEdit,
 } from '@/utils/indexedDB';
 import { calcCareerLegacy, calcDominance, calcTPG, getRawTrueTalent, isDefensivePosition } from '@/config/stats';
+import { displayName } from '@/utils/displayName';
 
 // The sprite look table (faces.ts) belongs to the Collection chunk; load it only when the editor opens
 
@@ -237,7 +238,7 @@ const PlayerEditDialog = ({ player, isNewPlayer = false, onClose, onSave, onDele
     if (!player || busy) return;
     setBusy('deleting');
 
-    const playerKey = `${player.position}:${player.name}`;
+    const playerKey = `${player.position}:${displayName(player.name)}`;
 
     try {
       await deletePlayerEdit(playerKey);

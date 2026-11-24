@@ -6,6 +6,7 @@ import ClubStrip from '@/components/brand/ClubStrip';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { ClockStage, LampBar, RatingBars, StarRow, clubVars, starText } from './clockParts';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /** The coach's record the next draft is built from (ClockPage works it out from coach.json and the save) */
 export interface DraftInfo {
@@ -71,7 +72,7 @@ const Row = ({ c, rank, onSelect }: { c: ClockPlayer; rank: number; onSelect: (p
       <span className="clk-bs__rank">{rank}</span>
       <ClockStage c={c} size="row" action="celebrate" />
       <span className="clk-bs__who">
-        <ClubStrip team={c.team} label={c.name} size="md" />
+        <ClubStrip team={c.team} label={displayName(c.name)} size="md" />
         <span className="clk-bs__sub">
           {c.pos} · AGE {c.age}
           {!c.player && ' · NO CARD YET'}
@@ -98,7 +99,7 @@ const Row = ({ c, rank, onSelect }: { c: ClockPlayer; rank: number; onSelect: (p
   return (
     <li>
       {c.player ? (
-        <button type="button" className="clk-bs clk-bs--pro" style={clubVars(c.team)} {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`${rank}. ${c.name}, ${c.pos}, ${c.team}, age ${c.age}. Open his card`}>
+        <button type="button" className="clk-bs clk-bs--pro" style={clubVars(c.team)} {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`${rank}. ${displayName(c.name)}, ${c.pos}, ${c.team}, age ${c.age}. Open his card`}>
           {inner}
         </button>
       ) : (
@@ -121,7 +122,7 @@ const ProspectBoard = ({ all, onSelect, draft }: Props) => {
   return (
     <div className="clk-stack">
       <p className="clk-takeaway">
-        {board.length} players are {PROSPECT_MAX_AGE} or younger. {top.name} has the most room to grow (+{top.room} rating points to his ceilings)
+        {board.length} players are {PROSPECT_MAX_AGE} or younger. {displayName(top.name)} has the most room to grow (+{top.room} rating points to his ceilings)
         {capped ? `; ${capped} already sit at every ceiling` : ''}.
       </p>
       {draft && <DraftStrip d={draft} />}

@@ -17,6 +17,7 @@ import TributeButton from '../../tribute/TributeButton';
 import { RetiredHangers } from '../../teams/RetiredBadge';
 import { keyOf } from '../records';
 import { SmallSampleChip } from './ddParts';
+import { displayName } from '@/utils/displayName';
 
 const ctl =
   'inline-flex h-12 items-center justify-center gap-1.5 rounded-md border border-line bg-night/60 px-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-panel-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-40';
@@ -67,8 +68,8 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             onClick={() => prev && onChoose(keyOf(prev))}
             disabled={!prev}
             className={ctl}
-            aria-label={prev ? `Previous ${player.position} by OVR: ${prev.name}` : 'No previous player'}
-            title={prev ? `Prev ${player.position}: ${prev.name}` : undefined}
+            aria-label={prev ? `Previous ${player.position} by OVR: ${displayName(prev.name)}` : 'No previous player'}
+            title={prev ? `Prev ${player.position}: ${displayName(prev.name)}` : undefined}
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             <span className="hidden md:inline">Prev</span>
@@ -78,8 +79,8 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             onClick={() => next && onChoose(keyOf(next))}
             disabled={!next}
             className={ctl}
-            aria-label={next ? `Next ${player.position} by OVR: ${next.name}` : 'No next player'}
-            title={next ? `Next ${player.position}: ${next.name}` : undefined}
+            aria-label={next ? `Next ${player.position} by OVR: ${displayName(next.name)}` : 'No next player'}
+            title={next ? `Next ${player.position}: ${displayName(next.name)}` : undefined}
           >
             <span className="hidden md:inline">Next</span>
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -91,12 +92,12 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
       <button
         type="button"
         onClick={onOpenCard}
-        aria-label={`Open ${player.name}'s player card`}
+        aria-label={`Open ${displayName(player.name)}'s player card`}
         className="block w-full rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <ProPlayerBanner
           size={wide ? 'hero' : 'card'}
-          name={player.name}
+          name={displayName(player.name)}
           nickname={player.nickname}
           position={player.position}
           team={team ?? player.team}
@@ -138,11 +139,11 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             type="button"
             onClick={onFamily}
             disabled={!onFamily}
-            title={`${family.name} (${family.members.length} ${player.position}s): ${family.definition}. Show the families map.`}
+            title={`${displayName(family.name)} (${family.members.length} ${player.position}s): ${family.definition}. Show the families map.`}
             className="lamp cursor-pointer border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-default"
             style={{ borderColor: family.color }}
           >
-            Family <b style={{ color: family.color }}>{family.name}</b>
+            Family <b style={{ color: family.color }}>{displayName(family.name)}</b>
           </button>
         )}
         {franchises.length > 0 && (

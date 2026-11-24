@@ -10,6 +10,7 @@ import { useMarket } from '@/utils/useMarket';
 import type { CardInfo } from '../useCardPool';
 import type { OwnedAuto } from '@/utils/collection';
 import './economy.css';
+import { displayName } from '@/utils/displayName';
 
 interface SellPanelProps {
   info: CardInfo;
@@ -67,13 +68,13 @@ const SellPanel = ({ info, entry, variant, finish, kit, kitKind, kitLabel, prizm
   const last = of <= 1;
 
   const sell = () => {
-    const got = sellCopies([{ ref, price, label: `${info.player.name} · ${label}` }]);
+    const got = sellCopies([{ ref, price, label: `${displayName(info.player.name)} · ${label}` }]);
     setConfirm(false);
     if (got == null) {
       toast('That copy is no longer in your binder.');
       return;
     }
-    toast.success(`Sold for ${fmtCoins(got)} coins`, { description: `${info.player.name} · ${label}` });
+    toast.success(`Sold for ${fmtCoins(got)} coins`, { description: `${displayName(info.player.name)} · ${label}` });
     onSold(only ? 'player' : last ? 'combo' : null);
   };
 
@@ -99,7 +100,7 @@ const SellPanel = ({ info, entry, variant, finish, kit, kitKind, kitLabel, prizm
         <div className="ec-confirm" role="alertdialog" aria-label="Confirm the sale">
           <p className="text-sm font-semibold">
             {only
-              ? `This is your only ${info.player.name} card. Selling it removes him from your binder.`
+              ? `This is your only ${displayName(info.player.name)} card. Selling it removes him from your binder.`
               : `This is your last ${label}. Selling it removes this finish from his card.`}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">

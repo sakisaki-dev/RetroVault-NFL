@@ -10,6 +10,10 @@ import type { SeasonView } from '@/utils/seasonLive';
 import type { PlayerLookup } from './LivePanels';
 import { BOARD_BG, LampGrid, color, lampText, signed } from './seasonGamesUi';
 import { LeagueTable, SectionTitle } from './SeasonGames';
+import { useFieldArt } from '@/components/teamlab/fieldArt';
+import { useLeague } from '@/context/LeagueContext';
+import { isInLeague } from '@/components/InLeague';
+import './nflHeader.css';
 
 /**
  * NFL edition Season page pieces in the site's pixel-stadium style: the season jumbotron (champion, Super Bowl, AP
@@ -45,6 +49,51 @@ const AwardPlate = ({ kind, a, big }: { kind: string; a: { player: string; team:
   </li>
 );
 
+
+/**
+ * The season header's scene: the leading club's crowd and turf (useFieldArt), its three best players standing on the
+ * turf as game sprites and the record on a pixel scoreboard (CSS stand-ins and logos where the game art is absent).
+ */
+const HeaderScene = ({ season, team, live }: { season: SeasonView; team: string; live: boolean }) => {
+  const art = useFieldArt(team, 'night');
+  const { getAllPlayers, dataVersion } = useLeague();
+  const id = findNFLTeam(team)?.name;
+  const best = useMemo(
+    () =>
+      getAllPlayers()
+        .filter((p) => !p.isRealLegend && (!live || isInLeague(p)) && findNFLTeam(p.team)?.name === id)
+        .sort((a, b) => (b.careerLegacy ?? 0) - (a.careerLegacy ?? 0))
+        .slice(0, 3),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getAllPlayers, dataVersion, id, live],
+  );
+  const row = season.table.find((r) => r.team === team);
+  const t = findNFLTeam(team);
+  const order = best.length === 3 ? [best[1], best[0], best[2]] : best;
+  return (
+    <div className="nsh-scene" style={{ ['--nsh-tint' as string]: t ? `hsl(${t.primaryColor})` : 'hsl(var(--gold))' }}>
+      <div className={cn('nsh-scene__crowd', art.crowd && 'nsh-scene__crowd--art')} style={art.crowd ? { backgroundImage: `url(${art.crowd})` } : undefined} aria-hidden="true" />
+      {art.stands && <div className="nsh-scene__stands" style={{ backgroundImage: `url(${art.stands})` }} aria-hidden="true" />}
+      <div className={cn('nsh-scene__turf', art.turf && 'nsh-scene__turf--art')} style={art.turf ? { backgroundImage: `url(${art.turf})` } : undefined} aria-hidden="true" />
+      <div className="nsh-scene__row">
+        <div className="nsh-scene__figs">
+          {order.map((p) => (
+            <PlayerHit key={p.name} name={p.name} pos={p.position} className="nsh-fig">
+              <StarSprite name={p.name} pos={p.position} team={team} size="m" celebrate={p === best[0]} />
+              <span className="nsh-fig__name">{p.name}</span>
+            </PlayerHit>
+          ))}
+        </div>
+        <div className="nsh-board" aria-label={`${team} record`}>
+          <span className="nsh-board__k">{live ? 'Best record' : 'Final record'}</span>
+          <span className="nsh-board__rec">{row?.record ?? ''}</span>
+          {row && <span className="nsh-board__sub">{signed(row.diff)} pts · power #{Number.isFinite(row.power) ? row.power : '–'}</span>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolean }) => {
   const sb = season.superBowl;
   const aw = season.awards ?? {};
@@ -56,6 +105,7 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
     <section aria-label={`${season.season} season`} className="relative overflow-hidden rounded-xl border border-[hsl(var(--gold)/0.55)] shadow-[0_0_24px_hsl(var(--gold)/0.12)]" style={{ background: BOARD_BG }}>
       <span aria-hidden className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 18% 0%, ${color(lead, 0.5)}, transparent 62%)` }} />
       <LampGrid />
+      {lead && <div className="relative p-3 pb-0 sm:p-4 sm:pb-0"><HeaderScene season={season} team={lead} live={live} /></div>}
       <div className="relative grid gap-3 p-3 sm:p-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           {lead && <TeamLogo team={lead} decorative className="h-20 w-20 flex-shrink-0 drop-shadow-[0_0_18px_hsl(0_0%_100%/0.2)] sm:h-28 sm:w-28" />}
@@ -91,7 +141,7 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
             ))}
           </ul>
         ) : (
-          <p className="self-center text-xs text-muted-foreground">Awards are announced after the Super Bowl.</p>
+          <p className="self-center font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">Awards are announced after the Super Bowl</p>
         )}
       </div>
     </section>
@@ -176,7 +226,7 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
     const m = new Map<string, SeasonView['table']>();
     for (const r of season.table) {
       if (!r.conference || !r.division) continue;
-      const k = `${r.conference} ${r.division}`;
+      const k = r.division.startsWith(r.conference) ? r.division : `${r.conference} ${r.division}`;
       m.set(k, [...(m.get(k) ?? []), r]);
     }
     return [...m.entries()]

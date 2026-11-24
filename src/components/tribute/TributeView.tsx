@@ -13,6 +13,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { tributeEntryOf, useLeagueContent, useTribute, type StoryStat, type Tribute, type TributeChapter, type TributeIndexEntry } from '@/utils/leagueContent';
 import './tribute.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * A Player Tribute (the fifth AI-authored lane: data/y80/tributes.json, written only by tribute.set; every figure
@@ -121,7 +122,7 @@ const TradeCard = ({ c, subject }: { c: TributeChapter; subject: string }) => {
                 {sd.players.map((p) => (
                   <li key={p.key} className={cn(p.key === subject && 'is-subject')}>
                     <span className="trib-trade__name">
-                      {p.name}
+                      {displayName(p.name)}
                       <span className="trib-trade__pos">{p.pos}</span>
                     </span>
                     <span className="trib-trade__line">
@@ -160,7 +161,7 @@ const TradeCard = ({ c, subject }: { c: TributeChapter; subject: string }) => {
                     <tr key={p.key} style={clubVars(sd.to)} className={cn(p.key === subject && 'is-subject')}>
                       <th scope="row">
                         <span className="trib-after__dot" aria-hidden="true" />
-                        {p.name}
+                        {displayName(p.name)}
                       </th>
                       <td>{p.played === false && !p.after?.games ? '—' : fmt(p.after?.games)}</td>
                       <td>{fmt(p.after?.rings)}</td>
@@ -244,14 +245,14 @@ const RivalCard = ({ c, subjectName, subjectTeam, rivalTeam }: { c: TributeChapt
   const last = (n: string) => n.split(' ').slice(-1)[0];
   return (
     <section className="trib-card trib-rival" aria-labelledby={`${c.id}-h`}>
-      <p className="trib-kicker trib-kicker--gold">The rival{r ? ` · ${r.name}` : ''}</p>
+      <p className="trib-kicker trib-kicker--gold">The rival{r ? ` · ${displayName(r.name)}` : ''}</p>
       <h2 id={`${c.id}-h`} className="trib-h3">
         {c.headline}
       </h2>
       {r && (
         <table className="trib-vs">
           <caption className="sr-only">
-            {subjectName} and {r.name}, career against career
+            {subjectName} and {displayName(r.name)}, career against career
           </caption>
           <thead>
             <tr>
@@ -344,7 +345,7 @@ const Hero = ({ entry, tribute, player, team, sprites }: { entry: TributeIndexEn
       </div>
       <div className="trib-hero__text">
         {nick && <p className="trib-hero__nick">&ldquo;{nick}&rdquo;</p>}
-        <DialogTitle className="trib-hero__name">{entry.name}</DialogTitle>
+        <DialogTitle className="trib-hero__name">{displayName(entry.name)}</DialogTitle>
         <DialogDescription className="trib-hero__deck">{tribute?.deck ?? entry.deck}</DialogDescription>
       </div>
     </header>
@@ -373,11 +374,11 @@ const TributeView = ({ playerKey, open, onClose }: { playerKey: string; open: bo
   const { tribute, loading } = useTribute(entry);
   const sprites = !!useGameSprites();
   const players = useMemo(() => getAllPlayers(), [getAllPlayers]);
-  const byKey = useMemo(() => new Map(players.map((p) => [`${p.position}:${p.name}`, p])), [players]);
+  const byKey = useMemo(() => new Map(players.map((p) => [`${p.position}:${displayName(p.name)}`, p])), [players]);
   const player = byKey.get(playerKey);
   const journey = tribute?.journey ?? [];
   const team = (player && bannerTeamOf(player)) || journey[journey.length - 1]?.team || '';
-  const names = useMemo(() => Object.fromEntries(players.map((p) => [`${p.position}:${p.name}`, p.name])), [players]);
+  const names = useMemo(() => Object.fromEntries(players.map((p) => [`${p.position}:${displayName(p.name)}`, p.name])), [players]);
 
   // chapter numbers count club chapters only; a club's years show on its first chapter
   let n = 0;

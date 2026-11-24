@@ -6,6 +6,7 @@ import { LabRootContext, PlayerPicker } from './lab/LabParts';
 import { LAB_TABS as TABS } from './lab/LabTabs';
 import './art.css';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
 interface ArtLabProps {
   open: boolean;
@@ -88,7 +89,7 @@ const ArtLab = ({ open, onClose, cards, total }: ArtLabProps) => {
           <div ref={setRoot} className="lab__main" id="lab-panel" role="tabpanel" aria-labelledby={`lab-tab-${tab}`}>
             {pick && (
               <p className="lab__hint">
-                <b>{pick.player.name}</b> · {pick.player.position} · {pick.franchise} · {active.hint}
+                <b>{displayName(pick.player.name)}</b> · {pick.player.position} · {pick.franchise} · {active.hint}
               </p>
             )}
             {!pick ? (

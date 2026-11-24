@@ -11,6 +11,7 @@ import CompRadar from '../comps/CompRadar';
 import { VIZ, fmtNum, ordinal } from '../analytics/viz';
 import { keyOf } from '../records';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const TOP = 3;
 /** Line style per series, matching CompRadar (first solid, the rest dashed), so identity is not colour alone. */
@@ -50,7 +51,7 @@ const LeaderRadar = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
   const ok = traits.map((_, i) => leaders.some((l) => Number.isFinite(l.traits[i]?.percentile)));
   const pctOf = (g: SkillGrade | undefined) => (g && Number.isFinite(g.percentile) ? g.percentile : null);
   const describe = (i: number) =>
-    `${labels[i]}: ` + leaders.map((l) => `${l.player.name} ${l.traits[i]?.display ?? '—'}${pctOf(l.traits[i]) != null ? ` (${ordinal(pctOf(l.traits[i]) as number)} percentile)` : ''}`).join('; ');
+    `${labels[i]}: ` + leaders.map((l) => `${displayName(l.player.name)} ${l.traits[i]?.display ?? '—'}${pctOf(l.traits[i]) != null ? ` (${ordinal(pctOf(l.traits[i]) as number)} percentile)` : ''}`).join('; ');
 
   if (positions.length === 0) return null;
   const active = axis != null && axis < traits.length ? axis : null;
@@ -97,7 +98,7 @@ const LeaderRadar = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
                   >
                     <Swatch color={l.color} dashed={!!DASH[i]} />
                     {l.player.team && <TeamLogo team={l.player.team} size={18} decorative backed />}
-                    <span className="min-w-0 flex-1 truncate text-sm font-semibold">{l.player.name}</span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-semibold">{displayName(l.player.name)}</span>
                     <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">{fmtNum(l.player.careerLegacy, 0)} CL</span>
                   </button>
                 </li>
@@ -111,7 +112,7 @@ const LeaderRadar = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
                   <ul className="space-y-0.5">
                     {leaders.map((l) => (
                       <li key={keyOf(l.player)} className="flex items-baseline justify-between gap-2">
-                        <span className="truncate">{l.player.name}</span>
+                        <span className="truncate">{displayName(l.player.name)}</span>
                         <span className="shrink-0 font-mono text-xs tabular-nums">
                           {l.traits[active]?.display ?? '—'}
                           {pctOf(l.traits[active]) != null && <span className="text-muted-foreground"> · {ordinal(pctOf(l.traits[active]) as number)}</span>}
@@ -136,7 +137,7 @@ const LeaderRadar = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
                 <th scope="col" className="px-2 py-1.5 font-normal">Trait</th>
                 {leaders.map((l) => (
                   <th key={keyOf(l.player)} scope="col" className="px-2 py-1.5 text-right font-normal normal-case">
-                    {l.player.name}
+                    {displayName(l.player.name)}
                   </th>
                 ))}
               </tr>

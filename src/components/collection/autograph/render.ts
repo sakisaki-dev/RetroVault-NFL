@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import {
   PENS,
   PRESTIGE,
@@ -1573,7 +1574,7 @@ export function renderLayers(p: AutographSnapshot, roll: AutographRoll, pw: numb
   ctx.fillRect(0, nb - 1, W, 2);
   ctx.textAlign = 'center';
   ctx.fillStyle = lightHead ? '#2a1d10' : '#eef1fa';
-  ctx.fillText(fitText(ctx, p.name.toUpperCase(), W * 0.84, 40, 24, (s) => `italic 800 ${s}px ${DISPLAY}`), W / 2, nt + (nb - nt) * 0.5);
+  ctx.fillText(fitText(ctx, displayName(p.name).toUpperCase(), W * 0.84, 40, 24, (s) => `italic 800 ${s}px ${DISPLAY}`), W / 2, nt + (nb - nt) * 0.5);
   ctx.fillStyle = lightHead ? '#6b5333' : '#9aa6c8';
   const plate = `${p.position} #${p.number} · ${p.team} · ${eraInfo.label}${roll.throwback ? ' (throwback)' : ''}`;
   ctx.fillText(fitText(ctx, plate, W * 0.84, 17, 12, (s) => `600 ${s}px ${BODY}`), W / 2, nt + (nb - nt) * 0.83);

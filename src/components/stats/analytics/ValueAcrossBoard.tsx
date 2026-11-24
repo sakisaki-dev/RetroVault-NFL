@@ -11,6 +11,7 @@ import { clubStyle } from '../visual/clubTone';
 import { fmtNum } from './viz';
 import { keyOf } from '../records';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const SHOWN = 10;
 
@@ -50,7 +51,7 @@ const ValueAcrossBoard = ({ players, onSelect }: { players: Player[]; onSelect: 
               className="flex w-full min-w-0 flex-col items-start gap-1 rounded text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               <RankMedal rank={r.rank} />
-              <span className="w-full truncate font-display text-sm font-extrabold uppercase italic leading-tight sm:text-base">{r.player.name}</span>
+              <span className="w-full truncate font-display text-sm font-extrabold uppercase italic leading-tight sm:text-base">{displayName(r.player.name)}</span>
               <span className="font-pixel text-[8px] text-muted-foreground">{r.player.position}</span>
               <span className="font-mono text-base font-bold tabular-nums text-gold sm:text-lg">+{fmtNum(r.sigma, 2)}σ</span>
             </button>
@@ -98,7 +99,7 @@ const ValueAcrossBoard = ({ players, onSelect }: { players: Player[]; onSelect: 
                   className="flex w-full min-w-0 items-center gap-1.5 rounded text-left font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
                   {r.player.team ? <TeamLogo team={r.player.team} size={18} decorative backed /> : <span className="w-[18px]" aria-hidden="true" />}
-                  <span className="truncate"><FitName name={r.player.name} /></span>
+                  <span className="truncate"><FitName name={displayName(r.player.name)} /></span>
                   <span className="shrink-0 font-pixel text-[9px] text-muted-foreground">{r.player.position}</span>
                 </button>
               </td>

@@ -7,6 +7,7 @@ import { ordinal } from '../analytics/viz';
 import { DdBar, GradeChip } from './ddParts';
 import LeaderboardPeek, { type PeekBoard } from './LeaderboardPeek';
 import { advLeaders, fmtAdv, useAdvanced } from '@/utils/nflAdvanced';
+import { displayName } from '@/utils/displayName';
 
 /**
  * NFL edition: the advanced-stat factors of a player (nflverse EPA / CPOE / target share, Next Gen Stats, PFR advanced
@@ -36,7 +37,7 @@ const DdAdvancedFactors = ({
   const scope = picker ? (picked && scopes.includes(picked) ? picked : scopes[0]) : forced && scopes.includes(forced) ? forced : null;
   if (!adv || !mine || !scope) {
     return picker && adv ? (
-      <p className="glass-card p-4 text-sm text-muted-foreground">No advanced data for {player.name}: his position or seasons are not covered by the sources (nflverse advanced data starts in 2016-2018).</p>
+      <p className="glass-card p-4 text-sm text-muted-foreground">No advanced data for {displayName(player.name)}: his position or seasons are not covered by the sources (nflverse advanced data starts in 2016-2018).</p>
     ) : null;
   }
   const entries = Object.entries(mine[scope] ?? {})
@@ -77,7 +78,7 @@ const DdAdvancedFactors = ({
           </div>
         )}
       </div>
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${player.name} advanced factors`}>
+      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} advanced factors`}>
         {entries.map(([id, v], i) => {
           const m = adv.metrics[id];
           const grade = m.dir === 'style' ? null : gradeFor(v[1]);

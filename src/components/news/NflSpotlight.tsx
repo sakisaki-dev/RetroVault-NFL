@@ -11,6 +11,7 @@ import { rowsOf, useGameLog, type GameRow } from '@/utils/gameLogs';
 import { peekProps } from '@/components/peek/peekProps';
 import type { Headline, PlayerNote } from '@/utils/leagueContent';
 import './nflSpotlight.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Arcade Spotlight, NFL edition (owner: "boring"): each player a hero tile. His sprite stands big on a club-colour
@@ -95,7 +96,7 @@ const bar = (pos: string, r: GameRow): number => {
 };
 
 const Tile = ({ p, headline, note, onPlayer }: { p: Player; headline?: Headline; note?: PlayerNote; onPlayer: (p: Player) => void }) => {
-  const key = `${p.position}:${p.name}`;
+  const key = `${p.position}:${displayName(p.name)}`;
   const log = useGameLog(key);
   const { numberFor } = useJerseyNumbers();
   const club = p.bannerTeam || p.team;
@@ -123,7 +124,7 @@ const Tile = ({ p, headline, note, onPlayer }: { p: Player; headline?: Headline;
         style={c ? ({ '--tc': `hsl(${c.primary})`, '--tc2': `hsl(${c.secondary})` } as CSSProperties) : undefined}
         onClick={() => onPlayer(p)}
         {...peekProps(p)}
-        aria-label={`Open ${p.name}'s card`}
+        aria-label={`Open ${displayName(p.name)}'s card`}
       >
         <span className="nsp__rays" aria-hidden="true" />
         <span className="nsp__num" aria-hidden="true">{num}</span>
@@ -140,7 +141,7 @@ const Tile = ({ p, headline, note, onPlayer }: { p: Player; headline?: Headline;
             <span className="nsp__team">{p.team && p.team !== 'FA' ? p.team : 'Free agent'}</span>
             <InLeague player={p} label={false} />
           </span>
-          <span className="nsp__name">{p.name}</span>
+          <span className="nsp__name">{displayName(p.name)}</span>
           <span className="nsp__why">
             <b>{reason.kicker}</b>
             {reason.text}
@@ -180,7 +181,7 @@ const NflSpotlight = ({ picks, headlines, notes, onPlayer }: { picks: Player[]; 
     </h2>
     <ul className="nsp-grid">
       {picks.map((p) => (
-        <Tile key={`${p.position}:${p.name}`} p={p} headline={headlines.find((h) => h.players[0] === p.name)} note={notes.find((x) => x.name === p.name)} onPlayer={onPlayer} />
+        <Tile key={`${p.position}:${displayName(p.name)}`} p={p} headline={headlines.find((h) => h.players[0] === p.name)} note={notes.find((x) => x.name === p.name)} onPlayer={onPlayer} />
       ))}
     </ul>
   </section>

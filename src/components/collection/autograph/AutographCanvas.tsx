@@ -5,6 +5,7 @@ import { autographFontsReady, loadAutographFonts } from './fonts';
 import { compose, renderAutograph, renderLayers, CARD_H, CARD_W } from './render';
 import { useAutographFigure } from './figure';
 import './autograph.css';
+import { displayName } from '@/utils/displayName';
 
 interface AutographCanvasProps {
   snap: AutographSnapshot;
@@ -111,7 +112,7 @@ const AutographCanvas = ({ snap, roll, cacheKey, write = false, writeDelayMs = 0
       ref={ref}
       className={cn('au-shield block aspect-[100/142] h-auto w-full bg-panel', className)}
       role="img"
-      aria-label={label ?? `${snap.name} autograph`}
+      aria-label={label ?? `${displayName(snap.name)} autograph`}
     />
   );
 };

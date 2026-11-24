@@ -1,3 +1,5 @@
+import '@/components/stats/visual/recordShelves.css';
+import './gameRecords.css';
 import { useMemo, useState, type ReactNode } from 'react';
 import { CalendarX2, ListOrdered, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -8,6 +10,7 @@ import TeamLogo from '@/components/timeline/TeamLogo';
 import ClubStrip from '@/components/brand/ClubStrip';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { BOARD_BG, FormPips, LampGrid, Rating, RESULT_TEXT, ResultChip, ScoreSide, color, isResult, lampText, rate, roundLabel, signed } from './seasonGamesUi';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Season page's backbone, the design that lived on the Timeline as "Season games": the coached club's
@@ -313,10 +316,10 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
         </tr>
       </thead>
       {divisions.map((d) => (
-        <tbody key={d.name}>
+        <tbody key={displayName(d.name)}>
           <tr className="border-t border-border/50 bg-secondary/30">
             <th scope="colgroup" colSpan={11} className="px-2 py-1.5 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-              {d.name}
+              {displayName(d.name)}
             </th>
           </tr>
           {d.rows.map((r) => {
@@ -421,51 +424,56 @@ export const GameRecords = ({ records }: { records: GameRecord[] }) => {
   return (
     <div className="space-y-2">
       <SectionTitle icon={Trophy}>Game records</SectionTitle>
-      <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-        {records.map((rec) => {
-          const r = rec as StreakRecord;
-          const isGame = !!(r.away && r.home && r.awayScore !== undefined && r.homeScore !== undefined);
-          const label = r.id === 'coach-win-streak' ? 'Longest winning streak' : r.label;
-          const where = isGame ? spot(r) : [spot(r.from), r.to ? `to ${spot(r.to)}` : ''].filter(Boolean).join(' ');
-          return (
-            <li key={r.id} className="relative overflow-hidden rounded-lg border border-[hsl(var(--line)/0.7)] shadow-[0_6px_18px_hsl(228_60%_2%/0.35)]" style={{ background: BOARD_BG }}>
-              <LampGrid />
-              <div className="relative flex items-end justify-between gap-2 px-3 pb-1.5 pt-2">
-                <div className="min-w-0">
-                  <p className="truncate font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">{label}</p>
-                  <p className={cn('font-display text-3xl font-bold tabular-nums leading-none', lampText)}>
-                    {r.value}
-                    {r.id === 'coach-win-streak' && <span className="ml-1 text-sm text-muted-foreground">games</span>}
-                  </p>
-                </div>
-                {where && <span className="flex-shrink-0 text-right font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">{where}</span>}
-              </div>
-              {isGame ? (
-                <>
-                  <p className="sr-only">
-                    {r.away} {r.awayScore} at {r.home} {r.homeScore}
-                  </p>
-                  <div className="relative flex items-stretch" aria-hidden>
-                    <ScoreSide team={r.away!} score={r.awayScore} won={r.awayScore! > r.homeScore!} />
-                    <span className="flex items-center bg-black/60 px-1.5 font-pixel text-[9px] text-muted-foreground">@</span>
-                    <ScoreSide team={r.home!} score={r.homeScore} won={r.homeScore! > r.awayScore!} align="right" />
+      <div className="rb-wall">
+        <section className="rb-shelf" style={{ ['--n' as string]: records.length }} aria-label="Game records">
+          <ul className="rb-shelf__row gr-row">
+            {records.map((rec) => {
+              const r = rec as StreakRecord;
+              const isGame = !!(r.away && r.home && r.awayScore !== undefined && r.homeScore !== undefined);
+              const label = r.id === 'coach-win-streak' ? 'Longest winning streak' : r.label;
+              const where = isGame ? spot(r) : [spot(r.from), r.to ? `to ${spot(r.to)}` : ''].filter(Boolean).join(' ');
+              const lead = isGame ? (r.awayScore! > r.homeScore! ? r.away : r.home) : r.team;
+              return (
+                <li key={r.id} className="min-w-0">
+                  <div className="rb-plaque gr-plaque" style={{ background: `linear-gradient(160deg, ${color(lead, 0.4)}, #0d1330 70%)` }} role="group" aria-label={`${label}: ${r.value}`}>
+                    <span className="rb-plaque__title" style={{ color: 'hsl(var(--gold))' }}>
+                      <Trophy className="h-3 w-3 shrink-0" aria-hidden />
+                      <span>{label}</span>
+                    </span>
+                    <span className="rb-plaque__value">
+                      {r.value}
+                      {r.id === 'coach-win-streak' && <small>games</small>}
+                    </span>
+                    {isGame ? (
+                      <span className="gr-sides">
+                        {[{ t: r.away!, sc: r.awayScore! }, { t: r.home!, sc: r.homeScore! }].map((x) => {
+                          const won = x.sc > (x.t === r.away ? r.homeScore! : r.awayScore!);
+                          return (
+                            <span key={x.t} className={cn('gr-side', won ? 'text-foreground' : 'text-foreground/55')}>
+                              <TeamLogo team={x.t} decorative className="h-5 w-5 flex-shrink-0" />
+                              <span className="gr-side__name">{x.t}</span>
+                              <span className={cn('font-display text-lg font-bold tabular-nums', won && lampText)}>{x.sc}</span>
+                            </span>
+                          );
+                        })}
+                      </span>
+                    ) : (
+                      r.team && (
+                        <span className="gr-side">
+                          <TeamLogo team={r.team} decorative className="h-6 w-6 flex-shrink-0" />
+                          <span className="gr-side__name">{r.team}</span>
+                        </span>
+                      )
+                    )}
+                    {where && <span className="rb-plaque__sub">{where}</span>}
                   </div>
-                </>
-              ) : (
-                r.team && (
-                  <div
-                    className="relative flex items-center gap-2 px-3 py-1.5"
-                    style={{ background: `linear-gradient(90deg, ${color(r.team, 0.5)}, ${color(r.team, 0.08)})` }}
-                  >
-                    <TeamLogo team={r.team} decorative className="h-6 w-6 flex-shrink-0 drop-shadow" />
-                    <span className="truncate text-sm font-semibold uppercase tracking-wide">{r.team}</span>
-                  </div>
-                )
-              )}
-            </li>
-          );
-        })}
-      </ul>
+                </li>
+              );
+            })}
+          </ul>
+          <span className="rb-shelf__rail" aria-hidden="true" />
+        </section>
+      </div>
     </div>
   );
 };

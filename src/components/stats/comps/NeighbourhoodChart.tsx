@@ -11,6 +11,7 @@ import { keyOf } from '../records';
 import { peekProps } from '../../peek/peekProps';
 import { dotColors } from './compColors';
 import { pairScores, type PositionModel } from './compModel';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Neighbourhood chart: his ~30 nearest comparable careers (by the similarity model) as club-colour dots over a
@@ -243,7 +244,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       out.push({ x: anchor === 'start' ? x + 9 : x - 9, y: y + 3.5, text, anchor, gold });
     };
     if (view.meOk) tryPlace(px(view.me.x), py(view.me.y), player.name, true);
-    view.near.slice(0, wide ? 9 : 5).forEach((d) => tryPlace(px(d.x), py(d.y), d.p.name.split(' ').slice(-1)[0]));
+    view.near.slice(0, wide ? 9 : 5).forEach((d) => tryPlace(px(d.x), py(d.y), displayName(d.p.name).split(' ').slice(-1)[0]));
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view, W, H, wide]);
@@ -254,7 +255,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
   const hofN = view.near.filter((d) => isHallOfFamer(d.p)).length;
   const retN = view.near.filter((d) => d.p.status !== 'Active').length;
   const says = !view.meOk
-    ? `${player.name} has no ${!Number.isFinite(X.get(player)) ? X.label : Y.label} on record, so he can't be placed on these axes. Try another pair.`
+    ? `${displayName(player.name)} has no ${!Number.isFinite(X.get(player)) ? X.label : Y.label} on record, so he can't be placed on these axes. Try another pair.`
     : `Among ${view.n.toLocaleString()} ${pos}s he is ${say(view.pctX)} for ${X.label} (${fmt(X, view.me.x)}) and ${say(view.pctY)} for ${Y.label} (${fmt(Y, view.me.y)}).`;
 
   return (
@@ -302,7 +303,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       </div>
 
       <div className="relative overflow-hidden rounded-lg border border-line/60 bg-night/50">
-        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`${player.name} among ${pos}s: ${X.label} against ${Y.label}`} style={{ imageRendering: 'pixelated', touchAction: 'manipulation' }}>
+        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`${displayName(player.name)} among ${pos}s: ${X.label} against ${Y.label}`} style={{ imageRendering: 'pixelated', touchAction: 'manipulation' }}>
           {xt.map((t) => (
             <g key={`x${t}`}>
               <line x1={px(t)} x2={px(t)} y1={pad.t} y2={H - pad.b} stroke={VIZ.grid} strokeWidth={0.6} />
@@ -337,13 +338,13 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
                 key={keyOf(d.p)}
                 tabIndex={0}
                 role="button"
-                aria-label={`${d.p.name}, ${sim(d)} similar`}
+                aria-label={`${displayName(d.p.name)}, ${sim(d)} similar`}
                 style={{ cursor: 'pointer', outline: 'none' }}
                 onClick={() => setSel(on ? null : d.p)}
                 onKeyDown={(e) => (e.key === 'Enter' ? onPick(d.p) : e.key === ' ' ? (e.preventDefault(), setSel(d.p)) : null)}
                 {...peekProps(d.p)}
               >
-                <title>{`${d.p.name} · ${sim(d)} similar · ${X.label} ${fmt(X, d.x)} · ${Y.label} ${fmt(Y, d.y)}`}</title>
+                <title>{`${displayName(d.p.name)} · ${sim(d)} similar · ${X.label} ${fmt(X, d.x)} · ${Y.label} ${fmt(Y, d.y)}`}</title>
                 <circle cx={px(d.x)} cy={py(d.y)} r={r + 6} fill="transparent" />
                 <rect x={px(d.x) - r} y={py(d.y) - r} width={r * 2} height={r * 2} rx={2} fill={c.fill} stroke={on ? '#fff' : isHallOfFamer(d.p) ? 'hsl(43 100% 62%)' : c.ring} strokeWidth={on || isHallOfFamer(d.p) ? 2 : 1.2} opacity={d.p.status === 'Active' ? 1 : 0.85} />
               </g>
@@ -371,7 +372,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       {sel && (
         <div ref={selRef} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-panel-2/70 p-2.5 text-sm">
           <div>
-            <span className="font-bold">{sel.name}</span>{' '}
+            <span className="font-bold">{displayName(sel.name)}</span>{' '}
             <span className="text-muted-foreground">
               {sel.position} · {bannerTeamOf(sel) || 'FA'} · {sel.status === 'Active' ? 'Active' : 'Retired'} · {sel.games} G
               {view.near.find((d) => d.p === sel) ? ` · ${sim(view.near.find((d) => d.p === sel)!)} similar` : ''}

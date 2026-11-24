@@ -12,6 +12,7 @@ import { FIELD_ART, type FieldArt, type Turf } from './fieldArt';
 import { PixelPlayer } from './labArt';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The lineup standing in formation on the game's turf (private build: Retro Bowl's own field, crowd and sideline crew
@@ -52,7 +53,8 @@ const DEF_TALL: typeof DEF_WIDE = {
 const YARDS = [10, 20, 30, 40, 50, 40, 30, 20, 10];
 const spread =(n: number, a: number, b: number) => (n === 1 ? [(a + b) / 2] : Array.from({ length: n }, (_, i) => a + ((b - a) * i) / (n - 1)));
 
-const lastName = (n: string) => {
+const lastName = (rawN: string)  => {
+  const n = displayName(rawN);
   const parts = n.split(' ');
   return parts.length > 1 && /^(jr\.?|sr\.?|ii|iii|iv)$/i.test(parts[parts.length - 1]) ? parts[parts.length - 2] : parts[parts.length - 1];
 };
@@ -172,7 +174,7 @@ const LabField = ({ ctx, lineup, kitClub, turf, art, tall, size, onPick, overlay
             style={style}
             {...peekProps(p.player)}
             onClick={() => onPick(s.id)}
-            aria-label={`${p.position} ${p.name}, grade ${p.grade?.grade ?? 'none'}. Change ${s.side === 'defense' ? 'this defender' : s.label}`}
+            aria-label={`${p.position} ${displayName(p.name)}, grade ${p.grade?.grade ?? 'none'}. Change ${s.side === 'defense' ? 'this defender' : s.label}`}
           >
             <span className="lab-fig">{figure(p)}</span>
             <span className="lab-tag" style={tagVars}>

@@ -3,6 +3,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { fmtCoins } from '@/utils/cardMarket';
 import { tierLabel } from '@/utils/collection';
 import type { OwnedCopy } from './copies';
+import { displayName } from '@/utils/displayName';
 
 interface CopyRowProps {
   copy: OwnedCopy;
@@ -30,7 +31,7 @@ const CopyRow = ({ copy, pressed, onClick, coins, coinsLabel = 'value', showTier
         <Check className="h-3.5 w-3.5" strokeWidth={3} />
       </span>
       <span className="min-w-0">
-        <span className="ec-copy__name">{copy.info.player.name}</span>
+        <span className="ec-copy__name">{displayName(copy.info.player.name)}</span>
         <span className="ec-copy__meta">
           {copy.info.player.position} · {copy.label}
         </span>

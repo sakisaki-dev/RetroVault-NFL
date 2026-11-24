@@ -7,6 +7,7 @@ import type { CardInfo } from '../useCardPool';
 import AutographCanvas from './AutographCanvas';
 import AutographDetails from './AutographDetails';
 import { freezeFor } from './freeze';
+import { displayName } from '@/utils/displayName';
 
 interface AutographPreviewProps {
   /** The card pool (useCardPool().cards) */
@@ -40,7 +41,7 @@ const AutographPreview = ({ cards, player, seed: seed0 = 1, overrides, details =
   return (
     <div className={cn('grid gap-4', details && 'sm:grid-cols-[minmax(0,260px)_minmax(0,1fr)] sm:items-start', className)}>
       <div className="grid gap-3">
-        <AutographCanvas key={`${snap.name}:${seed}`} snap={snap} roll={roll} write label={`Sample autograph: ${snap.name}`} />
+        <AutographCanvas key={`${displayName(snap.name)}:${seed}`} snap={snap} roll={roll} write label={`Sample autograph: ${displayName(snap.name)}`} />
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
@@ -62,7 +63,7 @@ const AutographPreview = ({ cards, player, seed: seed0 = 1, overrides, details =
       </div>
       {details && (
         <div className="min-w-0">
-          <p className="font-display text-2xl font-extrabold uppercase italic leading-none">{snap.name}</p>
+          <p className="font-display text-2xl font-extrabold uppercase italic leading-none">{displayName(snap.name)}</p>
           <p className="mb-2 mt-1 text-xs text-muted-foreground">Sample pull · seed {seed} · nothing is added to the binder</p>
           <AutographDetails snap={snap} roll={roll} />
         </div>

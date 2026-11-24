@@ -8,6 +8,7 @@ import TeamLogo from '@/components/brand/TeamLogo';
 import type { SavedTeam } from './useTeamLab';
 import { Card, GradeChip, PlayerChip } from './parts';
 import { NumberPlate, SituationIcon, WhyButton } from './CallSheet';
+import { displayName } from '@/utils/displayName';
 
 interface HeadToHeadPanelProps {
   ctx: LabContext;
@@ -85,7 +86,7 @@ const HeadToHeadPanel = ({ ctx, lineup, saved, presets, kitClub }: HeadToHeadPan
                       .filter((o) => o.group === g)
                       .map((o) => (
                         <SelectItem key={o.id} value={o.id}>
-                          {o.name}
+                          {displayName(o.name)}
                         </SelectItem>
                       ))}
                   </SelectGroup>

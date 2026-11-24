@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 /**
  * Induction speeches.
  *
@@ -100,7 +101,8 @@ export const signatureStats = (p: Player): SpeechStat[] =>
     .map(({ key, label }) => ({ label, value: Math.round(Number((p as unknown as Record<string, unknown>)[key]) || 0) }))
     .filter((s) => s.value > 0);
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.trim().split(/\s+/);
   return { first: parts[0] ?? name, last: parts.length > 1 ? parts[parts.length - 1] : name };
 };

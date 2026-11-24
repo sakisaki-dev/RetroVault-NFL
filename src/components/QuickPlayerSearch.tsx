@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { Clock, Radar, Search, Shield, Sparkles, Star } from 'lucide-react';
@@ -52,7 +53,8 @@ const teamVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.indexOf(' ');
   return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
 };

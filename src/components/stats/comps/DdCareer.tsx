@@ -13,6 +13,7 @@ import { teamThemeVars } from '../../player/teamTheme';
 import '../../player/playerCard.css';
 import { VIZ, fmtNum, ordinal } from '../analytics/viz';
 import { DdBar } from './ddParts';
+import { displayName } from '@/utils/displayName';
 
 export interface PosStat {
   key: string;
@@ -48,7 +49,7 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
   // Hall of Fame status (scripts/hall_of_fame.py): member, ballot, near miss or the active watch list, as score vs the bar
   const { data: hof } = useHallOfFame();
   const bar = hof?.bar ?? 65;
-  const standing = hofStandingOf(hof, `${player.position}:${player.name}`);
+  const standing = hofStandingOf(hof, `${player.position}:${displayName(player.name)}`);
   const inHall = standing?.kind === 'member' || isHallOfFamer(player);
   const score = standing?.entry.score ?? null;
   const progress = score == null ? 0 : inHall ? score : Math.min(100, (score / bar) * 100);

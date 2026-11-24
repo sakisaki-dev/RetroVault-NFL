@@ -9,6 +9,7 @@ import { POS_NAMES, clubFill, tierClass, tierOf } from './hofUtils';
 import { cn } from '@/lib/utils';
 import GameSprite from '../GameSprite';
 import { statureScale, useGameSprites } from '@/utils/gameSprites';
+import { displayName } from '@/utils/displayName';
 
 /** Legends' Row: everyone with a perfect 100, else the top three by score, on lit plinths. */
 const HofLegends = ({ items, onOpen }: { items: GalleryItem[]; onOpen: (key: string) => void }) => {
@@ -43,7 +44,7 @@ const HofLegends = ({ items, onOpen }: { items: GalleryItem[]; onOpen: (key: str
                 data-player-key={member.key}
                 className={cn('hof-legend', tierClass(member.score))}
                 style={{ ['--i' as string]: i }}
-                aria-label={`${member.name}${nickname ? `, ${nickname}` : ''}, ${member.pos}${team ? `, ${team.fullName}` : ''}, Hall of Fame Score ${member.score}, ${hofClassLabel(member.class)}. Open plaque`}
+                aria-label={`${displayName(member.name)}${nickname ? `, ${nickname}` : ''}, ${member.pos}${team ? `, ${team.fullName}` : ''}, Hall of Fame Score ${member.score}, ${hofClassLabel(member.class)}. Open plaque`}
               >
                 <FrameCrest score={member.score} />
                 <span className="hof-face flex flex-col items-center" style={clubFill(team)}>
