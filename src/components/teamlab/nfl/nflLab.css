@@ -196,3 +196,36 @@
     font-size: 8px;
   }
 }
+
+/* Phone: the controls fold into one drawer so the field shows above the fold */
+.nfl-ctl { display: contents; }
+.nfl-ctl-toggle { display: none; }
+@media (max-width: 639px) {
+  .nfl-toolbar { grid-template-columns: auto 1fr; }
+  .nfl-ctl-toggle {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px dashed hsl(var(--gold) / 0.55);
+    background: rgb(0 0 0 / 0.4);
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    text-transform: uppercase;
+    color: hsl(var(--gold));
+  }
+  .nfl-toolbar.is-open .nfl-ctl-toggle { background: hsl(var(--gold) / 0.15); }
+  .nfl-ctl {
+    display: none;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .nfl-toolbar.is-open .nfl-ctl { display: grid; }
+  .nfl-ctl > * { width: 100%; min-width: 0 !important; }
+  /* 22 players on a 400 px field: a taller pitch gives the tags room */
+  .nfl-lab .lab-pitch { padding-bottom: 0; }
+}

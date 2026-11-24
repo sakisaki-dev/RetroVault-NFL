@@ -131,7 +131,7 @@ export const spotOf = (l: Pick<NLineup, 'off' | 'def'>, id: string, tall: boolea
   const [x, y] = s.side === 'offense' ? OFF_WIDE_OVERRIDE[l.off]?.[id] ?? OFF_WIDE[id] : DEF_WIDE[l.def][id];
   if (!tall) return { x, y };
   // tall: the line of scrimmage runs across at 56% from the top; offense below it, defense above
-  const tx = 7 + ((y - 16) / 82) * 86;
+  const tx = 13 + ((y - 16) / 82) * 74;
   // names are wider than the sprites on a phone: the line zig-zags a little so the tags clear each other
   const zig = ({ wr1: -4, lt: 3, lg: -3, c: 3, rg: -3, rt: 3, te1: -3, wr2: 3, te2: 3 } as Record<string, number>)[id] ?? 0;
   const ty = (s.side === 'offense' ? 60 + (46 - x) * 1.45 : 56 - (x - 50) * 1.2) + zig;
@@ -145,7 +145,7 @@ export const FANTASY_SPOTS: Record<string, [number, number]> = {
 export const fantasySpot = (id: string, tall: boolean): { x: number; y: number } => {
   const [x, y] = FANTASY_SPOTS[id];
   if (!tall) return { x, y };
-  return { x: 7 + ((y - 16) / 82) * 86, y: id === 'dst' ? 30 : 60 + (46 - x) * 1.45 };
+  return { x: 13 + ((y - 16) / 82) * 74, y: id === 'dst' ? 30 : 60 + (46 - x) * 1.45 };
 };
 
 // ---------- Lineups ----------
