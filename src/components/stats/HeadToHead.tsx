@@ -415,7 +415,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
         <div className="glass-card overflow-clip">
           {/* Scoreboard: pinned under the site header while scrolling the rows, so each side stays labelled */}
           <div
-            className="scoreboard-strip chrome-follow sticky z-30 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-b border-line bg-night/95 px-3 py-2.5 backdrop-blur-md sm:px-6"
+            className="scoreboard-strip chrome-follow sticky z-30 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-b border-line bg-night px-3 py-2.5 sm:px-6"
             style={{ top: 'var(--site-header-h, 0px)' }}
           >
             <span className="flex min-w-0 items-center justify-end gap-2" {...peekProps(p1)}>

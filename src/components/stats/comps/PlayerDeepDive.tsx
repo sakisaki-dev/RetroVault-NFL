@@ -525,7 +525,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
       />
 
       {/* Mobile: sticky section chips */}
-      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background/90 px-4 py-1.5 backdrop-blur lg:hidden">{nav}</div>
+      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-1.5 lg:hidden">{nav}</div>
 
       {classic && (
         <p className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-xs leading-snug text-gold/90" data-testid="dd-classic-note">

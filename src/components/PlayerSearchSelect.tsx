@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { ChevronsUpDown, Search } from 'lucide-react';
 import InLeague from '@/components/InLeague';
@@ -29,6 +29,8 @@ interface PlayerSearchSelectProps {
   ariaLabel?: string;
   /** Show each player's official OVR (off in guessing games, where it would give the answer away) */
   showOvr?: boolean;
+  /** Always open below the trigger (never flip above and cover what's over it); the page scrolls the trigger into view */
+  openBelow?: boolean;
 }
 
 const playerKey = (p: Pick<Player, 'position' | 'name'>) => `${p.position}:${p.name}`;
@@ -118,8 +120,10 @@ const PlayerSearchSelect = ({
   placeholder = 'Search players...',
   ariaLabel,
   showOvr = false,
+  openBelow = false,
 }: PlayerSearchSelectProps) => {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState<Position | 'ALL'>('ALL');
   const extras = usePlayerExtras();
   const { numberFor } = useJerseyNumbers();
@@ -140,6 +144,7 @@ const PlayerSearchSelect = ({
 
   const trigger = (
     <Button
+      ref={triggerRef}
       variant="outline"
       role="combobox"
       aria-expanded={open}
@@ -203,6 +208,10 @@ const PlayerSearchSelect = ({
       open={open}
       onOpenChange={(o) => {
         setOpen(o);
+        if (o && openBelow) {
+          const el = triggerRef.current;
+          if (el) window.setTimeout(() => el.scrollIntoView({ block: 'center', behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 0);
+        }
         if (!o) {
           setPos('ALL');
           search.setQuery('');
@@ -217,6 +226,7 @@ const PlayerSearchSelect = ({
         className="z-[70] w-[min(520px,calc(100vw-1.5rem))] overflow-hidden border-line bg-popover p-0 shadow-elevated"
         align="start"
         side="bottom"
+        avoidCollisions={!openBelow}
         sideOffset={6}
         collisionPadding={12}
       >
