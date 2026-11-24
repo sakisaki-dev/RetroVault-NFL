@@ -3,7 +3,8 @@ import { cn } from '@/lib/utils';
 import './arcade.css';
 
 /**
- * LedDigits: dot-matrix text on a 5 x 7 grid, lit dots over dim "off" dots (digits, - : . / % + and the letters A-Z in
+ * LedDigits: by default the site's display numbers (Barlow Condensed, tabular; dot sets the size, 10px a dot); matrix? draws the
+ * dot-matrix text on a 5 x 7 grid, lit dots over dim "off" dots (digits, - : . / % + and the letters A-Z in
  * a compact set; anything else is blank). Props: value (string | number), color 'amber' | 'red' | 'green', width? (pad
  * with blank cells on the left to this many characters, so a counter keeps its size), dot? (px per dot, default 3),
  * label? (accessible text, default the value).
@@ -57,8 +58,16 @@ const G: Record<string, string> = {
   Z: '11111 00001 00010 00100 01000 10000 11111',
 };
 const LED: Record<string, string> = { amber: '#ffb21e', red: '#ff4a3d', green: '#3ddc84' };
+const INK: Record<string, string> = { amber: 'hsl(var(--gold))', red: '#ff6b5e', green: '#4ade80' };
 
-export const LedDigits = ({ value, color = 'amber', width, dot = 3, label, className }: { value: string | number; color?: keyof typeof LED; width?: number; dot?: number; label?: string; className?: string }) => {
+export const LedDigits = ({ value, color = 'amber', width, dot = 3, label, className, matrix }: { value: string | number; color?: keyof typeof LED; width?: number; dot?: number; label?: string; className?: string; matrix?: boolean }) => {
+  if (!matrix) {
+    return (
+      <span role="img" aria-label={label ?? String(value)} className={cn('ax-num', className)} style={{ fontSize: dot * 10, color: INK[color] } as CSSProperties}>
+        {String(value)}
+      </span>
+    );
+  }
   let text = String(value).toUpperCase();
   if (width && text.length < width) text = ' '.repeat(width - text.length) + text;
   const cells = [...text];
