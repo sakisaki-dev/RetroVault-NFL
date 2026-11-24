@@ -54,6 +54,10 @@ import { makeLookup, notability, replayable, sample, useSaverGames, weeksOf, typ
 import ScoreboardScene from './scenes/ScoreboardScene';
 import RingSweepScene from './scenes/RingSweepScene';
 import GameWeekScene from './scenes/GameWeekScene';
+import { useCareerSeasons } from '@/utils/careerSeasons';
+import CareerArcScene, { arcFor, loadStints, type CareerArcData } from './scenes/CareerArcScene';
+import RivalryNightScene, { type RivalryNightData } from './scenes/RivalryNightScene';
+import RecordChaseScene, { buildChases, type ChaseData } from './scenes/RecordChaseScene';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -95,6 +99,9 @@ type Scene =
   | { kind: 'scoreboard'; week: import('./scenes/nflSaverData').SaverWeek }
   | { kind: 'ringsweep'; picks: string[] }
   | { kind: 'gameweek'; game: import('@/utils/nflGames').GameDetail }
+  | { kind: 'careerarc'; data: CareerArcData }
+  | { kind: 'nflrivalry'; data: RivalryNightData }
+  | { kind: 'recordchase'; data: ChaseData }
   | { kind: 'pa' };
 
 interface CoachStint { club: string; years: number[]; seasons: number; titles: number; w: number; l: number; t: number }
@@ -154,6 +161,60 @@ const useWidgetFeed = () => {
     };
   }, []);
   return w;
+};
+
+const FORCED: Record<string, Scene['kind']> = { careerarc: 'careerarc', rivalry: 'nflrivalry', recordchase: 'recordchase' };
+
+/** Famous rivalries first, then any two clubs from one division (the NFL edition's career arc, rivalry night and record chase decks) */
+const FAMOUS: [string, string][] = [
+  ['Bears', 'Packers'], ['Cowboys', 'Eagles'], ['Steelers', 'Ravens'], ['Chiefs', 'Raiders'], ['49ers', 'Seahawks'], ['Patriots', 'Jets'],
+  ['Giants', 'Cowboys'], ['Packers', 'Vikings'], ['Bills', 'Patriots'], ['Broncos', 'Raiders'], ['Eagles', 'Giants'], ['Browns', 'Steelers'], ['Saints', 'Falcons'], ['Ravens', 'Bengals'],
+];
+const nflSaverB = (
+  players: Player[],
+  career: Awaited<ReturnType<typeof useCareerSeasons>>,
+  stints: Awaited<ReturnType<typeof loadStints>> | null,
+  records: ReturnType<typeof useClubRecords>,
+  schedule: ReturnType<typeof useSchedule>,
+  ovrOf: (key: string) => number | null,
+): Scene[][] => {
+  void ovrOf;
+  const decks: Scene[][] = [];
+  if (career) {
+    const arcs = players
+      .slice(0, 160)
+      .map((p) => ({ p, pts: arcFor(career, p, stints) }))
+      .filter((x): x is { p: Player; pts: NonNullable<typeof x.pts> } => !!x.pts)
+      .slice(0, 40);
+    decks.push(shuffle(arcs).slice(0, 14).map((x): Scene => ({ kind: 'careerarc', data: { player: x.p, points: x.pts, roll: Math.random() } })));
+  }
+  const years = schedule ? (schedule.seasonIndex ?? []).map((x) => x.season).filter((y) => Number(y) >= 1999) : [];
+  if (years.length) {
+    const top = (club: string) => players.filter((p) => findNFLTeam(bannerTeamOf(p))?.name === club).slice(0, 2);
+    const mk = (a: string, b: string): Scene | null => {
+      const [pa, pb] = [top(a), top(b)];
+      return pa.length === 2 && pb.length === 2 ? { kind: 'nflrivalry', data: { a, b, pa, pb, years } } : null;
+    };
+    const famous = shuffle(FAMOUS).map(([a, b]) => mk(a, b));
+    const div = new Map<string, string[]>();
+    NFL_TEAMS.forEach((t) => div.set(`${t.conference}${t.division}`, [...(div.get(`${t.conference}${t.division}`) ?? []), t.name]));
+    const rest = shuffle([...div.values()].flatMap((cs) => cs.flatMap((a, i) => cs.slice(i + 1).map((b): [string, string] => [a, b]))))
+      .filter(([a, b]) => !FAMOUS.some(([x, y]) => (x === a && y === b) || (x === b && y === a)))
+      .map(([a, b]) => mk(a, b));
+    decks.push([...famous.slice(0, 7), ...rest.slice(0, 3)].filter((x): x is Scene => !!x));
+  }
+  if (records) {
+    const all = buildChases(records, players, career ?? null);
+    const near = all.filter((c) => c.pct >= 0.6);
+    const mkc = (cs: typeof all, isNear: boolean): Scene => ({ kind: 'recordchase', data: { chases: cs, near: isNear, roll: Math.random() } });
+    if (near.length >= 2) {
+      const sh = shuffle(near);
+      const out: Scene[] = [];
+      for (let i = 0; i < sh.length && out.length < 4; i += 3) out.push(mkc(sh.slice(i, i + 3).sort((a, b) => b.pct - a.pct), true));
+      decks.push(out);
+    } else if (all.length) decks.push([mkc(all.slice(0, 3), false)]);
+  }
+  return decks;
 };
 
 const SCENE_MS = 14_000;
@@ -676,7 +737,7 @@ const lookFor = (club: string, roll: number, live: ReturnType<typeof useLiveSeas
 };
 
 /** A club's name as a small chip: its logo, its name, edged in its own colours (readable on any background) */
-const ClubTag = ({ team, label }: { team: string; label?: string }) => {
+export const ClubTag = ({ team, label }: { team: string; label?: string }) => {
   const t = findNFLTeam(team);
   const style = (t ? { '--c1': `hsl(${t.primaryColor})`, '--c2': `hsl(${t.secondaryColor})` } : {}) as CSSProperties;
   return (
@@ -688,7 +749,7 @@ const ClubTag = ({ team, label }: { team: string; label?: string }) => {
 };
 
 /** The stadium behind a scene: the game's stands, crowd and turf painted to the club, its logo at midfield, its pennants */
-const Stadium = ({ club, roll, children, className }: { club: string; roll: number; children?: ReactNode; className?: string }) => {
+export const Stadium = ({ club, roll, children, className }: { club: string; roll: number; children?: ReactNode; className?: string }) => {
   const live = useLiveSeason();
   const look = lookFor(club, roll, live);
   const art = useFieldArt(club, look === 'day' || look === 'dusk' ? 'day' : look === 'snow' ? 'snow' : 'night');
@@ -722,7 +783,7 @@ const Stadium = ({ club, roll, children, className }: { club: string; roll: numb
   );
 };
 
-const Figure = ({ player, sprites, action = 'idle', scale = 1, mirror = false }: { player: Player; sprites: boolean; action?: SpriteAction; scale?: number; mirror?: boolean }) => (
+export const Figure = ({ player, sprites, action = 'idle', scale = 1, mirror = false }: { player: Player; sprites: boolean; action?: SpriteAction; scale?: number; mirror?: boolean }) => (
   <span className={mirror ? 'sv-fig sv-fig--mirror' : 'sv-fig'} style={{ '--sv-scale': scale } as CSSProperties}>
     <span className="sv-fig__shadow" />
     {sprites ? (
@@ -1958,6 +2019,11 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   const saverGames = useSaverGames(saverSeason, IS_NFL);
   const bannerData = useBannerData();
   const allTime = useAllTimeRecords();
+  const careerFile = useCareerSeasons();
+  const [stintFile, setStintFile] = useState<Awaited<ReturnType<typeof loadStints>> | undefined>(undefined);
+  useEffect(() => {
+    if (IS_NFL) void loadStints().then(setStintFile);
+  }, []);
 
   const players = useMemo(
     () => getAllPlayers().filter((p) => !p.isRealLegend).sort((a, b) => b.careerLegacy - a.careerLegacy),
@@ -1973,7 +2039,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     const t = window.setTimeout(() => setWaited(true), 4_000);
     return () => window.clearTimeout(t);
   }, []);
-  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading && (saverGames !== undefined || !saverSeason) && !!bannerData && !!allTime)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
+  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading && (saverGames !== undefined || !saverSeason) && !!bannerData && !!allTime && careerFile !== undefined && stintFile !== undefined)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
   const scenes = useMemo<Scene[]>(() => {
     if (!ready) return [];
     const spot = shuffle(players.slice(0, 80)).map((p): Scene => ({ kind: 'spotlight', player: p, roll: Math.random() }));
@@ -2207,9 +2273,17 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       const mine = nflDecks.flat().filter((s) => s.kind === only);
       if (mine.length) return [...mine, ...mine, ...mine];
     }
+    const nflB: Scene[][] = IS_NFL ? nflSaverB(players, careerFile ?? null, stintFile ?? null, records, schedule, (k) => ovrMap.get(k) ?? null) : [];
     const pas: Scene[] = spotifyOn ? [{ kind: 'pa' }, { kind: 'pa' }, { kind: 'pa' }] : [];
-    const decks = (IS_NFL ? [spot, ...nflDecks, pas, flyovers, cardScenes, duels, champs, recs, lineups, dyks, takeScenes, rising, farewell, chases, market, gauntlet] : [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters]).filter((d) => d.length);
+    const decks = (IS_NFL ? [spot, ...nflDecks, ...nflB, pas, flyovers, cardScenes, duels, champs, recs, lineups, dyks, takeScenes, rising, farewell, chases, market, gauntlet] : [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters]).filter((d) => d.length);
     const out: Scene[] = [];
+    // dev only: ?saverScene=careerarc|rivalry|recordchase shows just that scene (several runs of it)
+    const forced = import.meta.env.DEV ? FORCED[new URLSearchParams(location.search).get('saverScene') ?? ''] : undefined;
+    if (forced) {
+      const only = nflB.flat().filter((x) => x.kind === forced);
+      for (let i = 0; only.length && i < 12; i++) out.push(only[i % only.length]);
+      return out;
+    }
     for (let i = 0; out.length < 60 && decks.some((d) => i < d.length); i++) decks.forEach((d) => d[i] && out.push(d[i]));
     return out;
     // the playlist is dealt once a run; later collection or rafters changes wait for the next run
@@ -2419,6 +2493,12 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
         return <TrophiesScene club={s.club} years={s.years} />;
       case 'stunt':
         return <StuntScene club={s.club} />;
+      case 'careerarc':
+        return <CareerArcScene data={s.data} ovr={ovrMap.get(playerKey(s.data.player)) ?? null} sprites={sprites} />;
+      case 'nflrivalry':
+        return <RivalryNightScene data={s.data} sprites={sprites} />;
+      case 'recordchase':
+        return <RecordChaseScene data={s.data} sprites={sprites} />;
       case 'pa':
         return nowPlaying ? <PaScene np={nowPlaying} club={paClub} /> : null;
     }
