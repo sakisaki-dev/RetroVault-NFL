@@ -269,18 +269,19 @@ def main():
     want = {p["gsis"]: p for p in allp if p.get("gsis")}
     by_pfr = {p["pfr"]: p for p in allp if p.get("pfr")}
 
-    # names: Retro Vault keys by POS:Name, so two players with the same full name and position are the only clash
-    # (Jr./Sr./II differ already; a WR and a LB with one name are POS:Name apart). The best-known keeps the plain
-    # name; the others carry an internal "(POS, club)" tag that the site strips for display (displayName()).
+    # names: some Retro Vault data (stints, banner teams, franchises in player-extras) is keyed by the bare name, so
+    # two players with one full name clash even at different positions (Justin Jefferson WR / LB). Jr./Sr./II differ
+    # already (normk keeps them). The best-known keeps the plain name; the others carry an internal "(POS, club)"
+    # tag that the site strips for display (displayName()).
     base = defaultdict(list)
     for p in roster:
-        base[(normk(p["name"]), p["pos"])].append(p)
+        base[normk(p["name"])].append(p)
     for ps in base.values():
         for p in ps:
             if len(ps) == 1:
                 p["display"] = p["name"]
             else:
-                clash = sum(1 for q in ps if q["club"] == p["club"]) > 1
+                clash = sum(1 for q in ps if q["club"] == p["club"] and q["pos"] == p["pos"]) > 1
                 tag = f"{p['pos']}, {p['club']}" if not clash else f"{p['pos']}, {p['club']} {p['uid'][-3:]}"
                 p["display"] = f"{p['name']} ({tag})"
             p["key"] = f"{p['pos']}:{p['display']}"
@@ -328,12 +329,12 @@ def main():
                 top["display"] = top["name"]
                 top["key"] = f"{top['pos']}:{top['name']}"
     # past players: the plain name unless a save player (or a better-known namesake) has it; stable keys for the save's
-    taken = {(normk(p["name"]), p["pos"]) for p in roster}
+    taken = {normk(p["name"]) for p in roster}
     used = {p["display"] for p in roster}
     for p in legends:  # most career games first
-        if (normk(p["name"]), p["pos"]) not in taken and p["name"] not in used:
+        if normk(p["name"]) not in taken and p["name"] not in used:
             p["display"] = p["name"]
-            taken.add((normk(p["name"]), p["pos"]))
+            taken.add(normk(p["name"]))
         else:
             tag = f"{p['pos']}, {p['club']}"
             p["display"] = f"{p['name']} ({tag})"

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Medal, Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -10,6 +10,9 @@ import GameSprite from '../GameSprite';
 import TeamLogo from '../timeline/TeamLogo';
 import { BOARD_BG, LampGrid, color, lampText, signed } from '../season/seasonGamesUi';
 import { displayName } from '@/utils/displayName';
+import { isInLeague } from '../InLeague';
+import { loadSeasonOvr } from '@/utils/useOfficialOvr';
+import type { SeasonOvrFile } from '@/config/ovr';
 import './powerBoards.css';
 
 /**
@@ -108,21 +111,32 @@ export const ClubLadder = ({
   );
 };
 
-/** Each club's best player by Career Legacy, keyed by club id */
+/** Each club's star this season, keyed by club id: active players on the club now, best by this season's rating
+ * (SZN), then Career Legacy. Never a retiree whose last club it was (Terrell Owens is not the 2026 Bengals' star). */
 const useStars = () => {
   const { getAllPlayers, dataVersion, careerData } = useLeague();
+  const [szn, setSzn] = useState<SeasonOvrFile | null>(null);
+  useEffect(() => {
+    let live = true;
+    loadSeasonOvr().then((d) => live && setSzn(d));
+    return () => {
+      live = false;
+    };
+  }, []);
   return useMemo(() => {
-    const best = new Map<string, Player>();
+    const best = new Map<string, { p: Player; s: number; l: number }>();
     getAllPlayers().forEach((p) => {
-      if (p.isRealLegend || !p.team) return;
+      if (p.isRealLegend || !isInLeague(p)) return;
       const id = findNFLTeam(p.team)?.id;
       if (!id) return;
+      const s = szn?.ovr[`${p.position}:${p.name}`] ?? -1;
+      const l = p.careerLegacy || 0;
       const cur = best.get(id);
-      if (!cur || (p.careerLegacy || 0) > (cur.careerLegacy || 0)) best.set(id, p);
+      if (!cur || s > cur.s || (s === cur.s && l > cur.l)) best.set(id, { p, s, l });
     });
-    return best;
+    return new Map([...best].map(([k, v]) => [k, v.p]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [careerData, getAllPlayers, dataVersion]);
+  }, [careerData, getAllPlayers, dataVersion, szn]);
 };
 
 type Move = { team: string; row: TeamSeasonRow & { change: NonNullable<TeamSeasonRow['change']> } };
