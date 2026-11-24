@@ -10,6 +10,7 @@ import { useLiveSeason, type LiveSeason } from '@/utils/seasonLive';
 import TeamLogo from '../brand/TeamLogo';
 import GameSprite, { type SpriteSize } from '../GameSprite';
 import './article-art.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Article art drawn with the owner's private Retro Bowl sprites (this Mac only): every story, hot take and Did you know
@@ -172,7 +173,7 @@ const ArticleArt = ({ league, variant = 'card', className, fallback = null, ...i
         <span className="na-field" aria-hidden="true" />
         <div className="na-row">
           {order.map((c, i) => (
-            <span key={c.p.name} className={cn('na-slot', r.scene === 'podium' && `na-step na-step--${order.length === 3 ? [2, 1, 3][i] : i + 1}`)}>
+            <span key={displayName(c.p.name)} className={cn('na-slot', r.scene === 'podium' && `na-step na-step--${order.length === 3 ? [2, 1, 3][i] : i + 1}`)}>
               <GameSprite peek player={c.p} team={c.club} kind="figure" size={small} action={r.scene === 'podium' && c === r.cast[0] ? 'celebrate' : 'idle'} />
             </span>
           ))}

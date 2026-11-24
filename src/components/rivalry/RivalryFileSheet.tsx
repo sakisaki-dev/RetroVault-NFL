@@ -10,6 +10,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { reducedMotion } from '@/utils/motion';
 import { rivalryFilesOf, type RivalryPaper } from '@/utils/rivalryFiles';
 import RivalryFileView from './RivalryFileView';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   id: string;
@@ -30,7 +31,7 @@ const RivalryFileSheet = ({ id, open, onClose, onTimeline }: Props) => {
   const file = useMemo(() => rivalryFilesOf(content).find((f) => f.id === id), [content, id]);
   const players = useMemo(() => {
     const m = new Map<string, Player>();
-    getAllPlayers().forEach((p) => !p.isRealLegend && m.set(`${p.position}:${p.name}`, p));
+    getAllPlayers().forEach((p) => !p.isRealLegend && m.set(`${p.position}:${displayName(p.name)}`, p));
     return m;
     // dataVersion: a new league load is a new player list
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -73,6 +73,7 @@ import {
   resetCollection,
 } from '@/utils/collection';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
 // The Card designs gallery and the Art lab are their own chunks, loaded the first time they open
 const CardDesigns = lazy(() => import('@/components/collection/CardDesigns'));
@@ -237,7 +238,7 @@ const RulesPopover = () => (
       </p>
       <p className="mt-3 font-semibold">Card stats</p>
       <p className="mt-0.5 text-muted-foreground">
-        {FACE_LEGEND.map((s) => `${s.code} ${s.name}`).join(' · ')}. Each is 0–99 from his percentile at the position.
+        {FACE_LEGEND.map((s) => `${s.code} ${displayName(s.name)}`).join(' · ')}. Each is 0–99 from his percentile at the position.
       </p>
     </PopoverContent>
   </Popover>
@@ -397,7 +398,7 @@ const CollectionTab = () => {
             era.keyPlayers
               .map((n) => matchPlayerByName(n, players))
               .filter((p): p is CardInfo['player'] => !!p)
-              .map((p) => [`${p.position}:${p.name}`, p] as const),
+              .map((p) => [`${p.position}:${displayName(p.name)}`, p] as const),
           ).values(),
         ];
         return { id: era.id, title: era.name, members };
@@ -408,7 +409,7 @@ const CollectionTab = () => {
       { id: 'hof-wing', title: 'Hall of Fame', members: cards.filter((c) => !c.player.isRealLegend && isHallOfFamer(c.player)).map((c) => c.player) },
     ].filter((a) => a.members.length > 0);
     // Set progress counts every player × variant
-    return [...extra, ...eras].map((a) => ({ ...a, have: variantsOwned(owned, a.members.map((p) => `${p.position}:${p.name}`)), total: a.members.length * VARIANTS.length }));
+    return [...extra, ...eras].map((a) => ({ ...a, have: variantsOwned(owned, a.members.map((p) => `${p.position}:${displayName(p.name)}`)), total: a.members.length * VARIANTS.length }));
   }, [cards, content, owned]);
 
   const teamOptions = useMemo(() => [...new Set(cards.map((c) => c.franchise))].sort(), [cards]);
@@ -427,7 +428,7 @@ const CollectionTab = () => {
         matchesQuery(c, bf.q),
     );
     const fr = (c: CardInfo) => (owned[c.key] ? finishRank(owned[c.key].best) : -1);
-    const surname = (c: CardInfo) => c.player.name.split(' ').slice(-1)[0];
+    const surname = (c: CardInfo) => displayName(c.player.name).split(' ').slice(-1)[0];
     const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
     let out = list;
     if (sort === 'ovr') out = [...list].sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0) || a.setNo - b.setNo);
@@ -448,7 +449,7 @@ const CollectionTab = () => {
   const shelf = SHELF_ORDER.filter((t) => packCount(state, t) > 0);
   const previewCards = useMemo(() => samplePack(designRows(cards), cards), [cards]);
   const openCard = (c: CardInfo, list: CardInfo[], from?: DOMRect) => setDetail({ info: c, list, from });
-  const describe = (pc: { player: Player }) => byKey.get(`${pc.player.position}:${pc.player.name}`)!;
+  const describe = (pc: { player: Player }) => byKey.get(`${pc.player.position}:${displayName(pc.player.name)}`)!;
   // What a card shows by default: the display choice when still owned, else auto (with the best kit owned there)
   const shown_ = (c: CardInfo) => {
     const d = displayWithKit(owned[c.key], state.display?.[c.key], c.player);
@@ -489,7 +490,7 @@ const CollectionTab = () => {
               </h1>
               <RulesPopover />
               {content?.edition?.label && (
-                <span className="col-edition" title={`${accent.name} edition: the shelf colour changes with every update`}>
+                <span className="col-edition" title={`${displayName(accent.name)} edition: the shelf colour changes with every update`}>
                   {content.edition.label}
                 </span>
               )}

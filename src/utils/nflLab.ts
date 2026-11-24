@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import type { Player, Position } from '@/types/player';
 import { playerKey } from '@/config/ovr';
 import { gradeFor, percentileOf, type GradeStep } from '@/config/skillGrades';
@@ -571,7 +572,8 @@ export interface CallItem {
   why: string;
   tone: 'up' | 'down' | 'even';
 }
-const lastName = (n: string) => {
+const lastName = (rawN: string)  => {
+  const n = displayName(rawN);
   const parts = n.split(' ');
   return /^(jr\.?|sr\.?|ii|iii|iv)$/i.test(parts[parts.length - 1]) && parts.length > 1 ? parts[parts.length - 2] : parts[parts.length - 1];
 };

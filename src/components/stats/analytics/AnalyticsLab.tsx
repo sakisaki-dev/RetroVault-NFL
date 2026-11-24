@@ -25,6 +25,7 @@ import { GRID_ITEM, gridVars } from '../grid';
 import { peekProps } from '@/components/peek/peekProps';
 import { StageFigure } from '../visual/ClubStage';
 import { clubStyle } from '../visual/clubTone';
+import { displayName } from '@/utils/displayName';
 
 type Select = (p: Player) => void;
 
@@ -60,7 +61,7 @@ const InsightTile = ({ insight, onSelect }: { insight: Insight; onSelect: Select
       className="flex min-w-0 items-center gap-1.5 rounded text-left text-sm font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
     >
       {insight.player.team && <TeamLogo team={insight.player.team} size={18} decorative backed />}
-      <span className="truncate"><FitName name={insight.player.name} /></span>
+      <span className="truncate"><FitName name={displayName(insight.player.name)} /></span>
       <span className="shrink-0 font-pixel text-[9px] text-muted-foreground">{insight.player.position}</span>
     </button>
     <span className="mt-auto pt-1 text-[11px] text-muted-foreground">{insight.caption}</span>

@@ -12,6 +12,7 @@ import { isAuto, isPrizmChase, isThrowback } from './walkoutBeats';
 import { KIT_SOURCE } from './kits';
 import type { AutographFreezer, TierPool } from '@/utils/collection';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * "Open all" (owner: "give me an option to open all packs at once"): every owned pack of one type, or everything, in
@@ -152,7 +153,7 @@ const OpenAll = ({
                   <h3 className="mb-2 font-pixel text-[10px] uppercase tracking-wider text-gold">Best pulls</h3>
                   <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
                     {bestPulls(sum).map((c, i) => {
-                      const info = byKey.get(`${c.player.position}:${c.player.name}`);
+                      const info = byKey.get(`${c.player.position}:${displayName(c.player.name)}`);
                       return (
                         <li key={i} className={cn('relative')} {...peekProps(c.player)}>
                           <CollectibleCard

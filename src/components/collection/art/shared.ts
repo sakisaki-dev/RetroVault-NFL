@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import type { GamePlayer } from '@/config/ovr';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { PrizmCopy } from '@/config/cardTiers';
@@ -78,7 +79,8 @@ export const paletteFor = (player: GamePlayer, uniform?: Uniform): Palette => {
 };
 
 const SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
-export const surnameOf = (name: string) => {
+export const surnameOf = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.trim().split(/\s+/);
   while (parts.length > 1 && SUFFIX.test(parts[parts.length - 1])) parts.pop();
   return parts[parts.length - 1] ?? name;

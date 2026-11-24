@@ -5,6 +5,7 @@ import { similarAmong, type Comp, type SimilarityMode } from '@/config/advanced'
 import { playerKey } from '@/config/ovr';
 import TeamLogo from '../../brand/TeamLogo';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 export type RealCompSets = { mode: SimilarityMode; comps: Comp[] }[];
 
@@ -40,7 +41,7 @@ const CompRow = ({ comp, ovr, onSelect }: { comp: Comp; ovr?: number; onSelect: 
         type="button"
         {...peekProps(p)}
         onClick={() => onSelect(p)}
-        aria-label={`${p.name}, real NFL ${p.position}: ${pct}% similar. Open card`}
+        aria-label={`${displayName(p.name)}, real NFL ${p.position}: ${pct}% similar. Open card`}
         className="group flex w-full items-center gap-2.5 rounded-lg border border-line bg-night/40 px-2.5 py-2 text-left transition-colors hover:border-gold/60 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
       >
         {p.photo?.url ? (
@@ -50,7 +51,7 @@ const CompRow = ({ comp, ovr, onSelect }: { comp: Comp; ovr?: number; onSelect: 
         )}
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-1.5">
-            <span className="truncate font-semibold group-hover:text-gold">{p.name}</span>
+            <span className="truncate font-semibold group-hover:text-gold">{displayName(p.name)}</span>
             <span className="shrink-0 rounded bg-red-500/15 px-1 font-pixel text-[8px] uppercase text-red-300 ring-1 ring-red-400/40">NFL</span>
           </span>
           <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-line/60" aria-hidden="true">

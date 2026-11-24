@@ -10,6 +10,7 @@ import { VIZ, fmtNum } from './viz';
 import { keyOf } from '../records';
 import { peekProps } from '@/components/peek/peekProps';
 import { clubStyle } from '../visual/clubTone';
+import { displayName } from '@/utils/displayName';
 
 const TOP = 15;
 
@@ -38,7 +39,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
   const max = Math.max(...rows.map((r) => r.mix.total), 1);
 
   const summary = (p: Player, m: Mix) =>
-    `${p.name}: Career Legacy ${fmtNum(m.total, 0)}. ` +
+    `${displayName(p.name)}: Career Legacy ${fmtNum(m.total, 0)}. ` +
     PARTS.map((part) => `${part.label} ${fmtNum(m[part.key], 0)} (${fmtNum(pct(m[part.key], m), 0)}%)`).join(', ');
 
   return (
@@ -86,7 +87,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
                       <span className="flex min-w-0 items-center gap-1.5" style={clubStyle(player)}>
                         <span className="cs-swatch" aria-hidden="true" />
                         <PositionBadge position={player.position} className="hidden min-w-[2rem] px-1 py-0 text-[9px] sm:inline-flex" />
-                        <span className="truncate text-xs font-semibold sm:text-sm">{player.name}</span>
+                        <span className="truncate text-xs font-semibold sm:text-sm">{displayName(player.name)}</span>
                       </span>
                       <span className="flex items-center gap-2">
                         <span className="flex h-3.5 gap-[2px]" style={{ width: `${width}%` }} aria-hidden="true">
@@ -106,7 +107,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
                   </TooltipTrigger>
                   <TooltipContent side="top" className="border-line bg-popover text-xs">
                     <p className="font-semibold">
-                      {player.name} · {fmtNum(mix.total, 0)}
+                      {displayName(player.name)} · {fmtNum(mix.total, 0)}
                     </p>
                     {PARTS.map((part) => (
                       <p key={part.key} className="mt-0.5 flex items-center gap-1.5 font-mono tabular-nums text-secondary-foreground">
@@ -141,7 +142,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
                 <tr key={keyOf(player)} className="border-t border-line/40">
                   <th scope="row" className="px-2 py-1 text-left font-semibold">
                     <button type="button" {...peekProps(player)} onClick={() => onSelect(player)} className="hover:text-gold">
-                      {player.name}
+                      {displayName(player.name)}
                     </button>
                   </th>
                   {PARTS.map((p) => (

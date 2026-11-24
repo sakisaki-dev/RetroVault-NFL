@@ -6,6 +6,7 @@ import { GRADE_SCALE } from '@/config/skillGrades';
 import { getReadableTextOn, getTeamColors } from '@/utils/teamColors';
 import TeamLogo from '../../brand/TeamLogo';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 export interface TierEntry {
   player: Player;
@@ -31,7 +32,7 @@ const TierChip = ({ e, onSelect }: { e: TierEntry; onSelect: (p: Player) => void
         type="button"
         {...peekProps(e.player)}
         onClick={() => onSelect(e.player)}
-        aria-label={`${e.player.name}${e.player.team ? `, ${e.player.team}` : ''}: ${e.value}${hof ? ', Hall of Famer' : ''}. Open player`}
+        aria-label={`${displayName(e.player.name)}${e.player.team ? `, ${e.player.team}` : ''}: ${e.value}${hof ? ', Hall of Famer' : ''}. Open player`}
         className="flex max-w-[13rem] items-center gap-1.5 rounded-md py-1 pl-1 pr-2 text-left text-xs font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-night"
         style={{ background: bg, color: ink, boxShadow: hof ? '0 0 0 2px hsl(var(--gold))' : undefined }}
       >
@@ -41,7 +42,7 @@ const TierChip = ({ e, onSelect }: { e: TierEntry; onSelect: (p: Player) => void
           </span>
         )}
         {hof && <Star className="h-3 w-3 shrink-0 fill-current" aria-hidden="true" />}
-        <span className="truncate"><FitName name={e.player.name} /></span>
+        <span className="truncate"><FitName name={displayName(e.player.name)} /></span>
         <span className="shrink-0 font-mono tabular-nums opacity-80">{e.value}</span>
       </button>
     </li>
@@ -61,7 +62,7 @@ const TierBoard = ({ tiers, onSelect }: { tiers: Tier[]; onSelect: (p: Player) =
           {t.entries.length ? (
             <ul className="flex flex-wrap gap-1.5" aria-label={`${t.letter} tier`}>
               {t.entries.map((e) => (
-                <TierChip key={`${e.player.position}:${e.player.name}`} e={e} onSelect={onSelect} />
+                <TierChip key={`${e.player.position}:${displayName(e.player.name)}`} e={e} onSelect={onSelect} />
               ))}
             </ul>
           ) : (

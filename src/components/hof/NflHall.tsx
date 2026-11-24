@@ -8,6 +8,7 @@ import TeamLogo from '../brand/TeamLogo';
 import { GalleryTile, type GalleryItem } from './HofGallery';
 import { HallHeading, Laurel, ScoreGauge } from './hofParts';
 import { careerLine, clubColors, fmt, yearsOf } from './hofUtils';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The NFL edition's Hall of Fame page: Canton (the real inductees whose careers reach 1999 or later, newest class first),
@@ -52,7 +53,7 @@ const Row = ({ entry, club, note, bar, chance, onOpen }: { entry: Entry; club: s
           <span className="block font-pixel text-[8px] uppercase text-muted-foreground">{chance != null ? `${chance}% chance` : over ? 'Over the bar' : `${bar - entry.score} short`}</span>
         </span>
       </span>
-      <ScoreGauge score={entry.score} bar={bar} label={`${entry.name}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
+      <ScoreGauge score={entry.score} bar={bar} label={`${displayName(entry.name)}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
     </>
   );
   const cls = `hof-rail ${over ? 'hof-rail--over border-amber-500/35' : 'border-line'} block w-full rounded-lg border bg-card py-3 pl-4 pr-3 text-left`;

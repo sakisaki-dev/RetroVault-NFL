@@ -16,6 +16,7 @@ import { peekProps } from '@/components/peek/peekProps';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { POSITION_COLORS } from '../graph/graphConfig';
+import { displayName } from '@/utils/displayName';
 
 /** A player's dot wears his club's colour (where he is best known): the league as a crowd of jerseys */
 const clubFill = (p: Player) => {
@@ -101,7 +102,7 @@ const DotMark = ({
     role="button"
     tabIndex={tabIndex}
     data-rk={dot.key}
-    aria-label={`${dot.player.name}, ${dot.player.position}${dot.player.team ? `, ${dot.player.team}` : ''}: ${fmtNum(dot.value, decimals)}${dot.hof ? ', Hall of Famer' : ''}. Open player`}
+    aria-label={`${displayName(dot.player.name)}, ${dot.player.position}${dot.player.team ? `, ${dot.player.team}` : ''}: ${fmtNum(dot.value, decimals)}${dot.hof ? ', Hall of Famer' : ''}. Open player`}
     className="cursor-pointer outline-none [&:focus-visible>.ring]:stroke-[hsl(43_100%_62%)]"
     {...peekProps(dot.player)}
     onClick={() => onSelect(dot.player)}
@@ -386,7 +387,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
                           className="font-display uppercase"
                           aria-hidden="true"
                         >
-                          {lead.player.name.split(' ').slice(-1)[0]}
+                          {displayName(lead.player.name).split(' ').slice(-1)[0]}
                         </text>
                       )}
                     </g>
@@ -410,7 +411,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
             <ChartTip x={hover.cx} y={hoverRow.top + MARK_LANE + hover.dy} width={width}>
               <p className="flex items-center gap-1.5 font-semibold text-foreground">
                 {hover.player.team && <TeamLogo team={hover.player.team} size={16} decorative backed />}
-                {hover.player.name} <span className="text-muted-foreground">· {hover.player.position}</span>
+                {displayName(hover.player.name)} <span className="text-muted-foreground">· {hover.player.position}</span>
               </p>
               <p className="mt-0.5 font-mono tabular-nums text-secondary-foreground">
                 {m.short} {fmtNum(hover.value, m.decimals)}
@@ -440,7 +441,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
                     <td className="px-2 py-1 text-muted-foreground" title={POSITION_NAMES[r.pos]}>{r.pos}</td>
                     <td className="px-2 py-1">
                       <button type="button" {...peekProps(d.player)} onClick={() => onSelect(d.player)} className="font-semibold hover:text-gold">
-                        {d.player.name}
+                        {displayName(d.player.name)}
                       </button>
                     </td>
                     <td className="px-2 py-1 text-right font-mono tabular-nums">{fmtNum(d.value, m.decimals)}</td>

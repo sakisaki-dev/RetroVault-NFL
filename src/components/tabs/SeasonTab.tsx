@@ -17,6 +17,7 @@ import AroundTheLeague from '@/components/season/AroundTheLeague';
 import '@/components/season/season.css';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Season page. Its backbone is the design that lived on the Timeline as "Season games" (scoreboard, club splits,
@@ -26,7 +27,7 @@ import { IS_NFL, seasonLabel } from '@/config/edition';
  * all-time block adds the playoff history and head-to-head. Everything is computed from data.
  */
 
-const keyOf = (p: Pick<Player, 'name' | 'position'>) => `${p.position}:${p.name}`;
+const keyOf = (p: Pick<Player, 'name' | 'position'>) => `${p.position}:${displayName(p.name)}`;
 const seasonNum = (id: string) => Number(id.replace(/\D/g, ''));
 
 /** The live season's scoreboard kicker and its perfect-season pill (the scoreboard's own pill style). */

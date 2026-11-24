@@ -14,6 +14,7 @@ import '@/components/news/news-art.css';
 import '@/components/news/story.css';
 import '@/components/news/takes.css';
 import './espn.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Deep Dive "In the news" (NFL edition): the real ESPN articles and clips that tag this player as an athlete (matched by
@@ -64,8 +65,8 @@ const InTheNews = ({ player }: { player: Player }) => {
         <>
           <p className="en-dd__sub">
             {featured.length
-              ? `${featured.length} ESPN ${featured.length === 1 ? 'piece names' : 'pieces name'} ${player.name} from the latest NFL news${club ? ` and the ${club}'s feed` : ''}.`
-              : `ESPN hasn't tagged ${player.name} in its latest items. Around the ${club}:`}
+              ? `${featured.length} ESPN ${featured.length === 1 ? 'piece names' : 'pieces name'} ${displayName(player.name)} from the latest NFL news${club ? ` and the ${club}'s feed` : ''}.`
+              : `ESPN hasn't tagged ${displayName(player.name)} in its latest items. Around the ${club}:`}
           </p>
           <ul className="ss-list ss-list--more">
             {shown.map((it, i) => (
@@ -74,7 +75,7 @@ const InTheNews = ({ player }: { player: Player }) => {
           </ul>
         </>
       ) : (
-        <p className="en-dd__sub">Nothing in ESPN&apos;s latest feed for {player.name}{club ? ` or the ${club}` : ''} right now.</p>
+        <p className="en-dd__sub">Nothing in ESPN&apos;s latest feed for {displayName(player.name)}{club ? ` or the ${club}` : ''} right now.</p>
       )}
       <ArticleReader item={shown.find((i) => i.id === openId) ?? null} order={shown} onOpen={(x) => setOpenId(x.id)} onClose={() => setOpenId(null)} players={players} />
     </div>

@@ -14,6 +14,7 @@ import TeamLogo from '../brand/TeamLogo';
 import TributeButton from '../tribute/TributeButton';
 import { Laurel, RibbonBanner } from './hofParts';
 import { POS_NAMES, careerLine, clubColors, fmt, ordinal, yearsOf } from './hofUtils';
+import { displayName } from '@/utils/displayName';
 
 /** "+15 for one league career record, +5 each for 2 season records" */
 const recordsNote = (career: number, season: number): string => {
@@ -181,7 +182,7 @@ const HofPlaque = ({
                     tabIndex={-1}
                     className="hof-plaque-name mt-2 text-transparent font-display text-[34px] font-extrabold uppercase leading-none tracking-wide focus:outline-none sm:text-5xl"
                   >
-                    {member.name}
+                    {displayName(member.name)}
                   </SheetTitle>
                   {nickname && (
                     <p className="mt-1 font-display text-lg italic" style={{ color: 'hsl(43 100% 66%)', textShadow: '0 1px 0 hsl(28 60% 3%)' }}>

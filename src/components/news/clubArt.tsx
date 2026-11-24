@@ -10,6 +10,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { getTeamColors } from '@/utils/teamColors';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Club identity for the news desk (Season Story, Hot Takes, the reading sheet): club colours as CSS vars, the real
@@ -130,9 +131,9 @@ export const PlayerBanners = ({ names, players, onPlayer, max = 3, className, la
   return (
     <ul className={cn('nz-banners', className)} aria-label={label}>
       {shown.map((p) => (
-        <li key={p.name}>
-          <button type="button" className="nz-banner" {...peekProps(p)} onClick={() => onPlayer(p)} aria-label={`Open ${p.name}'s card`}>
-            <ProPlayerBanner size="compact" name={p.name} position={p.position} team={bannerTeamOf(p)} number={numberFor(p)} interactive />
+        <li key={displayName(p.name)}>
+          <button type="button" className="nz-banner" {...peekProps(p)} onClick={() => onPlayer(p)} aria-label={`Open ${displayName(p.name)}'s card`}>
+            <ProPlayerBanner size="compact" name={displayName(p.name)} position={p.position} team={bannerTeamOf(p)} number={numberFor(p)} interactive />
           </button>
         </li>
       ))}

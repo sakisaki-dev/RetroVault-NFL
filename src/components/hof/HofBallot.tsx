@@ -3,6 +3,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import TeamLogo from '../brand/TeamLogo';
 import { HallHeading, ScoreGauge } from './hofParts';
 import { clubColors } from './hofUtils';
+import { displayName } from '@/utils/displayName';
 
 export interface BallotRow {
   entry: HofCase & { since?: string; yearsOnBallot?: number };
@@ -22,7 +23,7 @@ const Row = ({ row, bar, note }: { row: BallotRow; bar: number; note: string }) 
         <TeamLogo team={team ?? club} size={22} decorative />
         <span className="min-w-0 flex-1">
           <span className="block truncate font-display text-lg font-bold uppercase leading-tight" style={{ color: ink }}>
-            {entry.name}
+            {displayName(entry.name)}
           </span>
           <span className="block truncate text-xs text-muted-foreground">
             {entry.pos} · {note}
@@ -33,12 +34,12 @@ const Row = ({ row, bar, note }: { row: BallotRow; bar: number; note: string }) 
           <span className="block font-pixel text-[8px] uppercase text-muted-foreground">{over ? 'Over the bar' : `${bar - entry.score} short`}</span>
         </span>
       </span>
-      <ScoreGauge score={entry.score} bar={bar} label={`${entry.name}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
+      <ScoreGauge score={entry.score} bar={bar} label={`${displayName(entry.name)}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
     </>
   );
   const cls = `hof-rail ${over ? 'hof-rail--over border-amber-500/35' : 'border-line'} block w-full rounded-lg border bg-card py-3 pl-4 pr-3 text-left`;
   return row.onOpen ? (
-    <button type="button" onClick={row.onOpen} data-player-key={entry.key} className={`${cls} transition-colors hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold`} aria-label={`${entry.name}, score ${entry.score} against the bar of ${bar}. ${note}. Open player card`}>
+    <button type="button" onClick={row.onOpen} data-player-key={entry.key} className={`${cls} transition-colors hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold`} aria-label={`${displayName(entry.name)}, score ${entry.score} against the bar of ${bar}. ${note}. Open player card`}>
       {body}
     </button>
   ) : (

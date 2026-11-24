@@ -8,6 +8,7 @@ import TeamLogo from '@/components/timeline/TeamLogo';
 import ClubStrip from '@/components/brand/ClubStrip';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { BOARD_BG, FormPips, LampGrid, Rating, RESULT_TEXT, ResultChip, ScoreSide, color, isResult, lampText, rate, roundLabel, signed } from './seasonGamesUi';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Season page's backbone, the design that lived on the Timeline as "Season games": the coached club's
@@ -313,10 +314,10 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
         </tr>
       </thead>
       {divisions.map((d) => (
-        <tbody key={d.name}>
+        <tbody key={displayName(d.name)}>
           <tr className="border-t border-border/50 bg-secondary/30">
             <th scope="colgroup" colSpan={11} className="px-2 py-1.5 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-              {d.name}
+              {displayName(d.name)}
             </th>
           </tr>
           {d.rows.map((r) => {

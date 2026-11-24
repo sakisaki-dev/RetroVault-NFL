@@ -26,6 +26,7 @@ import { getTeamColors } from '@/utils/teamColors';
 import type { FourthCall, Impact, PlayerProfile, Situation, TeamAnalysis } from '@/utils/teamLab';
 import { peekProps } from '@/components/peek/peekProps';
 import './teamlab.css';
+import { displayName } from '@/utils/displayName';
 
 const SITUATION_ICON: Record<Situation | string, LucideIcon> = {
   every: Megaphone,
@@ -79,11 +80,11 @@ export const NumberPlate = ({ p }: { p: PlayerProfile }) => {
     <span
       className="number-plate inline-flex h-5 min-w-[1.6rem] shrink-0 items-center justify-center px-1 font-display text-xs font-extrabold italic tabular-nums text-white [clip-path:polygon(14%_0,100%_0,86%_100%,0_100%)]"
       style={{ background: c ? `hsl(${c.primary})` : 'hsl(var(--line))', textShadow: '0 1px 0 rgb(0 0 0 / 0.5)' } as CSSProperties}
-      title={`${p.position} ${p.name}`}
+      title={`${p.position} ${displayName(p.name)}`}
     >
       <span aria-hidden="true">{numberFor(p.player)}</span>
       <span className="sr-only">
-        {p.position} {p.name}
+        {p.position} {displayName(p.name)}
       </span>
     </span>
   );
@@ -240,7 +241,7 @@ const CallSheet = ({ analysis: a }: { analysis: TeamAnalysis }) => {
             <li key={t.slot} className="min-w-0 rounded-md bg-black/35 p-2 ring-1 ring-line/50" {...peekProps(t.profile.player)}>
               <p className="flex min-w-0 items-center gap-1.5">
                 <NumberPlate p={t.profile} />
-                <span className="min-w-0 flex-1 truncate font-display text-[15px] font-bold uppercase italic text-chalk">{t.profile.name}</span>
+                <span className="min-w-0 flex-1 truncate font-display text-[15px] font-bold uppercase italic text-chalk">{displayName(t.profile.name)}</span>
                 <span className="font-pixel text-[8px] text-muted-foreground">{t.profile.position}</span>
               </p>
               <p className="mt-1 flex flex-wrap gap-1">

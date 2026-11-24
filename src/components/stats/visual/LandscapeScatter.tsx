@@ -10,6 +10,7 @@ import type { PositionFamilies } from '@/config/families';
 import { FamilyZoneLabels, FamilyZoneLayer } from './FamilyZones';
 import { buildZones } from './zones';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The shared scatter engine for every landscape and the Graph Builder: team-coloured dots or logos (or a colour
@@ -57,7 +58,8 @@ const isZoomed = (v: ScatterView) => v.u1 - v.u0 < 0.999 || v.v1 - v.v0 < 0.999;
 
 const M = { top: 22, right: 18, bottom: 42, left: 50 };
 
-const shortName = (name: string) => {
+const shortName = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.split(' ');
   return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(' ')}` : name;
 };
@@ -241,7 +243,7 @@ const PointMark = ({
       role="button"
       tabIndex={0}
       data-rk={pt.key}
-      aria-label={`${p.name}, ${p.position}${p.team ? `, ${p.team}` : ''}${pt.nfl ? ', real NFL player, not in the league baseline' : hof ? ', Hall of Famer' : ''}: ${pt.xText}, ${pt.yText}${pt.sizeText ? `, ${pt.sizeText}` : ''}. Open player`}
+      aria-label={`${displayName(p.name)}, ${p.position}${p.team ? `, ${p.team}` : ''}${pt.nfl ? ', real NFL player, not in the league baseline' : hof ? ', Hall of Famer' : ''}: ${pt.xText}, ${pt.yText}${pt.sizeText ? `, ${pt.sizeText}` : ''}. Open player`}
       className="outline-none [&:focus-visible>.ring]:stroke-[hsl(43_100%_62%)]"
       {...peekProps(p)}
       onClick={() => onSelect(p)}
@@ -346,7 +348,7 @@ const ClusterChooser = ({
               {pt.player.team ? <TeamLogo team={pt.player.team} size={18} decorative backed /> : <span className="w-[18px]" />}
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-1 truncate font-semibold text-foreground">
-                  {pt.player.name}
+                  {displayName(pt.player.name)}
                   <span className="font-normal text-muted-foreground">· {pt.player.position}</span>
                   {pt.nfl && <span className="rounded-sm bg-flag/80 px-1 font-pixel text-[7px] text-night">NFL</span>}
                 </span>
@@ -912,7 +914,7 @@ const LandscapeScatter = ({
               )}
               {hovered && !labelled.has(hovered.key) && (
                 <text x={geo.X(hovered.x) + 9} y={geo.Y(hovered.y) - 8} fontSize={11} fontWeight={700} fill={GOLD} stroke={VIZ.surface} strokeWidth={3} paintOrder="stroke">
-                  {hovered.player.name}
+                  {displayName(hovered.player.name)}
                 </text>
               )}
             </g>
@@ -946,7 +948,7 @@ const LandscapeScatter = ({
         <ChartTip x={geo.X(hovered.x)} y={geo.Y(hovered.y)} width={width}>
           <p className="flex items-center gap-1.5 font-semibold text-foreground">
             {hovered.player.team && <TeamLogo team={hovered.player.team} size={16} decorative backed />}
-            {hovered.player.name} <span className="text-muted-foreground">· {hovered.player.position}</span>
+            {displayName(hovered.player.name)} <span className="text-muted-foreground">· {hovered.player.position}</span>
             {hovered.nfl && <span className="rounded-sm bg-flag/80 px-1 font-pixel text-[7px] text-night">NFL</span>}
           </p>
           <p className="mt-0.5 font-mono tabular-nums text-secondary-foreground">

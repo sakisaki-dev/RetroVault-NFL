@@ -12,6 +12,7 @@ import { FIELD_ART, type FieldArt, type Turf } from '../fieldArt';
 import { PixelPlayer } from '../labArt';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The NFL Team Lab field: the same turf, line of scrimmage and spots as the Retro Bowl lab's, for any set of spots
@@ -34,7 +35,8 @@ export interface FieldItem {
 }
 
 const YARDS = [10, 20, 30, 40, 50, 40, 30, 20, 10];
-const lastName = (n: string) => {
+const lastName = (rawN: string)  => {
+  const n = displayName(rawN);
   const parts = n.split(' ');
   return parts.length > 1 && /^(jr\.?|sr\.?|ii|iii|iv)$/i.test(parts[parts.length - 1]) ? parts[parts.length - 2] : parts[parts.length - 1];
 };
@@ -121,7 +123,7 @@ const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, side
         const tagVars = { '--tg-c': c ? `hsl(${c.primaryColor})` : 'hsl(var(--line))', '--tg-fg': c ? getReadableTextOn(c.primaryColor) : '#fff' } as CSSProperties;
         const kit = it.kit ?? kitClub;
         return (
-          <button key={it.id} type="button" className="lab-spot" style={style} {...peekProps(p.player)} onClick={() => onPick(it.id)} aria-label={`${it.label} ${p.name}. Change`}>
+          <button key={it.id} type="button" className="lab-spot" style={style} {...peekProps(p.player)} onClick={() => onPick(it.id)} aria-label={`${it.label} ${displayName(p.name)}. Change`}>
             <span className="lab-fig">
               {FIELD_ART ? <GameSprite player={p.player} team={kit} kind="figure" size={size} /> : <PixelPlayer club={kit} number={numberFor(p.player)} unit={pixelUnit} />}
               {it.injury && (

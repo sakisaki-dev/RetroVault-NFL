@@ -11,6 +11,7 @@ import type { CardInfo } from '../useCardPool';
 import { allCopies, duplicateCopies } from './copies';
 import './economy.css';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { displayName } from '@/utils/displayName';
 
 interface SellDuplicatesProps {
   open: boolean;
@@ -36,7 +37,7 @@ const SellDuplicates = ({ open, onClose, byKey, state }: SellDuplicatesProps) =>
   const players = new Set(list.map((c) => c.info.key)).size;
 
   const sell = () => {
-    const got = sellCopies(list.map((c) => ({ ref: c.ref, price: c.price, label: `${c.info.player.name} · ${c.label}` })));
+    const got = sellCopies(list.map((c) => ({ ref: c.ref, price: c.price, label: `${displayName(c.info.player.name)} · ${c.label}` })));
     if (got == null) {
       toast('Your binder changed; nothing was sold. Try again.');
       return;
@@ -74,7 +75,7 @@ const SellDuplicates = ({ open, onClose, byKey, state }: SellDuplicatesProps) =>
               {list.map((c) => (
                 <li key={c.id} className="flex items-baseline justify-between gap-3 border-b border-line/40 py-1.5">
                   <span className="min-w-0">
-                    <span className="font-semibold">{c.info.player.name}</span>
+                    <span className="font-semibold">{displayName(c.info.player.name)}</span>
                     <span className="block truncate text-xs text-muted-foreground">{c.label}</span>
                   </span>
                   <span className="shrink-0 font-mono text-xs tabular-nums">+{fmtCoins(sellPrice(c.price))}</span>

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { type OwnedAuto } from '@/utils/collection';
 import { autographValue, fmtMult, parallelOf, serialStr } from '@/config/autographs';
 import AutographCanvas from './AutographCanvas';
+import { displayName } from '@/utils/displayName';
 
 interface AutographCarouselProps {
   autos: OwnedAuto[];
@@ -85,7 +86,7 @@ const AutographCarousel = ({ autos, selectedId, onSelect, size = 'card', label }
               className={cn('ag-car__tile', a.id === selectedId && 'is-selected')}
               aria-current={a.id === selectedId ? 'true' : undefined}
               onClick={(e) => onSelect(a, e.currentTarget.getBoundingClientRect())}
-              aria-label={`${a.snap.name}, ${parallelOf(a.roll.parallel).label} ${serialStr(a.roll)}`}
+              aria-label={`${displayName(a.snap.name)}, ${parallelOf(a.roll.parallel).label} ${serialStr(a.roll)}`}
             >
               <AutographCanvas snap={a.snap} roll={a.roll} cacheKey={a.id} />
               <span className="ag-car__cap">

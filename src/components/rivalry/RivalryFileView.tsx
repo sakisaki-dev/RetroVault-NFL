@@ -8,6 +8,7 @@ import { clubVars } from './clubVars';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import { meetingLabel, type RivalryFile, type RivalryPaper, type RivalryStar } from '@/utils/rivalryFiles';
 import './rivalry.css';
+import { displayName } from '@/utils/displayName';
 
 const Side = ({ club, star, kicker, side, players, onPlayer }: { club: string; star?: RivalryStar; kicker: string; side: 'l' | 'r'; players: Map<string, Player>; onPlayer?: (p: Player) => void }) => {
   const team = findNFLTeam(club);
@@ -25,8 +26,8 @@ const Side = ({ club, star, kicker, side, players, onPlayer }: { club: string; s
       </span>
       <div className="rf-side__label">
         {star && (
-          <button type="button" className="rf-star" onClick={() => p && onPlayer?.(p)} disabled={!p || !onPlayer} {...peekKeyProps(star.key)} aria-label={`${star.name}, ${star.pos}, ${club} star by Career Legacy. Open player`}>
-            <span aria-hidden="true">★</span> {star.name}
+          <button type="button" className="rf-star" onClick={() => p && onPlayer?.(p)} disabled={!p || !onPlayer} {...peekKeyProps(star.key)} aria-label={`${displayName(star.name)}, ${star.pos}, ${club} star by Career Legacy. Open player`}>
+            <span aria-hidden="true">★</span> {displayName(star.name)}
           </button>
         )}
         <span className="rf-side__kicker">{kicker}</span>

@@ -9,6 +9,7 @@ import { bannerStats } from '@/components/hof/hofUtils';
 import { headlineStats } from '@/components/player/statLines';
 import { teamThemeVars } from '@/components/player/teamTheme';
 import SharePosterFrame from './SharePosterFrame';
+import { displayName } from '@/utils/displayName';
 
 const num = (v: number | null, decimals = 0) =>
   v == null || !Number.isFinite(v) ? '–' : v.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -51,7 +52,7 @@ const PlayerSharePoster = ({
     >
       <ProPlayerBanner
         size="hero"
-        name={player.name}
+        name={displayName(player.name)}
         position={player.position}
         team={team ?? player.team}
         number={number}

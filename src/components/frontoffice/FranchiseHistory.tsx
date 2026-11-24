@@ -10,6 +10,7 @@ import CoachStand from './CoachStand';
 import { FinishTag } from './SeasonLog';
 import { staggerStyle, teamVars, yearSpan } from './shared';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 interface FranchiseHistoryProps {
   stints: Stint[];
@@ -124,11 +125,11 @@ const FranchiseHistory = ({ stints, onPlayerSelect, numberFor }: FranchiseHistor
                             {...peekProps(k.player)}
                             onClick={() => onPlayerSelect(k.player!)}
                             className="block w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            aria-label={`${k.player.name}, ${k.player.position}. Open player card`}
+                            aria-label={`${displayName(k.player.name)}, ${k.player.position}. Open player card`}
                           >
                             <ProPlayerBanner
                               size="compact"
-                              name={k.player.name}
+                              name={displayName(k.player.name)}
                               position={k.player.position}
                               team={k.player.team}
                               number={numberFor(k.player) ?? null}

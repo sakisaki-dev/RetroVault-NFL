@@ -16,6 +16,7 @@ import {
   starsOf, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, type Side, type Star, type Unit,
 } from './gameModel';
 import './game.css';
+import { displayName } from '@/utils/displayName';
 
 const MoreGames = lazy(() => import('./MoreGames'));
 
@@ -197,7 +198,7 @@ const StarCard = ({ s, g, big, link }: { s: Star; g: GameDetail; big?: boolean; 
       </span>
       <span className="min-w-0">
         <span className="gm-star__k">{big ? <><Trophy className="mr-1 inline h-3 w-3" aria-hidden />Game ball</> : s.kicker}</span>
-        <span className="gm-star__n">{s.player.name}</span>
+        <span className="gm-star__n">{displayName(s.player.name)}</span>
         <span className="gm-star__l">{s.player.pos} · {abbrOf(abbr)}</span>
         <span className="gm-star__s">{s.line}</span>
       </span>
@@ -238,7 +239,7 @@ const shortLine = (p: GamePlayer, unit: Unit['def']['id']): string => {
 const Figure = ({ p, g, unit, link }: { p: GamePlayer; g: GameDetail; unit: Unit['def']['id']; link: Linker }) => {
   const abbr = p.side === 0 ? g.away : g.home;
   const href = link(p);
-  const parts = p.name.split(' ');
+  const parts = displayName(p.name).split(' ');
   const last = parts.slice(1).join(' ') || p.name;
   const hot = impact(p.s) >= 8 || v(p.s, 'fantasy_points_ppr') >= 15;
   const inner = (
@@ -252,7 +253,7 @@ const Figure = ({ p, g, unit, link }: { p: GamePlayer; g: GameDetail; unit: Unit
     </>
   );
   const cls = cn('gm-fig', hot && 'is-hot');
-  return href ? <a href={href} className={cls} title={`${p.name}, ${p.pos}: open Deep Dive`}>{inner}</a> : <div className={cls} title={`${p.name}, ${p.pos}`}>{inner}</div>;
+  return href ? <a href={href} className={cls} title={`${displayName(p.name)}, ${p.pos}: open Deep Dive`}>{inner}</a> : <div className={cls} title={`${displayName(p.name)}, ${p.pos}`}>{inner}</div>;
 };
 
 const Roster = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }) => {
@@ -285,7 +286,7 @@ const Roster = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }) 
                 <span>Also played:</span>{' '}
                 {rest.map((p, i) => {
                   const href = link(p);
-                  const t = `${p.name}${shortLine(p, u.def.id) ? ` (${shortLine(p, u.def.id)})` : ''}`;
+                  const t = `${displayName(p.name)}${shortLine(p, u.def.id) ? ` (${shortLine(p, u.def.id)})` : ''}`;
                   return <span key={p.gsis + p.name}>{href ? <a href={href}>{t}</a> : t}{i < rest.length - 1 ? ', ' : ''}</span>;
                 })}
               </p>
@@ -368,7 +369,7 @@ const StatTable = ({ title, rows, cols, g, link, tag }: { title: string; rows: G
               return (
                 <tr key={p.gsis + p.name}>
                   <th scope="row">
-                    {href ? <a href={href}>{p.name}</a> : p.name}
+                    {href ? <a href={href}>{displayName(p.name)}</a> : p.name}
                     <small>{p.pos}</small>
                   </th>
                   {shown.map((c) => {
@@ -419,7 +420,7 @@ const SnapBars = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }
           const href = link(p);
           return (
             <li key={p.gsis + p.name}>
-              <span className="gm-snaps__n">{href ? <a href={href}>{p.name}</a> : p.name}<small>{p.pos}</small></span>
+              <span className="gm-snaps__n">{href ? <a href={href}>{displayName(p.name)}</a> : p.name}<small>{p.pos}</small></span>
               <span className="gm-snaps__bar"><i style={{ width: `${(n / max) * 100}%` }} /></span>
               <span className="gm-snaps__v">{n}<small>{Math.round((n / max) * 100)}%</small></span>
             </li>
@@ -468,10 +469,10 @@ const Missing = ({ g }: { g: GameDetail }) => {
 
 const GameView = ({ g }: { g: GameDetail }) => {
   const { getAllPlayers } = useLeague();
-  const pool = useMemo(() => new Set(getAllPlayers().map((p) => `${p.position}:${p.name}`)), [getAllPlayers]);
+  const pool = useMemo(() => new Set(getAllPlayers().map((p) => `${p.position}:${displayName(p.name)}`)), [getAllPlayers]);
   const link: Linker = (p) => {
     if (!hasCardPos(p.pos)) return null;
-    const key = `${sitePos(p.pos)}:${p.name}`;
+    const key = `${sitePos(p.pos)}:${displayName(p.name)}`;
     return pool.has(key) ? buildHash({ tab: 'career', sub: 'deepdive', p: key }) : null;
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);
@@ -527,7 +528,7 @@ const GameView = ({ g }: { g: GameDetail }) => {
                       return (
                         <li key={l.label}>
                           <span className="gm-leader__k">{l.label}</span>
-                          <span className="gm-leader__n">{href ? <a href={href}>{l.player.name}</a> : l.player.name}</span>
+                          <span className="gm-leader__n">{href ? <a href={href}>{displayName(l.player.name)}</a> : l.player.name}</span>
                           <span className="gm-leader__v">{l.line}</span>
                         </li>
                       );

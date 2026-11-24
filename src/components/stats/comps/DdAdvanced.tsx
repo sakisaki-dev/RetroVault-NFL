@@ -3,6 +3,7 @@ import { metricsFor, type AdvMetric, type MetricBoard } from '@/config/advanced'
 import MetricLabel from '../analytics/MetricLabel';
 import PercentileBar from '../analytics/PercentileBar';
 import { fmtNum, fmtPlus, ordinal } from '../analytics/viz';
+import { displayName } from '@/utils/displayName';
 
 type Group = 'Efficiency' | 'Volume' | 'Value' | 'Hardware';
 const GROUPS: { key: Group; blurb: string }[] = [
@@ -50,7 +51,7 @@ const DdAdvanced = ({ player, boards }: { player: Player; boards: Map<string, Me
               {key}
               <span className="text-[11px] font-normal normal-case tracking-normal text-muted-foreground">{blurb}</span>
             </h3>
-            <ul className="space-y-2" aria-label={`${player.name} ${key.toLowerCase()} percentiles among ${player.position}s`}>
+            <ul className="space-y-2" aria-label={`${displayName(player.name)} ${key.toLowerCase()} percentiles among ${player.position}s`}>
               {items.map(({ m, board, row }) => (
                 <li key={m.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 sm:grid-cols-[10rem_minmax(0,1fr)_7.5rem]">
                   <MetricLabel metric={m} className="text-xs font-semibold text-secondary-foreground sm:text-sm" />

@@ -16,6 +16,7 @@ import { clubStyle } from './clubTone';
 import type { SpriteAction } from '@/utils/gameSprites';
 import type { Position } from '@/types/player';
 import { cn } from '@/lib/utils';
+import { displayName } from '@/utils/displayName';
 
 const ELITE_OVR = 90;
 
@@ -164,7 +165,7 @@ const StatsPulse = ({ data, book, onSelect }: { data: LeagueData; book: RecordBo
           sub={
             <button type="button" {...peekProps(chase.player)} onClick={() => onSelect(chase.player)} className="inline-flex max-w-full items-center gap-1.5 rounded font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
               {chase.player.team && <TeamLogo team={chase.player.team} size={16} decorative backed />}
-              <span className="truncate">{chase.player.name}</span>
+              <span className="truncate">{displayName(chase.player.name)}</span>
             </button>
           }
           chart={
@@ -178,7 +179,7 @@ const StatsPulse = ({ data, book, onSelect }: { data: LeagueData; book: RecordBo
               </span>
             </span>
           }
-          summary={`${chase.player.name} has ${Math.floor(chase.percentToRecord)}% of the ${chase.recordName} record and is on pace to pass it in ${chase.seasonsToBreak} seasons.`}
+          summary={`${displayName(chase.player.name)} has ${Math.floor(chase.percentToRecord)}% of the ${chase.recordName} record and is on pace to pass it in ${chase.seasonsToBreak} seasons.`}
         />
       ) : (
         <Card title="Career records" value={book.boards.size} sub="tracked boards" chart={null} summary="" />

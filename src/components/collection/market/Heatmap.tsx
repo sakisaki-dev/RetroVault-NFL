@@ -3,6 +3,7 @@ import { fmtCoins } from '@/utils/cardMarket';
 import { squarify } from './treemap';
 import { changeText, dirOf, type MarketRow } from './marketRows';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 const GAP = 2;
@@ -54,7 +55,7 @@ const Heatmap = ({ rows, onOpen }: { rows: MarketRow[]; onOpen: (r: MarketRow) =
           </span>
           {g.tiles.map((t) => {
             const r = t.item;
-            const label = `${r.info.player.name}, ${r.info.player.position}: ${fmtCoins(r.value)} coins, ${changeText(r.change)}`;
+            const label = `${displayName(r.info.player.name)}, ${r.info.player.position}: ${fmtCoins(r.value)} coins, ${changeText(r.change)}`;
             return (
               <button
                 key={r.key}
@@ -66,7 +67,7 @@ const Heatmap = ({ rows, onOpen }: { rows: MarketRow[]; onOpen: (r: MarketRow) =
                 {...peekProps(r.info.player)}
                 onClick={() => onOpen(r)}
               >
-                <span className="mk-heat__name">{r.info.player.name.split(' ').slice(-1)[0]}</span>
+                <span className="mk-heat__name">{displayName(r.info.player.name).split(' ').slice(-1)[0]}</span>
                 <span className="mk-heat__chg">{changeText(r.change)}</span>
               </button>
             );

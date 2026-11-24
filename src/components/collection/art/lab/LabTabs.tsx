@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type ComponentType } from 'react';
 import { Play, RotateCcw, Shirt } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -112,10 +113,10 @@ const rollSample = (type: PackType, pool: TierPool): PackCard[] => {
   if (type !== 'exchange') return rollPack(type, pool, Math.random, KIT_SOURCE).map(asPackCard);
   const taken = new Set<string>();
   return EXCHANGE_PLAN.flatMap(([tier, finish]) => {
-    const list = pool[tier].filter((p) => !taken.has(`${p.position}:${p.name}`));
+    const list = pool[tier].filter((p) => !taken.has(`${p.position}:${displayName(p.name)}`));
     const player = list[Math.floor(Math.random() * list.length)];
     if (!player) return [];
-    taken.add(`${player.position}:${player.name}`);
+    taken.add(`${player.position}:${displayName(player.name)}`);
     const variant = weighted(variantWeights('exchange', tier, finish));
     const kit = rollKit('exchange', clubKits(player.team), variant);
     const prizm = rollPrizm('exchange', variant);
@@ -139,7 +140,7 @@ export const PacksTab = memo(({ league, total }: LabTabProps) => {
   }, [league]);
   // The Card designs sample: a Common, a Rare, two Epics and a Legendary Holo Autograph, so every reveal plays once
   const showcase = useMemo(() => samplePack(designRows(league), league), [league]);
-  const describe = useCallback((c: PackCard) => byKey.get(`${c.player.position}:${c.player.name}`)!, [byKey]);
+  const describe = useCallback((c: PackCard) => byKey.get(`${c.player.position}:${displayName(c.player.name)}`)!, [byKey]);
   // Fresh objects every tear, so the walkout decoys re-roll on Replay
   const onTear = useCallback((t: PackType) => (mix === 'showcase' ? showcase.map((c) => ({ ...c })) : rollSample(t, pool)), [mix, showcase, pool]);
   const play = () => {
@@ -279,7 +280,7 @@ export const WalkoutTab = memo(({ pick, total }: LabTabProps) => {
         ) : (
           <button type="button" className="lab-stage__idle" onClick={play}>
             <Play className="h-8 w-8" aria-hidden="true" />
-            <b>{pick.player.name}</b>
+            <b>{displayName(pick.player.name)}</b>
             <span>{sample}</span>
           </button>
         )}
@@ -327,7 +328,7 @@ export const DesignsTab = memo(({ pick, total }: LabTabProps) => {
   return (
     <section aria-label="Card designs" className="lab-sec">
       <Chips<Finish> label="Finish" value={finish} options={FINISHES.map((f) => ({ key: f.key, label: f.label }))} onChange={setFinish} />
-      <ul className="lab-cards" aria-label={`${pick.player.name}: the ${VARIANTS.length} art variants, ${finishLabel(finish)} finish`}>
+      <ul className="lab-cards" aria-label={`${displayName(pick.player.name)}: the ${VARIANTS.length} art variants, ${finishLabel(finish)} finish`}>
         {VARIANTS.map((v) => (
           <li key={v.key}>
             <LabCard info={pick} finish={finish} variant={v.key} total={total} />

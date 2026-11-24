@@ -10,6 +10,7 @@ import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import GameSprite from '../GameSprite';
 import { peekProps } from '../peek/peekProps';
 import TeamLogo from '../brand/TeamLogo';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The champions' team photo on a Season Story lead (the owner's private Retro Bowl sprites; nothing on the public
@@ -65,26 +66,26 @@ const TeamPhoto = ({ season, winner, players, featured }: Props) => {
         </span>
         <div className="tp-row tp-row--back" aria-hidden="true">
           {back.map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
+            <GameSprite key={displayName(p.name)} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
         </div>
         <div className="tp-row tp-row--front" aria-hidden="true">
           {front.slice(0, mid).map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
+            <GameSprite key={displayName(p.name)} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
           <GameSprite player={star} team={team.name} season={year} kind="figure" size="l" action="celebrate" className="tp-star" peek />
           {front.slice(mid).map((p) => (
-            <GameSprite key={p.name} player={p} team={team.name} season={year} kind="figure" size="m" peek />
+            <GameSprite key={displayName(p.name)} player={p} team={team.name} season={year} kind="figure" size="m" peek />
           ))}
         </div>
         {withCoach && <CoachSprite who="head" team={team.name} size="m" className="tp-coach" />}
       </div>
       <figcaption className="tp-cap">
-        Front and centre: <b {...peekProps(star)} data-peek-through>{star.name}</b> · {roster.length} ring holders
+        Front and centre: <b {...peekProps(star)} data-peek-through>{displayName(star.name)}</b> · {roster.length} ring holders
         {withCoach && coach?.name && (
           <>
             {' '}
-            · on the sideline, head coach <b>{coach.name}</b>
+            · on the sideline, head coach <b>{displayName(coach.name)}</b>
           </>
         )}
       </figcaption>

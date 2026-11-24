@@ -19,6 +19,7 @@ import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './nflPodium.css';
 import { dataResponse } from '@/utils/dataStore';
+import { displayName } from '@/utils/displayName';
 
 /**
  * NFL Season page extras: each game's star performer (public/data/league/stars/<year>.json, scripts/nfl/game_stars.py,
@@ -222,9 +223,9 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
         const [pos] = splitKey(r.key);
         return (
           <li key={r.key} className="flex min-w-0 flex-col items-center text-center">
-            <PlayerHit name={r.name} pos={pos} className="flex max-w-full flex-col items-center text-center">
-              <StarSprite name={r.name} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
-              <p className="mt-1 max-w-full truncate font-display text-sm font-bold uppercase leading-tight">{r.name}</p>
+            <PlayerHit name={displayName(r.name)} pos={pos} className="flex max-w-full flex-col items-center text-center">
+              <StarSprite name={displayName(r.name)} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
+              <p className="mt-1 max-w-full truncate font-display text-sm font-bold uppercase leading-tight">{displayName(r.name)}</p>
             </PlayerHit>
             <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <TeamLogo team={r.team} decorative className="h-4 w-4" /> {findNFLTeam(r.team)?.name ?? r.team}

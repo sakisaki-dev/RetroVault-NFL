@@ -7,6 +7,7 @@ import CompMap from '../comps/CompMap';
 import { buildShapeMap } from './shapeMap';
 import { openInCompFinder } from '../comps/compFinderLink';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const useWide = () => {
   const q = '(min-width: 768px)';
@@ -42,9 +43,9 @@ const FamilyMap = ({ players, position }: { players: Player[]; position: Positio
         {fams && (
           <ol className="flex flex-wrap gap-1.5">
             {fams.families[0].members.map((p) => (
-              <li key={p.name}>
+              <li key={displayName(p.name)}>
                 <button type="button" className="rounded-full border border-line/70 px-2 py-0.5 text-xs font-semibold text-foreground hover:border-gold/60 hover:text-gold" {...peekProps(p)} onClick={() => openInCompFinder(p)}>
-                  {p.name} <span className="font-mono text-[10px] text-muted-foreground">{Math.round(p.careerLegacy).toLocaleString()}</span>
+                  {displayName(p.name)} <span className="font-mono text-[10px] text-muted-foreground">{Math.round(p.careerLegacy).toLocaleString()}</span>
                 </button>
               </li>
             ))}

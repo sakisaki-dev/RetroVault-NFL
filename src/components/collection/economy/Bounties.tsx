@@ -7,6 +7,7 @@ import { fmtCoins } from '@/utils/cardMarket';
 import { BOUNTY_PRICE_SHARE, bountiesDone, bountyPayout, turnInBounty, type Bounty } from '@/utils/economy';
 import CopyRow from './CopyRow';
 import { consumes, factsOf, type OwnedCopy } from './copies';
+import { displayName } from '@/utils/displayName';
 
 interface BountiesProps {
   bounties: Bounty[];
@@ -42,12 +43,12 @@ const Bounties = ({ bounties, seed, editionLabel, state, copies, change }: Bount
   }, [bounties, copies, change]);
 
   const turnIn = (b: Bounty, c: OwnedCopy) => {
-    const pay = turnInBounty(seed, b, { ref: c.ref, price: c.price, label: `${c.info.player.name} · ${c.label}` });
+    const pay = turnInBounty(seed, b, { ref: c.ref, price: c.price, label: `${displayName(c.info.player.name)} · ${c.label}` });
     if (pay == null) {
       toast('That bounty is closed or the card is gone.');
       return;
     }
-    toast.success(`Bounty paid: +${fmtCoins(pay)} coins`, { description: `${c.info.player.name} · ${c.label}` });
+    toast.success(`Bounty paid: +${fmtCoins(pay)} coins`, { description: `${displayName(c.info.player.name)} · ${c.label}` });
     setOpen(null);
     setPickId(null);
   };
@@ -116,8 +117,8 @@ const Bounties = ({ bounties, seed, editionLabel, state, copies, change }: Bount
                       {warn && (warn.leaving.length > 0 || warn.lastCombos.length > 0) && (
                         <p className="ec-warn" role="alert">
                           {warn.leaving.length
-                            ? `This is your only ${picked.info.player.name} card: turning it in removes him from your binder.`
-                            : `This is your last ${picked.label} of ${picked.info.player.name}.`}
+                            ? `This is your only ${displayName(picked.info.player.name)} card: turning it in removes him from your binder.`
+                            : `This is your last ${picked.label} of ${displayName(picked.info.player.name)}.`}
                         </p>
                       )}
                       <button type="button" className={cn('ec-btn', warn?.lastCombos.length ? 'ec-btn--danger' : 'ec-btn--gold')} onClick={() => turnIn(b, picked)}>

@@ -10,6 +10,7 @@ import type { Career } from './careerStory';
 import { MetricChips } from './CareerHero';
 import MultiLine, { type LineSeries } from './MultiLine';
 import type { GraphMetric } from './graphKit';
+import { displayName } from '@/utils/displayName';
 
 type Mode = 'comp' | 'top' | 'avg';
 const posOf = (k: string) => k.slice(0, k.indexOf(':')) as Position;
@@ -53,14 +54,14 @@ const CompareOverlay = ({
   const [metricId, setMetricId] = useState('ovr');
   const metric = metrics.find((m) => m.id === metricId) ?? metrics[0];
   const comps = useMemo(
-    () => similarPlayers(players, player, 8, 'level').filter((c) => league.byKey.get(`${c.player.position}:${c.player.name}`)?.some((p) => p.careerYear != null)),
+    () => similarPlayers(players, player, 8, 'level').filter((c) => league.byKey.get(`${c.player.position}:${displayName(c.player.name)}`)?.some((p) => p.careerYear != null)),
     [players, player, league],
   );
   const [compKey, setCompKey] = useState('');
-  const comp = comps.find((c) => `${c.player.position}:${c.player.name}` === compKey) ?? comps[0];
+  const comp = comps.find((c) => `${c.player.position}:${displayName(c.player.name)}` === compKey) ?? comps[0];
 
   const { series, band, note } = useMemo(() => {
-    const mine: LineSeries = { key: career.key, label: player.name.split(' ').slice(-1)[0], color: GOLD, points: byCareerYear(career.points, metric), width: 3 };
+    const mine: LineSeries = { key: career.key, label: displayName(player.name).split(' ').slice(-1)[0], color: GOLD, points: byCareerYear(career.points, metric), width: 3 };
     if (mode === 'avg') {
       const at = new Map<number, number[]>();
       league.byKey.forEach((pts, k) => {
@@ -76,11 +77,11 @@ const CompareOverlay = ({
       return { series: [avg, mine], band, note: `Every recorded ${player.position}'s ${metric.label.toLowerCase()} by career year (3+ players a year); shaded: the middle half.` };
     }
     if (mode === 'comp' && comp) {
-      const k = `${comp.player.position}:${comp.player.name}`;
+      const k = `${comp.player.position}:${displayName(comp.player.name)}`;
       return {
-        series: [{ key: k, label: comp.player.name.split(' ').slice(-1)[0], color: VIZ.series[0], points: byCareerYear(league.byKey.get(k) ?? [], metric), width: 2, peekKey: k }, mine],
+        series: [{ key: k, label: displayName(comp.player.name).split(' ').slice(-1)[0], color: VIZ.series[0], points: byCareerYear(league.byKey.get(k) ?? [], metric), width: 2, peekKey: k }, mine],
         band: undefined,
-        note: `${comp.player.name}: ${Math.round(comp.similarity)} closest overall (level + style of their career rates).`,
+        note: `${displayName(comp.player.name)}: ${Math.round(comp.similarity)} closest overall (level + style of their career rates).`,
       };
     }
     const top = [...league.byKey.entries()]
@@ -119,11 +120,11 @@ const CompareOverlay = ({
       {mode === 'comp' && comps.length > 0 && (
         <div className="cg-chips scrollbar-none" data-no-swipe-x role="radiogroup" aria-label="Comparable player">
           {comps.map((c) => {
-            const k = `${c.player.position}:${c.player.name}`;
+            const k = `${c.player.position}:${displayName(c.player.name)}`;
             const on = comp === c;
             return (
               <button key={k} type="button" role="radio" aria-checked={on} onClick={() => setCompKey(k)} className={cn('cg-chip', on && 'cg-chip--on')} {...peekProps(c.player)}>
-                {c.player.name} <span className="opacity-70">{Math.round(c.similarity)}</span>
+                {displayName(c.player.name)} <span className="opacity-70">{Math.round(c.similarity)}</span>
               </button>
             );
           })}
@@ -131,7 +132,7 @@ const CompareOverlay = ({
       )}
       <MetricChips metrics={metrics.filter((m) => !m.invert)} value={metric.id} onChange={setMetricId} label="Comparison metric" />
       {xs.length > 1 ? (
-        <MultiLine series={series} xs={xs} xLabel={(x) => `Yr ${x}`} yFmt={(v) => metric.fmt(v)} band={band} zero={!['ovr', 'car', 'skill'].includes(metric.id)} ariaLabel={`${player.name} against ${mode === 'avg' ? 'the league average' : mode === 'comp' ? 'a comparable' : 'the top five'} by career year`} selX={career.points[idx]?.careerYear ?? null} />
+        <MultiLine series={series} xs={xs} xLabel={(x) => `Yr ${x}`} yFmt={(v) => metric.fmt(v)} band={band} zero={!['ovr', 'car', 'skill'].includes(metric.id)} ariaLabel={`${displayName(player.name)} against ${mode === 'avg' ? 'the league average' : mode === 'comp' ? 'a comparable' : 'the top five'} by career year`} selX={career.points[idx]?.careerYear ?? null} />
       ) : (
         <p className="cg-note">Not enough seasons with {metric.label.toLowerCase()} to compare.</p>
       )}

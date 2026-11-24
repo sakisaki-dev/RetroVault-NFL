@@ -14,6 +14,7 @@ import { buildZones } from '../visual/zones';
 import { dotColors } from './compColors';
 import { peekProps } from '../../peek/peekProps';
 import type { SimilarityMap } from './compModel';
+import { displayName } from '@/utils/displayName';
 
 const GOLD = 'hsl(43 100% 62%)';
 const MAX_ZOOM = 6;
@@ -257,7 +258,7 @@ const CompMap = ({ map, ovrMap, selectedKey, topComps, overlayKey, onPick, wide,
       const isSel = p.key === selectedKey;
       const right = px < W * 0.75;
       const size = wide ? (isSel ? 15 : 12.5) : isSel ? 12 : 10.5;
-      const text = isSel || wide || view.k > 1.5 ? p.player.name : p.player.name.split(' ').slice(-1)[0];
+      const text = isSel || wide || view.k > 1.5 ? p.player.name : displayName(p.player.name).split(' ').slice(-1)[0];
       const width = text.length * size * (isSel ? 0.62 : 0.56);
       const x = px + (right ? 1 : -1) * (p.r + (isSel ? 15 : 6));
       const x0 = right ? x : x - width;
@@ -294,7 +295,7 @@ const CompMap = ({ map, ovrMap, selectedKey, topComps, overlayKey, onPick, wide,
       >
         <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
           {hover.player.team && <TeamLogo team={hover.player.team} size={18} decorative backed />}
-          {hover.player.name}
+          {displayName(hover.player.name)}
           {isHallOfFamer(hover.player) && <span className="font-pixel text-[8px] text-gold">HOF</span>}
         </span>
         <span className="mt-0.5 block text-muted-foreground">
@@ -412,7 +413,7 @@ const CompMap = ({ map, ovrMap, selectedKey, topComps, overlayKey, onPick, wide,
                 tabIndex={0}
                 role="button"
                 aria-pressed={isSel}
-                aria-label={`${p.player.name}, ${findNFLTeam(p.player.team)?.abbreviation ?? p.player.team ?? 'no team'}${p.ovr != null ? `, OVR ${p.ovr}` : ''}${hof ? ', Hall of Famer' : ''}${fams && famOf(p.key) != null ? `, ${fams.families[famOf(p.key)!].name}` : ''}${p.nn >= 0 ? `. Top comp ${layout[p.nn].player.name} ${Math.round(p.nnScore)}%` : ''}`}
+                aria-label={`${displayName(p.player.name)}, ${findNFLTeam(p.player.team)?.abbreviation ?? p.player.team ?? 'no team'}${p.ovr != null ? `, OVR ${p.ovr}` : ''}${hof ? ', Hall of Famer' : ''}${fams && famOf(p.key) != null ? `, ${fams.families[famOf(p.key)!].name}` : ''}${p.nn >= 0 ? `. Top comp ${layout[p.nn].player.name} ${Math.round(p.nnScore)}%` : ''}`}
                 onClick={() => {
                   if (!dragged.current) onPick(p.player);
                 }}

@@ -3,6 +3,7 @@ import type { GamePlayer } from '@/config/ovr';
 import { bodyFor } from '@/config/bodyTypes';
 import { SPRITE_BASELINE, nflSpriteFor, useGameSprites, type SpriteAction } from '@/utils/gameSprites';
 import type { Uniform } from '../art/sprite/uniforms';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The walkout runner: his Retro Bowl sprite (the owner's private sprites, GameSprite's source and rules) in the kit the
@@ -48,7 +49,7 @@ export const useKitFigure = (player: GamePlayer, uniform: Uniform | null, action
   const job = useMemo<Job | null>(() => {
     const nfl = sprites?.nfl;
     if (!KIT_SPRITES || !nfl || player.isRealLegend || !uniform) return null;
-    const key = `${player.position}:${player.name}`;
+    const key = `${player.position}:${displayName(player.name)}`;
     const looks = sprites?.looks ?? sprites?.regular?.skins;
     const locked = looks?.[player.name]?.skin;
     const tone = typeof locked === 'string' ? locked : player.spriteSkin;

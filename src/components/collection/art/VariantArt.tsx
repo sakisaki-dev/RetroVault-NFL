@@ -11,6 +11,7 @@ import LockerArt from './LockerArt';
 import AutographCanvas from '../autograph/AutographCanvas';
 import { isSampleAuto, useAutographFor, type AutographChoice } from '../autograph/sample';
 import './art.css';
+import { displayName } from '@/utils/displayName';
 
 /** The art style behind each drawn card variant (the Autograph is its own canvas, AutoArt). */
 const VARIANT_ART: Record<Exclude<Variant, 'auto'>, ComponentType<ArtProps>> = {
@@ -41,7 +42,7 @@ const AutoArt = ({ player, number, finish, autograph }: Omit<VariantArtProps, 'v
   const auto = useAutographFor({ player, number: number ?? 0 }, isFinish(finish) ? finish : 'base', autograph);
   return (
     <span className="ra ra--auto">
-      <AutographCanvas snap={auto.snap} roll={auto.roll} cacheKey={auto.id} label={`${auto.snap.name} autograph${isSampleAuto(auto) ? ' (sample)' : ''}`} />
+      <AutographCanvas snap={auto.snap} roll={auto.roll} cacheKey={auto.id} label={`${displayName(auto.snap.name)} autograph${isSampleAuto(auto) ? ' (sample)' : ''}`} />
     </span>
   );
 };

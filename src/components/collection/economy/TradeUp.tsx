@@ -10,6 +10,7 @@ import { KIT_SOURCE } from '../kits';
 import type { CardInfo } from '../useCardPool';
 import CopyRow from './CopyRow';
 import { consumes, type OwnedCopy } from './copies';
+import { displayName } from '@/utils/displayName';
 
 interface TradeUpProps {
   copies: OwnedCopy[];
@@ -110,7 +111,7 @@ const TradeUp = ({ copies, tierPool, byKey, total, freeze, meanValue, onOpenCard
   };
 
   const handIn = chosen.reduce((a, c) => a + c.price, 0);
-  const resultInfo = result ? byKey.get(`${result.player.position}:${result.player.name}`) : undefined;
+  const resultInfo = result ? byKey.get(`${result.player.position}:${displayName(result.player.name)}`) : undefined;
 
   return (
     <div className="space-y-3">
@@ -157,7 +158,7 @@ const TradeUp = ({ copies, tierPool, byKey, total, freeze, meanValue, onOpenCard
               <strong>Uses the last copy of:</strong>{' '}
               {lastCombos
                 .filter((c) => !leaving.some((l) => l.info.key === c.info.key))
-                .map((c) => `${c.info.player.name} ${variantLabel(c.variant)} ${finishLabel(c.finish)}`)
+                .map((c) => `${displayName(c.info.player.name)} ${variantLabel(c.variant)} ${finishLabel(c.finish)}`)
                 .join(', ')}
               .
             </p>
@@ -185,7 +186,7 @@ const TradeUp = ({ copies, tierPool, byKey, total, freeze, meanValue, onOpenCard
       {result && resultInfo && (
         <div className="ec-result" aria-live="polite">
           <p className="ec-kicker">Trade-up result</p>
-          <div className="ec-result__card ec-pop" key={`${result.player.name}-${result.finish}-${result.variant}`}>
+          <div className="ec-result__card ec-pop" key={`${displayName(result.player.name)}-${result.finish}-${result.variant}`}>
             <CollectibleCard
               owned
               player={resultInfo.player}
@@ -204,7 +205,7 @@ const TradeUp = ({ copies, tierPool, byKey, total, freeze, meanValue, onOpenCard
             />
           </div>
           <p className="text-center text-sm">
-            <strong>{result.player.name}</strong> · {variantLabel(result.variant)} {finishLabel(result.finish)}
+            <strong>{displayName(result.player.name)}</strong> · {variantLabel(result.variant)} {finishLabel(result.finish)}
             {result.isNew ? ' · New card!' : result.newVariant ? ' · New art' : result.duplicate ? ` · Duplicate, +${result.shards} shards` : ''}
           </p>
           <button type="button" className="ec-btn ec-btn--ghost ec-btn--sm" onClick={() => setResult(null)}>

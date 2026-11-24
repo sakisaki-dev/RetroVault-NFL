@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { memo } from 'react';
 import type { Position } from '@/types/player';
 import { fmtFixed } from '@/utils/numberFormat';
@@ -57,7 +58,7 @@ export const graphMetrics = (pos: Position): GraphMetric[] => {
   }));
   const rates: GraphMetric[] = seasonRates(pos).map((r) => ({
     id: `rate:${r.id}`,
-    label: r.trait ? `${r.name} · ${r.label}` : r.label,
+    label: r.trait ? `${displayName(r.name)} · ${r.label}` : r.label,
     short: r.label,
     group: 'Rate',
     get: (p) => {
@@ -66,7 +67,7 @@ export const graphMetrics = (pos: Position): GraphMetric[] => {
     },
     fmt: (v) => `${fmtFixed(v, r.decimals)}${r.suffix ?? ''}`,
     pctId: r.id,
-    definition: r.definition + (r.trait ? ` (the ${r.name} skill grade, on one season)` : ''),
+    definition: r.definition + (r.trait ? ` (the ${displayName(r.name)} skill grade, on one season)` : ''),
   }));
   const out = [...card, ...box, ...rates];
   CACHE.set(pos, out);

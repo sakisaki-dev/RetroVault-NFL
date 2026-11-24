@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
 import { memo, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type TouchEvent as RTouchEvent } from 'react';
 import { Clock, CornerDownLeft, Search, Shield, Star, X } from 'lucide-react';
@@ -79,7 +80,8 @@ const teamVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.indexOf(' ');
   return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
 };
@@ -110,7 +112,7 @@ const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, sele
         aria-current={selected ? 'true' : undefined}
         onPointerDown={() => warmPlayerCard(p)}
         onClick={() => onPick(p)}
-        aria-label={`${p.name}, ${p.position}${team ? `, ${team.fullName}` : ''}${ovr != null ? `, ${ovrLabelOf(p)} ${ovr}` : ''}`}
+        aria-label={`${displayName(p.name)}, ${p.position}${team ? `, ${team.fullName}` : ''}${ovr != null ? `, ${ovrLabelOf(p)} ${ovr}` : ''}`}
         {...(peek ? peekProps(p) : {})}
       >
         <span className="ss-logo" aria-hidden="true">

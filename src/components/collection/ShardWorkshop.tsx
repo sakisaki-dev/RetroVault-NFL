@@ -7,6 +7,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import CollectibleCard from './CollectibleCard';
 import type { CardInfo } from './useCardPool';
 import './shardWorkshop.css';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   cards: CardInfo[];
@@ -73,7 +74,7 @@ const ShardWorkshop = ({ cards, owned, shards, perPack, onOpen }: Props) => {
     }
     setForging(true);
     window.setTimeout(() => setForging(false), 900);
-    toast.success(`Claimed: ${chosen.player.name}`, {
+    toast.success(`Claimed: ${displayName(chosen.player.name)}`, {
       description: `${variantLabel(v)} Base card added to your binder.`,
       action: { label: 'View', onClick: () => onOpen(chosen) },
     });
@@ -118,12 +119,12 @@ const ShardWorkshop = ({ cards, owned, shards, perPack, onOpen }: Props) => {
               <p className="sw__kicker">
                 <Crown className="h-3.5 w-3.5" aria-hidden="true" /> {tierLabel(chosen.tier)} claim · {cost.toLocaleString()} shards
               </p>
-              <p className="sw__name">{chosen.player.name}</p>
+              <p className="sw__name">{displayName(chosen.player.name)}</p>
               <p className="sw__sub">
                 {variantLabel(variant)} art at Base · {owned[chosen.key] ? 'a new art for your binder' : 'not in your binder yet'}
               </p>
 
-              <div className="sw__gauge" role="progressbar" aria-label={`Shards toward claiming ${chosen.player.name}`} aria-valuemin={0} aria-valuemax={cost} aria-valuenow={Math.min(shards, cost)}>
+              <div className="sw__gauge" role="progressbar" aria-label={`Shards toward claiming ${displayName(chosen.player.name)}`} aria-valuemin={0} aria-valuemax={cost} aria-valuenow={Math.min(shards, cost)}>
                 <span className="sw__gauge-fill" style={{ transform: `scaleX(${share})` }} />
                 <span className="sw__gauge-ticks" aria-hidden="true" />
               </div>
@@ -184,10 +185,10 @@ const ShardWorkshop = ({ cards, owned, shards, perPack, onOpen }: Props) => {
                     aria-pressed={on}
                     onClick={() => choose(c.key)}
                     style={t ? { ['--sw-club' as string]: t.primaryColor } : undefined}
-                    aria-label={`${c.player.name}, ${owned[c.key] ? 'new art' : 'not owned'}`}
+                    aria-label={`${displayName(c.player.name)}, ${owned[c.key] ? 'new art' : 'not owned'}`}
                   >
                     {t?.logoUrl ? <img src={t.logoUrl} alt="" loading="lazy" /> : <span className="sw__pick-fa">FA</span>}
-                    <span className="sw__pick-name">{c.player.name.split(' ').slice(-1)[0]}</span>
+                    <span className="sw__pick-name">{displayName(c.player.name).split(' ').slice(-1)[0]}</span>
                     <span className="sw__pick-meta">
                       {c.player.position}
                       {c.ovr != null && ` ${c.ovr}`}

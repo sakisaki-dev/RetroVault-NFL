@@ -9,6 +9,7 @@ import type { Career } from './careerStory';
 import { seasonScore, type SeasonPoint } from './careerModel';
 import { groupOf, type Group } from './statDefs';
 import { clubInk, linear, shortNum, yLabel } from './graphKit';
+import { displayName } from '@/utils/displayName';
 
 const M = { l: 36, r: 40, t: 14, b: 22 };
 
@@ -232,7 +233,7 @@ export const PeakChart = ({ player, career, idx, onIdx }: { player: Player; care
         idx={idx}
         onIdx={onIdx}
         barDomain={[0, 100]}
-        ariaLabel={`${player.name} season score and career games by season`}
+        ariaLabel={`${displayName(player.name)} season score and career games by season`}
       />
     </div>
   );
@@ -347,7 +348,7 @@ export const VolumeRate = ({ player, career, idx, onIdx }: { player: Player; car
         lineFmt={pair.effFmt}
         idx={idx}
         onIdx={onIdx}
-        ariaLabel={`${player.name}: ${pair.vol} and ${pair.eff} by season`}
+        ariaLabel={`${displayName(player.name)}: ${pair.vol} and ${pair.eff} by season`}
       />
     </div>
   );

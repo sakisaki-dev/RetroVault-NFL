@@ -14,6 +14,7 @@ import { FINISH_ICON, TIER_ICON } from './rarityIcons';
 import { cardFaceVars } from './cardFace';
 import { loadMarket } from '@/utils/useMarket';
 import './collection.css';
+import { displayName } from '@/utils/displayName';
 
 const motionOk = () => {
   try {
@@ -54,7 +55,8 @@ const idleOffset = (name: string) => {
 
 const SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
 /** Surname for the name bar ("Odell Beckham Jr." → "Beckham"). */
-const surnameOf = (name: string) => {
+const surnameOf = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.trim().split(/\s+/);
   while (parts.length > 1 && SUFFIX.test(parts[parts.length - 1])) parts.pop();
   return parts[parts.length - 1] ?? name;
@@ -321,7 +323,7 @@ const CollectibleCard = ({
 
   const setLabel = setNo != null && setTotal ? `card ${setNo} of ${setTotal}` : null;
   const label = owned
-    ? `${player.name}, ${pinned ? 'your display card, ' : ''}${variant ? `${variantLabel(variant)} variant, ` : ''}${par ? `${prizmInfo(par.c).label} parallel ${prizmSerial(par)}, ` : ''}${tierLabel(tier)} tier, ${finishLabel(finish)} finish, ${ovr != null ? `CAR ${ovr}, ` : ''}${posName}${team ? `, ${team.name}` : ''}${number != null ? `, number ${number}` : ''}${setLabel ? `, ${setLabel}` : ''}${mark ? `, ${mark}` : ''}${onOpen ? '. Open card' : ''}`
+    ? `${displayName(player.name)}, ${pinned ? 'your display card, ' : ''}${variant ? `${variantLabel(variant)} variant, ` : ''}${par ? `${prizmInfo(par.c).label} parallel ${prizmSerial(par)}, ` : ''}${tierLabel(tier)} tier, ${finishLabel(finish)} finish, ${ovr != null ? `CAR ${ovr}, ` : ''}${posName}${team ? `, ${team.name}` : ''}${number != null ? `, number ${number}` : ''}${setLabel ? `, ${setLabel}` : ''}${mark ? `, ${mark}` : ''}${onOpen ? '. Open card' : ''}`
     : `Locked ${tierLabel(tier)} card, ${posName}${hint ? `. ${hint}` : ''}`;
 
   // The Autograph variant is the whole card (owner: "i want that art to be the card … it deserves to be the full
@@ -457,7 +459,7 @@ const CollectibleCard = ({
         className,
       )}
       style={vars}
-      data-key={`${player.position}:${player.name}`}
+      data-key={`${player.position}:${displayName(player.name)}`}
       data-idle={idle ? '' : undefined}
       onPointerMove={tilts ? onMove : undefined}
       onPointerLeave={tilts ? onLeave : undefined}

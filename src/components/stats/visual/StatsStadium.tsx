@@ -17,6 +17,7 @@ import CountUp from '../../brand/CountUp';
 import { clubStyle } from './clubTone';
 import './statsStadium.css';
 import { seasonLabel } from '@/config/edition';
+import { displayName } from '@/utils/displayName';
 
 /*
  * The Stats › Players opener (owner, 2026-11-17: "change this part to be more immersive", the header and headline cards):
@@ -116,7 +117,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
       {chase && (
         <button type="button" className="ss__chase" style={clubStyle(chase.player)} {...peekProps(chase.player)} onClick={() => onSelect(chase.player)}>
           <span className="ss__chase-k">Live chase</span>
-          <span className="ss__chase-name">{chase.player.name}</span>
+          <span className="ss__chase-name">{displayName(chase.player.name)}</span>
           <span className="ss__chase-rec">{chase.recordName}</span>
           <span className="ss__chase-bar" aria-hidden="true">
             <i style={{ width: `${Math.min(100, chase.percentToRecord)}%` }} />
@@ -139,7 +140,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
                 className="ss__man-hit"
                 {...peekProps(h.player)}
                 onClick={() => onSelect(h.player)}
-                aria-label={`${h.player.name}, Career Legacy ${fmtNum(h.player.careerLegacy, 0)}${h.boards.length ? `, holds the ${h.boards.map((x) => x.title).join(', ')} record` : ''}. Open player`}
+                aria-label={`${displayName(h.player.name)}, Career Legacy ${fmtNum(h.player.careerLegacy, 0)}${h.boards.length ? `, holds the ${h.boards.map((x) => x.title).join(', ')} record` : ''}. Open player`}
               >
                 <span className="ss__plate" aria-hidden="true">
                   {b ? (
@@ -165,7 +166,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
                     </span>
                   )}
                 </span>
-                <span className="ss__name">{h.player.name.split(' ').slice(-1)[0]}</span>
+                <span className="ss__name">{displayName(h.player.name).split(' ').slice(-1)[0]}</span>
               </button>
             </li>
           );

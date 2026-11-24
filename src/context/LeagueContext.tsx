@@ -7,6 +7,7 @@ import { dataText } from '@/utils/dataStore';
 import { loadPlayerExtras, signatureTeamOf } from '@/utils/playerExtras';
 import { IS_NFL } from '@/config/edition';
 import { registerFreeAgents, registerRealNumbers } from '@/utils/gameSprites';
+import { displayName } from '@/utils/displayName';
 
 interface LeagueContextType {
   /** League players with position-normalized metrics. Excludes real-life legends. */
@@ -192,7 +193,7 @@ export const LeagueProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const fa: Array<[string, string]> = [];
       POSITION_KEYS.forEach((k) =>
         (result.careerData[k] as Player[]).forEach((p) => {
-          if ((!p.team || p.team === 'FA') && p.status !== 'Retired') fa.push([`${p.position}:${p.name}`, p.bannerTeam ?? '']);
+          if ((!p.team || p.team === 'FA') && p.status !== 'Retired') fa.push([`${p.position}:${displayName(p.name)}`, p.bannerTeam ?? '']);
         }),
       );
       registerFreeAgents(fa);

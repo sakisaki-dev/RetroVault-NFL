@@ -6,6 +6,7 @@ import { HallHeading } from './hofParts';
 import { clubColors, fmt } from './hofUtils';
 import { cn } from '@/lib/utils';
 import { peekKeyProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /** Rings of Honor: pick a club, see its ring (Hall of Famers first, in gold), in the club's colours. */
 const RingsOfHonor = ({
@@ -98,13 +99,13 @@ const RingsOfHonor = ({
         {list.length ? (
           <ol className="divide-y divide-line/60">
             {list.map((e) => (
-              <li key={`${e.pos}:${e.name}`}>
+              <li key={`${e.pos}:${displayName(e.name)}`}>
                 <button
                   type="button"
-                  {...peekKeyProps(`${e.pos}:${e.name}`)}
+                  {...peekKeyProps(`${e.pos}:${displayName(e.name)}`)}
                   onClick={() => onOpen(e)}
                   className="relative flex min-h-[48px] w-full items-center gap-3 px-3 py-2 text-left hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold sm:px-4"
-                  aria-label={`${e.name}, ${e.pos}${e.hof ? ', Hall of Famer' : `, ${e.why}`}, Career Legacy ${fmt(e.careerLegacy)}. Open`}
+                  aria-label={`${displayName(e.name)}, ${e.pos}${e.hof ? ', Hall of Famer' : `, ${e.why}`}, Career Legacy ${fmt(e.careerLegacy)}. Open`}
                 >
                   {e.hof && <span aria-hidden="true" className="hof-honour-ribbon" />}
                   <span
@@ -115,7 +116,7 @@ const RingsOfHonor = ({
                     {e.pos}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className={cn('block truncate pr-0.5 font-display text-lg font-bold uppercase leading-tight', e.hof ? 'hof-metal-text' : 'text-chalk')}>{e.name}</span>
+                    <span className={cn('block truncate pr-0.5 font-display text-lg font-bold uppercase leading-tight', e.hof ? 'hof-metal-text' : 'text-chalk')}>{displayName(e.name)}</span>
                     <span className="block truncate text-xs text-muted-foreground">
                       {e.hof ? 'Hall of Famer' : e.why === 'Career Legacy' ? `Career Legacy ${fmt(e.careerLegacy)}` : e.why}
                     </span>

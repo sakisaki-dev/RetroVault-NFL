@@ -15,6 +15,7 @@ import { fmtNum, fmtPlus, ordinal } from './viz';
 import { keyOf } from '../records';
 import PlusLollipop from '../visual/PlusLollipop';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const SHOWN = 12;
 
@@ -140,13 +141,13 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
                     className="flex w-full min-w-0 items-center gap-1.5 rounded text-left font-semibold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   >
                     {r.player.team ? <TeamLogo team={r.player.team} size={18} decorative backed /> : <span className="w-[18px]" aria-hidden="true" />}
-                    <span className="truncate"><FitName name={r.player.name} /></span>
+                    <span className="truncate"><FitName name={displayName(r.player.name)} /></span>
                     {r.nfl && <span className="sr-only">, real NFL player, unranked</span>}
                   </button>
                   {/* Mobile: percentile under the name */}
                   <PercentileBar
                     pct={r.pct}
-                    label={`${r.player.name} percentile`}
+                    label={`${displayName(r.player.name)} percentile`}
                     className="mt-1 h-1.5 w-full overflow-hidden rounded-sm sm:hidden"
                   />
                 </td>
@@ -157,7 +158,7 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
                 <td className="py-1.5 text-right font-mono tabular-nums text-secondary-foreground">{fmtPlus(r.plus)}</td>
                 <td className="hidden py-1.5 pl-3 sm:table-cell">
                   <div className="flex items-center gap-2">
-                    <PercentileBar pct={r.pct} label={`${r.player.name} percentile`} className="h-2 flex-1 overflow-hidden rounded-sm" />
+                    <PercentileBar pct={r.pct} label={`${displayName(r.player.name)} percentile`} className="h-2 flex-1 overflow-hidden rounded-sm" />
                     <span className="w-8 text-right font-mono text-[11px] tabular-nums text-muted-foreground">{ordinal(r.pct)}</span>
                   </div>
                 </td>

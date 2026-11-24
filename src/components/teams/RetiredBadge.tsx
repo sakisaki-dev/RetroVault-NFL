@@ -8,6 +8,7 @@ import { openRafters } from '@/utils/raftersLink';
 import TeamLogo from '@/components/brand/TeamLogo';
 import type { RetiredNumber } from '@/utils/jerseys';
 import './rafters.css';
+import { displayName } from '@/utils/displayName';
 
 /** At most this many clubs' banners hang on a card (Sherman Brandson's three clubs all hang; the banners slim down) */
 const MAX_CLUBS = 3;
@@ -96,7 +97,7 @@ export const RetiredStrip = ({ player, onLeave, className }: { player: Player | 
       <ul className="raf-cere__banners" aria-label={clubs.length === 1 ? 'Club that retired his number' : 'Clubs that retired his number'}>
         {clubs.map((r, i) => {
           const t = getNFLTeamById(r.teamKey);
-          const inRing = ringFor(t).some((e) => `${e.pos}:${e.name}` === `${player.position}:${player.name}`);
+          const inRing = ringFor(t).some((e) => `${e.pos}:${displayName(e.name)}` === `${player.position}:${displayName(player.name)}`);
           return (
             <li key={r.teamKey} style={{ ['--d' as string]: `${-i * 0.9}s` }}>
               <button

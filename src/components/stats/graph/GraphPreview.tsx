@@ -9,6 +9,7 @@ import { openInCompFinder } from '../comps/compFinderLink';
 import { useSwipeToDismiss } from '@/hooks/useSwipeToDismiss';
 import { dur } from '@/utils/motion';
 import './graphMobile.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Phone Graph Builder: the tapped dot's compact preview, docked at the bottom (non-modal, so the next dot can be
@@ -54,7 +55,7 @@ const GraphPreview = ({
     <div
       ref={swipeRef}
       role="region"
-      aria-label={`${p.name}: ${shown.xText}, ${shown.yText}`}
+      aria-label={`${displayName(p.name)}: ${shown.xText}, ${shown.yText}`}
       className="gp-sheet"
       data-open={open ? 'true' : 'false'}
     >
@@ -62,7 +63,7 @@ const GraphPreview = ({
         <span className="gp-grab" aria-hidden="true" />
         {p.team && <TeamLogo team={p.team} size={34} decorative backed />}
         <div className="min-w-0 flex-1">
-          <p className="truncate font-display text-xl font-extrabold uppercase italic leading-tight text-chalk">{p.name}</p>
+          <p className="truncate font-display text-xl font-extrabold uppercase italic leading-tight text-chalk">{displayName(p.name)}</p>
           <p className="truncate text-xs text-white/80">
             {p.position}
             {p.team ? ` · ${p.team}` : ''}
