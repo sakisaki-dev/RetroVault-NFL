@@ -72,7 +72,8 @@
   background: linear-gradient(180deg, #121a3c, #1e2a58);
 }
 .ss--art .ss__turf {
-  background: var(--ss-turf) center 30% / cover no-repeat;
+  /* only the clean middle band of the field art: its painted end-zone lettering and helmet logos sit above and below it */
+  background: var(--ss-turf) center 48% / auto 270% repeat-x;
 }
 .ss--art .ss__crowd {
   background: var(--ss-crowd) center / auto 100% repeat-x;

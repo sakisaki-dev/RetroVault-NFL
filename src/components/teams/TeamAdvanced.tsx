@@ -7,6 +7,7 @@ import { reducedMotion } from '@/utils/motion';
 import { scheduleSeasons, useSchedule, type ScheduleSeason, type TableRow, type TeamSeasonRow } from '@/utils/schedule';
 import TeamLogo from '../timeline/TeamLogo';
 import SectionIntro from '../stats/SectionIntro';
+import { ClubLadder, StockBoard } from './PowerBoards';
 
 /**
  * Stats → Teams: advanced team stats from the weekly league scores (public/data/league/schedule.json, built by
@@ -727,9 +728,19 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
   const gaps = gapsOf(rows);
   const latest = rows.at(-1);
 
+  const [showAll, setShowAll] = useState(false);
+
   return (
     <div className="space-y-4">
-    <LeagueChart progression={progression} clubs={clubs} team={team} onTeam={onTeam} />
+    <button
+      type="button"
+      aria-expanded={showAll}
+      onClick={() => setShowAll((v) => !v)}
+      className="rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
+    >
+      {showAll ? 'Hide the all-clubs chart' : 'Show every club on one chart'}
+    </button>
+    {showAll && <LeagueChart progression={progression} clubs={clubs} team={team} onTeam={onTeam} />}
     <div className="glass-card space-y-4 p-3 sm:p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-3">
@@ -892,6 +903,7 @@ const TeamAdvanced = () => {
   const [picked, setPicked] = useState<string | null>(null);
   const [compact, setCompact] = useState<boolean>(prefersCompact);
   const [tracked, setTracked] = useState<string | null>(null);
+  const [fullTable, setFullTable] = useState(false);
   const progressionRef = useRef<HTMLElement>(null);
 
   if (!schedule) return null;
@@ -959,7 +971,16 @@ const TeamAdvanced = () => {
         </div>
 
         <InsightCards season={season} />
-        <AdvancedTable season={season} compact={compact} onTrack={multi ? track : undefined} />
+        <ClubLadder season={season} progression={progression} onTrack={multi ? track : undefined} />
+        <button
+          type="button"
+          aria-expanded={fullTable}
+          onClick={() => setFullTable((v) => !v)}
+          className="rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
+        >
+          {fullTable ? 'Hide the advanced table' : 'Advanced table, every column'}
+        </button>
+        {fullTable && <AdvancedTable season={season} compact={compact} onTrack={multi ? track : undefined} />}
       </section>
 
       <section ref={progressionRef} aria-labelledby="progression-heading" className="scroll-mt-20 space-y-4">
@@ -984,7 +1005,7 @@ const TeamAdvanced = () => {
             <h3 className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide text-gold">
               <TrendingUp className="h-4 w-4" aria-hidden /> Risers and fallers
             </h3>
-            <Movers progression={progression} season={season.season} seasonsWithData={seasons.length} onTrack={track} />
+            <StockBoard progression={progression} season={season.season} clubs={season.table.length || 32} onTrack={track} />
           </>
         )}
       </section>

@@ -29,7 +29,8 @@ import {
 import { usePlayerExtras } from '@/utils/playerExtras';
 import { useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
-import { IS_NFL } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
+import '../teams/powerBoards.css';
 import { StrengthStrip, SuperBowlStrip } from '../teams/nfl/TeamStrips';
 
 type ConferenceFilter = 'all' | 'AFC' | 'NFC';
@@ -90,6 +91,8 @@ const TeamRankingsTab = () => {
   const coached = useMemo(() => coachedByTeam(content), [content]);
   const superBowls = useMemo(() => content?.superBowls ?? [], [content]);
   const lastSeason = latestSeasonYear(content);
+  const firstSeason = superBowls.length ? Math.min(...superBowls.map((sb) => sb.year)) : 0;
+  const [allFa, setAllFa] = useState(false);
 
   const league = useMemo(
     () => getAllPlayers().filter((p) => !p.isRealLegend),
@@ -173,7 +176,7 @@ const TeamRankingsTab = () => {
           <p className="font-pixel text-[10px] uppercase text-gold">League Hub · Franchises</p>
           <h1 className="font-display text-5xl sm:text-6xl font-extrabold italic uppercase leading-none">Teams</h1>
           <p className="mt-2 text-sm text-muted-foreground max-w-xl">
-            Every franchise in the league's {lastSeason ? `${lastSeason} years` : 'history'}: who won, who built dynasties, and who is on the roster now. Pick a team for its
+            Every franchise {firstSeason && lastSeason ? `from ${seasonLabel(firstSeason)} to ${seasonLabel(lastSeason)}` : 'in the league'}: who won, who built dynasties, and who is on the roster now. Pick a team for its
             franchise page.
           </p>
         </div>
@@ -181,7 +184,7 @@ const TeamRankingsTab = () => {
           <span className="lamp">Franchises <b><CountUp value={teams.length} /></b></span>
           <span className="lamp">Super Bowls <b><CountUp value={superBowls.length} /></b></span>
           <span className="lamp">Champions <b><CountUp value={totals.champions} /></b></span>
-          <span className="lamp">Your titles <b><CountUp value={totals.yourTitles} /></b></span>
+          {!IS_NFL && <span className="lamp">Your titles <b><CountUp value={totals.yourTitles} /></b></span>}
           <span className="lamp">Hall of Famers <b><CountUp value={totals.hof} /></b></span>
         </div>
       </header>
@@ -269,6 +272,7 @@ const TeamRankingsTab = () => {
           <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {[...unassigned]
               .sort((a, b) => (b.careerLegacy || 0) - (a.careerLegacy || 0))
+              .slice(0, allFa ? undefined : 12)
               .map((p) => (
                 <li key={`${p.name}-${p.position}`}>
                   <button
@@ -289,6 +293,11 @@ const TeamRankingsTab = () => {
                 </li>
               ))}
           </ul>
+          {unassigned.length > 12 && (
+            <button type="button" aria-expanded={allFa} onClick={() => setAllFa((v) => !v)} className="mt-3 rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              {allFa ? 'Show the top 12' : `Show all ${unassigned.length}`}
+            </button>
+          )}
         </section>
       )}
 

@@ -40,7 +40,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
   const ovrMap = useOfficialOvr();
   const club = useCurrentClub() ?? 'Eagles';
   const { content } = useLeagueContent();
-  const season = latestSeasonYear(content);
+  const season = content?.season ? Number(String(content.season).replace(/\D/g, '')) || latestSeasonYear(content) : latestSeasonYear(content);
   const art = useFieldArt(club, 'night');
   const sprites = useGameSprites();
 
