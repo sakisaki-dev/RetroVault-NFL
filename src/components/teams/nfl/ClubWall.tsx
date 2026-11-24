@@ -89,8 +89,11 @@ const lastTitleLine = (rec: FranchiseRecord | undefined, firstSeason: number) =>
 
 const label = ({ club, season }: { club: Club; season: number | null }) => {
   const { s, rec, row, top } = club;
-  return `${s.label}${s.team ? `, ${s.team.conference} ${s.team.division}` : ''}. ${row ? `${season ? seasonLabel(season) + ' record ' : 'Record '}${row.record}. ` : ''}Power rank ${rec?.powerRank ?? '—'}. ${rec?.titles ?? 0} titles.${top[0] ? ` Star ${displayName(top[0].name)}.` : ''} Open club page`;
+  return `${s.label}${s.team ? `, ${s.team.conference} ${s.team.division}` : ''}. ${row ? `${season ? seasonLabel(season) + ' record ' : 'Record '}${row.record}. ` : ''}Power rank ${row?.power ?? rec?.powerRank ?? '—'}. ${rec?.titles ?? 0} titles.${top[0] ? ` Star ${displayName(top[0].name)}.` : ''} Open club page`;
 };
+
+/** The 2026 power rank (the ladder's number), else the all-time one */
+const rankOf = (c: Club) => c.row?.power ?? c.rec?.powerRank ?? 99;
 
 const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, narrow }: TileProps) => {
   const { s, rec, row, top } = club;
@@ -120,9 +123,9 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         </span>
       )}
       <span aria-hidden="true" className="cw-abbr">{t.abbreviation}</span>
-      {rec && (
+      {(row || rec) && (
         <span aria-hidden="true" className={cn('cw-rank', bigRank && 'cw-rank--big')}>
-          {leader && !bigRank ? 'DIV LEADER · ' : ''}#{rec.powerRank}
+          {leader && !bigRank ? 'DIV LEADER · ' : ''}#{rankOf(club)}
         </span>
       )}
       <span className="cw-text">
@@ -137,11 +140,12 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         </span>
         <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>
       </span>
+      {leader && hasSprites && <span aria-hidden="true" className="cw-turf" />}
       {hasSprites && sprites.length > 0 && (
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (
             <span key={p.name + p.position} className="cw-fig">
-              <StarSprite name={p.name} pos={p.position} team={t.name} size={leader && narrow ? 'm' : 's'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
+              <StarSprite name={p.name} pos={p.position} team={t.name} size={leader ? 'm' : 's'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
             </span>
           ))}
         </span>
@@ -194,6 +198,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
   const [view, setView] = useState<View>(readView);
   const sprites = useGameSprites();
   const narrow = useNarrow();
+  void narrow;
   const { dataVersion } = useLeague();
 
   const [ovr, setOvr] = useState<Record<string, number> | null>(null);
@@ -233,6 +238,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
     const score = (p: Player) => ovr?.[`${p.position}:${p.name}`] ?? -1;
     const wanted = teams.filter((t) => t.team && (conf === 'all' || t.team.conference === conf));
     const sorted = sortTeams(wanted, sort === 'division' ? 'division' : sort, records);
+    if (sort === 'power') sorted.sort((a, b) => (rows.get(a.team!.name)?.power ?? 99) - (rows.get(b.team!.name)?.power ?? 99));
     return sorted.map<Club>((s) => ({
       s,
       rec: records.get(s.key),
@@ -252,7 +258,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
       else out.push({ label: lab, clubs: [c] });
     });
     const pct = (c: Club) => (c.row ? (c.row.w + c.row.t / 2) / Math.max(1, c.row.w + c.row.l + c.row.t) : 0);
-    out.forEach((b) => b.clubs.sort((x, y) => pct(y) - pct(x) || (x.rec?.powerRank ?? 99) - (y.rec?.powerRank ?? 99)));
+    out.forEach((b) => b.clubs.sort((x, y) => pct(y) - pct(x) || rankOf(x) - rankOf(y)));
     return out;
   }, [clubs, sort]);
 
@@ -299,7 +305,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
       ) : (
         <div className="cw-strips">
           {clubs.map((c, i) => (
-            <Strip key={c.s.key} club={c} place={sort === 'power' ? (c.rec?.powerRank ?? i + 1) : i + 1} season={season} onOpen={onOpen} />
+            <Strip key={c.s.key} club={c} place={sort === 'power' ? rankOf(c) : i + 1} season={season} onOpen={onOpen} />
           ))}
         </div>
       )}
