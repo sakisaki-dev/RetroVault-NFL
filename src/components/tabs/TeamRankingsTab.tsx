@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Building2, UserX } from 'lucide-react';
 import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
@@ -27,7 +27,7 @@ import {
   type TeamSummary,
 } from '../teams/teamStats';
 import { usePlayerExtras } from '@/utils/playerExtras';
-import { useHubRoute } from '../stats/hub/hashRoute';
+import { buildHash, useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
@@ -129,24 +129,40 @@ const TeamRankingsTab = () => {
   }, [visible, sortKey]);
 
   const openSummary = teams.find((t) => t.key === openKey) ?? null;
-  // A club strip elsewhere (the Season page) links here as #stats/teams?p=<club>: open that club's sheet once
-  const { route } = useHubRoute();
+  /*
+   * The club sheet is a page in the history: opening a club pushes #stats/teams?p=<club> (Back and the phone edge swipe
+   * close it and return to the Teams page where it was left), closing with the X goes Back to it. A club strip elsewhere
+   * (the Season page, a game page) links here the same way, and the header's quick search too (utils/teamSearch.ts).
+   */
+  const { route, navigate } = useHubRoute();
   const wanted = route.sub === 'teams' ? route.p : undefined;
+  const pushed = useRef(false);
   useEffect(() => {
-    if (!wanted) return;
+    if (!wanted) {
+      pushed.current = false;
+      setOpenKey(null);
+      return;
+    }
     const hit = teams.find((t) => t.team?.name === wanted || t.label === wanted);
     if (hit) setOpenKey(hit.key);
   }, [wanted, teams]);
-  // The header's quick search opens a club here even when the hash is already that club's (utils/teamSearch.ts)
-  useEffect(() => {
-    const on = (e: Event) => {
-      const name = (e as CustomEvent<string>).detail;
-      const hit = teams.find((t) => t.team?.name === name || t.label === name);
-      if (hit) setOpenKey(hit.key);
-    };
-    window.addEventListener(OPEN_TEAM_EVENT, on);
-    return () => window.removeEventListener(OPEN_TEAM_EVENT, on);
-  }, [teams]);
+  const openClub = useCallback(
+    (key: string) => {
+      const hit = teams.find((t) => t.key === key);
+      setOpenKey(key);
+      if (!hit) return;
+      const to = { tab: 'career', sub: 'teams' as const, p: hit.team?.name ?? hit.label };
+      if (buildHash(to) !== window.location.hash) pushed.current = true;
+      navigate(to);
+    },
+    [teams, navigate],
+  );
+  const closeClub = useCallback(() => {
+    setOpenKey(null);
+    if (!window.location.hash.includes('?p=')) return;
+    if (pushed.current) window.history.back();
+    else navigate({ tab: 'career', sub: 'teams' }, { replace: true });
+  }, [navigate]);
   const totals = useMemo(
     () => ({
       yourTitles: superBowls.filter((sb) => sb.yourResult === 'won').length,
@@ -193,18 +209,18 @@ const TeamRankingsTab = () => {
       {/* League overview: power ranking + dynasty timeline */}
       {IS_NFL && teams.length > 0 && (
         <div className="space-y-4">
-          {superBowls.length > 0 && <SuperBowlStrip superBowls={superBowls} openable={openable} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />}
-          <StrengthStrip teams={teams} records={records} superBowls={superBowls} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />
+          {superBowls.length > 0 && <SuperBowlStrip superBowls={superBowls} openable={openable} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />}
+          <StrengthStrip teams={teams} records={records} superBowls={superBowls} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />
         </div>
       )}
       {!IS_NFL && teams.length > 0 && (
         <div className="grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-7 min-w-0">
-            <PowerRanking teams={teams} records={records} lastSeason={lastSeason} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />
+            <PowerRanking teams={teams} records={records} lastSeason={lastSeason} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />
           </div>
           {superBowls.length > 0 && (
             <div className="lg:col-span-5 min-w-0">
-              <DynastyGrid superBowls={superBowls} openable={openable} onOpen={setOpenKey} highlight={highlight} onHighlight={setHighlight} />
+              <DynastyGrid superBowls={superBowls} openable={openable} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />
             </div>
           )}
         </div>
@@ -248,7 +264,7 @@ const TeamRankingsTab = () => {
                     <TeamCard
                       summary={summary}
                       record={records.get(summary.key)}
-                      onOpen={() => setOpenKey(summary.key)}
+                      onOpen={() => openClub(summary.key)}
                       onHighlight={setHighlight}
                       coached={coached.get(summary.team?.id ?? summary.label)}
                     />
@@ -308,7 +324,7 @@ const TeamRankingsTab = () => {
         coached={openSummary ? coached.get(openSummary.team?.id ?? openSummary.label) : undefined}
         league={league}
         ovrFor={ovrFor}
-        onClose={() => setOpenKey(null)}
+        onClose={closeClub}
       />
       <PlayerDetailCard player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />
     </div>

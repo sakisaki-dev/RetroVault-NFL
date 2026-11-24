@@ -1,24 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Medal, Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { useLeague } from '@/context/LeagueContext';
-import { useGameSprites } from '@/utils/gameSprites';
-import type { Player } from '@/types/player';
 import type { ScheduleSeason, TeamSeasonRow } from '@/utils/schedule';
-import GameSprite from '../GameSprite';
 import TeamLogo from '../timeline/TeamLogo';
-import { BOARD_BG, LampGrid, color, lampText, signed } from '../season/seasonGamesUi';
-import { displayName } from '@/utils/displayName';
-import { isInLeague } from '../InLeague';
-import { loadSeasonOvr } from '@/utils/useOfficialOvr';
-import type { SeasonOvrFile } from '@/config/ovr';
+import { BOARD_BG, color, lampText, signed } from '../season/seasonGamesUi';
 import './powerBoards.css';
 
 /**
  * Stats → Teams boards (owner-approved NFL immersion pass): the season's power ladder, the Season page's ladder rows with a
- * progression sparkline per club (replaces the tangled all-clubs line chart), and the risers and fallers as an LED stock
- * board with each club's star player as a bust. Rules over schedule.json and the league sheet only.
+ * progression sparkline per club (replaces the tangled all-clubs line chart), Rules over schedule.json and the league sheet only.
  */
 
 const seasonNum = (s: string) => Number(s.replace(/\D/g, '')) || 0;
@@ -107,131 +98,6 @@ export const ClubLadder = ({
           );
         })}
       </ol>
-    </div>
-  );
-};
-
-/** Each club's star this season, keyed by club id: active players on the club now, best by this season's rating
- * (SZN), then Career Legacy. Never a retiree whose last club it was (Terrell Owens is not the 2026 Bengals' star). */
-const useStars = () => {
-  const { getAllPlayers, dataVersion, careerData } = useLeague();
-  const [szn, setSzn] = useState<SeasonOvrFile | null>(null);
-  useEffect(() => {
-    let live = true;
-    loadSeasonOvr().then((d) => live && setSzn(d));
-    return () => {
-      live = false;
-    };
-  }, []);
-  return useMemo(() => {
-    const best = new Map<string, { p: Player; s: number; l: number }>();
-    getAllPlayers().forEach((p) => {
-      if (p.isRealLegend || !isInLeague(p)) return;
-      const id = findNFLTeam(p.team)?.id;
-      if (!id) return;
-      const s = szn?.ovr[`${p.position}:${p.name}`] ?? -1;
-      const l = p.careerLegacy || 0;
-      const cur = best.get(id);
-      if (!cur || s > cur.s || (s === cur.s && l > cur.l)) best.set(id, { p, s, l });
-    });
-    return new Map([...best].map(([k, v]) => [k, v.p]));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [careerData, getAllPlayers, dataVersion, szn]);
-};
-
-type Move = { team: string; row: TeamSeasonRow & { change: NonNullable<TeamSeasonRow['change']> } };
-
-export const StockBoard = ({
-  progression,
-  season,
-  clubs,
-  onTrack,
-}: {
-  progression: Record<string, TeamSeasonRow[]>;
-  season: string;
-  clubs: number;
-  onTrack: (t: string) => void;
-}) => {
-  const stars = useStars();
-  const sprites = useGameSprites();
-  const moved = useMemo(
-    () =>
-      Object.entries(progression)
-        .map(([team, rows]) => ({ team, row: rows.find((r) => r.season === season) }))
-        .filter((m): m is Move => !!m.row?.change),
-    [progression, season],
-  );
-  if (!moved.length) return <p className="glass-card p-4 text-sm text-muted-foreground">{season} is the first season with weekly scores, so there is nothing to compare it with.</p>;
-  const byChange = [...moved].sort((a, b) => b.row.change.power - a.row.change.power || a.row.power - b.row.power || a.team.localeCompare(b.team));
-  const risers = byChange.filter((m) => m.row.change.power > 0).slice(0, 5);
-  const fallers = [...byChange].reverse().filter((m) => m.row.change.power < 0).slice(0, 5);
-  const tape = [...risers, ...fallers];
-
-  const Side = ({ title, items, up }: { title: string; items: Move[]; up: boolean }) => (
-    <div className="pb-side relative min-w-0 overflow-hidden rounded-xl border border-[hsl(var(--line)/0.7)] p-2.5 sm:p-3" style={{ background: BOARD_BG }}>
-      <LampGrid />
-      <h4 className={cn('relative mb-2 flex items-center gap-2 font-pixel text-[10px] uppercase tracking-widest', up ? 'text-[hsl(145_63%_55%)]' : 'text-[hsl(357_80%_70%)]')}>
-        {up ? <TrendingUp className="h-3.5 w-3.5" aria-hidden /> : <TrendingDown className="h-3.5 w-3.5" aria-hidden />} {title}
-      </h4>
-      {items.length === 0 ? (
-        <p className="relative text-sm text-muted-foreground">None this season.</p>
-      ) : (
-        <ol className="relative space-y-1.5">
-          {items.map((m) => {
-            const star = stars.get(findNFLTeam(m.team)?.id ?? '');
-            const tone = `hsl(${findNFLTeam(m.team)?.primaryColor ?? '220 10% 55%'})`;
-            const d = Math.abs(m.row.change.power);
-            return (
-              <li key={m.team}>
-                <button type="button" onClick={() => onTrack(m.team)} title={`Show ${m.team} progression`} className="pb-stock flex w-full items-center gap-2 rounded-lg px-1.5 py-1 text-left" style={{ ['--tone' as string]: tone }}>
-                  <span className="pb-stock__bust" aria-hidden>
-                    {star && sprites && !star.isRealLegend ? <GameSprite player={star} kind="bust" size="s" /> : <TeamLogo team={m.team} decorative className="h-7 w-7" />}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-1.5 font-display text-sm font-bold uppercase leading-tight">
-                      <TeamLogo team={m.team} decorative className="h-4 w-4 flex-shrink-0" />
-                      <span className="truncate">{nick(m.team)}</span>
-                    </span>
-                    <span className="block truncate text-[11px] text-muted-foreground">
-                      {star ? displayName(star.name) : m.row.record} · #{m.row.power + m.row.change.power} to #{m.row.power}
-                    </span>
-                  </span>
-                  <span className="hidden min-[420px]:block">
-                    <Spark rows={progression[m.team] ?? []} clubs={clubs} tone={tone} />
-                  </span>
-                  <span className={cn('pb-led font-display text-xl font-bold tabular-nums', up ? 'pb-led--up' : 'pb-led--down')}>
-                    {up ? '▲' : '▼'}
-                    {d}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      )}
-    </div>
-  );
-
-  return (
-    <div className="space-y-2">
-      <div className="pb-tape" aria-hidden>
-        <div className="pb-tape__run">
-          {[0, 1].map((k) => (
-            <span key={k} className="pb-tape__set">
-              {tape.map((m) => (
-                <span key={`${k}-${m.team}`} className={m.row.change.power > 0 ? 'pb-t-up' : 'pb-t-down'}>
-                  {findNFLTeam(m.team)?.abbreviation ?? m.team} {m.row.change.power > 0 ? '▲' : '▼'}
-                  {Math.abs(m.row.change.power)}
-                </span>
-              ))}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div className="grid gap-3 md:grid-cols-2">
-        <Side title={`Risers, ${season}`} items={risers} up />
-        <Side title={`Fallers, ${season}`} items={fallers} up={false} />
-      </div>
     </div>
   );
 };

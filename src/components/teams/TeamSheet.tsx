@@ -144,7 +144,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
     <>
       <Sheet open={!!summary} onOpenChange={(open) => !open && onClose()}>
         {/* data-peek-ok: press and hold a player here for the quick look (components/peek) */}
-        <SheetContent side="right" data-peek-ok className="w-full sm:max-w-3xl p-0 overflow-y-auto overflow-x-hidden border-l border-line">
+        <SheetContent side="right" data-peek-ok data-route-owned className="w-full sm:max-w-3xl p-0 overflow-y-auto overflow-x-hidden border-l border-line">
           {summary && (
             <>
               {/* Hero */}

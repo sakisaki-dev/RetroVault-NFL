@@ -89,7 +89,7 @@ export const useModalChrome = <T extends HTMLElement>(
    * close starts (X, tap outside, Escape, swipe), not when the exit animation ends, and taken again if it reopens.
    */
   React.useEffect(() => {
-    if (!node) return;
+    if (!node || node.hasAttribute("data-route-owned")) return; // a sheet that is its own route entry (Teams: #stats/teams?p=)
     let release: (() => void) | null = null;
     const sync = () => {
       const open = node.getAttribute("data-state") !== "closed";
