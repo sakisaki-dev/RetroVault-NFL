@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import type { GamePlayer } from '@/config/ovr';
 import { bodyFor } from '@/config/bodyTypes';
-import { SPRITE_BASELINE, nflSpriteFor, useGameSprites, type SpriteAction } from '@/utils/gameSprites';
+import { SPRITE_BASELINE, nflSpriteFor, realNumberOf, useGameSprites, type SpriteAction } from '@/utils/gameSprites';
 import type { Uniform } from '../art/sprite/uniforms';
 import { displayName } from '@/utils/displayName';
 
@@ -26,6 +26,9 @@ interface Job {
   cols: number;
   cx: number;
   foot: number;
+  silhouette?: string;
+  number?: number;
+  numberClub?: string;
 }
 
 const cache = new Map<string, Promise<string | null>>();
@@ -35,7 +38,7 @@ const run = (job: Job): Promise<string | null> => {
     p = (async () => {
       const painted = job.uniform ? await import('@/utils/toppsPortrait').then((m) => m.paintUniform(job.src, job.uniform!)) : job.src;
       const m = await import('@/utils/gameKitPaint');
-      return m.processSprite(painted, { paint: job.paint, rows: job.rows, cols: job.cols, cx: job.cx, foot: job.foot });
+      return m.processSprite(painted, { paint: job.paint, rows: job.rows, cols: job.cols, cx: job.cx, foot: job.foot, silhouette: job.silhouette, number: job.number, numberClub: job.numberClub });
     })().catch(() => null);
     cache.set(job.key, p);
     if (cache.size > 60) cache.delete(cache.keys().next().value!);
@@ -59,7 +62,7 @@ export const useKitFigure = (player: GamePlayer, uniform: Uniform | null, action
     const body = bodyFor(key, looks?.[player.name]);
     const paintKit = !home && pick.kit === 'neutral';
     return {
-      key: `${pick.src}|${home ? pick.paint ?? '' : uniform.id + JSON.stringify(uniform.jersey + uniform.pants + uniform.trim)}|${body.rows},${body.cols}`,
+      key: `${pick.src}|${home ? pick.paint ?? '' : uniform.id + JSON.stringify(uniform.jersey + uniform.pants + uniform.trim)}|${body.rows},${body.cols}|${pick.silhouette ?? ''}`,
       src: pick.src,
       uniform: paintKit ? uniform : undefined,
       paint: home ? pick.paint : undefined,
@@ -67,6 +70,9 @@ export const useKitFigure = (player: GamePlayer, uniform: Uniform | null, action
       cols: body.cols,
       cx: pick.cx,
       foot: pick.foot,
+      silhouette: pick.silhouette,
+      number: home && pick.numberClub ? realNumberOf(key) : undefined,
+      numberClub: home ? pick.numberClub : undefined,
     };
   }, [sprites, player.position, player.name, player.team, player.spriteSkin, player.isRealLegend, uniform, action]);
   const [out, setOut] = useState<{ key: string; url: string | null } | null>(null);

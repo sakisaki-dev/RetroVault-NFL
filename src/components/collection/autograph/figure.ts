@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { AutographSnapshot } from '@/config/autographs';
 import { bodyFor } from '@/config/bodyTypes';
-import { faceFor, nflSpriteFor, useGameSprites, type GameSprites } from '@/utils/gameSprites';
+import { faceFor, nflSpriteFor, realNumberOf, useGameSprites, type GameSprites } from '@/utils/gameSprites';
 
 /**
  * The player sprite an autograph is drawn around (owner approved, 2026-11-13: on-card full figure on the horizon,
@@ -60,12 +60,12 @@ const resolveFigure = (sprites: GameSprites, snap: Pick<AutographSnapshot, 'name
   const pick = nflSpriteFor(sprites.nfl, key, snap.team, snap.team, 'idle', false, tone, 1);
   if (pick) {
     const body = bodyFor(key, looks?.[snap.name]);
-    const id = `nfl|${pick.src}|${pick.paint ?? ''}|${body.rows},${body.cols}`;
+    const id = `nfl|${pick.src}|${pick.paint ?? ''}|${body.rows},${body.cols}|${pick.silhouette ?? ''}`;
     return {
       key: id,
       run: () =>
         import('@/utils/gameKitPaint')
-          .then((m) => m.processSprite(pick.src, { paint: pick.paint, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot }))
+          .then((m) => m.processSprite(pick.src, { paint: pick.paint, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot, silhouette: pick.silhouette, number: pick.numberClub ? realNumberOf(key) : undefined, numberClub: pick.numberClub }))
           .then(loadImage)
           .then((img) => ({
             id,

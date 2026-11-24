@@ -139,6 +139,8 @@ export interface PortraitJob {
   cols: number;
   cx: number;
   foot: number;
+  /** NFL edition: no real sprite, so a silhouette: the game face template whose head outline replaces the donor's (gameSprites.ts silhouetteFallback) */
+  silhouette?: string;
 }
 
 const cache = new Map<string, Promise<string | null>>();
@@ -146,12 +148,12 @@ const CACHE_MAX = 300;
 
 /** The printed portrait's source image (a data URL of the cropped, upscaled bust), cached per sprite × kit × body. */
 export const toppsPortrait = (job: PortraitJob): Promise<string | null> => {
-  const key = `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}`;
+  const key = `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}|${job.silhouette ?? ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const run = (async () => {
     const painted = job.uniform ? await paintUniform(job.src, job.uniform) : job.src;
-    const shaped = await processSprite(painted, { rows: job.rows, cols: job.cols, cx: job.cx, foot: job.foot });
+    const shaped = await processSprite(painted, { rows: job.rows, cols: job.cols, cx: job.cx, foot: job.foot, silhouette: job.silhouette });
     return cropBust(shaped, job.cx, job.foot);
   })();
   if (cache.size >= CACHE_MAX) cache.delete(cache.keys().next().value!);

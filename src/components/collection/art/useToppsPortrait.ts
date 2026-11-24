@@ -35,10 +35,10 @@ export const useToppsPortrait = (player: GamePlayer, uniform: Uniform): Portrait
     if (!pick) return null;
     const body = bodyFor(key, looks?.[player.name]);
     const paint = pick.paint || pick.kit === 'neutral';
-    return { src: pick.src, uniform: paint ? uniform : undefined, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot };
+    return { src: pick.src, uniform: paint ? uniform : undefined, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot, silhouette: pick.silhouette };
   }, [sprites, key, player.name, player.team, player.spriteSkin, player.isRealLegend, uniform]);
 
-  const jobKey = job ? `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}` : '';
+  const jobKey = job ? `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}|${job.silhouette ?? ''}` : '';
   const [out, setOut] = useState<{ key: string; url: string | null } | null>(null);
   useEffect(() => {
     if (!job) return;
