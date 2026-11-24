@@ -33,6 +33,8 @@ import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
 import { StadiumHeader, LedBoard, PixelChip, PixelPanel, SectionHeader } from '../arcade';
 import { useSchedule } from '@/utils/schedule';
+import BannerRing from '../teams/banner/BannerRing';
+import { useBannerData } from '../teams/banner/useBannerData';
 import FranchiseWall from '../teams/nfl/FranchiseWall';
 import AllTimePower from '../teams/nfl/AllTimePower';
 import Dynasties from '../teams/nfl/Dynasties';
@@ -181,6 +183,7 @@ const TeamRankingsTab = () => {
   );
 
   const schedule = useSchedule();
+  const bannerData = useBannerData();
   // the stage: the all-time power No. 1 and its three greatest players
   const stage = useMemo(() => {
     const top = [...teams].filter((t) => t.team).sort((x, y) => (records.get(x.key)?.powerRank ?? 99) - (records.get(y.key)?.powerRank ?? 99))[0];
@@ -205,6 +208,9 @@ const TeamRankingsTab = () => {
   return (
     <div className="container py-6 sm:py-8 space-y-6">
       {/* Page header: the power ladder leader's stadium and stars, the franchise counts as scoreboards */}
+      {IS_NFL && bannerData ? (
+        <BannerRing data={bannerData} onOpenClub={openClub} onOpenPlayer={(p) => navigate({ tab: 'career', sub: 'deepdive', p: `${p.position}:${p.name}` })} />
+      ) : (
       <StadiumHeader
         club={stage.club}
         players={stage.players}
@@ -226,6 +232,7 @@ const TeamRankingsTab = () => {
           Every franchise {firstSeason && lastSeason ? `from ${seasonLabel(firstSeason)} to ${seasonLabel(lastSeason)}` : 'in the league'}: who won, who built dynasties, and who is on the roster now.
         </p>
       </StadiumHeader>
+      )}
       {IS_NFL && (
         <p className="-mt-3 text-sm text-muted-foreground">
           Every franchise, all time since {firstSeason ? seasonLabel(firstSeason) : '1999'}: records, titles, playoff trips, greatest players and club sheets.{' '}

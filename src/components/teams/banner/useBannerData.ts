@@ -4,7 +4,7 @@ import type { Player } from '@/types/player';
 import type { NFLTeam } from '@/utils/nflTeams';
 import { useLeagueContent } from '@/utils/leagueContent';
 import { useOfficialOvr } from '@/utils/useOfficialOvr';
-import { usePlayerExtras } from '@/utils/playerExtras';
+import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
 import { isHallOfFamer } from '@/config/stats';
 import { overallRating } from '@/components/brand/ProPlayerBanner.utils';
 import { buildFranchiseRecords, buildTeamSummaries, type FranchiseRecord, type TeamSummary } from '../teamStats';
@@ -57,6 +57,32 @@ export const useBannerData = (): BannerData | null => {
         return { s, rec, team: s.team!, rank: rec.powerRank, titles: rec.titles, top: s.franchisePlayers.slice(0, 5), star: s.franchisePlayers[0] ?? null };
       })
       .sort((a, b) => a.rank - b.rank);
+    // One face per player: a club's greatest is skipped when he is better known for another club that has him on its roster
+    const used = new Set<string>();
+    const keyOf = (p: Player) => `${p.position}:${p.name}`;
+    const lastYear = Math.max(0, ...Object.values(extras.stints).flatMap((v) => v.stints.map((x) => x.to)));
+    /** The club he is best known for: the card's signature club, else (retired) where he spent the most seasons, rings breaking ties, else his banner club */
+    const homeOf = (p: Player): string => {
+      const sig = extras.signatureTeams[p.name];
+      if (sig) return sig;
+      const st = extras.stints[p.name]?.stints ?? [];
+      if (!st.length || Math.max(...st.map((x) => x.to)) >= lastYear) return bannerTeamOf(p);
+      return [...st].sort((a, b) => b.to - b.from + b.rings.length * 0.5 - (a.to - a.from + a.rings.length * 0.5))[0].team;
+    };
+    clubs.forEach((c) => {
+      const ok = (p: Player) => {
+        if (used.has(keyOf(p))) return false;
+        const home = homeOf(p);
+        const isClub = (x: BannerClub) => home === x.team.name || home.endsWith(` ${x.team.name}`);
+        if (!home || isClub(c)) return true;
+        const homeClub = clubs.find(isClub);
+        return !homeClub || !homeClub.s.franchisePlayers.includes(p);
+      };
+      const pick = c.s.franchisePlayers.filter(ok).slice(0, 5);
+      c.top = pick;
+      c.star = pick[0] ?? null;
+      if (c.star) used.add(keyOf(c.star));
+    });
     const champions = clubs.filter((c) => c.titles > 0).sort((a, b) => b.titles - a.titles || a.rank - b.rank);
     const since = superBowls.length ? Math.min(...superBowls.map((sb) => sb.year)) : 1999;
     return {
@@ -64,5 +90,5 @@ export const useBannerData = (): BannerData | null => {
       champions,
       totals: { franchises: clubs.length, superBowls: superBowls.length, champions: new Set(superBowls.map((sb) => sb.winner).filter(Boolean)).size, hof: league.filter(isHallOfFamer).length, since },
     };
-  }, [teams, records, superBowls, league]);
+  }, [teams, records, superBowls, league, extras]);
 };

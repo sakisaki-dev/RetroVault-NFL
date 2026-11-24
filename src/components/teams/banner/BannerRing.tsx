@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from 'react';
 import TeamLogo from '@/components/brand/TeamLogo';
+import type { Player } from '@/types/player';
 import { displayName } from '@/utils/displayName';
 import type { BannerClub, BannerData } from './useBannerData';
 import { Beams, Counts, Figure, plateOf, stars, useStadiumVars, Wordmark } from './parts';
@@ -16,7 +17,7 @@ const drop = (u: number) => {
   return Math.round(RING_B * (1 - Math.sqrt(Math.max(0, 1 - t * t))));
 };
 
-const BannerRing = ({ data }: { data: BannerData }) => {
+const BannerRing = ({ data, onOpenClub, onOpenPlayer }: { data: BannerData; onOpenClub?: (key: string) => void; onOpenPlayer?: (p: Player) => void }) => {
   const lead = data.clubs[0];
   const vars = useStadiumVars(lead.team.name, 'night');
   const front = useMemo(() => {
@@ -24,24 +25,28 @@ const BannerRing = ({ data }: { data: BannerData }) => {
     return [d, b, a, c, e].filter(Boolean) as BannerClub[];
   }, [data.clubs]);
   return (
-    <div className="bn bn3" style={vars} role="img" aria-label={`Teams: ${data.totals.franchises} franchises ranked by all-time power`}>
+    <div className="bn bn3" style={vars} role="group" aria-label={`Teams: ${data.totals.franchises} franchises ranked by all-time power`}>
       <span className="bn3-stands" />
       <span className="bn3-crowd" />
       <span className="bn3-turf" />
       <Beams />
       <span className="bn3-rim" aria-hidden="true" />
-      <ol className="bn3-ring" aria-hidden="true">
+      <ol className="bn3-ring">
         {data.clubs.map((c, i) => {
           const p = plateOf(c);
           return (
-            <li
-              key={c.s.key}
+            <li key={c.s.key} className="bn3-li" style={{ ['--dy32' as string]: `${drop(i / 31)}px`, ['--dy16' as string]: `${drop((i % 16) / 15)}px` } as CSSProperties}>
+            <button
+              type="button"
+              onClick={() => onOpenClub?.(c.s.key)}
+              aria-label={`${c.team.city} ${c.team.name}, all-time power rank ${c.rank}${c.titles ? `, ${c.titles} Super Bowl titles` : ''}. Open club page`}
               className={i === 0 ? 'bn3-plaque is-first' : 'bn3-plaque'}
-              style={{ ['--c1' as string]: p.fill, ['--c2' as string]: p.edge, ['--dy32' as string]: `${drop(i / 31)}px`, ['--dy16' as string]: `${drop((i % 16) / 15)}px` } as CSSProperties}
+              style={{ ['--c1' as string]: p.fill, ['--c2' as string]: p.edge } as CSSProperties}
               title={`#${c.rank} ${c.team.city} ${c.team.name}`}
             >
               <TeamLogo team={c.team} size={26} decorative />
               <b>{stars(c.titles) || ' '}</b>
+            </button>
             </li>
           );
         })}
@@ -54,14 +59,14 @@ const BannerRing = ({ data }: { data: BannerData }) => {
         {front.map((c) => {
           const first = c === lead;
           return (
-            <span key={c.s.key} className={first ? 'bn3-fig is-first' : 'bn3-fig'}>
+            <button key={c.s.key} type="button" disabled={!c.star} onClick={() => c.star && onOpenPlayer?.(c.star)} aria-label={c.star ? `${displayName(c.star.name)}, ${c.team.name}. Open Deep Dive` : c.team.name} className={first ? 'bn3-fig is-first' : 'bn3-fig'}>
               <Figure club={c} action={first ? 'celebrate' : 'idle'} size="m" />
               <span className="bn3-name">
                 <i>#{c.rank}</i>
                 <TeamLogo team={c.team} size={14} decorative />
                 <b>{c.star ? displayName(c.star.name) : c.team.name}</b>
               </span>
-            </span>
+            </button>
           );
         })}
       </div>
