@@ -32,7 +32,7 @@
 .gm-hero__name { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.9rem; line-height: 0.95; text-transform: uppercase; font-style: italic; }
 .gm-hero__sub { margin-top: 0.2rem; font-size: 11px; color: hsl(var(--muted-foreground)); }
 .gm-hero__qb { width: 64px; display: flex; justify-content: center; position: absolute; bottom: -10px; opacity: 0.95; pointer-events: none; z-index: 0; right: 0; }
-.gm-hero__club--home .gm-hero__qb { right: auto; left: 0; transform: scaleX(-1); }
+.gm-hero__club--home .gm-hero__qb { right: auto; left: 0; }
 .gm-hero__club { padding-right: 64px; } .gm-hero__club--home { padding-right: 0; padding-left: 64px; }
 @media (max-width: 1100px) { .gm-hero__qb { display: none; } .gm-hero__club, .gm-hero__club--home { padding: 0; } }
 .gm-hero__club > div:not(.gm-hero__qb) { position: relative; z-index: 1; }

@@ -93,6 +93,7 @@ class Painter:
         self.socks = ix["sockTemplate"]
         self.font = {tuple(k.split("|")): v for k, v in ix["numberFont"].items()}
         self.pal = pal or palettes()
+        J.set_kit(ix)
 
     def _target(self, era: dict) -> dict:
         t = {}
@@ -110,7 +111,7 @@ class Painter:
         if not src:
             return a
         tgt = self._target(era)
-        jersey, nc = J.chest(a)
+        jersey, nc = J.chest(a, src_club)
         band = J.band_of(a) or {}
         numcells = J.mask_of(a, nc) if nc is not None else np.zeros((64, 64), bool)
         # the number goes first: its cells become plain cloth, drawn again after the repaint

@@ -44,11 +44,11 @@ export const NameStrip = ({ p, g, link, children, className }: { p: GamePlayer; 
   );
 };
 
-export const SpriteOf = ({ p, g, size = 's', celebrate, kind = 'figure' }: { p: GamePlayer; g: GameDetail; size?: 's' | 'm' | 'l'; celebrate?: boolean; kind?: 'figure' | 'bust' }) => {
+export const SpriteOf = ({ p, g, size = 's', celebrate, kind = 'figure', flip }: { p: GamePlayer; g: GameDetail; size?: 's' | 'm' | 'l'; celebrate?: boolean; kind?: 'figure' | 'bust'; flip?: boolean }) => {
   const abbr = clubOf(g, p.side);
   const sprites = useGameSprites();
   if (!sprites) return <TeamLogo team={abbr} decorative className={size === 's' ? 'h-9 w-9' : 'h-14 w-14'} />;
-  return <GameSprite player={{ name: p.name, position: sitePos(p.pos), team: abbr, bannerTeam: abbr }} team={abbr} season={g.season} kind={kind} size={size} action={celebrate ? 'celebrate' : undefined} />;
+  return <GameSprite player={{ name: p.name, position: sitePos(p.pos), team: abbr, bannerTeam: abbr }} team={abbr} season={g.season} kind={kind} size={size} flip={flip} action={celebrate ? 'celebrate' : undefined} />;
 };
 
 const Card = ({ title, kicker, children, className }: { title: string; kicker?: string; children: ReactNode; className?: string }) => (
@@ -108,7 +108,7 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
   if (!qa || !qh) return null;
   const head = (p: GamePlayer, side: Side) => (
     <div className={cn('gm-qb__who', side === 1 ? 'is-home mo-run-r' : 'mo-run-l')} style={{ ...sideStyle(toneOf(clubOf(g, side))), ...clubVars(clubOf(g, side)) }}>
-      <span className="gm-qb__spr"><SpriteOf p={p} g={g} size="m" /></span>
+      <span className="gm-qb__spr"><SpriteOf p={p} g={g} size="m" flip={side === 1} /></span>
       <span className="gm-qb__id">
         <small>{abbrOf(clubOf(g, side))} · {side === 0 ? 'Away' : 'Home'}</small>
         <NameStrip p={p} g={g} link={link} className="gm-qb__name" />

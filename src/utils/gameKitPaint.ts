@@ -195,7 +195,7 @@ const repaintPixels = (px: Uint8ClampedArray, w: number, h: number, from: string
  * band's accent colour.
  */
 const NUM_SLOT_X: Record<string, number> = { one: 29, left: 26, right: 31 };
-const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, club: string) => {
+const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, club: string, fileClub?: string): number | undefined => {
   const t = numberTables();
   if (!t || h < 40 || w < 38) return;
   const at = (x: number, y: number) => (y * w + x) * 4;
@@ -214,7 +214,11 @@ const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, 
   for (let y = 36; y < 40; y++) for (const x of [25, 26, 37, 38]) if (solid(x, y)) edges.add(key(x, y));
   const inner: number[] = [];
   for (let y = 36; y < 40; y++) for (let x = 27; x < 37; x++) if (solid(x, y) && !edges.has(key(x, y)) && key(x, y) !== jersey) inner.push(key(x, y));
-  const fileNc = vote(inner)[0];
+  // a ball or an arm across the chest (poses 3-5) can out-vote a thin number, so the number colour the kit file was drawn in
+  // is the club's own (numberKit) when it is on the chest; the vote is the fallback (a painted neutral, an unknown club)
+  const kitFile = fileClub ? t.kit[fileClub]?.nc : undefined;
+  const kitKey = kitFile ? (kitFile[0] << 16) | (kitFile[1] << 8) | kitFile[2] : undefined;
+  const fileNc = kitKey !== undefined && kitKey !== jersey && chest.some((k) => k === kitKey) ? kitKey : vote(inner)[0];
   const bg: Record<number, number> = {};
   const accOf: Record<number, number | undefined> = {};
   for (const y of [34, 35]) {
@@ -257,7 +261,7 @@ const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, 
   const s = String(number);
   s.split('').forEach((d, i) => {
     const slot = s.length === 1 ? 'one' : i === 0 ? 'left' : 'right';
-    const g = t.font[`${d}|${slot}`] ?? t.font[`${d}|${slot === 'left' ? 'right' : 'left'}`] ?? t.font[`${d}|one`];
+    const g = t.font[`${d}|${slot}`] ?? t.font[`${d}|${slot === 'left' ? 'right' : 'left'}`] ?? t.font[`${d}|one`] ?? t.font[`${d}|right`] ?? t.font[`${d}|left`];
     if (!g) return;
     for (let gy = 0; gy < 7; gy++) {
       for (let gx = 0; gx < 6; gx++) {
@@ -271,6 +275,7 @@ const numberize = (px: Uint8ClampedArray, w: number, h: number, number: number, 
       }
     }
   });
+  return (nc2[0] << 16) | (nc2[1] << 8) | nc2[2];
 };
 
 /**
@@ -396,6 +401,60 @@ const silhouetteize = (px: Uint8ClampedArray, w: number, h: number, head: Uint8C
     }
 };
 
+/**
+ * MIRROR a sprite left to right (a home-side figure that faces the other way) WITHOUT reversing his number: the whole image
+ * is flipped about the centre line (x -> w - 1 - x), then the chest's number window (rows 33-39, columns 26-37: it maps onto
+ * itself, so it is the same cells) is put back the way the file drew it, so the digits still read left to right. The number
+ * ink is the chest's number colour (the club's kit colour when the file's kit is known, else the vote) and, in the band rows
+ * 34-35, its accent; a ball or an arm in front of the chest in the flipped image keeps its place.
+ */
+const mirrorKeepNumber = (px: Uint8ClampedArray, w: number, h: number, inkHint?: number) => {
+  const src = px.slice();
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const a = (y * w + x) * 4;
+    const b = (y * w + (w - 1 - x)) * 4;
+    px[a] = src[b]; px[a + 1] = src[b + 1]; px[a + 2] = src[b + 2]; px[a + 3] = src[b + 3];
+  }
+  if (h < 40 || w < 38 || w !== 64) return;
+  const key = (d: Uint8ClampedArray, x: number, y: number) => (d[(y * w + x) * 4] << 16) | (d[(y * w + x) * 4 + 1] << 8) | d[(y * w + x) * 4 + 2];
+  const solid = (d: Uint8ClampedArray, x: number, y: number) => d[(y * w + x) * 4 + 3] === 255;
+  const vote = (d: Uint8ClampedArray, cells: [number, number][]) => {
+    const c = new Map<number, number>();
+    cells.forEach(([x, y]) => solid(d, x, y) && c.set(key(d, x, y), (c.get(key(d, x, y)) ?? 0) + 1));
+    return [...c.entries()].sort((p, q) => q[1] - p[1]).map(([k]) => k);
+  };
+  const cells = (ys: number[], x0: number, x1: number) => ys.flatMap((y) => Array.from({ length: x1 - x0 }, (_, i) => [x0 + i, y] as [number, number]));
+  const jersey = vote(src, cells([36, 37, 38, 39], 26, 38))[0];
+  if (jersey === undefined) return;
+  const kk = inkHint;
+  const edges = new Set<number>();
+  for (let y = 36; y < 40; y++) for (const x of [25, 26, 37, 38]) if (solid(src, x, y)) edges.add(key(src, x, y));
+  const inner = vote(src, cells([36, 37, 38, 39], 27, 37)).filter((k) => !edges.has(k) && k !== jersey);
+  const nc = kk !== undefined && kk !== jersey && inner.includes(kk) ? kk : inner[0];
+  const bg: Record<number, number> = {};
+  const acc: Record<number, number | undefined> = {};
+  for (const y of [34, 35]) {
+    const v = vote(src, cells([y], 27, 37));
+    bg[y] = v[0];
+    acc[y] = v.find((k) => k !== v[0]);
+  }
+  const inkOf = (d: Uint8ClampedArray, x: number, y: number) => {
+    if (!solid(d, x, y)) return false;
+    const k = key(d, x, y);
+    return y === 34 || y === 35 ? acc[y] !== undefined && k === acc[y] : nc !== undefined && k === nc;
+  };
+  const put = (x: number, y: number, k: number) => {
+    const a = (y * w + x) * 4;
+    px[a] = (k >> 16) & 255; px[a + 1] = (k >> 8) & 255; px[a + 2] = k & 255;
+  };
+  for (let y = 33; y < 40; y++) for (let x = 26; x < 38; x++) if (inkOf(px, x, y)) put(x, y, y === 34 || y === 35 ? bg[y] : jersey);
+  for (let y = 33; y < 40; y++) for (let x = 26; x < 38; x++) {
+    if (!inkOf(src, x, y)) continue;
+    const a = (y * w + x) * 4;
+    px[a] = src[a]; px[a + 1] = src[a + 1]; px[a + 2] = src[a + 2]; px[a + 3] = src[a + 3];
+  }
+};
+
 export interface SpriteJob {
   /** NFL edition: draw the figure as a silhouette with this game face template's head outline (a file URL; silhouetteize) */
   silhouette?: string;
@@ -409,6 +468,10 @@ export interface SpriteJob {
   /** Rows added (+) / removed (-) and columns a side (bodyTypes.ts BodyRoll) */
   rows?: number;
   cols?: number;
+  /** The club kit the file is drawn in (its number colour reads the number when a mirror puts it back) */
+  kit?: string;
+  /** Mirror the figure left to right (a home side facing the other way); his number still reads the right way round */
+  flip?: boolean;
   /** The figure's centre line and feet row (index anchors) */
   cx?: number;
   foot?: number;
@@ -426,8 +489,8 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
   const rows = job.rows ?? 0;
   const cols = job.cols ?? 0;
   const num = job.number !== undefined && job.numberClub ? job.number : undefined;
-  if (!job.paint && !job.polo && !rows && !cols && num === undefined && !job.silhouette) return Promise.resolve(src);
-  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}|${num ?? ''}|${job.silhouette ?? ''}`;
+  if (!job.paint && !job.polo && !rows && !cols && num === undefined && !job.silhouette && !job.flip) return Promise.resolve(src);
+  const key = `${src}|${job.paint ?? ''}|${job.polo?.color ?? ''}|${rows},${cols}|${num ?? ''}|${job.silhouette ?? ''}|${job.flip ? `f${job.kit ?? ''}` : ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const job2 = Promise.all([loadImage(src), job.silhouette ? loadImage(job.silhouette) : null]).then(([img, headImg]) => {
@@ -444,7 +507,8 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
       if (from) repaintPixels(data.data, w, h, from, to, Number(/_p(\d)\.png/.exec(src)?.[1] ?? 1));
       else paintPixels(data.data, w, h, to);
     }
-    if (num !== undefined) numberize(data.data, w, h, num, job.numberClub!);
+    let inkHint: number | undefined;
+    if (num !== undefined) inkHint = numberize(data.data, w, h, num, job.numberClub!, job.paint?.split('<')[1]);
     if (job.silhouette && headImg) {
       const hc = document.createElement('canvas');
       hc.width = 64;
@@ -459,8 +523,12 @@ export const processSprite = (src: string, job: SpriteJob = {}): Promise<string>
       }
     }
     if (job.polo) paintPolo(data.data, w, h, job.polo.color, job.polo.mask);
+    if (job.flip) {
+      const kc = inkHint === undefined && job.kit ? numberTables()?.kit[job.kit]?.nc : undefined;
+      mirrorKeepNumber(data.data, w, h, inkHint ?? (kc ? (kc[0] << 16) | (kc[1] << 8) | kc[2] : undefined));
+    }
     if (rows || cols) {
-      const shaped = reshape(new Uint32Array(data.data.buffer), w, h, job.cx ?? 31.5, job.foot ?? 58, rows, cols);
+      const shaped = reshape(new Uint32Array(data.data.buffer), w, h, job.flip ? w - 1 - (job.cx ?? 31.5) : job.cx ?? 31.5, job.foot ?? 58, rows, cols);
       data.data.set(new Uint8ClampedArray(shaped.buffer));
     }
     ctx.putImageData(data, 0, 0);
