@@ -363,6 +363,56 @@ export const foldAdvanced = (overall: Overall | null, advancedPcts: number[]): O
   return { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
 };
 
+/**
+ * THE career skill rating, computed once and read by the Players table, search, cards and the Deep Dive's Career scope
+ * (so the two can never disagree). Per position: each player's classic overall is folded with his advanced factors
+ * (`foldAdvanced`) where he has any, then re-ranked in the qualified pool (the fold of two percentiles squeezes toward
+ * the middle, so without it S would be rare).
+ *
+ * Fairness: grade on the stats that exist, never impute. A player with no advanced data (pre-2016 careers such as
+ * Newsome's) is scored on his classic traits only, so he is re-ranked against the qualified players with the SAME data
+ * coverage: folded scores against folded scores, classic-only against classic-only. Each group keeps its own
+ * top 10% S. A group under 12 qualified players keeps its un-reranked percentile. A player outside the pool (small
+ * sample) is slotted into his group's scale the same way.
+ *
+ * `advPctsOf(key)` gives his graded advanced percentiles for the career scope; `advReady(pos)` says whether that
+ * position's advanced data has loaded (not yet: classic overalls stand, so nothing is mis-grouped while it loads).
+ */
+export const careerSkillOveralls = (players: Player[], advPctsOf: (key: string) => number[], advReady: (pos: Position) => boolean): Map<string, Overall> => {
+  const out = new Map<string, Overall>();
+  const byPos = new Map<Position, Player[]>();
+  players.forEach((p) => {
+    if (p.isRealLegend) return;
+    const a = byPos.get(p.position);
+    if (a) a.push(p);
+    else byPos.set(p.position, [p]);
+  });
+  byPos.forEach((group, pos) => {
+    const ctx = IS_NFL && advReady(pos) ? careerCtx(players, pos) : null;
+    const rows = group.flatMap((p) => {
+      const base = playerSkillGrades(players, p).overall;
+      if (!base) return [];
+      const key = `${p.position}:${p.name}`;
+      const pcts = ctx ? advPctsOf(key).filter(Number.isFinite) : [];
+      const folded = pcts.length ? foldAdvanced(base, pcts)! : base;
+      return [{ key, folded, cover: pcts.length > 0, q: !!ctx && ctx.pool.includes(p) }];
+    });
+    const withAdv: number[] = [];
+    const classic: number[] = [];
+    if (ctx) rows.forEach((r) => r.q && (r.cover ? withAdv : classic).push(r.folded.pct));
+    withAdv.sort((a, b) => a - b);
+    classic.sort((a, b) => a - b);
+    rows.forEach((r) => {
+      const ref = ctx ? (r.cover ? withAdv : classic) : [];
+      if (ref.length < 12) return void out.set(r.key, r.folded);
+      const pct = percentileOf(ref, r.folded.pct);
+      const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
+      out.set(r.key, { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) });
+    });
+  });
+  return out;
+};
+
 export interface SkillGrade {
   trait: SkillTrait;
   /** Raw stat value (NaN when missing) and its display string */
