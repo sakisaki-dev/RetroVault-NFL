@@ -109,7 +109,8 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
       type="button"
       onClick={() => onOpen(s.key)}
       aria-label={label({ club, season })}
-      className={cn('cw-tile', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
+      title={`${t.city} ${t.name} · ${last.text}`}
+      className={cn('cw-tile', !leader && 'cw-tile--thin', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
       style={{
         ['--p' as string]: `hsl(${primary})`,
         ['--s' as string]: `hsl(${secondary})`,
@@ -117,35 +118,36 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         color: fg,
       }}
     >
-      {leader && (
-        <span aria-hidden="true" className="cw-bglogo">
-          <TeamLogo team={t} size={340} decorative />
-        </span>
-      )}
-      <span aria-hidden="true" className="cw-abbr">{t.abbreviation}</span>
+      <span aria-hidden="true" className="cw-bglogo">
+        <TeamLogo team={t} size={leader ? 340 : 170} decorative />
+      </span>
       {(row || rec) && (
         <span aria-hidden="true" className={cn('cw-rank', bigRank && 'cw-rank--big')}>
           {leader && !bigRank ? 'DIV LEADER · ' : ''}#{rankOf(club)}
         </span>
       )}
       <span className="cw-text">
-        <span className="cw-city">
-          <TeamLogo team={t} size={20} decorative />
-          {t.city}
-        </span>
+        {leader ? (
+          <span className="cw-city">
+            <TeamLogo team={t} size={20} decorative />
+            {t.city}
+          </span>
+        ) : (
+          <TeamLogo team={t} size={26} decorative className="cw-mini" />
+        )}
         <span className="cw-name">{t.name}</span>
         <span className="cw-row">
-          {row && <span className="cw-rec">{season ? `${seasonLabel(season)} ` : ''}{row.record}</span>}
+          {row && <span className="cw-rec">{leader && season ? `${seasonLabel(season)} ` : ''}{row.record}</span>}
           {titles > 0 && <span className="cw-ttl">{stars(titles)}</span>}
         </span>
-        <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>
+        {leader && <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>}
       </span>
       {leader && hasSprites && <span aria-hidden="true" className="cw-turf" />}
       {hasSprites && sprites.length > 0 && (
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (
             <span key={p.name + p.position} className="cw-fig">
-              <StarSprite name={p.name} pos={p.position} team={t.name} size="s" celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
+              <StarSprite name={p.name} pos={p.position} team={t.name} size="s" kind={leader ? 'figure' : 'bust'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
             </span>
           ))}
         </span>

@@ -154,3 +154,30 @@
   .cw-sprites--lead .cw-fig:first-child { margin-left: 0; }
   .cw-turf { left: 50%; }
 }
+
+/* ---- thin cards (owner: smaller / thinner, logo backgrounds like the scoreboards) ---- */
+.cw-bglogo { opacity: .26; }
+.cw-tile--thin { flex-direction: row; align-items: center; gap: 8px; min-height: 58px; height: 58px; padding: 0 8px 0 10px; }
+.cw-tile--thin .cw-bglogo { right: -30px; top: -56px; }
+.cw-tile--thin .cw-text { flex: 1; min-width: 0; max-width: none; flex-direction: row; align-items: center; gap: 8px; }
+.cw-tile--thin .cw-mini { flex: none; }
+.cw-tile--thin .cw-name { font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.cw-tile--thin .cw-row { margin: 0; flex: none; flex-wrap: nowrap; gap: 6px; }
+.cw-tile--thin .cw-rec { font-size: 11px; }
+.cw-tile--thin .cw-rank { position: static; flex: none; order: 3; font-size: 9px; }
+.cw-tile--thin .cw-rank--big { font-size: 20px; }
+.cw-tile--thin .cw-sprites { position: static; order: 4; flex: none; height: 40px; width: 36px; align-items: flex-end; overflow: hidden; }
+.cw-tile--thin .cw-fig { width: 36px; height: 40px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.cw-tile--thin .cw-fig > * { transform: none; }
+.cw-board__tiles { gap: 3px; }
+.cw-tile--lead { min-height: 136px; }
+.cw-tile--lead .cw-name { font-size: 24px; }
+.cw-sprites--lead { bottom: 4px; }
+@media (max-width: 639px) {
+  .cw-tile--thin { min-height: 54px; height: 54px; }
+  .cw-tile--thin .cw-name { font-size: 16px; }
+  .cw-tile--lead { min-height: 120px; }
+  .cw-tile--lead .cw-name { font-size: 22px; }
+  .cw-wall { gap: 4px; grid-template-columns: 1fr; }
+}
+.cw-wall { gap: 4px; }
