@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Crown, LayoutGrid, ListOrdered, Medal, Minus, Star, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
 import { gameHash, playoffGameId, useGameIds } from '@/utils/nflGames';
 import { PlayerHit, StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
@@ -80,7 +81,7 @@ const HeaderScene = ({ season, team, live }: { season: SeasonView; team: string;
           {order.map((p) => (
             <PlayerHit key={p.name} name={p.name} pos={p.position} className="nsh-fig">
               <StarSprite name={p.name} pos={p.position} team={team} size="m" celebrate={p === best[0]} />
-              <span className="nsh-fig__name">{p.name}</span>
+              <span className="nsh-fig__name">{displayName(p.name)}</span>
             </PlayerHit>
           ))}
         </div>

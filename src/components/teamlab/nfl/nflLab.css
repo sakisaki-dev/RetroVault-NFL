@@ -224,8 +224,28 @@
     grid-template-columns: 1fr 1fr;
     gap: 6px;
   }
-  .nfl-toolbar.is-open .nfl-ctl { display: grid; }
+  /* The drawer floats over the field (never pushes it), so mode switches and open / close keep the pitch still */
+  .nfl-toolbar { position: relative; }
+  .nfl-toolbar.is-open .nfl-ctl {
+    display: grid;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid hsl(var(--gold) / 0.5);
+    background: rgb(7 10 22 / 0.97);
+    box-shadow: 0 14px 30px rgb(0 0 0 / 0.65);
+  }
+  .nfl-ctl > .nfl-ctl-wide { grid-column: 1 / -1; }
+  .nfl-ctl .nfl-seg { width: 100%; }
+  .nfl-ctl .nfl-seg-btn { flex: 1 1 0; }
   .nfl-ctl > * { width: 100%; min-width: 0 !important; }
   /* 22 players on a 400 px field: a taller pitch gives the tags room */
   .nfl-lab .lab-pitch { padding-bottom: 0; }
 }
+
+/* The open drawer must sit above the stands and field that follow the header */
+@media (max-width: 639px) { .nfl-lab .lab-jumbo { position: relative; z-index: 20; overflow: visible; } }

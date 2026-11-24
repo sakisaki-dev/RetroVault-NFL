@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Ban, Calculator, Dices, Eraser, FastForward, ListOrdered, Lock, LockOpen, Plus, Swords, Wallet } from 'lucide-react';
+import { Ban, Calculator, SlidersHorizontal, Dices, Eraser, FastForward, ListOrdered, Lock, LockOpen, Plus, Swords, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -76,6 +76,7 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
   const { ctx, data, injured, sched } = nl;
   const lab = data?.lab ?? null;
   const saved = useSavedLabs();
+  const [ctlOpen, setCtlOpen] = useState(false);
   const [fl, setFl] = useState<FLineup>(emptyF);
   const [locks, setLocks] = useState<FLineup>({});
   const [excludes, setExcludes] = useState<Set<string>>(new Set());
@@ -252,9 +253,24 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
             { label: capMode ? 'Salary' : 'Scoring', value: capMode ? `${cost}/${cap}` : SCORING_LABELS[prefs.scoring], game: true, title: capMode ? "The game's salaries against its cap" : 'Scoring rules' },
           ]}
         >
-          <div className="lab-toolbar nfl-toolbar">
+          <div className={cn('lab-toolbar nfl-toolbar', ctlOpen && 'is-open')}>
             <ModeSwitch mode="fantasy" onMode={onMode} />
-            <div className="nfl-seg nfl-seg--sm" role="group" aria-label="Fantasy format">
+            {prefs.fmode !== 'draft' ? (
+              <Button type="button" size="sm" onClick={build} disabled={!cands.length} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90" title="Best projected lineup for the next four weeks, honouring locks and removed players">
+                <Wallet className="mr-1 h-4 w-4" aria-hidden="true" /> {capMode ? `Build under ${cap}` : 'Best lineup'}
+              </Button>
+            ) : (
+              <>
+                <Button type="button" size="sm" onClick={startDraft} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90">
+                  <Dices className="mr-1 h-4 w-4" aria-hidden="true" /> {draft ? 'Redraft' : 'Start the draft'}
+                </Button>
+              </>
+            )}
+            <button type="button" className="nfl-ctl-toggle" onClick={() => setCtlOpen((v) => !v)} aria-expanded={ctlOpen} aria-controls="nfl-ctl">
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" /> {ctlOpen ? 'Hide controls' : 'Format, scoring and more'}
+            </button>
+            <div className="nfl-ctl" id="nfl-ctl">
+            <div className="nfl-seg nfl-seg--sm nfl-ctl-wide" role="group" aria-label="Fantasy format">
               {([['free', 'Free pick'], ['cap', 'Salary cap'], ['draft', 'Draft']] as const).map(([id, label]) => (
                 <button key={id} type="button" className={cn('nfl-seg-btn', prefs.fmode === id && 'is-on')} onClick={() => setPrefs({ fmode: id })} aria-pressed={prefs.fmode === id}>
                   {label}
@@ -272,22 +288,11 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
                 ))}
               </SelectContent>
             </Select>
-            {prefs.fmode !== 'draft' ? (
-              <Button type="button" size="sm" onClick={build} disabled={!cands.length} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90" title="Best projected lineup for the next four weeks, honouring locks and removed players">
-                <Wallet className="mr-1 h-4 w-4" aria-hidden="true" /> {capMode ? `Build under ${cap}` : 'Best lineup'}
-              </Button>
-            ) : (
-              <>
-                <Button type="button" size="sm" onClick={startDraft} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90">
-                  <Dices className="mr-1 h-4 w-4" aria-hidden="true" /> {draft ? 'Redraft' : 'Start the draft'}
-                </Button>
                 {drafting && (
                   <Button type="button" size="sm" variant="outline" className="lab-btn" onClick={simToEnd}>
                     <FastForward className="mr-1 h-4 w-4" aria-hidden="true" /> Auto-finish
                   </Button>
                 )}
-              </>
-            )}
             <ClubSelect value={prefs.club} onChange={(c) => setPrefs({ club: c })} label="Stadium" />
             <TurfSelect turf={stage.turf} onTurf={stage.setTurf} />
             {(filled > 0 || excludes.size > 0) && (
@@ -295,6 +300,7 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
                 <Eraser className="mr-1 h-4 w-4" aria-hidden="true" /> Clear
               </Button>
             )}
+            </div>
           </div>
         </NflHeader>
         <Stands art={stage.art} />

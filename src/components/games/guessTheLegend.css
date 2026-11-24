@@ -4,6 +4,14 @@
 .arcade .gl-how { grid-area: how; min-width: 0; }
 .arcade .gl-how .howto { margin: 0; }
 .arcade .gl-how .howto-min { margin: 0; }
+@media (max-width: 899px) {
+  /* Phone: the how-to owns a reserved one-line slot. Folded it is a pill; open (first visit) the steps float over
+     the card as an overlay, so folding after the first miss never moves the page. */
+  .arcade .gl-how { position: relative; height: 32px; z-index: 6; }
+  .arcade .gl-how .howto-min { position: absolute; inset: 0; justify-content: flex-start; align-items: center; }
+  .arcade .gl-how .howto { position: absolute; top: 0; left: 0; right: 0; box-shadow: inset 3px 0 0 var(--ht), 0 0 0 1px var(--line), 0 16px 34px #000c; }
+  .arcade .gl-grid { gap: 12px; }
+}
 @media (min-width: 900px) {
   .arcade .gl-grid { grid-template-columns: minmax(340px, 400px) minmax(0, 1fr); grid-template-areas: 'stage clues' 'log clues'; align-items: start; gap: 18px 22px; }
   /* the how-to sits under the clues, so folding it never moves the card, the guess bar or the clues */
