@@ -372,6 +372,25 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
     );
   }
 
+  if (mode === 'draft' && landed && !Number.isFinite(f.get(landed))) {
+    // this spin has no tracking data for the trait: it stays an open slot (never "no data"), inviting another spin
+    return (
+      <div className="bal-tile open" style={vars} title={`${f.label}: ${f.definition}`} role="group" aria-label={`${name} (${f.label}): open slot. Spin a ${pos} with tracking data to fill it.`}>
+        <span className="bal-tile-top">
+          <span className="key">{i + 1}</span>
+          <span className="nm">{name}</span>
+        </span>
+        <span className="bal-tile-mid">
+          <span className="q">+</span>
+          <span className="val">
+            <b>Open</b>
+            <span>Spin a {pos} with tracking data</span>
+          </span>
+        </span>
+      </div>
+    );
+  }
+
   if (mode === 'draft' && landed) {
     const v = f.get(landed);
     const ok = Number.isFinite(v);
@@ -387,7 +406,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           disabled={!ok}
           onClick={() => onSteal(i)}
           title={`${f.label}: ${f.definition}`}
-          aria-label={ok ? `${i + 1}: steal ${name} (${f.label}), value sealed until the reveal. ${f.definition}` : `${i + 1}: ${name}, no data for this player`}
+          aria-label={ok ? `${i + 1}: steal ${name} (${f.label}), value sealed until the reveal. ${f.definition}` : `${i + 1}: ${name}, open slot`}
         >
           <span className="bal-tile-top">
             <span className="key">{i + 1}</span>
@@ -396,7 +415,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           <span className="bal-tile-mid">
             {ok ? <SealedChip size="lg" /> : <span className="q">--</span>}
             <span className="val">
-              <b>{ok ? 'Sealed' : 'No data'}</b>
+              <b>{ok ? 'Sealed' : 'Open'}</b>
               <span>{f.label}</span>
             </span>
           </span>
@@ -415,7 +434,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
         aria-label={
           ok
             ? `${i + 1}: steal ${name}, grade ${g?.grade}: ${f.label} ${fmtFeature(f, v)}, ${ordinal(pct)} percentile. ${f.definition}`
-            : `${i + 1}: ${name}, no data for this player`
+            : `${i + 1}: ${name}, open slot`
         }
       >
         <span className="bal-tile-top">
@@ -425,7 +444,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
         <span className="bal-tile-mid">
           {ok ? <GradeChip pct={pct} size="lg" plain={f.style} /> : <span className="q">--</span>}
           <span className="val">
-            <b>{ok ? fmtFeature(f, v) : 'No data'}</b>
+            <b>{ok ? fmtFeature(f, v) : 'Open'}</b>
             <span>
               {f.label}
               {ok ? ` · ${ordinal(pct)}` : ''}
@@ -665,10 +684,10 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
     return () => window.clearTimeout(t);
   }, [advReady, pos]);
   const features = useMemo(() => {
-    const f = pos ? buildFeatures(pos, adv) : [];
+    const f = pos ? buildFeatures(pos, adv, players) : [];
     if (pos) setTraitsInPlay(pos, f); // the spin prefers players who have data for an open trait
     return f;
-  }, [pos, adv]);
+  }, [pos, adv, players]);
   const pool = useMemo(() => (pos ? spinPool(players, pos) : []), [players, pos]);
 
   const [mystery, setMystery] = useState(false);
@@ -681,6 +700,8 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   const [lastLocked, setLastLocked] = useState<number | null>(null);
   const [showLive, setShowLive] = useState(false);
   const [announce, setAnnounce] = useState('');
+  /** Open slots dropped at the end because no one left has real data for them (never estimated) */
+  const [skipped, setSkipped] = useState<number[]>([]);
   const [result, setResult] = useState<BuildResult | null>(null);
   const [stage, setStage] = useState(3);
   const [scanName, setScanName] = useState('');
@@ -762,7 +783,9 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
         }
         if (!r) {
           // No league player has data for any open slot: reveal with what we have rather than stall
-          setAnnounce('No player left has data for your open slots. Revealing your build.');
+          const stuck = features.map((f, i) => (open[i] ? null : f)).filter((f): f is NonNullable<typeof f> => !!f);
+          setSkipped(features.map((_, i) => i).filter((i) => !open[i]));
+          setAnnounce(`Dropped ${stuck.map((f) => f.label).join(', ')}: no one left has it. Revealing your build.`);
           finish(open);
           return;
         }
@@ -837,6 +860,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
     setAnyLeft(true);
     setLastLocked(null);
     setResult(null);
+    setSkipped([]);
     setShowLive(false);
     setGame((g) => g + 1);
     setPhase('draft');
@@ -988,7 +1012,10 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
         <OvrMedallion overall={ov} sealed={mode === 'draft' && mystery} />
       </div>
       <ol className="bal-slots" ref={mode === 'draft' ? boardRef : undefined}>
-        {features.map((f, i) => (
+        {features.map((f, i) => {
+          // slots dropped at the end stay out of the result
+          if (skipped.includes(i) && !rows[i]) return null;
+          return (
           <li key={f.id}>
             <SlotTile
               i={i}
@@ -1004,7 +1031,8 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
               onSteal={lock}
             />
           </li>
-        ))}
+          );
+        })}
       </ol>
       {foot}
     </section>

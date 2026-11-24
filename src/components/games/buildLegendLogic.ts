@@ -50,9 +50,17 @@ export const MIN_SPIN_POOL = 5;
  * advanced file (NaN for a player outside its qualified pool, "no data" like any missing stat); time to throw and aDOT
  * are styles (shown, never graded). They are never part of the similarity match: the match reads only the classic traits.
  */
-export const buildFeatures = (pos: Position, adv: AdvFile | null): CompFeature[] => {
+const MIN_ADV_HOLDERS = 8;
+
+/**
+ * `pool` is the game's own player pool (its All / Active and SZN / OVR settings). An advanced trait is offered only when
+ * at least a handful of that pool have real data for it. A player outside the advanced file simply has no value for it
+ * (NaN): his card doesn't draw that trait and he can't be locked into its slot. Nothing is estimated.
+ */
+export const buildFeatures = (pos: Position, adv: AdvFile | null, pool: Player[] = []): CompFeature[] => {
   const classic = compFeatures(pos);
   if (!IS_NFL || !adv) return classic;
+  const atPos = pool.filter((p) => p.position === pos && !isLegend(p));
   const extra = Object.entries(adv.metrics)
     .filter(([, m]) => m.pos.includes(pos))
     .map(([id, m]): CompFeature => ({
@@ -66,7 +74,7 @@ export const buildFeatures = (pos: Position, adv: AdvFile | null): CompFeature[]
       lowerIsBetter: m.dir === 'low',
       style: m.dir === 'style',
     }))
-    .filter((f) => Object.keys(adv.p).some((k) => k.startsWith(`${pos}:`) && Number.isFinite(f.get({ position: pos, name: k.slice(pos.length + 1) } as Player))));
+    .filter((f) => atPos.filter((p) => Number.isFinite(f.get(p))).length >= MIN_ADV_HOLDERS);
   return [...classic, ...extra];
 };
 
@@ -126,6 +134,17 @@ export const spin = (pool: Player[], position: Position, slots: (Slot | null)[],
 /** The club a spin lands on for a player: the club he is shown with everywhere (his banner team). */
 export const clubOf = (p: Player): string => bannerTeamOf(p) || 'Free agents';
 
+/** Prefer a player who fills an open advanced slot (when one is open), most of the time, so those slots don't sit open for long. */
+const preferAdvanced = (cand: Player[], position: Position, slots: (Slot | null)[], rand: () => number): Player[] => {
+  const feats = traitsInPlay(position);
+  const n = compFeatures(position).length;
+  const adv = (p: Player) => feats.some((f, i) => i >= n && !slots[i] && Number.isFinite(f.get(p)));
+  const openAdv = feats.some((_, i) => i >= n && !slots[i]);
+  if (!openAdv || rand() > 0.75) return cand;
+  const pref = cand.filter(adv);
+  return pref.length ? pref : cand;
+};
+
 const usefulFor = (position: Position, slots: (Slot | null)[]) => {
   const feats = traitsInPlay(position);
   return (p: Player) => feats.some((f, i) => !slots[i] && Number.isFinite(f.get(p)));
@@ -147,6 +166,7 @@ export const spinClub = (
   let cand = pool.filter((p) => !seen.has(p) && useful(p));
   if (!cand.length) cand = pool.filter(useful);
   if (!cand.length) return null;
+  cand = preferAdvanced(cand, position, slots, rand);
   // The club reel is weighted by how many eligible players each club has (the same as drawing the player and showing
   // his club), so every player is as likely as before the club reel; a uniform club draw over-picked thin clubs
   const player = cand[Math.floor(rand() * cand.length)];
