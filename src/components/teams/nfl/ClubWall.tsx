@@ -145,7 +145,7 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (
             <span key={p.name + p.position} className="cw-fig">
-              <StarSprite name={p.name} pos={p.position} team={t.name} size={leader ? 'm' : 's'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
+              <StarSprite name={p.name} pos={p.position} team={t.name} size="s" celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
             </span>
           ))}
         </span>
