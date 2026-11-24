@@ -124,36 +124,3 @@
     transition: none !important;
   }
 }
-
-/* Club-tinted grade tiles: flat club primary, hard secondary border, no text shadow or gradient (the S keeps its gold ring). */
-.dd-grade--club { border: 2px solid; border-radius: 2px; text-shadow: none; }
-.dd-grade--club.dd-grade--s { box-shadow: 0 0 0 2px hsl(43 100% 62%); }
-.dd-grade--club.dd-grade--s::after { display: none; }
-.dd-sechead { border-bottom: 0; }
-
-/* Slim sticky mini-hero (DdMiniHero): flat club colour, hard secondary rule, slides in once the hero has gone. */
-.dd-mini { position: sticky; top: var(--site-header-h, 56px); z-index: 30; height: 0; overflow: visible; pointer-events: none; }
-.dd-mini__in {
-  position: absolute; left: 0; right: 0; top: 0; height: 44px;
-  display: flex; align-items: center; gap: 10px; padding: 0 12px 0 8px;
-  background: var(--ax-c1); color: var(--ax-ink); border: 0; border-bottom: 3px solid var(--ax-c2);
-  text-align: left; cursor: pointer;
-  transform: translateY(-120%); opacity: 0; transition: transform 160ms ease-out, opacity 120ms;
-}
-.dd-mini[data-on] { pointer-events: auto; }
-.dd-mini[data-on] .dd-mini__in { transform: none; opacity: 1; }
-.dd-mini__spr { height: 40px; width: 32px; display: grid; place-items: end center; overflow: hidden; flex: none; }
-.dd-mini__name { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 20px; line-height: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dd-mini__pos, .dd-mini__ovr { font-family: var(--font-pixel); font-size: 9px; text-transform: uppercase; opacity: 0.9; flex: none; }
-.dd-mini__ovr b { font-size: 12px; }
-.dd-mini__club { margin-left: auto; flex: none; }
-@media (max-width: 420px) { .dd-mini__ovr { display: none; } }
-@media (prefers-reduced-motion: reduce) { .dd-mini__in { transition: none; } }
-
-/* Deep Dive data surfaces: the site's glass cards become flat pixel panels with the club stripe (same look as PixelPanel). */
-.dd-arcade .glass-card {
-  background: hsl(var(--card)); backdrop-filter: none; border-radius: 0;
-  border: 2px solid hsl(var(--line)); box-shadow: inset 4px 0 0 var(--ax-c1), inset 6px 0 0 var(--ax-c2);
-}
-.dd-arcade .glass-card.dd-card--s { box-shadow: inset 4px 0 0 hsl(43 100% 62%); }
-@media (max-width: 1023px) { .dd-mini { top: calc(var(--site-header-h, 56px) + 40px); } }

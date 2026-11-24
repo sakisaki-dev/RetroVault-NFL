@@ -37,10 +37,8 @@ import DdGameLog from '../gamelog/DdGameLog';
 import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
-import { DdSection, DdClubContext } from './ddParts';
-import { classicNoteOf, usePlayerExtras, signatureTeamOf } from '@/utils/playerExtras';
-import { clubVars } from '@/components/arcade/clubInk';
-import DdMiniHero from './DdMiniHero';
+import { DdSection } from './ddParts';
+import { classicNoteOf, usePlayerExtras } from '@/utils/playerExtras';
 import { afterPaint } from '@/hooks/useDeferredStage';
 import DeferredSection from '@/components/ui/DeferredSection';
 import { MIN_RADAR_AXES, buildPositionModel, buildSimilarityMap, type PositionModel, type SimilarityMap } from './compModel';
@@ -437,7 +435,6 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const prev = idx > 0 ? ladder[idx - 1] : null;
   const next = idx >= 0 && idx < ladder.length - 1 ? ladder[idx + 1] : null;
   const ovr = ovrMap.get(keyOf(player));
-  const bannerClub = signatureTeamOf(extras, player) ?? player.team ?? null;
   const car = careerOvrMap.get(keyOf(player));
   const seasonShown = ovrBasis.get(keyOf(player)) === 'season' && seasonOvr && ovr != null;
   const cr = IS_NFL ? careerRatingOf(keyOf(player)) : undefined;
@@ -501,9 +498,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   );
 
   return (
-    <DdClubContext.Provider value={bannerClub}>
+    <>
     {swipeHint}
-    <div ref={rootRef} className="dd-arcade scroll-mt-28 space-y-5" id="deep-dive" style={clubVars(bannerClub)}>
+    <div ref={rootRef} className="scroll-mt-28 space-y-5" id="deep-dive">
       <DdHero
         key={`hero-${keyOf(player)}`}
         player={player}
@@ -528,8 +525,6 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             : undefined
         }
       />
-
-      <DdMiniHero player={player} club={bannerClub} ovr={ovr} ovrLabel={ovrLabel} onTop={() => rootRef && document.getElementById('deep-dive')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })} />
 
       {/* Mobile: sticky section chips */}
       <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-1.5 lg:hidden">{nav}</div>
@@ -652,7 +647,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         </div>
       </div>
     </div>
-    </DdClubContext.Provider>
+    </>
   );
 };
 

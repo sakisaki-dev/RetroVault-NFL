@@ -6,10 +6,7 @@ import { percentileOf } from '@/config/skillGrades';
 import { loadCareerSeasons, type CareerSeasonsFile } from '@/utils/careerSeasons';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { VIZ } from '../analytics/viz';
-import { ArcadeToggle, PixelChip, PixelPanel, PixelSelect } from '@/components/arcade';
-import GameSprite from '../../GameSprite';
-import { resolveTeam } from '../../brand/TeamLogo';
-import { useDdClub } from './ddParts';
+import Chips from '../analytics/Chips';
 import { keyOf } from '../records';
 import { peekProps } from '../../peek/peekProps';
 import { dotColors } from './compColors';
@@ -132,10 +129,6 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
   const [era, setEra] = useState<EraId>('all');
   const [status, setStatus] = useState<'all' | 'active' | 'retired'>('all');
   const [qualified, setQualified] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
-  const club = useDdClub();
-  const filtersOn = (era !== 'all' ? 1 : 0) + (status !== 'all' ? 1 : 0) + (!qualified ? 1 : 0);
-  const axOptions = useMemo(() => axes.filter((a) => a.id !== 'szn' || seasonOvr).map((a) => ({ value: a.id, label: a.label })), [axes, seasonOvr]);
   // the 2.5 MB career-years file loads only when an era is picked
   const [careers, setCareers] = useState<CareerSeasonsFile | null>(null);
   useEffect(() => {
@@ -268,11 +261,9 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
 
   return (
     <div className="space-y-2.5">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {presets.length > 0 && (
-          <ArcadeToggle
-            size="sm"
-            club={club}
+          <Chips
             label="Axis presets"
             value={presets.find(([x, y]) => x === ax[0] && y === ax[1])?.[2] ?? 'custom'}
             onChange={(v) => {
@@ -282,22 +273,37 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
             options={presets.map(([, , l]) => ({ value: l, label: l }))}
           />
         )}
-        <PixelSelect label="X axis" prefix="X" value={X.id} onChange={(v) => setAx([v, ax[1]])} options={axOptions} />
-        <PixelSelect label="Y axis" prefix="Y" value={Y.id} onChange={(v) => setAx([ax[0], v])} options={axOptions} />
-        <PixelChip pressed={showFilters} club={club} onClick={() => setShowFilters((v) => !v)} aria-expanded={showFilters}>
-          Filters{filtersOn ? ` · ${filtersOn}` : ''}
-        </PixelChip>
-      </div>
-      {showFilters && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-2 border-line bg-panel/60 p-2">
-          <ArcadeToggle size="sm" club={club} label="Era" value={era} onChange={(v) => setEra(v as EraId)} options={ERAS.map((e) => ({ value: e.id, label: e.id === 'all' ? 'All eras' : e.id }))} />
-          <ArcadeToggle size="sm" club={club} label="Status" value={status} onChange={(v) => setStatus(v as typeof status)} options={[{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'retired', label: 'Retired' }]} />
-          <ArcadeToggle size="sm" club={club} label="Qualified" value={qualified ? 'on' : 'off'} onChange={(v) => setQualified(v === 'on')} options={[{ value: 'on', label: `Starters (${qMin}+ G)` }, { value: 'off', label: 'Everyone' }]} />
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <label className="flex items-center gap-1">
+            X
+            <select className="rounded bg-night/70 px-1.5 py-1 text-foreground" value={X.id} onChange={(e) => setAx([e.target.value, ax[1]])}>
+              {axes.filter((a) => a.id !== 'szn' || seasonOvr).map((a) => (
+                <option key={a.id} value={a.id}>{a.label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex items-center gap-1">
+            Y
+            <select className="rounded bg-night/70 px-1.5 py-1 text-foreground" value={Y.id} onChange={(e) => setAx([ax[0], e.target.value])}>
+              {axes.filter((a) => a.id !== 'szn' || seasonOvr).map((a) => (
+                <option key={a.id} value={a.id}>{a.label}</option>
+              ))}
+            </select>
+          </label>
         </div>
-      )}
+      </div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <Chips label="Era" value={era} onChange={setEra} options={ERAS.map((e) => ({ value: e.id, label: e.id === 'all' ? 'All eras' : e.id, title: e.id === 'all' ? undefined : 'By the middle of his career' }))} />
+        <Chips label="Status" value={status} onChange={setStatus} options={[{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'retired', label: 'Retired' }]} />
+        <Chips
+          label="Qualified"
+          value={qualified ? 'on' : 'off'}
+          onChange={(v) => setQualified(v === 'on')}
+          options={[{ value: 'on', label: `Starters (${qMin}+ G)`, title: 'Players with enough games to trust their rates' }, { value: 'off', label: 'Everyone' }]}
+        />
+      </div>
 
-      <PixelPanel club={club} tone="stripe" pad="none" className="relative overflow-hidden !pl-[10px]" style={{ background: VIZ.surface }}>
-        <div className="relative">
+      <div className="relative overflow-hidden rounded-lg border border-line/60 bg-night/50">
         <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`${displayName(player.name)} among ${pos}s: ${X.label} against ${Y.label}`} style={{ imageRendering: 'pixelated', touchAction: 'manipulation' }}>
           {xt.map((t) => (
             <g key={`x${t}`}>
@@ -328,7 +334,6 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
             const c = dotColors(bannerTeamOf(d.p));
             const r = (wide ? 5 : 4) + Math.max(0, Math.min(1, ((ovrMap.get(keyOf(d.p)) ?? 60) - 55) / 40)) * (wide ? 4 : 3);
             const on = sel === d.p;
-            const logo = resolveTeam(bannerTeamOf(d.p))?.logoUrl ?? null;
             return (
               <g
                 key={keyOf(d.p)}
@@ -342,21 +347,14 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
               >
                 <title>{`${displayName(d.p.name)} · ${sim(d)} similar · ${X.label} ${fmt(X, d.x)} · ${Y.label} ${fmt(Y, d.y)}`}</title>
                 <circle cx={px(d.x)} cy={py(d.y)} r={r + 6} fill="transparent" />
-                {logo ? (
-                  <>
-                    <circle cx={px(d.x)} cy={py(d.y)} r={r + 2.5} fill={VIZ.surface} stroke={on ? '#fff' : isHallOfFamer(d.p) ? 'hsl(43 100% 62%)' : c.ring} strokeWidth={on || isHallOfFamer(d.p) ? 2 : 1} opacity={d.p.status === 'Active' ? 1 : 0.8} />
-                    <image href={logo} x={px(d.x) - r - 1} y={py(d.y) - r - 1} width={(r + 1) * 2} height={(r + 1) * 2} preserveAspectRatio="xMidYMid meet" opacity={d.p.status === 'Active' ? 1 : 0.8} />
-                  </>
-                ) : (
-                  <rect x={px(d.x) - r} y={py(d.y) - r} width={r * 2} height={r * 2} rx={2} fill={c.fill} stroke={on ? '#fff' : isHallOfFamer(d.p) ? 'hsl(43 100% 62%)' : c.ring} strokeWidth={on || isHallOfFamer(d.p) ? 2 : 1.2} opacity={d.p.status === 'Active' ? 1 : 0.85} />
-                )}
+                <rect x={px(d.x) - r} y={py(d.y) - r} width={r * 2} height={r * 2} rx={2} fill={c.fill} stroke={on ? '#fff' : isHallOfFamer(d.p) ? 'hsl(43 100% 62%)' : c.ring} strokeWidth={on || isHallOfFamer(d.p) ? 2 : 1.2} opacity={d.p.status === 'Active' ? 1 : 0.85} />
               </g>
             );
           })}
           {view.meOk && (
             <g>
               <circle cx={px(view.me.x)} cy={py(view.me.y)} r={wide ? 13 : 11} fill="none" stroke="hsl(43 100% 62%)" strokeWidth={2} />
-              <circle cx={px(view.me.x)} cy={py(view.me.y)} r={3} fill="hsl(43 100% 62%)" />
+              <path d={`M${px(view.me.x)} ${py(view.me.y) - 7} l6 7 l-6 7 l-6 -7 z`} fill="hsl(43 100% 62%)" stroke="#111627" strokeWidth={1.4} />
             </g>
           )}
           {labels.map((l, i) => (
@@ -365,20 +363,11 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
             </text>
           ))}
         </svg>
-        {/* him and his five closest comps stand on the chart as game busts (HTML over the SVG, so they stay crisp) */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          {[...(view.meOk ? [{ p: player, x: view.me.x, y: view.me.y, me: true }] : []), ...view.near.slice(0, 5).map((d) => ({ p: d.p, x: d.x, y: d.y, me: false }))].map((d) => (
-            <span key={`b${keyOf(d.p)}`} className="absolute" style={{ left: `${(px(d.x) / W) * 100}%`, top: `${(py(d.y) / H) * 100}%`, transform: 'translate(-50%, -88%)', filter: d.me ? 'drop-shadow(0 0 3px hsl(43 100% 62%))' : undefined }}>
-              <GameSprite player={d.p} team={bannerTeamOf(d.p)} kind="bust" size="s" />
-            </span>
-          ))}
-        </div>
-        </div>
-      </PixelPanel>
+      </div>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
         <span><span className="inline-block h-2 w-2 rounded-sm" style={{ background: 'rgba(57,135,229,.55)' }} /> the other {view.n.toLocaleString()} {pos}s (darker = more)</span>
         <span><span className="inline-block h-2 w-2 rounded-sm bg-gold" /> him</span>
-        <span>logos: his {Math.min(N_NEIGHBOURS, view.near.length)} nearest, gold rim = Hall of Famer</span>
+        <span>squares: his {Math.min(N_NEIGHBOURS, view.near.length)} nearest, gold rim = Hall of Famer</span>
       </p>
 
       {sel && (

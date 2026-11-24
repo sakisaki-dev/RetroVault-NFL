@@ -1,17 +1,13 @@
-import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
-import { SectionHeader, clubPlate } from '@/components/arcade';
+import type { CSSProperties, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { GradeStep } from '@/config/skillGrades';
-
-/** The player's banner club: section headers wear its logo, grade tiles its flat colour (null outside the Deep Dive). */
-export const DdClubContext = createContext<string | null>(null);
-export const useDdClub = () => useContext(DdClubContext);
 
 /** One Deep Dive section: anchor target for the section index, broadcast-style heading, staggered reveal. */
 export const DdSection = ({
   id,
   title,
+  icon: Icon,
   kicker,
   actions,
   index,
@@ -26,16 +22,21 @@ export const DdSection = ({
   index: number;
   children: ReactNode;
   className?: string;
-}) => {
-  const club = useDdClub();
-  return (
-  <section id={id} aria-label={title} className={cn('dd-enter scroll-mt-28 space-y-3', className)} style={{ '--i': index } as CSSProperties}>
-    <SectionHeader club={club} title={title} right={actions} as="h2" className="dd-sechead" />
-    {kicker && <p className="-mt-1 text-xs text-muted-foreground sm:text-sm">{kicker}</p>}
+}) => (
+  <section id={id} aria-labelledby={`${id}-title`} className={cn('dd-enter scroll-mt-28 space-y-3', className)} style={{ '--i': index } as CSSProperties}>
+    <div className="flex flex-wrap items-end justify-between gap-2">
+      <div className="min-w-0">
+        <h2 id={`${id}-title`} className="section-title text-xl sm:text-2xl">
+          <Icon className="h-5 w-5 text-gold" aria-hidden="true" />
+          {title}
+        </h2>
+        {kicker && <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{kicker}</p>}
+      </div>
+      {actions}
+    </div>
     {children}
   </section>
-  );
-};
+);
 
 /** Letter-grade chip (S glows gold). */
 export const GradeChip = ({ grade, size = 'md', className }: { grade: GradeStep | null; size?: 'sm' | 'md' | 'lg' | 'xl'; className?: string }) => {
@@ -47,10 +48,8 @@ export const GradeChip = ({ grade, size = 'md', className }: { grade: GradeStep 
       </span>
     );
   }
-  const club = useDdClub();
-  const plate = club ? clubPlate(club) : null;
   return (
-    <span className={cn('dd-grade', grade.grade === 'S' && 'dd-grade--s', plate && 'dd-grade--club', dims, className)} style={plate ? { background: plate.fill, color: plate.ink, borderColor: plate.edge } : { background: grade.color }} aria-label={`Grade ${grade.grade.replace('−', ' minus').replace('+', ' plus')}`}>
+    <span className={cn('dd-grade', grade.grade === 'S' && 'dd-grade--s', dims, className)} style={{ background: grade.color }} aria-label={`Grade ${grade.grade.replace('−', ' minus').replace('+', ' plus')}`}>
       {grade.grade}
     </span>
   );

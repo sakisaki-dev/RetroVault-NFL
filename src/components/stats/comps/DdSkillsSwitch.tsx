@@ -5,8 +5,7 @@ import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
 import { careerPool, careerPoolLabel, foldAdvanced, gradeFor, ovrFromPercentile, percentileOf, playerSkillGrades, tierFor } from '@/config/skillGrades';
 import { careerRatingOf } from '@/config/ovr';
 import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
-import { ArcadeToggle } from '@/components/arcade';
-import { useDdClub } from './ddParts';
+import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
 import DdAdvancedFactors from './DdAdvancedFactors';
 import { IS_NFL } from '@/config/edition';
@@ -73,16 +72,19 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
     <div className="space-y-3">
       {hasSeason && (
         <div className="flex flex-wrap items-center gap-2">
-          <ArcadeToggle
-            label="Skill ratings basis"
-            club={useDdClub()}
-            value={shown}
-            onChange={(v) => setMode(v as 'season' | 'career')}
-            options={[
-              { value: 'season', label: `This season (${label})` },
-              { value: 'career', label: 'Career' },
-            ]}
-          />
+          <div role="group" aria-label="Skill ratings basis" className="inline-flex overflow-hidden rounded-lg border border-line text-xs">
+            {(['season', 'career'] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                aria-pressed={shown === m}
+                onClick={() => setMode(m)}
+                className={cn('px-3 py-1.5 font-display font-bold uppercase tracking-wide', shown === m ? 'bg-gold/20 text-gold' : 'text-muted-foreground hover:text-foreground')}
+              >
+                {m === 'season' ? `This season (${label})` : 'Career'}
+              </button>
+            ))}
+          </div>
           <p className="text-[11px] text-muted-foreground">
             {useSeason
               ? `Graded on ${label}${seasonOvr?.live ? ' so far' : ''} alone, against ${player.position}s who played it.`
