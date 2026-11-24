@@ -34,6 +34,7 @@ const NewsTab = lazyRetry(() => import('@/components/espn/NewsTab'));
 const SeasonTab = lazyRetry(() => import('@/components/tabs/SeasonTab'));
 const FrontOfficeTab = lazyRetry(() => import('@/components/tabs/FrontOfficeTab'));
 const CollectionTab = lazyRetry(() => import('@/components/tabs/CollectionTab'));
+const BannerLab = import.meta.env.DEV ? lazyRetry(() => import('@/components/teams/banner/BannerLab')) : null;
 const ArcadeKitDemo = import.meta.env.DEV ? lazyRetry(() => import('@/components/arcade/ArcadeKitDemo')) : null;
 const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
 
@@ -127,6 +128,7 @@ const IndexContent = () => {
                 {activeTab === 'office' && <FrontOfficeTab />}
                 {activeTab === 'games' && <GamesTab />}
                 {ArcadeKitDemo && activeTab === 'arcadekit' && <ArcadeKitDemo />}
+                {BannerLab && activeTab === 'bannerlab' && <BannerLab />}
               </div>
             </Suspense></TabBoundary>
           </main>
