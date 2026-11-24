@@ -22,6 +22,7 @@ import { getTeamTextColor } from '@/utils/teamColors';
 import { matchPlayerByName } from '@/utils/leagueContent';
 import { CLUB_RECORD_FOR, SEASON_GROUP, entryName, holderName, setInText, useClubRecords, type ClubRecordRow } from './clubRecords';
 import { displayName } from '@/utils/displayName';
+import { bannerTeamOf } from '@/utils/playerExtras';
 
 const fmt = (v: number, decimals: number) => formatDecimal(v, decimals);
 
@@ -31,7 +32,8 @@ type Select = (p: Player) => void;
 
 /** The club's own mark for this record (the in-game board, Skura's club only): beaten league-wide, or still the best. */
 const ClubLine = ({ row }: { row?: ClubRecordRow }) => {
-  if (!row || !row.league) return null;
+  // the coach's-club board is a Retro Bowl idea; the NFL edition has no such club
+  if (IS_NFL || !row || !row.league) return null;
   const who = entryName({ name: row.club.name, player: row.club.holder });
   const best = !row.broken;
   return (
@@ -78,6 +80,8 @@ interface PlaqueItem {
  */
 const Plaque = ({ item, index, onSelect }: { item: PlaqueItem; index: number; onSelect: Select }) => {
   const hsl = GROUP_META[item.group].hsl;
+  // the club he is best known for (retired) or plays for (active): the banner team, the one his sprite and colours wear
+  const club = (item.player && !item.player.isRealLegend ? bannerTeamOf(item.player) : '') || item.team;
   const body = (
     <>
       {item.player && !item.player.isRealLegend && <StageFigure player={item.player} action={item.broken ? 'stiffarm' : 'celebrate'} />}
@@ -90,8 +94,8 @@ const Plaque = ({ item, index, onSelect }: { item: PlaqueItem; index: number; on
         {item.unit && <small>{item.unit}</small>}
       </span>
       <span className="rb-plaque__holder">
-        {item.team && <TeamLogo team={item.team} size={16} decorative backed />}
-        <span className="truncate" style={{ color: inkOf(item.team) ?? 'hsl(var(--secondary-foreground))' }}>
+        {club && <TeamLogo team={club} size={16} decorative backed />}
+        <span className="truncate" style={{ color: inkOf(club) ?? 'hsl(var(--secondary-foreground))' }}>
           {item.holder}
         </span>
         {item.year && <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{item.year}</span>}
@@ -285,7 +289,7 @@ const LeaderTile = ({ data, onSelect }: { data: RecordBoardData; onSelect: Selec
           {fmt(top.value, data.decimals)}
         </span>
         <span className="flex min-w-0 items-center gap-1.5">
-          {top.player.team && <TeamLogo team={top.player.team} size={18} decorative backed />}
+          {bannerTeamOf(top.player) && <TeamLogo team={bannerTeamOf(top.player)} size={18} decorative backed />}
           <span className="truncate text-sm font-semibold text-foreground"><FitName name={displayName(top.player.name)} /></span>
         </span>
         {margin && (
