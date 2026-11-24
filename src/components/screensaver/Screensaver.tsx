@@ -48,6 +48,12 @@ import { useSeasonLeaders, type LeaderRow, type SeasonLeaders } from '@/utils/se
 import { timeAgo, useEspnNews, type NewsItem } from '@/utils/espnNews';
 import { dataResponse } from '@/utils/dataStore';
 import { displayName, surnameOf } from '@/utils/displayName';
+import { useBannerData } from '@/components/teams/banner/useBannerData';
+import { useAllTimeRecords } from '@/components/teams/nfl/allTime';
+import { makeLookup, notability, replayable, sample, useSaverGames, weeksOf, type SaverDeps } from './scenes/nflSaverData';
+import ScoreboardScene from './scenes/ScoreboardScene';
+import RingSweepScene from './scenes/RingSweepScene';
+import GameWeekScene from './scenes/GameWeekScene';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -86,6 +92,9 @@ type Scene =
   | { kind: 'nflscores'; kick: string; title: string; sub: string; games: RoundGame[] }
   | { kind: 'nflstand'; season: string; tables: { conf: string; rows: { seed: number | null; row: TableRow; div: boolean }[] }[] }
   | { kind: 'nflnews'; item: NewsItem; players: Player[]; roll: number }
+  | { kind: 'scoreboard'; week: import('./scenes/nflSaverData').SaverWeek }
+  | { kind: 'ringsweep'; picks: string[] }
+  | { kind: 'gameweek'; game: import('@/utils/nflGames').GameDetail }
   | { kind: 'pa' };
 
 interface CoachStint { club: string; years: number[]; seasons: number; titles: number; w: number; l: number; t: number }
@@ -1944,6 +1953,11 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   const schedule = useSchedule();
   const upcoming = useUpcoming();
   const news = useEspnNews();
+  // NFL edition: the game files and the franchise wall behind Scoreboard Sunday, the ring sweep and Game of the week
+  const saverSeason = schedule ? Number(latestScheduleSeason(schedule)?.season) || null : null;
+  const saverGames = useSaverGames(saverSeason, IS_NFL);
+  const bannerData = useBannerData();
+  const allTime = useAllTimeRecords();
 
   const players = useMemo(
     () => getAllPlayers().filter((p) => !p.isRealLegend).sort((a, b) => b.careerLegacy - a.careerLegacy),
@@ -1959,7 +1973,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     const t = window.setTimeout(() => setWaited(true), 4_000);
     return () => window.clearTimeout(t);
   }, []);
-  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
+  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading && (saverGames !== undefined || !saverSeason) && !!bannerData && !!allTime)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
   const scenes = useMemo<Scene[]>(() => {
     if (!ready) return [];
     const spot = shuffle(players.slice(0, 80)).map((p): Scene => ({ kind: 'spotlight', player: p, roll: Math.random() }));
@@ -2165,6 +2179,33 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
         .slice(0, 6)
         .map((item): Scene => ({ kind: 'nflnews', item, roll: Math.random(), players: item.athletes.map((n) => byName.get(n)).filter((x): x is Player => !!x) }));
       nflDecks.push(stories);
+      // Scoreboard Sunday, the ring of honor sweep and Game of the week (one new week, club set or game a run)
+      const wks = weeksOf(saverGames ?? []);
+      const pickWeeks = (n: number) => {
+        const pool = wks.slice(0, 6);
+        const out: typeof wks = [];
+        while (out.length < n && pool.length) {
+          const wsum = pool.reduce((a, _, i) => a + (pool.length - i), 0);
+          let r = Math.random() * wsum;
+          const i = pool.findIndex((_, k) => (r -= pool.length - k) < 0);
+          out.push(...pool.splice(Math.max(0, i), 1));
+        }
+        return out;
+      };
+      nflDecks.push(pickWeeks(2).map((week): Scene => ({ kind: 'scoreboard', week })));
+      if (bannerData) {
+        const names = shuffle(bannerData.clubs.map((c) => c.team.name));
+        nflDecks.push([0, 1, 2].map((k): Scene => ({ kind: 'ringsweep', picks: names.slice(k * 4, k * 4 + (k === 2 ? 3 : 4)).sort((a, b) => bannerData.clubs.findIndex((c) => c.team.name === a) - bannerData.clubs.findIndex((c) => c.team.name === b)) })));
+      }
+      const recentIds = new Set(wks.slice(0, 4).flatMap((w) => w.games.map((g) => g.id)));
+      const cands = (saverGames ?? []).filter((g) => recentIds.has(g.id) && replayable(g)).sort((a, b) => notability(b) - notability(a)).slice(0, 10);
+      nflDecks.push(sample(cands, 3).map((game): Scene => ({ kind: 'gameweek', game })));
+    }
+    // dev only: ?saverScene=<kind> plays just that scene kind (Scoreboard Sunday, ringsweep, gameweek...)
+    const only = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('saverScene') : null;
+    if (only) {
+      const mine = nflDecks.flat().filter((s) => s.kind === only);
+      if (mine.length) return [...mine, ...mine, ...mine];
     }
     const pas: Scene[] = spotifyOn ? [{ kind: 'pa' }, { kind: 'pa' }, { kind: 'pa' }] : [];
     const decks = (IS_NFL ? [spot, ...nflDecks, pas, flyovers, cardScenes, duels, champs, recs, lineups, dyks, takeScenes, rising, farewell, chases, market, gauntlet] : [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters]).filter((d) => d.length);
@@ -2308,8 +2349,20 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     };
   }, [resting]);
 
+  const saverDeps: SaverDeps = {
+    Stadium,
+    lookFor: (club, roll) => lookFor(club, roll, live),
+    sprites,
+    lookup: makeLookup(players),
+  };
   const render = (s: Scene) => {
     switch (s.kind) {
+      case 'scoreboard':
+        return <ScoreboardScene week={s.week} deps={saverDeps} />;
+      case 'ringsweep':
+        return bannerData ? <RingSweepScene data={bannerData} allTime={allTime} picks={s.picks} deps={saverDeps} /> : null;
+      case 'gameweek':
+        return <GameWeekScene game={s.game} deps={saverDeps} />;
       case 'nflrow':
         return <RowScene kick={s.kick} title={s.title} sub={s.sub} items={s.items} sprites={sprites} roll={s.roll} club={s.club} />;
       case 'nflscores':

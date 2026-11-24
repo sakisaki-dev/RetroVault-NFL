@@ -18,6 +18,10 @@ const ScreensaverHost = () => {
 
   // Start now (the menu's button) works on any screen; only the idle start checks for a big screen
   useEffect(() => onScreensaverStart(() => setOn(true)), []);
+  // dev only: ?saverScene=<kind> starts the show at once on that scene kind
+  useEffect(() => {
+    if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('saverScene')) setOn(true);
+  }, []);
   // back from Spotify's sign-in (the screensaver's now playing card): finish it and tidy the address
   useEffect(() => {
     void completeSpotifyLogin();
