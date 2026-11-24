@@ -78,6 +78,7 @@ def main():
     ix = L.load_index(SPR)
     clubs = ix["clubs"]
     font = {tuple(k.split("|")): v for k, v in ix["numberFont"].items()}
+    J.set_kit(ix)
     extras = json.loads(Path(args.extras).read_text())
     sig = extras.get("signatureTeams", {})
     nums = extras.get("realNumbers", {})
@@ -195,25 +196,6 @@ def main():
                     a[y, x, :3] = night
         return a
 
-    def erase_draw_number(a, number):
-        """The donor's number out of the chest (every number-colour pixel, the band accent in rows 34-35), his own in."""
-        jersey, nc = J.chest(a)
-        band = J.band_of(a) or {}
-        for y in range(33, 40):
-            for x in range(26, 38):
-                if not a[y, x, 3]:
-                    continue
-                c = tuple(int(v) for v in a[y, x, :3])
-                if y in band and band[y][1] and c == band[y][1]:
-                    a[y, x, :3] = band[y][0]
-                elif y not in band and nc and c == nc:
-                    a[y, x, :3] = jersey
-        if number is not None and nc is not None:
-            for (y, x) in J.glyph_cells(font, number) or []:
-                if a[y, x, 3] and tuple(int(v) for v in a[y, x, :3]) == (band[y][0] if y in band else jersey):
-                    a[y, x, :3] = (band[y][1] or nc) if y in band else nc
-        return a
-
     made = collections.Counter()
     new_entries = {}
 
@@ -315,9 +297,11 @@ def main():
                 donor = load(src)
                 skin = skin_set(donor)
                 if want_kit:
-                    a = erase_draw_number(donor.copy(), number)
-                    jersey, _ = J.chest(a)
-                    a = blackout(a, skin, jersey or (40, 44, 60), pose, tpl)
+                    # the donor's number out through his standing pose's reading of the kit (a ball held across the chest
+                    # must not fool the number colour), his own in; no number known: a blank jersey
+                    ref = J.ref_of(load(L.fname(de["uid"], clubs[dclub], 1)).astype(int), dclub)
+                    a = J.bake(donor.copy(), number, font, ref) if ref else donor.copy()
+                    a = blackout(a, skin, (ref or {}).get("jersey") or (40, 44, 60), pose, tpl)
                     store.put(L.fname(uid, clubs[dclub], pose), a)
                     kits.setdefault(dclub, []).append(pose)
                 if window:

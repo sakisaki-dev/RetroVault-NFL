@@ -25,7 +25,13 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+import sys
+
+import numpy as np
 from PIL import Image
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "nfl"))
+import jersey_numbers as J  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 NFL = ROOT / "public" / "private-sprites" / "nfl"
@@ -160,6 +166,8 @@ class SpriteSet:
         """Writes every wanted sprite; returns {url: url or None when the site has no sprite for him}. Deletes stale
         files. The widget draws its layout without a sprite where one is missing."""
         OUT.mkdir(parents=True, exist_ok=True)
+        if (NFL / "index.json").exists():
+            J.set_kit(json.loads((NFL / "index.json").read_text()))
         names = sorted(self.jobs)
         result: dict[str, str | None] = {}
         written = set()
@@ -172,7 +180,9 @@ class SpriteSet:
                 img = figure(pick, palettes)
                 v = self.jobs[n]["variant"]
                 if v == "left":
-                    img = img.transpose(Image.FLIP_LEFT_RIGHT)  # x -> 63 - x keeps the centre line on 31.5
+                    # x -> 63 - x keeps the centre line on 31.5; his number is put back the right way round
+                    club_n = self.jobs[n]["club"]
+                    img = Image.fromarray(J.mirror_keep_number(np.asarray(img.convert("RGBA")).astype(int), club_n).astype(np.uint8), "RGBA") if img.size == (64, 64) else img.transpose(Image.FLIP_LEFT_RIGHT)
                 elif v == "sil":
                     img = silhouette(img)
                 save(img, OUT / n)

@@ -717,7 +717,7 @@ const Figure = ({ player, sprites, action = 'idle', scale = 1, mirror = false }:
   <span className={mirror ? 'sv-fig sv-fig--mirror' : 'sv-fig'} style={{ '--sv-scale': scale } as CSSProperties}>
     <span className="sv-fig__shadow" />
     {sprites ? (
-      <GameSprite player={player} kind="figure" size="l" action={action} className="sv-fig__sprite" />
+      <GameSprite player={player} kind="figure" size="l" action={action} flip={mirror} className="sv-fig__sprite" />
     ) : (
       <span className="sv-fig__logo">
         <TeamLogo team={bannerTeamOf(player)} size={120} decorative />

@@ -186,7 +186,7 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
     const parts = displayName(p.name).split(' ');
     return (
       <li key={p.gsis + p.name} className={cn('gm-mu__fig', side === 1 && 'gm-mu__fig--home', side === 0 ? 'mo-run-l' : 'mo-run-r')} style={stag(i + 2)}>
-        <span className="gm-mu__spr">{cold && <i className="gm-breath" aria-hidden />}<SpriteOf p={p} g={g} celebrate={w === side && unitOf(p) === 'qb'} /></span>
+        <span className="gm-mu__spr">{cold && <i className="gm-breath" aria-hidden />}<SpriteOf p={p} g={g} flip={side === 1} celebrate={w === side && unitOf(p) === 'qb'} /></span>
         <NameStrip p={p} g={g} link={link} className="gm-mu__name">{parts.slice(1).join(' ') || p.name}</NameStrip>
       </li>
     );

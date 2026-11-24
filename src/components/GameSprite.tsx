@@ -56,6 +56,12 @@ export interface GameSpriteProps {
    * the sprite (a story's cover, a card). Only where the sprite stands for one league player outside the games.
    */
   peek?: boolean;
+  /**
+   * Face the other way (a home side in a head-to-head, the right of a VS). Never mirror a sprite with CSS: the number on
+   * his chest would read backwards. The NFL sprite is flipped in the pixels with the number put back the right way round
+   * (gameKitPaint.ts mirrorKeepNumber); the regular recolour has no number and just flips.
+   */
+  flip?: boolean;
   className?: string;
   style?: CSSProperties;
   // ---- v1 props, still read (other pages use them): kind 'face' = bust, 'body' = figure; pose → action; scale /
@@ -101,21 +107,21 @@ const useTicker = (on: boolean, fps: number) => {
  * (config/bodyTypes.ts) pixel for pixel (gameKitPaint.ts processSprite, cached per file x club x body). Null until
  * ready; the plain file when there is nothing to do.
  */
-const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string, silhouette?: string): string | null => {
+const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string, silhouette?: string, flip?: boolean, kit?: string): string | null => {
   const [out, setOut] = useState<{ key: string; url: string } | null>(null);
-  const plain = !!src && !paint && !rows && !cols && !silhouette && !(number !== undefined && numberClub);
-  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}|${silhouette ?? ''}` : '';
+  const plain = !!src && !paint && !rows && !cols && !silhouette && !flip && !(number !== undefined && numberClub);
+  const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}|${silhouette ?? ''}|${flip ? `f${kit ?? ''}` : ''}` : '';
   useEffect(() => {
     if (!key) return;
     let live = true;
     import('@/utils/gameKitPaint')
-      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub, silhouette }))
+      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit }))
       .then((url) => live && setOut({ key, url }))
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [key, src, paint, rows, cols, cx, foot, number, numberClub, silhouette]);
+  }, [key, src, paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit]);
   if (plain) return src;
   return out && out.key === key ? out.url : null;
 };
@@ -127,7 +133,7 @@ const useProcessed = (src: string | undefined, paint: string | undefined, rows: 
 const px = (extra?: CSSProperties): CSSProperties => ({ imageRendering: 'pixelated', ...extra });
 
 const GameSprite = (props: GameSpriteProps) => {
-  const { player, team, season, legend = false, showKit = false, peek = false, className, style } = props;
+  const { player, team, season, legend = false, showKit = false, peek = false, flip = false, className, style } = props;
   const kind = props.kind === 'face' ? 'bust' : props.kind === 'body' || !props.kind ? 'figure' : props.kind;
   const size: SpriteSize = props.size ?? (kind === 'bust' ? sizeOf(props.scale) : sizeOf(props.nflScale ?? props.scale)) ?? 'm';
   const action: SpriteAction = props.action ?? (props.pose ? LEGACY_ACTION[props.pose] ?? 'idle' : 'idle');
@@ -154,7 +160,7 @@ const GameSprite = (props: GameSpriteProps) => {
     () => bodyFor(`${position ?? ''}:${name}`, (sprites?.looks ?? sprites?.regular?.skins)?.[name]),
     [sprites, position, name],
   );
-  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub, nfl?.silhouette);
+  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub, nfl?.silhouette, flip, nfl?.kit);
 
   const regular = useMemo(() => {
     const r = sprites?.regular;
@@ -185,6 +191,7 @@ const GameSprite = (props: GameSpriteProps) => {
 
   if (nfl) {
     const src = shaped;
+    const cxs = flip ? 63 - nfl.cx : nfl.cx; // a mirrored figure's centre line
     if (kind === 'bust') {
       return (
         <span aria-hidden="true" {...peekAttrs} className={cn(cls, 'overflow-hidden')} style={{ width: BUST.w * u, height: BUST.h * u, ...style }}>
@@ -197,7 +204,7 @@ const GameSprite = (props: GameSpriteProps) => {
               draggable={false}
               className="absolute max-w-none"
               // a taller body lifts the head by its extra rows: the crop follows the head
-              style={px({ width: 64 * u, height: 64 * u, left: -Math.round((nfl.cx - BUST.w / 2) * u), top: -(BUST.y - body.rows) * u })}
+              style={px({ width: 64 * u, height: 64 * u, left: -Math.round((cxs - BUST.w / 2) * u), top: -(BUST.y - body.rows) * u })}
             />
           )}
         </span>
@@ -214,7 +221,7 @@ const GameSprite = (props: GameSpriteProps) => {
             draggable={false}
             className="absolute max-w-none"
             // centred on his legs and stood on the baseline, not on the canvas
-            style={px({ width: 64 * u, height: 64 * u, left: Math.round((32 - nfl.cx) * u), top: (BASELINE - 1 - nfl.foot) * u })}
+            style={px({ width: 64 * u, height: 64 * u, left: Math.round((32 - cxs) * u), top: (BASELINE - 1 - nfl.foot) * u })}
           />
         )}
         {tag}
@@ -233,14 +240,14 @@ const GameSprite = (props: GameSpriteProps) => {
           alt=""
           draggable={false}
           className="absolute max-w-none"
-          style={px({ width: img.w * s, height: img.h * s, left: Math.round(32 * u - (img.cx ?? img.w / 2) * s), top: BASELINE * u - ((img.foot ?? img.h - 1) + 1) * s })}
+          style={px({ width: img.w * s, height: img.h * s, left: Math.round(32 * u - (flip ? img.w - (img.cx ?? img.w / 2) : img.cx ?? img.w / 2) * s), top: BASELINE * u - ((img.foot ?? img.h - 1) + 1) * s, ...(flip ? { transform: 'scaleX(-1)' } : null) })}
         />
       </span>
     );
   }
   return (
     <span aria-hidden="true" {...peekAttrs} className={cls} style={{ width: img.w * u, height: img.h * u, ...style }}>
-      <img src={img.src} alt="" draggable={false} className="absolute left-0 top-0 max-w-none" style={px({ width: img.w * u, height: img.h * u })} />
+      <img src={img.src} alt="" draggable={false} className="absolute left-0 top-0 max-w-none" style={px({ width: img.w * u, height: img.h * u, ...(flip ? { transform: 'scaleX(-1)' } : null) })} />
     </span>
   );
 };

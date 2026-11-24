@@ -19,7 +19,7 @@ const Side = ({ club, star, kicker, side, players, onPlayer }: { club: string; s
         {team?.abbreviation ?? club.slice(0, 3).toUpperCase()}
       </span>
       <span className="rf-side__figure" aria-hidden="true">
-        {p && <GameSprite player={p} team={club} kind="figure" size="l" className="rf-side__sprite" />}
+        {p && <GameSprite player={p} team={club} kind="figure" size="l" flip={side === 'r'} className="rf-side__sprite" />}
         <span className="rf-side__logo">
           <TeamLogo team={team ?? club} size={84} decorative />
         </span>

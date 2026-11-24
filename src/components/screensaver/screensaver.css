@@ -993,9 +993,7 @@
 }
 
 /* ================= Duel: two of a position's greatest, squared up ================= */
-.sv-fig--mirror .sv-fig__sprite {
-  transform: scaleX(-1);
-}
+/* a mirrored figure is flipped by GameSprite (flip), so his number still reads the right way round */
 .sv-duel {
   position: absolute;
   inset: 0;

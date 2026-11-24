@@ -86,9 +86,7 @@
   position: relative;
   z-index: 1;
 }
-.rf-side--r .rf-side__sprite {
-  transform: scaleX(-1);
-}
+/* the right side faces left through GameSprite flip (never a CSS mirror: it would reverse his number) */
 .rf-side__logo {
   position: relative;
   z-index: 1;
