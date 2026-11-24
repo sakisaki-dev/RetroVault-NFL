@@ -142,7 +142,6 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         </span>
         {leader && <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>}
       </span>
-      {leader && hasSprites && <span aria-hidden="true" className="cw-turf" />}
       {hasSprites && sprites.length > 0 && (
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (

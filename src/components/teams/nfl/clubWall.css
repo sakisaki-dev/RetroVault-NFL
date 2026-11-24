@@ -72,7 +72,6 @@
   .cw-tile:not(.cw-tile--lead) .cw-last { max-width: calc(100% - 46px); white-space: nowrap; font-size: 9px; }
 }
 
-.cw-turf { position: absolute; left: 0; right: 0; bottom: 0; height: 40px; z-index: 0; pointer-events: none; background: repeating-linear-gradient(90deg, rgb(255 255 255 / .06) 0 28px, transparent 28px 56px), linear-gradient(180deg, rgb(46 125 50 / .75), rgb(27 82 33 / .95)); border-top: 2px solid rgb(255 255 255 / .35); }
 .cw-sprites--lead { bottom: 4px; }
 .cw-sprites--lead .cw-fig, .cw-sprites--lead .cw-fig { width: 128px; height: 128px; margin: 0 -28px; }
 .cw-fig { position: relative; }
@@ -110,7 +109,6 @@
 .cw-sprites--lead .cw-fig { width: calc(64px * var(--k)); height: calc(64px * var(--k)); margin: 0 -14px 0 0; }
 .cw-sprites--lead .cw-fig > * { transform: scale(var(--k)); transform-origin: 50% 100%; }
 .cw-sprites--lead .cw-fig:nth-child(2) { margin-top: 0; z-index: 1; }
-.cw-turf { left: 46%; height: 22px; border-top-width: 2px; border-radius: 0 0 0 0; }
 .cw-strips, .cw-board__strips { gap: 4px; }
 .cw-strip { min-height: 38px; padding: 5px 10px; }
 @media (max-width: 639px) {
@@ -152,7 +150,6 @@
   .cw-sprites--lead { width: 48%; right: 0; }
   .cw-sprites--lead .cw-fig { margin: 0 0 0 -28px; }
   .cw-sprites--lead .cw-fig:first-child { margin-left: 0; }
-  .cw-turf { left: 50%; }
 }
 
 /* ---- thin cards (owner: smaller / thinner, logo backgrounds like the scoreboards) ---- */
