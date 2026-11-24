@@ -1,12 +1,14 @@
 import { IS_NFL } from '@/config/edition';
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import SpritePlaceholder, { useNearViewport } from '@/components/SpritePlaceholder';
 import { cn } from '@/lib/utils';
 import { reducedMotion } from '@/utils/motion';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { bodyFor, rolePose } from '@/config/bodyTypes';
-import { freeAgentClub, realNumberOf, REGULAR_POSE, SPRITE_BASELINE, SPRITE_BUST, faceFor, nflSpriteFor, useGameSprites, type BodyPose, type FaceSubject, type SpriteAction } from '@/utils/gameSprites';
+import { freeAgentClub, realNumberOf, REGULAR_POSE, SPRITE_BASELINE, SPRITE_BUST, faceFor, nflSpriteFor, spritePending, useGameSprites, useSpritesLoading, type BodyPose, type FaceSubject, type SpriteAction } from '@/utils/gameSprites';
 import { displayName } from '@/utils/displayName';
+import { resolveSuffixKey } from '@/utils/nameSuffix';
 
 /**
  * Retro Bowl's own sprite for a player (the owner's private sprites, src/utils/gameSprites.ts). Renders nothing when
@@ -107,21 +109,29 @@ const useTicker = (on: boolean, fps: number) => {
  * (config/bodyTypes.ts) pixel for pixel (gameKitPaint.ts processSprite, cached per file x club x body). Null until
  * ready; the plain file when there is nothing to do.
  */
-const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string, silhouette?: string, flip?: boolean, kit?: string): string | null => {
+const useProcessed = (src: string | undefined, paint: string | undefined, rows: number, cols: number, cx: number, foot: number, number?: number, numberClub?: string, silhouette?: string, flip?: boolean, kit?: string, near = true): string | null => {
   const [out, setOut] = useState<{ key: string; url: string } | null>(null);
   const plain = !!src && !paint && !rows && !cols && !silhouette && !flip && !(number !== undefined && numberClub);
   const key = src && !plain ? `${src}|${paint ?? ''}|${rows},${cols}|${cx},${foot}|${number ?? ''}|${numberClub ?? ''}|${silhouette ?? ''}|${flip ? `f${kit ?? ''}` : ''}` : '';
   useEffect(() => {
-    if (!key) return;
+    // not near the screen yet (a long list, a collapsed panel): its files are not asked for until it is
+    if (!key || !near) return;
     let live = true;
+    let release: (() => void) | undefined;
     import('@/utils/gameKitPaint')
-      .then((m) => m.processSprite(src!, { paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit }))
-      .then((url) => live && setOut({ key, url }))
+      .then((m) => {
+        if (!live) return undefined;
+        const h = m.processSpriteHeld(src!, { paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit });
+        release = h.release;
+        return h.promise;
+      })
+      .then((url) => live && url && setOut({ key, url }))
       .catch(() => undefined);
     return () => {
       live = false;
+      release?.();
     };
-  }, [key, src, paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit]);
+  }, [key, near, src, paint, rows, cols, cx, foot, number, numberClub, silhouette, flip, kit]);
   if (plain) return src;
   return out && out.key === key ? out.url : null;
 };
@@ -160,17 +170,29 @@ const GameSprite = (props: GameSpriteProps) => {
     () => bodyFor(`${position ?? ''}:${name}`, (sprites?.looks ?? sprites?.regular?.skins)?.[name]),
     [sprites, position, name],
   );
-  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub, nfl?.silhouette, flip, nfl?.kit);
+  const [boxRef, near] = useNearViewport();
+  const shaped = useProcessed(nfl?.src, nfl?.paint, nfl ? body.rows : 0, nfl ? body.cols : 0, nfl?.cx ?? 31.5, nfl?.foot ?? 58, nfl?.numberClub ? realNumberOf(`${position ?? ''}:${name}`) : undefined, nfl?.numberClub, nfl?.silhouette, flip, nfl?.kit, near);
+  // the indexes (or his shard) are still loading: his box stands with its placeholder rather than collapsing, or showing a stand-in he doesn't wear
+  const indexLoading = useSpritesLoading();
+  const shardWaiting = useMemo(() => {
+    if (kind === 'helmet' || legend || !sprites?.nfl) return false;
+    const key = `${position ?? ''}:${name}`;
+    return spritePending(sprites.nfl, IS_NFL ? resolveSuffixKey(sprites.nfl.players, key) : key);
+  }, [sprites, kind, legend, position, name]);
+  const [loadedSrc, setLoadedSrc] = useState('');
+  const onImg = (src: string) => (el: HTMLImageElement | null) => {
+    if (el?.complete && el.naturalWidth) setLoadedSrc(src);
+  };
 
   const regular = useMemo(() => {
     const r = sprites?.regular;
-    if (!r || nfl || legend) return [];
+    if (!r || nfl || legend || shardWaiting) return [];
     const face = faceFor({ name, position, spriteSkin, gameFace }, r.skins);
     if (kind === 'helmet') return [r.art.helmetImage(r, club)];
     if (kind === 'bust') return [r.art.facePortrait(r, face, club)];
     const frames = r.art.bodyFrames(r, face, club, REGULAR_POSE[action]);
     return action === 'idle' ? frames.slice(0, 1) : frames;
-  }, [sprites, nfl, legend, kind, club, action, name, position, spriteSkin, gameFace]);
+  }, [sprites, nfl, legend, shardWaiting, kind, club, action, name, position, spriteSkin, gameFace]);
 
   const tick = useTicker(regular.length > 1, action === 'run' ? 10 : 6);
   const peekKey = peek && !legend && position && name ? `${position}:${name}` : undefined;
@@ -194,9 +216,12 @@ const GameSprite = (props: GameSpriteProps) => {
     const cxs = flip ? 63 - nfl.cx : nfl.cx; // a mirrored figure's centre line
     if (kind === 'bust') {
       return (
-        <span aria-hidden="true" {...peekAttrs} className={cn(cls, 'overflow-hidden')} style={{ width: BUST.w * u, height: BUST.h * u, ...style }}>
+        <span ref={boxRef} aria-hidden="true" {...peekAttrs} className={cn(cls, 'overflow-hidden')} style={{ width: BUST.w * u, height: BUST.h * u, ...style }}>
+          {!(src && loadedSrc === src) && <SpritePlaceholder bust />}
           {src && (
             <img
+              ref={onImg(src)}
+              onLoad={() => setLoadedSrc(src)}
               src={src}
               alt=""
               loading="lazy"
@@ -211,9 +236,12 @@ const GameSprite = (props: GameSpriteProps) => {
       );
     }
     return (
-      <span aria-hidden="true" data-unit={u} {...peekAttrs} className={cls} style={{ width: 64 * u, height: 64 * u, ...style }}>
+      <span ref={boxRef} aria-hidden="true" data-unit={u} {...peekAttrs} className={cls} style={{ width: 64 * u, height: 64 * u, ...style }}>
+        {!(src && loadedSrc === src) && <SpritePlaceholder />}
         {src && (
           <img
+            ref={onImg(src)}
+            onLoad={() => setLoadedSrc(src)}
             src={src}
             alt=""
             loading="lazy"
@@ -229,7 +257,19 @@ const GameSprite = (props: GameSpriteProps) => {
     );
   }
 
-  if (!regular.length) return null;
+  if (!regular.length) {
+    // no sprite yet, and one may still come: hold his box (kind helmet / legends draw nothing)
+    if (!(indexLoading || shardWaiting) || kind === 'helmet' || legend) return null;
+    return kind === 'bust' ? (
+      <span ref={boxRef} aria-hidden="true" {...peekAttrs} className={cn(cls, 'overflow-hidden')} style={{ width: BUST.w * u, height: BUST.h * u, ...style }}>
+        <SpritePlaceholder bust />
+      </span>
+    ) : (
+      <span ref={boxRef} aria-hidden="true" data-unit={u} {...peekAttrs} className={cls} style={{ width: 64 * u, height: 64 * u, ...style }}>
+        <SpritePlaceholder />
+      </span>
+    );
+  }
   const img = regular[tick % regular.length];
   if (kind === 'figure') {
     const s = 3 * u;

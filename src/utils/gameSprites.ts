@@ -1,3 +1,4 @@
+import { setSpriteCacheStamp } from '@/utils/spriteLoader';
 import { IS_NFL } from '@/config/edition';
 import { numberTables, setKitColors, setNumberTables, setSockTemplate, type KitColors } from '@/utils/kitColorTable';
 import { useSyncExternalStore } from 'react';
@@ -139,6 +140,8 @@ export const PRIVATE_BASE = `${import.meta.env.BASE_URL}private-sprites/`;
 
 let sprites: GameSprites | null = null;
 let started = false;
+/** Both sources have answered (or failed): until then a sprite box shows its loading mark instead of nothing. */
+let settled = false;
 const listeners = new Set<() => void>();
 const publish = (part: Partial<GameSprites>) => {
   sprites = { nfl: null, regular: null, looks: null, ...sprites, ...part };
@@ -190,8 +193,10 @@ export const loadGameSprites = (): void => {
   if (started || !ENABLED || typeof window === 'undefined') return;
   started = true;
   // the NFL index with the site's locked looks, together, so a locked body (Sherman Brandson) never draws twice
-  Promise.all([privateJson('nfl/core.json').then((core) => core ?? privateJson('nfl/index.json')), siteLooks()]).then(([nfl, looks]) => {
+  const nflJob = Promise.all([privateJson('nfl/core.json').then((core) => core ?? privateJson('nfl/index.json')), siteLooks()]).then(([nfl, looks]) => {
     if (validNfl(nfl)) {
+      const x = nfl as { save?: unknown; saveYears?: unknown; size?: unknown };
+      setSpriteCacheStamp(JSON.stringify([x.save, x.saveYears, x.size, Object.keys((nfl as NflSprites).players).length]));
       setKitColors((nfl as { kitColors?: KitColors }).kitColors);
       setNumberTables(nfl as Parameters<typeof setNumberTables>[0]);
       setSockTemplate((nfl as { sockTemplate?: Record<string, string[]> }).sockTemplate);
@@ -200,7 +205,7 @@ export const loadGameSprites = (): void => {
       publish({ nfl, looks });
     }
   });
-  privateJson('index.json')
+  const regularJob = privateJson('index.json')
     .then(async (index) => {
       if (!validIndex(index)) return;
       const [faces, bodies, helmet] = await Promise.all([index.faces.file, index.bodies.file, index.helmet.file].map((f) => loadImage(PRIVATE_BASE + f)));
@@ -211,7 +216,17 @@ export const loadGameSprites = (): void => {
     .catch(() => {
       /* no regular sheets: callers fall back silently */
     });
+  Promise.allSettled([nflJob, regularJob]).then(() => {
+    settled = true;
+    listeners.forEach((l) => l());
+  });
 };
+
+/** True while the sprite indexes are still loading on a machine that has them (never on the public site). */
+export const SPRITES_ENABLED = ENABLED;
+const loadingSnapshot = () => ENABLED && !settled;
+/** The sprite indexes are still on their way: a sprite box draws its placeholder, not nothing (GameSprite, CoachSprite). */
+export const useSpritesLoading = (): boolean => useSyncExternalStore(subscribe, loadingSnapshot, () => false);
 
 
 // ---------- Sharded player index (retirees): fetched when a sprite asks for one ----------
