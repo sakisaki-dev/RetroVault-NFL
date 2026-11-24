@@ -342,6 +342,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
             <b>{fmtFeature(f, slot.value)}</b>
             <span>
               {f.label} · {ordinal(pct)}
+              {f.proxyFor?.(slot.player) ? ` · est. from ${f.proxyFor(slot.player)}` : ''}
             </span>
           </span>
         </span>
@@ -429,6 +430,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
             <span>
               {f.label}
               {ok ? ` · ${ordinal(pct)}` : ''}
+              {ok && f.proxyFor?.(landed) ? ` · est. from ${f.proxyFor(landed)}` : ''}
             </span>
           </span>
         </span>
@@ -665,10 +667,10 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
     return () => window.clearTimeout(t);
   }, [advReady, pos]);
   const features = useMemo(() => {
-    const f = pos ? buildFeatures(pos, adv) : [];
+    const f = pos ? buildFeatures(pos, adv, players) : [];
     if (pos) setTraitsInPlay(pos, f); // the spin prefers players who have data for an open trait
     return f;
-  }, [pos, adv]);
+  }, [pos, adv, players]);
   const pool = useMemo(() => (pos ? spinPool(players, pos) : []), [players, pos]);
 
   const [mystery, setMystery] = useState(false);
