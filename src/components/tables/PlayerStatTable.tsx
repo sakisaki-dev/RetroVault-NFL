@@ -224,7 +224,7 @@ function PlayerStatTable<T extends Player>({
                   <SortHeader key={m.key} k={m.key} label={m.label} tip={m.tip} sort={sort} onToggle={toggleSort} />
                 ))}
                 <SortHeader k="szn" label="SZN" tip="Season OVR (62–99): this season's line, ranked within the position among players who played it. Active players only" sort={sort} onToggle={toggleSort} />
-                <SortHeader k="car" label="CAR" tip={IS_NFL ? "Career rating (62–99): 70% efficiency (era-adjusted, shrunk by sample) + 30% production and honours, ranked among qualified starters" : "Career OVR (62–99): career production and awards, ranked within the position (active and retired)"} sort={sort} onToggle={toggleSort} />
+                <SortHeader k="car" label="CAR" tip={IS_NFL ? "Career rating (62–99): 50% efficiency (era-adjusted, shrunk by sample) + 50% production and honours, ranked among qualified starters" : "Career OVR (62–99): career production and awards, ranked within the position (active and retired)"} sort={sort} onToggle={toggleSort} />
                 <SortHeader k="skill" label="Skill" tip="Skill rating: per-game skills graded against the position (S to F), ignores career length and awards" sort={sort} onToggle={toggleSort} />
               </tr>
             </thead>

@@ -16,7 +16,7 @@ Owner-approved model (2026-11-23, experiments rounds 1-3): career score = 70% EF
                and seasons as a qualified starter (longevity, 1999 on), 30%: percentiles among qualified players.
   honours      raw points, uncapped (MVP 30, OPOY / DPOY 18, SB MVP 12, ring 10, ROY 2), scaled to the position's maximum
                among qualified players, zero = 0.
-  score        0.7 x efficiency + 0.3 x (0.5 production + 0.5 honours); a player with no weekly data (the classics, partial weekly careers) takes his efficiency from CAREER-TOTAL rates against peers within 5 years, flagged.
+  score        0.5 x efficiency + 0.5 x (0.5 production + 0.5 honours) (owner tested 70/30, 60/40, 50/50 on 2026-11-23; 50/50 had the best Hall of Fame AUC on retirees); a career that starts before 1999 takes its efficiency from CAREER-TOTAL rates against the real league averages of the seasons he played, flagged.
   CAR          the score's percentile among qualified players (S = top 10%), then rating = 62 + 37 x (pct / 100) ^ 2.5.
 Qualified = QB 1,500 attempts, RB 500 carries, WR / TE 150 catches, LB / DB / DL 48 games. Offensive linemen have no weekly
 data and keep the League Score rating (src/config/ovr.ts). Deterministic. The site only reads the number.
@@ -24,6 +24,7 @@ data and keep the League Score rating (src/config/ovr.ts). Deterministic. The si
 import csv
 import gzip
 import json
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -36,6 +37,7 @@ CACHE = ROOT / "data" / "nfl-cache"
 OUT = ROOT / "public" / "data" / "nfl" / "career_rating.json"
 NOW = 2026
 ZERO_K = 5000
+EFF_SHARE = float(os.environ.get("RV_EFF_SHARE", 0.5))   # efficiency's share of the career score; production and honours split the rest evenly
 
 players = json.loads((ROOT / "data/y80/players.json").read_text())
 byk = {f"{p['pos']}:{p['n']}": p for p in players}
@@ -554,13 +556,13 @@ for pos in POS:
         prod = 0.7 * pctof(Pq, prod_of(p)) + 0.3 * pctof(Lq, p.get("g") or 0)   # longevity = career games
         hon = 100.0 * honours(p) / hmax
         ph = 0.5 * prod + 0.5 * hon
-        score[k] = (0.7 * eff + 0.3 * ph) if eff is not None else ph
+        score[k] = (EFF_SHARE * eff + (1 - EFF_SHARE) * ph) if eff is not None else ph
         RES[k] = [None, eff, prod, hon, honours(p), 0 if full else 1]
     qs = np.sort([score[k] for k in q])
     for k in ks:
         RES[k][0] = pctof(qs, score[k])
 out = {"v": 1,
-       "about": "scripts/nfl/career_rating.py: career score = 0.7 efficiency (era-adjusted, reliability-shrunk, fitted weights) + 0.3 (0.5 production + 0.5 honours); p = [CAR percentile among qualified players, efficiency pct (null: career totals only), production pct, honours pct (points scaled to the position max), raw honours points, totals-only flag]",
+       "about": "scripts/nfl/career_rating.py: career score = 0.5 efficiency (era-adjusted, reliability-shrunk, fitted weights) + 0.5 (0.5 production + 0.5 honours); p = [CAR percentile among qualified players, efficiency pct (null: career totals only), production pct, honours pct (points scaled to the position max), raw honours points, totals-only flag]",
        "k": {pos: {st: round(float(K[(pos, st)]), 1) if K[(pos, st)] < 1e8 else None for st in STATS[pos]} for pos in POS},
        "weights": {pos: {st: round(w, 3) for st, w in W[pos].items() if w > 0} for pos in POS},
        "p": {k: [round(v[0], 1), None if v[1] is None else round(v[1], 1), round(v[2], 1), round(v[3], 1), v[4], v[5]] for k, v in sorted(RES.items()) if v[0] == v[0]}}
