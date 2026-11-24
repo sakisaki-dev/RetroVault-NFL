@@ -31,7 +31,7 @@ import { buildHash, useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
-import { StrengthStrip, SuperBowlStrip } from '../teams/nfl/TeamStrips';
+import ClubWall from '../teams/nfl/ClubWall';
 import { displayName } from '@/utils/displayName';
 
 type ConferenceFilter = 'all' | 'AFC' | 'NFC';
@@ -207,12 +207,7 @@ const TeamRankingsTab = () => {
       </header>
 
       {/* League overview: power ranking + dynasty timeline */}
-      {IS_NFL && teams.length > 0 && (
-        <div className="space-y-4">
-          {superBowls.length > 0 && <SuperBowlStrip superBowls={superBowls} openable={openable} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />}
-          <StrengthStrip teams={teams} records={records} superBowls={superBowls} onOpen={openClub} highlight={highlight} onHighlight={setHighlight} />
-        </div>
-      )}
+      {IS_NFL && teams.length > 0 && <ClubWall teams={teams} records={records} league={league} firstSeason={firstSeason} onOpen={openClub} />}
       {!IS_NFL && teams.length > 0 && (
         <div className="grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-7 min-w-0">
@@ -230,6 +225,7 @@ const TeamRankingsTab = () => {
       <TeamAdvanced />
 
       {/* Controls */}
+      {!IS_NFL && (
       <section aria-labelledby="franchises-heading" className="space-y-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <h2 id="franchises-heading" className="section-title text-2xl flex-1">
@@ -275,6 +271,7 @@ const TeamRankingsTab = () => {
           ))
         )}
       </section>
+      )}
 
       {/* Players with no club in the league sheet (free agents) */}
       {unassigned.length > 0 && (
