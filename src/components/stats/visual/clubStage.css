@@ -153,14 +153,15 @@
   }
 }
 
-/* ---- flat club-colour cards (owner: "don't do gradients here, use the team logo, colourful and fun") ---- */
+/* ---- flat club-colour cards (owner: "don't do gradients here, use the team logo, colourful and fun", then "too
+   bright, keep it a bit more subtle"): the club colour toned into the night panel, a club-colour top stripe ---- */
 .cs-flat {
-  background: var(--cs-flat, #1a2147) !important;
+  background: color-mix(in srgb, var(--cs-flat, #1a2147) 34%, #131a2e) !important;
   color: var(--cs-flat-ink, #fff);
-  border: 0;
-  border-top: 0;
+  border: 1px solid color-mix(in srgb, var(--cs-flat, #1a2147) 45%, transparent);
+  border-top: 3px solid var(--cs-flat, #1a2147);
   border-radius: 14px;
-  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.14) inset, 0 6px 0 rgb(0 0 0 / 0.28), 0 10px 20px rgb(0 0 0 / 0.35);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
 }
 .cs-flat::before {
   display: none;

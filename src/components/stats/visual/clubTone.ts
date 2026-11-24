@@ -17,7 +17,8 @@ const lightOf = (hsl: string) => parseFloat(hsl.trim().split(/[\s,]+/)[2] ?? '50
  */
 const flatVars = (primary: string, secondary: string) => {
   const flat = lightOf(primary) < 20 && lightOf(secondary) > lightOf(primary) ? secondary : primary;
-  return { '--cs-flat': `hsl(${flat})`, '--cs-flat-ink': lightOf(flat) > 50 ? '#10142a' : '#ffffff' };
+  // the card toned the colour into the night panel (clubStage.css .cs-flat), so chalk text always reads
+  return { '--cs-flat': `hsl(${flat})`, '--cs-flat-ink': '#ffffff' };
 };
 
 /** Gold, silver and bronze for the top three of a ranked list */
