@@ -66,7 +66,7 @@ const RATING_KEYS = new Set(['szn', 'car', 'skill']);
 /** Skill rating with its letter grade chip. */
 const SkillCell = ({ overall }: { overall?: Overall }) =>
   overall ? (
-    <span className="inline-flex items-center justify-end gap-1.5" title={`Skill ${overall.grade.grade} · ${Math.round(overall.pct)}th percentile at the position`}>
+    <span className="inline-flex items-center justify-end gap-1.5" title={`Career skill ${overall.grade.grade} · ${Math.round(overall.pct)}th percentile at the position (same as the Deep Dive's Career view)`}>
       <span className="rounded px-1 font-display text-xs font-extrabold text-[#0b1020]" style={{ background: overall.grade.color }}>
         {overall.grade.grade}
       </span>
@@ -227,7 +227,7 @@ function PlayerStatTable<T extends Player>({
                 ))}
                 <SortHeader k="szn" label="SZN" tip="Season OVR (62–99): this season's line, ranked within the position among players who played it. Active players only" sort={sort} onToggle={toggleSort} />
                 <SortHeader k="car" label={CAREER_LABEL} tip={IS_NFL ? "OVR, the career rating (62–99): 50% efficiency (era-adjusted, shrunk by sample) + 50% production and honours, ranked among qualified starters" : "Career OVR (62–99): career production and awards, ranked within the position (active and retired)"} sort={sort} onToggle={toggleSort} />
-                <SortHeader k="skill" label="Skill" tip="Skill rating: per-game skills graded against the position (S to F), ignores career length and awards" sort={sort} onToggle={toggleSort} />
+                <SortHeader k="skill" label="Skill" tip="Career skill rating: per-game skills and advanced factors graded against the position (S to F), ignores career length and awards. The Deep Dive's Career view shows the same grade; its This season view grades one season alone." sort={sort} onToggle={toggleSort} />
               </tr>
             </thead>
             <tbody>

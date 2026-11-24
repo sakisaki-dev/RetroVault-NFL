@@ -1,30 +1,34 @@
 import { useMemo } from 'react';
 import { useLeague } from '@/context/LeagueContext';
-import { playerKey } from '@/config/ovr';
-import { playerSkillGrades, type Overall } from '@/config/skillGrades';
+import { careerSkillOveralls, type Overall } from '@/config/skillGrades';
+import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 
 /*
- * One computation per league load: the Stats page, the player card and quick search all mount this hook, and each
- * tab switch remounts them, so the map is kept at module level for the current league data and data version.
+ * One computation per league load and advanced-data load: the Stats page, the player card, quick search and the Deep
+ * Dive all mount this hook, and each tab switch remounts them, so the map is kept at module level.
  */
-let cached: { data: unknown; version: number; map: Map<string, Overall> } | null = null;
+let cached: { data: unknown; version: number; adv: unknown; map: Map<string, Overall> } | null = null;
 
 /**
- * Skill rating for every league player (`POS:Name` → Overall): per-game skills graded against the position,
- * independent of career length and awards. Same math as Deep Dive and Build-a-Legend.
+ * Career skill rating for every league player (`POS:Name` → Overall): per-game skills graded against the position,
+ * independent of career length and awards, folded with the advanced factors where he has them and ranked among players
+ * with the same data coverage (config/skillGrades.ts careerSkillOveralls). The one number the table, search, cards and
+ * the Deep Dive's Career scope all show.
  */
 export const useSkillRatings = (): Map<string, Overall> => {
   const { getAllPlayers, dataVersion, careerData } = useLeague();
+  const adv = useAdvanced();
   return useMemo(() => {
-    if (cached && cached.data === careerData && cached.version === dataVersion) return cached.map;
+    if (cached && cached.data === careerData && cached.version === dataVersion && cached.adv === adv) return cached.map;
     const league = getAllPlayers().filter((p) => !(p as { isRealLegend?: boolean }).isRealLegend);
-    const out = new Map<string, Overall>();
-    league.forEach((p) => {
-      const o = playerSkillGrades(league, p).overall;
-      if (o) out.set(playerKey(p), o);
-    });
-    if (careerData) cached = { data: careerData, version: dataVersion, map: out };
+    const out = careerSkillOveralls(
+      league,
+      (key) => advancedPcts(adv, key, 'c'),
+      // a position's rows have landed once any of its players is in the file
+      (pos) => !!adv && Object.keys(adv.p).some((k) => k.startsWith(`${pos}:`)),
+    );
+    if (careerData) cached = { data: careerData, version: dataVersion, adv, map: out };
     return out;
     // dataVersion bumps when the league reloads or a player is edited
-  }, [getAllPlayers, dataVersion, careerData]);
+  }, [getAllPlayers, dataVersion, careerData, adv]);
 };

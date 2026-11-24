@@ -5,6 +5,7 @@ import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
 import { careerPool, careerPoolLabel, seasonPoolLabel, foldAdvanced, gradeFor, ovrFromPercentile, percentileOf, playerSkillGrades, tierFor } from '@/config/skillGrades';
 import { careerRatingOf } from '@/config/ovr';
 import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
+import { useSkillRatings } from '@/utils/useSkillRatings';
 import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
 import DdAdvancedFactors from './DdAdvancedFactors';
@@ -48,25 +49,28 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   // NFL: the advanced factors of the shown scope count as much as the classic traits (skillGrades.ts foldAdvanced)
   const adv = useAdvanced(player.position);
   const scope = useSeason ? String(seasonOvr?.season) : 'c';
-  // The career overall is the classic overall folded with the advanced factors, then RE-RANKED among the qualified
-  // starters (the fold of two percentiles squeezes toward the middle, so S would otherwise be rare): S stays the top 10%.
+  // Career scope: the one career rating the Players table, search and cards show (useSkillRatings: classic overall folded
+  // with the advanced factors, ranked among players with the same data coverage), so the two never disagree.
+  // This season scope: its own computation (a different number by design), folded and re-ranked in that season's pool.
+  const careerRatings = useSkillRatings();
   const foldedPool = useMemo(() => {
-    const set = useSeason ? seasonPlayers : players;
-    const pool = IS_NFL && adv ? careerPool(set, player.position) : null;
+    if (!useSeason) return null;
+    const pool = IS_NFL && adv ? careerPool(seasonPlayers, player.position) : null;
     if (!pool) return null;
     return pool
-      .map((p) => foldAdvanced(playerSkillGrades(set, p).overall, advancedPcts(adv, playerKey(p), useSeason ? String(seasonOvr?.season) : 'c'))?.pct)
+      .map((p) => foldAdvanced(playerSkillGrades(seasonPlayers, p).overall, advancedPcts(adv, playerKey(p), String(seasonOvr?.season)))?.pct)
       .filter((x): x is number => typeof x === 'number')
       .sort((a, b) => a - b);
-  }, [adv, useSeason, players, seasonPlayers, seasonOvr, player.position]);
+  }, [adv, useSeason, seasonPlayers, seasonOvr, player.position]);
   const grades = useMemo(() => {
+    if (!useSeason) return IS_NFL ? { ...base, overall: careerRatings.get(key) ?? base.overall } : base;
     if (!(IS_NFL && adv)) return base;
     const folded = foldAdvanced(base.overall, advancedPcts(adv, key, scope));
     if (!folded || !foldedPool) return { ...base, overall: folded };
     const pct = percentileOf(foldedPool, folded.pct);
     const grade = gradeFor(pct) ?? folded.grade;
     return { ...base, overall: { ...folded, pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) } };
-  }, [base, adv, key, scope, foldedPool]);
+  }, [base, adv, key, scope, foldedPool, useSeason, careerRatings]);
   const label = seasonOvr ? seasonLabel(seasonOvr.season) : 'This season';
 
   return (
