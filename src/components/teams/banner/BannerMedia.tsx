@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from 'react';
 import TeamLogo from '@/components/brand/TeamLogo';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import type { BannerData } from './useBannerData';
 import { Counts, Figure, Flashes, plateOf, stars, Wordmark } from './parts';
 
@@ -62,7 +62,7 @@ const BannerMedia = ({ data }: { data: BannerData }) => {
               <span className="bn4-step">
                 <i>{rk}</i>
                 <TeamLogo team={c.team} size={16} decorative />
-                <b>{c.star ? displayName(c.star.name).split(' ').slice(-1)[0] : c.team.name}</b>
+                <b>{c.star ? surnameOf(c.star.name) : c.team.name}</b>
                 <em>{stars(c.titles)}</em>
               </span>
             </span>

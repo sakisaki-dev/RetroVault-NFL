@@ -23,7 +23,7 @@ import {
   type SixDegEdge,
   type SixDegPuzzle,
 } from './sixDegreesGraph';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 const BEST_KEY = 'sixdeg:best';
 const RECENT_TARGETS = 6;
@@ -65,11 +65,7 @@ const LinkLine = ({ edge, pending, label, trend }: { edge?: SixDegEdge | null; p
   );
 };
 
-const nameParts = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.indexOf(' ');
-  return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
-};
+const nameParts = (rawName: string) => firstAndLast(rawName);
 
 /** A player as a route token in his club colours (best-known club): logo, name, position and OVR. */
 const Token = ({ p, label, ovr, tone, className }: { p: GamePlayer; label: string; ovr: number | null; tone?: 'start' | 'goal'; className?: string }) => {

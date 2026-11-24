@@ -40,7 +40,7 @@ import {
   type Overall,
   type Slot,
 } from './buildLegendLogic';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const BEST_KEY = 'build:best';
 const CLONES_KEY = 'build:clones';
@@ -160,7 +160,7 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
             <tr>
               <th scope="col">Trait</th>
               <th scope="col">You</th>
-              <th scope="col">{displayName(top.player.name).split(' ').slice(-1)[0]}</th>
+              <th scope="col">{surnameOf(top.player.name)}</th>
               <th scope="col">Taken from</th>
             </tr>
           </thead>
@@ -220,7 +220,7 @@ const TickNumber = ({ value }: { value: number }) => {
 };
 
 
-const surname = (p: Player) => displayName(p.name).split(' ').slice(-1)[0];
+const surname = (p: Player) => surnameOf(p.name);
 /** A player's club colours (his best-known club), or the sealed purple in Mystery mode. */
 const SEALED_STYLE: TeamStyle = { ...MYSTERY_STYLE, c1: '#5b3d8f', c2: '#e0a3ff', text: '#ffffff' };
 const styleOf = (p: Player | null | undefined, sealed = false): TeamStyle => (p && !sealed ? teamStyle(bannerTeamOf(p)) : SEALED_STYLE);

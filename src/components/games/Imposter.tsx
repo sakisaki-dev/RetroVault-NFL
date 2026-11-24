@@ -13,7 +13,7 @@ import { buildTraits, levelFor, makeImposterRound, type ImposterRound } from './
 import { Hud, HudStat, Pips, prefersReducedMotion, teamLook, useRevealClock } from './rosterKit';
 import HowToStrip from './HowToStrip';
 import './imposter.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 const BEST_KEY = 'imposter:best';
 const LEVEL_NAMES = { 1: 'Rookie', 2: 'Pro', 3: 'All-Pro' } as const;
@@ -21,10 +21,9 @@ const RECENT_FAMILIES = 3;
 /** Streak where the next level starts (see levelFor) */
 const NEXT_LEVEL_AT = { 1: 5, 2: 12 } as const;
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.lastIndexOf(' ');
-  return i > 0 ? [name.slice(0, i), name.slice(i + 1)] : ['', name];
+const splitName = (rawName: string) => {
+  const { first, last } = firstAndLast(rawName);
+  return [first, last];
 };
 
 const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<string, number> }) => {

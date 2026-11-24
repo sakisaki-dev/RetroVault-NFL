@@ -1,16 +1,9 @@
 import type { Player } from '@/types/player';
+import { firstAndLast } from '@/utils/displayName';
 import { ovr, ovrAgainst, playerKey } from '@/config/ovr';
 
-const SUFFIXES = new Set(['jr', 'jr.', 'sr', 'sr.', 'ii', 'iii', 'iv', 'v']);
-
-/** "Patrick Surtain II" -> { first: "Patrick", last: "Surtain II" }; one-word names are all "last". */
-export const splitPlayerName = (name: string): { first: string; last: string } => {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length <= 1) return { first: '', last: parts[0] ?? '' };
-  let cut = parts.length - 1;
-  if (SUFFIXES.has(parts[cut].toLowerCase()) && cut > 1) cut -= 1;
-  return { first: parts.slice(0, cut).join(' '), last: parts.slice(cut).join(' ') };
-};
+/** "Patrick Surtain II" -> { first: "Patrick", last: "Surtain" } (suffix dropped); one-word names are all "last". */
+export const splitPlayerName = (name: string): { first: string; last: string } => firstAndLast(name);
 
 const poolCache = new WeakMap<Player[], Map<string, number>>();
 

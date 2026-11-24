@@ -9,7 +9,7 @@ import { usePhone } from '@/hooks/usePhone';
 import type { CapRow, OfficeState } from '@/utils/clubOffice';
 import { Desk, Lamp, PickToken } from './board';
 import { peekProps } from '../peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /** Half-stars (1 to 10) as five stars. */
 export const Stars = ({ half, className }: { half: number; className?: string }) => {
@@ -159,7 +159,7 @@ const CapSheet = ({ state, rows, playerFor, onPlayerSelect }: CapSheetProps) => 
                   </span>
                   <span className="fo-payroll__plate">
                     <b>{r.p.salary}</b>
-                    <i>{displayName(r.name).split(' ').slice(-1)[0].replace(/^(II|III|Jr\.?)$/, displayName(r.name).split(' ').slice(-2, -1)[0])}</i>
+                    <i>{surnameOf(r.name)}</i>
                   </span>
                 </button>
               </li>

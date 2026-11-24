@@ -14,7 +14,7 @@ import { buildZones } from '../visual/zones';
 import { dotColors } from './compColors';
 import { peekProps } from '../../peek/peekProps';
 import type { SimilarityMap } from './compModel';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const GOLD = 'hsl(43 100% 62%)';
 const MAX_ZOOM = 6;
@@ -258,7 +258,7 @@ const CompMap = ({ map, ovrMap, selectedKey, topComps, overlayKey, onPick, wide,
       const isSel = p.key === selectedKey;
       const right = px < W * 0.75;
       const size = wide ? (isSel ? 15 : 12.5) : isSel ? 12 : 10.5;
-      const text = isSel || wide || view.k > 1.5 ? p.player.name : displayName(p.player.name).split(' ').slice(-1)[0];
+      const text = isSel || wide || view.k > 1.5 ? p.player.name : surnameOf(p.player.name);
       const width = text.length * size * (isSel ? 0.62 : 0.56);
       const x = px + (right ? 1 : -1) * (p.r + (isSel ? 15 : 6));
       const x0 = right ? x : x - width;

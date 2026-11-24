@@ -3,6 +3,7 @@ import { playerKey } from '@/config/ovr';
 import { gradeFor, percentileOf, playerSkillGrades, type GradeStep } from '@/config/skillGrades';
 import { pairSimilarity } from '@/config/advanced';
 import { findNFLTeam } from '@/utils/nflTeams';
+import { surnameOf } from '@/utils/displayName';
 
 /**
  * Team Lab engine: pure and React-free (unit-testable, bundled by a node sanity script).
@@ -826,17 +827,8 @@ const defLeader = (sp: SlotProfiles, rate: string) => DEF_SLOTS.map((id) => sp[i
 
 const IMPACT_W: Record<Impact, number> = { high: 300, med: 200, low: 100 };
 const last = (p: PlayerProfile) => splitLast(p.name);
-/** Surname for short calls: keeps particles ("Van Oxley", "De la Cruz") and suffixes ("Surtain II"). */
-const PARTICLES = new Set(['van', 'von', 'de', 'da', 'di', 'del', 'della', 'la', 'le', 'st', 'st.', 'mac', 'ter', 'du']);
-const SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
-const splitLast = (name: string) => {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length < 2) return name;
-  let i = parts.length - 1;
-  if (SUFFIX.test(parts[i]) && i > 1) i -= 1;
-  while (i > 1 && PARTICLES.has(parts[i - 1].toLowerCase())) i -= 1;
-  return parts.slice(i).join(' ');
-};
+/** Surname for short calls: keeps particles ("Van Oxley", "De la Cruz"), drops suffixes. */
+const splitLast = (name: string) => surnameOf(name);
 
 /** The 4th-down policy the text rules use: aggressive with a weak defense, conservative with an elite one. */
 export type FourthPolicy = 'aggressive' | 'standard' | 'conservative';

@@ -16,7 +16,7 @@ import { radarPair } from './compColors';
 import { MIN_RADAR_AXES, type PositionModel } from './compModel';
 import { SmallSampleChip } from './ddParts';
 import { isApproxTotals } from './DdRealComps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 type Overlay = 'comp' | 'avg' | 'none';
 const AVG_COLOR = 'hsl(226 20% 72%)';
@@ -373,7 +373,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           </>
         )}
         <p className="mt-auto text-[11px] text-muted-foreground">
-          Click a comp to overlay him on the hexagon; mini hexagons show the comp (colour) over {displayName(player.name).split(' ').slice(-1)[0]} (grey). Dive opens his report; the swords send the pair to
+          Click a comp to overlay him on the hexagon; mini hexagons show the comp (colour) over {surnameOf(player.name)} (grey). Dive opens his report; the swords send the pair to
           Head-to-Head.
         </p>
       </div>

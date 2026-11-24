@@ -18,7 +18,7 @@ import { POSITION_NAMES } from '@/utils/playerMeta';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { usePhone } from '@/hooks/usePhone';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 interface PlayerSearchSelectProps {
   players: Player[];
@@ -65,11 +65,7 @@ const bannerVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.indexOf(' ');
-  return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
-};
+const splitName = (rawName: string) => firstAndLast(rawName);
 
 /** One player as a mini version of his card banner: team gradient, jersey number plate, name, logo. */
 const MiniBanner = ({ player, number, ovr, compact = false }: { player: Player; number: number; ovr?: number; compact?: boolean }) => {

@@ -1,4 +1,5 @@
 import type { Player } from '@/types/player';
+import { stripSuffix } from '@/utils/nameSuffix';
 import { bannerTeamOf } from '@/utils/playerExtras';
 
 /**
@@ -60,7 +61,7 @@ export interface Mention {
 }
 
 const words = (text: string) => text.match(/[\p{L}][\p{L}.'’-]*/gu) ?? [];
-const lastOf = (p: Player) => nameKey(p.name).split(' ').slice(-1)[0];
+const lastOf = (p: Player) => stripSuffix(nameKey(p.name)).split(' ').slice(-1)[0];
 
 /** Full-name matches in a text, then last-name-only mentions of the players found (or tagged) */
 const scan = (text: string, ix: NameIndex, tagged: Player[], teams: string[], also: Iterable<Player> = []): Map<Player, number> => {

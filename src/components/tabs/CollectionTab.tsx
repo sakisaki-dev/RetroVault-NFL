@@ -73,7 +73,7 @@ import {
   resetCollection,
 } from '@/utils/collection';
 import PixelLoader from '@/components/ui/PixelLoader';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 // The Card designs gallery and the Art lab are their own chunks, loaded the first time they open
 const CardDesigns = lazy(() => import('@/components/collection/CardDesigns'));
@@ -428,7 +428,7 @@ const CollectionTab = () => {
         matchesQuery(c, bf.q),
     );
     const fr = (c: CardInfo) => (owned[c.key] ? finishRank(owned[c.key].best) : -1);
-    const surname = (c: CardInfo) => displayName(c.player.name).split(' ').slice(-1)[0];
+    const surname = (c: CardInfo) => surnameOf(c.player.name);
     const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
     let out = list;
     if (sort === 'ovr') out = [...list].sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0) || a.setNo - b.setNo);

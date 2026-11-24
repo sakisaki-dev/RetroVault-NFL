@@ -9,7 +9,7 @@ import type { Career } from './careerStory';
 import { BOX, HEADLINE, groupOf } from './statDefs';
 import MultiLine, { type LineSeries, type Marker } from './MultiLine';
 import { shortNum, yLabel } from './graphKit';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const OTHERS = [VIZ.series[0], VIZ.series[1], VIZ.series[2]];
 const posOf = (k: string) => k.slice(0, k.indexOf(':')) as Position;
@@ -37,14 +37,14 @@ const RaceChart = ({ player, career, league, idx, onIdx }: { player: Player; car
     const mine = line(career.points);
     const series: LineSeries[] = top.map((r, i) => ({
       key: r.k,
-      label: nameOf(r.k).split(' ').slice(-1)[0],
+      label: surnameOf(nameOf(r.k)),
       color: i < 3 ? OTHERS[i] : VIZ.muted,
       points: line(r.pts),
       width: 1.5,
       dash: i >= 3 ? '3 3' : undefined,
       peekKey: r.k,
     }));
-    series.push({ key, label: displayName(player.name).split(' ').slice(-1)[0], color: GOLD, points: mine, width: 3 });
+    series.push({ key, label: surnameOf(player.name), color: GOLD, points: mine, width: 3 });
     // where he passed each of them
     const markers: Marker[] = [];
     const passed: { k: string; year: number }[] = [];

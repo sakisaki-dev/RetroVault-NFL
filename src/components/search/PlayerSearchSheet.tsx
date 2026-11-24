@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
 import { memo, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type TouchEvent as RTouchEvent } from 'react';
 import { Clock, CornerDownLeft, Radio, Search, Shield, Star, X } from 'lucide-react';
@@ -83,11 +83,7 @@ const teamVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.indexOf(' ');
-  return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
-};
+const splitName = (rawName: string) => firstAndLast(rawName);
 
 interface RowProps {
   player: Player;

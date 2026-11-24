@@ -11,7 +11,7 @@ import { keyOf } from '../records';
 import { peekProps } from '../../peek/peekProps';
 import { dotColors } from './compColors';
 import { pairScores, type PositionModel } from './compModel';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 /**
@@ -245,7 +245,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       out.push({ x: anchor === 'start' ? x + 9 : x - 9, y: y + 3.5, text, anchor, gold });
     };
     if (view.meOk) tryPlace(px(view.me.x), py(view.me.y), player.name, true);
-    view.near.slice(0, wide ? 9 : 5).forEach((d) => tryPlace(px(d.x), py(d.y), displayName(d.p.name).split(' ').slice(-1)[0]));
+    view.near.slice(0, wide ? 9 : 5).forEach((d) => tryPlace(px(d.x), py(d.y), surnameOf(d.p.name)));
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view, W, H, wide]);

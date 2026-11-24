@@ -78,13 +78,7 @@ export const paletteFor = (player: GamePlayer, uniform?: Uniform): Palette => {
   };
 };
 
-const SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
-export const surnameOf = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.trim().split(/\s+/);
-  while (parts.length > 1 && SUFFIX.test(parts[parts.length - 1])) parts.pop();
-  return parts[parts.length - 1] ?? name;
-};
+export { surnameOf } from '@/utils/displayName';
 
 /** Small stable hash, for per-player variety (skin tone, sock stripes). */
 export const seedOf = (s: string) => {

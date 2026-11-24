@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import type { Player, Position } from '@/types/player';
 import { playerKey } from '@/config/ovr';
 import { gradeFor, percentileOf, type GradeStep } from '@/config/skillGrades';
@@ -573,11 +573,6 @@ export interface CallItem {
   why: string;
   tone: 'up' | 'down' | 'even';
 }
-const lastName = (rawN: string)  => {
-  const n = displayName(rawN);
-  const parts = n.split(' ');
-  return /^(jr\.?|sr\.?|ii|iii|iv)$/i.test(parts[parts.length - 1]) && parts.length > 1 ? parts[parts.length - 2] : parts[parts.length - 1];
-};
 export const identityOf = (s: NScore): { label: string; why: string } => {
   const u = s.units;
   const pass = u.passing.score;
@@ -609,25 +604,25 @@ export const callSheet = (ctx: NflCtx, l: NLineup, s: NScore, idx: Indices | nul
   const lean = u.passing.score - u.run.score;
   hit(
     lean >= 12,
-    { id: 'early', situation: 'Early downs', title: `Throw first: let ${lastName(qb.name)} work`, why: `Passing ${ordinal(u.passing.score)} percentile against a run game at ${ordinal(u.run.score)}; ${qb.name} throws for ${qb.stats.ya?.display ?? '—'} Y/A.`, tone: 'up' },
+    { id: 'early', situation: 'Early downs', title: `Throw first: let ${surnameOf(qb.name)} work`, why: `Passing ${ordinal(u.passing.score)} percentile against a run game at ${ordinal(u.run.score)}; ${qb.name} throws for ${qb.stats.ya?.display ?? '—'} Y/A.`, tone: 'up' },
     lean <= -12
-      ? { id: 'early', situation: 'Early downs', title: `Feed ${lastName(rb.name)} on first down`, why: `Run game ${ordinal(u.run.score)} percentile (${rb.stats.ypc?.display ?? '—'} Y/C) beats the passing game at ${ordinal(u.passing.score)}.`, tone: 'up' }
-      : { id: 'early', situation: 'Early downs', title: 'Mix run and pass; stay on schedule', why: `Passing ${ordinal(u.passing.score)} and run ${ordinal(u.run.score)} are close: set up the play action off ${lastName(rb.name)}.`, tone: 'even' },
+      ? { id: 'early', situation: 'Early downs', title: `Feed ${surnameOf(rb.name)} on first down`, why: `Run game ${ordinal(u.run.score)} percentile (${rb.stats.ypc?.display ?? '—'} Y/C) beats the passing game at ${ordinal(u.passing.score)}.`, tone: 'up' }
+      : { id: 'early', situation: 'Early downs', title: 'Mix run and pass; stay on schedule', why: `Passing ${ordinal(u.passing.score)} and run ${ordinal(u.run.score)} are close: set up the play action off ${surnameOf(rb.name)}.`, tone: 'even' },
   );
   hit(
     u.protection.score >= 60,
-    { id: 'third', situation: '3rd & long', title: 'Five- and seven-step drops: let routes develop', why: `Protection ${ordinal(u.protection.score)} percentile${idx ? `; ${lastName(qb.name)} takes ${idx.qbSk.toFixed(2)} sacks/G` : ''}.`, tone: 'up' },
-    { id: 'third', situation: '3rd & long', title: 'Quick game, screens, draws', why: `Protection is only ${ordinal(u.protection.score)} percentile${idx ? `; ${lastName(qb.name)} takes ${idx.qbSk.toFixed(2)} sacks/G` : ''}: get the ball out.`, tone: 'down' },
+    { id: 'third', situation: '3rd & long', title: 'Five- and seven-step drops: let routes develop', why: `Protection ${ordinal(u.protection.score)} percentile${idx ? `; ${surnameOf(qb.name)} takes ${idx.qbSk.toFixed(2)} sacks/G` : ''}.`, tone: 'up' },
+    { id: 'third', situation: '3rd & long', title: 'Quick game, screens, draws', why: `Protection is only ${ordinal(u.protection.score)} percentile${idx ? `; ${surnameOf(qb.name)} takes ${idx.qbSk.toFixed(2)} sacks/G` : ''}: get the ball out.`, tone: 'down' },
   );
   hit(
     u.explosive.score >= 60 && !!deepWr,
-    { id: 'deep', situation: 'Play action', title: `Shot to ${deepWr ? lastName(deepWr.name) : 'the best receiver'} off play action`, why: `Explosiveness ${ordinal(u.explosive.score)} percentile; ${deepWr?.name} averages ${deepWr?.stats.ypr?.display ?? '—'} yards a catch.`, tone: 'up' },
-    { id: 'deep', situation: 'Play action', title: 'Take the underneath throws', why: `Explosiveness is ${ordinal(u.explosive.score)} percentile: win with ${tes[0] ? lastName(tes[0].name) : 'short routes'} and tempo.`, tone: 'down' },
+    { id: 'deep', situation: 'Play action', title: `Shot to ${deepWr ? surnameOf(deepWr.name) : 'the best receiver'} off play action`, why: `Explosiveness ${ordinal(u.explosive.score)} percentile; ${deepWr?.name} averages ${deepWr?.stats.ypr?.display ?? '—'} yards a catch.`, tone: 'up' },
+    { id: 'deep', situation: 'Play action', title: 'Take the underneath throws', why: `Explosiveness is ${ordinal(u.explosive.score)} percentile: win with ${tes[0] ? surnameOf(tes[0].name) : 'short routes'} and tempo.`, tone: 'down' },
   );
   hit(
     u.redzone.score >= 55,
-    { id: 'rz', situation: 'Red zone', title: `Target ${redWr ? lastName(redWr.name) : 'the top receiver'} inside the 20`, why: `Red zone ${ordinal(u.redzone.score)} percentile; ${redWr?.name} scores on ${redWr?.stats.tdPerRec?.display ?? '—'} of his catches.`, tone: 'up' },
-    { id: 'rz', situation: 'Red zone', title: `Pound it in with ${lastName(rb.name)}`, why: `Red zone is ${ordinal(u.redzone.score)} percentile through the air; lean on ${rb.name} (${rb.stats.td16?.display ?? '—'} TD per 16).`, tone: 'down' },
+    { id: 'rz', situation: 'Red zone', title: `Target ${redWr ? surnameOf(redWr.name) : 'the top receiver'} inside the 20`, why: `Red zone ${ordinal(u.redzone.score)} percentile; ${redWr?.name} scores on ${redWr?.stats.tdPerRec?.display ?? '—'} of his catches.`, tone: 'up' },
+    { id: 'rz', situation: 'Red zone', title: `Pound it in with ${surnameOf(rb.name)}`, why: `Red zone is ${ordinal(u.redzone.score)} percentile through the air; lean on ${rb.name} (${rb.stats.td16?.display ?? '—'} TD per 16).`, tone: 'down' },
   );
   const rush = u.passRush.score;
   hit(

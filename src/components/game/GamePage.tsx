@@ -24,7 +24,7 @@ import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
 import './gameKit.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
 import { Reveal, ViewCount, stag, useReveal } from '@/components/motion/Reveal';
 
@@ -183,11 +183,11 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const revSb = useReveal<HTMLDivElement>();
   const revMu = useReveal<HTMLDivElement>();
   const fig = (p: GamePlayer, side: Side, i: number) => {
-    const parts = displayName(p.name).split(' ');
+    const lastNm = surnameOf(p.name);
     return (
       <li key={p.gsis + p.name} className={cn('gm-mu__fig', side === 1 && 'gm-mu__fig--home', side === 0 ? 'mo-run-l' : 'mo-run-r')} style={stag(i + 2)}>
         <span className="gm-mu__spr">{cold && <i className="gm-breath" aria-hidden />}<SpriteOf p={p} g={g} flip={side === 1} celebrate={w === side && unitOf(p) === 'qb'} /></span>
-        <NameStrip p={p} g={g} link={link} className="gm-mu__name">{parts.slice(1).join(' ') || p.name}</NameStrip>
+        <NameStrip p={p} g={g} link={link} className="gm-mu__name">{lastNm}</NameStrip>
       </li>
     );
   };
@@ -228,7 +228,7 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
           {ball && (
             <div className="gm-ball mo-pop" style={{ ['--tc' as string]: toneOf(ball.side === 0 ? g.away : g.home), ['--i' as string]: 8 }}>
               <span className="gm-mu__spr gm-ball__spr"><SpriteOf p={ball} g={g} celebrate /></span>
-              <NameStrip p={ball} g={g} link={link} className="gm-mu__name"><span className="gm-ball__k">Game ball</span> {displayName(ball.name).split(' ').slice(1).join(' ') || ball.name}</NameStrip>
+              <NameStrip p={ball} g={g} link={link} className="gm-mu__name"><span className="gm-ball__k">Game ball</span> {surnameOf(ball.name)}</NameStrip>
             </div>
           )}
         </div>
@@ -304,8 +304,7 @@ const shortLine = (p: GamePlayer, unit: Unit['def']['id']): string => {
 const Figure = ({ p, g, unit, link }: { p: GamePlayer; g: GameDetail; unit: Unit['def']['id']; link: Linker }) => {
   const abbr = p.side === 0 ? g.away : g.home;
   const href = link(p);
-  const parts = displayName(p.name).split(' ');
-  const last = parts.slice(1).join(' ') || p.name;
+  const last = surnameOf(p.name);
   const hot = impact(p.s) >= 8 || v(p.s, 'fantasy_points_ppr') >= 15;
   const inner = (
     <>

@@ -13,7 +13,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { tributeEntryOf, useLeagueContent, useTribute, type StoryStat, type Tribute, type TributeChapter, type TributeIndexEntry } from '@/utils/leagueContent';
 import './tribute.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 /**
@@ -230,7 +230,7 @@ const MarketCard = ({ c, journey, names }: { c: TributeChapter; journey: Tribute
           </p>
           {passed && other && (
             <p className="trib-chart__note">
-              {passed}: his card passed {names[other].split(' ').slice(-1)[0]}'s for the first time.
+              {passed}: his card passed {surnameOf(names[other])}'s for the first time.
             </p>
           )}
         </figure>
@@ -243,7 +243,7 @@ const MarketCard = ({ c, journey, names }: { c: TributeChapter; journey: Tribute
 
 const RivalCard = ({ c, subjectName, subjectTeam, rivalTeam }: { c: TributeChapter; subjectName: string; subjectTeam: string; rivalTeam: string }) => {
   const r = c.rival;
-  const last = (n: string) => n.split(' ').slice(-1)[0];
+  const last = surnameOf;
   return (
     <section className="trib-card trib-rival" aria-labelledby={`${c.id}-h`}>
       <p className="trib-kicker trib-kicker--gold">The rival{r ? ` · ${displayName(r.name)}` : ''}</p>

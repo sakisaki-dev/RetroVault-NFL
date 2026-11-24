@@ -12,7 +12,7 @@ import { DECLINE_AGE, DEFENSE, OFFENSE, agePyramid, buildClock, finalAge, improv
 import { RATING_LABEL } from './clockParts';
 import { peekProps } from '@/components/peek/peekProps';
 import './clock.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 /**
  * Stats › Graphs › Age curves (#stats/graphs/age-curves): the league's ages from the live save, in the Graphs page's
@@ -118,10 +118,9 @@ const fnv = (s: string) => {
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
   return h >>> 0;
 };
-const shortName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.split(' ');
-  return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(' ')}` : name;
+const shortName = (rawName: string) => {
+  const { first, last } = firstAndLast(rawName);
+  return first ? `${first[0]}. ${last}` : last;
 };
 const M = { top: 26, right: 14, bottom: 38, left: 52 };
 const NAMED = 8;

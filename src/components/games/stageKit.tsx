@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 import { useEffect, useState, type CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { bannerTeamOf } from '@/utils/playerExtras';
@@ -38,12 +38,7 @@ export const clubLook = (teamName?: string | null): ClubLook => {
 /** Where a player is best known (his club while active, his signature club once retired). */
 export const playerClub = (p: Player) => clubLook(bannerTeamOf(p));
 
-export const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.trim().split(/\s+/);
-  if (parts.length < 2) return { first: '', last: name };
-  return { first: parts.slice(0, -1).join(' '), last: parts[parts.length - 1] };
-};
+export const splitName = (rawName: string) => firstAndLast(rawName);
 
 export const useReducedMotion = () => {
   const q = '(prefers-reduced-motion: reduce)';

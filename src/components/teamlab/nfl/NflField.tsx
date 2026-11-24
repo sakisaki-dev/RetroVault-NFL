@@ -12,7 +12,7 @@ import { FIELD_ART, type FieldArt, type Turf } from '../fieldArt';
 import { PixelPlayer } from '../labArt';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /**
  * The NFL Team Lab field: the same turf, line of scrimmage and spots as the Retro Bowl lab's, for any set of spots
@@ -35,11 +35,6 @@ export interface FieldItem {
 }
 
 const YARDS = [10, 20, 30, 40, 50, 40, 30, 20, 10];
-const lastName = (rawN: string)  => {
-  const n = displayName(rawN);
-  const parts = n.split(' ');
-  return parts.length > 1 && /^(jr\.?|sr\.?|ii|iii|iv)$/i.test(parts[parts.length - 1]) ? parts[parts.length - 2] : parts[parts.length - 1];
-};
 const INJ_COLOR: Record<InjuryCode, string> = { IR: '#ef4444', Out: '#ef4444', Doubtful: '#f97316', Questionable: '#facc15' };
 
 interface Props {
@@ -134,7 +129,7 @@ const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, side
             </span>
             <span className="lab-tag" style={tagVars}>
               <b>{it.label}</b>
-              <span className="lab-tag-name">{lastName(p.name)}</span>
+              <span className="lab-tag-name">{surnameOf(p.name)}</span>
               {it.badge ? (
                 <i className="lab-tag-grade nfl-badge">{it.badge}</i>
               ) : (

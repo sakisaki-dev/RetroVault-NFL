@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf, firstAndLast } from '@/utils/displayName';
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowLeftRight, IdCard, Radar, Star, Swords } from 'lucide-react';
@@ -388,11 +388,6 @@ const compareTarget = (p: Player, byKey: Map<string, Player>): Player | null => 
   return best;
 };
 
-const lastName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.indexOf(' ');
-  return i < 0 ? name : name.slice(i + 1);
-};
 
 const PeekCard = ({
   player: p,
@@ -489,8 +484,7 @@ const PeekCard = ({
     '--pk-2': team ? `hsl(${team.secondaryColor})` : 'hsl(var(--muted-foreground))',
     '--pk-fg': team ? getReadableTextOn(team.primaryColor) : 'hsl(var(--chalk))',
   } as CSSProperties;
-  const i = displayName(p.name).indexOf(' ');
-  const first = i < 0 ? '' : displayName(p.name).slice(0, i);
+  const { first } = firstAndLast(p.name);
 
   return createPortal(
     <div className="pk-root" data-held={state.held ? '' : undefined}>
@@ -522,7 +516,7 @@ const PeekCard = ({
                   {team ? ` · ${team.abbreviation}` : ''}
                 </span>
                 {first && <span className="pk-first">{first}</span>}
-                <span className="pk-last">{lastName(p.name)}</span>
+                <span className="pk-last">{surnameOf(p.name)}</span>
                 <span className="pk-tags">
                   <InLeague player={p} />
                   {hof && (
@@ -560,7 +554,7 @@ const PeekCard = ({
               ))}
             </dl>
           </div>
-          <PeekActions onRun={(id) => run.current(id, p, other)} compareLabel={other ? `vs ${lastName(other.name)}` : 'Compare'} />
+          <PeekActions onRun={(id) => run.current(id, p, other)} compareLabel={other ? `vs ${surnameOf(other.name)}` : 'Compare'} />
         </div>
       </div>
     </div>,

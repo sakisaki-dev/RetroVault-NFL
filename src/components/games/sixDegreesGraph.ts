@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { playerKey, type GamePlayer } from '@/config/ovr';
 import { matchPlayerByName, type LeagueContent } from '@/utils/leagueContent';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -45,13 +45,7 @@ const KIND_ORDER: LinkKind[] = ['family', 'lineage', 'team', 'era'];
 
 const isReal = (p: GamePlayer) => p.isRealLegend === true;
 
-const lastName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
-  const tail = parts[parts.length - 1] ?? '';
-  // "Mason Earl III" -> "Earl"
-  return (/^(jr\.?|sr\.?|ii|iii|iv|v)$/i.test(tail) && parts.length > 2 ? parts[parts.length - 2] : tail).toLowerCase();
-};
+const lastName = (rawName: string) => surnameOf(rawName).toLowerCase();
 const firstName = (name: string) => (name.trim().split(/\s+/)[0] ?? '').toLowerCase();
 const fold = (s: string) => s.toLowerCase().replace(/[’‘`']/g, '').replace(/[^a-z0-9]/g, '');
 
@@ -65,8 +59,7 @@ const shortNameFor = (nodes: GamePlayer[]) => {
   return (p: GamePlayer) => {
     const ln = lastName(p.name);
     if ((counts.get(ln) ?? 0) > 1) return p.name;
-    const parts = p.name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
-    return parts.find((w) => w.toLowerCase() === ln) ?? p.name;
+    return surnameOf(p.name) || p.name;
   };
 };
 

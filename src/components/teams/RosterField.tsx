@@ -5,7 +5,7 @@ import { getReadableTextOn } from '@/utils/teamColors';
 import GameSprite from '../GameSprite';
 import './rosterField.css';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /**
  * The roster as a formation (the owner's private Retro Bowl sprites; TeamSheet shows it only when this Mac has them):
@@ -88,7 +88,7 @@ const RosterField = ({ players, team, numberFor, onOpen }: Props) => {
         {/* Name tags on their own layer above every figure, so no sprite ever covers a name */}
         {spots.map(({ p, x, y }) => (
           <span key={`tag-${p.position}:${displayName(p.name)}`} className="rf-tag" style={{ left: `${x}%`, top: `${y}%` }} aria-hidden="true">
-            <b>{p.position}</b> {displayName(p.name).split(' ').slice(-1)[0]}
+            <b>{p.position}</b> {surnameOf(p.name)}
           </span>
         ))}
       </div>

@@ -17,7 +17,7 @@ import { peekProps } from '@/components/peek/peekProps';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { POSITION_COLORS } from '../graph/graphConfig';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 /** A player's dot wears his club's colour (where he is best known): the league as a crowd of jerseys */
@@ -389,7 +389,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
                           className="font-display uppercase"
                           aria-hidden="true"
                         >
-                          {displayName(lead.player.name).split(' ').slice(-1)[0]}
+                          {surnameOf(lead.player.name)}
                         </text>
                       )}
                     </g>

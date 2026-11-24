@@ -6,6 +6,7 @@ import { RAFTERS_ANCHOR } from '@/utils/raftersLink';
 import { reducedMotion } from '@/utils/motion';
 import type { GalleryItem } from './HofGallery';
 import { clubColors } from './hofUtils';
+import { surnameOf } from '@/utils/displayName';
 
 /**
  * The Hall's header showpiece: a steel truss with a row of gold-lit busts (the latest class first, then the top scores,
@@ -55,7 +56,7 @@ const HofShowcase = ({ items, onOpen }: { items: GalleryItem[]; onOpen: (item: G
                     {it.player ? <GameSprite player={it.player} team={it.club} kind="bust" size="m" /> : <TeamLogo team={team ?? it.club} size={48} decorative />}
                   </span>
                   <span className="hof-show__plinth" />
-                  <span className="hof-show__name" style={{ color: ink }}>{it.member.name.replace(/ \(.*\)$/, '').split(' ').slice(-1)[0]}</span>
+                  <span className="hof-show__name" style={{ color: ink }}>{surnameOf(it.member.name)}</span>
                 </button>
               </li>
             );

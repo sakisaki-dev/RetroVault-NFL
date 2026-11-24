@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 /**
  * Induction speeches.
  *
@@ -101,11 +101,7 @@ export const signatureStats = (p: Player): SpeechStat[] =>
     .map(({ key, label }) => ({ label, value: Math.round(Number((p as unknown as Record<string, unknown>)[key]) || 0) }))
     .filter((s) => s.value > 0);
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.trim().split(/\s+/);
-  return { first: parts[0] ?? name, last: parts.length > 1 ? parts[parts.length - 1] : name };
-};
+const splitName = (rawName: string) => firstAndLast(rawName);
 
 /** "Waller–Finney era · Y15–30" -> "Waller–Finney era" */
 const eraName = (raw?: string) => raw?.split('·')[0].trim() || undefined;

@@ -7,7 +7,7 @@ import { DECLINE_AGE, ROOKIE_AGE, baseMaxAge, buildClock, growthSeasons, halfSta
 import { RatingBars, StarRow, clubVars, starText } from './clockParts';
 import './clock.css';
 import PixelLoader from '@/components/ui/PixelLoader';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /**
  * Deep Dive › Age & clock: one player's age from the live save, his retirement clock, his growth chance, ratings now
@@ -70,7 +70,7 @@ const PositionCurve = ({ me, peers }: { me: ClockPlayer; peers: ClockPlayer[] })
         <path d={line} fill="none" stroke={VIZ.bar} strokeWidth={2.5} />
         <circle cx={sx(me.age)} cy={sy(mine)} r={7} fill={teamMark(me.team)} stroke={GOLD} strokeWidth={2} />
         <text x={sx(me.age) + (sx(me.age) > m.left + pw * 0.7 ? -11 : 11)} y={sy(mine) - 10} textAnchor={sx(me.age) > m.left + pw * 0.7 ? 'end' : 'start'} fontSize={12} fontWeight={700} fill={VIZ.ink} paintOrder="stroke" stroke="hsl(226 40% 11%)" strokeWidth={3}>
-          {displayName(me.name).split(' ').slice(-1)[0]} · {me.age}
+          {surnameOf(me.name)} · {me.age}
         </text>
       </svg>
       <p className="mt-1 text-xs text-muted-foreground">

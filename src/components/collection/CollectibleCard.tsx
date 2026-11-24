@@ -14,7 +14,7 @@ import { FINISH_ICON, TIER_ICON } from './rarityIcons';
 import { cardFaceVars } from './cardFace';
 import { loadMarket } from '@/utils/useMarket';
 import './collection.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 const motionOk = () => {
@@ -54,14 +54,7 @@ const idleOffset = (name: string) => {
   return Math.abs(h) % 8000;
 };
 
-const SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv|v)$/i;
 /** Surname for the name bar ("Odell Beckham Jr." → "Beckham"). */
-const surnameOf = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.trim().split(/\s+/);
-  while (parts.length > 1 && SUFFIX.test(parts[parts.length - 1])) parts.pop();
-  return parts[parts.length - 1] ?? name;
-};
 
 /**
  * League players have no photos: a game-worn jersey in team colours (shoulder stripes, collar, sleeve numbers and the

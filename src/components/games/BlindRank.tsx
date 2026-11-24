@@ -17,7 +17,7 @@ import {
 import { DeckCard, Hud, HudStat, Land, Pips, Slab, launchFrom, teamLook, usePointerDrag, useRevealClock } from './rosterKit';
 import HowToStrip from './HowToStrip';
 import './blindrank.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const SIZE = 5;
 const POS_OPTIONS: PosFilter[] = ['QB', 'RB', 'WR', 'TE', 'DEF', 'ANY'];
@@ -209,7 +209,7 @@ const BlindRank = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap: Map<str
                       {truth.map((p, i) => (
                         <li key={playerKey(p)} style={teamLook(p).vars} className={cn(i < reveal.step && 'on')}>
                           <b>{i + 1}</b>
-                          <span>{displayName(p.name).split(' ').slice(-1)[0]}</span>
+                          <span>{surnameOf(p.name)}</span>
                           <em>{ovrOf(p)}</em>
                         </li>
                       ))}

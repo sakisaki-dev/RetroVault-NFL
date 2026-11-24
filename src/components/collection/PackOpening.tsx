@@ -19,7 +19,7 @@ import { kitStamp, kitUniform, type Uniform } from './art/sprite/uniforms';
 import PackTunnel, { type BoardText, type TunnelHandle } from './tunnel/PackTunnel';
 import type { TunnelGeo } from './tunnel/drawTunnel';
 import './kits.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 const reducedMotion = () => {
@@ -689,7 +689,7 @@ const PackOpening = ({ type, onClose, onTear, describe, total, remaining, proven
     if (walking) {
       if (walkFlipped) {
         const info = describe(walking);
-        const surname = displayName(info.player.name).split(' ').slice(-1)[0];
+        const surname = surnameOf(info.player.name);
         return { top: surname, bottom: `${info.ovr ?? '–'} ${CAREER_LABEL}`, tone: TIER_LIGHT[walking.tier] };
       }
       // the tier shows only once the card turns

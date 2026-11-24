@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { Clock, Radar, Radio, Search, Shield, Sparkles, Star } from 'lucide-react';
@@ -56,11 +56,7 @@ const teamVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.indexOf(' ');
-  return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
-};
+const splitName = (rawName: string) => firstAndLast(rawName);
 
 type GradeLike = { grade: string; color: string };
 

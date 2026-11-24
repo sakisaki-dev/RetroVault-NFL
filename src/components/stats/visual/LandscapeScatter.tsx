@@ -10,7 +10,7 @@ import type { PositionFamilies } from '@/config/families';
 import { FamilyZoneLabels, FamilyZoneLayer } from './FamilyZones';
 import { buildZones } from './zones';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 /**
  * The shared scatter engine for every landscape and the Graph Builder: team-coloured dots or logos (or a colour
@@ -58,10 +58,9 @@ const isZoomed = (v: ScatterView) => v.u1 - v.u0 < 0.999 || v.v1 - v.v0 < 0.999;
 
 const M = { top: 22, right: 18, bottom: 42, left: 50 };
 
-const shortName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.split(' ');
-  return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(' ')}` : name;
+const shortName = (rawName: string) => {
+  const { first, last } = firstAndLast(rawName);
+  return first ? `${first[0]}. ${last}` : last;
 };
 
 interface Placed {

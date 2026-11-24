@@ -7,7 +7,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import CollectibleCard from './CollectibleCard';
 import type { CardInfo } from './useCardPool';
 import './shardWorkshop.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 interface Props {
   cards: CardInfo[];
@@ -188,7 +188,7 @@ const ShardWorkshop = ({ cards, owned, shards, perPack, onOpen }: Props) => {
                     aria-label={`${displayName(c.player.name)}, ${owned[c.key] ? 'new art' : 'not owned'}`}
                   >
                     {t?.logoUrl ? <img src={t.logoUrl} alt="" loading="lazy" /> : <span className="sw__pick-fa">FA</span>}
-                    <span className="sw__pick-name">{displayName(c.player.name).split(' ').slice(-1)[0]}</span>
+                    <span className="sw__pick-name">{surnameOf(c.player.name)}</span>
                     <span className="sw__pick-meta">
                       {c.player.position}
                       {c.ovr != null && ` ${c.ovr}`}

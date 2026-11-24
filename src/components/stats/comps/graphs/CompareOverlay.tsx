@@ -10,7 +10,7 @@ import type { Career } from './careerStory';
 import { MetricChips } from './CareerHero';
 import MultiLine, { type LineSeries } from './MultiLine';
 import type { GraphMetric } from './graphKit';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 type Mode = 'comp' | 'top' | 'avg';
 const posOf = (k: string) => k.slice(0, k.indexOf(':')) as Position;
@@ -61,7 +61,7 @@ const CompareOverlay = ({
   const comp = comps.find((c) => `${c.player.position}:${displayName(c.player.name)}` === compKey) ?? comps[0];
 
   const { series, band, note } = useMemo(() => {
-    const mine: LineSeries = { key: career.key, label: displayName(player.name).split(' ').slice(-1)[0], color: GOLD, points: byCareerYear(career.points, metric), width: 3 };
+    const mine: LineSeries = { key: career.key, label: surnameOf(player.name), color: GOLD, points: byCareerYear(career.points, metric), width: 3 };
     if (mode === 'avg') {
       const at = new Map<number, number[]>();
       league.byKey.forEach((pts, k) => {
@@ -79,7 +79,7 @@ const CompareOverlay = ({
     if (mode === 'comp' && comp) {
       const k = `${comp.player.position}:${displayName(comp.player.name)}`;
       return {
-        series: [{ key: k, label: displayName(comp.player.name).split(' ').slice(-1)[0], color: VIZ.series[0], points: byCareerYear(league.byKey.get(k) ?? [], metric), width: 2, peekKey: k }, mine],
+        series: [{ key: k, label: surnameOf(comp.player.name), color: VIZ.series[0], points: byCareerYear(league.byKey.get(k) ?? [], metric), width: 2, peekKey: k }, mine],
         band: undefined,
         note: `${displayName(comp.player.name)}: ${Math.round(comp.similarity)} closest overall (level + style of their career rates).`,
       };
@@ -91,7 +91,7 @@ const CompareOverlay = ({
       .slice(0, 5);
     return {
       series: [
-        ...top.map((t, i) => ({ key: t.k, label: nameOf(t.k).split(' ').slice(-1)[0], color: i < 3 ? VIZ.series[i] : VIZ.muted, dash: i >= 3 ? '3 3' : undefined, points: byCareerYear(t.pts, metric), width: 1.5, peekKey: t.k })),
+        ...top.map((t, i) => ({ key: t.k, label: surnameOf(nameOf(t.k)), color: i < 3 ? VIZ.series[i] : VIZ.muted, dash: i >= 3 ? '3 3' : undefined, points: byCareerYear(t.pts, metric), width: 1.5, peekKey: t.k })),
         mine,
       ],
       band: undefined,

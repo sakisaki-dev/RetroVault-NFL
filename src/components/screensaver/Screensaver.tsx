@@ -47,7 +47,7 @@ import { useLiveSeason, kickoffText, scheduleWeeks, useUpcoming, withUpcoming, t
 import { useSeasonLeaders, type LeaderRow, type SeasonLeaders } from '@/utils/seasonLeaders';
 import { timeAgo, useEspnNews, type NewsItem } from '@/utils/espnNews';
 import { dataResponse } from '@/utils/dataStore';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -822,7 +822,7 @@ const LineupScene = ({ club, players, roll, sprites }: { club: string; players: 
             return (
               <li key={playerKey(p)} className={best ? 'sv-line__man sv-line__man--best' : 'sv-line__man'} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
                 <Figure player={p} sprites={sprites} action={best ? 'celebrate' : 'idle'} scale={best ? 1.3 : 1.05} />
-                <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
+                <span className="sv-line__name">{surnameOf(p.name)}</span>
                 <span className="sv-line__cl">{fmt(p.careerLegacy)}</span>
               </li>
             );
@@ -1034,7 +1034,7 @@ const Row = ({ items, sprites, best = 0, action = 'idle' }: { items: { p: Player
     {items.map(({ p, line }, i) => (
       <li key={playerKey(p)} className={i === best ? 'sv-line__man sv-line__man--best' : 'sv-line__man'} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
         <Figure player={p} sprites={sprites} action={i === best ? 'celebrate' : action} scale={i === best ? 1.2 : 1} />
-        <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
+        <span className="sv-line__name">{surnameOf(p.name)}</span>
         <span className="sv-line__cl">{line}</span>
       </li>
     ))}
@@ -1204,7 +1204,7 @@ const GauntletScene = ({ title, kick, entries, sprites }: { title: string; kick:
         {entries.slice(0, 5).map(({ p, has }, i) => (
           <li key={playerKey(p)} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
             <Figure player={p} sprites={sprites} action={has.every(Boolean) ? 'celebrate' : 'idle'} scale={1.05} />
-            <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
+            <span className="sv-line__name">{surnameOf(p.name)}</span>
             <span className="sv-gauntlet__rings">
               {AWARDS.map((a, k) => (
                 <i key={a} title={a} className={has[k] ? undefined : 'sv-off'} />
@@ -1256,7 +1256,7 @@ const HofClassScene = ({ label, members, sprites }: { label: string; members: Pl
         {members.slice(0, 7).map((p, i) => (
           <li key={playerKey(p)} style={{ ...clubStyle(p), '--i': i, '--step': Math.abs(i - Math.floor(Math.min(7, members.length) / 2)) } as CSSProperties}>
             <Figure player={p} sprites={sprites} action={i === Math.floor(Math.min(7, members.length) / 2) ? 'celebrate' : 'idle'} scale={0.95} />
-            <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
+            <span className="sv-line__name">{surnameOf(p.name)}</span>
           </li>
         ))}
       </ul>

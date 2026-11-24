@@ -17,7 +17,7 @@ import CountUp from '../../brand/CountUp';
 import { clubStyle } from './clubTone';
 import './statsStadium.css';
 import { seasonLabel } from '@/config/edition';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 /*
  * The Stats › Players opener (owner, 2026-11-17: "change this part to be more immersive", the header and headline cards):
@@ -166,7 +166,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
                     </span>
                   )}
                 </span>
-                <span className="ss__name">{displayName(h.player.name).split(' ').slice(-1)[0]}</span>
+                <span className="ss__name">{surnameOf(h.player.name)}</span>
               </button>
             </li>
           );

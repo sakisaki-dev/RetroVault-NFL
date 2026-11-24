@@ -8,7 +8,7 @@ import PriceChart from './PriceChart';
 import ChangeBadge from './ChangeBadge';
 import { dirOf, type MarketRow } from './marketRows';
 import { peekKeyProps, peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
 
 const teamVars = (info: CardInfo) => {
@@ -68,7 +68,7 @@ const TickerItem = ({ row, onOpen, copy }: { row: MarketRow; onOpen: () => void;
   <li>
     <button type="button" className={cn('mk-tick', `mk-flash--${dirOf(row.change)}`)} {...peekProps(row.info.player)} onClick={onOpen} tabIndex={copy ? -1 : undefined}>
       <span className="mk-tick__pos">{row.info.player.position}</span>
-      <span className="mk-tick__name">{displayName(row.info.player.name).split(' ').slice(-1)[0].toUpperCase()}</span>
+      <span className="mk-tick__name">{surnameOf(row.info.player.name).toUpperCase()}</span>
       <span className="tabular-nums">{fmtCoins(row.value)}</span>
       <ChangeBadge change={row.change} />
     </button>

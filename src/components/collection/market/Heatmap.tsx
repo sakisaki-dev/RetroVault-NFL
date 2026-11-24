@@ -3,7 +3,7 @@ import { fmtCoins } from '@/utils/cardMarket';
 import { squarify } from './treemap';
 import { changeText, dirOf, type MarketRow } from './marketRows';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 const GAP = 2;
@@ -67,7 +67,7 @@ const Heatmap = ({ rows, onOpen }: { rows: MarketRow[]; onOpen: (r: MarketRow) =
                 {...peekProps(r.info.player)}
                 onClick={() => onOpen(r)}
               >
-                <span className="mk-heat__name">{displayName(r.info.player.name).split(' ').slice(-1)[0]}</span>
+                <span className="mk-heat__name">{surnameOf(r.info.player.name)}</span>
                 <span className="mk-heat__chg">{changeText(r.change)}</span>
               </button>
             );

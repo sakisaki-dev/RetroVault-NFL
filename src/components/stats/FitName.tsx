@@ -1,10 +1,11 @@
+import { firstAndLast } from '@/utils/displayName';
 /** Names at least this long get the surname-first short form on phones. */
 const LONG = 15;
 
 /** "Sherman Brandson" → "S. Brandson"; one-word names stay as they are. */
 export const surnameFirst = (name: string) => {
-  const parts = name.trim().split(/\s+/);
-  return parts.length < 2 ? name : `${parts[0][0]}. ${parts.slice(1).join(' ')}`;
+  const { first, last } = firstAndLast(name);
+  return first ? `${first[0]}. ${last}` : name;
 };
 
 /**

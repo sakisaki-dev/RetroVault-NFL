@@ -8,7 +8,7 @@ import { fmtNum } from '@/components/stats/analytics/viz';
 import { openInCompFinder } from '@/components/stats/comps/compFinderLink';
 import { headlineStats } from './statLines';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 interface Props {
   player: Player;
@@ -75,8 +75,8 @@ const CompsPanel = ({ player, players, numberFor, onSelect, onNavigate }: Props)
                         <th scope="col" className="text-left font-normal">
                           <span className="sr-only">Stat</span>
                         </th>
-                        <th scope="col" className="text-right font-normal">{displayName(c.name).split(' ').slice(-1)[0]}</th>
-                        <th scope="col" className="pl-3 text-right font-normal">{displayName(player.name).split(' ').slice(-1)[0]}</th>
+                        <th scope="col" className="text-right font-normal">{surnameOf(c.name)}</th>
+                        <th scope="col" className="pl-3 text-right font-normal">{surnameOf(player.name)}</th>
                       </tr>
                     </thead>
                     <tbody>

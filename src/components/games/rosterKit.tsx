@@ -10,7 +10,7 @@ import { getScoutLine, isLegend, legendLabel, type GamePlayer, type ScoutStat, u
 import { isHallOfFamer } from '@/config/stats';
 import GameSprite from '../GameSprite';
 import './rosterkit.css';
-import { displayName } from '@/utils/displayName';
+import { displayName, firstAndLast } from '@/utils/displayName';
 
 /*
  * Shared presentation for the card-dealing games (Blind Rank, Keep 3 Cut 3, Who's the Imposter?):
@@ -61,10 +61,9 @@ export const teamLook = (p: GamePlayer): TeamLook => {
   };
 };
 
-const splitName = (rawName: string)  => {
-  const name = displayName(rawName);
-  const i = name.lastIndexOf(' ');
-  return i > 0 ? [name.slice(0, i), name.slice(i + 1)] : ['', name];
+const splitName = (rawName: string) => {
+  const { first, last } = firstAndLast(rawName);
+  return [first, last];
 };
 
 const Logo = ({ team, className }: { team: NFLTeam | null; className?: string }) =>

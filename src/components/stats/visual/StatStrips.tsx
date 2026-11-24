@@ -11,7 +11,7 @@ import { keyOf } from '../records';
 import { GOLD, niceTicks, swarm, teamMark, thinForSwarm, useWidth } from './chartKit';
 import { ChartTip } from './chartParts';
 import { peekProps } from '@/components/peek/peekProps';
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 
 const R = 5;
 const PAD_X = 10;
@@ -134,7 +134,7 @@ const StripSvg = ({ strip, width, onSelect, onShow }: { strip: Strip; width: num
             const y = d.label === 'above' ? strip.mid + d.dy - R - 5 : strip.mid + d.dy + R + 12;
             return (
               <text key={keyOf(d.row.player)} x={d.cx} y={y} textAnchor={anchor} fontSize={10.5} fontWeight={700} fill={d.label === 'above' ? VIZ.ink : VIZ.muted} stroke={VIZ.surface} strokeWidth={3} paintOrder="stroke">
-                {displayName(d.row.player.name).split(' ').slice(-1)[0]}
+                {surnameOf(d.row.player.name)}
               </text>
             );
           })}

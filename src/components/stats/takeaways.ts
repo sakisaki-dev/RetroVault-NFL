@@ -1,4 +1,4 @@
-import { displayName } from '@/utils/displayName';
+import { displayName, surnameOf } from '@/utils/displayName';
 import type { Player, Position } from '@/types/player';
 import { evaluateMetric, type AdvContext, type AdvMetric } from '@/config/advanced';
 import { formatDecimal } from '@/utils/metricColors';
@@ -10,11 +10,6 @@ import type { RecordBoardData } from './records';
  * little data for a fair one).
  */
 
-const surname = (rawName: string)  => {
-  const name = displayName(rawName);
-  const parts = name.trim().split(/\s+/);
-  return parts.length > 1 ? parts.slice(1).join(' ') : name;
-};
 const fmt = (v: number, d: number) => formatDecimal(v, d);
 const list = (names: string[]) => (names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 
@@ -43,7 +38,7 @@ export const recordsTakeaway = (boards: RecordBoardData[]): string | null => {
   const widest = [...boards].sort((a, b) => leadShare(b) - leadShare(a))[0];
   const [a, c] = widest?.entries ?? [];
   if (!a || !c) return null;
-  return `The widest lead is ${a.player.name}'s ${widest.title.toLowerCase()} record, ${fmt(a.value, widest.decimals)} to ${fmt(c.value, widest.decimals)} for ${surname(c.player.name)}.`;
+  return `The widest lead is ${a.player.name}'s ${widest.title.toLowerCase()} record, ${fmt(a.value, widest.decimals)} to ${fmt(c.value, widest.decimals)} for ${surnameOf(c.player.name)}.`;
 };
 
 /** Efficiency Leaders: the rate record with the biggest lead over #2. */
@@ -51,7 +46,7 @@ export const efficiencyTakeaway = (boards: RecordBoardData[]): string | null => 
   const widest = [...boards].filter((b) => b.entries.length >= 2).sort((a, b) => leadShare(b) - leadShare(a))[0];
   if (!widest) return null;
   const [a, c] = widest.entries;
-  return `${a.player.name} has the clearest efficiency edge: ${fmt(a.value, widest.decimals)} ${widest.title.toLowerCase()}, ${fmt(Math.abs(a.value - c.value), widest.decimals)} clear of ${surname(c.player.name)} at #2.`;
+  return `${a.player.name} has the clearest efficiency edge: ${fmt(a.value, widest.decimals)} ${widest.title.toLowerCase()}, ${fmt(Math.abs(a.value - c.value), widest.decimals)} clear of ${surnameOf(c.player.name)} at #2.`;
 };
 
 /**
