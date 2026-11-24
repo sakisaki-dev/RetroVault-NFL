@@ -15,9 +15,9 @@ import { hslOf } from '../season/seasonGamesUi';
 import { liftForDarkBg } from '@/utils/teamColors';
 import {
   atsOf, compareRows, podiumOf, fmtDate, hasNgs, hasPfr, hasSnaps, impact, leadersFor, missingFor, played, recapOf, roofLabel, roundLabel, sitePos, snaps,
-  lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, roman, superBowlNumber, type Side, type Star, type Unit,
+  lineOf, readableOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, roman, superBowlNumber, type Side, type Star, type Unit,
 } from './gameModel';
-import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, type Linker } from './gameSections';
+import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, matchupTabs, type Linker } from './gameSections';
 import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, ArcadeToggle, CrowdDivider, ClubStrip } from '@/components/arcade';
 import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
@@ -25,6 +25,7 @@ import './gameStage.css';
 import './gameKit.css';
 import { displayName } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
+import { Reveal, ViewCount, stag, useReveal } from '@/components/motion/Reveal';
 
 const MoreGames = lazy(() => import('./MoreGames'));
 
@@ -92,8 +93,8 @@ const Compare = ({ g }: { g: GameDetail }) => {
   const base = compareRows(g);
   const byId = (id: string) => base.find((r) => r.id === id);
   const fgs = (s: Stat) => `${v(s, 'fg_made')}/${v(s, 'fg_att')}`;
-  const rows: { id: string; label: string; a: number; h: number; sa?: string; sh?: string; lowerBetter?: boolean }[] = [];
-  const pass = byId('pass'); if (pass) rows.push({ ...pass, label: 'Passing yards' });
+  const rows: { id: string; label: string; a: number; h: number; sa?: string; sh?: string; lowerBetter?: boolean; tip?: string }[] = [];
+  const pass = byId('pass'); if (pass) rows.push({ ...pass, label: 'Net passing yards', tip: `Passing yards less yards lost to sacks. Gross: ${v(A, 'passing_yards')} ${teamName(g.away)}, ${v(H, 'passing_yards')} ${teamName(g.home)} (the QB lines above are gross).` });
   const rush = byId('rush'); if (rush) rows.push({ ...rush, label: 'Rushing yards' });
   const fd = byId('fd'); if (fd) rows.push({ ...fd });
   if (v(A, 'fg_att') || v(H, 'fg_att')) rows.push({ id: 'fg', label: 'Field goals', a: v(A, 'fg_made'), h: v(H, 'fg_made'), sa: fgs(A), sh: fgs(H) });
@@ -108,20 +109,22 @@ const Compare = ({ g }: { g: GameDetail }) => {
         <TeamLogo team={g.away} decorative className="h-7 w-7" />
         <TeamLogo team={g.home} decorative className="h-7 w-7" />
       </div>
-      {shown.map((r) => {
+      <Reveal className="gm-compare__rows">
+      {shown.map((r, i) => {
         const aBetter = r.lowerBetter ? r.a < r.h : r.a > r.h;
         const hBetter = r.lowerBetter ? r.h < r.a : r.h > r.a;
         const tot = Math.abs(r.a) + Math.abs(r.h);
         const pa = tot ? Math.max(4, Math.min(96, (Math.abs(r.a) / tot) * 100)) : 50;
         return (
-          <div key={r.id} className="gm-cmp">
-            <span className={cn('gm-cmp__n', aBetter && 'is-better')}>{r.sa ?? Math.round(r.a)}</span>
-            <span className="gm-cmp__l">{r.label}{r.lowerBetter ? ' (lower wins)' : ''}</span>
-            <span className={cn('gm-cmp__n gm-cmp__n--h', hBetter && 'is-better')}>{r.sh ?? Math.round(r.h)}</span>
-            <span className="gm-cmp__seg" aria-hidden><i className="a" style={{ width: `${pa}%` }} /><i className="h" style={{ width: `${100 - pa}%` }} /></span>
+          <div key={r.id} className="gm-cmp mo-rise" style={stag(i)}>
+            <span className={cn('gm-cmp__n', aBetter && 'is-better')}>{r.sa ?? <ViewCount value={Math.round(r.a)} />}</span>
+            <span className="gm-cmp__l" title={r.tip}>{r.label}{r.lowerBetter ? ' (lower wins)' : ''}</span>
+            <span className={cn('gm-cmp__n gm-cmp__n--h', hBetter && 'is-better')}>{r.sh ?? <ViewCount value={Math.round(r.h)} />}</span>
+            <span className="gm-cmp__seg" aria-hidden><i className="a mo-grow" style={{ width: `${pa}%`, ['--i' as string]: i + 1 }} /><i className="h mo-grow mo-grow--r" style={{ width: `${100 - pa}%`, ['--i' as string]: i + 1 }} /></span>
           </div>
         );
       })}
+      </Reveal>
     </PixelPanel>
   );
 };
@@ -176,10 +179,12 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const ball = done ? podiumOf(g)[0] : undefined;
   const windy = (g.wind ?? 0) >= 12 && g.roof !== 'dome' && g.roof !== 'closed';
   const cold = g.temp !== undefined && g.temp < 40 && g.roof !== 'dome' && g.roof !== 'closed';
-  const fig = (p: GamePlayer, side: Side) => {
+  const revSb = useReveal<HTMLDivElement>();
+  const revMu = useReveal<HTMLDivElement>();
+  const fig = (p: GamePlayer, side: Side, i: number) => {
     const parts = displayName(p.name).split(' ');
     return (
-      <li key={p.gsis + p.name} className={cn('gm-mu__fig', side === 1 && 'gm-mu__fig--home')}>
+      <li key={p.gsis + p.name} className={cn('gm-mu__fig', side === 1 && 'gm-mu__fig--home', side === 0 ? 'mo-run-l' : 'mo-run-r')} style={stag(i + 2)}>
         <span className="gm-mu__spr">{cold && <i className="gm-breath" aria-hidden />}<SpriteOf p={p} g={g} celebrate={w === side && unitOf(p) === 'qb'} /></span>
         <NameStrip p={p} g={g} link={link} className="gm-mu__name">{parts.slice(1).join(' ') || p.name}</NameStrip>
       </li>
@@ -188,7 +193,7 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const club = (side: Side) => {
     const abbr = side === 0 ? g.away : g.home;
     return (
-      <button type="button" className={cn('gm-sb__club', side === 1 && 'is-home')} onClick={() => openTeamPage(teamName(abbr))} aria-label={`${teamName(abbr)} team page`}>
+      <button type="button" className={cn('gm-sb__club mo-pop', side === 1 && 'is-home')} onClick={() => openTeamPage(teamName(abbr))} aria-label={`${teamName(abbr)} team page`}>
         <TeamLogo team={abbr} decorative className="gm-sb__logo" />
         <span className="gm-sb__name">{teamName(abbr)}</span>
         <span className="gm-sb__role">{side === 0 ? 'Away' : 'Home'}</span>
@@ -201,32 +206,32 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
       <span className="gm-ez gm-ez--a" style={{ ['--tc' as string]: toneOf(g.away) }} aria-hidden>{abbrOf(g.away)}</span>
       <span className="gm-ez gm-ez--h" style={{ ['--tc' as string]: toneOf(g.home) }} aria-hidden>{abbrOf(g.home)}</span>
       {windy && <div className="gm-wind" aria-hidden>{Array.from({ length: 9 }, (_, i) => <i key={i} style={{ top: `${14 + i * 9}%`, animationDelay: `${-i * 0.7}s`, width: `${14 + (i % 3) * 8}%` }} />)}</div>}
-      <div className="gm-sb" style={{ ['--ca' as string]: toneOf(g.away), ['--ch' as string]: toneOf(g.home) }}>
+      <div ref={revSb} className="gm-sb" style={{ ['--ca' as string]: toneOf(g.away), ['--ch' as string]: toneOf(g.home) }}>
         {club(0)}
         <div className="gm-sb__mid" role="img" aria-label={done ? `${teamName(g.away)} ${g.awayScore}, ${teamName(g.home)} ${g.homeScore}` : 'Not played yet'}>
           <span className="gm-sb__fin">{done ? `Final${g.ot ? ' · OT' : ''}${w === null ? ' · Tie' : ''}` : g.time ? clock(g.time) : 'To play'}</span>
           {done && (
             <div className="gm-sb__score">
-              <span className={cn('gm-num', w === 0 && 'is-win', w === 1 && 'is-lose')}>{g.awayScore}</span>
+              <span className={cn('gm-num', w === 0 && 'is-win', w === 1 && 'is-lose')}><ViewCount value={g.awayScore!} duration={900} /></span>
               <span className="gm-dash">–</span>
-              <span className={cn('gm-num', w === 1 && 'is-win', w === 0 && 'is-lose')}>{g.homeScore}</span>
+              <span className={cn('gm-num', w === 1 && 'is-win', w === 0 && 'is-lose')}><ViewCount value={g.homeScore!} duration={900} /></span>
             </div>
           )}
         </div>
         {club(1)}
       </div>
-      <div className="gm-mu">
-        <ul className="gm-mu__side" aria-label={`${teamName(g.away)} starters`}>{[...sq[0]].reverse().map((p) => fig(p, 0))}</ul>
+      <div ref={revMu} className="gm-mu">
+        <ul className="gm-mu__side" aria-label={`${teamName(g.away)} starters`}>{[...sq[0]].reverse().map((p, i) => fig(p, 0, i))}</ul>
         <div className="gm-mu__mid">
-          <span className="gm-mu__vs" aria-hidden>VS</span>
+          <span className="gm-mu__vs mo-pop" style={stag(5)} aria-hidden>VS</span>
           {ball && (
-            <div className="gm-ball" style={{ ['--tc' as string]: toneOf(ball.side === 0 ? g.away : g.home) }}>
+            <div className="gm-ball mo-pop" style={{ ['--tc' as string]: toneOf(ball.side === 0 ? g.away : g.home), ['--i' as string]: 8 }}>
               <span className="gm-mu__spr gm-ball__spr"><SpriteOf p={ball} g={g} celebrate /></span>
               <NameStrip p={ball} g={g} link={link} className="gm-mu__name"><span className="gm-ball__k">Game ball</span> {displayName(ball.name).split(' ').slice(1).join(' ') || ball.name}</NameStrip>
             </div>
           )}
         </div>
-        <ul className="gm-mu__side" aria-label={`${teamName(g.home)} starters`}>{sq[1].map((p) => fig(p, 1))}</ul>
+        <ul className="gm-mu__side" aria-label={`${teamName(g.home)} starters`}>{sq[1].map((p, i) => fig(p, 1, i))}</ul>
       </div>
       <ul className="gm-chips" aria-label="Game conditions">
         {(g.stadium || g.roof) && <li><MapPin className="h-3 w-3" aria-hidden /> {[g.stadium, g.roof ? roofLabel(g.roof).toLowerCase() : null].filter(Boolean).join(' · ')}</li>}
@@ -257,13 +262,13 @@ const GamePodium = ({ g, link, champions }: { g: GameDetail; link: Linker; champ
   return (
     <>
       <PodiumStage team={top[0].side === 0 ? g.away : g.home} turf={isNight(g) ? 'night' : 'day'} className="gm-podstage">
-        <ol className="gm-pod" aria-label="Stars of the game: 1st in the middle, 2nd left, 3rd right">
+        <Reveal as="ol" className="gm-pod" aria-label="Stars of the game: 1st in the middle, 2nd left, 3rd right">
           {order.map((o, i) => {
             if (!o) return <li key={`e${i}`} />;
             const { p, rank: r } = o;
             const abbr = p.side === 0 ? g.away : g.home;
             return (
-              <li key={p.gsis + p.name} className={cn('gm-pod__col', r === 1 && 'is-first')}>
+              <li key={p.gsis + p.name} className={cn('gm-pod__col mo-step', r === 1 && 'is-first')} style={stag(r === 1 ? 3 : r === 2 ? 2 : 0)}>
                 <SpriteOf p={p} g={g} size="m" celebrate={r === 1 || winner === p.side} />
                 <div className="nsx-step gm-pod__step" style={{ minHeight: [92, 118, 84][r - 1], ...clubVars(abbr) }}>
                   <span className="gm-pod__rank">{r}</span>
@@ -274,7 +279,7 @@ const GamePodium = ({ g, link, champions }: { g: GameDetail; link: Linker; champ
               </li>
             );
           })}
-        </ol>
+        </Reveal>
       </PodiumStage>
       {kick && <p className="gm-kick">{kick}</p>}
     </>
@@ -284,18 +289,18 @@ const GamePodium = ({ g, link, champions }: { g: GameDetail; link: Linker; champ
 /* ---- top performers: per club, four colour strips ---- */
 
 const Performers = ({ g, link }: { g: GameDetail; link: Linker }) => (
-  <div className="gm-perf">
+  <Reveal className="gm-perf">
     {([0, 1] as Side[]).map((s) => {
       const abbr = s === 0 ? g.away : g.home;
       const rows = g.players.filter((p) => p.side === s && score(p) > 0 && lineOf(p)).sort((a, b) => score(b) - score(a)).slice(0, 4);
       return (
-        <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-perf__club" style={{ ['--tc' as string]: toneOf(abbr) }}>
+        <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-perf__club mo-fade" style={{ ['--tc' as string]: toneOf(abbr), ['--i' as string]: s }}>
           <p className="gm-perf__head"><TeamLogo team={abbr} decorative className="h-6 w-6" /> <span>{findNFLTeam(abbr)?.fullName ?? abbr}</span></p>
           <ul>
             {rows.map((p, i) => (
-              <li key={p.gsis + p.name} className={cn('gm-perf__row', i === 0 && 'is-top')}>
+              <li key={p.gsis + p.name} className={cn('gm-perf__row mo-rise', i === 0 && 'is-top')} style={stag(i + 1 + s)}>
                 <span className="gm-perf__floor"><SpriteOf p={p} g={g} size="m" celebrate={i === 0} /></span>
-                <span className="gm-perf__txt"><NameStrip p={p} g={g} link={link} className="gm-perf__n" /><span className="gm-perf__line">{p.pos} · {lineOf(p)}</span></span>
+                <span className="gm-perf__txt"><NameStrip p={p} g={g} link={link} className="gm-perf__n" /><span className="gm-perf__line">{p.pos} · {readableOf(p)}</span></span>
               </li>
             ))}
             {!rows.length && <li className="gm-perf__none">No stat lines recorded for this club.</li>}
@@ -303,7 +308,7 @@ const Performers = ({ g, link }: { g: GameDetail; link: Linker }) => (
         </PixelPanel>
       );
     })}
-  </div>
+  </Reveal>
 );
 
 
@@ -499,19 +504,19 @@ const SnapBars = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }
   const col = (rows: GamePlayer[], key: string, max: number, label: string) => (
     <div>
       <p className="gm-tbl__t">{label}<i>{rows.length ? `${max} snaps` : ''}</i></p>
-      <ul className="gm-snaps">
-        {rows.slice(0, 16).map((p) => {
+      <Reveal as="ul" className="gm-snaps">
+        {rows.slice(0, 16).map((p, i) => {
           const n = v(p.s, key);
           const href = link(p);
           return (
-            <li key={p.gsis + p.name}>
+            <li key={p.gsis + p.name} className="mo-rise" style={stag(i)}>
               <span className="gm-snaps__n">{href ? <a href={href}>{displayName(p.name)}</a> : p.name}<small>{p.pos}</small></span>
-              <span className="gm-snaps__bar"><i style={{ width: `${(n / max) * 100}%` }} /></span>
+              <span className="gm-snaps__bar"><i className="mo-grow" style={{ width: `${(n / max) * 100}%`, ['--i' as string]: i }} /></span>
               <span className="gm-snaps__v">{n}<small>{Math.round((n / max) * 100)}%</small></span>
             </li>
           );
         })}
-      </ul>
+      </Reveal>
     </div>
   );
   return (
@@ -626,7 +631,9 @@ const GameView = ({ g }: { g: GameDetail }) => {
   const away = teamName(g.away);
   const home = teamName(g.home);
 
-  const [matchup, setMatchup] = useState<'eff' | 'ground' | 'air' | 'rush' | 'fan' | 'st'>('eff');
+  const [matchupPick, setMatchup] = useState<'eff' | 'ground' | 'air' | 'rush' | 'fan' | 'st'>('eff');
+  const mTabs = useMemo(() => matchupTabs(g), [g]);
+  const matchup = mTabs.some((t) => t.value === matchupPick) ? matchupPick : mTabs[0]?.value ?? 'eff';
   const [deep, setDeep] = useState<'box' | 'rosters' | 'adv' | 'snaps' | 'coaches' | null>(null);
   const { navigate } = useHubRoute();
   const back = () => {
@@ -680,20 +687,24 @@ const GameView = ({ g }: { g: GameDetail }) => {
           {sb && <Champions g={g} link={link} />}
           <CrowdDivider />
           <QbDuel g={g} link={link} />
-          <Section g={g} id="gm-matchup" icon={Gauge} title="Matchup stats" kicker="Efficiency, rushing, passing, defense, fantasy and kicking">
-            <ArcadeToggle
-              label="Matchup stats"
-              value={matchup}
-              onChange={(v) => setMatchup(v as typeof matchup)}
-              options={[{ value: 'eff', label: 'Efficiency' }, { value: 'ground', label: 'Ground game' }, { value: 'air', label: 'Air attack' }, { value: 'rush', label: 'Pass rush' }, { value: 'fan', label: 'Fantasy' }, { value: 'st', label: 'Special teams' }]}
-            />
-            {matchup === 'eff' && <Efficiency g={g} />}
-            {matchup === 'ground' && <GroundGame g={g} link={link} />}
-            {matchup === 'air' && <AirAttack g={g} link={link} />}
-            {matchup === 'rush' && <PassRush g={g} link={link} />}
-            {matchup === 'fan' && <Fantasy g={g} link={link} />}
-            {matchup === 'st' && <SpecialTeams g={g} />}
-          </Section>
+          {mTabs.length > 0 && (
+            <Section g={g} id="gm-matchup" icon={Gauge} title="Matchup stats" kicker="Efficiency, rushing, passing, defense, fantasy and kicking">
+              <ArcadeToggle
+                label="Matchup stats"
+                value={matchup}
+                onChange={(v) => setMatchup(v as typeof matchup)}
+                options={mTabs}
+              />
+              <div key={matchup} className="mo-xfade">
+                {matchup === 'eff' && <Efficiency g={g} />}
+                {matchup === 'ground' && <GroundGame g={g} link={link} />}
+                {matchup === 'air' && <AirAttack g={g} link={link} />}
+                {matchup === 'rush' && <PassRush g={g} link={link} />}
+                {matchup === 'fan' && <Fantasy g={g} link={link} />}
+                {matchup === 'st' && <SpecialTeams g={g} />}
+              </div>
+            </Section>
+          )}
           <CrowdDivider />
           {g.players.length > 0 && (
             <Section g={g} id="gm-players" icon={Users} title="Top performers" kicker="By club">

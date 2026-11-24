@@ -13,6 +13,7 @@ import { LeagueTable, SectionTitle } from './SeasonGames';
 import { useLeague } from '@/context/LeagueContext';
 import { isInLeague } from '@/components/InLeague';
 import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, StadiumHeader, clubVars, type StagePlayer } from '@/components/arcade';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './sx.css';
 
 /**
@@ -27,8 +28,8 @@ const cv = (club?: string | null) => clubVars(club) as CSSProperties;
 
 const AWARD_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'Offensive POY', dpoy: 'Defensive POY', oroy: 'Offensive ROY', droy: 'Defensive ROY', sbmvp: 'Super Bowl MVP' };
 
-const AwardPlate = ({ kind, a }: { kind: string; a: { player: string; team: string; position: string } }) => (
-  <li className="min-w-0">
+const AwardPlate = ({ kind, a, i = 0 }: { kind: string; a: { player: string; team: string; position: string }; i?: number }) => (
+  <li className="min-w-0 mo-pop" style={stag(i, 70)}>
     <PlayerHit name={a.player} pos={a.position} className={cn('sx-award', kind === 'mvp' && 'sx-award--mvp')} style={cv(a.team)}>
       <span className="sx-award__sprite">
         <StarSprite name={a.player} pos={a.position} team={a.team} size="m" celebrate={kind === 'mvp' || kind === 'sbmvp'} />
@@ -88,16 +89,16 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
         />
       )}
       {best.length > 0 && (
-        <div className="sx-stars" aria-label={`${nick(lead ?? '')} stars`}>
-          {best.map((p) => (
-            <PlayerHit key={p.name} name={p.name} pos={p.position} className="max-w-full">
+        <Reveal className="sx-stars" aria-label={`${nick(lead ?? '')} stars`}>
+          {best.map((p, i) => (
+            <PlayerHit key={p.name} name={p.name} pos={p.position} className="max-w-full mo-rise" style={stag(i + 3, 80)}>
               <ClubStrip club={lead} size="sm">{displayName(p.name)}</ClubStrip>
             </PlayerHit>
           ))}
-        </div>
+        </Reveal>
       )}
       {lead && sb && (
-        <div className="sx-champ" style={cv(lead)}>
+        <Reveal className="sx-champ" style={cv(lead)}>
           {sb && (
             <span className="sx-confetti" aria-hidden>
               {CONFETTI.map((c, i) => (
@@ -105,7 +106,7 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
               ))}
             </span>
           )}
-          <span className="sx-champ__logo"><TeamLogo team={lead} decorative className="h-16 w-16" /></span>
+          <span className="sx-champ__logo mo-pop"><TeamLogo team={lead} decorative className="h-16 w-16" /></span>
           <div className="sx-champ__txt">
             {sb ? (
               <>
@@ -127,14 +128,14 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
               <LedDigits value={`${w}-${l}`} dot={4} />
             </span>
           )}
-        </div>
+        </Reveal>
       )}
       {kinds.length > 0 ? (
-        <ul className="sx-awards" aria-label="AP award winners">
-          {kinds.map((k) => (
-            <AwardPlate key={k} kind={k} a={aw[k]} />
+        <Reveal as="ul" className="sx-awards" aria-label="AP award winners">
+          {kinds.map((k, i) => (
+            <AwardPlate key={k} kind={k} a={aw[k]} i={i} />
           ))}
-        </ul>
+        </Reveal>
       ) : (
         <p className="sx-note">Awards are announced after the Super Bowl.</p>
       )}
@@ -146,13 +147,13 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
 
 type PGame = NonNullable<SeasonView['playoffs']>[number]['games'][number];
 
-const BracketGame = ({ g, final, seeds, id }: { g: PGame; final?: boolean; seeds: Map<string, number>; id?: string }) => {
+const BracketGame = ({ g, final, seeds, id, i = 0 }: { g: PGame; final?: boolean; seeds: Map<string, number>; id?: string; i?: number }) => {
   const fav = g.line === undefined || g.line === 0 ? null : g.line > 0 ? g.home : g.away;
   const winner = g.away_score > g.home_score ? g.away : g.home;
   const upset = fav && winner !== fav && Math.abs(g.line!) >= 2.5;
   const seed = (t: string) => (seeds.has(t) ? `#${seeds.get(t)}` : undefined);
   return (
-    <li className="min-w-0">
+    <li className="min-w-0 mo-pop" style={stag(i, 90)}>
       <ScoreTile
         away={{ club: g.away, score: g.away_score, record: seed(g.away) }}
         home={{ club: g.home, score: g.home_score, record: seed(g.home) }}
@@ -173,14 +174,14 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
   return (
     <div className="sx-block">
       <SectionTitle kicker="Postseason" club={sb?.winner}>Road to the Super Bowl</SectionTitle>
-      <div className="sx-field">
+      <Reveal className="sx-field">
         <div className="relative flex min-w-[640px] items-stretch gap-3">
-          {rounds.map((r) => (
+          {rounds.map((r, ri) => (
             <div key={r.round} className="flex min-w-0 flex-1 flex-col">
               <p className={cn('sx-field__round', r.round === 'Super Bowl' && 'is-sb')}>{r.round}</p>
               <ul className="flex flex-1 list-none flex-col justify-around gap-2 p-0">
-                {r.games.map((g) => (
-                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} id={playoffGameId(ids, season.season, g.away, g.home)} />
+                {r.games.map((g, gi) => (
+                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} id={playoffGameId(ids, season.season, g.away, g.home)} i={ri * 2 + gi * 0.5} />
                 ))}
               </ul>
             </div>
@@ -193,7 +194,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
             </div>
           )}
         </div>
-      </div>
+      </Reveal>
       {seeds.size > 0 && <p className="sx-note">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</p>}
     </div>
   );
@@ -226,9 +227,9 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
   return (
     <div className="sx-block">
       <SectionTitle kicker="Standings" club={divisions[0][1][0].team}>Division boards</SectionTitle>
-      <ul className="sx-divs">
-        {divisions.map(([name, rows]) => (
-          <li key={name} className="sx-div" style={cv(rows[0].team)}>
+      <Reveal as="ul" className="sx-divs">
+        {divisions.map(([name, rows], di) => (
+          <li key={name} className="sx-div mo-rise" style={{ ...cv(rows[0].team), ...stag(di, 70) }}>
             <p className="sx-div__head">
               <TeamLogo team={rows[0].team} decorative className="h-6 w-6 p-px" />
               {name}
@@ -238,7 +239,7 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
                 const champ = season.superBowl?.winner === r.team;
                 const post = made.has(r.abbr);
                 return (
-                  <li key={r.abbr} className={cn('sx-div__row', i === 0 && 'is-lead', done && !post && 'is-out')} style={cv(r.team)}>
+                  <li key={r.abbr} className={cn('sx-div__row mo-rise', i === 0 && 'is-lead', done && !post && 'is-out')} style={{ ...cv(r.team), ...stag(di + i + 1, 60) }}>
                     <TeamLogo team={r.team} decorative className="h-7 w-7 flex-shrink-0" />
                     <span className="sx-div__name">
                       <span>{r.team}</span>
@@ -254,7 +255,7 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
             </ol>
           </li>
         ))}
-      </ul>
+      </Reveal>
       {old && <p className="sx-note">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
       {tags.size > 0 && <p className="sx-note">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
     </div>
@@ -280,12 +281,12 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
       >
         Power ladder
       </SectionTitle>
-      <ol className="sx-ladder">
-        {shown.map((r) => {
+      <Reveal as="ol" className="sx-ladder">
+        {shown.map((r, ri) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
           return (
-            <li key={r.abbr} className={cn('sx-rung', r.power <= 3 && 'is-top')} style={cv(r.team)}>
+            <li key={r.abbr} className={cn('sx-rung mo-rise', r.power <= 3 && 'is-top')} style={{ ...cv(r.team), ...stag(ri, 40) }}>
               <span className="sx-rung__n">{r.power}</span>
               <TeamLogo team={r.team} decorative className="h-8 w-8 flex-shrink-0" />
               <span className="sx-rung__name">{r.team}</span>
@@ -294,11 +295,11 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
               <span className={cn('sx-rung__mv', move === null ? 'text-muted-foreground' : move > 0 ? 'text-[hsl(145_63%_55%)]' : move < 0 ? 'text-[hsl(357_80%_70%)]' : 'text-muted-foreground')} title={before ? `Ranked ${before} the season before` : 'Not ranked the season before'}>
                 {move === null ? <span className="font-pixel text-[7px]">NEW</span> : move > 0 ? <><TrendingUp className="h-3 w-3" aria-hidden />{move}</> : move < 0 ? <><TrendingDown className="h-3 w-3" aria-hidden />{-move}</> : <Minus className="h-3 w-3" aria-hidden />}
               </span>
-              <span className="sx-rung__bar" aria-hidden><i style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%` }} /></span>
+              <span className="sx-rung__bar" aria-hidden><i className="mo-grow" style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%`, ['--i' as string]: ri * 0.7 + 3 }} /></span>
             </li>
           );
         })}
-      </ol>
+      </Reveal>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { POST_ROUNDS, ROUND_LABEL, kickoffOf, regWeeks } from '@/utils/gameFinde
 import { BOARD_BG, RESULT_STYLE, color, type Result } from './seasonGamesUi';
 import { ArcadeToggle, ClubBadge, PixelStepper, SectionHeader } from '@/components/arcade';
 import { ScoreTile } from '@/components/arcade';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './sx.css';
 
 /**
@@ -29,12 +30,12 @@ export const played = (g: GameDetail) => g.awayScore !== undefined && g.homeScor
 const keyOfGame = (g: GameDetail) => (g.type === 'REG' ? String(g.week) : g.type);
 export const gameOrder = (a: GameDetail, b: GameDetail) => (a.date + (a.time ?? '')).localeCompare(b.date + (b.time ?? ''));
 
-const GameTile = ({ g }: { g: GameDetail }) => {
+const GameTile = ({ g, i = 0 }: { g: GameDetail; i?: number }) => {
   const done = played(g);
   const k = kickoffOf(g);
   const slot = k.tag && ['TNF', 'SNF', 'MNF'].includes(k.tag) ? k.tag : undefined;
   return (
-    <li className="min-w-0">
+    <li className="min-w-0 mo-fade" style={stag(i, 45)}>
       <ScoreTile
         away={{ club: g.away, score: g.awayScore }}
         home={{ club: g.home, score: g.homeScore }}
@@ -50,7 +51,7 @@ const GameTile = ({ g }: { g: GameDetail }) => {
 };
 
 /** One club's result, for the season strip. */
-export const ResultTile = ({ g, abbr, remember }: { g: GameDetail; abbr: string; remember?: boolean }) => {
+export const ResultTile = ({ g, abbr, remember, i = 0 }: { g: GameDetail; abbr: string; remember?: boolean; i?: number }) => {
   const home = g.home === abbr;
   const opp = home ? g.away : g.home;
   const done = played(g);
@@ -60,7 +61,7 @@ export const ResultTile = ({ g, abbr, remember }: { g: GameDetail; abbr: string;
   const k = kickoffOf(g);
   const wk = g.type === 'REG' ? `Wk ${g.week}` : ROUND_LABEL[g.type];
   return (
-    <li className="min-w-0">
+    <li className="min-w-0 mo-fade" style={stag(i, 30)}>
       <button
         type="button"
         onClick={() => { if (remember) memo.back = true; openGame(g.id); }}
@@ -183,9 +184,9 @@ const ScoresBrowser = () => {
       ) : shown.length === 0 ? (
         <p className="rounded-lg border border-dashed border-border/50 p-4 text-sm text-muted-foreground">No games here{club ? ' for that club' : ' that week'}.</p>
       ) : club ? (
-        <ul className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">{shown.map((g) => <ResultTile key={g.id} g={g} abbr={club} remember />)}</ul>
+        <Reveal as="ul" key={`${season}-${club}`} className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">{shown.map((g, i) => <ResultTile key={g.id} g={g} abbr={club} remember i={i} />)}</Reveal>
       ) : (
-        <ul className="sx-scorelist">{shown.map((g) => <GameTile key={g.id} g={g} />)}</ul>
+        <Reveal as="ul" key={`${season}-${week}`} className="sx-scorelist">{shown.map((g, i) => <GameTile key={g.id} g={g} i={i} />)}</Reveal>
       )}
     </section>
   );

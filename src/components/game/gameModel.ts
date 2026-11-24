@@ -192,6 +192,25 @@ export const proseOf = (p: GamePlayer): string => {
   const bits = [`${pl(tk, 'tackle', 'tackles')}`, v(s, 'def_sacks') ? pl(v(s, 'def_sacks'), 'sack', 'sacks') : '', v(s, 'def_interceptions') ? pl(v(s, 'def_interceptions'), 'interception', 'interceptions') : ''].filter(Boolean);
   return bits.join(' and ');
 };
+/** A player's line in plain words for a card ("7 catches for 86 yards and a touchdown · 2 tackles"), up to two parts, no abbreviations. */
+export const readableOf = (p: GamePlayer): string => {
+  const s = p.s;
+  const pl = (n: number | string, one: string, many: string) => `${n} ${Number(n) === 1 ? one : many}`;
+  const tds = (n: number) => (n ? ` and ${n === 1 ? 'a touchdown' : `${n} touchdowns`}` : '');
+  const bits: string[] = [];
+  if (v(s, 'attempts') >= 5) {
+    const ints = v(s, 'passing_interceptions');
+    bits.push(`${v(s, 'completions')} of ${v(s, 'attempts')} passing for ${pl(v(s, 'passing_yards'), 'yard', 'yards')}${tds(v(s, 'passing_tds'))}${ints ? `, ${pl(ints, 'interception', 'interceptions')}` : ''}`);
+  }
+  if (v(s, 'carries') >= 3 || (!bits.length && v(s, 'carries'))) bits.push(`${pl(v(s, 'carries'), 'carry', 'carries')} for ${pl(v(s, 'rushing_yards'), 'yard', 'yards')}${tds(v(s, 'rushing_tds'))}`);
+  if (v(s, 'receptions') || v(s, 'targets') >= 3) bits.push(`${pl(v(s, 'receptions'), 'catch', 'catches')} for ${pl(v(s, 'receiving_yards'), 'yard', 'yards')}${tds(v(s, 'receiving_tds'))}`);
+  if (impact(s) >= 4 || tackles(s) >= 4) {
+    const d = [pl(n0(tackles(s)), 'tackle', 'tackles'), v(s, 'def_sacks') ? pl(n0(v(s, 'def_sacks')), 'sack', 'sacks') : '', v(s, 'def_interceptions') ? pl(v(s, 'def_interceptions'), 'interception', 'interceptions') : '', v(s, 'def_tackles_for_loss') ? pl(n0(v(s, 'def_tackles_for_loss')), 'tackle for loss', 'tackles for loss') : '', v(s, 'def_pass_defended') ? pl(v(s, 'def_pass_defended'), 'pass defended', 'passes defended') : '', v(s, 'def_fumbles_forced') ? pl(v(s, 'def_fumbles_forced'), 'forced fumble', 'forced fumbles') : '', v(s, 'def_tds') ? pl(v(s, 'def_tds'), 'defensive touchdown', 'defensive touchdowns') : ''].filter(Boolean);
+    bits.push(d.join(', '));
+  }
+  if (v(s, 'fg_att') || v(s, 'pat_att')) bits.push(`${v(s, 'fg_made')} of ${v(s, 'fg_att')} on field goals, ${v(s, 'pat_made')} of ${v(s, 'pat_att')} on extra points`);
+  return bits.slice(0, 2).join(' · ');
+};
 /** The stars of the game: the top three by score (kickers excluded), the podium and the game ball share this order. */
 export const podiumOf = (g: GameDetail): GamePlayer[] => g.players.filter((p) => score(p) > 0 && unitOf(p) !== 'st').sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name)).slice(0, 3);
 /** The game ball, then each club's best on each side of the ball. */
