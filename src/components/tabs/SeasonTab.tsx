@@ -14,6 +14,7 @@ import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo, StandingsBanners }
 import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
+import ScoresBrowser from '@/components/season/ScoresBrowser';
 import '@/components/season/season.css';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { IS_NFL, seasonLabel } from '@/config/edition';
@@ -128,6 +129,11 @@ const SeasonTab = () => {
                 : "Every score of the season: the coached club's scoreboard, the league by the numbers, the table and the games that stood out."}
             </p>
           </div>
+          {IS_NFL && (
+            <button type="button" onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })} className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md border border-[hsl(var(--gold)/0.5)] px-3 font-pixel text-[9px] uppercase tracking-wider text-[hsl(var(--gold))] hover:bg-[hsl(var(--gold)/0.12)]">
+              Find a game ↓
+            </button>
+          )}
           {options.length > 1 && (
             <div role="group" aria-label="Season" className="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-secondary/50 p-0.5 text-xs font-semibold">
               {options.map((id) => (
@@ -191,6 +197,8 @@ const SeasonTab = () => {
           <NoScores season={shown ?? 'This season'} available={options} onSeason={setPicked} />
         )}
       </section>
+
+      {IS_NFL && <ScoresBrowser />}
 
       {(schedule.records.length > 0 && IS_NFL) && (
         <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">

@@ -17,6 +17,7 @@ import RetiredRafters from './RetiredRafters';
 import { useRafters } from '@/utils/rafters';
 import type { RingOfHonorEntry } from '@/utils/hallOfFame';
 import StadiumWeather from './StadiumWeather';
+import ClubGames from './nfl/ClubGames';
 import TitlesTimeline from './TitlesTimeline';
 import PositionRadar from './PositionRadar';
 import { peekProps } from '@/components/peek/peekProps';
@@ -290,6 +291,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                       </section>
                     )}
                     <StadiumWeather teamName={t?.name ?? summary.label} accent={accent} />
+                    <ClubGames teamName={t?.name ?? summary.label} />
                     {legends.length > 0 && (
                       <section aria-labelledby="franchise-icons">
                         <h3 id="franchise-icons" className="section-title text-base mb-2">

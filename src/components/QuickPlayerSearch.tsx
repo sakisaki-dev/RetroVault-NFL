@@ -1,7 +1,7 @@
 import { displayName } from '@/utils/displayName';
 import { useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
-import { Clock, Radar, Search, Shield, Sparkles, Star } from 'lucide-react';
+import { Clock, Radar, Radio, Search, Shield, Sparkles, Star } from 'lucide-react';
 import InLeague from '@/components/InLeague';
 import type { Player, Position } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,8 @@ import { useSkillRatings } from '@/utils/useSkillRatings';
 import { getTeamColors } from '@/utils/teamColors';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openTeamPage, searchTeams } from '@/utils/teamSearch';
+import { openGame } from '@/utils/nflGames';
+import { MeetingRow, meetingLabel, useMeetings } from './search/GameMeetings';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import { useCurrentClub } from '@/utils/club';
 import PlayerDetailCard from './PlayerDetailCard';
@@ -230,6 +232,10 @@ const QuickSearchPhone = () => {
           setOpen(false);
           openTeamPage(t.name);
         }}
+        onPickGame={(m) => {
+          setOpen(false);
+          openGame(m.id);
+        }}
       />
       <PlayerDetailCard player={selected} onClose={() => setSelected(null)} />
     </>
@@ -315,7 +321,9 @@ const QuickSearchDialog = () => {
   // Clubs matching the query lead the results; a pick opens its team page (Stats › Teams)
   const clubs = useMemo(() => (pos === 'ALL' ? searchTeams(deferredQuery) : []), [deferredQuery, pos]);
 
-  const activePlayer = active.startsWith('team ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
+  const meetings = useMeetings(deferredQuery);
+
+  const activePlayer = active.startsWith('team ') || active.startsWith('game ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
 
   const choose = (p: Player, deepDive = false) => {
     pushRecent(playerKey(p));
@@ -335,7 +343,7 @@ const QuickSearchDialog = () => {
             onValueChange={setActive}
             className="bg-transparent"
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.shiftKey && activePlayer && !active.startsWith('team ')) {
+              if (e.key === 'Enter' && e.shiftKey && activePlayer && !active.startsWith('team ') && !active.startsWith('game ')) {
                 e.preventDefault();
                 choose(activePlayer, true);
               }
@@ -408,6 +416,32 @@ const QuickSearchDialog = () => {
                           </span>
                           <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">Team page</span>
                         </span>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+                {meetings.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <Radio className="h-3 w-3 text-gold" aria-hidden="true" />
+                        Games
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {meetings.map((m) => (
+                      <CommandItem
+                        key={`game:${m.id}`}
+                        value={`game ${m.id}`}
+                        aria-label={meetingLabel(m)}
+                        onSelect={() => {
+                          setOpen(false);
+                          openGame(m.id);
+                        }}
+                        className="my-1 cursor-pointer overflow-hidden rounded-lg border border-line/60 p-0 data-[selected=true]:bg-[hsl(var(--gold)/0.16)] data-[selected=true]:text-foreground"
+                      >
+                        <MeetingRow m={m} />
                       </CommandItem>
                     ))}
                   </CommandGroup>
