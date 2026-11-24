@@ -7,6 +7,7 @@ import type { GameDetail, GamePlayer, Stat } from '@/utils/nflGames';
 import { useGameSprites } from '@/utils/gameSprites';
 import { hslOf } from '../season/seasonGamesUi';
 import { displayName } from '@/utils/displayName';
+import { liftForDarkBg } from '@/utils/teamColors';
 import { score, sitePos, unitOf, v, impact, type Side } from './gameModel';
 
 /** Shared bits and the data-dense sections of the game page (QB duel, ground game, air attack, pass rush, tiles, fantasy, special teams). */
@@ -56,47 +57,80 @@ const sideStyle = (tone: string) => ({ ['--tc' as string]: tone });
 const qbOf = (g: GameDetail, side: Side) => g.players.filter((p) => p.side === side && unitOf(p) === 'qb' && v(p.s, 'attempts') >= 5).sort((a, b) => v(b.s, 'attempts') - v(a.s, 'attempts'))[0];
 
 interface Row { label: string; get: (s: Stat) => number | undefined; fmt: (n: number, s: Stat) => string; better?: 'hi' | 'lo' }
-const QB_ROWS: Row[] = [
-  { label: 'Comp / Att', get: (s) => (v(s, 'attempts') ? v(s, 'completions') / v(s, 'attempts') : undefined), fmt: (_n, s) => `${v(s, 'completions')}/${v(s, 'attempts')}`, better: 'hi' },
-  { label: 'Pass yards', get: (s) => v(s, 'passing_yards'), fmt: (n) => String(n), better: 'hi' },
-  { label: 'TD', get: (s) => v(s, 'passing_tds'), fmt: (n) => String(n), better: 'hi' },
-  { label: 'INT', get: (s) => v(s, 'passing_interceptions'), fmt: (n) => String(n), better: 'lo' },
-  { label: 'Yards / att', get: (s) => (v(s, 'attempts') ? v(s, 'passing_yards') / v(s, 'attempts') : undefined), fmt: (n) => n.toFixed(1), better: 'hi' },
-  { label: 'Pass EPA', get: (s) => (has(s, 'passing_epa') ? s.passing_epa : undefined), fmt: (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toFixed(1), better: 'hi' },
-  { label: 'CPOE', get: (s) => (has(s, 'passing_cpoe') ? s.passing_cpoe : undefined), fmt: (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toFixed(1) + '%', better: 'hi' },
-  { label: 'Avg depth of target', get: (s) => (has(s, 'avg_intended_air_yards') ? s.avg_intended_air_yards : v(s, 'attempts') && has(s, 'passing_air_yards') ? s.passing_air_yards / v(s, 'attempts') : undefined), fmt: (n) => n.toFixed(1) },
-  { label: 'Time to throw', get: (s) => (has(s, 'avg_time_to_throw') ? s.avg_time_to_throw : undefined), fmt: (n) => `${n.toFixed(2)}s` },
-  { label: 'Pressured', get: (s) => (has(s, 'times_pressured') ? s.times_pressured : undefined), fmt: (n) => String(n), better: 'lo' },
-  { label: 'Hit', get: (s) => (has(s, 'times_hit') ? s.times_hit : undefined), fmt: (n) => String(n), better: 'lo' },
-  { label: 'Sacked', get: (s) => v(s, 'sacks_suffered'), fmt: (n) => String(n), better: 'lo' },
-  { label: 'Bad throws', get: (s) => (has(s, 'passing_bad_throws') ? s.passing_bad_throws : undefined), fmt: (n) => String(n), better: 'lo' },
-  { label: 'Drops', get: (s) => (has(s, 'passing_drops') ? s.passing_drops : undefined), fmt: (n) => String(n), better: 'lo' },
+const sgn1 = (n: number, suffix = '') => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toFixed(1) + suffix;
+const QB_GROUPS: { title: string; rows: Row[] }[] = [
+  { title: 'Passing', rows: [
+    { label: 'Comp / Att', get: (s) => (v(s, 'attempts') ? v(s, 'completions') / v(s, 'attempts') : undefined), fmt: (_n, s) => `${v(s, 'completions')}/${v(s, 'attempts')}`, better: 'hi' },
+    { label: 'Pass yards', get: (s) => v(s, 'passing_yards'), fmt: (n) => String(n), better: 'hi' },
+    { label: 'TD', get: (s) => v(s, 'passing_tds'), fmt: (n) => String(n), better: 'hi' },
+    { label: 'INT', get: (s) => v(s, 'passing_interceptions'), fmt: (n) => String(n), better: 'lo' },
+    { label: 'Yards / att', get: (s) => (v(s, 'attempts') ? v(s, 'passing_yards') / v(s, 'attempts') : undefined), fmt: (n) => n.toFixed(1), better: 'hi' },
+  ] },
+  { title: 'Efficiency', rows: [
+    { label: 'Pass EPA', get: (s) => (has(s, 'passing_epa') ? s.passing_epa : undefined), fmt: (n) => sgn1(n), better: 'hi' },
+    { label: 'CPOE', get: (s) => (has(s, 'passing_cpoe') ? s.passing_cpoe : undefined), fmt: (n) => sgn1(n, '%'), better: 'hi' },
+  ] },
+  { title: 'Style', rows: [
+    { label: 'Avg depth of target (yds)', get: (s) => (has(s, 'avg_intended_air_yards') ? s.avg_intended_air_yards : v(s, 'attempts') && has(s, 'passing_air_yards') ? s.passing_air_yards / v(s, 'attempts') : undefined), fmt: (n) => n.toFixed(1) },
+    { label: 'Time to throw', get: (s) => (has(s, 'avg_time_to_throw') ? s.avg_time_to_throw : undefined), fmt: (n) => `${n.toFixed(2)}s` },
+  ] },
+  { title: 'Pressure', rows: [
+    { label: 'Sacked', get: (s) => v(s, 'sacks_suffered'), fmt: (n) => String(n), better: 'lo' },
+    { label: 'Pressured', get: (s) => (has(s, 'times_pressured') ? s.times_pressured : undefined), fmt: (n) => String(n), better: 'lo' },
+    { label: 'Hit', get: (s) => (has(s, 'times_hit') ? s.times_hit : undefined), fmt: (n) => String(n), better: 'lo' },
+    { label: 'Bad throws', get: (s) => (has(s, 'passing_bad_throws') ? s.passing_bad_throws : undefined), fmt: (n) => String(n), better: 'lo' },
+    { label: 'Drops by receivers', get: (s) => (has(s, 'passing_drops') ? s.passing_drops : undefined), fmt: (n) => String(n), better: 'lo' },
+  ] },
 ];
+
+/** The share of the bar the left QB takes: 50% level, more when he leads (the lower value leads where lower is better). */
+const splitOf = (a: number, h: number, better?: 'hi' | 'lo'): number => {
+  const tot = Math.abs(a) + Math.abs(h);
+  if (!tot) return 50;
+  if (!better) return Math.max(8, Math.min(92, (Math.abs(a) / tot) * 100));
+  const d = (better === 'hi' ? a - h : h - a) / tot;
+  return Math.max(8, Math.min(92, 50 + 50 * d));
+};
+const headLine = (s: Stat) => bits([`${v(s, 'completions')}/${v(s, 'attempts')}`, `${v(s, 'passing_yards')} yds`, `${v(s, 'passing_tds')} TD`, `${v(s, 'passing_interceptions')} INT`]);
 
 export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const qa = qbOf(g, 0);
   const qh = qbOf(g, 1);
   if (!qa || !qh) return null;
-  const rows = QB_ROWS.filter((r) => r.get(qa.s) !== undefined || r.get(qh.s) !== undefined);
   const head = (p: GamePlayer, side: Side) => (
     <div className={cn('gm-qb__who', side === 1 && 'is-home')} style={sideStyle(toneOf(clubOf(g, side)))}>
       <span className="gm-qb__spr"><SpriteOf p={p} g={g} size="m" /></span>
-      <span className="gm-qb__id"><NameStrip p={p} g={g} link={link} className="gm-qb__name" /><small>{abbrOf(clubOf(g, side))} · QB</small></span>
+      <span className="gm-qb__id">
+        <small>{abbrOf(clubOf(g, side))} · {side === 0 ? 'Away' : 'Home'}</small>
+        <NameStrip p={p} g={g} link={link} className="gm-qb__name" />
+        <span className="gm-qb__line">{headLine(p.s)}</span>
+      </span>
     </div>
   );
   return (
     <Card title="QB duel" kicker="Passer against passer" className="gm-qb">
       <div className="gm-qb__top">{head(qa, 0)}<span className="gm-qb__vs" aria-hidden>VS</span>{head(qh, 1)}</div>
-      <div className="gm-qb__rows" style={{ ['--ca' as string]: toneOf(g.away), ['--ch' as string]: toneOf(g.home) }}>
-        {rows.map((r) => {
-          const a = r.get(qa.s);
-          const h = r.get(qh.s);
-          const win = (x?: number, y?: number) => r.better && x !== undefined && y !== undefined && x !== y && (r.better === 'hi' ? x > y : x < y);
+      <div className="gm-qb__body" style={{ ['--ca' as string]: liftForDarkBg(toneOf(g.away), 46), ['--ch' as string]: liftForDarkBg(toneOf(g.home), 46) }}>
+        {QB_GROUPS.map((grp) => {
+          const rows = grp.rows.filter((r) => r.get(qa.s) !== undefined || r.get(qh.s) !== undefined);
+          if (!rows.length) return null;
           return (
-            <div key={r.label} className="gm-qb__row">
-              <b className={cn(win(a, h) && 'is-better is-a')}>{a === undefined ? '–' : r.fmt(a, qa.s)}</b>
-              <span>{r.label}</span>
-              <b className={cn(win(h, a) && 'is-better is-h')}>{h === undefined ? '–' : r.fmt(h, qh.s)}</b>
+            <div key={grp.title} className="gm-qb__grp">
+              <p className="gm-qb__gh">{grp.title}</p>
+              {rows.map((r) => {
+                const a = r.get(qa.s);
+                const h = r.get(qh.s);
+                const win = (x?: number, y?: number) => !!r.better && x !== undefined && y !== undefined && x !== y && (r.better === 'hi' ? x > y : x < y);
+                const split = a !== undefined && h !== undefined ? splitOf(a, h, r.better) : 50;
+                return (
+                  <div key={r.label} className="gm-qb__row">
+                    <b className={cn(win(a, h) ? 'is-better' : r.better && win(h, a) && 'is-worse')}>{a === undefined ? '–' : r.fmt(a, qa.s)}</b>
+                    <span className="gm-qb__lab">{r.label}{r.better === 'lo' ? ' (lower wins)' : ''}</span>
+                    <b className={cn(win(h, a) ? 'is-better' : r.better && win(a, h) && 'is-worse')}>{h === undefined ? '–' : r.fmt(h, qh.s)}</b>
+                    <span className={cn('gm-qb__split', !r.better && 'is-neutral')} aria-hidden><i className="a" style={{ width: `${split}%` }} /><i className="h" style={{ width: `${100 - split}%` }} /></span>
+                  </div>
+                );
+              })}
             </div>
           );
         })}
