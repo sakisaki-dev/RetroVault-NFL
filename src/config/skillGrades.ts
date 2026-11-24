@@ -179,7 +179,18 @@ export const VALUE_WEIGHTS: Record<string, Record<string, number>> = {
   DEF: { impactG: 0.35, tklG: 0.2, sackG: 0.15, intG: 0.15, ffG: 0.15 },
   OL: { blocksG: 1 },
 };
-const valueWeight = (pos: Position, id: string) => (isNoSignal(pos, id) ? 0 : VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0);
+/**
+ * NFL season grades (owner, 2026-11-24): weights read from the career efficiency model's fitted shape (rushing and receiving
+ * balanced for RBs, volume and per-catch efficiency for WR/TE, completion / TD / INT for QBs), with TD rate and volume counting.
+ * Fumbles weigh 0 (no signal), and so do pure style descriptors (receiving share, rush share). Defenders keep VALUE_WEIGHTS.
+ */
+export const SEASON_VALUE_WEIGHTS: Record<string, Record<string, number>> = {
+  QB: { cmp: 0.25, ya: 0.15, tdPct: 0.2, intPct: 0.15, rating: 0.05, passYdsG: 0.15, rushYdsG: 0.05, rushShare: 0 },
+  RB: { ypc: 0.2, rushYdsG: 0.22, recYdsG: 0.3, ypt: 0.08, td16: 0.2, fumRate: 0, recShare: 0 },
+  REC: { recYdsG: 0.4, ypr: 0.25, recG: 0.2, tdPerRec: 0.15, fumRate: 0 },
+};
+const valueWeight = (pos: Position, id: string, season = false) =>
+  isNoSignal(pos, id) ? 0 : (season ? SEASON_VALUE_WEIGHTS[traitGroup(pos)]?.[id] : undefined) ?? VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0;
 /** Share of the overall that comes from the player's three best traits, so excellence isn't averaged away. */
 export const OVERALL_TOP3_MIX = 0.4;
 
@@ -221,6 +232,30 @@ const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g') =
   };
   return n === 'att' ? v('attempts') : n === 'carries' ? v('rushAtt') : n === 'touches' ? v('rushAtt') + v('receptions') : n === 'rec' ? v('receptions') : v('games');
 };
+/**
+ * NFL season pools (owner, 2026-11-24): a season is graded against the players who qualified for it so far, scaled to the weeks
+ * played (the most games anyone has): QB 10 attempts a week, RB 6 carries, WR / TE 2.5 catches, defenders 40% of the weeks
+ * (at 10 weeks: 100 attempts, 60 carries, 25 catches, 4 games).
+ */
+const SEASON_QUALIFY: Record<string, { field: 'attempts' | 'rushAtt' | 'receptions' | 'games'; per: number; noun: string }> = {
+  QB: { field: 'attempts', per: 10, noun: 'attempts' },
+  RB: { field: 'rushAtt', per: 6, noun: 'carries' },
+  WR: { field: 'receptions', per: 2.5, noun: 'catches' },
+  TE: { field: 'receptions', per: 2.5, noun: 'catches' },
+  LB: { field: 'games', per: 0.4, noun: 'games' },
+  DB: { field: 'games', per: 0.4, noun: 'games' },
+  DL: { field: 'games', per: 0.4, noun: 'games' },
+};
+const weeksCache = new WeakMap<readonly Player[], number>();
+const seasonWeeks = (players: Player[]) => {
+  let w = weeksCache.get(players);
+  if (w === undefined) weeksCache.set(players, (w = players.reduce<number>((m, p) => (Number.isFinite(p.games) && p.games > m ? p.games : m), 0)));
+  return w;
+};
+const seasonMin = (players: Player[], pos: Position) => {
+  const q = SEASON_QUALIFY[pos];
+  return q ? Math.max(q.field === 'games' ? 2 : 5, Math.round(q.per * seasonWeeks(players))) : 0;
+};
 const isSeasonSet = (players: Player[]) => players.length > 0 && !!(players[0] as unknown as { __season?: boolean }).__season;
 
 interface CareerCtx {
@@ -230,6 +265,8 @@ interface CareerCtx {
   baseline: Map<string, number[]>;
   /** raw overall percentile of every qualified player, sorted: the overall is re-ranked inside it */
   overallSorted: number[];
+  season: boolean;
+  label: string;
 }
 const careerCache = new WeakMap<readonly Player[], Map<Position, CareerCtx | null>>();
 const shrunkOf = (ctx: Pick<CareerCtx, 'mean'>, pos: Position, f: CompFeature, p: Player): number => {
@@ -243,11 +280,15 @@ const shrunkOf = (ctx: Pick<CareerCtx, 'mean'>, pos: Position, f: CompFeature, p
   return mu + (v - mu) * (n / (n + k));
 };
 const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
-  if (!IS_NFL || !careerRatingMeta() || !CAREER_QUALIFY[pos] || isSeasonSet(players)) return null;
+  const season = isSeasonSet(players);
+  if (!IS_NFL || !careerRatingMeta() || !(season ? SEASON_QUALIFY[pos] : CAREER_QUALIFY[pos])) return null;
   let byPos = careerCache.get(players);
   if (!byPos) careerCache.set(players, (byPos = new Map()));
   if (byPos.has(pos)) return byPos.get(pos)!;
-  const pool = players.filter((p) => p.position === pos && !p.isRealLegend && isCareerQualified(p));
+  const min = season ? seasonMin(players, pos) : 0;
+  const qualifies = (p: Player) => (season ? exposureOf(p, SEASON_QUALIFY[pos].field === 'games' ? 'g' : SEASON_QUALIFY[pos].field === 'attempts' ? 'att' : SEASON_QUALIFY[pos].field === 'rushAtt' ? 'carries' : 'rec') >= min : isCareerQualified(p));
+  const label = season ? `${min} ${SEASON_QUALIFY[pos].noun} this season` : CAREER_QUALIFY[pos].label;
+  const pool = players.filter((p) => p.position === pos && !p.isRealLegend && qualifies(p));
   const features = compFeatures(pos);
   if (pool.length < 12) {
     byPos.set(pos, null);
@@ -258,12 +299,12 @@ const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
     const v = pool.map(f.get).filter(Number.isFinite);
     if (v.length) mean.set(f.id, v.reduce((a, b) => a + b, 0) / v.length);
   });
-  const ctx: CareerCtx = { features, pool, mean, baseline: new Map(), overallSorted: [] };
+  const ctx: CareerCtx = { features, pool, mean, baseline: new Map(), overallSorted: [], season, label };
   features.forEach((f) =>
     ctx.baseline.set(f.id, isNoSignal(pos, f.id) ? [] : pool.map((p) => shrunkOf(ctx, pos, f, p)).filter(Number.isFinite).sort((a, b) => a - b)),
   );
   ctx.overallSorted = pool
-    .map((p) => overallFor(features, ctx.baseline, features.map((f) => (isNoSignal(pos, f.id) ? null : finiteOrNull(shrunkOf(ctx, pos, f, p)))), pos)?.pct)
+    .map((p) => overallFor(features, ctx.baseline, features.map((f) => (isNoSignal(pos, f.id) ? null : finiteOrNull(shrunkOf(ctx, pos, f, p)))), pos, season)?.pct)
     .filter((x): x is number => typeof x === 'number')
     .sort((a, b) => a - b);
   byPos.set(pos, ctx);
@@ -276,17 +317,19 @@ export const careerPool = (players: Player[], pos: Position): Player[] | null =>
 
 /** The qualifier label for a position's career pool ("500 career carries"). */
 export const careerPoolLabel = (pos: Position) => CAREER_QUALIFY[pos]?.label;
+/** The qualifier label for a season set's pool ("60 carries this season"), or undefined. */
+export const seasonPoolLabel = (players: Player[], pos: Position) => (SEASON_QUALIFY[pos] ? `${seasonMin(players, pos)} ${SEASON_QUALIFY[pos].noun} this season` : undefined);
 
 /**
  * THE overall (Build-a-Legend header, build panel, results; Player Deep Dive): value-weighted mean percentile
  * blended with the mean of the three best traits (OVERALL_TOP3_MIX) → OVR on the official 62–99 curve, letter
  * grade (same GRADE_SCALE) and tier from the grade. Null before any valued trait.
  */
-export const overallFor = (features: CompFeature[], baseline: Map<string, number[]>, values: (number | null)[], position: Position): Overall | null => {
+export const overallFor = (features: CompFeature[], baseline: Map<string, number[]>, values: (number | null)[], position: Position, season = false): Overall | null => {
   const items: { w: number; pct: number }[] = [];
   features.forEach((f, i) => {
     const v = values[i];
-    const w = valueWeight(position, f.id);
+    const w = valueWeight(position, f.id, season);
     if (v == null || w <= 0) return;
     const pct = skillPct(f, baseline.get(f.id) ?? [], v);
     if (Number.isFinite(pct)) items.push({ w, pct });
@@ -341,14 +384,14 @@ export const playerSkillGrades = (players: Player[], player: Player): { traits: 
       const percentile = skillPct(t, cc.baseline.get(t.id) ?? [], shrunkOf(cc, pos, t, player));
       return { trait: t, value, display: fmtFeature(t, value), percentile, grade: gradeFor(percentile) };
     });
-    const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos);
+    const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos, cc.season);
     let overall: Overall | null = null;
     if (raw) {
       const pct = percentileOf(cc.overallSorted, raw.pct);
       const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
       overall = { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
     }
-    return { traits: rows, overall, smallSample: !isCareerQualified(player) };
+    return { traits: rows, overall, smallSample: cc.season ? !cc.pool.includes(player) : !isCareerQualified(player) };
   }
   const baseline = positionBaseline(players, player.position);
   const rows = traits.map((t) => {
@@ -395,7 +438,7 @@ export const skillBoard = (players: Player[], position: Position, traitId: strin
       })
       .filter((e) => Number.isFinite(e.value))
       .sort((a, b) => b.percentile - a.percentile || byName(a, b));
-    return { poolLabel: CAREER_QUALIFY[position].label, lowerIsBetter: !!t.lowerIsBetter, entries };
+    return { poolLabel: cc.label, lowerIsBetter: !!t.lowerIsBetter, entries };
   }
   const pool = traitPools(players, position).get(traitId);
   if (!t || !pool) return null;
@@ -419,5 +462,5 @@ export const overallBoard = (players: Player[], position: Position): SkillBoard 
     .filter((x): x is { p: Player; o: Overall } => !!x.o)
     .map(({ p, o }) => ({ player: p, value: o.rating, display: String(o.rating), percentile: o.pct, grade: o.grade }))
     .sort((a, b) => b.value - a.value || b.percentile - a.percentile || byName(a, b));
-  return { poolLabel: cc ? CAREER_QUALIFY[position].label : `${SIM_MIN_GAMES}+ games`, lowerIsBetter: false, entries };
+  return { poolLabel: cc ? cc.label : `${SIM_MIN_GAMES}+ games`, lowerIsBetter: false, entries };
 };
