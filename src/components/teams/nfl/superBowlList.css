@@ -1,0 +1,14 @@
+.sbl__grid { display: grid; gap: 6px; grid-template-columns: 1fr; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 768px) { .sbl__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .sbl__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sbl__row { display: grid; grid-template-columns: 3rem 2.25rem minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; min-width: 0; padding: 7px 12px 7px 14px; text-align: left; border-radius: 14px; background: hsl(var(--card)); border: 1px solid hsl(var(--line)); box-shadow: inset 5px 0 0 var(--ax-c1); color: inherit; }
+button.sbl__row { cursor: pointer; transition: background-color .15s ease, border-color .15s ease; }
+button.sbl__row:hover { background: hsl(var(--gold) / .1); border-color: hsl(var(--gold) / .5); }
+button.sbl__row:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.sbl__year { font: 800 20px/1 var(--font-display, inherit); font-variant-numeric: tabular-nums; }
+.sbl__logo { width: 34px; height: 34px; flex: none; }
+.sbl__main { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.sbl__main b { font: 800 16px/1.1 var(--font-display, inherit); text-transform: uppercase; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sbl__vs { display: flex; align-items: center; gap: 4px; font-size: 12px; color: hsl(var(--muted-foreground)); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.sbl__mini { width: 16px; height: 16px; flex: none; }
+.sbl__no { font: 8px/1 var(--font-pixel, monospace); color: hsl(var(--gold)); letter-spacing: .04em; }

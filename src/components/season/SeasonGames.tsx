@@ -419,11 +419,11 @@ const spot = (p?: { season?: string; week?: number; round?: string }) =>
   p ? [p.season, p.round ?? (p.week ? `Week ${p.week}` : '')].filter(Boolean).join(' ') : '';
 
 /** The all-time game records as plaques in the record book's look: the figure, the two clubs with their logos and score, where it happened. */
-export const GameRecords = ({ records }: { records: GameRecord[] }) => {
+export const GameRecords = ({ records, title = 'Game records' }: { records: GameRecord[]; title?: string }) => {
   if (!records.length) return null;
   return (
     <div className="sx-block">
-      <SectionTitle kicker="All-time">Game records</SectionTitle>
+      <SectionTitle kicker="All-time">{title}</SectionTitle>
       <ul className="sx-plaques sx-plaques--auto" aria-label="Game records">
         {records.map((rec) => {
           const r = rec as StreakRecord;
