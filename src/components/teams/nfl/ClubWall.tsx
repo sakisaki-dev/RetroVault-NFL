@@ -13,6 +13,7 @@ import { useSchedule, useScheduleSeason, type TableRow } from '@/utils/schedule'
 import { seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
 import { divisionKey, sortTeams, type FranchiseRecord, type TeamSortKey, type TeamSummary } from '../teamStats';
+import { ArcadeToggle, SectionHeader } from '@/components/arcade';
 import './clubWall.css';
 
 type Conf = 'all' | 'AFC' | 'NFC';
@@ -50,13 +51,7 @@ interface Club {
 }
 
 const Chips = <T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { key: T; label: string }[]; onChange: (v: T) => void }) => (
-  <div role="group" aria-label={label} className="cw-chips">
-    {options.map((o) => (
-      <button key={o.key} type="button" aria-pressed={value === o.key} onClick={() => onChange(o.key)} className={cn('cw-chip', value === o.key && 'is-on')}>
-        {o.label}
-      </button>
-    ))}
-  </div>
+  <ArcadeToggle<T> label={label} size="sm" value={value} onChange={onChange} options={options.map((o) => ({ value: o.key, label: o.label }))} />
 );
 
 const useNarrow = () => {
@@ -267,12 +262,9 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
   void divisionKey;
 
   return (
-    <section aria-labelledby="club-wall-heading" className="cw space-y-3">
+    <section aria-label="Club wall" className="cw space-y-3">
       <div className="cw-bar">
-        <h2 id="club-wall-heading" className="section-title text-2xl">
-          Club wall
-          <span className="font-pixel text-[9px] text-muted-foreground">{clubs.length}</span>
-        </h2>
+        <SectionHeader title="Club wall" kicker={`${clubs.length} clubs`} className="cw-head" />
         <div className="cw-controls">
           <Chips<WallSort> label="Sort" value={sort} options={SORTS} onChange={setSort} />
           <Chips<Conf> label="Conference" value={conf} options={CONFS} onChange={setConf} />

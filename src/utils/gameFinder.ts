@@ -28,6 +28,8 @@ export interface Meeting {
   week: number;
   away: string;
   home: string;
+  /** The first club the query named (search rows show its result) */
+  first?: string;
 }
 /** Every game two clubs played against each other, newest first (abbreviations as ids.json keeps them). */
 export const meetingsOf = (ids: GameIds, a: string, b: string, limit = 5): Meeting[] => {

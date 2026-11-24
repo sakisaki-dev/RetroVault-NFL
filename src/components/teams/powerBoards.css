@@ -7,12 +7,31 @@
   width: 64px;
 }
 .pb-row {
+  background: hsl(var(--card));
+  border: 2px solid hsl(var(--line) / 0.7);
+  border-left: 5px solid var(--ax-c1);
   transition: border-color 0.15s;
 }
 button.pb-row:hover {
-  border-color: hsl(var(--gold) / 0.6);
+  border-color: hsl(var(--gold) / 0.7);
+  border-left-color: var(--ax-c1);
 }
+.pb-bar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--ax-c1); }
 .pb-lazy {
   content-visibility: auto;
   contain-intrinsic-size: auto 150px;
+}
+
+.ax-table thead { background: hsl(var(--secondary)); border-bottom: 2px solid hsl(var(--gold) / 0.6); }
+.ax-table thead th { font-family: var(--font-pixel, inherit); font-size: 9px; }
+.ax-table tbody tr:nth-child(even) { background: hsl(var(--secondary) / 0.35); }
+
+.ts-icon { background: hsl(var(--card)); border: 2px solid hsl(var(--line) / .7); }
+.ts-icon:hover { border-color: hsl(var(--gold) / .7); }
+.ax-strip small { font-size: .75em; opacity: .8; margin-left: 2px; }
+.ax-strip.ts-lead { font-size: 15px; }
+
+@media (max-width: 640px) {
+  .teams-stage .ax-stadium__plate { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .teams-stage .ax-stadium__right { align-self: stretch; }
 }

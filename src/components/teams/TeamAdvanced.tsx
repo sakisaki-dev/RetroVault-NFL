@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ArrowDown, ArrowUp, ArrowUpDown, CalendarRange, Dice5, Gauge, Home, LineChart, Scale, Shield, TrendingUp, Waves } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Dice5, Gauge, Home, Scale, Shield, TrendingUp, Waves } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { useCurrentClub } from '@/utils/club';
@@ -8,6 +8,8 @@ import { scheduleSeasons, useSchedule, type ScheduleSeason, type TableRow, type 
 import TeamLogo from '../timeline/TeamLogo';
 import SectionIntro from '../stats/SectionIntro';
 import { ClubLadder } from './PowerBoards';
+import { ArcadeToggle, ClubBadge, PixelChip, PixelPanel, PixelSelect, SectionHeader } from '../arcade';
+import { teamMark } from '../stats/visual/chartKit';
 
 /**
  * Stats → Teams: advanced team stats from the weekly league scores (public/data/league/schedule.json, built by
@@ -16,7 +18,7 @@ import { ClubLadder } from './PowerBoards';
  */
 
 const NEUTRAL = '220 10% 40%';
-const teamColor = (team?: string | null) => `hsl(${findNFLTeam(team ?? undefined)?.primaryColor ?? NEUTRAL})`;
+const teamColor = (team?: string | null) => (findNFLTeam(team ?? undefined) ? teamMark(team) : `hsl(${NEUTRAL})`);
 const UP = 'text-[hsl(145_63%_52%)]';
 const DOWN = 'text-[hsl(357_80%_68%)]';
 const signTone = (n?: number | null) => (n == null || n === 0 ? '' : n > 0 ? UP : DOWN);
@@ -59,10 +61,9 @@ const useWidth = <T extends HTMLElement>(fallback: number) => {
   return [ref, width] as const;
 };
 
-const ClubName = ({ team, className, logo = 'h-5 w-5', bar = true }: { team: string; className?: string; logo?: string; bar?: boolean }) => (
+const ClubName = ({ team, className }: { team: string; className?: string; logo?: string; bar?: boolean }) => (
   <span className={cn('flex min-w-0 items-center gap-2', className)}>
-    {bar && <span aria-hidden className="h-5 w-1 flex-shrink-0 rounded-full" style={{ background: teamColor(team) }} />}
-    <TeamLogo team={team} decorative backed className={cn(logo, 'flex-shrink-0')} />
+    <ClubBadge club={team} size="sm" abbr={false} />
     <span className="truncate">{team}</span>
   </span>
 );
@@ -180,29 +181,14 @@ const thBase = 'px-1.5 py-2 font-semibold sm:px-2';
 const tdBase = 'px-1.5 py-1.5 tabular-nums whitespace-nowrap sm:px-2';
 const alignClass = (a: Column['align']) => (a === 'left' ? 'text-left' : a === 'center' ? 'text-center' : 'text-right');
 
-/** Season pills; nothing to pick (one season) = not shown. */
+/** Season toggle; nothing to pick (one season) = not shown. */
 const SeasonPicker = ({ seasons, value, onChange }: { seasons: ScheduleSeason[]; value: string; onChange: (s: string) => void }) =>
   seasons.length < 2 ? null : (
-  <div role="group" aria-label="Season" className="flex min-w-0 items-center gap-2">
-    <span className="font-pixel text-[9px] uppercase text-muted-foreground shrink-0">Season</span>
-    <div className="flex min-w-0 gap-1 overflow-x-auto scrollbar-none rounded-lg bg-secondary/50 p-1">
-      {seasons.map((s) => (
-        <button
-          key={s.season}
-          type="button"
-          aria-pressed={value === s.season}
-          onClick={() => onChange(s.season)}
-          className={cn(
-            'tap-40 shrink-0 rounded-md px-2.5 py-1 font-display text-xs font-bold uppercase tracking-wide transition-colors',
-            value === s.season ? 'bg-gold text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
-          )}
-        >
-          {s.season}
-        </button>
-      ))}
+    <div className="flex min-w-0 items-center gap-2">
+      <span className="ax-kicker shrink-0">Season</span>
+      <ArcadeToggle size="sm" label="Season" value={value} onChange={onChange} options={seasons.map((s) => ({ value: s.season, label: s.season }))} />
     </div>
-  </div>
-);
+  );
 
 const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; compact: boolean; onTrack?: (team: string) => void }) => {
   const [sort, setSort] = useState<{ key: SortKey; asc: boolean }>({ key: 'power', asc: true });
@@ -223,8 +209,8 @@ const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; c
 
   return (
     <div className="space-y-2">
-    <div className="max-h-[34rem] overflow-auto rounded-lg border border-border/40">
-      <table className={cn('w-full text-sm', compact ? 'min-w-0' : 'min-w-[760px]')}>
+    <PixelPanel pad="none" className="max-h-[34rem] overflow-auto">
+      <table className={cn('ax-table w-full text-sm', compact ? 'min-w-0' : 'min-w-[760px]')}>
         <caption className="sr-only">
           Advanced team stats, {season.season}. Sorted by {COLUMNS.find((c) => c.key === sort.key)?.title ?? sort.key}, {sort.asc ? 'ascending' : 'descending'}.
         </caption>
@@ -263,7 +249,7 @@ const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; c
           {rows.map((r) => {
             const coach = r.team === season.coachTeam;
             return (
-              <tr key={r.abbr} className={cn('border-t border-border/30', coach ? 'bg-primary/15' : 'hover:bg-secondary/20')} aria-current={coach ? 'true' : undefined}>
+              <tr key={r.abbr} className={cn('border-t border-border/30', coach ? 'bg-gold/10' : 'hover:bg-secondary/20')} aria-current={coach ? 'true' : undefined}>
                 {columns.map((c) =>
                   c.key === 'team' ? (
                     <th
@@ -306,7 +292,7 @@ const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; c
           })}
         </tbody>
       </table>
-    </div>
+    </PixelPanel>
     <p className="text-xs text-muted-foreground">
       {columns
         .map((c) => LEGEND[c.key])
@@ -412,24 +398,17 @@ const InsightCards = ({ season }: { season: ScheduleSeason }) => {
   return (
     <ul className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4" aria-label={`Season insights, ${season.season}`}>
       {insights.map((i, n) => (
-        <li
-          key={i.id}
-          // An odd count: the last card spans two columns, so neither the 2-up nor the 4-up grid leaves an orphan
-          className={cn(
-            'relative overflow-hidden rounded-xl border border-border/50 bg-secondary/25 p-3',
-            insights.length % 2 === 1 && n === insights.length - 1 && 'col-span-2',
-          )}
-          style={{ boxShadow: `inset 3px 0 0 ${teamColor(i.row.team)}` }}
-        >
-          <TeamLogo team={i.row.team} decorative className="pointer-events-none absolute -right-3 -top-3 h-20 w-20 opacity-10" />
-          <p className="flex items-center gap-1.5 font-pixel text-[9px] uppercase text-muted-foreground">
-            <i.icon className="h-3.5 w-3.5" aria-hidden /> {i.label}
-          </p>
-          <div className="mt-2 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
-            <ClubName team={i.row.team} className="font-display text-base font-bold uppercase sm:text-lg" logo="h-6 w-6" />
-            <span className={cn('font-display text-2xl font-extrabold tabular-nums leading-none', i.tone)}>{i.value}</span>
-          </div>
-          <p className="mt-1.5 text-xs text-muted-foreground">{i.detail}</p>
+        <li key={i.id} className={cn('min-w-0', insights.length % 2 === 1 && n === insights.length - 1 && 'col-span-2')}>
+          <PixelPanel club={i.row.team} tone="stripe" watermark pad="sm" className="h-full">
+            <p className="flex items-center gap-1.5 font-pixel text-[9px] uppercase text-muted-foreground">
+              <i.icon className="h-3.5 w-3.5" aria-hidden /> {i.label}
+            </p>
+            <div className="mt-2 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
+              <ClubName team={i.row.team} className="font-display text-base font-bold uppercase sm:text-lg" />
+              <span className={cn('font-display text-2xl font-extrabold tabular-nums leading-none', i.tone)}>{i.value}</span>
+            </div>
+            <p className="mt-1.5 text-xs text-muted-foreground">{i.detail}</p>
+          </PixelPanel>
         </li>
       ))}
     </ul>
@@ -562,7 +541,7 @@ const DiffChart = ({ team, rows, width }: { team: string; rows: TeamSeasonRow[];
               y={top}
               width={barW}
               height={h}
-              rx={2}
+              rx={0}
               className={r.diff >= 0 ? 'fill-[hsl(145_63%_42%)]' : 'fill-[hsl(357_80%_62%)]'}
             />
             <text
@@ -640,22 +619,10 @@ const LeagueChart = ({ progression, clubs, team, onTeam }: { progression: Record
   // end-of-line labels: power ranks are unique, so every club gets one; other metrics label only the focused club
   const lastOf = (s: (typeof series)[number]) => s.rows.at(-1)!;
   return (
-    <div className="glass-card space-y-3 p-3 sm:p-4">
+    <PixelPanel className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="font-display text-base font-bold uppercase tracking-wide">All {series.length} clubs</p>
-        <div role="group" aria-label="Chart metric" className="flex rounded-md border border-border/60 p-0.5 text-xs">
-          {LEAGUE_METRICS.map((m) => (
-            <button
-              key={m.key}
-              type="button"
-              aria-pressed={metric === m.key}
-              onClick={() => setMetric(m.key)}
-              className={cn('tap-40 rounded px-2.5 py-1 font-semibold', metric === m.key ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground')}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
+        <ArcadeToggle<LeagueMetric> size="sm" label="Chart metric" value={metric} onChange={setMetric} options={LEAGUE_METRICS.map((m) => ({ value: m.key, label: m.label }))} />
       </div>
       <div ref={ref} className="min-w-0" onMouseLeave={() => setHover(null)}>
         <svg
@@ -717,7 +684,7 @@ const LeagueChart = ({ progression, clubs, team, onTeam }: { progression: Record
           ? `One season of weekly scores so far (${seasons[0]}), so every club is a single point. Lines appear as more seasons are uploaded; skipped seasons show as dashed stretches.`
           : 'Tap or hover a line to bring a club forward; tap to track it below. Dashed stretches skip seasons without weekly scores.'}
       </p>
-    </div>
+    </PixelPanel>
   );
 };
 
@@ -732,19 +699,14 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
 
   return (
     <div className="space-y-4">
-    <button
-      type="button"
-      aria-expanded={showAll}
-      onClick={() => setShowAll((v) => !v)}
-      className="rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
-    >
+    <PixelChip pressed={showAll} onClick={() => setShowAll((v) => !v)} aria-expanded={showAll}>
       {showAll ? 'Hide the all-clubs chart' : 'Show every club on one chart'}
-    </button>
+    </PixelChip>
     {showAll && <LeagueChart progression={progression} clubs={clubs} team={team} onTeam={onTeam} />}
-    <div className="glass-card space-y-4 p-3 sm:p-4">
+    <PixelPanel club={team} tone="stripe" className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-3">
-          <TeamLogo team={team} decorative className="h-10 w-10 flex-shrink-0" backed />
+          <ClubBadge club={team} size="lg" abbr={false} />
           <div className="min-w-0">
             <p className="font-display text-xl font-bold uppercase leading-tight">{team}</p>
             <p className="text-xs text-muted-foreground">
@@ -753,20 +715,7 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
             </p>
           </div>
         </div>
-        <label className="flex items-center gap-2 text-xs">
-          <span className="font-pixel text-[9px] uppercase text-muted-foreground">Club</span>
-          <select
-            value={team}
-            onChange={(e) => onTeam(e.target.value)}
-            className="min-w-0 rounded-md border border-border bg-secondary/50 px-2 py-1.5 font-display text-sm font-bold uppercase tracking-wide"
-          >
-            {teams.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </label>
+        <PixelSelect label="Club" prefix="CLUB" value={team} onChange={onTeam} options={teams.map((t) => ({ value: t, label: t }))} />
       </div>
 
       {rows.length > 0 && (
@@ -785,8 +734,8 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-border/40">
-        <table className="w-full min-w-[340px] text-sm">
+      <div className="overflow-x-auto border-2 border-[hsl(var(--line)/0.7)]">
+        <table className="ax-table w-full min-w-[340px] text-sm">
           <caption className="sr-only">{team} season by season, newest first, with the change against the previous season that has weekly scores</caption>
           <thead>
             <tr className="text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -821,7 +770,7 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
           </tbody>
         </table>
       </div>
-    </div>
+    </PixelPanel>
     </div>
   );
 };
@@ -836,19 +785,19 @@ const Movers = ({ progression, season, seasonsWithData, onTrack }: { progression
   );
   if (seasonsWithData < 2) {
     return (
-      <p className="glass-card p-4 text-sm text-muted-foreground">
+      <p className="ax-panel p-4 text-sm text-muted-foreground">
         Risers and fallers appear once a second season of weekly scores is uploaded: each club's power rank against its previous season with scores.
       </p>
     );
   }
   if (!moved.length) {
-    return <p className="glass-card p-4 text-sm text-muted-foreground">{season} is the first season with weekly scores, so there is nothing to compare it with.</p>;
+    return <p className="ax-panel p-4 text-sm text-muted-foreground">{season} is the first season with weekly scores, so there is nothing to compare it with.</p>;
   }
   const byChange = [...moved].sort((a, b) => b.row.change.power - a.row.change.power || a.row.power - b.row.power || a.team.localeCompare(b.team));
   const risers = byChange.filter((m) => m.row.change.power > 0).slice(0, 5);
   const fallers = [...byChange].reverse().filter((m) => m.row.change.power < 0).slice(0, 5);
   const List = ({ title, items, up }: { title: string; items: typeof moved; up: boolean }) => (
-    <div className="glass-card min-w-0 p-3 sm:p-4">
+    <div className="ax-panel min-w-0 p-3 sm:p-4">
       <h4 className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
         {up ? <ArrowUp className={cn('h-4 w-4', UP)} aria-hidden /> : <ArrowDown className={cn('h-4 w-4', DOWN)} aria-hidden />} {title}
       </h4>
@@ -911,8 +860,8 @@ const TeamAdvanced = () => {
   if (!seasons.length) {
     return (
       <section aria-labelledby="advanced-heading" className="space-y-3">
-        <h2 id="advanced-heading" className="section-title text-2xl">Advanced team stats</h2>
-        <p className="glass-card p-4 text-sm text-muted-foreground">
+        <SectionHeader title="Advanced team stats" kicker="Weekly scores" />
+        <p className="ax-panel p-4 text-sm text-muted-foreground">
           No weekly scores yet. Advanced team stats (expected wins, luck, consistency, home edge) and each club's progression come from the LEAGUE
           schedule screens, one per week, plus the standings; they appear here once a season of them is uploaded.
         </p>
@@ -935,64 +884,33 @@ const TeamAdvanced = () => {
     <>
       <section aria-labelledby="advanced-heading" className="space-y-4">
         <div className="flex flex-col gap-1">
-          <h2 id="advanced-heading" className="section-title text-2xl">
-            {season.season} power &amp; advanced stats
-          </h2>
+          <SectionHeader kicker="Weekly league scores" title={<span id="advanced-heading">{season.season} power &amp; advanced stats</span>} />
           <SectionIntro id="team-advanced" takeaway={advancedTakeaway(season)}>
             From the weekly league scores: the season power ranking (the # column; a different thing from All-time power above), Pythagorean expected
             wins (points scored and allowed), luck (wins above or below them), margin adjusted for the schedule, consistency of game margins and the
             home edge.{multi ? ' Pick a club to follow its progression.' : ''}
           </SectionIntro>
         </div>
-        <div className={cn('glass-card flex flex-col gap-2.5 p-3 sm:flex-row sm:items-center', multi ? 'sm:justify-between' : 'sm:justify-end')}>
+        <div className={cn('flex flex-col gap-2.5 sm:flex-row sm:items-center', multi ? 'sm:justify-between' : 'sm:justify-end')}>
           <SeasonPicker seasons={seasons} value={season.season} onChange={setPicked} />
-          <div role="group" aria-label="Columns" className="flex items-center gap-2">
-            <span className="font-pixel text-[9px] uppercase text-muted-foreground">Columns</span>
-            <div className="flex gap-1 rounded-lg bg-secondary/50 p-1">
-              {[
-                { key: true, label: 'Key' },
-                { key: false, label: 'All' },
-              ].map((o) => (
-                <button
-                  key={o.label}
-                  type="button"
-                  aria-pressed={compact === o.key}
-                  onClick={() => setCompact(o.key)}
-                  className={cn(
-                    'tap-40 rounded-md px-2.5 py-1 font-display text-xs font-bold uppercase tracking-wide transition-colors',
-                    compact === o.key ? 'bg-gold text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  {o.label}
-                </button>
-              ))}
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="ax-kicker">Columns</span>
+            <ArcadeToggle size="sm" label="Columns" value={compact ? 'key' : 'all'} onChange={(v) => setCompact(v === 'key')} options={[{ value: 'key', label: 'Key' }, { value: 'all', label: 'All' }]} />
           </div>
         </div>
 
         <InsightCards season={season} />
         <ClubLadder season={season} progression={progression} onTrack={multi ? track : undefined} />
-        <button
-          type="button"
-          aria-expanded={fullTable}
-          onClick={() => setFullTable((v) => !v)}
-          className="rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
-        >
+        <PixelChip pressed={fullTable} aria-expanded={fullTable} onClick={() => setFullTable((v) => !v)}>
           {fullTable ? 'Hide the advanced table' : 'Advanced table, every column'}
-        </button>
+        </PixelChip>
         {fullTable && <AdvancedTable season={season} compact={compact} onTrack={multi ? track : undefined} />}
       </section>
 
       <section ref={progressionRef} aria-labelledby="progression-heading" className="scroll-mt-20 space-y-4">
-        <h2 id="progression-heading" className="section-title text-2xl">
-          <LineChart className="h-5 w-5 text-gold" aria-hidden /> Progression
-          <span className="font-pixel text-[9px] text-muted-foreground">
-            <CalendarRange className="mr-1 inline h-3 w-3" aria-hidden />
-            {seasons.length} season{seasons.length === 1 ? '' : 's'}
-          </span>
-        </h2>
+        <SectionHeader kicker={`${seasons.length} season${seasons.length === 1 ? '' : 's'} with weekly scores`} title={<span id="progression-heading">Progression</span>} />
         {!multi ? (
-          <p className="glass-card p-4 text-sm text-muted-foreground">
+          <p className="ax-panel p-4 text-sm text-muted-foreground">
             Each club's season-by-season charts appear once a second season of weekly scores is uploaded (only {season.season} so far).
           </p>
         ) : (
@@ -1000,7 +918,7 @@ const TeamAdvanced = () => {
             {team ? (
               <Progression progression={progression} clubs={season.table.length || 32} team={team} onTeam={setTracked} />
             ) : (
-              <p className="glass-card p-4 text-sm text-muted-foreground">No club has a season of weekly scores yet.</p>
+              <p className="ax-panel p-4 text-sm text-muted-foreground">No club has a season of weekly scores yet.</p>
             )}
           </>
         )}

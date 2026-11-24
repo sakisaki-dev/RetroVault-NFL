@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Radio, Trophy } from 'lucide-react';
-import TeamLogo from '@/components/timeline/TeamLogo';
+import { cn } from '@/lib/utils';
+import { ClubBadge, PixelIcon, PixelStepper, SectionHeader, clubVars } from '@/components/arcade';
+import TeamLogo from '@/components/brand/TeamLogo';
 import { IS_NFL } from '@/config/edition';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { openGame, useGameIds, useSeasonGames, useSuperBowlIds } from '@/utils/nflGames';
-import { parseGameId } from '@/utils/gameFinder';
-import { ResultTile, ScoresSkeleton, gameOrder } from '@/components/season/ScoresBrowser';
+import { openGame, useGameIds, useSeasonGames, useSuperBowlIds, type GameDetail } from '@/utils/nflGames';
+import { ROUND_LABEL, parseGameId } from '@/utils/gameFinder';
+import { ScoresSkeleton, gameOrder, played } from '@/components/season/ScoresBrowser';
+import './clubGames.css';
 
 /**
  * The club sheet's "Schedule": one season of the club's games as results (W/L, score, opponent), each opening the
@@ -15,6 +17,42 @@ import { ResultTile, ScoresSkeleton, gameOrder } from '@/components/season/Score
 const NOW: Record<string, string> = { STL: 'LAR', LA: 'LAR', OAK: 'LV', SD: 'LAC' };
 const now = (a: string) => NOW[a] ?? a;
 const sbSides = (id: string) => { const g = parseGameId(id); return { away: now(g.away), home: now(g.home) }; };
+
+/** One game of the club's season as a ticket: week kicker, W/L lamp, opponent logo, the score with the winner lit */
+const Ticket = ({ g, abbr }: { g: GameDetail; abbr: string }) => {
+  const home = g.home === abbr;
+  const opp = home ? g.away : g.home;
+  const done = played(g);
+  const pf = (home ? g.homeScore : g.awayScore) ?? 0;
+  const pa = (home ? g.awayScore : g.homeScore) ?? 0;
+  const r = !done ? null : pf > pa ? 'W' : pf < pa ? 'L' : 'T';
+  const wk = g.type === 'REG' ? `WEEK ${g.week}` : (ROUND_LABEL[g.type] ?? g.type).toUpperCase();
+  return (
+    <li className="min-w-0">
+      <button
+        type="button"
+        onClick={() => openGame(g.id)}
+        aria-label={`${wk}, ${home ? 'vs' : 'at'} ${opp}${done ? `, ${r === 'W' ? 'win' : r === 'L' ? 'loss' : 'tie'} ${pf} to ${pa}` : ', not played yet'}. Open the game`}
+        className={cn('cg-ticket', g.type !== 'REG' && 'is-post')}
+        style={clubVars(opp)}
+      >
+        <span className="cg-ticket__wk">{wk}{g.ot ? ' · OT' : ''}</span>
+        <span className="cg-ticket__main">
+          <span className={cn('cg-lamp', r && `is-${r}`)} aria-hidden>{r ?? '–'}</span>
+          <TeamLogo team={opp} size={30} decorative backed />
+          <span className="cg-ticket__opp" aria-hidden>{home ? 'vs' : '@'} {findNFLTeam(opp)?.abbreviation ?? opp}</span>
+          {done && (
+            <span className="cg-ticket__score" aria-hidden>
+              <b className={cn(r === 'W' && 'is-lit')}>{pf}</b>
+              <i>–</i>
+              <b className={cn(r === 'L' && 'is-lit')}>{pa}</b>
+            </span>
+          )}
+        </span>
+      </button>
+    </li>
+  );
+};
 
 const ClubGames = ({ teamName }: { teamName: string }) => {
   const abbr = findNFLTeam(teamName)?.abbreviation;
@@ -30,27 +68,26 @@ const ClubGames = ({ teamName }: { teamName: string }) => {
   return (
     <section aria-labelledby="club-games">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <h3 id="club-games" className="section-title flex items-center gap-2 text-base"><Radio className="h-4 w-4 text-[hsl(var(--gold))]" aria-hidden /> Schedule</h3>
-        <select aria-label="Season" value={year} onChange={(e) => setPicked(Number(e.target.value))} className="h-8 rounded-md border border-border/60 bg-background px-2 font-display text-sm font-bold tabular-nums">
-          {years.map((y) => <option key={y} value={y}>{y}</option>)}
-        </select>
+        <SectionHeader as="h3" kicker="Club schedule" title="Schedule" club={teamName} className="cg-head" />
+        <PixelStepper label="Season" value={year} onChange={setPicked} values={years} />
       </div>
       {all === undefined ? <ScoresSkeleton n={6} /> : !games?.length ? <p className="text-sm text-muted-foreground">No games found for {year}.</p> : (
-        <ul className="grid grid-cols-2 gap-2 md:grid-cols-3">{games.map((g) => <ResultTile key={g.id} g={g} abbr={abbr} />)}</ul>
+        <ul className="grid grid-cols-2 gap-2 md:grid-cols-3">{games.map((g) => <Ticket key={g.id} g={g} abbr={abbr} />)}</ul>
       )}
       {bowls.length > 0 && (
-        <div className="mt-3">
-          <p className="mb-1 flex items-center gap-1.5 font-pixel text-[9px] uppercase tracking-widest text-muted-foreground"><Trophy className="h-3 w-3 text-[hsl(var(--gold))]" aria-hidden /> Super Bowl appearances</p>
-          <ul className="flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:thin]">
+        <div className="mt-4">
+          <p className="ax-kicker mb-1.5 flex items-center gap-1.5"><PixelIcon name="trophy" size={14} color="hsl(var(--gold))" /> Super Bowl appearances</p>
+          <ul className="flex flex-wrap gap-1.5">
             {bowls.map(([y, id]) => {
               const g = sbSides(id);
               const opp = g.away === abbr ? g.home : g.away;
               return (
-                <li key={y} className="flex-shrink-0">
-                  <button type="button" onClick={() => openGame(id)} aria-label={`${y} Super Bowl against ${opp}. Open the game`} className="flex items-center gap-1.5 rounded-md border border-[hsl(var(--gold)/0.5)] bg-black/40 px-2 py-1 hover:bg-[hsl(var(--gold)/0.12)]">
+                <li key={y}>
+                  <button type="button" onClick={() => openGame(id)} aria-label={`${y} Super Bowl against ${opp}. Open the game`} className="cg-sb">
+                    <PixelIcon name="trophy" size={14} />
                     <span className="font-display text-sm font-bold tabular-nums">{y}</span>
-                    <span className="font-pixel text-[8px] uppercase text-muted-foreground">vs</span>
-                    <TeamLogo team={opp} decorative className="h-5 w-5" />
+                    <span className="font-pixel text-[8px] uppercase">vs</span>
+                    <ClubBadge club={opp} size="sm" />
                   </button>
                 </li>
               );
