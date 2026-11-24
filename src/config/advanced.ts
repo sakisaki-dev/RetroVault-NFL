@@ -346,11 +346,11 @@ export const ADV_METRICS: AdvMetric[] = [
     short: 'Awd/100',
     family: 'Value',
     definition: `Award points as weighted in Dominance (ring ${AWARD_POINTS.ring}, MVP ${AWARD_POINTS.mvp}, OPOY ${AWARD_POINTS.opoy} / DPOY ${AWARD_POINTS.dpoy}, SB MVP ${AWARD_POINTS.sbmvp}) per 100 games.`,
-    minLabel: `min ${ADV_MIN.games} games`,
+    minLabel: `min 60 games`,
     positions: POSITIONS,
     decimals: 1,
     plus: true,
-    qualifies: minGames,
+    qualifies: (p) => p.games >= 60,
     value: (p) => ratio(awardPoints(p), p.games) * 100,
   },
 ];
