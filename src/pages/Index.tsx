@@ -1,4 +1,6 @@
-import { Suspense, lazy, useEffect, useMemo } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
+import { lazyRetry } from '@/utils/lazyRetry';
+import TabBoundary from '@/components/TabBoundary';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
@@ -24,15 +26,15 @@ import { decodeProgress, importProgress } from '@/utils/deviceSync';
 
 // Every tab is its own chunk, loaded the first time it is opened (the Collection one carries the card art and
 // pack opening; the Art lab and Card designs split off again inside it).
-const CareerTab = lazy(() => import('@/components/tabs/CareerTab'));
-const HallOfFameTab = lazy(() => import('@/components/tabs/HallOfFameTab'));
-const GamesTab = lazy(() => import('@/components/tabs/GamesTab'));
-const TimelineTab = lazy(() => import('@/components/tabs/TimelineTab'));
-const NewsTab = lazy(() => import('@/components/espn/NewsTab'));
-const SeasonTab = lazy(() => import('@/components/tabs/SeasonTab'));
-const FrontOfficeTab = lazy(() => import('@/components/tabs/FrontOfficeTab'));
-const CollectionTab = lazy(() => import('@/components/tabs/CollectionTab'));
-const TeamLabTab = lazy(() => import('@/components/teamlab/TeamLabTab'));
+const CareerTab = lazyRetry(() => import('@/components/tabs/CareerTab'));
+const HallOfFameTab = lazyRetry(() => import('@/components/tabs/HallOfFameTab'));
+const GamesTab = lazyRetry(() => import('@/components/tabs/GamesTab'));
+const TimelineTab = lazyRetry(() => import('@/components/tabs/TimelineTab'));
+const NewsTab = lazyRetry(() => import('@/components/espn/NewsTab'));
+const SeasonTab = lazyRetry(() => import('@/components/tabs/SeasonTab'));
+const FrontOfficeTab = lazyRetry(() => import('@/components/tabs/FrontOfficeTab'));
+const CollectionTab = lazyRetry(() => import('@/components/tabs/CollectionTab'));
+const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
 
 const IndexContent = () => {
   // The visible page lives in the URL hash (#stats/teams, #stats/deepdive?p=…) so it is linkable and Back works.
@@ -112,7 +114,7 @@ const IndexContent = () => {
           <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
             {/* Tab changes are transitions (hashRoute), so the old tab stays until the new one is ready; it then
                 cross-fades in (.rv-view-in). The fallback only shows on a cold first load, after ~150 ms. */}
-            <Suspense fallback={<TabFallback />}>
+            <TabBoundary key={activeTab}><Suspense fallback={<TabFallback />}>
               <div key={activeTab} className="rv-view-in">
                 {activeTab === 'career' && <CareerTab />}
                 {activeTab === 'lab' && <TeamLabTab />}
@@ -124,7 +126,7 @@ const IndexContent = () => {
                 {activeTab === 'office' && <FrontOfficeTab />}
                 {activeTab === 'games' && <GamesTab />}
               </div>
-            </Suspense>
+            </Suspense></TabBoundary>
           </main>
         </HubRouteContext.Provider>
 

@@ -9,6 +9,8 @@ import { playerSkillGrades } from '@/config/skillGrades';
 import GameBanner from './GameBanner';
 import { ArcadeButton, Confetti, CountUp, Lamp, TeamLogo } from './ArcadeUI';
 import HowToStrip from './HowToStrip';
+import { useFieldArt } from '@/components/teamlab/fieldArt';
+import '@/components/season/nflPodium.css';
 import { getTeamTextColor } from '@/utils/teamColors';
 import './guessTheLegend.css';
 import { bannerTeamOf } from '@/utils/playerExtras';
@@ -302,7 +304,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
     const gTeam = findNFLTeam(bannerTeamOf(g));
     const aTeam = findNFLTeam(bannerTeamOf(answer));
     return (
-      <li key={playerKey(g)} className={cn('gl-row', correct && 'solved', latest && 'latest')}>
+      <li key={playerKey(g)} className={cn('gl-row', correct && 'solved', latest && 'latest')} style={teamVars(teamStyle(bannerTeamOf(g)))}>
         <div className="gl-row-name">
           <span aria-hidden="true" className={cn('gl-row-mark', correct ? 'turf' : 'flag')}>
             {correct ? '✓' : '✗'}
@@ -327,14 +329,6 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
   return (
     <div className="gl">
       <Confetti fire={confetti} />
-      <HowToStrip
-        id="legend"
-        steps={[
-          <>A mystery player hides behind the card. Clue 1 is open.</>,
-          <>Search a name and press Guess. Every miss unlocks the next clue and the prize drops by a point.</>,
-          <>Name him early: 5 points on clue 1, nothing if every clue was needed.</>,
-        ]}
-      />
 
       <div className="gl-grid">
         <section className="gl-stage" aria-label="Mystery player">
@@ -344,19 +338,15 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
             <Lamp label="Best" value={best} />
           </div>
 
-          {finished ? (
-            <div className="gl-revealed" key={`r-${playerKey(answer)}`}>
-              <GameBanner player={answer as GamePlayer} ovr={ovrOf(answer)} reveal className="flip-y" />
-            </div>
-          ) : (
-            <MysteryCard
-              key={`m-${playerKey(answer)}`}
-              answer={answer}
-              revealed={revealed}
-              ovr={ovrOf(answer)}
-              shake={misses}
-            />
-          )}
+          <StageFloor club={revealed >= TEAM_CLUE || finished ? bannerTeamOf(answer) : ''}>
+            {finished ? (
+              <div className="gl-revealed" key={`r-${playerKey(answer)}`}>
+                <GameBanner player={answer as GamePlayer} ovr={ovrOf(answer)} reveal className="flip-y" />
+              </div>
+            ) : (
+              <MysteryCard key={`m-${playerKey(answer)}`} answer={answer} revealed={revealed} ovr={ovrOf(answer)} shake={misses} />
+            )}
+          </StageFloor>
 
           <ol className="gl-meter" aria-label={`Clue ${revealed} of ${clues.length} open`}>
             {clues.map((c, i) => (
@@ -384,7 +374,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
               </div>
               <div className="gl-guess-row">
                 <div className="gl-guess-pick">
-                  <PlayerSearchSelect players={players} value={selection} onValueChange={setSelection} placeholder="Who is it?" ariaLabel="Your guess" />
+                  <PlayerSearchSelect players={players} value={selection} onValueChange={setSelection} placeholder="Who is it?" ariaLabel="Your guess" openBelow />
                 </div>
                 <ArcadeButton tone="go" disabled={!selection} onClick={() => submitGuess(selection)}>
                   Guess
@@ -431,6 +421,17 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
           )}
         </section>
 
+        <div className="gl-right">
+        <div className="gl-how">
+      <HowToStrip
+        id="legend"
+        steps={[
+          <>A mystery player hides behind the card. Clue 1 is open.</>,
+          <>Search a name and press Guess. Every miss unlocks the next clue and the prize drops by a point.</>,
+          <>Name him early: 5 points on clue 1, nothing if every clue was needed.</>,
+        ]}
+      />
+        </div>
         <section className="gl-clues" aria-label="Clues">
           <h3 className="gl-h">
             Clues <span>{finished ? 'all open' : `${revealed} of ${clues.length} open`}</span>
@@ -469,6 +470,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
             </ol>
           )}
         </section>
+        </div>
 
         {guesses.length > 0 && (
           <section className="gl-log" aria-label="Your guesses">
@@ -487,6 +489,24 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
           </section>
         )}
       </div>
+    </div>
+  );
+};
+
+/** The sealed card's stage: a night stadium floor (crowd behind, floodlights, a spotlight pool on the turf), tinted to the club once it is known. */
+const StageFloor = ({ club, children }: { club: string; children: ReactNode }) => {
+  const art = useFieldArt(club || 'Eagles', 'night');
+  const t = findNFLTeam(club);
+  const tint = t ? `hsl(${t.primaryColor})` : 'hsl(var(--gold))';
+  return (
+    <div className="nsx-stage gl-floor" style={{ ['--nsx-tint' as string]: tint }}>
+      <div className={cn('nsx-stage__crowd', art.crowd && 'nsx-stage__crowd--art')} style={art.crowd ? { backgroundImage: `url(${art.crowd})` } : undefined} aria-hidden="true" />
+      {art.stands && <div className="nsx-stage__stands" style={{ backgroundImage: `url(${art.stands})` }} aria-hidden="true" />}
+      <span className="nsx-stage__beam nsx-stage__beam--l" aria-hidden="true" />
+      <span className="nsx-stage__beam nsx-stage__beam--r" aria-hidden="true" />
+      <span className="nsx-stage__spot" aria-hidden="true" />
+      <div className={cn('nsx-stage__turf', art.turf && 'nsx-stage__turf--art')} style={art.turf ? { backgroundImage: `url(${art.turf})` } : undefined} aria-hidden="true" />
+      <div className="nsx-stage__content">{children}</div>
     </div>
   );
 };

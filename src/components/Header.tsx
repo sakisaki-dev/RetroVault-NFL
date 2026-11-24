@@ -195,7 +195,7 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
     : [];
 
   return (
-    <header ref={headerRef} data-site-header className="chrome-hide sticky top-0 z-50 border-b border-line/70 bg-night/90 backdrop-blur-md supports-[backdrop-filter]:bg-night/80">
+    <header ref={headerRef} data-site-header className="chrome-hide sticky top-0 z-50 border-b border-line/70 bg-night">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded focus:bg-gold focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"

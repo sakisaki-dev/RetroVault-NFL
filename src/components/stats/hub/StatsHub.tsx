@@ -287,7 +287,7 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
       <div
         ref={barRef}
         data-chrome-bar
-        className="chrome-hide-bar sticky z-40 border-b border-line/70 bg-night/90 backdrop-blur-md supports-[backdrop-filter]:bg-night/75"
+        className="chrome-hide-bar sticky z-40 border-b border-line/70 bg-night"
         style={{ top: 'var(--site-header-h, 0px)' }}
       >
         <div className="container flex items-center gap-3 py-1.5">
