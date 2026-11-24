@@ -863,7 +863,17 @@ export const PowerAdvanced = ({ season: view }: { season: { season: string; tabl
 const TeamAdvanced = () => {
   const schedule = useSchedule();
   const currentClub = useCurrentClub();
-  const seasons = useMemo(() => (schedule ? scheduleSeasons(schedule) : []), [schedule]);
+  // franchise history: completed seasons only (the one in progress lives on the Season page)
+  const finished = useMemo(() => {
+    const ids = schedule?.seasonIndex?.filter((s) => s.superBowl).map((s) => s.season);
+    return ids?.length ? new Set(ids) : null;
+  }, [schedule]);
+  const seasons = useMemo(() => (schedule ? scheduleSeasons(schedule).filter((s) => !finished || finished.has(s.season)) : []), [schedule, finished]);
+  const progression = useMemo(() => {
+    const all = schedule?.progression ?? {};
+    if (!finished) return all;
+    return Object.fromEntries(Object.entries(all).map(([k, rows]) => [k, rows.filter((r) => finished.has(r.season))]));
+  }, [schedule, finished]);
   const [tracked, setTracked] = useState<string | null>(null);
 
   if (!schedule) return null;
@@ -881,7 +891,6 @@ const TeamAdvanced = () => {
   }
 
   const season = seasons[0];
-  const progression = schedule.progression ?? {};
   const defaultTeam = [currentClub, seasons[0].coachTeam, Object.keys(progression).sort()[0]].find((t) => t && progression[t]) ?? null;
   const team = tracked && progression[tracked] ? tracked : defaultTeam;
   // Progression and risers / fallers need two seasons of weekly scores; until then one line stands in for them

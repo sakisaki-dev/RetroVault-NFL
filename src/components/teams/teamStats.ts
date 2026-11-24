@@ -162,6 +162,8 @@ export interface FranchiseRecord {
   /** 0–100 blend of titles, Hall of Famers, legacy and best OVR (see POWER_WEIGHTS) */
   power: number;
   powerRank: number;
+  /** The four parts of `power` in points (they sum to it, before rounding) */
+  parts: { titles: number; hof: number; legacy: number; ovr: number };
 }
 
 /** How the franchise power score is blended (each part is scaled to the league's best franchise). */
@@ -211,6 +213,7 @@ export const buildFranchiseRecords = (
       bestOvrPlayer: bestOvrPlayer as Player | null,
       power: 0,
       powerRank: 0,
+      parts: { titles: 0, hof: 0, legacy: 0, ovr: 0 },
     };
   });
 
@@ -223,13 +226,13 @@ export const buildFranchiseRecords = (
   const spanO = ovrs.length ? Math.max(1, Math.max(...ovrs) - minO) : 1;
   rows.forEach((r) => {
     const ovrPart = r.bestOvr == null ? 0 : (r.bestOvr - minO) / spanO;
-    r.power = Math.round(
-      100 *
-        (POWER_WEIGHTS.titles * (r.titles / maxT) +
-          POWER_WEIGHTS.hof * (r.hof.length / maxH) +
-          POWER_WEIGHTS.legacy * (r.legacy / maxL) +
-          POWER_WEIGHTS.ovr * ovrPart),
-    );
+    r.parts = {
+      titles: 100 * POWER_WEIGHTS.titles * (r.titles / maxT),
+      hof: 100 * POWER_WEIGHTS.hof * (r.hof.length / maxH),
+      legacy: 100 * POWER_WEIGHTS.legacy * (r.legacy / maxL),
+      ovr: 100 * POWER_WEIGHTS.ovr * ovrPart,
+    };
+    r.power = Math.round(r.parts.titles + r.parts.hof + r.parts.legacy + r.parts.ovr);
   });
   [...rows]
     .sort((a, b) => b.power - a.power || b.titles - a.titles || b.legacy - a.legacy)

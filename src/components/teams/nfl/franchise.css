@@ -1,0 +1,34 @@
+/* Franchise wall: the club wall's card UI with all-time content */
+.fw .cw-controls { align-items: center; }
+.fw-stats { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.fw-stat { display: flex; flex-direction: column; line-height: 1.05; }
+.fw-stat b { font: italic 800 20px/1 var(--font-display, inherit); text-shadow: 0 2px 0 rgb(0 0 0 / .35); font-variant-numeric: tabular-nums; }
+.fw-stat small { font-size: 9px; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+.fw-lead .cw-text { max-width: 52%; }
+.fw-lead__rank { font-size: 30px; }
+@media (min-width: 640px) {
+  .fw-wall { grid-auto-rows: 58px; }
+  .fw-wall > .fw-lead { grid-column: span 2; grid-row: span 3; min-height: 0; height: auto; }
+  .fw-lead .cw-name { font-size: 34px; }
+  .fw-lead .cw-text { max-width: 50%; gap: 4px; }
+  .fw-lead .cw-sprites--lead { width: 50%; }
+  .fw-lead { --k: 1.9; }
+}
+@media (max-width: 639px) {
+  .fw-lead { min-height: 270px; }
+  .fw-lead .cw-text { max-width: 100%; }
+  .fw-lead .cw-sprites--lead { width: 100%; left: 0; right: 0; justify-content: center; bottom: 2px; }
+  .fw-lead { --k: 1.5; }
+  .fw-stat b { font-size: 17px; }
+  .fw-lead .fw-stats { gap: 4px 14px; }
+  .cw-tile--thin .cw-facts { font-size: 9px; }
+}
+.cw-tile--thin .cw-id { overflow: hidden; }
+.cw-rank--big { pointer-events: none; }
+
+/* shared head-to-head bits for the all-time sections */
+.fw-sec { display: grid; gap: 10px; }
+.fw-panel { border-radius: 14px; border: 1px solid hsl(var(--border)); background: hsl(var(--card)); padding: 12px; min-width: 0; }
+.fw-ttl { margin-left: 6px; font-size: 13px; font-style: normal; letter-spacing: 1px; vertical-align: 2px; }
+.cw-tile--thin .cw-name { display: block; }
+.cw-tile--thin .cw-row:empty { display: none; }

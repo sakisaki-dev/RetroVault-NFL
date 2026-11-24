@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
 import { openGame, playoffGameId, useGameIds } from '@/utils/nflGames';
-import { PlayerHit, StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
+import { PlayerHit, StarSprite, playoffSeeds } from './NflSeasonExtras';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { SeasonView } from '@/utils/seasonLive';
@@ -213,68 +213,6 @@ const clubLink = (team: string) => ({
     }
   },
 });
-
-/* ---------------- Division boards ---------------- */
-
-export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upcoming?: { away: string; home: string }[] }) => {
-  const seeds = useMemo(() => playoffSeeds(season), [season]);
-  const tags = useMemo<Map<string, Clinch>>(() => (!season.playoffs?.length && upcoming ? clinchTags(season, upcoming) : new Map()), [season, upcoming]);
-  const made = useMemo(() => {
-    const s = new Set<string>();
-    for (const r of season.playoffs ?? []) for (const g of r.games) (s.add(g.away), s.add(g.home));
-    return s;
-  }, [season.playoffs]);
-  const done = made.size > 0;
-  const divisions = useMemo(() => {
-    const m = new Map<string, SeasonView['table']>();
-    for (const r of season.table) {
-      if (!r.conference || !r.division) continue;
-      const k = r.division.startsWith(r.conference) ? r.division : `${r.conference} ${r.division}`;
-      m.set(k, [...(m.get(k) ?? []), r]);
-    }
-    return [...m.entries()]
-      .map(([k, rows]) => [k, rows.sort((a, b) => (a.divisionRank ?? 9) - (b.divisionRank ?? 9) || b.pct - a.pct)] as const)
-      .sort((a, b) => a[0].localeCompare(b[0]));
-  }, [season.table]);
-  if (!divisions.length) return null;
-  const old = Number(season.season) < 2002;
-  return (
-    <div className="sx-block" id="season-standings" style={{ scrollMarginTop: 80 }}>
-      <SectionTitle kicker="Standings" club={divisions[0][1][0].team}>Division boards</SectionTitle>
-      <Reveal as="ul" className="sx-divs">
-        {divisions.map(([name, rows], di) => (
-          <li key={name} className="sx-div mo-rise" style={{ ...cv(rows[0].team), ...stag(di, 70) }}>
-            <p className="sx-div__head">
-              <TeamLogo team={rows[0].team} decorative className="h-6 w-6 p-px" />
-              {name}
-            </p>
-            <ol className="m-0 list-none p-0">
-              {rows.map((r, i) => {
-                const champ = season.superBowl?.winner === r.team;
-                const post = made.has(r.abbr);
-                return (
-                  <li key={r.abbr} className={cn('sx-div__row sx-club-link mo-rise', i === 0 && 'is-lead', done && !post && 'is-out')} style={{ ...cv(r.team), ...stag(di + i + 1, 60) }} {...clubLink(r.team)}>
-                    <TeamLogo team={r.team} decorative className="h-7 w-7 flex-shrink-0" />
-                    <span className="sx-div__name">
-                      <span>{r.team}</span>
-                      {seeds.has(r.abbr) && <span className="sx-tag" title="Playoff seed">#{seeds.get(r.abbr)}</span>}
-                      {tags.get(r.abbr) && <span className={cn('sx-tag', tags.get(r.abbr) === 'out' && 'sx-tag--out')} title="Clinched or eliminated by the games left">{tags.get(r.abbr) === 'div' ? 'Div' : tags.get(r.abbr) === 'in' ? 'In' : 'Out'}</span>}
-                      {champ ? <PixelIcon name="trophy" size={14} color="hsl(var(--gold))" label="Champion" /> : done && post ? <PixelIcon name="star" size={12} color="hsl(var(--gold))" label="Made the playoffs" /> : null}
-                    </span>
-                    <span className="sx-div__rec">{r.record}</span>
-                    <span className="sx-div__diff">{signed(r.diff)}</span>
-                  </li>
-                );
-              })}
-            </ol>
-          </li>
-        ))}
-      </Reveal>
-      {old && <p className="sx-note">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
-      {tags.size > 0 && <p className="sx-note">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
-    </div>
-  );
-};
 
 /* ---------------- Power ladder ---------------- */
 
