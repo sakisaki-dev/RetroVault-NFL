@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Layers3, Shield } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
 import { POSITIONS } from '@/config/advanced';
+import { IS_NFL } from '@/config/edition';
 import { HOF_THRESHOLD, LEGACY_TIERS, getLegacyTier, isHallOfFamer, type LegacyTierKey } from '@/config/stats';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -49,10 +50,12 @@ interface TierRow {
   total: number;
   counts: Record<Band, number>;
   names: Record<Band, string[]>;
+  /** Real Hall of Fame members at the position (NFL edition: membership, not a Career Legacy band) */
+  members: number;
 }
 
 const TierBar = ({ row, max }: { row: TierRow; max: number }) => {
-  const hof = row.total - row.counts.none;
+  const hof = IS_NFL ? row.members : row.total - row.counts.none;
   return (
     <li className="grid grid-cols-[2.25rem_minmax(0,1fr)_4.5rem] items-center gap-2">
       <span className="font-display text-sm font-bold" title={POSITION_NAMES[row.pos]}>
@@ -101,7 +104,7 @@ export const HofTiers = ({ players }: { players: Player[] }) => {
           counts[b] += 1;
           names[b].push(p.name);
         });
-        return { pos, total: at.length, counts, names };
+        return { pos, total: at.length, counts, names, members: at.filter(isHallOfFamer).length };
       }).filter((r) => r.total > 0),
     [players],
   );
@@ -113,7 +116,7 @@ export const HofTiers = ({ players }: { players: Player[] }) => {
     <ChartFrame
       title="Career Legacy by position"
       icon={<Layers3 className="h-4 w-4 text-gold" aria-hidden="true" />}
-      description={`Each bar is one position's players, split by Career Legacy tier; ${hof} of ${players.length} league players are Hall of Famers (voted in by the ballot). Bar length = players at the position; the right column is Hall of Famers / players.`}
+      description={`Each bar is one position's players, split by Career Legacy tier; ${hof} of ${players.length} league players are Hall of Famers${IS_NFL ? '' : ' (voted in by the ballot)'}. Bar length = players at the position; the right column is Hall of Famers / players.`}
       controls={
         <Legend
           label="Legacy tiers"
@@ -136,7 +139,7 @@ export const HofTiers = ({ players }: { players: Player[] }) => {
                 <th scope="col" className="px-2 py-1.5 font-normal">Pos</th>
                 {BANDS.map((b) => (
                   <th key={b.key} scope="col" className="px-2 py-1.5 text-right font-normal">
-                    {b.key === 'none' ? 'Not HOF' : b.key}
+                    {b.key === 'none' ? (IS_NFL ? 'Under' : 'Not HOF') : b.key}
                   </th>
                 ))}
                 <th scope="col" className="px-2 py-1.5 text-right font-normal">Total</th>

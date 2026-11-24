@@ -143,7 +143,8 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
       season: season ?? null,
       players: players.length,
       teams: teams.size,
-      hof: players.filter(isHallOfFamer).length,
+      hof: IS_NFL ? 0 : players.filter(isHallOfFamer).length,
+      mvps: players.reduce((sum, p) => sum + (p.mvp || 0), 0),
       rings: players.reduce((sum, p) => sum + (p.rings || 0), 0),
     };
     // dataVersion bumps after edits/uploads so the board stays in sync
@@ -189,7 +190,7 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
     ? [
         { k: 'Players', v: board.players },
         { k: 'Teams', v: board.teams },
-        { k: 'HOF', v: board.hof },
+        ...(IS_NFL ? [{ k: 'MVPs', v: board.mvps }] : [{ k: 'HOF', v: board.hof }]),
         { k: 'Rings', v: board.rings },
       ]
     : [];

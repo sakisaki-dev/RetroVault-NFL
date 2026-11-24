@@ -45,7 +45,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
     { k: 'Value', v: shortNum(p.value), d: prev ? delta(p.value, prev.value) : null, pct: true },
     { k: 'Legacy', v: fmtFixed(p.legacy, 0), d: delta(p.legacy, prev?.legacy) },
     { k: 'Rank', v: `#${p.legacyRank}`, d: prev ? -(delta(p.legacyRank, prev.legacyRank) ?? 0) || null : null },
-    { k: 'HOF', v: String(p.hof.score), d: delta(p.hof.score, prev?.hof.score) },
+    ...(IS_NFL ? [] : [{ k: 'HOF', v: String(p.hof.score), d: delta(p.hof.score, prev?.hof.score) }]),
     { k: 'Grade', v: p.grade || '—', d: null },
   ];
   return (

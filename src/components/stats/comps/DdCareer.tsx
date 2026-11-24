@@ -14,6 +14,7 @@ import '../../player/playerCard.css';
 import { VIZ, fmtNum, ordinal } from '../analytics/viz';
 import { DdBar } from './ddParts';
 import { displayName } from '@/utils/displayName';
+import { IS_NFL } from '@/config/edition';
 
 export interface PosStat {
   key: string;
@@ -31,7 +32,7 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
   const { retiredInfo } = useJerseyNumbers();
   const card = extras.cards[normalizeName(player.name)];
   const retired = retiredInfo(player);
-  const tier = getLegacyTier(player.careerLegacy);
+  const tier = IS_NFL ? null : getLegacyTier(player.careerLegacy);
   const stints = extras.stints[normalizeName(player.name)];
   const arc = useMemo(
     () => buildCareerArc({ player, content, card, retired, hofTier: tier?.label ?? null, stints }),
@@ -64,6 +65,18 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
       </div>
 
       <div className="flex min-w-0 flex-col gap-3">
+        {IS_NFL ? (
+          // NFL edition: real Pro Football Hall of Fame membership as a plain fact, no score or bar (inductees only)
+          inHall && (
+            <div className="glass-card flex items-center gap-2.5 p-3 sm:p-4">
+              <span aria-hidden="true" className="font-pixel text-[10px] text-gold">&#9733;</span>
+              <p className="text-sm">
+                <b className="text-gold">Pro Football Hall of Fame</b>
+                {standing?.kind === 'member' && standing.entry.class ? <span className="text-muted-foreground"> · {hofClassLabel(standing.entry.class)}</span> : null}
+              </p>
+            </div>
+          )
+        ) : (
         <div className="glass-card space-y-2 p-3 sm:p-4">
           <h3 className="flex items-baseline justify-between font-display text-base font-bold uppercase tracking-wide">
             Hall of Fame
@@ -108,6 +121,7 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
           )}
           <DdBar pct={progress} color="hsl(43 100% 62%)" label={inHall ? 'Hall of Fame Score out of 100' : `Hall of Fame Score against the bar of ${bar}`} />
         </div>
+        )}
 
         <div className="glass-card space-y-2 p-3 sm:p-4">
           <h3 className="font-display text-base font-bold uppercase tracking-wide">Legacy composition</h3>

@@ -8,7 +8,7 @@ import { VIZ } from '../../analytics/viz';
 import { BOX, groupOf, seasonRates } from './statDefs';
 import type { SeasonPoint } from './careerModel';
 import type { EventKind } from './careerStory';
-import { seasonLabel } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
 
 /** One chartable metric over his seasons (the hero's chips, the comparison overlay). */
 export interface GraphMetric {
@@ -44,8 +44,11 @@ export const graphMetrics = (pos: Position): GraphMetric[] => {
     { id: 'legacy', label: 'Career Legacy', short: 'Legacy', group: 'Card', get: (p) => p.legacy, fmt: int, definition: 'Career Legacy at the season end (re-scaled with the league on every upload).' },
     { id: 'rank', label: 'Legacy rank', short: 'Rank', group: 'Card', get: (p) => p.legacyRank || null, fmt: (v) => `#${int(v)}`, invert: true, definition: 'His Career Legacy rank among every recorded player at the season end.' },
     { id: 'skill', label: 'Skill rating', short: 'Skill', group: 'Card', get: (p) => p.skill, fmt: int, definition: 'Overall skill rating (62–99) behind his letter grade at the season end.' },
-    { id: 'hof', label: 'Hall of Fame Score', short: 'HOF', group: 'Card', get: (p) => p.hof.score, fmt: int, definition: 'The Hall of Fame Score rule applied to that season end: standing at his position + honours + league records held.' },
   ];
+  // the Hall of Fame Score series is the live edition's rule; the NFL edition has no score
+  if (!IS_NFL) card.push(
+    { id: 'hof', label: 'Hall of Fame Score', short: 'HOF', group: 'Card', get: (p) => p.hof.score, fmt: int, definition: 'The Hall of Fame Score rule applied to that season end: standing at his position + honours + league records held.' },
+  );
   const box: GraphMetric[] = BOX[groupOf(pos)].map((b) => ({
     id: `box:${b.key}`,
     label: b.label,

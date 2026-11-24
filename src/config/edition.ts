@@ -18,7 +18,7 @@ export const seasonSpan = (a: number, b: number): string =>
   a === b ? seasonLabel(a) : IS_NFL ? `${a}–${b}` : `Y${a}–${b}`;
 
 /** Top-level tabs the NFL edition hides (everything built on the coach or the AI-written lanes). */
-export const NFL_HIDDEN_TABS = ['office', 'timeline'];
+export const NFL_HIDDEN_TABS = ['office', 'timeline', 'hof'];
 /** Tabs only the NFL edition has: News (ESPN's feed) sits where the Timeline was */
 export const NFL_ONLY_TABS = ['news'];
 

@@ -89,7 +89,7 @@ const IndexContent = () => {
     });
     const offH2H = onHeadToHeadRequest(() => navigate({ tab: 'career', sub: 'h2h' }));
     // A retired number's strip on the player card opens that club's rafters (Hall of Fame tab, Rafters section)
-    const offRafters = onRaftersRequest(() => navigate({ tab: 'hof' }));
+    const offRafters = onRaftersRequest(() => navigate(IS_NFL ? { tab: 'career', sub: 'teams' } : { tab: 'hof' }));
     return () => {
       offDive();
       offH2H();
@@ -118,7 +118,7 @@ const IndexContent = () => {
               <div key={activeTab} className="rv-view-in">
                 {activeTab === 'career' && <CareerTab />}
                 {activeTab === 'lab' && <TeamLabTab />}
-                {activeTab === 'hof' && <HallOfFameTab />}
+                {!IS_NFL && activeTab === 'hof' && <HallOfFameTab />}
                 {activeTab === 'collection' && <CollectionTab />}
                 {activeTab === 'season' && <SeasonTab />}
                 {activeTab === 'timeline' && <TimelineTab />}

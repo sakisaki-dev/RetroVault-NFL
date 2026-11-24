@@ -18,6 +18,7 @@ import { RetiredHangers } from '../../teams/RetiredBadge';
 import { keyOf } from '../records';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
+import { IS_NFL } from '@/config/edition';
 
 const ctl =
   'inline-flex h-12 items-center justify-center gap-1.5 rounded-md border border-line bg-night/60 px-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-panel-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-40';
@@ -48,7 +49,8 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
   // The banner wears his signature team (where he was best known); the franchise chips list them all
   const club = signatureTeamOf(extras, player);
   const team = findNFLTeam(club);
-  const tier = getLegacyTier(player.careerLegacy);
+  // NFL edition: the Hall of Fame is real membership (the banner's badge), not a Career Legacy tier
+  const tier = IS_NFL ? null : getLegacyTier(player.careerLegacy);
   const known = extras.franchises[normalizeName(player.name)] ?? [];
   const franchises = known.length ? known : player.team ? [player.team] : [];
 

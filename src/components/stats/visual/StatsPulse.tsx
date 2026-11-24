@@ -2,6 +2,7 @@ import { useMemo, type ReactNode } from 'react';
 import type { LeagueData, Player } from '@/types/player';
 import { POSITIONS, leaguePlayers } from '@/config/advanced';
 import { playerKey } from '@/config/ovr';
+import { IS_NFL } from '@/config/edition';
 import { HOF_THRESHOLD, isHallOfFamer } from '@/config/stats';
 import { useOfficialOvr } from '@/utils/useOfficialOvr';
 import CountUp from '../../brand/CountUp';
@@ -110,7 +111,7 @@ const StatsPulse = ({ data, book, onSelect }: { data: LeagueData; book: RecordBo
     return Array.from({ length: n }, (_, i) => {
       const lo = i * 1000;
       const c = players.filter((p) => p.careerLegacy >= lo && p.careerLegacy < lo + 1000).length;
-      return { label: `${i}k`, value: c, hot: lo >= HOF_THRESHOLD, tip: `${fmtNum(lo, 0)}–${fmtNum(lo + 999, 0)}: ${c}` };
+      return { label: `${i}k`, value: c, hot: !IS_NFL && lo >= HOF_THRESHOLD, tip: `${fmtNum(lo, 0)}–${fmtNum(lo + 999, 0)}: ${c}` };
     });
   }, [players]);
   const ovrs = useMemo(() => players.map((p) => ovrMap.get(playerKey(p))).filter((v): v is number => v != null), [players, ovrMap]);
@@ -143,9 +144,9 @@ const StatsPulse = ({ data, book, onSelect }: { data: LeagueData; book: RecordBo
         star={hofStar}
         action="celebrate"
         value={hof}
-        sub={`${players.length ? Math.round((hof / players.length) * 100) : 0}% of the league · voted in`}
+        sub={IS_NFL ? 'Pro Football Hall of Fame' : `${players.length ? Math.round((hof / players.length) * 100) : 0}% of the league · voted in`}
         chart={<MiniColumns cols={legacyBins} />}
-        summary={`Career Legacy histogram in 1,000-point bins, Hall of Fame bins in gold: ${legacyBins.map((b) => `${b.label} ${b.value}`).join(', ')}.`}
+        summary={`Career Legacy histogram in 1,000-point bins${IS_NFL ? '' : ', Hall of Fame bins in gold'}: ${legacyBins.map((b) => `${b.label} ${b.value}`).join(', ')}.`}
       />
       <Card
         title={`${ELITE_OVR}+ overall`}

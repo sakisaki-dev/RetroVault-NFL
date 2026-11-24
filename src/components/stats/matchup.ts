@@ -1,4 +1,5 @@
 import type { Player, Position } from '@/types/player';
+import { IS_NFL } from '@/config/edition';
 import { AWARD_POINTS, HOF_THRESHOLD, getRawTrueTalent, isDefensivePosition } from '@/config/stats';
 import { leagueScore } from '@/config/ovr';
 import {
@@ -189,7 +190,7 @@ export const LEAGUE_DEFS: Record<string, MetricDef> = {
   careerLegacy: {
     label: 'Career Legacy',
     short: 'CL',
-    definition: `4 × True Talent + 4 × Dominance + 2 × games. The Hall of Fame is a separate ballot over retired players.`,
+    definition: `4 × True Talent + 4 × Dominance + 2 × games.${IS_NFL ? '' : ' The Hall of Fame is a separate ballot over retired players.'}`,
     minLabel: ALL,
   },
   tpg: {

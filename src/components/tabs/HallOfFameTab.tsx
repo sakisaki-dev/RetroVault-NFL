@@ -16,10 +16,8 @@ import HofBallot, { type BallotRow } from '../hof/HofBallot';
 import RingsOfHonor from '../hof/RingsOfHonor';
 import HofRafters from '../hof/HofRafters';
 import HofLegends from '../hof/HofLegends';
-import NflHall from '../hof/NflHall';
 import { Laurel, MedalCoin, RibbonBanner } from '../hof/hofParts';
 import { roman } from '../hof/hofUtils';
-import { IS_NFL } from '@/config/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { displayName } from '@/utils/displayName';
 
@@ -133,29 +131,6 @@ const HallOfFameTab = () => {
     return (
       <div className="container py-16 text-center text-muted-foreground" aria-live="polite">
         The Hall of Fame file could not be loaded.
-      </div>
-    );
-  }
-
-  if (IS_NFL) {
-    const open = openKey ? byKey.get(openKey) : undefined;
-    return (
-      <div className="container overflow-x-hidden py-6 sm:py-8">
-        <NflHall hof={hof} items={items} extras={extras} players={players} clubOf={clubOf} onOpenMember={setOpenKey} onOpenCard={setCardPlayer} />
-        <HofPlaque
-          member={open?.member ?? null}
-          player={open?.player}
-          number={open?.number ?? null}
-          club={open?.club ?? ''}
-          extras={extras}
-          jerseys={jerseys}
-          nickname={open?.nickname}
-          speech={open ? content?.speeches?.[open.member.name] : undefined}
-          onClose={() => setOpenKey(null)}
-          onReplay={replay}
-          onOpenCard={openCard}
-        />
-        <PlayerDetailCard player={cardPlayer} onClose={() => setCardPlayer(null)} />
       </div>
     );
   }

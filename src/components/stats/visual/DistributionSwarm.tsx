@@ -3,6 +3,7 @@ import { ScatterChart as SwarmIcon } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
 import { POSITIONS, quantile } from '@/config/advanced';
 import { playerKey } from '@/config/ovr';
+import { IS_NFL } from '@/config/edition';
 import { HOF_THRESHOLD, LEGACY_TIERS, isHallOfFamer } from '@/config/stats';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import TeamLogo from '../../brand/TeamLogo';
@@ -256,7 +257,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
     <ChartFrame
       title="How the league is spread"
       icon={<SwarmIcon className="h-4 w-4 text-gold" aria-hidden="true" />}
-      description={`One band per position, by ${m.label}: the blocks are the crowd (taller means more players, tinted by the commonest club), dots mark each position's top five, gold diamonds the ${hofCount} Hall of Famers (voted in by the ballot)${metric === 'legacy' ? '; the gold line is the Great tier and the faint lines the Elite and Legendary tiers' : '; the tick in each row is the position median'}.`}
+      description={`One band per position, by ${m.label}: the blocks are the crowd (taller means more players, tinted by the commonest club), dots mark each position's top five, gold diamonds the ${hofCount} Hall of Famers${IS_NFL ? '' : ' (voted in by the ballot)'}${metric === 'legacy' ? '; the gold line is the Great tier and the faint lines the Elite and Legendary tiers' : '; the tick in each row is the position median'}.`}
       controls={
         <div className="flex flex-wrap items-center justify-between gap-2">
           <Chips label="Distribution metric" value={metric} onChange={setMetric} options={METRICS.map((x0) => ({ value: x0.id, label: x0.short, title: x0.label }))} />

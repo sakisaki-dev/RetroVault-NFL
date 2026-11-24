@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { IS_NFL } from '@/config/edition';
 import type { Player, Position } from '@/types/player';
 import { HEADLINE_METRIC, METRIC_BY_ID, POSITIONS } from '@/config/advanced';
 import { HOF_THRESHOLD, getLegacyTier, isHallOfFamer } from '@/config/stats';
@@ -347,4 +348,4 @@ export const buildGraph = (c: GraphConfig, players: Player[], legends: Player[],
   return { xs, ys, ss, points, spec, positions, shown, nflMissing: { n: nflMissingN, stats: [...missing] } };
 };
 
-export const HOF_LABEL = 'Hall of Fame (voted in)';
+export const HOF_LABEL = IS_NFL ? 'Hall of Fame' : 'Hall of Fame (voted in)';

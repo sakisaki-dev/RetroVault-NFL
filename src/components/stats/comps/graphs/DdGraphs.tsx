@@ -94,7 +94,7 @@ const DdGraphs = ({ player, players, wide }: { player: Player; players: Player[]
           of the percentile pools. The snapshots keep yards, touchdowns, catches, interceptions, tackles, sacks, forced fumbles and blocks, not attempts, carries or
           fumbles, so rates that need those (Y/A, Cmp%, Y/C) exist only for a season the live save covers. Percentiles rank a season among every {player.position} with 8+
           games that season. SZN (the season alone) and CAR (the career to that point), card value, Career Legacy (and its rank) are the snapshot&rsquo;s own numbers; Career Legacy re-scales with the league each upload. The
-          Hall of Fame Score is the ballot&rsquo;s rule applied to each season end. Career years before the records are estimated at 17 games a season.
+          {!IS_NFL && 'The Hall of Fame Score is the ballot\u2019s rule applied to each season end. '}Career years before the records are estimated at 17 games a season.
         </p>
       </details>
     </div>

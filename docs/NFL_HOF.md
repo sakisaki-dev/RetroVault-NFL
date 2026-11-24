@@ -1,5 +1,13 @@
 # NFL Hall of Fame (NFL edition)
 
+**2026-11-24 (owner: the computed score "doesn't really make sense"):** the NFL edition has no Hall of Fame tab, score, bar, ballot,
+classes as "voted in", eligible-soon, snubs or watch list. `scripts/hall_of_fame.py` (RV_EDITION=nfl) writes membership only:
+the real Pro Football Hall of Fame inductees (data/nfl/hof.json, players) with their real class year (`nfl_membership()`), matched by
+name, years and position group (a DE/LB mismatch such as Jason Taylor matches when the years agree to a season). The site shows
+membership as a plain fact: a "Hall of Fame" badge on the player card and Deep Dive hero, gold diamonds and HOF counts elsewhere.
+The live Retro Bowl edition keeps its scored Hall unchanged. Everything below is history of the removed score.
+
+
 `scripts/hall_of_fame.py` (RV_EDITION=nfl) -> `public/data/league/halloffame.json`, page `src/components/hof/NflHall.tsx`.
 
 Members are the real Pro Football Hall of Fame inductees (data/nfl/hof.json) who are players here (71 in classes 1999-2026; 51 are

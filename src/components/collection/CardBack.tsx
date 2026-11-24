@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { useLeague } from '@/context/LeagueContext';
+import { IS_NFL } from '@/config/edition';
 import { getLegacyTier, isDefensivePosition, isHallOfFamer } from '@/config/stats';
 import { playerSkillGrades } from '@/config/skillGrades';
 import { formatDecimal } from '@/utils/metricColors';
@@ -61,7 +62,7 @@ const CardBack = ({ info, tier, total, variant, finish, kit, prizm }: CardBackPr
       content,
       card: extras.cards[key],
       retired: retiredInfo(p),
-      hofTier: getLegacyTier(p.careerLegacy)?.label ?? null,
+      hofTier: IS_NFL ? null : getLegacyTier(p.careerLegacy)?.label ?? null,
       stints: extras.stints[key],
     });
   }, [p, content, extras, retiredInfo]);

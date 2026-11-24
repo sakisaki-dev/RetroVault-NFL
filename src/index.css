@@ -1022,7 +1022,7 @@ html[data-chrome] .bnav-reveal {
   top: 6px;
   bottom: 6px;
   left: 4px;
-  width: calc((100% - 8px) / 5);
+  width: calc((100% - 8px) / var(--nt, 5));
   border-radius: 31px;
   /* The current tab's accent, barely there (owner: "keep the accent colors but super super subtle"): a soft wash of its
      colour fading down the glass, a hairline of it, the label lightly tinted */
@@ -1047,7 +1047,7 @@ html[data-chrome] .bnav-reveal {
   top: -12px;
   bottom: -12px;
   left: 0;
-  width: calc((100% - 8px) / 5 + 12px);
+  width: calc((100% - 8px) / var(--nt, 5) + 12px);
   border-radius: 999px;
   background: radial-gradient(ellipse at 50% 28%, rgba(255, 255, 255, 0.22), color-mix(in srgb, var(--hc, #f1c35c) 12%, transparent) 62%, color-mix(in srgb, var(--hc, #f1c35c) 6%, transparent));
   box-shadow:

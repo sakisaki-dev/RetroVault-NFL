@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { IS_NFL } from '@/config/edition';
 import { toast } from 'sonner';
 import { Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,7 +22,7 @@ interface SetsProps {
 
 const KINDS: { key: SetKind | 'all'; label: string }[] = [
   { key: 'all', label: 'All' },
-  { key: 'hof', label: 'Hall of Fame' },
+  ...(IS_NFL ? [] : [{ key: 'hof' as const, label: 'Hall of Fame' }]),
   { key: 'champion', label: 'Champions' },
   { key: 'club', label: 'Club rosters' },
 ];

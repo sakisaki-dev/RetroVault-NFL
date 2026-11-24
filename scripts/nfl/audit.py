@@ -44,6 +44,8 @@ if recs and not any(r.get("league") for r in recs["records"]):
 hof = load("league/halloffame.json")
 if hof and hof.get("members") and not all(m.get("real") for m in hof["members"]):
     errors.append("a Hall of Fame member is not a real inductee (data/nfl/hof.json)")
+if hof and (hof.get("ballot") or hof.get("watch") or hof.get("soon") or hof.get("snubs") or any("score" in m or "parts" in m for m in hof.get("members", []))):
+    errors.append("halloffame.json carries a Hall of Fame score, ballot or watch list (the NFL edition keeps real membership only)")
 extras = load("player-extras.json")
 if extras:
     stints = extras.get("stints", {})

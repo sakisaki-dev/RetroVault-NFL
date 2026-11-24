@@ -50,12 +50,14 @@ import { reducedMotion } from '@/utils/motion';
  * changes. The menus are a pointer shortcut (aria-hidden): keyboard and VoiceOver keep the tabs, the More sheet and
  * each page's own section links.
  */
-const MAIN = [
+const ALL_MAIN = [
   { value: 'games', label: 'Arcade', Icon: Gamepad2 },
   { value: 'career', label: 'Stats', Icon: BarChart3 },
   { value: 'collection', label: 'Collection', Icon: Layers },
   { value: 'hof', label: 'Hall of Fame', short: 'HOF', Icon: Crown },
 ] as const;
+/** The NFL edition has no Hall of Fame tab (its Hall is a plain fact on the player card) */
+const MAIN = IS_NFL ? ALL_MAIN.filter((m) => m.value !== 'hof') : ALL_MAIN;
 /**
  * Each tab's own colour (owner: "everything is green and yellow which is kinda odd so maybe diff colors for each"): the
  * pill under the current tab, the lifted puck and finger bubble while sliding, and that tab's hold menu wear it. The
@@ -130,7 +132,7 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
   },
 };
 
-if (IS_NFL) SECTIONS.hof.items = SECTIONS.hof.items.filter((i) => i.id === 'future');
+if (IS_NFL) delete (SECTIONS as Record<string, unknown>).hof;
 
 const HOLD_MS = 450;
 /** Space between a menu and the bar (px); index.css .bnav-pop uses the same */
@@ -458,12 +460,12 @@ const BottomNav = ({ activeTab, onTabChange, onRoute }: { activeTab: string; onT
         {/* What is playing on Spotify rides above the dock and tucks away with it */}
         <NowPlayingStrip />
         {/* The dock: a floating capsule in the widget's gold rim; the pill under the current tab slides between tabs */}
-        <div ref={dockRef} className="bnav__dock" style={{ '--ai': activeIdx, '--ac': activeColor } as CSSProperties}>
+        <div ref={dockRef} className="bnav__dock" style={{ '--ai': activeIdx, '--nt': MAIN.length + 1, '--ac': activeColor } as CSSProperties}>
         <span className="bnav__pill" aria-hidden="true" />
         <span ref={bubbleRef} className="bnav__bubble" aria-hidden="true" />
         <ul
           ref={listRef}
-          className="grid grid-cols-5"
+          className="grid" style={{ gridTemplateColumns: `repeat(${MAIN.length + 1}, minmax(0, 1fr))` }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

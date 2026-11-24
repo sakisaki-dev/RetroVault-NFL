@@ -10,6 +10,7 @@ import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { formatDecimal, getMetricTier, getTierBgColor, getTierColor, getTierLabel } from '@/utils/metricColors';
 import { AWARD_META, POSITION_NAMES } from '@/utils/playerMeta';
+import { IS_NFL } from '@/config/edition';
 import { AWARD_POINTS, getLegacyTier, isDefensivePosition, isHallOfFamer } from '@/config/stats';
 import { ADV_METRICS, awardPoints, buildContext, evaluateMetric } from '@/config/advanced';
 import { leagueScore } from '@/config/ovr';
@@ -187,7 +188,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
   const card = extras.cards[nameKey];
   const careerStints = player ? extras.stints[nameKey] : undefined; // read only with a player open: the history loads on that read
   const retired = player ? retiredInfo(player) : undefined;
-  const hofTier = player ? getLegacyTier(player.careerLegacy) : null;
+  // NFL edition: no Hall of Fame tier from Career Legacy; membership alone (the badge) says it
+  const hofTier = player && !IS_NFL ? getLegacyTier(player.careerLegacy) : null;
 
   const arc = useMemo(
     () => (player ? buildCareerArc({ player, content, card, retired, hofTier: hofTier?.label ?? null, stints: careerStints }) : null),
@@ -627,12 +629,21 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
                 {isDefense ? `DPOY ${AWARD_POINTS.dpoy}` : `OPOY ${AWARD_POINTS.opoy}`}, SB MVP {AWARD_POINTS.sbmvp}).
               </p>
             </section>
-            {(hofTier || retired) && (
+            {(hofTier || retired || (IS_NFL && hof)) && (
               <section aria-labelledby={`${headingId}-honors`}>
                 <SectionTitle icon={Milestone} id={`${headingId}-honors`}>
                   Honors
                 </SectionTitle>
                 <ul className="flex flex-wrap gap-2">
+                  {IS_NFL && hof && (
+                    <li className="pc-honor">
+                      <Trophy className="h-8 w-8" aria-hidden="true" />
+                      <span>
+                        <span className="block font-display text-lg font-bold uppercase">Hall of Fame</span>
+                        <span className="font-pixel text-[9px] uppercase">Pro Football</span>
+                      </span>
+                    </li>
+                  )}
                   {hofTier && (
                     <li className="pc-honor">
                       <Trophy className="h-8 w-8" aria-hidden="true" />
