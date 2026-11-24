@@ -38,5 +38,8 @@ const baseIndex = (owner: object, keys: Iterable<string>): Map<string, string | 
 /** `key` itself when `known` has it, else the single suffixed key that matches it without the suffix, else `key`. */
 export const resolveSuffixKey = (known: Record<string, unknown>, key: string): string => {
   if (key in known) return key;
-  return baseIndex(known, Object.keys(known)).get(key) ?? key;
+  // the outside name carries a suffix the sheet doesn't ("Deebo Samuel Sr." vs the sheet's "Deebo Samuel")
+  const bare = stripKeySuffix(key);
+  if (bare !== key && bare in known) return bare;
+  return baseIndex(known, Object.keys(known)).get(bare) ?? key;
 };

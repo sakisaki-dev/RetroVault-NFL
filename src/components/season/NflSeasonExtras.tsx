@@ -126,7 +126,7 @@ const useKeyFinder = () => {
       by.set(bare, [...(by.get(bare) ?? []), p]);
     });
     return (name: string, pos?: string): string | null => {
-      const list = by.get(normalizeName(name)) ?? [];
+      const list = by.get(normalizeName(name)) ?? by.get(normalizeName(stripSuffix(name))) ?? [];
       if (!list.length) return null;
       const want = pos ? sitePos(pos) : null;
       const hit = (want && list.find((p) => p.position === want)) || list.reduce((a, b) => ((b.games ?? 0) > (a.games ?? 0) ? b : a));

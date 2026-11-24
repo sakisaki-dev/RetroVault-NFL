@@ -595,7 +595,9 @@ const GameView = ({ g }: { g: GameDetail }) => {
   }, [getAllPlayers]);
   const link: Linker = (p) => {
     if (!hasCardPos(p.pos)) return null;
-    const key = pool.get(`${sitePos(p.pos)}:${displayName(p.name)}`);
+    const full = `${sitePos(p.pos)}:${displayName(p.name)}`;
+    // and the other way: the game line carries a suffix the sheet doesn't ("Deebo Samuel Sr.")
+    const key = pool.get(full) ?? pool.get(stripKeySuffix(full));
     return key ? buildHash({ tab: 'career', sub: 'deepdive', p: key }) : null;
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);

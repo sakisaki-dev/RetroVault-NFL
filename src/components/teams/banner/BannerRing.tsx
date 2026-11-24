@@ -5,6 +5,9 @@ import { displayName } from '@/utils/displayName';
 import type { BannerClub, BannerData } from './useBannerData';
 import { Beams, Counts, Figure, plateOf, stars, useStadiumVars, Wordmark } from './parts';
 
+/** Clubs whose logo is drawn in their own primary (the Jets' green on green): their plaque is light so the logo reads */
+const LIGHT_PLAQUE = new Set(['Jets']);
+
 /**
  * Banner 3, "Ring of honor": the stadium bowl seen from midfield. All 32 clubs hang on the upper-deck ring as plaques in
  * their colours (all-time power order, No. 1 first, a star for every title), the game's stand front and crowd below, the
@@ -41,7 +44,7 @@ const BannerRing = ({ data, onOpenClub, onOpenPlayer }: { data: BannerData; onOp
               onClick={() => onOpenClub?.(c.s.key)}
               aria-label={`${c.team.city} ${c.team.name}, all-time power rank ${c.rank}${c.titles ? `, ${c.titles} Super Bowl titles` : ''}. Open club page`}
               className={i === 0 ? 'bn3-plaque is-first' : 'bn3-plaque'}
-              style={{ ['--c1' as string]: p.fill, ['--c2' as string]: p.edge } as CSSProperties}
+              style={{ ['--c1' as string]: LIGHT_PLAQUE.has(c.team.name) ? '#f4f6f2' : p.fill, ['--c2' as string]: p.edge } as CSSProperties}
               title={`#${c.rank} ${c.team.city} ${c.team.name}`}
             >
               <TeamLogo team={c.team} size={26} decorative />
