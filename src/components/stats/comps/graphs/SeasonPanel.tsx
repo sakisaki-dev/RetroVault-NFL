@@ -8,6 +8,7 @@ import type { Career } from './careerStory';
 import { BOX, fmtRate, groupOf, seasonRates } from './statDefs';
 import { EVENT_LABEL, GlyphIcon, clubInk, shortNum, yLabel } from './graphKit';
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import { CAREER_LABEL } from '@/config/ovr';
 
 const STATUS_NOTE: Record<string, string> = {
   first: IS_NFL ? 'First season in the data: no earlier season to measure it against' : 'First recorded season: no snapshot before it, so no season line',
@@ -40,7 +41,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
   const rates = seasonRates(player.position).filter((r) => Number.isFinite(p.rates[r.id]));
   const delta = (a: number, b: number | undefined) => (b == null || a === b ? null : a - b);
   const tiles = [
-    { k: 'CAR', v: p.car == null ? '—' : fmtFixed(p.car, 0), d: p.car == null || prev?.car == null ? null : delta(p.car, prev.car) },
+    { k: CAREER_LABEL, v: p.car == null ? '—' : fmtFixed(p.car, 0), d: p.car == null || prev?.car == null ? null : delta(p.car, prev.car) },
     { k: 'SZN', v: p.ovr == null ? '—' : fmtFixed(p.ovr, 0), d: p.ovr == null || prev?.ovr == null ? null : delta(p.ovr, prev.ovr) },
     { k: 'Value', v: shortNum(p.value), d: prev ? delta(p.value, prev.value) : null, pct: true },
     { k: 'Legacy', v: fmtFixed(p.legacy, 0), d: delta(p.legacy, prev?.legacy) },

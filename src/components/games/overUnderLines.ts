@@ -1,5 +1,6 @@
 import type { Player, Position } from '@/types/player';
 import { playerKey, type GamePlayer } from '@/config/ovr';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * Over/Under Lines: pure prop + line generation and bet settlement (no React, no storage).
@@ -69,7 +70,7 @@ export const PROP_STATS: PropStat[] = [
   { key: 'mvp', label: 'MVPs', phrase: 'MVP awards', kind: 'award', positions: [...OFFENSE_SKILL, ...DEFENSE], weight: 1 },
   { key: 'careerLegacy', label: 'Career Legacy', phrase: 'Career Legacy score', kind: 'metric', leagueOnly: true, weight: 1, decimals: 2 },
   { key: 'trueTalent', label: 'True Talent', phrase: 'True Talent score', kind: 'metric', leagueOnly: true, weight: 1, decimals: 2 },
-  { key: 'ovr', label: 'Rating', phrase: 'overall rating (CAR or SZN, as chosen)', kind: 'ovr', leagueOnly: true, weight: 1 },
+  { key: 'ovr', label: 'Rating', phrase: `overall rating (${CAREER_LABEL} or SZN, as chosen)`, kind: 'ovr', leagueOnly: true, weight: 1 },
 ];
 
 const isRealLegend = (p: Player) => (p as GamePlayer).isRealLegend === true;

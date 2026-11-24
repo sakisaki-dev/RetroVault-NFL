@@ -18,6 +18,7 @@ import FamilyMap from './FamilyMap';
 import { familiesFor } from '@/config/families';
 import { peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 type View = 'tiers' | 'strips' | 'families';
 type TierBy = 'skill' | 'ovr';
@@ -139,7 +140,7 @@ const LeagueGallery = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Pla
               onChange={setTierBy}
               options={[
                 { value: 'skill' as TierBy, label: 'Skill rating' },
-                { value: 'ovr' as TierBy, label: 'Rating (SZN active, CAR retired)' },
+                { value: 'ovr' as TierBy, label: `Rating (SZN active, ${CAREER_LABEL} retired)` },
               ]}
             />
           }
@@ -157,7 +158,7 @@ const LeagueGallery = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Pla
                   <tr>
                     <th scope="col" className="px-2 py-1.5 font-normal">Tier</th>
                     <th scope="col" className="px-2 py-1.5 font-normal">Player</th>
-                    <th scope="col" className="px-2 py-1.5 text-right font-normal">{tierBy === 'skill' ? 'Skill' : 'SZN/CAR'}</th>
+                    <th scope="col" className="px-2 py-1.5 text-right font-normal">{tierBy === 'skill' ? 'Skill' : `SZN/${CAREER_LABEL}`}</th>
                   </tr>
                 </thead>
                 <tbody>

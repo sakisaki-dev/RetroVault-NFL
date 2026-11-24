@@ -12,6 +12,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { DEFENSE_TERMS, OFFENSE_TERMS, OFFENSE_UNITS, DEFENSE_UNITS, ALL_UNITS, UNIT_LABELS, UNIT_WEIGHTS, buildProfiles, pickDistinct, rng, ordinal, type PlayerProfile, type UnitId } from '@/utils/teamLab';
 import type { DepthFile, LabFile } from '@/utils/nflLabData';
 import type { InjuryCode } from '@/utils/injuries';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * NFL edition Team Lab engine (pure, React-free): real 11-man lineups and the same "vs random lineups" grades as the
@@ -32,8 +33,8 @@ import type { InjuryCode } from '@/utils/injuries';
 
 export type RatingSource = 'szn' | 'car';
 export const RATING_SOURCES: { id: RatingSource; label: string; note: string; ready: boolean }[] = [
-  { id: 'szn', label: 'SZN', note: 'This season (2026): a player with no 2026 snaps uses his CAR', ready: true },
-  { id: 'car', label: 'CAR', note: 'Career: his whole career ranked within the position', ready: true },
+  { id: 'szn', label: 'SZN', note: 'This season (2026): a player with no 2026 snaps uses his OVR', ready: true },
+  { id: 'car', label: CAREER_LABEL, note: 'OVR, the career rating: his whole career ranked within the position', ready: true },
 ];
 /** True when SZN is asked for but he has no 2026 snaps, so his CAR stands in. */
 export const usesCarFallback = (p: PlayerProfile, src: RatingSource = 'szn'): boolean => src === 'szn' && p.szn == null && p.car != null;

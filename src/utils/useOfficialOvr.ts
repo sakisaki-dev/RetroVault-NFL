@@ -5,6 +5,7 @@ import { normalizeLeague } from '@/config/stats';
 import { buildGamePool, displayOvr, officialOvrMap, setCareerRatings, type CareerRatingFile, type GamePlayer, type LegendPhoto, type OvrBasis, type SeasonOvrFile } from '@/config/ovr';
 import { dataResponse } from '@/utils/dataStore';
 import { IS_NFL } from '@/config/edition';
+import { CAREER_LABEL } from '@/config/ovr';
 
 // ---------- Loaders (one request per page load; 404 / bad JSON resolve to empty) ----------
 
@@ -54,8 +55,8 @@ let seasonOvrLoaded: SeasonOvrFile | null = null;
  * The label of the rating the site SHOWS for a player: SZN when it is his season OVR (an active player with a season
  * line), else CAR (retired, or no games this season). Read after the season file has loaded (ratings are empty before).
  */
-export const ovrLabelOf = (p: { position: string; name: string; status?: string }): 'SZN' | 'CAR' =>
-  p.status !== 'Retired' && seasonOvrLoaded?.ovr[`${p.position}:${p.name}`] != null ? 'SZN' : 'CAR';
+export const ovrLabelOf = (p: { position: string; name: string; status?: string }): 'SZN' | 'OVR' | 'CAR' =>
+  p.status !== 'Retired' && seasonOvrLoaded?.ovr[`${p.position}:${p.name}`] != null ? 'SZN' : CAREER_LABEL;
 
 export const loadSeasonOvr = (): Promise<SeasonOvrFile | null> => {
   seasonOvrRequest ??= fetchJson('data/league/season_ovr.json').then((d) =>

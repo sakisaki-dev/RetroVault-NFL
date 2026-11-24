@@ -12,6 +12,7 @@ import { peekProps } from '../../peek/peekProps';
 import { dotColors } from './compColors';
 import { pairScores, type PositionModel } from './compModel';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * The Neighbourhood chart: his ~30 nearest comparable careers (by the similarity model) as club-colour dots over a
@@ -54,14 +55,14 @@ const ERAS: { id: EraId; lo: number; hi: number }[] = [
 
 /** Preset axis pairs by feature id per position (first two that exist are used). */
 const PRESETS: Record<string, [string, string, string][]> = {
-  QB: [['ya', 'tdPct', 'Efficiency'], ['passYdsG', 'rushYdsG', 'Dual threat'], ['cmp', 'intPct', 'Accuracy'], ['car', 'szn', 'CAR vs SZN']],
+  QB: [['ya', 'tdPct', 'Efficiency'], ['passYdsG', 'rushYdsG', 'Dual threat'], ['cmp', 'intPct', 'Accuracy'], ['car', 'szn', `${CAREER_LABEL} vs SZN`]],
   RB: [['ypc', 'rushYdsG', 'Run game'], ['rushYdsG', 'recYdsG', 'Workload'], ['td16', 'ypt', 'Scoring']],
   WR: [['ypr', 'recG', 'Big play vs volume'], ['recYdsG', 'tdPerRec', 'Production']],
   TE: [['ypr', 'recG', 'Big play vs volume'], ['recYdsG', 'tdPerRec', 'Production']],
-  OL: [['blocksG', 'car', 'Blocks vs CAR']],
-  LB: [['tklG', 'sackG', 'Tackler vs rusher'], ['intG', 'tklG', 'Coverage'], ['impactG', 'car', 'Impact vs CAR']],
-  DB: [['tklG', 'intG', 'Tackler vs ballhawk'], ['intG', 'ffG', 'Takeaways'], ['impactG', 'car', 'Impact vs CAR']],
-  DL: [['sackG', 'tklG', 'Rusher vs tackler'], ['sackG', 'ffG', 'Disruption'], ['impactG', 'car', 'Impact vs CAR']],
+  OL: [['blocksG', 'car', `Blocks vs ${CAREER_LABEL}`]],
+  LB: [['tklG', 'sackG', 'Tackler vs rusher'], ['intG', 'tklG', 'Coverage'], ['impactG', 'car', `Impact vs ${CAREER_LABEL}`]],
+  DB: [['tklG', 'intG', 'Tackler vs ballhawk'], ['intG', 'ffG', 'Takeaways'], ['impactG', 'car', `Impact vs ${CAREER_LABEL}`]],
+  DL: [['sackG', 'tklG', 'Rusher vs tackler'], ['sackG', 'ffG', 'Disruption'], ['impactG', 'car', `Impact vs ${CAREER_LABEL}`]],
 };
 
 const fmt = (a: Axis, v: number) => {
@@ -107,7 +108,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
   const axes = useMemo<Axis[]>(() => {
     const feats: Axis[] = model.features.map((f) => ({ id: f.id, label: f.label, get: f.get, lower: f.lowerIsBetter, decimals: f.decimals ?? 1, scale: f.scale, suffix: f.suffix }));
     const extra: Axis[] = [
-      { id: 'car', label: 'CAR', get: (p) => careerOvrMap.get(keyOf(p)) ?? NaN, decimals: 0 },
+      { id: 'car', label: CAREER_LABEL, get: (p) => careerOvrMap.get(keyOf(p)) ?? NaN, decimals: 0 },
       { id: 'szn', label: 'SZN', get: (p) => seasonOvr?.[keyOf(p)] ?? NaN, decimals: 0 },
       { id: 'games', label: 'Games', get: (p) => p.games, decimals: 0 },
     ];

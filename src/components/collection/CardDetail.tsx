@@ -1,4 +1,5 @@
 import { flushSync } from 'react-dom';
+import { CAREER_LABEL } from '@/config/ovr';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useDeferredStage } from '@/hooks/useDeferredStage';
 import { ChevronLeft, ChevronRight, Crown, Hammer, Pin, PinOff, RotateCcw, UserRound } from 'lucide-react';
@@ -821,7 +822,7 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
                   <DialogDescription className="mt-1.5">
                     {variantLabel(variant)} · {finishLabel(finish)}
                     {worn && worn.kind !== 'home' ? ` · ${kitName(worn.uniform)}` : ''}
-                    {prizm ? ` · ${prizmInfo(prizm.c).label} ${prizmSerial(prizm)}` : ''} · {POSITION_NAMES[info.player.position] ?? info.player.position} · {info.cardTeam} · CAR {info.ovr ?? '–'}
+                    {prizm ? ` · ${prizmInfo(prizm.c).label} ${prizmSerial(prizm)}` : ''} · {POSITION_NAMES[info.player.position] ?? info.player.position} · {info.cardTeam} · {CAREER_LABEL} {info.ovr ?? '–'}
                   </DialogDescription>
                   {/* The card as shown (its art, finish, kit and parallel) as a picture for the share sheet */}
                   <ShareImageButton
