@@ -372,6 +372,25 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
     );
   }
 
+  if (mode === 'draft' && landed && !Number.isFinite(f.get(landed))) {
+    // this spin has no tracking data for the trait: it stays an open slot (never "no data"), inviting another spin
+    return (
+      <div className="bal-tile open" style={vars} title={`${f.label}: ${f.definition}`} role="group" aria-label={`${name} (${f.label}): open slot. Spin a ${pos} with tracking data to fill it.`}>
+        <span className="bal-tile-top">
+          <span className="key">{i + 1}</span>
+          <span className="nm">{name}</span>
+        </span>
+        <span className="bal-tile-mid">
+          <span className="q">+</span>
+          <span className="val">
+            <b>Open</b>
+            <span>Spin a {pos} with tracking data</span>
+          </span>
+        </span>
+      </div>
+    );
+  }
+
   if (mode === 'draft' && landed) {
     const v = f.get(landed);
     const ok = Number.isFinite(v);
@@ -387,7 +406,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           disabled={!ok}
           onClick={() => onSteal(i)}
           title={`${f.label}: ${f.definition}`}
-          aria-label={ok ? `${i + 1}: steal ${name} (${f.label}), value sealed until the reveal. ${f.definition}` : `${i + 1}: ${name}, no data for this player`}
+          aria-label={ok ? `${i + 1}: steal ${name} (${f.label}), value sealed until the reveal. ${f.definition}` : `${i + 1}: ${name}, open slot`}
         >
           <span className="bal-tile-top">
             <span className="key">{i + 1}</span>
@@ -396,7 +415,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
           <span className="bal-tile-mid">
             {ok ? <SealedChip size="lg" /> : <span className="q">--</span>}
             <span className="val">
-              <b>{ok ? 'Sealed' : 'No data'}</b>
+              <b>{ok ? 'Sealed' : 'Open'}</b>
               <span>{f.label}</span>
             </span>
           </span>
@@ -415,7 +434,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
         aria-label={
           ok
             ? `${i + 1}: steal ${name}, grade ${g?.grade}: ${f.label} ${fmtFeature(f, v)}, ${ordinal(pct)} percentile. ${f.definition}`
-            : `${i + 1}: ${name}, no data for this player`
+            : `${i + 1}: ${name}, open slot`
         }
       >
         <span className="bal-tile-top">
@@ -425,7 +444,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
         <span className="bal-tile-mid">
           {ok ? <GradeChip pct={pct} size="lg" plain={f.style} /> : <span className="q">--</span>}
           <span className="val">
-            <b>{ok ? fmtFeature(f, v) : 'No data'}</b>
+            <b>{ok ? fmtFeature(f, v) : 'Open'}</b>
             <span>
               {f.label}
               {ok ? ` · ${ordinal(pct)}` : ''}
@@ -994,9 +1013,8 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
       </div>
       <ol className="bal-slots" ref={mode === 'draft' ? boardRef : undefined}>
         {features.map((f, i) => {
-          // a spun player's card draws only the traits he has real data for; dropped slots stay out of the result
+          // slots dropped at the end stay out of the result
           if (skipped.includes(i) && !rows[i]) return null;
-          if (mode === 'draft' && current && !rows[i] && !Number.isFinite(f.get(current))) return null;
           return (
           <li key={f.id}>
             <SlotTile

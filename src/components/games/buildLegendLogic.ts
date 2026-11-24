@@ -134,6 +134,17 @@ export const spin = (pool: Player[], position: Position, slots: (Slot | null)[],
 /** The club a spin lands on for a player: the club he is shown with everywhere (his banner team). */
 export const clubOf = (p: Player): string => bannerTeamOf(p) || 'Free agents';
 
+/** Prefer a player who fills an open advanced slot (when one is open), most of the time, so those slots don't sit open for long. */
+const preferAdvanced = (cand: Player[], position: Position, slots: (Slot | null)[], rand: () => number): Player[] => {
+  const feats = traitsInPlay(position);
+  const n = compFeatures(position).length;
+  const adv = (p: Player) => feats.some((f, i) => i >= n && !slots[i] && Number.isFinite(f.get(p)));
+  const openAdv = feats.some((_, i) => i >= n && !slots[i]);
+  if (!openAdv || rand() > 0.75) return cand;
+  const pref = cand.filter(adv);
+  return pref.length ? pref : cand;
+};
+
 const usefulFor = (position: Position, slots: (Slot | null)[]) => {
   const feats = traitsInPlay(position);
   return (p: Player) => feats.some((f, i) => !slots[i] && Number.isFinite(f.get(p)));
@@ -155,6 +166,7 @@ export const spinClub = (
   let cand = pool.filter((p) => !seen.has(p) && useful(p));
   if (!cand.length) cand = pool.filter(useful);
   if (!cand.length) return null;
+  cand = preferAdvanced(cand, position, slots, rand);
   // The club reel is weighted by how many eligible players each club has (the same as drawing the player and showing
   // his club), so every player is as likely as before the club reel; a uniform club draw over-picked thin clubs
   const player = cand[Math.floor(rand() * cand.length)];
