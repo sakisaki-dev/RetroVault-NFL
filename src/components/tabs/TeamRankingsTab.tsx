@@ -32,9 +32,11 @@ import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
 import { StadiumHeader, LedBoard, PixelChip, PixelPanel, SectionHeader } from '../arcade';
-import { useSchedule, useScheduleSeason } from '@/utils/schedule';
-import { findNFLTeam } from '@/utils/nflTeams';
-import ClubWall from '../teams/nfl/ClubWall';
+import { useSchedule } from '@/utils/schedule';
+import FranchiseWall from '../teams/nfl/FranchiseWall';
+import AllTimePower from '../teams/nfl/AllTimePower';
+import Dynasties from '../teams/nfl/Dynasties';
+import FranchiseLeaders from '../teams/nfl/FranchiseLeaders';
 import SuperBowlList from '../teams/nfl/SuperBowlList';
 import { GameRecords } from '../season/SeasonGames';
 import '@/components/season/season.css';
@@ -179,18 +181,13 @@ const TeamRankingsTab = () => {
   );
 
   const schedule = useSchedule();
-  const topSeason = useMemo(() => (schedule ? Object.keys(schedule.seasons).sort((x, y) => Number(y) - Number(x))[0] ?? null : null), [schedule]);
-  const topSched = useScheduleSeason(schedule, topSeason) ?? null;
+  // the stage: the all-time power No. 1 and its three greatest players
   const stage = useMemo(() => {
-    const leader = topSched?.table.find((r) => r.power === 1)?.team ?? teams[0]?.team?.name ?? 'Eagles';
-    const name = findNFLTeam(leader)?.name ?? leader;
-    const pool = league
-      .filter((p) => !p.isRealLegend && findNFLTeam(p.team)?.name === name)
-      .sort((x, y) => (y.careerLegacy ?? 0) - (x.careerLegacy ?? 0))
-      .slice(0, 3);
+    const top = [...teams].filter((t) => t.team).sort((x, y) => (records.get(x.key)?.powerRank ?? 99) - (records.get(y.key)?.powerRank ?? 99))[0];
+    const pool = top?.franchisePlayers.slice(0, 3) ?? [];
     const players = pool.length === 3 ? [pool[1], pool[0], pool[2]] : pool;
-    return { club: name, players, label: topSeason ? `${seasonLabel(Number(topSeason))} power No. 1` : '' };
-  }, [topSched, teams, league, topSeason]);
+    return { club: top?.team?.name ?? 'Eagles', players };
+  }, [teams, records]);
 
   if (!careerData) {
     return (
@@ -213,7 +210,7 @@ const TeamRankingsTab = () => {
         players={stage.players}
         kind="figure"
         size="m"
-        kicker="League Hub"
+        kicker="League Hub · all time"
         height={290}
         className="teams-stage"
         title="Teams"
@@ -231,12 +228,14 @@ const TeamRankingsTab = () => {
       </StadiumHeader>
       {IS_NFL && (
         <p className="-mt-3 text-sm text-muted-foreground">
-          Every franchise from {firstSeason ? seasonLabel(firstSeason) : '1999'}: titles, Super Bowl trips, all-time records and club sheets. For one season at a time, open the Season page.
+          Every franchise, all time since {firstSeason ? seasonLabel(firstSeason) : '1999'}: records, titles, playoff trips, greatest players and club sheets.{' '}
+          <a href="#season" className="font-semibold text-gold hover:underline">This season → Season page</a>
         </p>
       )}
 
       {/* League overview: power ranking + dynasty timeline */}
-      {IS_NFL && teams.length > 0 && <ClubWall teams={teams} records={records} league={league} firstSeason={firstSeason} onOpen={openClub} />}
+      {IS_NFL && teams.length > 0 && <FranchiseWall teams={teams} records={records} onOpen={openClub} />}
+      {IS_NFL && teams.length > 0 && <AllTimePower teams={teams} records={records} onOpen={openClub} />}
       {!IS_NFL && teams.length > 0 && (
         <div className="grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-7 min-w-0">
@@ -252,6 +251,8 @@ const TeamRankingsTab = () => {
 
       {/* The champions, each club's progression across seasons, the all-time game records (the season-by-season views live on the Season page) */}
       {IS_NFL && superBowls.length > 0 && <SuperBowlList superBowls={superBowls} />}
+      {IS_NFL && <Dynasties />}
+      {IS_NFL && teams.length > 0 && <FranchiseLeaders teams={teams} league={league} />}
       <TeamAdvanced />
       {IS_NFL && !!schedule?.records.length && (
         <section aria-labelledby="alltime-heading" className="season">

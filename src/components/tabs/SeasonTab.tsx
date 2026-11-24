@@ -10,7 +10,8 @@ import { NotableGames, NumbersStrip, WeeklyChart } from '@/components/season/Sea
 import { GameLog, GameRecords, LeagueTable, NoScores, SectionTitle } from '@/components/season/SeasonGames';
 import { AwardRaces, InjuryReport, NflInjuryReport, Leaders, type PlayerLookup } from '@/components/season/LivePanels';
 import { HeadToHeadGrid } from '@/components/season/scheduleParts';
-import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo, StandingsBanners } from '@/components/season/NflSeason';
+import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo } from '@/components/season/NflSeason';
+import SeasonClubWall from '@/components/season/SeasonClubWall';
 import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
@@ -169,7 +170,7 @@ const SeasonTab = () => {
             {IS_NFL && <SeasonJumbo season={season} live={isLive || !season.superBowl} />}
             {IS_NFL && <PlayoffBracket season={season} />}
             {IS_NFL && <CrowdDivider />}
-            {IS_NFL && <StandingsBanners season={season} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
+            {IS_NFL && <SeasonClubWall season={season} live={isLive} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
             {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}

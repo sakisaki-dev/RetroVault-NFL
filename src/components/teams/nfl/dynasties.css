@@ -1,0 +1,12 @@
+.dyn-cols { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .dyn-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.dyn-h { font: 800 13px/1 var(--font-display, inherit); text-transform: uppercase; letter-spacing: .08em; color: hsl(var(--gold)); padding: 0 2px 8px; }
+.dyn-list { display: grid; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.dyn-row { display: grid; grid-template-columns: 22px 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 7px 12px 7px 8px; border-radius: 12px; text-align: left; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-left: 5px solid var(--p); min-height: 50px; }
+.dyn-row:hover { background: hsl(var(--secondary) / .6); }
+.dyn-row:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.dyn-n { font: italic 800 16px/1 var(--font-display, inherit); text-align: center; color: hsl(var(--muted-foreground)); }
+.dyn-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.dyn-main b { font: italic 800 16px/1 var(--font-display, inherit); text-transform: uppercase; }
+.dyn-main small { font-size: 11px; color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dyn-pct { font: italic 800 18px/1 var(--font-display, inherit); font-variant-numeric: tabular-nums; color: hsl(var(--gold)); white-space: nowrap; }
