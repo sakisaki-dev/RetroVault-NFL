@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { Dices, Eraser, Plane, Shirt, Sparkles, Sun, Users } from 'lucide-react';
+import { Dices, Eraser, Plane, Shirt, SlidersHorizontal, Sparkles, Sun, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -54,6 +54,7 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
   const [lineup, setLineup] = useState<NLineup>(() => emptyNLineup());
   const [loaded, setLoaded] = useState<{ club: string; skipped: Skipped[]; filled: string[] } | null>(null);
   const [anyPlayer, setAnyPlayer] = useState(false);
+  const [ctlOpen, setCtlOpen] = useState(false);
   const [src, setSrc] = useState<RatingSource>('szn');
   const [kit, setKit] = useState('');
   const auto = useRef(false);
@@ -135,12 +136,16 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
             { label: 'Formation', value: `${lineup.off}·${lineup.def}`, game: true, title: 'Offensive personnel and base defense' },
           ]}
         >
-          <div className="lab-toolbar nfl-toolbar">
+          <div className={cn('lab-toolbar nfl-toolbar', ctlOpen && 'is-open')}>
             <ModeSwitch mode="team" onMode={onMode} />
-            <ClubSelect value={prefs.club} onChange={(c) => setPrefs({ club: c })} />
             <Button type="button" size="sm" onClick={() => load(prefs.club, lineup.off, null)} disabled={!depth} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90" title="That club's depth chart now, injured starters stepping aside">
               <Plane className="mr-1 h-4 w-4" aria-hidden="true" /> Load {clubName}
             </Button>
+            <button type="button" className="nfl-ctl-toggle" onClick={() => setCtlOpen((v) => !v)} aria-expanded={ctlOpen} aria-controls="nfl-ctl">
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" /> {ctlOpen ? 'Hide controls' : 'Formation, kit and more'}
+            </button>
+            <div className="nfl-ctl" id="nfl-ctl">
+            <ClubSelect value={prefs.club} onChange={(c) => setPrefs({ club: c })} />
             <Select value={lineup.off} onValueChange={(v) => setForms(v as OffForm, lineup.def)}>
               <SelectTrigger className="lab-btn h-9 w-auto min-w-[7.5rem]" aria-label="Offensive personnel">
                 <SelectValue />
@@ -201,6 +206,7 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
                 <Eraser className="mr-1 h-4 w-4" aria-hidden="true" /> Clear
               </Button>
             )}
+            </div>
           </div>
         </NflHeader>
         <Stands art={stage.art} />
