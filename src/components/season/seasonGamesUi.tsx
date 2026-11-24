@@ -107,7 +107,7 @@ export const Rating = ({ label, value }: { label: string; value?: number }) =>
   );
 
 /** The dark scoreboard surface: deep navy, a faint lamp grid, an optional club-colour wash. */
-export const BOARD_BG = 'hsl(228 55% 5%)';
+export const BOARD_BG = 'hsl(var(--card))';
 export const LampGrid = ({ className }: { className?: string }) => (
   <span
     aria-hidden

@@ -11,6 +11,8 @@ import ClubStrip from '@/components/brand/ClubStrip';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { BOARD_BG, FormPips, LampGrid, Rating, RESULT_TEXT, ResultChip, ScoreSide, color, isResult, lampText, rate, roundLabel, signed } from './seasonGamesUi';
 import { displayName } from '@/utils/displayName';
+import { SectionHeader, PixelIcon, clubVars } from '@/components/arcade';
+import type { CSSProperties } from 'react';
 
 /**
  * The Season page's backbone, the design that lived on the Timeline as "Season games": the coached club's
@@ -117,10 +119,8 @@ type TableView = 'power' | 'standings';
 /** Phones show one column set at a time; wider screens show both. */
 type ColumnSet = 'stats' | 'form';
 
-export const SectionTitle = ({ icon: Icon, children }: { icon: typeof Trophy; children: ReactNode }) => (
-  <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-    <Icon className="h-4 w-4" aria-hidden /> {children}
-  </h3>
+export const SectionTitle = ({ children, kicker, club, right }: { icon?: unknown; children: ReactNode; kicker?: ReactNode; club?: string | null; right?: ReactNode }) => (
+  <SectionHeader as="h3" title={children} kicker={kicker} club={club} right={right} />
 );
 
 export const Toggle = <T extends string>({
@@ -418,62 +418,47 @@ export const LeagueTable = ({ season }: { season: ScheduleSeason }) => {
 const spot = (p?: { season?: string; week?: number; round?: string }) =>
   p ? [p.season, p.round ?? (p.week ? `Week ${p.week}` : '')].filter(Boolean).join(' ') : '';
 
-/** The all-time game records as scoreboard lower-thirds: lamp kicker and figure, the game as a broadcast score bar. */
+/** The all-time game records as plaques in the record book's look: the figure, the two clubs with their logos and score, where it happened. */
 export const GameRecords = ({ records }: { records: GameRecord[] }) => {
   if (!records.length) return null;
   return (
-    <div className="space-y-2">
-      <SectionTitle icon={Trophy}>Game records</SectionTitle>
-      <div className="rb-wall">
-        <section className="rb-shelf" style={{ ['--n' as string]: records.length }} aria-label="Game records">
-          <ul className="rb-shelf__row gr-row">
-            {records.map((rec) => {
-              const r = rec as StreakRecord;
-              const isGame = !!(r.away && r.home && r.awayScore !== undefined && r.homeScore !== undefined);
-              const label = r.id === 'coach-win-streak' ? 'Longest winning streak' : r.label;
-              const where = isGame ? spot(r) : [spot(r.from), r.to ? `to ${spot(r.to)}` : ''].filter(Boolean).join(' ');
-              const lead = isGame ? (r.awayScore! > r.homeScore! ? r.away : r.home) : r.team;
-              return (
-                <li key={r.id} className="min-w-0">
-                  <div className="rb-plaque gr-plaque" style={{ background: `linear-gradient(160deg, ${color(lead, 0.4)}, #0d1330 70%)` }} role="group" aria-label={`${label}: ${r.value}`}>
-                    <span className="rb-plaque__title" style={{ color: 'hsl(var(--gold))' }}>
-                      <Trophy className="h-3 w-3 shrink-0" aria-hidden />
-                      <span>{label}</span>
-                    </span>
-                    <span className="rb-plaque__value">
-                      {r.value}
-                      {r.id === 'coach-win-streak' && <small>games</small>}
-                    </span>
-                    {isGame ? (
-                      <span className="gr-sides">
-                        {[{ t: r.away!, sc: r.awayScore! }, { t: r.home!, sc: r.homeScore! }].map((x) => {
-                          const won = x.sc > (x.t === r.away ? r.homeScore! : r.awayScore!);
-                          return (
-                            <span key={x.t} className={cn('gr-side', won ? 'text-foreground' : 'text-foreground/55')}>
-                              <TeamLogo team={x.t} decorative className="h-5 w-5 flex-shrink-0" />
-                              <span className="gr-side__name">{x.t}</span>
-                              <span className={cn('font-display text-lg font-bold tabular-nums', won && lampText)}>{x.sc}</span>
-                            </span>
-                          );
-                        })}
-                      </span>
-                    ) : (
-                      r.team && (
-                        <span className="gr-side">
-                          <TeamLogo team={r.team} decorative className="h-6 w-6 flex-shrink-0" />
-                          <span className="gr-side__name">{r.team}</span>
-                        </span>
-                      )
-                    )}
-                    {where && <span className="rb-plaque__sub">{where}</span>}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          <span className="rb-shelf__rail" aria-hidden="true" />
-        </section>
-      </div>
+    <div className="sx-block">
+      <SectionTitle kicker="All-time">Game records</SectionTitle>
+      <ul className="sx-plaques sx-plaques--auto" aria-label="Game records">
+        {records.map((rec) => {
+          const r = rec as StreakRecord;
+          const isGame = !!(r.away && r.home && r.awayScore !== undefined && r.homeScore !== undefined);
+          const label = r.id === 'coach-win-streak' ? 'Longest winning streak' : r.label;
+          const where = isGame ? spot(r) : [spot(r.from), r.to ? `to ${spot(r.to)}` : ''].filter(Boolean).join(' ');
+          const lead = isGame ? (r.awayScore! > r.homeScore! ? r.away : r.home) : r.team;
+          return (
+            <li key={r.id} className="sx-plaque" style={clubVars(lead) as CSSProperties} role="group" aria-label={`${label}: ${r.value}`}>
+              <span className="sx-plaque__k"><PixelIcon name="trophy" size={12} />{label}</span>
+              <span className="sx-plaque__v">
+                {r.value}
+                {r.id === 'coach-win-streak' && <small className="ml-1 text-xs font-normal text-muted-foreground">games</small>}
+              </span>
+              {isGame ? (
+                [{ t: r.away!, sc: r.awayScore!, o: r.homeScore! }, { t: r.home!, sc: r.homeScore!, o: r.awayScore! }].map((x) => (
+                  <span key={x.t} className={cn('sx-plaque__side', x.sc > x.o ? 'is-win' : 'is-lose')}>
+                    <TeamLogo team={x.t} decorative className="h-6 w-6 flex-shrink-0" />
+                    <span className="min-w-0 truncate">{x.t}</span>
+                    <b>{x.sc}</b>
+                  </span>
+                ))
+              ) : (
+                r.team && (
+                  <span className="sx-plaque__side">
+                    <TeamLogo team={r.team} decorative className="h-6 w-6 flex-shrink-0" />
+                    <span className="min-w-0 truncate">{r.team}</span>
+                  </span>
+                )
+              )}
+              {where && <span className="sx-plaque__sub">{where}</span>}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
