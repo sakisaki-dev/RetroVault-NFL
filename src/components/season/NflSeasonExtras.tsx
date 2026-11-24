@@ -262,12 +262,12 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
  * beams, a spotlight on the winner's step and the painted turf under the podium (CSS stand-ins in a build without the
  * game art).
  */
-const PodiumStage = ({ team, children }: { team: string; children: ReactNode }) => {
-  const art = useFieldArt(team || 'Eagles', 'night');
+export const PodiumStage = ({ team, children, turf = 'night', className }: { team: string; children: ReactNode; turf?: 'day' | 'night' | 'snow'; className?: string }) => {
+  const art = useFieldArt(team || 'Eagles', turf);
   const t = findNFLTeam(team);
   const tint = t ? `hsl(${t.primaryColor})` : 'hsl(var(--gold))';
   return (
-    <div className="nsx-stage" style={{ ['--nsx-tint' as string]: tint }}>
+    <div className={cn('nsx-stage', className)} style={{ ['--nsx-tint' as string]: tint }}>
       <div className={cn('nsx-stage__crowd', art.crowd && 'nsx-stage__crowd--art')} style={art.crowd ? { backgroundImage: `url(${art.crowd})` } : undefined} aria-hidden="true" />
       {art.stands && <div className="nsx-stage__stands" style={{ backgroundImage: `url(${art.stands})` }} aria-hidden="true" />}
       <span className="nsx-stage__beam nsx-stage__beam--l" aria-hidden="true" />
