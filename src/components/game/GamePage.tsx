@@ -18,7 +18,7 @@ import {
   lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, roman, superBowlNumber, type Side, type Star, type Unit,
 } from './gameModel';
 import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, type Linker } from './gameSections';
-import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, LedDigits, CrowdDivider, ClubStrip } from '@/components/arcade';
+import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, ArcadeToggle, CrowdDivider, ClubStrip } from '@/components/arcade';
 import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
@@ -63,7 +63,6 @@ const Section = ({ id, icon: Icon, title, kicker, children, className, g }: { id
     <SectionHeader
       title={<span id={`${id}-h`} className="gm-sech"><Icon className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> {title}</span>}
       kicker={kicker}
-      right={g ? <span className="gm-sech__clubs"><ClubBadge club={g.away} size="sm" /><ClubBadge club={g.home} size="sm" /></span> : undefined}
     />
     {children}
   </section>
@@ -104,11 +103,10 @@ const Compare = ({ g }: { g: GameDetail }) => {
   const shown = rows.filter((r) => r.a || r.h || r.id === 'sk');
   if (!shown.length) return null;
   return (
-    <PixelPanel screen className="gm-compare" pad="sm" style={{ ['--ca' as string]: clubPlate(g.away).fill, ['--ch' as string]: clubPlate(g.home).fill }}>
+    <PixelPanel className="gm-compare" pad="sm" style={{ ['--ca' as string]: clubPlate(g.away).fill, ['--ch' as string]: clubPlate(g.home).fill }}>
       <div className="gm-compare__head">
-        <ClubBadge club={g.away} />
-        <span className="ax-kicker">Tale of the tape</span>
-        <ClubBadge club={g.home} />
+        <TeamLogo team={g.away} decorative className="h-7 w-7" />
+        <TeamLogo team={g.home} decorative className="h-7 w-7" />
       </div>
       {shown.map((r) => {
         const aBetter = r.lowerBetter ? r.a < r.h : r.a > r.h;
@@ -117,9 +115,9 @@ const Compare = ({ g }: { g: GameDetail }) => {
         const pa = tot ? Math.max(4, Math.min(96, (Math.abs(r.a) / tot) * 100)) : 50;
         return (
           <div key={r.id} className="gm-cmp">
-            <span className={cn('gm-cmp__n', aBetter && 'is-better')}><LedDigits value={r.sa ?? Math.round(r.a)} dot={2} color="amber" /></span>
+            <span className={cn('gm-cmp__n', aBetter && 'is-better')}>{r.sa ?? Math.round(r.a)}</span>
             <span className="gm-cmp__l">{r.label}{r.lowerBetter ? ' (lower wins)' : ''}</span>
-            <span className={cn('gm-cmp__n gm-cmp__n--h', hBetter && 'is-better')}><LedDigits value={r.sh ?? Math.round(r.h)} dot={2} color="amber" /></span>
+            <span className={cn('gm-cmp__n gm-cmp__n--h', hBetter && 'is-better')}>{r.sh ?? Math.round(r.h)}</span>
             <span className="gm-cmp__seg" aria-hidden><i className="a" style={{ width: `${pa}%` }} /><i className="h" style={{ width: `${100 - pa}%` }} /></span>
           </div>
         );
@@ -628,6 +626,7 @@ const GameView = ({ g }: { g: GameDetail }) => {
   const away = teamName(g.away);
   const home = teamName(g.home);
 
+  const [matchup, setMatchup] = useState<'eff' | 'ground' | 'air' | 'rush' | 'fan' | 'st'>('eff');
   const [deep, setDeep] = useState<'box' | 'rosters' | 'adv' | 'snaps' | 'coaches' | null>(null);
   const { navigate } = useHubRoute();
   const back = () => {
@@ -681,13 +680,20 @@ const GameView = ({ g }: { g: GameDetail }) => {
           {sb && <Champions g={g} link={link} />}
           <CrowdDivider />
           <QbDuel g={g} link={link} />
-          <Efficiency g={g} />
-          <CrowdDivider />
-          <div className="gm-grid">
-            <div className="gm-stack"><GroundGame g={g} link={link} /><PassRush g={g} link={link} /></div>
-            <div className="gm-stack"><AirAttack g={g} link={link} /><Fantasy g={g} link={link} /></div>
-          </div>
-          <SpecialTeams g={g} />
+          <Section g={g} id="gm-matchup" icon={Gauge} title="Matchup stats" kicker="Efficiency, rushing, passing, defense, fantasy and kicking">
+            <ArcadeToggle
+              label="Matchup stats"
+              value={matchup}
+              onChange={(v) => setMatchup(v as typeof matchup)}
+              options={[{ value: 'eff', label: 'Efficiency' }, { value: 'ground', label: 'Ground game' }, { value: 'air', label: 'Air attack' }, { value: 'rush', label: 'Pass rush' }, { value: 'fan', label: 'Fantasy' }, { value: 'st', label: 'Special teams' }]}
+            />
+            {matchup === 'eff' && <Efficiency g={g} />}
+            {matchup === 'ground' && <GroundGame g={g} link={link} />}
+            {matchup === 'air' && <AirAttack g={g} link={link} />}
+            {matchup === 'rush' && <PassRush g={g} link={link} />}
+            {matchup === 'fan' && <Fantasy g={g} link={link} />}
+            {matchup === 'st' && <SpecialTeams g={g} />}
+          </Section>
           <CrowdDivider />
           {g.players.length > 0 && (
             <Section g={g} id="gm-players" icon={Users} title="Top performers" kicker="By club">

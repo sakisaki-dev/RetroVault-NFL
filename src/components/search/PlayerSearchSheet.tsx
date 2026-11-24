@@ -11,7 +11,7 @@ import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { searchTeams } from '@/utils/teamSearch';
 import type { Meeting } from '@/utils/gameFinder';
-import { MeetingRow, meetingLabel, useMeetings } from './GameMeetings';
+import { MeetingButton, useMeetings } from './GameMeetings';
 import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { useSwipeToDismiss } from '@/hooks/useSwipeToDismiss';
 import { warmPlayerCard } from '@/components/player/warmPlayerCard';
@@ -248,9 +248,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
       <ul className="ss-list">
         {meetings.map((m) => (
           <li key={m.id}>
-            <button type="button" className="mx-2 my-1 flex w-[calc(100%-1rem)] items-center rounded-lg border border-white/10 bg-black/30 text-left active:bg-white/10" aria-label={meetingLabel(m)} onClick={() => onPickGame?.(m)}>
-              <MeetingRow m={m} />
-            </button>
+            <MeetingButton m={m} onOpen={() => onPickGame?.(m)} />
           </li>
         ))}
       </ul>

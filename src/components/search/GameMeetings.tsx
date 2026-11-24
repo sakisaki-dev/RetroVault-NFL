@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { Radio } from 'lucide-react';
-import { ClubBadge, LedDigits } from '@/components/arcade';
+import TeamLogo from '@/components/brand/TeamLogo';
+import { CommandItem } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { loadGameIds, useSeasonGames, type GameIds } from '@/utils/nflGames';
@@ -25,29 +26,71 @@ export const useMeetings = (query: string, limit = 5): Meeting[] => {
   return useMemo(() => (pair && ids ? meetingsOf(ids, pair[0], pair[1], limit).map((m) => ({ ...m, first: pair[0] })) : []), [pair, ids, limit]);
 };
 
-export const MeetingRow = ({ m }: { m: Meeting }) => {
+/** A meeting's score from its season file, and the colour of the winning club (the home club until it is played). */
+const useMeetingResult = (m: Meeting) => {
   const games = useSeasonGames(m.season);
   const g = games?.find((x) => x.id === m.id);
   const done = g?.awayScore !== undefined && g?.homeScore !== undefined;
-  const firstHome = !!m.first && m.first === m.home;
   const a = g?.awayScore ?? 0;
   const h = g?.homeScore ?? 0;
-  const mine = firstHome ? h : a;
-  const theirs = firstHome ? a : h;
-  const r = !done || !m.first ? null : mine > theirs ? 'W' : mine < theirs ? 'L' : 'T';
-  return (
-    <span className="flex min-w-0 flex-1 items-center gap-2 py-2 pl-2 pr-3">
-      <span className={cn('flex h-6 w-6 flex-none items-center justify-center border-2 font-display text-sm font-bold', r === 'W' ? 'border-[hsl(145_63%_62%)] bg-[hsl(145_63%_42%)] text-[#04140a]' : r === 'L' ? 'border-[hsl(357_80%_74%)] bg-[hsl(357_80%_58%)] text-white' : 'border-white/20 bg-white/10 text-muted-foreground')} aria-hidden>
-        {r ?? '–'}
+  const win: 'away' | 'home' | null = done && a !== h ? (a > h ? 'away' : 'home') : null;
+  const tone = win === 'away' ? m.away : m.home;
+  const colors = findNFLTeam(tone);
+  return { done, a, h, win, colors };
+};
+const abbr = (club: string) => findNFLTeam(club)?.abbreviation ?? club;
+
+/** The row's content, shaped like the Teams rows: logos, a Barlow main line ("CIN 20 · WAS 22", the winner bold) and a small secondary line. */
+const MeetingBody = ({ m, r, sheet }: { m: Meeting; r: ReturnType<typeof useMeetingResult>; sheet?: boolean }) => (
+  <>
+    <span className="flex flex-none items-center gap-1" aria-hidden>
+      <TeamLogo team={m.away} size={sheet ? 28 : 30} decorative />
+      <TeamLogo team={m.home} size={sheet ? 28 : 30} decorative />
+    </span>
+    <span className={cn('flex min-w-0 flex-1 flex-col items-start leading-none', sheet && 'ss-team__text')}>
+      <span className={cn('truncate font-display text-xl uppercase tracking-wide', sheet && 'ss-team__name', !sheet && 'qs-name')} style={{ fontStyle: 'normal' }}>
+        <span className={r.win === 'away' ? 'font-extrabold' : 'font-medium opacity-80'}>
+          {abbr(m.away)}
+          {r.done ? ` ${r.a}` : ''}
+        </span>
+        <span className="font-medium opacity-60">{r.done ? ' · ' : ' at '}</span>
+        <span className={r.win === 'home' ? 'font-extrabold' : 'font-medium opacity-80'}>
+          {abbr(m.home)}
+          {r.done ? ` ${r.h}` : ''}
+        </span>
       </span>
-      <ClubBadge club={m.away} size="sm" />
-      {done ? <LedDigits value={`${a}-${h}`} dot={2} label={`${a} to ${h}`} className="flex-none" /> : <span className="font-pixel text-[8px] text-muted-foreground">@</span>}
-      <ClubBadge club={m.home} size="sm" />
-      <span className="ml-auto flex flex-shrink-0 flex-col items-end gap-1 text-right font-pixel text-[8px] uppercase leading-tight text-muted-foreground">
-        {done && <b className="border border-[hsl(var(--gold)/0.7)] px-1 py-0.5 font-normal text-[hsl(var(--gold))]">Final</b>}
-        <span>{m.season} · {weekLabelOf(m.season, m.week)}</span>
+      <span className={cn('mt-1 truncate text-[11px]', sheet ? 'ss-team__sub' : 'qs-sub')} style={sheet ? { fontSize: 12 } : undefined}>
+        {m.season} · {weekLabelOf(m.season, m.week)}
+        {r.done ? ' · Final' : ''}
       </span>
     </span>
+  </>
+);
+
+const toneVars = (r: ReturnType<typeof useMeetingResult>, key: '--qs-1' | '--ss-1') =>
+  ({ [key]: r.colors ? `hsl(${r.colors.primaryColor})` : 'hsl(var(--line))' }) as CSSProperties;
+
+/** Dialog row (inside a cmdk group). */
+export const MeetingItem = ({ m, onOpen }: { m: Meeting; onOpen: () => void }) => {
+  const r = useMeetingResult(m);
+  return (
+    <CommandItem value={`game ${m.id}`} aria-label={meetingLabel(m)} onSelect={onOpen} className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0" style={toneVars(r, '--qs-1')}>
+      <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
+        <MeetingBody m={m} r={r} />
+        <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">Game</span>
+      </span>
+    </CommandItem>
+  );
+};
+
+/** Phone sheet row. */
+export const MeetingButton = ({ m, onOpen }: { m: Meeting; onOpen: () => void }) => {
+  const r = useMeetingResult(m);
+  return (
+    <button type="button" className="ss-team" style={toneVars(r, '--ss-1')} aria-label={meetingLabel(m)} onClick={onOpen}>
+      <MeetingBody m={m} r={r} sheet />
+      <span className="ss-team__go">Game</span>
+    </button>
   );
 };
 

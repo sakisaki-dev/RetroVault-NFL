@@ -173,6 +173,25 @@ export const lineOf = (p: GamePlayer): string => {
   if (v(s, 'fg_att') || v(s, 'pat_att')) bits.push(`${v(s, 'fg_made')}/${v(s, 'fg_att')} FG, ${v(s, 'pat_made')}/${v(s, 'pat_att')} XP`);
   return bits.slice(0, 2).join(' · ');
 };
+/** A player's headline in plain words for prose ("7 catches for 86 yards and a touchdown"), no stat abbreviations. */
+export const proseOf = (p: GamePlayer): string => {
+  const s = p.s;
+  const pl = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  const tds = (n: number) => (n ? ` and ${n === 1 ? 'a touchdown' : `${n} touchdowns`}` : '');
+  const ry = v(s, 'rushing_yards');
+  const cy = v(s, 'receiving_yards');
+  if (v(s, 'attempts') >= 5) {
+    const ints = v(s, 'passing_interceptions');
+    return `${v(s, 'completions')} of ${v(s, 'attempts')} passing for ${pl(v(s, 'passing_yards'), 'yard', 'yards')}${tds(v(s, 'passing_tds'))}${ints ? `, with ${pl(ints, 'interception', 'interceptions')}` : ''}`;
+  }
+  if (v(s, 'carries') >= 3 && ry >= cy) return `${pl(v(s, 'carries'), 'carry', 'carries')} for ${pl(ry, 'yard', 'yards')}${tds(v(s, 'rushing_tds'))}`;
+  if (v(s, 'receptions')) return `${pl(v(s, 'receptions'), 'catch', 'catches')} for ${pl(cy, 'yard', 'yards')}${tds(v(s, 'receiving_tds'))}`;
+  if (v(s, 'carries')) return `${pl(v(s, 'carries'), 'carry', 'carries')} for ${pl(ry, 'yard', 'yards')}${tds(v(s, 'rushing_tds'))}`;
+  if (v(s, 'fg_att')) return `${v(s, 'fg_made')} of ${v(s, 'fg_att')} on field goals`;
+  const tk = tackles(s);
+  const bits = [`${pl(tk, 'tackle', 'tackles')}`, v(s, 'def_sacks') ? pl(v(s, 'def_sacks'), 'sack', 'sacks') : '', v(s, 'def_interceptions') ? pl(v(s, 'def_interceptions'), 'interception', 'interceptions') : ''].filter(Boolean);
+  return bits.join(' and ');
+};
 /** The stars of the game: the top three by score (kickers excluded), the podium and the game ball share this order. */
 export const podiumOf = (g: GameDetail): GamePlayer[] => g.players.filter((p) => score(p) > 0 && unitOf(p) !== 'st').sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name)).slice(0, 3);
 /** The game ball, then each club's best on each side of the ball. */
@@ -265,8 +284,8 @@ export const recapOf = (g: GameDetail): string[] => {
     const lead = w === null ? star.player : (best(w) ?? star.player);
     const other = w === null ? undefined : best(w === 0 ? 1 : 0);
     const leadClub = lead.side === 0 ? aN : hN;
-    if (other && other !== lead) lines.push(`${lead.name} (${leadClub}) led the way: ${lineOf(lead)}, while ${other.name} had ${lineOf(other)} for the ${other.side === 0 ? aN : hN}.`);
-    else lines.push(`${star.player.name} (${club}) led the way: ${star.line}.`);
+    if (other && other !== lead) lines.push(`${lead.name} (${leadClub}) led the way with ${proseOf(lead)}, while ${other.name} answered for the ${other.side === 0 ? aN : hN} with ${proseOf(other)}.`);
+    else lines.push(`${star.player.name} (${club}) led the way with ${proseOf(star.player)}.`);
   }
   if (g.team) {
     const [A, H] = g.team;
