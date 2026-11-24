@@ -17,7 +17,8 @@ import { HeatStrip, TrophyShelf } from './Strips';
 import RaceChart from './RaceChart';
 import { PeakChart, VolumeRate } from './Bars';
 import CompareOverlay from './CompareOverlay';
-import { BestSeasons, ClubSplits } from './Extras';
+import { ClubSplits } from './Extras';
+import { BestSeasons } from './SeasonCards';
 import './careerGraphs.css';
 import { displayName } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
@@ -84,7 +85,7 @@ const DdGraphs = ({ player, players, wide }: { player: Player; players: Player[]
         {career.hasSeasons && <PeakChart player={player} career={career} idx={at} onIdx={setIdx} />}
         {career.hasSeasons && <VolumeRate player={player} career={career} idx={at} onIdx={setIdx} />}
         {career.hasSeasons && <ClubSplits player={player} career={career} />}
-        {career.hasSeasons && <BestSeasons player={player} career={career} onIdx={setIdx} />}
+        {career.hasSeasons && <BestSeasons player={player} career={career} league={league!} onIdx={setIdx} />}
         <CompareOverlay player={player} players={players} career={career} league={league!} metrics={metrics} idx={at} />
       </div>
       <details className="text-xs text-muted-foreground">
