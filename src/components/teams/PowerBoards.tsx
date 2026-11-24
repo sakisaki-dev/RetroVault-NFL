@@ -9,6 +9,7 @@ import type { ScheduleSeason, TeamSeasonRow } from '@/utils/schedule';
 import GameSprite from '../GameSprite';
 import TeamLogo from '../timeline/TeamLogo';
 import { BOARD_BG, LampGrid, color, lampText, signed } from '../season/seasonGamesUi';
+import { displayName } from '@/utils/displayName';
 import './powerBoards.css';
 
 /**
@@ -178,7 +179,7 @@ export const StockBoard = ({
                       <span className="truncate">{nick(m.team)}</span>
                     </span>
                     <span className="block truncate text-[11px] text-muted-foreground">
-                      {star ? star.name : m.row.record} · #{m.row.power + m.row.change.power} to #{m.row.power}
+                      {star ? displayName(star.name) : m.row.record} · #{m.row.power + m.row.change.power} to #{m.row.power}
                     </span>
                   </span>
                   <span className="hidden min-[420px]:block">
