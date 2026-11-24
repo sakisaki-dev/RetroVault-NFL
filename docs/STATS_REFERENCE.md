@@ -94,6 +94,7 @@ TT (adjusted)  = raw TT × factor(pos)
 ```
 
 - Then Dominance, Career Legacy and TPG are **always** recomputed from the adjusted TT (using the formulas in §2.1), overriding sheet and manual values so every metric is consistent.
+- **TPG scale (NFL edition only, `TPG_SCALE_ENABLED`).** The top-3 benchmark equalizes career totals, which longevity drives, so per-game TPG was far higher for QB, OL and TE than for RB, WR and defenders. After the TT adjustment, TPG is multiplied by a per-position factor = mean of the positions' 90th-percentile TPG / this position's 90th-percentile TPG, over qualified players (games >= min(32, the position's median games)). TT, Dominance and Career Legacy are unchanged. The live edition keeps the plain formula.
 - Each player keeps `rawTrueTalent` (sheet / edited value) and `positionFactor`. `trueTalent` is the adjusted value everywhere in the UI.
 - Player edits from IndexedDB are merged **before** normalization, and their TT is treated as raw. Editors should therefore pre-fill and save `rawTrueTalent` (`getRawTrueTalent(p)`), not the adjusted `trueTalent`.
 - Players with `isRealLegend` and players with TT ≤ 0 don't count toward benchmarks. Legends get the same factors but are removed from `careerData` and exposed separately as `legends` in `useLeague()`, so league stats exclude them.
