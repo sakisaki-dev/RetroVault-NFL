@@ -16,8 +16,7 @@ Owner-approved model (2026-11-23, experiments rounds 1-3): career score = 70% EF
                and seasons as a qualified starter (longevity, 1999 on), 30%: percentiles among qualified players.
   honours      raw points, uncapped (MVP 30, OPOY / DPOY 18, SB MVP 12, ring 10, ROY 2), scaled to the position's maximum
                among qualified players, zero = 0.
-  score        0.7 x efficiency + 0.3 x (0.5 production + 0.5 honours); a player with no weekly data (career totals only, the
-               pre-1999 classics) is scored on production (totals) and honours alone, weights re-normalised, flagged.
+  score        0.7 x efficiency + 0.3 x (0.5 production + 0.5 honours); a player with no weekly data (the classics, partial weekly careers) takes his efficiency from CAREER-TOTAL rates against peers within 5 years, flagged.
   CAR          the score's percentile among qualified players (S = top 10%), then rating = 62 + 37 x (pct / 100) ^ 2.5.
 Qualified = QB 1,500 attempts, RB 500 carries, WR / TE 150 catches, LB / DB / DL 48 games. Offensive linemen have no weekly
 data and keep the League Score rating (src/config/ovr.ts). Deterministic. The site only reads the number.
@@ -319,14 +318,112 @@ for pos in POS:
         if np.isfinite(sc[i]):
             EFF[key_of[gs]] = pctof(qs, sc[i])
 
+# ---------- efficiency from CAREER TOTALS for players without full weekly data (classics, partial careers)
+# Same traits as the weekly model where the totals allow; every rate is measured against peers whose careers centre within
+# 5 years of his (everyone in the data with career totals); shrunk by the same k; the position weights mapped to the traits
+# that exist and re-normalised (a missing stat is skipped, never a zero).
+WEEKLY_G = defaultdict(int)
+for (gs, y), a_ in acc.items():
+    WEEKLY_G[key_of[gs]] += a_["g"]
+weekly_span = defaultdict(list)
+for (gs, y), a_ in acc.items():
+    weekly_span[key_of[gs]].append(y)
+
+
+def centre(k):
+    p = byk[k]; nf = p.get("nfl") or {}
+    if nf.get("debut") and nf.get("last"):
+        return (nf["debut"] + nf["last"]) / 2
+    ys = weekly_span.get(k)
+    if ys:
+        return (min(ys) + max(ys)) / 2
+    return None
+
+
+def num_of(p, key):
+    v = p.get(key)
+    return float(v) if isinstance(v, (int, float)) else None
+
+
+def tot_traits(p):
+    """{trait: (num, den, weight/k stat name, lower-is-better)} from a players.json row; missing inputs drop the trait."""
+    n = lambda k: num_of(p, k)
+    g = n("g") or 0
+    pos = p["pos"]; out = {}
+    def add(name, num, den, stat):
+        if num is not None and den and den > 0:
+            out[name] = (num, den, stat)
+    if pos == "QB":
+        att = n("att")
+        add("ya", n("yds"), att, "ya"); add("cmp", n("cmp"), att, "cmp"); add("td", n("td"), att, "td"); add("int", n("int"), att, "int")
+    elif pos == "RB":
+        ratt, rec = n("ratt"), n("rec")
+        touches = (ratt or 0) + (rec or 0) if ratt is not None and rec is not None else None
+        add("ypc", n("ryds"), ratt, "ypc")
+        if touches and n("recyds") is not None and n("ryds") is not None:
+            add("ypt", n("ryds") + n("recyds"), touches, "ypt")
+        if touches and n("rtd") is not None and n("rectd") is not None:
+            add("td_touch", n("rtd") + n("rectd"), touches, "td_touch")
+        add("ryds_g", n("ryds"), g, "ryds_g")
+    elif pos in ("WR", "TE"):
+        rec = n("rec")
+        add("ypr", n("yds"), rec, "ypr"); add("td_rec", n("td"), rec, "td_rec"); add("recyds_g", n("yds"), g, "recyds_g"); add("rec_g", rec, g, "tgt_g")
+    else:
+        add("tkl_g", n("tkl"), g, "tkl_g"); add("sack_g", n("sck"), g, "sack_g"); add("int_g", n("int"), g, "int_g"); add("ff_g", n("ff"), g, "ff_g")
+    return out
+
+
+TOT = {}
+for k, p in byk.items():
+    if p["pos"] in SPECS:
+        t = tot_traits(p)
+        if t:
+            TOT[k] = (centre(k), t)
+TOT_EFF = {}
+for pos in POS:
+    ks = [k for k in TOT if byk[k]["pos"] == pos]
+    traits = sorted({tn for k in ks for tn in TOT[k][1]})
+    ex = {}
+    for k in ks:
+        c, t = TOT[k]
+        peers = [j for j in ks if c is None or TOT[j][0] is None or abs(TOT[j][0] - c) <= 5]
+        for tn, (num, den, stat) in t.items():
+            pn = sum(TOT[j][1][tn][0] for j in peers if tn in TOT[j][1]); pd_ = sum(TOT[j][1][tn][1] for j in peers if tn in TOT[j][1])
+            ex[(k, tn)] = (num / den - (pn / pd_ if pd_ else 0.0), den, stat)
+    mu = {}
+    for tn in traits:
+        v = [ex[(k, tn)][0] for k in ks if (k, tn) in ex and qual[k]]
+        mu[tn] = float(np.mean(v)) if v else 0.0
+    shr = {}
+    for (k, tn), (x, den, stat) in ex.items():
+        kk = K.get((pos, stat), 1e9)
+        shr[(k, tn)] = mu[tn] + (x - mu[tn]) * den / (den + kk) * (0.0 if kk >= ZERO_K else 1.0) if kk < ZERO_K else None
+        if kk < ZERO_K:
+            shr[(k, tn)] = mu[tn] + (x - mu[tn]) * den / (den + kk)
+    sd = {}; mean = {}
+    for tn in traits:
+        v = [shr[(k, tn)] * (-1.0 if tn == "int" else 1.0) for k in ks if shr.get((k, tn)) is not None and qual[k]]
+        mean[tn] = float(np.mean(v)) if v else 0.0; sd[tn] = float(np.std(v)) or 1.0
+    wts = {tn: W[pos].get(TOT[ks[0]][1][tn][2] if tn in TOT[ks[0]][1] else "", 0.0) for tn in traits}
+    # weight by the stat each trait maps to (looked up per player below)
+    sc = {}
+    for k in ks:
+        num_w = 0.0; den_w = 0.0
+        for tn, (num, den, stat) in TOT[k][1].items():
+            x = shr.get((k, tn))
+            w = W[pos].get(stat, 0.0)
+            if x is None or w <= 0:
+                continue
+            z = (x * (-1.0 if tn == "int" else 1.0) - mean[tn]) / sd[tn]
+            num_w += w * z; den_w += w
+        if den_w > 0:
+            sc[k] = num_w / den_w
+    qs = np.sort([v for k, v in sc.items() if qual[k]])
+    for k, v in sc.items():
+        TOT_EFF[k] = pctof(qs, v)
+
 # ---------- production and honours, then the career score
 nq = defaultdict(int)
-WEEKLY_G = defaultdict(int)
-for (gs, y), a in acc.items():
-    WEEKLY_G[key_of[gs]] += a["g"]
-for (gs, y), a in acc.items():
-    if main_exp(a, a["pos"]) >= THR_SEASON[a["pos"]]:
-        nq[key_of[gs]] += 1
 
 
 def prod_of(p):
@@ -343,18 +440,20 @@ RES = {}
 for pos in POS:
     ks = [k for k, p in byk.items() if p["pos"] == pos]
     q = [k for k in ks if qual[k]]
-    Pq = np.sort([prod_of(byk[k]) for k in q]); Lq = np.sort([nq.get(k, 0) for k in q]); hmax = max([honours(byk[k]) for k in q] + [1])
+    Pq = np.sort([prod_of(byk[k]) for k in q]); Lq = np.sort([byk[k].get("g") or 0 for k in q]); hmax = max([honours(byk[k]) for k in q] + [1])
     score = {}
     for k in ks:
         p = byk[k]
-        # weekly data must cover most of his career: a pre-1999 star with two weekly seasons is career-totals-only (his
-        # efficiency would be two shrunk seasons and his longevity two seasons)
-        weekly = k in EFF and WEEKLY_G.get(k, 0) >= 0.6 * max(1, p.get("g") or 0)
-        prod = 0.7 * pctof(Pq, prod_of(p)) + 0.3 * pctof(Lq, nq.get(k, 0)) if weekly else pctof(Pq, prod_of(p))  # no weekly data: no longevity
+        # a career inside the weekly data: the weekly efficiency model; one that starts before 1999: efficiency from career totals
+        nf = p.get("nfl") or {}
+        debut = nf.get("debut") or (int(nf["rookie"]) if str(nf.get("rookie") or "").isdigit() else None)
+        full = k in EFF and not (debut and debut < 1999)   # a career that starts before the weekly data (1999) uses career totals
+        eff = EFF[k] if full else TOT_EFF.get(k)
+        prod = 0.7 * pctof(Pq, prod_of(p)) + 0.3 * pctof(Lq, p.get("g") or 0)   # longevity = career games
         hon = 100.0 * honours(p) / hmax
         ph = 0.5 * prod + 0.5 * hon
-        score[k] = (0.7 * EFF[k] + 0.3 * ph) if weekly else ph
-        RES[k] = [None, EFF.get(k), prod, hon, honours(p), 0 if weekly else 1]
+        score[k] = (0.7 * eff + 0.3 * ph) if eff is not None else ph
+        RES[k] = [None, eff, prod, hon, honours(p), 0 if full else 1]
     qs = np.sort([score[k] for k in q])
     for k in ks:
         RES[k][0] = pctof(qs, score[k])

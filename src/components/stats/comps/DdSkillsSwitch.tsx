@@ -107,7 +107,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
               Small career sample (under {careerPoolLabel(player.position)}): his rates are pulled toward the qualified average in proportion to the sample.
             </p>
           )}
-          {careerRatingOf(key)?.[5] === 1 && <p className="text-[11px] text-muted-foreground">Career totals only: there are no weekly efficiency numbers for his career, so his CAR is graded on production and honours.</p>}
+          {careerRatingOf(key)?.[5] === 1 && <p className="text-[11px] text-muted-foreground">Efficiency from career totals (no weekly data for his whole career): his rates are compared with players whose careers centre within five years of his, then ranked with everyone else.</p>}
         </>
       )}
       {IS_NFL && <DdAdvancedFactors player={player} players={players} scope={useSeason ? String(seasonOvr?.season) : 'c'} onOpenPlayer={onOpenPlayer} />}

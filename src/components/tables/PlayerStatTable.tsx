@@ -13,6 +13,7 @@ import TeamBadge from '../brand/TeamBadge';
 import TeamLogo, { resolveTeam } from '../brand/TeamLogo';
 import { calculateLeaders } from '@/utils/csvParser';
 import { playerKey } from '@/config/ovr';
+import { IS_NFL } from '@/config/edition';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { useSkillRatings } from '@/utils/useSkillRatings';
 import { getTeamColors } from '@/utils/teamColors';

@@ -440,7 +440,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
     car == null
       ? undefined
       : cr
-        ? `CAR ${car}: career rating. 70% efficiency (every rate against that season's league average, shrunk by sample size) plus 30% production and honours (MVP 30, OPOY/DPOY 18, SB MVP 12, ring 10, ROY 2), ranked among qualified ${player.position}s.${cr[5] === 1 ? ' Career totals only: graded on production and honours.' : ` Efficiency ${cr[1]?.toFixed(0)}, production ${cr[2].toFixed(0)}, honours ${cr[3].toFixed(0)}.`}`
+        ? `CAR ${car}: career rating. 70% efficiency (every rate against that season's league average, shrunk by sample size) plus 30% production and honours (MVP 30, OPOY/DPOY 18, SB MVP 12, ring 10, ROY 2), ranked among qualified ${player.position}s.${cr[5] === 1 ? ' Efficiency from career totals (no weekly data).' : ''} Efficiency ${cr[1] == null ? 'n/a' : cr[1].toFixed(0)}, production ${cr[2].toFixed(0)}, honours ${cr[3].toFixed(0)}.`
         : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
   // Two ratings (owner, 2026-11-23): SZN = this season alone, CAR = the whole career. A retired player shows CAR only.
   const ovrTitle = IS_NFL
