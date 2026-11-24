@@ -14,6 +14,7 @@ import { SectionTitle } from './SeasonGames';
 import { useFieldArt } from '@/components/teamlab/fieldArt';
 import { useLeague } from '@/context/LeagueContext';
 import { normalizeName } from '@/utils/playerExtras';
+import { stripSuffix } from '@/utils/nameSuffix';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
@@ -110,9 +111,16 @@ const useKeyFinder = () => {
   const { getAllPlayers, dataVersion } = useLeague();
   return useMemo(() => {
     const by = new Map<string, Player[]>();
+    const exact = new Set(getAllPlayers().map((p) => normalizeName(p.name.replace(/\s*\(.*\)$/, ''))));
     getAllPlayers().forEach((p) => {
       const n = normalizeName(p.name.replace(/\s*\(.*\)$/, ''));
       by.set(n, [...(by.get(n) ?? []), p]);
+    });
+    // game lines and award lists drop the suffix ("James Cook" for "James Cook III"): an exact name still wins
+    getAllPlayers().forEach((p) => {
+      const bare = normalizeName(stripSuffix(p.name.replace(/\s*\(.*\)$/, '')));
+      if (bare === normalizeName(p.name.replace(/\s*\(.*\)$/, '')) || exact.has(bare)) return;
+      by.set(bare, [...(by.get(bare) ?? []), p]);
     });
     return (name: string, pos?: string): string | null => {
       const list = by.get(normalizeName(name)) ?? [];

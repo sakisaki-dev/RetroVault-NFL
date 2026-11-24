@@ -4,6 +4,7 @@ import { useSyncExternalStore } from 'react';
 import type * as SpriteArt from './gameSpriteArt';
 import { findNFLTeam } from './nflTeams';
 import { dataResponse } from '@/utils/dataStore';
+import { resolveSuffixKey } from '@/utils/nameSuffix';
 
 /**
  * Retro Bowl's own player sprites (New Star Games' art; the NFL edition's NFL and NFLPA marks) in
@@ -368,7 +369,12 @@ export const nflSpriteFor = (
   tone?: string,
   role = 1,
   season?: number,
-): NflPick | null => (nfl ? withNumber(withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role, season)), key, legend) : null);
+): NflPick | null => {
+  if (!nfl) return null;
+  // a name from a game line, ESPN or an award list has no suffix: "RB:James Cook" is "RB:James Cook III" (his own sprite)
+  if (IS_NFL && !legend) key = resolveSuffixKey(nfl.players, key);
+  return withNumber(withAnchor(nfl, pickNfl(nfl, key, (!legend && freeAgentClub(key)) || club, current, action, legend, tone, role, season)), key, legend);
+};
 
 const STANDIN_SKINS: Record<string, number[]> = { pale: [2], light: [2], tan: [2, 1], medium: [1, 0], brown: [0], deep: [0] };
 

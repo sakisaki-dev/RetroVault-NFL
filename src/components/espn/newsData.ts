@@ -6,6 +6,7 @@ import { newsKind, type NewsItem, type NewsKind } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { mentionsOf } from '@/utils/newsMentions';
 import { normalizeName } from '@/utils/playerExtras';
+import { stripSuffix } from '@/utils/nameSuffix';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 
 /** The scene kind ArticleArt draws for an ESPN item (its rule picks vs / turf / lineup from kind, players and clubs) */
@@ -20,10 +21,20 @@ export const useTaggedPlayers = (items: NewsItem[], players: Player[]) => {
   const byKey = useMemo(() => new Map(players.map((p) => [keyOfPlayer(p), p])), [players]);
   const byName = useMemo(() => {
     const m = new Map<string, Player>();
+    const bareNames = new Map<string, Player>();
     players.forEach((p) => {
       const k = normalizeName(p.name.replace(/\s*\(.*\)$/, ''));
       const cur = m.get(k);
       if (!cur || p.careerLegacy > cur.careerLegacy) m.set(k, p);
+      // ESPN drops the suffix ("James Cook" for "James Cook III"): also file him under the bare name unless that is a card of its own
+      const bare = normalizeName(stripSuffix(p.name.replace(/\s*\(.*\)$/, '')));
+      if (bare !== k) {
+        const b = bareNames.get(bare);
+        if (!b || p.careerLegacy > b.careerLegacy) bareNames.set(bare, p);
+      }
+    });
+    bareNames.forEach((p, b) => {
+      if (!m.has(b)) m.set(b, p);
     });
     return m;
   }, [players]);
