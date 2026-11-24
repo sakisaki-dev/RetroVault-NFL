@@ -5,6 +5,7 @@ import { overallBoard, skillBoard, type Overall, type SkillBoard, type SkillGrad
 import { ordinal } from '../analytics/viz';
 import { DdBar, GradeChip } from './ddParts';
 import LeaderboardPeek, { type PeekBoard } from './LeaderboardPeek';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   player: Player;
@@ -35,7 +36,7 @@ const DdSkills = ({ player, ovr, ovrLabel = 'CAR', traits, overall, players, onO
   if (!graded.length) {
     return (
       <p className="glass-card p-4 text-sm text-muted-foreground">
-        No graded skills yet: too few of {player.name}&rsquo;s rates are on record. Grades appear once he has the stats for them.
+        No graded skills yet: too few of {displayName(player.name)}&rsquo;s rates are on record. Grades appear once he has the stats for them.
       </p>
     );
   }
@@ -83,7 +84,7 @@ const DdSkills = ({ player, ovr, ovrLabel = 'CAR', traits, overall, players, onO
           </button>
         </LeaderboardPeek>
       )}
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${player.name} skill grades`}>
+      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (

@@ -12,6 +12,7 @@ import type { Turf } from './fieldArt';
 import { GradeChip } from './parts';
 import { SLOT_NAMES } from './labSlots';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const ORDER: SlotId[] = ['qb', 'rb', 'wr1', 'wr2', 'te', 'ol', 'd1', 'd2', 'd3', 'd4'];
 const Slot = ({ ctx, slot, lineup, onSlot }: { ctx: LabContext; slot: SlotId; lineup: Lineup; onSlot: (s: SlotId, k: string) => void }) => {
@@ -129,7 +130,7 @@ export const LabToolbar = (p: ToolbarProps) => (
           <SelectItem key={x.id} value={x.id}>
             <span className="inline-flex items-center gap-2">
               {x.team && <TeamLogo team={x.team} size={16} decorative />}
-              {x.name} <span className="text-muted-foreground">· {10 - x.filled.length}/10 from the franchise</span>
+              {displayName(x.name)} <span className="text-muted-foreground">· {10 - x.filled.length}/10 from the franchise</span>
             </span>
           </SelectItem>
         ))}

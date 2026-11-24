@@ -6,6 +6,7 @@ import { VIZ } from '../analytics/viz';
 import { placeZoneLabels, type ZoneShape } from './zones';
 import './familyZones.css';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Family zones, shared by the similarity map (CompMap) and the Graph Builder scatter: the shaded regions (drawn
@@ -52,7 +53,7 @@ export const FamilyZoneLayer = ({ zones, fams, transform, active, onHover, onOpe
           }}
           style={{ cursor: 'pointer' }}
         >
-          <title>{`${f.name} (${f.members.length}): ${f.definition}`}</title>
+          <title>{`${displayName(f.name)} (${f.members.length}): ${f.definition}`}</title>
         </path>
       );
     })}
@@ -87,7 +88,7 @@ export const FamilyZoneLabels = ({
       const top = toScreen(z.cx, z.top)[1];
       const bottom = toScreen(z.cx, z.bottom)[1];
       const f = fams.families[z.id];
-      const text = f.name.toUpperCase();
+      const text = displayName(f.name).toUpperCase();
       return { id: z.id, cx, cy, top: Math.min(top, bottom), bottom: Math.max(top, bottom), w: text.length * size * 0.66 + 14, h: size + 8, text, n: f.members.length };
     })
     .filter((it) => it.cx > -40 && it.cx < W + 40 && it.cy > -40 && it.cy < H + 40)
@@ -178,7 +179,7 @@ export const FamilyPanel = ({
                   <Swatch color={f.color} />
                   <span className="min-w-0">
                     <span className="font-semibold text-foreground" style={{ color: f.color }}>
-                      {f.name}
+                      {displayName(f.name)}
                     </span>
                     <span className="text-muted-foreground"> · {f.members.length}</span>
                     <span className="block text-muted-foreground">{f.definition}</span>
@@ -193,10 +194,10 @@ export const FamilyPanel = ({
         </ul>
       )}
       {zonesOn && fam && (
-        <div className="rounded-md border bg-night/60 p-2.5" style={{ borderColor: `${fam.color}88` }} role="region" aria-label={`${fam.name} members`}>
+        <div className="rounded-md border bg-night/60 p-2.5" style={{ borderColor: `${fam.color}88` }} role="region" aria-label={`${displayName(fam.name)} members`}>
           <div className="mb-1.5 flex items-start justify-between gap-2">
             <p className="text-xs">
-              <b style={{ color: fam.color }}>{fam.name}</b>
+              <b style={{ color: fam.color }}>{displayName(fam.name)}</b>
               <span className="text-muted-foreground">
                 {' '}
                 · {fam.members.length} {fams.position}s · {fam.definition}. By Career Legacy; tap a name for his Deep Dive.
@@ -208,7 +209,7 @@ export const FamilyPanel = ({
           </div>
           <ol className="flex flex-wrap gap-1.5">
             {fam.members.map((p, i) => (
-              <li key={p.name}>
+              <li key={displayName(p.name)}>
                 <button
                   type="button"
                   title={pickLabel}
@@ -217,7 +218,7 @@ export const FamilyPanel = ({
                   onClick={() => onPick(p)}
                 >
                   <span className="font-mono text-[10px] text-muted-foreground">{i + 1}</span>
-                  <span className="font-semibold">{p.name}</span>
+                  <span className="font-semibold">{displayName(p.name)}</span>
                   {isHallOfFamer(p) && <span className="font-pixel text-[7px] text-gold">HOF</span>}
                   <span className="font-mono text-[10px] text-muted-foreground">{Math.round(p.careerLegacy).toLocaleString()}</span>
                 </button>

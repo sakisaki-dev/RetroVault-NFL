@@ -23,6 +23,7 @@ import { keyOf } from './records';
 import { onHeadToHeadRequest, takeHeadToHeadRequest } from './comps/compFinderLink';
 import { LEAGUE_DEFS, buildMatchup, type Cell, type Matchup, type Row, type Side } from './matchup';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 type Select = (p: Player) => void;
 
@@ -77,12 +78,12 @@ const HeroCard = ({
           type="button"
           {...peekProps(player)}
           onClick={() => onSelect(player)}
-          aria-label={`Open ${player.name}'s player card`}
+          aria-label={`Open ${displayName(player.name)}'s player card`}
           className="block w-full rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <ProPlayerBanner
             size={wide ? 'hero' : 'card'}
-            name={player.name}
+            name={displayName(player.name)}
             nickname={player.nickname}
             position={player.position}
             team={team ?? player.team}
@@ -101,7 +102,7 @@ const HeroCard = ({
         </div>
       )}
       {player && (
-        <div className="flex flex-wrap gap-1.5" aria-label={`${player.name} career summary`}>
+        <div className="flex flex-wrap gap-1.5" aria-label={`${displayName(player.name)} career summary`}>
           <span className="lamp">
             Legacy <b>{fmtNum(player.careerLegacy, 0)}</b>
           </span>
@@ -220,7 +221,7 @@ const LegacyBars = ({ p1, p2, m }: { p1: Player; p2: Player; m: Matchup }) => {
         const mix = m.legacy[i];
         return (
           <div key={keyOf(p)} className="grid grid-cols-[minmax(0,6rem)_1fr] items-center gap-2 sm:grid-cols-[minmax(0,10rem)_1fr]" aria-hidden="true">
-            <span className="truncate text-xs font-semibold sm:text-sm">{p.name}</span>
+            <span className="truncate text-xs font-semibold sm:text-sm">{displayName(p.name)}</span>
             <span className="flex items-center gap-2">
               <span className="flex h-3.5 gap-[2px] motion-safe:transition-[width] motion-safe:duration-500" style={{ width: `${(mix.total / max) * 100}%` }}>
                 {LEGACY_PARTS.filter((part) => mix[part.key] > 0).map((part, j, shown) => (
@@ -449,7 +450,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
           <div className="flex flex-col items-center gap-1.5 border-b border-line px-3 py-2 text-center text-sm">
             <p>
               <span className="font-pixel text-[10px] uppercase text-muted-foreground">Categories won · </span>
-              {leader ? <span className="font-semibold text-gold">{leader.name} leads</span> : <span className="font-semibold text-chalk">Dead even</span>}
+              {leader ? <span className="font-semibold text-gold">{displayName(leader.name)} leads</span> : <span className="font-semibold text-chalk">Dead even</span>}
             </p>
             <ul className="flex flex-wrap justify-center gap-1.5" aria-label="Categories won by section">
               {m.tallies.map((t) => (

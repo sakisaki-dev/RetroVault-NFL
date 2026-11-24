@@ -28,6 +28,7 @@ import {
 import { ClubLogo, playerClub, splitName, useReducedMotion } from './stageKit';
 import HowToStrip from './HowToStrip';
 import './overUnder.css';
+import { displayName } from '@/utils/displayName';
 
 const BANK_KEY = 'ou:bank';
 const BEST_KEY = 'ou:best';
@@ -341,7 +342,7 @@ const OverUnder = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<st
 
                   <fieldset className="ou2-fs ou2-sides" disabled={phase !== 'pick'}>
                     <legend className="sr-only">
-                      {prop.player.name}, {prop.stat.phrase}: over or under {formatLine(prop.line)}
+                      {displayName(prop.player.name)}, {prop.stat.phrase}: over or under {formatLine(prop.line)}
                     </legend>
                     {(['over', 'under'] as const).map((side) => (
                       <label
@@ -379,7 +380,7 @@ const OverUnder = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<st
                               checked={pick.units === u}
                               disabled={u !== pick.units && stake - pick.units + u > bank}
                               onChange={() => setUnits(i, u)}
-                              aria-label={`${u} unit${u > 1 ? 's' : ''} on ${prop.player.name}`}
+                              aria-label={`${u} unit${u > 1 ? 's' : ''} on ${displayName(prop.player.name)}`}
                             />
                             <span aria-hidden="true">{u}u</span>
                           </label>
@@ -425,7 +426,7 @@ const OverUnder = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<st
           {/* Screen-reader play-by-play of the reveal */}
           <p className="sr-only" aria-live="polite">
             {lastShown && bet && phase === 'reveal'
-              ? `${lastShown.player.name}: ${formatActual(lastShown.actual, lastShown.stat)} ${lastShown.stat.phrase}. ${
+              ? `${displayName(lastShown.player.name)}: ${formatActual(lastShown.actual, lastShown.stat)} ${lastShown.stat.phrase}. ${
                   isWinner(lastShown, picks[shown - 1].side as OUSide) ? 'Win' : 'Loss'
                 }.`
               : ''}

@@ -17,6 +17,7 @@ import StatStrips, { StatStripsTable } from './StatStrips';
 import FamilyMap from './FamilyMap';
 import { familiesFor } from '@/config/families';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 type View = 'tiers' | 'strips' | 'families';
 type TierBy = 'skill' | 'ovr';
@@ -67,15 +68,15 @@ const FamilyTable = ({ players, position, onSelect }: { players: Player[]; posit
           {fams.families.map((f) => (
             <tr key={f.id} className="border-t border-line/40 align-top">
               <td className="px-2 py-1.5">
-                <b style={{ color: f.color }}>{f.name}</b> <span className="text-xs text-muted-foreground">({f.members.length})</span>
+                <b style={{ color: f.color }}>{displayName(f.name)}</b> <span className="text-xs text-muted-foreground">({f.members.length})</span>
                 <span className="block text-xs text-muted-foreground">{f.definition}</span>
               </td>
               <td className="px-2 py-1.5">
                 {f.members.map((p, i) => (
-                  <span key={p.name}>
+                  <span key={displayName(p.name)}>
                     {i > 0 && ', '}
                     <button type="button" {...peekProps(p)} onClick={() => onSelect(p)} className="font-semibold hover:text-gold">
-                      {p.name}
+                      {displayName(p.name)}
                     </button>
                   </span>
                 ))}
@@ -162,11 +163,11 @@ const LeagueGallery = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Pla
                 <tbody>
                   {tiers.flatMap((t) =>
                     t.entries.map((e) => (
-                      <tr key={`${t.letter}:${e.player.name}`} className="border-t border-line/40">
+                      <tr key={`${t.letter}:${displayName(e.player.name)}`} className="border-t border-line/40">
                         <td className="px-2 py-1 font-display font-bold">{t.letter}</td>
                         <td className="px-2 py-1">
                           <button type="button" {...peekProps(e.player)} onClick={() => onSelect(e.player)} className="font-semibold hover:text-gold">
-                            {e.player.name}
+                            {displayName(e.player.name)}
                           </button>
                           <span className="ml-1 text-xs text-muted-foreground">
                             {e.player.team ?? ''}

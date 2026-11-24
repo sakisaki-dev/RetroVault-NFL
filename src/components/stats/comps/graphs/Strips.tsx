@@ -7,6 +7,7 @@ import type { Career } from './careerStory';
 import { BOX, groupOf, seasonRates } from './statDefs';
 import { EVENT_LABEL, GlyphIcon, clubInk, pctFill, yLabel } from './graphKit';
 import { seasonScore } from './careerModel';
+import { displayName } from '@/utils/displayName';
 
 const shortYear = (y: number, narrow: boolean) => (narrow ? `'${y % 100}` : yLabel(y));
 
@@ -39,7 +40,7 @@ export const HeatStrip = ({ player, career, idx, onIdx, wide }: { player: Player
         Each season ranked among {player.position}s with 8+ games that season (rates, and box stats per game). Lighter is better; hatched: no season line. Rates
         needing attempts or carries appear only where the live save supplies them.
       </p>
-      <div className="cg-heat" style={grid} role="table" aria-label={`${player.name} percentiles by season`} data-no-swipe-x>
+      <div className="cg-heat" style={grid} role="table" aria-label={`${displayName(player.name)} percentiles by season`} data-no-swipe-x>
         <span role="columnheader" />
         {pts.map((p, i) => (
           <span key={p.year} role="columnheader" className={cn('text-center text-[9.5px] tabular-nums', i === idx ? 'font-bold text-gold' : 'text-muted-foreground')}>

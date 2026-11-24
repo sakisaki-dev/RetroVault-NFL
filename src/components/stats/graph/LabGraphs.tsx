@@ -4,6 +4,7 @@ import Chips from '../analytics/Chips';
 import GraphCard from './GraphCard';
 import { fixedCharts, type GraphConfig, type GraphPreset } from './graphConfig';
 import type { GraphDeps } from './graphStats';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The Lab's charts: four fixed ones (Peak vs longevity first, VOR, efficiency for the Lab's position, Skill vs OVR)
@@ -42,7 +43,7 @@ const LabGraphs = ({
           label="Lab chart"
           value={current.id}
           onChange={setView}
-          options={all.map((p) => ({ value: p.id, label: presets.includes(p) ? `★ ${p.name}` : p.name, title: p.config.subtitle ?? 'Saved Graph Builder preset' }))}
+          options={all.map((p) => ({ value: p.id, label: presets.includes(p) ? `★ ${displayName(p.name)}` : p.name, title: p.config.subtitle ?? 'Saved Graph Builder preset' }))}
         />
       </div>
       <GraphCard

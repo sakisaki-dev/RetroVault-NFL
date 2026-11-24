@@ -15,6 +15,7 @@ import { careerTotals } from '@/components/player/statLines';
 import { prizmInfo, prizmSerial, variantLabel, type Finish, type PrizmCopy, type Tier, type Variant } from '@/utils/collection';
 import { kitUniform, uniformLabel } from './art/sprite/uniforms';
 import type { CardInfo } from './useCardPool';
+import { displayName } from '@/utils/displayName';
 
 /** "Art: 70s Topps". */
 const artNote = (variant: Variant) => `Art: ${variantLabel(variant)}`;
@@ -78,7 +79,7 @@ const CardBack = ({ info, tier, total, variant, finish, kit, prizm }: CardBackPr
       <div className="cb__head">
         <span className="cb__logo">{team ? <TeamLogo team={p.team} size={34} decorative /> : <span aria-hidden="true">★</span>}</span>
         <span className="min-w-0 flex-1">
-          <span className="cb__name">{p.name}</span>
+          <span className="cb__name">{displayName(p.name)}</span>
           <span className="cb__sub">
             {POSITION_NAMES[p.position] ?? p.position} · {info.cardTeam}
           </span>

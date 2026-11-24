@@ -8,6 +8,7 @@ import type { CardInfo } from '../useCardPool';
 import PriceChart from './PriceChart';
 import ChangeBadge from './ChangeBadge';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 /** Allocation bar segments: one hue family per bar, stepped light → dark, every segment labelled in the legend. */
@@ -74,7 +75,7 @@ const AllocBar = ({ title, parts }: { title: string; parts: { label: string; val
 const HoldingLine = ({ h, label, onOpen }: { h: Holding; label: string; onOpen: () => void }) => (
   <button type="button" className="mk-hold" {...peekProps(h.info.player)} onClick={onOpen}>
     <span className="mk-hold__label">{label}</span>
-    <span className="mk-hold__name">{h.info.player.name}</span>
+    <span className="mk-hold__name">{displayName(h.info.player.name)}</span>
     <span className="mk-hold__meta">
       {h.auto ?? `${h.par ?? variantShort(h.variant)} · ${finishLabel(h.finish)}`} · {fmtCoins(h.now)}
     </span>

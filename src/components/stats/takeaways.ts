@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import type { Player, Position } from '@/types/player';
 import { evaluateMetric, type AdvContext, type AdvMetric } from '@/config/advanced';
 import { formatDecimal } from '@/utils/metricColors';
@@ -9,7 +10,8 @@ import type { RecordBoardData } from './records';
  * little data for a fair one).
  */
 
-const surname = (name: string) => {
+const surname = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.trim().split(/\s+/);
   return parts.length > 1 ? parts.slice(1).join(' ') : name;
 };

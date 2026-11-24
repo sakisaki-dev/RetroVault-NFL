@@ -9,6 +9,7 @@ import TeamLogo from '../../brand/TeamLogo';
 import { VIZ, fmtNum, fmtPlus, ordinal } from '../analytics/viz';
 import { keyOf } from '../records';
 import { niceTicks } from './chartKit';
+import { displayName } from '@/utils/displayName';
 
 const ABOVE = `rgb(${VIZ.above})`;
 const BELOW = `rgb(${VIZ.below})`;
@@ -48,7 +49,7 @@ const LollipopRow = ({ r, board, scale, onSelect }: { r: Row; board: MetricBoard
         type="button"
         {...peekProps(r.player)}
         onClick={() => onSelect(r.player)}
-        aria-label={`${r.nfl ? 'Real NFL, unranked' : `Rank ${r.rank}`}: ${r.player.name}, ${fmtNum(r.value, m.decimals)}${suffix}${r.plus != null ? `, + index ${fmtPlus(r.plus)}` : ''}, ${ordinal(r.pct)} percentile. Open player`}
+        aria-label={`${r.nfl ? 'Real NFL, unranked' : `Rank ${r.rank}`}: ${displayName(r.player.name)}, ${fmtNum(r.value, m.decimals)}${suffix}${r.plus != null ? `, + index ${fmtPlus(r.plus)}` : ''}, ${ordinal(r.pct)} percentile. Open player`}
         className={cn(GRID, 'h-7 w-full rounded px-1 text-left hover:bg-panel-2/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold')}
       >
         <span className={cn('text-center font-pixel text-[9px]', r.rank === 1 ? 'text-gold' : 'text-muted-foreground')} aria-hidden="true">
@@ -56,7 +57,7 @@ const LollipopRow = ({ r, board, scale, onSelect }: { r: Row; board: MetricBoard
         </span>
         <span className="flex min-w-0 items-center gap-1.5" aria-hidden="true">
           {r.player.team ? <TeamLogo team={r.player.team} size={16} decorative backed /> : <span className="w-4" />}
-          <span className="truncate text-xs font-semibold sm:text-sm"><FitName name={r.player.name} /></span>
+          <span className="truncate text-xs font-semibold sm:text-sm"><FitName name={displayName(r.player.name)} /></span>
         </span>
         <span className="relative h-full" aria-hidden="true">
           <span className="absolute inset-y-0 w-px border-l border-dashed" style={{ left: `${x(scale.ref)}%`, borderColor: VIZ.muted }} />

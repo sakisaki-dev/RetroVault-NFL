@@ -23,6 +23,7 @@ import {
   type SixDegEdge,
   type SixDegPuzzle,
 } from './sixDegreesGraph';
+import { displayName } from '@/utils/displayName';
 
 const BEST_KEY = 'sixdeg:best';
 const RECENT_TARGETS = 6;
@@ -64,7 +65,8 @@ const LinkLine = ({ edge, pending, label, trend }: { edge?: SixDegEdge | null; p
   );
 };
 
-const nameParts = (name: string) => {
+const nameParts = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.indexOf(' ');
   return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
 };
@@ -260,7 +262,7 @@ const SixDegrees = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<s
         ]}
       />
 
-      <section className="sd-route" aria-label={`Link ${start.name} to ${target.name}`} key={puzzle.id}>
+      <section className="sd-route" aria-label={`Link ${displayName(start.name)} to ${displayName(target.name)}`} key={puzzle.id}>
         <div className="sd-route-ends">
           <Token p={start} label="Start" ovr={ovrOf(start)} tone="start" className="rise" />
           <span className="sd-route-arrow" aria-hidden="true">
@@ -305,7 +307,7 @@ const SixDegrees = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<s
             <li key={key} className={cn('sd-node rise', isTail && !done && 'tail', key === puzzle.target && 'goal')}>
               {edge && <LinkLine edge={edge} trend={key === puzzle.target ? null : trendOf(chain[i - 1], key)} />}
               <span className="sr-only">
-                Step {i}: {p.name}
+                Step {i}: {displayName(p.name)}
                 {edge ? `, linked by ${edge.reason}` : ', start'}
               </span>
               <GameBanner player={p} size="compact" ovr={ovrOf(p)} reveal eyebrow={i === 0 ? 'Start' : key === puzzle.target ? 'Target reached' : `Link ${i}`} />

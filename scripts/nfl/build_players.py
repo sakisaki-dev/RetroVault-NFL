@@ -86,6 +86,12 @@ def norm(s: str) -> str:
     return re.sub(r"[^a-z]", "", s)
 
 
+def normk(s: str) -> str:
+    """Name identity that keeps Jr./Sr./II (Marvin Harrison and Marvin Harrison Jr. are different names)."""
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]", "", s)
+
+
 def rows(name):
     p = CACHE / name
     if not p.exists():
@@ -263,19 +269,19 @@ def main():
     want = {p["gsis"]: p for p in allp if p.get("gsis")}
     by_pfr = {p["pfr"]: p for p in allp if p.get("pfr")}
 
-    # names: Retro Vault keys stints, extras and banners by name, so a name two players share gets his club (and
-    # position when that doesn't separate them): "Justin Jefferson (LB, Browns)"
+    # names: Retro Vault keys by POS:Name, so two players with the same full name and position are the only clash
+    # (Jr./Sr./II differ already; a WR and a LB with one name are POS:Name apart). The best-known keeps the plain
+    # name; the others carry an internal "(POS, club)" tag that the site strips for display (displayName()).
     base = defaultdict(list)
     for p in roster:
-        base[norm(p["name"])].append(p)
+        base[(normk(p["name"]), p["pos"])].append(p)
     for ps in base.values():
         for p in ps:
             if len(ps) == 1:
                 p["display"] = p["name"]
             else:
-                clash = sum(1 for q in ps if q["pos"] == p["pos"]) > 1
+                clash = sum(1 for q in ps if q["club"] == p["club"]) > 1
                 tag = f"{p['pos']}, {p['club']}" if not clash else f"{p['pos']}, {p['club']} {p['uid'][-3:]}"
-                # the best-known of the namesakes keeps the plain name (most career games)
                 p["display"] = f"{p['name']} ({tag})"
             p["key"] = f"{p['pos']}:{p['display']}"
 
@@ -322,12 +328,12 @@ def main():
                 top["display"] = top["name"]
                 top["key"] = f"{top['pos']}:{top['name']}"
     # past players: the plain name unless a save player (or a better-known namesake) has it; stable keys for the save's
-    taken = {norm(p["name"]) for p in roster}
+    taken = {(normk(p["name"]), p["pos"]) for p in roster}
     used = {p["display"] for p in roster}
     for p in legends:  # most career games first
-        if norm(p["name"]) not in taken and p["name"] not in used:
+        if (normk(p["name"]), p["pos"]) not in taken and p["name"] not in used:
             p["display"] = p["name"]
-            taken.add(norm(p["name"]))
+            taken.add((normk(p["name"]), p["pos"]))
         else:
             tag = f"{p['pos']}, {p['club']}"
             p["display"] = f"{p['name']} ({tag})"

@@ -8,6 +8,7 @@ import { PACKS, type CollectionState } from '@/utils/collection';
 import { fmtCoins } from '@/utils/cardMarket';
 import { claimSet, setProgress, setReward, type CollectionSet, type SetKind } from '@/utils/economy';
 import type { CardInfo } from '../useCardPool';
+import { displayName } from '@/utils/displayName';
 
 interface SetsProps {
   sets: CollectionSet[];
@@ -140,7 +141,7 @@ const Sets = ({ sets, state, byKey, values, onOpenCard }: SetsProps) => {
                           {have && info ? (
                             <button type="button" className="ec-member is-owned" onClick={() => onOpenCard(info)}>
                               <i aria-hidden="true" />
-                              {info.player.name}
+                              {displayName(info.player.name)}
                             </button>
                           ) : (
                             <span className="ec-member" title="Not in your binder yet">

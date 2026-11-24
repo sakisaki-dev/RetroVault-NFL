@@ -51,6 +51,7 @@ import { SlotRow } from './NflDepthChart';
 import NflSaved from './NflSaved';
 import { ClubSelect, ModeSwitch, Stands, TurfSelect, openPicker, useStage } from './NflShared';
 import { useSavedLabs, type NflLabReady, type Prefs } from './useNflLab';
+import { displayName } from '@/utils/displayName';
 
 const f1 = (x: number) => x.toFixed(1);
 const nameOf = (key: string) => (key.startsWith('DST:') ? `${findNFLTeam(key.slice(4))?.name ?? key.slice(4)} D/ST` : key.slice(key.indexOf(':') + 1));
@@ -588,7 +589,7 @@ const FantasyH2H = ({
           </SelectTrigger>
           <SelectContent className="z-[70] max-h-80">
             {opponents.map((o) => (
-              <SelectItem key={o.id} value={o.id}>{o.name}</SelectItem>
+              <SelectItem key={o.id} value={o.id}>{displayName(o.name)}</SelectItem>
             ))}
           </SelectContent>
         </Select>

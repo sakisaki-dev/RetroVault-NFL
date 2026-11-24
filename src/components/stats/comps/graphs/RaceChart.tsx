@@ -9,6 +9,7 @@ import type { Career } from './careerStory';
 import { BOX, HEADLINE, groupOf } from './statDefs';
 import MultiLine, { type LineSeries, type Marker } from './MultiLine';
 import { shortNum, yLabel } from './graphKit';
+import { displayName } from '@/utils/displayName';
 
 const OTHERS = [VIZ.series[0], VIZ.series[1], VIZ.series[2]];
 const posOf = (k: string) => k.slice(0, k.indexOf(':')) as Position;
@@ -43,7 +44,7 @@ const RaceChart = ({ player, career, league, idx, onIdx }: { player: Player; car
       dash: i >= 3 ? '3 3' : undefined,
       peekKey: r.k,
     }));
-    series.push({ key, label: player.name.split(' ').slice(-1)[0], color: GOLD, points: mine, width: 3 });
+    series.push({ key, label: displayName(player.name).split(' ').slice(-1)[0], color: GOLD, points: mine, width: 3 });
     // where he passed each of them
     const markers: Marker[] = [];
     const passed: { k: string; year: number }[] = [];
@@ -91,7 +92,7 @@ const RaceChart = ({ player, career, league, idx, onIdx }: { player: Player; car
           const i = career.points.findIndex((p) => p.year === y);
           if (i >= 0) onIdx(i);
         }}
-        ariaLabel={`${player.name}'s career ${b.label.toLowerCase()} by season against the top five`}
+        ariaLabel={`${displayName(player.name)}'s career ${b.label.toLowerCase()} by season against the top five`}
       />
       {data.passed.length > 0 && (
         <ul className="cg-legend">

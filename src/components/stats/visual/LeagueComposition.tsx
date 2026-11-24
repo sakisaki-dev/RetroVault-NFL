@@ -13,6 +13,7 @@ import { fmtNum } from '../analytics/viz';
 import { teamMark } from './chartKit';
 import { Legend } from './chartParts';
 import { useStagger } from '@/utils/motion';
+import { displayName } from '@/utils/displayName';
 
 // ---------- Hall of Fame tiers by position ----------
 
@@ -184,8 +185,8 @@ const TeamBar = ({ row, metric, max }: { row: TeamRow; metric: TeamMetric; max: 
   const v = row[metric];
   return (
     <li className="grid grid-cols-[1.5rem_minmax(0,7.5rem)_minmax(0,1fr)_2rem] items-center gap-2 sm:grid-cols-[1.5rem_minmax(0,9rem)_minmax(0,1fr)_2.5rem]">
-      <TeamLogo team={row.name} size={22} decorative backed />
-      <span className="truncate text-sm font-semibold">{row.name}</span>
+      <TeamLogo team={displayName(row.name)} size={22} decorative backed />
+      <span className="truncate text-sm font-semibold">{displayName(row.name)}</span>
       <span className="block h-3 rounded-sm bg-night/70" aria-hidden="true">
         <span
           className="block h-full rounded-r-[4px] motion-safe:transition-[width] motion-safe:duration-500"
@@ -266,7 +267,7 @@ export const FranchiseBars = ({ players }: { players: Player[] }) => {
             <tbody>
               {[...all].sort((a, b) => b[metric] - a[metric] || a.name.localeCompare(b.name)).map((r) => (
                 <tr key={r.id} className="border-t border-line/40">
-                  <th scope="row" className="px-2 py-1 text-left font-semibold">{r.name}</th>
+                  <th scope="row" className="px-2 py-1 text-left font-semibold">{displayName(r.name)}</th>
                   <td className="px-2 py-1 text-right font-mono tabular-nums">{r.titles}</td>
                   <td className="px-2 py-1 text-right font-mono tabular-nums">{r.hof}</td>
                   <td className="px-2 py-1 text-right font-mono tabular-nums">{r.players}</td>

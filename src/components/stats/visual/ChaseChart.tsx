@@ -10,6 +10,7 @@ import ChartFrame from '../analytics/ChartFrame';
 import { VIZ, fmtNum } from '../analytics/viz';
 import { MIN, PACE_MAX_SEASONS, keyOf, type PaceEntry } from '../records';
 import { GOLD, teamMark } from './chartKit';
+import { displayName } from '@/utils/displayName';
 
 type Select = (p: Player) => void;
 
@@ -34,14 +35,14 @@ const ChaseRow = ({ row, max, onSelect }: { row: Row; max: number; onSelect: Sel
         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
           {p.team && <TeamLogo team={p.team} size={20} decorative backed />}
           <button type="button" onClick={() => onSelect(p)} {...peekProps(p)} className="truncate rounded font-display text-base font-bold uppercase hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
-            {p.name}
+            {displayName(p.name)}
           </button>
           <PositionBadge position={p.position} className="min-w-[2rem] px-1.5 py-0.5 text-[10px]" />
           <span className="text-xs text-muted-foreground">
             chasing <span className="font-semibold text-gold">{pace.recordName}</span> ·{' '}
             <ClubStrip
               team={bannerTeamOf(pace.recordHolder)}
-              label={pace.recordHolder.name}
+              label={displayName(pace.recordHolder.name)}
               size="sm"
               onClick={() => onSelect(pace.recordHolder)}
               playerKey={peekProps(pace.recordHolder)['data-player-key']}
@@ -56,7 +57,7 @@ const ChaseRow = ({ row, max, onSelect }: { row: Row; max: number; onSelect: Sel
       {/* Track: solid = done so far, dotted ticks = each projected 16-game season, gold diamond = the season he passes it */}
       <div
         role="img"
-        aria-label={`${p.name}: ${fmtNum(cur, 0)}% of the record now, projected to pass it in ${seasons(pace.seasonsToBreak)}`}
+        aria-label={`${displayName(p.name)}: ${fmtNum(cur, 0)}% of the record now, projected to pass it in ${seasons(pace.seasonsToBreak)}`}
         className="relative h-5"
       >
         <span className="absolute inset-x-0 top-1/2 h-2.5 -translate-y-1/2 rounded-sm bg-night/80" />
@@ -141,11 +142,11 @@ const ChaseChart = ({ pace, onSelect, title = 'Chasing history', intro }: { pace
                 <tr key={`${keyOf(p.player)}:${p.recordName}`} className="border-t border-line/40" {...peekProps(p.player)}>
                   <td className="px-2 py-1">
                     <button type="button" onClick={() => onSelect(p.player)} className="font-semibold hover:text-gold">
-                      {p.player.name}
+                      {displayName(p.player.name)}
                     </button>
                   </td>
                   <td className="px-2 py-1 text-xs">
-                    {p.recordName} ({p.recordHolder.name})
+                    {p.recordName} ({displayName(p.recordHolder.name)})
                   </td>
                   <td className="px-2 py-1 text-right font-mono tabular-nums">
                     {fmtNum(p.currentValue, 0)} <span className="text-muted-foreground">({fmtNum(cur, 0)}%)</span>

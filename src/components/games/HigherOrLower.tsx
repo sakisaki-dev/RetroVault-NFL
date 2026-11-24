@@ -24,6 +24,7 @@ import { ClubLogo, playerClub, splitName, useReducedMotion } from './stageKit';
 import HowToStrip from './HowToStrip';
 import GameSprite from '../GameSprite';
 import './higherLower.css';
+import { displayName } from '@/utils/displayName';
 
 interface Round {
   category: StatCategory;
@@ -91,7 +92,7 @@ const Fighter = ({
     <article
       className={cn('hl-fighter', side, revealed && (winner ? 'win' : 'lose'))}
       style={look.vars}
-      aria-label={`${side === 'known' ? 'Known' : 'Challenger'}: ${player.name}, ${look.name}${sealed ? `, ${category.label} hidden` : `, ${fmt(value, category.decimals)} ${category.label}`}`}
+      aria-label={`${side === 'known' ? 'Known' : 'Challenger'}: ${displayName(player.name)}, ${look.name}${sealed ? `, ${category.label} hidden` : `, ${fmt(value, category.decimals)} ${category.label}`}`}
     >
       <div className="hl-card">
         <ClubLogo look={look} className="hl-card-logo" />
@@ -285,7 +286,7 @@ const HigherOrLower = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<str
         </div>
 
         {!result ? (
-          <div className="hl-calls" role="group" aria-label={`Does ${b.name} have more or fewer ${category.phrase} than ${a.name}?`}>
+          <div className="hl-calls" role="group" aria-label={`Does ${displayName(b.name)} have more or fewer ${category.phrase} than ${displayName(a.name)}?`}>
             <button type="button" className="hl-call more" onClick={() => answer(true)}>
               <span className="arrow" aria-hidden="true">
                 ▲

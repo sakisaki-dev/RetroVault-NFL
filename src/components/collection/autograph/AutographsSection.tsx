@@ -7,6 +7,7 @@ import { autographValue, fmtMult, parallelOf, serialStr } from '@/config/autogra
 import AutographCanvas from './AutographCanvas';
 import AutographCarousel from './AutographCarousel';
 import { autographOddsLine } from './AutographDetails';
+import { displayName } from '@/utils/displayName';
 
 const PAGE = 48;
 
@@ -75,10 +76,10 @@ const AutographsSection = ({ autos, onOpen }: { autos: OwnedAuto[]; onOpen: (aut
               const v = autographValue(a.roll).total;
               return (
                 <li key={a.id} className="min-w-0">
-                  <button type="button" className="au-tile" onClick={(e) => onOpen(a, e.currentTarget.getBoundingClientRect())} aria-label={`${a.snap.name}, ${parallelOf(a.roll.parallel).label} ${serialStr(a.roll)}: details`}>
+                  <button type="button" className="au-tile" onClick={(e) => onOpen(a, e.currentTarget.getBoundingClientRect())} aria-label={`${displayName(a.snap.name)}, ${parallelOf(a.roll.parallel).label} ${serialStr(a.roll)}: details`}>
                     <AutographCanvas snap={a.snap} roll={a.roll} cacheKey={a.id} />
                     <span className="min-w-0 px-0.5">
-                      <span className="block truncate text-xs font-semibold">{a.snap.name}</span>
+                      <span className="block truncate text-xs font-semibold">{displayName(a.snap.name)}</span>
                       <span className="block truncate font-mono text-[11px] text-muted-foreground">
                         {serialStr(a.roll)} · <span className="text-gold">{fmtMult(v)}</span>
                       </span>

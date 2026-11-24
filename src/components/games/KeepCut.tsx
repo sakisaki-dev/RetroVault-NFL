@@ -17,6 +17,7 @@ import {
 import { DeckCard, Hud, HudStat, Land, Pips, Slab, launchFrom, usePointerDrag, useRevealClock } from './rosterKit';
 import HowToStrip from './HowToStrip';
 import './keepcut.css';
+import { displayName } from '@/utils/displayName';
 
 const SIZE = 6;
 const KEEP = 3;
@@ -143,9 +144,9 @@ const KeepCut = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap: Map<strin
   const upsets = sorted
     ? sorted.flatMap((p, i) => {
         const c = choiceOf(p);
-        if (c === 'cut' && i === 0) return [`You cut the #1, ${p.name}`];
-        if (c === 'cut' && i < KEEP) return [`You cut a top-3 career, ${p.name}`];
-        if (c === 'keep' && i === SIZE - 1) return [`You kept the worst of six, ${p.name}`];
+        if (c === 'cut' && i === 0) return [`You cut the #1, ${displayName(p.name)}`];
+        if (c === 'cut' && i < KEEP) return [`You cut a top-3 career, ${displayName(p.name)}`];
+        if (c === 'keep' && i === SIZE - 1) return [`You kept the worst of six, ${displayName(p.name)}`];
         return [];
       })
     : [];
@@ -251,11 +252,11 @@ const KeepCut = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap: Map<strin
                 />
               </div>
               <div className="kc-decide2">
-                <button type="button" className="kc-btn cut" disabled={full('cut')} onClick={() => decide('cut')} aria-label={`Cut ${current.name}`} aria-keyshortcuts="C ArrowLeft">
+                <button type="button" className="kc-btn cut" disabled={full('cut')} onClick={() => decide('cut')} aria-label={`Cut ${displayName(current.name)}`} aria-keyshortcuts="C ArrowLeft">
                   <span aria-hidden="true">✕</span> Cut
                   <small>{full('cut') ? 'Full' : `${SIZE - KEEP - cuts} left`}</small>
                 </button>
-                <button type="button" className="kc-btn keep" disabled={full('keep')} onClick={() => decide('keep')} aria-label={`Keep ${current.name}`} aria-keyshortcuts="K ArrowRight">
+                <button type="button" className="kc-btn keep" disabled={full('keep')} onClick={() => decide('keep')} aria-label={`Keep ${displayName(current.name)}`} aria-keyshortcuts="K ArrowRight">
                   Keep <span aria-hidden="true">✓</span>
                   <small>{full('keep') ? 'Full' : `${KEEP - keeps} left`}</small>
                 </button>

@@ -18,6 +18,7 @@ import { POSITION_NAMES } from '@/utils/playerMeta';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { usePhone } from '@/hooks/usePhone';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
+import { displayName } from '@/utils/displayName';
 
 interface PlayerSearchSelectProps {
   players: Player[];
@@ -33,7 +34,7 @@ interface PlayerSearchSelectProps {
   openBelow?: boolean;
 }
 
-const playerKey = (p: Pick<Player, 'position' | 'name'>) => `${p.position}:${p.name}`;
+const playerKey = (p: Pick<Player, 'position' | 'name'>) => `${p.position}:${displayName(p.name)}`;
 
 const fold = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[’']/g, '');
 
@@ -64,7 +65,8 @@ const bannerVars = (team?: string): CSSProperties => {
   } as CSSProperties;
 };
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.indexOf(' ');
   return i < 0 ? { first: '', last: name } : { first: name.slice(0, i), last: name.slice(i + 1) };
 };
@@ -149,7 +151,7 @@ const PlayerSearchSelect = ({
       role="combobox"
       aria-expanded={open}
       aria-haspopup={phone ? 'dialog' : undefined}
-      aria-label={ariaLabel ? `${ariaLabel}${selectedPlayer ? `: ${selectedPlayer.name}` : ''}` : undefined}
+      aria-label={ariaLabel ? `${ariaLabel}${selectedPlayer ? `: ${displayName(selectedPlayer.name)}` : ''}` : undefined}
       className="h-12 w-full justify-between gap-2 border-line bg-night/60 px-2.5 hover:bg-panel-2"
       onClick={phone ? () => flushSync(() => setOpen(true)) : undefined}
       style={
@@ -278,7 +280,7 @@ const PlayerSearchSelect = ({
                           onValueChange(isSelected ? '' : key);
                           setOpen(false);
                         }}
-                        aria-label={`${player.name}${bannerTeamOf(player) ? `, ${bannerTeamOf(player)}` : ''}, number ${numberFor(player)}`}
+                        aria-label={`${displayName(player.name)}${bannerTeamOf(player) ? `, ${bannerTeamOf(player)}` : ''}, number ${numberFor(player)}`}
                         className={cn(
                           'my-1 cursor-pointer overflow-hidden rounded-md px-2 py-1.5 text-foreground transition-[box-shadow,transform] motion-safe:data-[selected=true]:translate-x-0.5',
                           'data-[selected=true]:bg-transparent data-[selected=true]:text-foreground',

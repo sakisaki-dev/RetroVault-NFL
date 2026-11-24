@@ -47,6 +47,7 @@ import { useLiveSeason, kickoffText, scheduleWeeks, useUpcoming, withUpcoming, t
 import { useSeasonLeaders, type LeaderRow, type SeasonLeaders } from '@/utils/seasonLeaders';
 import { timeAgo, useEspnNews, type NewsItem } from '@/utils/espnNews';
 import { dataResponse } from '@/utils/dataStore';
+import { displayName } from '@/utils/displayName';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -734,7 +735,7 @@ const SpotlightScene = ({ player, roll, rank, number, ovr, sprites }: { player: 
         <div className="sv-spot__banner">
           <ProPlayerBanner
             size="hero"
-            name={player.name}
+            name={displayName(player.name)}
             nickname={player.nickname}
             position={player.position}
             team={t ?? player.team}
@@ -787,7 +788,7 @@ const CardScene = ({ card, owned, display }: { card: CardInfo; owned: ReturnType
         </div>
         <div className="sv-vault__text">
           <p className="sv-kick">From the binder</p>
-          <h2 className="sv-title">{card.player.name}</h2>
+          <h2 className="sv-title">{displayName(card.player.name)}</h2>
           <p className="sv-sub">
             {tierLabel(card.tier)}
             {finish ? ` · ${finish}` : ''}
@@ -821,7 +822,7 @@ const LineupScene = ({ club, players, roll, sprites }: { club: string; players: 
             return (
               <li key={playerKey(p)} className={best ? 'sv-line__man sv-line__man--best' : 'sv-line__man'} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
                 <Figure player={p} sprites={sprites} action={best ? 'celebrate' : 'idle'} scale={best ? 1.3 : 1.05} />
-                <span className="sv-line__name">{p.name.split(' ').slice(-1)[0]}</span>
+                <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
                 <span className="sv-line__cl">{fmt(p.careerLegacy)}</span>
               </li>
             );
@@ -861,7 +862,7 @@ const HofScene = ({ player, label, sprites }: { player: Player; label: string; s
       </div>
       <div className="sv-hall__plaque">
         <p className="sv-kick">Hall of Fame · {label}</p>
-        <h2 className="sv-title">{player.name}</h2>
+        <h2 className="sv-title">{displayName(player.name)}</h2>
         {player.nickname && <p className="sv-nick">“{player.nickname}”</p>}
         <p className="sv-sub">
           {t?.fullName ?? player.team} · Career Legacy {fmt(player.careerLegacy)}
@@ -899,7 +900,7 @@ const DuelScene = ({ a, b, pos, sprites }: { a: Player; b: Player; pos: string; 
         </span>
         <Figure player={p} sprites={sprites} scale={1.7} mirror={right} />
         <div className="sv-duel__card">
-          <h3 className="sv-duel__name">{p.name}</h3>
+          <h3 className="sv-duel__name">{displayName(p.name)}</h3>
           <p className="sv-duel__club">
             <ClubTag team={t?.name ?? p.team} />
           </p>
@@ -938,13 +939,13 @@ const ChampsScene = ({ bowl }: { bowl: SuperBowlEntry }) => {
       <Particles kind="confetti" count={80} colors={[w ? `hsl(${w.primaryColor})` : '#ffc63e', w ? `hsl(${w.secondaryColor})` : '#ffffff', '#ffc63e', '#ffffff']} />
       <div className="sv-champs__body">
         <p className="sv-kick">Super Bowl {bowl.roman} · {seasonLabel(bowl.year)}</p>
-        <div className="sv-champs__logo">{w && <TeamLogo team={w.name} size={300} decorative />}</div>
+        <div className="sv-champs__logo">{w && <TeamLogo team={displayName(w.name)} size={300} decorative />}</div>
         <h2 className="sv-title">{w?.fullName ?? bowl.winner}</h2>
         <p className="sv-champs__score">
           <b>{bowl.score}</b>
           {l && (
             <span>
-              over the <TeamLogo team={l.name} size={34} decorative /> {l.name}
+              over the <TeamLogo team={displayName(l.name)} size={34} decorative /> {displayName(l.name)}
             </span>
           )}
         </p>
@@ -1019,7 +1020,7 @@ const RecordScene = ({ row, holder, sprites }: { row: ClubRecordRow; holder: Pla
         </div>
         <div className="sv-rec__man" style={clubStyle(holder)}>
           <Figure player={holder} sprites={sprites} action="stiffarm" scale={1.6} />
-          <span className="sv-line__name">{holder.name}</span>
+          <span className="sv-line__name">{displayName(holder.name)}</span>
         </div>
       </div>
     </Stadium>
@@ -1033,7 +1034,7 @@ const Row = ({ items, sprites, best = 0, action = 'idle' }: { items: { p: Player
     {items.map(({ p, line }, i) => (
       <li key={playerKey(p)} className={i === best ? 'sv-line__man sv-line__man--best' : 'sv-line__man'} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
         <Figure player={p} sprites={sprites} action={i === best ? 'celebrate' : action} scale={i === best ? 1.2 : 1} />
-        <span className="sv-line__name">{p.name.split(' ').slice(-1)[0]}</span>
+        <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
         <span className="sv-line__cl">{line}</span>
       </li>
     ))}
@@ -1131,7 +1132,7 @@ const MarketScene = ({ title, rows, sprites }: { title: string; rows: MarketRow[
         {rows.map(({ p, text, up }) => (
           <li key={playerKey(p)} style={clubStyle(p)}>
             <span className="sv-market__sw" />
-            <span className="sv-market__name">{p.name}</span>
+            <span className="sv-market__name">{displayName(p.name)}</span>
             <span className="sv-market__pos">{p.position}</span>
             <b className={up === null ? 'sv-flat' : up ? 'sv-up' : 'sv-down'}>
               {up === null ? '' : up ? '▲ ' : '▼ '}
@@ -1141,7 +1142,7 @@ const MarketScene = ({ title, rows, sprites }: { title: string; rows: MarketRow[
         ))}
       </ul>
       <span className="sv-market__ticker" aria-hidden="true">
-        {rows.map(({ p, text, up }) => `${p.name.toUpperCase()} ${up === null ? '' : up ? '▲' : '▼'}${text}`).join('   ·   ')}
+        {rows.map(({ p, text, up }) => `${displayName(p.name).toUpperCase()} ${up === null ? '' : up ? '▲' : '▼'}${text}`).join('   ·   ')}
       </span>
     </div>
     {rows[0] && (
@@ -1174,7 +1175,7 @@ const ChaseScene = ({ p, c, roll, sprites }: { p: Player; c: WidgetChase; roll: 
       <div className="sv-rec__board">
         <p className="sv-kick">Record chase · {c.holder} holds it</p>
         <h2 className="sv-rec__name">
-          {p.name}: {fmt(c.have)} {c.unit}
+          {displayName(p.name)}: {fmt(c.have)} {c.unit}
         </h2>
         <div className="sv-chase">
           <i style={{ '--w': `${Math.min(100, c.pct)}%` } as CSSProperties} />
@@ -1185,7 +1186,7 @@ const ChaseScene = ({ p, c, roll, sprites }: { p: Player; c: WidgetChase; roll: 
       </div>
       <div className="sv-rec__man" style={clubStyle(p)}>
         <Figure player={p} sprites={sprites} action="run" scale={1.6} />
-        <span className="sv-line__name">{p.name}</span>
+        <span className="sv-line__name">{displayName(p.name)}</span>
       </div>
     </div>
   </Stadium>
@@ -1203,7 +1204,7 @@ const GauntletScene = ({ title, kick, entries, sprites }: { title: string; kick:
         {entries.slice(0, 5).map(({ p, has }, i) => (
           <li key={playerKey(p)} style={{ ...clubStyle(p), '--i': i } as CSSProperties}>
             <Figure player={p} sprites={sprites} action={has.every(Boolean) ? 'celebrate' : 'idle'} scale={1.05} />
-            <span className="sv-line__name">{p.name.split(' ').slice(-1)[0]}</span>
+            <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
             <span className="sv-gauntlet__rings">
               {AWARDS.map((a, k) => (
                 <i key={a} title={a} className={has[k] ? undefined : 'sv-off'} />
@@ -1223,7 +1224,7 @@ const RivalryScene = ({ file, a, b, sprites }: { file: RivalryFileLite; a: Playe
   return (
     <div className="sv-duel sv-rival" style={{ '--a': ta ? `hsl(${ta.primaryColor})` : undefined, '--b': tb ? `hsl(${tb.primaryColor})` : undefined } as CSSProperties}>
       <div className="sv-duel__side">
-        {ta && <TeamLogo team={ta.name} size={180} decorative />}
+        {ta && <TeamLogo team={displayName(ta.name)} size={180} decorative />}
         {a && <Figure player={a} sprites={sprites} scale={1.2} />}
         <h3 className="sv-duel__name">{ta?.name}</h3>
       </div>
@@ -1236,7 +1237,7 @@ const RivalryScene = ({ file, a, b, sprites }: { file: RivalryFileLite; a: Playe
         </p>
       </div>
       <div className="sv-duel__side sv-duel__side--r">
-        {tb && <TeamLogo team={tb.name} size={180} decorative />}
+        {tb && <TeamLogo team={displayName(tb.name)} size={180} decorative />}
         {b && <Figure player={b} sprites={sprites} scale={1.2} mirror />}
         <h3 className="sv-duel__name">{tb?.name}</h3>
       </div>
@@ -1255,7 +1256,7 @@ const HofClassScene = ({ label, members, sprites }: { label: string; members: Pl
         {members.slice(0, 7).map((p, i) => (
           <li key={playerKey(p)} style={{ ...clubStyle(p), '--i': i, '--step': Math.abs(i - Math.floor(Math.min(7, members.length) / 2)) } as CSSProperties}>
             <Figure player={p} sprites={sprites} action={i === Math.floor(Math.min(7, members.length) / 2) ? 'celebrate' : 'idle'} scale={0.95} />
-            <span className="sv-line__name">{p.name.split(' ').slice(-1)[0]}</span>
+            <span className="sv-line__name">{displayName(p.name).split(' ').slice(-1)[0]}</span>
           </li>
         ))}
       </ul>

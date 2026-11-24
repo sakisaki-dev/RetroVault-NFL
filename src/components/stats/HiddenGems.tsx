@@ -13,6 +13,7 @@ import PositionBadge from '../PositionBadge';
 import { StageFigure } from './visual/ClubStage';
 import { clubStyle } from './visual/clubTone';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /** Skill rating at least this high, and at least this many points above the official OVR. */
 const MIN_SKILL = 80;
@@ -140,7 +141,7 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
                   type="button"
                   {...peekProps(g.player)}
                   onClick={() => onSelect(g.player)}
-                  aria-label={`${g.player.name}, ${g.player.position}: overall ${g.ovr}, skill rating ${g.skill} (${g.grade.grade}), ${g.gap} points higher. Open card`}
+                  aria-label={`${displayName(g.player.name)}, ${g.player.position}: overall ${g.ovr}, skill rating ${g.skill} (${g.grade.grade}), ${g.gap} points higher. Open card`}
                   className="cs-card group flex w-full items-center gap-3 rounded-lg border border-line bg-night/40 px-3 py-2.5 text-left transition-colors hover:border-gold/60 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   style={clubStyle(g.player)}
                 >
@@ -149,7 +150,7 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
                   <StageFigure player={g.player} action="idle" className="!relative !bottom-auto !right-auto !h-14 !w-14 shrink-0" />
                   <span className="min-w-0 flex-1">
                     <span className="flex min-w-0 items-center gap-2">
-                      <span className="truncate font-semibold group-hover:text-gold">{g.player.name}</span>
+                      <span className="truncate font-semibold group-hover:text-gold">{displayName(g.player.name)}</span>
                       <PositionBadge position={g.player.position} />
                       {g.player.games < SMALL_SAMPLE && (
                         <span className="shrink-0 rounded bg-panel-2 px-1.5 py-0.5 font-pixel text-[8px] uppercase text-muted-foreground" title="Under 32 games: rates can still swing">

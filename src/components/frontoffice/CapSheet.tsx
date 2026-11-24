@@ -9,6 +9,7 @@ import { usePhone } from '@/hooks/usePhone';
 import type { CapRow, OfficeState } from '@/utils/clubOffice';
 import { Desk, Lamp, PickToken } from './board';
 import { peekProps } from '../peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /** Half-stars (1 to 10) as five stars. */
 export const Stars = ({ half, className }: { half: number; className?: string }) => {
@@ -151,14 +152,14 @@ const CapSheet = ({ state, rows, playerFor, onPlayerSelect }: CapSheetProps) => 
           {bySalary.map((r) => {
             const player = playerFor(r);
             return (
-              <li key={r.key} style={{ flexGrow: r.p.salary }} title={`${r.name}, ${r.spos}: ${r.p.salary}`}>
-                <button type="button" className="fo-payroll__who" {...peekProps(player)} onClick={() => player && onPlayerSelect(player)} disabled={!player} aria-label={`${r.name}, salary ${r.p.salary}. Open player card`}>
+              <li key={r.key} style={{ flexGrow: r.p.salary }} title={`${displayName(r.name)}, ${r.spos}: ${r.p.salary}`}>
+                <button type="button" className="fo-payroll__who" {...peekProps(player)} onClick={() => player && onPlayerSelect(player)} disabled={!player} aria-label={`${displayName(r.name)}, salary ${r.p.salary}. Open player card`}>
                   <span className="fo-payroll__bust">
                     <Bust player={player} r={r} team={state.club} size={phone ? 's' : 'm'} />
                   </span>
                   <span className="fo-payroll__plate">
                     <b>{r.p.salary}</b>
-                    <i>{r.name.split(' ').slice(-1)[0].replace(/^(II|III|Jr\.?)$/, r.name.split(' ').slice(-2, -1)[0])}</i>
+                    <i>{displayName(r.name).split(' ').slice(-1)[0].replace(/^(II|III|Jr\.?)$/, displayName(r.name).split(' ').slice(-2, -1)[0])}</i>
                   </span>
                 </button>
               </li>
@@ -209,10 +210,10 @@ const CapSheet = ({ state, rows, playerFor, onPlayerSelect }: CapSheetProps) => 
                 <div className="min-w-0">
                   <ClubStrip
                     team={state.club}
-                    label={r.name}
+                    label={displayName(r.name)}
                     size="sm"
                     onClick={player ? () => onPlayerSelect(player) : undefined}
-                    ariaLabel={`${r.name}, ${r.spos}. Open player card`}
+                    ariaLabel={`${displayName(r.name)}, ${r.spos}. Open player card`}
                     className="fo-cap__strip"
                   />
                   <p className="fo-cap__meta">

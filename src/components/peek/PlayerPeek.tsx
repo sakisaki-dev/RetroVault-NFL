@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowLeftRight, IdCard, Radar, Star, Swords } from 'lucide-react';
@@ -144,7 +145,7 @@ const PlayerPeekLayer = () => {
   const { getAllPlayers, dataVersion } = useLeague();
   const byKey = useMemo(() => {
     const m = new Map<string, Player>();
-    getAllPlayers().forEach((p) => !p.isRealLegend && m.set(`${p.position}:${p.name}`, p));
+    getAllPlayers().forEach((p) => !p.isRealLegend && m.set(`${p.position}:${displayName(p.name)}`, p));
     return m;
     // dataVersion bumps after edits and uploads
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,7 +159,7 @@ const PlayerPeekLayer = () => {
   const run = useRef<(id: ActionId, p: Player, other: Player | null) => void>(() => undefined);
   run.current = (id, p, other) => {
     closePeek();
-    window.dispatchEvent(new CustomEvent(PEEK_ACTION_EVENT, { detail: { id, key: `${p.position}:${p.name}` } }));
+    window.dispatchEvent(new CustomEvent(PEEK_ACTION_EVENT, { detail: { id, key: `${p.position}:${displayName(p.name)}` } }));
     if (id === 'card') setCard(p);
     else if (id === 'dive') openInCompFinder(p);
     else if (id === 'h2h') prefillHeadToHead(p);
@@ -374,7 +375,7 @@ const fmt = (v: number | null, d = 0) => (v == null || !Number.isFinite(v) ? 'â€
 
 /** Compare's default opponent: the last other player peeked or searched, else his closest peer by Career Legacy */
 const compareTarget = (p: Player, byKey: Map<string, Player>): Player | null => {
-  const self = `${p.position}:${p.name}`;
+  const self = `${p.position}:${displayName(p.name)}`;
   for (const k of [...peeked, ...readRecent()]) {
     const o = k !== self ? byKey.get(k) : undefined;
     if (o) return o;
@@ -387,7 +388,8 @@ const compareTarget = (p: Player, byKey: Map<string, Player>): Player | null => 
   return best;
 };
 
-const lastName = (name: string) => {
+const lastName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.indexOf(' ');
   return i < 0 ? name : name.slice(i + 1);
 };
@@ -403,8 +405,8 @@ const PeekCard = ({
   byKey: Map<string, Player>;
   run: { current: (id: ActionId, p: Player, other: Player | null) => void };
 }) => {
-  const ovr = useOfficialOvr().get(`${p.position}:${p.name}`);
-  const grade = useSkillRatings().get(`${p.position}:${p.name}`)?.grade;
+  const ovr = useOfficialOvr().get(`${p.position}:${displayName(p.name)}`);
+  const grade = useSkillRatings().get(`${p.position}:${displayName(p.name)}`)?.grade;
   const { numberFor } = useJerseyNumbers();
   const club = bannerTeamOf(p);
   const team = findNFLTeam(club);
@@ -425,7 +427,7 @@ const PeekCard = ({
 
   // Remember him for the next Compare (after this card picked its own opponent)
   useEffect(() => {
-    const k = `${p.position}:${p.name}`;
+    const k = `${p.position}:${displayName(p.name)}`;
     return () => {
       const i = peeked.indexOf(k);
       if (i >= 0) peeked.splice(i, 1);
@@ -487,8 +489,8 @@ const PeekCard = ({
     '--pk-2': team ? `hsl(${team.secondaryColor})` : 'hsl(var(--muted-foreground))',
     '--pk-fg': team ? getReadableTextOn(team.primaryColor) : 'hsl(var(--chalk))',
   } as CSSProperties;
-  const i = p.name.indexOf(' ');
-  const first = i < 0 ? '' : p.name.slice(0, i);
+  const i = displayName(p.name).indexOf(' ');
+  const first = i < 0 ? '' : displayName(p.name).slice(0, i);
 
   return createPortal(
     <div className="pk-root" data-held={state.held ? '' : undefined}>
@@ -500,7 +502,7 @@ const PeekCard = ({
         }}
         role="dialog"
         aria-modal="false"
-        aria-label={`Quick look: ${p.name}`}
+        aria-label={`Quick look: ${displayName(p.name)}`}
         className={below ? 'pk-card pk-card--below' : 'pk-card'}
         style={vars}
       >

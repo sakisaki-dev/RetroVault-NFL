@@ -7,7 +7,9 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import TeamLogo from '../brand/TeamLogo';
 import { GalleryTile, type GalleryItem } from './HofGallery';
 import { HallHeading, Laurel, ScoreGauge } from './hofParts';
+import HofShowcase from './HofShowcase';
 import { careerLine, clubColors, fmt, yearsOf } from './hofUtils';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The NFL edition's Hall of Fame page: Canton (the real inductees whose careers reach 1999 or later, newest class first),
@@ -52,7 +54,7 @@ const Row = ({ entry, club, note, bar, chance, onOpen }: { entry: Entry; club: s
           <span className="block font-pixel text-[8px] uppercase text-muted-foreground">{chance != null ? `${chance}% chance` : over ? 'Over the bar' : `${bar - entry.score} short`}</span>
         </span>
       </span>
-      <ScoreGauge score={entry.score} bar={bar} label={`${entry.name}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
+      <ScoreGauge score={entry.score} bar={bar} label={`${displayName(entry.name)}: Hall of Fame Score ${entry.score}, bar ${bar}`} className="mt-2" />
     </>
   );
   const cls = `hof-rail ${over ? 'hof-rail--over border-amber-500/35' : 'border-line'} block w-full rounded-lg border bg-card py-3 pl-4 pr-3 text-left`;
@@ -149,6 +151,7 @@ const NflHall = ({
           <span className="mr-1.5 inline-block rounded-sm bg-gold px-1.5 py-0.5 align-middle font-pixel text-[9px] uppercase text-night">Bar {hof.bar}</span>
           Hall of Fame Score: position standing, elite seasons, honours, records, longevity. Eligible five seasons after a last game.
         </p>
+        <HofShowcase items={items} onOpen={(i) => i.player && onOpenCard(i.player)} />
         <nav aria-label="Sections" className="hof-floor -mx-12 -mb-5 mt-5 px-3 pb-3 pt-3.5 sm:-mx-20 sm:-mb-6 sm:px-6">
           <ol className="relative -mx-1 flex gap-2 overflow-x-auto px-1 pb-1.5 pt-0.5 scrollbar-none sm:justify-center">
             {NAV.map(([id, label]) => (

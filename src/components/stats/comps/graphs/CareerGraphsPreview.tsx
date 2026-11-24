@@ -8,6 +8,7 @@ import { openDeepDiveAt } from '../compFinderLink';
 import { groupOf } from './statDefs';
 import { shortNum } from './graphKit';
 import { seasonLabel } from '@/config/edition';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The player card's way into the career graphs: his card value at each season end as a sparkline coloured by club,
@@ -17,7 +18,7 @@ import { seasonLabel } from '@/config/edition';
 const CareerGraphsPreview = ({ player, onNavigate }: { player: Player; onNavigate?: () => void }) => {
   const file = useCareerSeasons();
   const extras = usePlayerExtras();
-  const entry = file?.players[`${player.position}:${player.name}`];
+  const entry = file?.players[`${player.position}:${displayName(player.name)}`];
   if (!file || !entry || player.isRealLegend) return null;
   const start = file.seasons.indexOf(entry.from);
   const ringAt = (file.fields[groupOf(player.position)] ?? []).indexOf('rings');

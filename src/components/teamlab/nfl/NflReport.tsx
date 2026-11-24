@@ -30,6 +30,7 @@ import {
 } from '@/utils/nflLab';
 import { Card, GradeChip, ScoreBar } from '../parts';
 import type { SavedLab } from './useNflLab';
+import { displayName } from '@/utils/displayName';
 
 const GROUPS: { title: string; units: UnitId[] }[] = [
   { title: 'Offense', units: OFFENSE_UNITS },
@@ -224,7 +225,7 @@ export const NflH2H = ({ ctx, lineup, depth, lab, injured, src, saved, kitClub }
                 <SelectGroup>
                   <SelectLabel>Saved teams</SelectLabel>
                   {teamSaved.map((s) => (
-                    <SelectItem key={s.id} value={`saved:${s.id}`}>{s.name}</SelectItem>
+                    <SelectItem key={s.id} value={`saved:${s.id}`}>{displayName(s.name)}</SelectItem>
                   ))}
                 </SelectGroup>
               )}
@@ -232,7 +233,7 @@ export const NflH2H = ({ ctx, lineup, depth, lab, injured, src, saved, kitClub }
                 <SelectLabel>Real starting lineups</SelectLabel>
                 {clubs.map((c) => (
                   <SelectItem key={c.abbr} value={c.abbr}>
-                    <span className="inline-flex items-center gap-2"><TeamLogo team={c.abbr} size={16} decorative /> {c.name}</span>
+                    <span className="inline-flex items-center gap-2"><TeamLogo team={c.abbr} size={16} decorative /> {displayName(c.name)}</span>
                   </SelectItem>
                 ))}
               </SelectGroup>

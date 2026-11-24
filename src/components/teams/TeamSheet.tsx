@@ -31,6 +31,7 @@ import {
   type TeamSummary,
 } from './teamStats';
 import { seasonLabel } from '@/config/edition';
+import { displayName } from '@/utils/displayName';
 
 /** Franchise legends shown before "Show all" */
 const LEGENDS_SHOWN = 8;
@@ -108,11 +109,11 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
   );
   const { ringFor, players: leagueByKey } = useRafters();
   const openRetired = (r: RetiredNumber) => {
-    const p = summary?.franchisePlayers.find((x) => `${x.position}:${x.name}` === r.playerKey) ?? (r.playerKey ? leagueByKey.get(r.playerKey) : undefined);
+    const p = summary?.franchisePlayers.find((x) => `${x.position}:${displayName(x.name)}` === r.playerKey) ?? (r.playerKey ? leagueByKey.get(r.playerKey) : undefined);
     if (p) setSelectedPlayer(p);
   };
   const openRing = (e: RingOfHonorEntry) => {
-    const p = leagueByKey.get(`${e.pos}:${e.name}`);
+    const p = leagueByKey.get(`${e.pos}:${displayName(e.name)}`);
     if (p) setSelectedPlayer(p);
   };
 
@@ -296,19 +297,19 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                         </h3>
                         <ul className="grid gap-2 sm:grid-cols-3">
                           {legends.slice(0, 3).map((l, i) => (
-                            <li key={`${l.player.position}:${l.player.name}`} className="min-w-0">
+                            <li key={`${l.player.position}:${displayName(l.player.name)}`} className="min-w-0">
                               <button
                                 type="button"
                                 onClick={() => setSelectedPlayer(l.player)}
                                 {...peekProps(l.player)}
                                 className="flex w-full min-w-0 items-center gap-3 rounded-lg border border-border bg-secondary/30 p-2.5 text-left hover:border-line"
-                                aria-label={`Number ${i + 1} franchise icon: ${l.player.name}, ${l.player.position}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
+                                aria-label={`Number ${i + 1} franchise icon: ${displayName(l.player.name)}, ${l.player.position}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
                               >
                                 <span className="font-display text-3xl font-extrabold italic leading-none text-gold" aria-hidden="true">
                                   {i + 1}
                                 </span>
                                 <span className="min-w-0" aria-hidden="true">
-                                  <span className="block truncate font-display text-base font-bold uppercase leading-tight">{l.player.name}</span>
+                                  <span className="block truncate font-display text-base font-bold uppercase leading-tight">{displayName(l.player.name)}</span>
                                   <span className="block truncate text-xs text-muted-foreground">
                                     {l.player.position}
                                     {l.years ? ` · ${l.years}` : ''} · {Math.round(l.player.careerLegacy || 0).toLocaleString()}
@@ -352,17 +353,17 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                           {shownLegends.map((l) => {
                             const ret = retiredInfo(l.player);
                             return (
-                              <li key={`${l.player.position}:${l.player.name}`} className="min-w-0">
+                              <li key={`${l.player.position}:${displayName(l.player.name)}`} className="min-w-0">
                                 <button
                                   type="button"
                                   {...peekProps(l.player)}
                                   onClick={() => setSelectedPlayer(l.player)}
                                   className="group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-card text-left hover:border-line"
-                                  aria-label={`${l.player.name}, ${l.player.position}${l.years ? `, here ${l.years}` : ''}${l.rings.length ? `, ${l.rings.length} ${l.rings.length === 1 ? 'ring' : 'rings'} here` : ''}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
+                                  aria-label={`${displayName(l.player.name)}, ${l.player.position}${l.years ? `, here ${l.years}` : ''}${l.rings.length ? `, ${l.rings.length} ${l.rings.length === 1 ? 'ring' : 'rings'} here` : ''}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
                                 >
                                   <ProPlayerBanner
                                     size="card"
-                                    name={l.player.name}
+                                    name={displayName(l.player.name)}
                                     position={l.player.position}
                                     team={t ?? summary.label}
                                     number={numberFor(l.player)}
@@ -438,17 +439,17 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                         </h3>
                         <ul className="grid gap-2 sm:grid-cols-2">
                           {players.map((p) => (
-                            <li key={`${p.position}:${p.name}`} className="min-w-0">
+                            <li key={`${p.position}:${displayName(p.name)}`} className="min-w-0">
                               <button
                                 type="button"
                                 {...peekProps(p)}
                                 onClick={() => setSelectedPlayer(p)}
                                 className="flex w-full flex-col overflow-hidden rounded-lg border border-border bg-card text-left hover:border-line"
-                                aria-label={`${p.name}, ${p.position}, number ${numberFor(p)}: ${p.games} games, ${p.rings} ${p.rings === 1 ? 'ring' : 'rings'}, ${Math.round(p.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
+                                aria-label={`${displayName(p.name)}, ${p.position}, number ${numberFor(p)}: ${p.games} games, ${p.rings} ${p.rings === 1 ? 'ring' : 'rings'}, ${Math.round(p.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
                               >
                                 <ProPlayerBanner
                                   size="compact"
-                                  name={p.name}
+                                  name={displayName(p.name)}
                                   position={p.position}
                                   team={t ?? summary.label}
                                   number={numberFor(p)}
@@ -486,7 +487,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                             <p className="font-pixel text-[8px] uppercase text-gold">{stat.label}</p>
                             <ol className="mt-1.5 space-y-1">
                               {top.map(({ player, value }, i) => (
-                                <li key={`${player.position}:${player.name}`} className="flex min-w-0 items-baseline gap-2">
+                                <li key={`${player.position}:${displayName(player.name)}`} className="flex min-w-0 items-baseline gap-2">
                                   <span className="w-3 shrink-0 font-pixel text-[8px] text-muted-foreground">{i + 1}</span>
                                   <button
                                     type="button"
@@ -497,7 +498,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                                       i === 0 ? 'font-display text-lg font-bold uppercase leading-tight' : 'text-sm',
                                     )}
                                   >
-                                    {player.name}
+                                    {displayName(player.name)}
                                     <span className="ml-1 text-xs font-normal normal-case text-muted-foreground">{player.position}</span>
                                   </button>
                                   <span

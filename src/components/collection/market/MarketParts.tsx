@@ -8,6 +8,7 @@ import PriceChart from './PriceChart';
 import ChangeBadge from './ChangeBadge';
 import { dirOf, type MarketRow } from './marketRows';
 import { peekKeyProps, peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 const teamVars = (info: CardInfo) => {
   const t = findNFLTeam(info.player.team);
@@ -66,7 +67,7 @@ const TickerItem = ({ row, onOpen, copy }: { row: MarketRow; onOpen: () => void;
   <li>
     <button type="button" className={cn('mk-tick', `mk-flash--${dirOf(row.change)}`)} {...peekProps(row.info.player)} onClick={onOpen} tabIndex={copy ? -1 : undefined}>
       <span className="mk-tick__pos">{row.info.player.position}</span>
-      <span className="mk-tick__name">{row.info.player.name.split(' ').slice(-1)[0].toUpperCase()}</span>
+      <span className="mk-tick__name">{displayName(row.info.player.name).split(' ').slice(-1)[0].toUpperCase()}</span>
       <span className="tabular-nums">{fmtCoins(row.value)}</span>
       <ChangeBadge change={row.change} />
     </button>
@@ -134,7 +135,7 @@ export const MoverRow = ({ row, rank, maxAbs, onOpen }: { row: MarketRow; rank: 
           <span className="mk-tile__pos">{row.info.player.position}</span>
         </span>
         <span className="mk-tile__who">
-          <span className="mk-tile__name">{row.info.player.name}</span>
+          <span className="mk-tile__name">{displayName(row.info.player.name)}</span>
           <span className="mk-tile__meta">
             {row.info.cardTeam} · CAR {row.info.ovr ?? '–'}
           </span>

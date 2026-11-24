@@ -6,6 +6,7 @@ import GameSprite from '../GameSprite';
 import ProPlayerBanner, { type ProPlayerBannerSize } from '../brand/ProPlayerBanner';
 import { isLegend, legendLabel, useRatingTag, type GamePlayer } from './gameUtils';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { displayName } from '@/utils/displayName';
 
 /** "Author · License" for a legend's Commons photo, or null when there is nothing to credit. */
 const photoCreditOf = (p: GamePlayer): string | null => {
@@ -80,7 +81,7 @@ const GameBanner = ({
   return (
     <div className={cn('gb', className)} style={style}>
       <ProPlayerBanner
-        name={player.name}
+        name={displayName(player.name)}
         nickname={player.nickname}
         position={player.position}
         team={bannerTeamOf(player)}

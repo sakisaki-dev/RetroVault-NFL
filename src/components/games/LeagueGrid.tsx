@@ -14,6 +14,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { ClubLogo, clubLook, playerClub, splitName, useReducedMotion } from './stageKit';
 import HowToStrip from './HowToStrip';
 import './leagueGrid.css';
+import { displayName } from '@/utils/displayName';
 
 const MAX_GUESSES = 9;
 
@@ -365,7 +366,7 @@ const ScoutSheet = ({
                     <ClubLogo look={look} />
                   </span>
                   <span className="lg2-opt-name">
-                    {p.name}
+                    {displayName(p.name)}
                     {p.nickname && <i> "{p.nickname}"</i>}
                   </span>
                   <span className="lg2-opt-pos">{used ? 'On grid' : p.position}</span>
@@ -489,7 +490,7 @@ const LeagueGrid = ({ players }: { players: Player[]; ovrMap: Map<string, number
     const guess = players.find((p) => playerKey(p) === pickedKey);
     if (!guess) return;
     if (usedKeys.has(pickedKey)) {
-      setFeedback(`${guess.name} is already on your grid. No guess used.`);
+      setFeedback(`${displayName(guess.name)} is already on your grid. No guess used.`);
       setWrong((w) => w + 1);
       return;
     }
@@ -506,7 +507,7 @@ const LeagueGrid = ({ players }: { players: Player[]; ovrMap: Map<string, number
       if (remaining === 0 || Object.keys(next).length === 9) recordBest(Object.keys(next).length);
       else requestAnimationFrame(() => cellRefs.current[id]?.focus({ preventScroll: true }));
     } else {
-      setFeedback(`${guess.name} doesn't fit both. ${remaining} guess${remaining === 1 ? '' : 'es'} left.`);
+      setFeedback(`${displayName(guess.name)} doesn't fit both. ${remaining} guess${remaining === 1 ? '' : 'es'} left.`);
       setWrong((w) => w + 1);
       setMissFlash(Date.now());
       if (remaining === 0) {
@@ -591,14 +592,14 @@ const LeagueGrid = ({ players }: { players: Player[]; ovrMap: Map<string, number
               const rowLook = row.logo ? clubLook(row.label) : null;
               if (player) {
                 return (
-                  <div key={col.id} role="gridcell" className={cn('lg2-cell filled', lastFilled === id && 'fresh')} aria-label={`${row.label} and ${col.label}: ${player.name}`}>
+                  <div key={col.id} role="gridcell" className={cn('lg2-cell filled', lastFilled === id && 'fresh')} aria-label={`${row.label} and ${col.label}: ${displayName(player.name)}`}>
                     <GridCard player={player} fits={fits(r, c)} />
                   </div>
                 );
               }
               if (finished) {
                 return (
-                  <div key={col.id} role="gridcell" className="lg2-cell over" aria-label={`${row.label} and ${col.label}: missed${sample ? `, ${sample.name} fits` : ''}`}>
+                  <div key={col.id} role="gridcell" className="lg2-cell over" aria-label={`${row.label} and ${col.label}: missed${sample ? `, ${displayName(sample.name)} fits` : ''}`}>
                     {sample ? (
                       <GridCard player={sample} fits={fits(r, c)} missed delay={(r * 3 + c) * 70} />
                     ) : (
@@ -671,7 +672,7 @@ const LeagueGrid = ({ players }: { players: Player[]; ovrMap: Map<string, number
               {MAX_GUESSES - guessesLeft} guess{MAX_GUESSES - guessesLeft === 1 ? '' : 'es'} used
               {rarest && (
                 <>
-                  {' · '}rarest pick <b style={{ color: playerClub(rarest.p).ink }}>{rarest.p.name}</b> ({rarest.n} fit{rarest.n === 1 ? '' : 's'})
+                  {' · '}rarest pick <b style={{ color: playerClub(rarest.p).ink }}>{displayName(rarest.p.name)}</b> ({rarest.n} fit{rarest.n === 1 ? '' : 's'})
                 </>
               )}
             </p>

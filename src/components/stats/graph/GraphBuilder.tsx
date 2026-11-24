@@ -32,6 +32,7 @@ import GraphPreview from './GraphPreview';
 import type { LPoint } from '../visual/landscape';
 import { usePhone } from '@/hooks/usePhone';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
+import { displayName } from '@/utils/displayName';
 
 type Mark = 'dots' | 'logos';
 const MIN_GAMES = [0, 8, 16, 32, 64, 100];
@@ -108,12 +109,12 @@ const QuickRows = ({
           {saved.map((p) => (
             <li key={p.id} className="inline-flex items-stretch overflow-hidden rounded-full border border-gold/40 bg-gold/5">
               <button type="button" onClick={() => onPick(p.config)} className="min-h-[32px] px-3 text-xs font-semibold text-foreground hover:bg-gold/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold">
-                ★ {p.name}
+                ★ {displayName(p.name)}
               </button>
               <button
                 type="button"
                 onClick={() => onRemoveSaved(p.id)}
-                aria-label={`Delete saved chart ${p.name}`}
+                aria-label={`Delete saved chart ${displayName(p.name)}`}
                 title="Delete (also unpins it from the Lab)"
                 className="inline-flex min-h-[32px] w-8 items-center justify-center border-l border-gold/30 text-muted-foreground hover:bg-flag/20 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
               >
@@ -379,7 +380,7 @@ const GraphBuilder = ({
           {saved.map((pr) => (
             <button key={pr.id} type="button" aria-pressed={paramsKey(pr.config) === current} onClick={() => onChange(pr.config)} className="gb-chip gb-chip--ghost border-gold/50">
               <Star className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-              {pr.name}
+              {displayName(pr.name)}
             </button>
           ))}
           {TRY_THESE.map((t) => (
@@ -492,7 +493,7 @@ const GraphBuilder = ({
                 </label>
                 <input id={`${uid}-mq`} type="search" value={search} list={`${uid}-mnames`} onChange={(e) => setSearch(e.target.value)} placeholder="Name…" className={cn(inputCls, 'h-11 text-base')} />
                 <datalist id={`${uid}-mnames`}>
-                  {names.rows.map((p) => <option key={`${p.position}:${p.name}`} value={p.name} />)}
+                  {names.rows.map((p) => <option key={`${p.position}:${displayName(p.name)}`} value={displayName(p.name)} />)}
                 </datalist>
                 {search.trim().length >= 2 && <p className="text-xs text-muted-foreground">{highlight ? 'Ringed and labelled in gold.' : 'Not on this chart.'}</p>}
               </div>
@@ -565,8 +566,8 @@ const GraphBuilder = ({
                   <ul className="space-y-1">
                     {saved.map((pr) => (
                       <li key={pr.id} className="flex items-center justify-between gap-2 rounded-md border border-line/70 px-3">
-                        <span className="truncate text-sm">★ {pr.name}</span>
-                        <button type="button" onClick={() => onRemovePreset(pr.id)} aria-label={`Delete saved chart ${pr.name}`} className="inline-flex h-11 w-11 items-center justify-center text-muted-foreground">
+                        <span className="truncate text-sm">★ {displayName(pr.name)}</span>
+                        <button type="button" onClick={() => onRemovePreset(pr.id)} aria-label={`Delete saved chart ${displayName(pr.name)}`} className="inline-flex h-11 w-11 items-center justify-center text-muted-foreground">
                           <X className="h-4 w-4" aria-hidden="true" />
                         </button>
                       </li>
@@ -637,7 +638,7 @@ const GraphBuilder = ({
                 className={inputCls}
               />
               <datalist id={`${uid}-names`}>
-                {names.rows.map((p) => <option key={`${p.position}:${p.name}`} value={p.name} />)}
+                {names.rows.map((p) => <option key={`${p.position}:${displayName(p.name)}`} value={displayName(p.name)} />)}
               </datalist>
             </div>
           </div>

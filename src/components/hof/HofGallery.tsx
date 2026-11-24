@@ -10,6 +10,7 @@ import { POSITIONS, clubFill, tierClass, tierOf, yearsOf } from './hofUtils';
 import { cn } from '@/lib/utils';
 import GameSprite from '../GameSprite';
 import { statureScale, useGameSprites } from '@/utils/gameSprites';
+import { displayName } from '@/utils/displayName';
 
 export interface GalleryItem {
   member: HofMember;
@@ -46,7 +47,7 @@ export const GalleryTile = memo(function GalleryTile({ item, years, index, onOpe
   const staged = !!sprites;
   // A huge, tall look (statureScale: Sherman Brandson) stands one whole-pixel step bigger, scaled from his feet
   const stature = statureScale(sprites, member.name);
-  const label = `${member.name}, ${member.pos}${team ? `, ${team.fullName}` : ''}, Hall of Fame Score ${member.score}${member.firstBallot ? ', first ballot' : member.veteran ? ', veteran' : ''}. Open plaque`;
+  const label = `${displayName(member.name)}, ${member.pos}${team ? `, ${team.fullName}` : ''}, Hall of Fame Score ${member.score}${member.firstBallot ? ', first ballot' : member.veteran ? ', veteran' : ''}. Open plaque`;
   const sash = (member.firstBallot || member.veteran) && (
     <span aria-hidden="true" className={cn('hof-sash', !member.firstBallot && 'hof-sash--silver')}>
       {member.firstBallot ? 'First ballot' : 'Veteran'}

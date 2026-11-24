@@ -6,6 +6,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { bodyFor, rolePose } from '@/config/bodyTypes';
 import { freeAgentClub, realNumberOf, REGULAR_POSE, SPRITE_BASELINE, SPRITE_BUST, faceFor, nflSpriteFor, useGameSprites, type BodyPose, type FaceSubject, type SpriteAction } from '@/utils/gameSprites';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Retro Bowl's own sprite for a player (the owner's private sprites, src/utils/gameSprites.ts). Renders nothing when
@@ -131,7 +132,7 @@ const GameSprite = (props: GameSpriteProps) => {
   const size: SpriteSize = props.size ?? (kind === 'bust' ? sizeOf(props.scale) : sizeOf(props.nflScale ?? props.scale)) ?? 'm';
   const action: SpriteAction = props.action ?? (props.pose ? LEGACY_ACTION[props.pose] ?? 'idle' : 'idle');
   const sprites = useGameSprites();
-  const faClub = !legend ? freeAgentClub(`${player.position ?? ''}:${player.name}`) : undefined;
+  const faClub = !legend ? freeAgentClub(`${player.position ?? ''}:${displayName(player.name)}`) : undefined;
   const club = faClub ?? team ?? bannerTeamOf(player);
   const { name, position, spriteSkin, gameFace } = player;
   const current = player.team;

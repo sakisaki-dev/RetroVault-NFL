@@ -10,6 +10,7 @@ import type { Player, Position } from '@/types/player';
 import { careerLine, farewellTour, liveGames, type ClockPlayer } from './clockModel';
 import { ClockPips, ClockStage, LampBar, Medals, clubVars } from './clockParts';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 interface Props {
   all: ClockPlayer[];
@@ -46,10 +47,10 @@ const LastLap = ({ list, season, onSelect }: { list: ClockPlayer[]; season: numb
       <ol className="clk-lap">
         {list.map((c, i) => (
           <li key={c.key} className="clk-lap__item" style={clubVars(c.team)}>
-            <button type="button" className="clk-lap__btn" {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`No. ${i + 1}, ${c.name}, ${c.pos}, ${c.team}, age ${c.age}, ${c.left === 0 ? 'final season' : 'one more season'}. Open his card`}>
+            <button type="button" className="clk-lap__btn" {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`No. ${i + 1}, ${displayName(c.name)}, ${c.pos}, ${c.team}, age ${c.age}, ${c.left === 0 ? 'final season' : 'one more season'}. Open his card`}>
               <ProPlayerBanner
                 size={phone ? 'compact' : 'card'}
-                name={c.name}
+                name={displayName(c.name)}
                 position={c.pos}
                 team={c.team}
                 number={numberFor(c.player!) ?? null}
@@ -81,14 +82,14 @@ const LastLap = ({ list, season, onSelect }: { list: ClockPlayer[]; season: numb
 /** One player as a club-colour broadcast strip */
 const Row = ({ c, rank, season, onSelect }: { c: ClockPlayer; rank: number; season: number; onSelect: (p: Player) => void }) => (
   <li>
-    <button type="button" className="clk-bs" style={clubVars(c.team)} {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`${rank}. ${c.name}, ${c.pos}, ${c.team}, age ${c.age}. Open his card`}>
+    <button type="button" className="clk-bs" style={clubVars(c.team)} {...peekProps(c.player)} onClick={() => onSelect(c.player!)} aria-label={`${rank}. ${displayName(c.name)}, ${c.pos}, ${c.team}, age ${c.age}. Open his card`}>
       <span className="clk-bs__mark" aria-hidden="true">
         <TeamLogo team={c.team} size={72} decorative />
       </span>
       <span className="clk-bs__rank">{rank}</span>
       <ClockStage c={c} size="row" action="run" />
       <span className="clk-bs__who">
-        <ClubStrip team={c.team} label={c.name} size="md" />
+        <ClubStrip team={c.team} label={displayName(c.name)} size="md" />
         <span className="clk-bs__sub">
           {c.pos} · AGE {c.age}
         </span>

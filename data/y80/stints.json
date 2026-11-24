@@ -1302,8 +1302,43 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Mike Edwards (OL, FA)": {
-  "stints": [],
+ "Mike Edwards": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 2019,
+    "to": 2022,
+    "rings": [
+     2020
+    ]
+   },
+   {
+    "team": "Chiefs",
+    "from": 2023,
+    "to": 2023,
+    "rings": [
+     2023
+    ]
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   }
+  ],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
@@ -5139,7 +5174,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Connor McGovern (OL, FA 039)": {
+ "Connor McGovern (OL, FA)": {
   "stints": [
    {
     "team": "Broncos",
@@ -6096,21 +6131,9 @@
  "Brandon Johnson": {
   "stints": [
    {
-    "team": "Broncos",
-    "from": 2022,
-    "to": 2023,
-    "rings": []
-   },
-   {
-    "team": "Steelers",
-    "from": 2024,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Steelers",
-    "from": 2026,
-    "to": 2026,
+    "team": "Eagles",
+    "from": 2025,
+    "to": 2025,
     "rings": []
    }
   ],
@@ -7905,46 +7928,6 @@
     "team": "Bengals",
     "from": 2026,
     "to": 2026,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Mike Edwards": {
-  "stints": [
-   {
-    "team": "Buccaneers",
-    "from": 2019,
-    "to": 2022,
-    "rings": [
-     2020
-    ]
-   },
-   {
-    "team": "Chiefs",
-    "from": 2023,
-    "to": 2023,
-    "rings": [
-     2023
-    ]
-   },
-   {
-    "team": "Buccaneers",
-    "from": 2024,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Bills",
-    "from": 2024,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Chiefs",
-    "from": 2025,
-    "to": 2025,
     "rings": []
    }
   ],
@@ -10273,7 +10256,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "DJ Turner (WR, FA)": {
+ "DJ Turner": {
   "stints": [
    {
     "team": "Raiders",
@@ -11059,17 +11042,11 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Byron Young (DL, Eagles)": {
+ "Byron Young": {
   "stints": [
    {
-    "team": "Raiders",
+    "team": "Rams",
     "from": 2023,
-    "to": 2023,
-    "rings": []
-   },
-   {
-    "team": "Eagles",
-    "from": 2025,
     "to": 2026,
     "rings": []
    }
@@ -11338,7 +11315,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Chris Smith II (DB, FA)": {
+ "Chris Smith II": {
   "stints": [
    {
     "team": "Raiders",
@@ -17853,11 +17830,11 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Marcus Harris (DL, Chiefs)": {
+ "Marcus Harris": {
   "stints": [
    {
-    "team": "Chiefs",
-    "from": 2026,
+    "team": "Titans",
+    "from": 2025,
     "to": 2026,
     "rings": []
    }
@@ -18762,7 +18739,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Jaylon Jones (DB, Colts 034)": {
+ "Jaylon Jones (DB, Colts)": {
   "stints": [
    {
     "team": "Colts",
@@ -19913,8 +19890,21 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Jaylon Moore (WR, FA)": {
-  "stints": [],
+ "Jaylon Moore": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 2021,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   }
+  ],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
@@ -20008,7 +19998,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Leonard Taylor (TE, FA)": {
+ "Leonard Taylor": {
   "stints": [],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
@@ -27592,7 +27582,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Michael Carter (RB, Titans)": {
+ "Michael Carter": {
   "stints": [
    {
     "team": "Jets",
@@ -28772,14 +28762,26 @@
  "Jonah Williams": {
   "stints": [
    {
-    "team": "Bengals",
-    "from": 2020,
-    "to": 2023,
+    "team": "Rams",
+    "from": 2021,
+    "to": 2024,
     "rings": []
    },
    {
-    "team": "Cardinals",
+    "team": "Lions",
     "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2025,
     "to": 2025,
     "rings": []
    }
@@ -29573,18 +29575,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Byron Young": {
-  "stints": [
-   {
-    "team": "Rams",
-    "from": 2023,
-    "to": 2026,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Cobie Durant": {
   "stints": [
    {
@@ -29849,36 +29839,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Jonah Williams (DL, Cardinals)": {
-  "stints": [
-   {
-    "team": "Rams",
-    "from": 2021,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Lions",
-    "from": 2024,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Vikings",
-    "from": 2024,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Saints",
-    "from": 2025,
-    "to": 2025,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Larrell Murchison": {
   "stints": [
    {
@@ -29984,9 +29944,15 @@
  "Tyler Davis": {
   "stints": [
    {
-    "team": "Rams",
-    "from": 2024,
-    "to": 2026,
+    "team": "Jaguars",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Packers",
+    "from": 2021,
+    "to": 2022,
     "rings": []
    }
   ],
@@ -30728,24 +30694,6 @@
    {
     "team": "49ers",
     "from": 2020,
-    "to": 2026,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Jaylon Moore": {
-  "stints": [
-   {
-    "team": "49ers",
-    "from": 2021,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Chiefs",
-    "from": 2025,
     "to": 2026,
     "rings": []
    }
@@ -32796,7 +32744,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Byron Murphy II (DL, Seahawks)": {
+ "Byron Murphy II": {
   "stints": [
    {
     "team": "Seahawks",
@@ -35791,24 +35739,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Tyler Davis (TE, FA)": {
-  "stints": [
-   {
-    "team": "Jaguars",
-    "from": 2020,
-    "to": 2020,
-    "rings": []
-   },
-   {
-    "team": "Packers",
-    "from": 2021,
-    "to": 2022,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Josiah Deguara": {
   "stints": [
    {
@@ -37098,8 +37028,8 @@
  "Justin Jefferson": {
   "stints": [
    {
-    "team": "Vikings",
-    "from": 2020,
+    "team": "Browns",
+    "from": 2026,
     "to": 2026,
     "rings": []
    }
@@ -40405,7 +40335,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "David Long (DB, FA 040)": {
+ "David Long": {
   "stints": [
    {
     "team": "Rams",
@@ -43456,7 +43386,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Jordan Phillips (DL, Dolphins 003)": {
+ "Jordan Phillips (DL, Dolphins)": {
   "stints": [
    {
     "team": "Dolphins",
@@ -46087,18 +46017,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Marcus Harris": {
-  "stints": [
-   {
-    "team": "Titans",
-    "from": 2025,
-    "to": 2026,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Kalel Mullings": {
   "stints": [
    {
@@ -46632,18 +46550,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Brandon Johnson (DB, Seahawks)": {
-  "stints": [
-   {
-    "team": "Eagles",
-    "from": 2025,
-    "to": 2025,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Hollin Pierce": {
   "stints": [],
   "confidence": "confirmed",
@@ -46994,7 +46900,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Chris Paul Jr. (LB, Seahawks)": {
+ "Chris Paul Jr.": {
   "stints": [],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
@@ -49950,18 +49856,6 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Justin Jefferson (LB, Browns)": {
-  "stints": [
-   {
-    "team": "Browns",
-    "from": 2026,
-    "to": 2026,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
  "Joe Royer": {
   "stints": [],
   "confidence": "confirmed",
@@ -51905,7 +51799,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Frank Gore (RB, Jets)": {
+ "Frank Gore": {
   "stints": [
    {
     "team": "49ers",
@@ -53237,7 +53131,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Antoine Winfield (DB, Vikings)": {
+ "Antoine Winfield": {
   "stints": [
    {
     "team": "Bills",
@@ -53640,7 +53534,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Joey Porter (LB, Cardinals)": {
+ "Joey Porter": {
   "stints": [
    {
     "team": "Steelers",
@@ -54645,7 +54539,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Andre Carter (DL, Patriots)": {
+ "Andre Carter": {
   "stints": [
    {
     "team": "49ers",
@@ -57264,7 +57158,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Asante Samuel (DB, Falcons)": {
+ "Asante Samuel": {
   "stints": [
    {
     "team": "Patriots",
@@ -58437,7 +58331,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Marvin Harrison (WR, Colts)": {
+ "Marvin Harrison": {
   "stints": [
    {
     "team": "Colts",
@@ -67012,7 +66906,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Darrell Jackson (WR, Broncos)": {
+ "Darrell Jackson": {
   "stints": [
    {
     "team": "Seahawks",
@@ -75183,7 +75077,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Kris Jenkins (DL, Jets)": {
+ "Kris Jenkins": {
   "stints": [
    {
     "team": "Panthers",
@@ -85075,7 +84969,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Cedrick Wilson (WR, Steelers)": {
+ "Cedrick Wilson": {
   "stints": [
    {
     "team": "49ers",
@@ -89311,7 +89205,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Tony Brown (DL, Titans)": {
+ "Tony Brown": {
   "stints": [
    {
     "team": "49ers",
@@ -95075,7 +94969,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Eric Johnson (TE, Saints)": {
+ "Eric Johnson": {
   "stints": [
    {
     "team": "49ers",
@@ -97802,7 +97696,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Mario Edwards (DB, Buccaneers)": {
+ "Mario Edwards": {
   "stints": [
    {
     "team": "Cowboys",
@@ -115053,7 +114947,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "D.J. Moore (DB, Panthers)": {
+ "D.J. Moore": {
   "stints": [
    {
     "team": "Bears",
@@ -133449,7 +133343,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "James Williams (WR, Seahawks)": {
+ "James Williams": {
   "stints": [
    {
     "team": "Seahawks",
@@ -136721,7 +136615,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Anthony Johnson (DL, Colts)": {
+ "Anthony Johnson": {
   "stints": [
    {
     "team": "Dolphins",
@@ -136793,7 +136687,7 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
- "Brian Parker (TE, Broncos)": {
+ "Brian Parker": {
   "stints": [
    {
     "team": "Chiefs",
@@ -146394,7 +146288,7 @@
   "confidence": "confirmed",
   "evidence": "Clubs and years from his Wikipedia infobox."
  },
- "John Stephens (RB, Chiefs)": {
+ "John Stephens": {
   "stints": [
    {
     "team": "Patriots",

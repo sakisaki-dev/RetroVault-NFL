@@ -31,6 +31,7 @@ import {
   type GamePlayer,
   useRatingTag
 } from './gameUtils';
+import { displayName } from '@/utils/displayName';
 
 /** A player's club colour, lifted to read on the dark arcade. */
 const teamInk = (p: Player) => getTeamTextColor(bannerTeamOf(p)) ?? 'var(--chalk)';
@@ -310,7 +311,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
           </span>
           <TeamLogo team={gTeam} className="gl-row-logo" />
           <span className="gl-row-nm" style={{ color: teamInk(g) }}>
-            {g.name}
+            {displayName(g.name)}
           </span>
           <InLeague player={g} label={false} />
         </div>
@@ -408,7 +409,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
               </div>
               <div className="gl-result-name">
                 {solved ? 'It is ' : 'It was '}
-                <b style={{ color: answerInk }}>{answer.name}</b> <InLeague player={answer} />
+                <b style={{ color: answerInk }}>{displayName(answer.name)}</b> <InLeague player={answer} />
               </div>
               <div className="gl-result-streak px">
                 {points > 0 ? `Streak ${streak}${streak > 0 && streak === best ? ' · best ever' : ''}` : 'Streak reset'}

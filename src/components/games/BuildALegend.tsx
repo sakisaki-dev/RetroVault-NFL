@@ -40,6 +40,7 @@ import {
   type Overall,
   type Slot,
 } from './buildLegendLogic';
+import { displayName } from '@/utils/displayName';
 
 const BEST_KEY = 'build:best';
 const CLONES_KEY = 'build:clones';
@@ -85,11 +86,11 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
     return { f, name: traitName(pos, f), mine, his, pMine: skillPct(f, sorted, mine), pHis: skillPct(f, sorted, his), from: result.picks[i] };
   });
   const tipFor = (r: (typeof rows)[number]) =>
-    `${r.name} (${r.f.label}): your build ${fmtFeature(r.f, r.mine)} (${ordinal(r.pMine)} pct) · ${top.player.name} ${fmtFeature(r.f, r.his)} (${ordinal(r.pHis)} pct)`;
+    `${displayName(r.name)} (${r.f.label}): your build ${fmtFeature(r.f, r.mine)} (${ordinal(r.pMine)} pct) · ${displayName(top.player.name)} ${fmtFeature(r.f, r.his)} (${ordinal(r.pHis)} pct)`;
 
   return (
     <div className="bal-panel">
-      <h4>Your build vs {top.player.name}</h4>
+      <h4>Your build vs {displayName(top.player.name)}</h4>
       <p className="arc-hint" style={{ margin: 0 }}>
         Percentile among league {plural(pos)} with 8+ games (flipped for INT% and fumbles, so right is always better). Hover or focus a row for values.
       </p>
@@ -100,10 +101,10 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
         </span>
         <span>
           <i style={{ background: C_MATCH }} />
-          {top.player.name}
+          {displayName(top.player.name)}
         </span>
       </div>
-      <ul className="bal-chart" aria-label={`Percentile comparison of your build and ${top.player.name}`} onMouseLeave={() => setActive(null)}>
+      <ul className="bal-chart" aria-label={`Percentile comparison of your build and ${displayName(top.player.name)}`} onMouseLeave={() => setActive(null)}>
         {rows.map((r, i) => {
           const a = Number.isFinite(r.pMine) ? r.pMine : 50;
           const b = Number.isFinite(r.pHis) ? r.pHis : null;
@@ -118,7 +119,7 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
               onBlur={() => setActive(null)}
             >
               <span className="bal-row-k" aria-hidden="true">
-                {r.name}
+                {displayName(r.name)}
               </span>
               <div className="bal-track" aria-hidden="true">
                 <span className="mid" />
@@ -154,12 +155,12 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
       <details className="bal-details">
         <summary>Show as table</summary>
         <table className="bal-table">
-          <caption className="sr-only">Your build compared with {top.player.name}</caption>
+          <caption className="sr-only">Your build compared with {displayName(top.player.name)}</caption>
           <thead>
             <tr>
               <th scope="col">Trait</th>
               <th scope="col">You</th>
-              <th scope="col">{top.player.name.split(' ').slice(-1)[0]}</th>
+              <th scope="col">{displayName(top.player.name).split(' ').slice(-1)[0]}</th>
               <th scope="col">Taken from</th>
             </tr>
           </thead>
@@ -167,7 +168,7 @@ const StyleChart = ({ result, baseline }: { result: BuildResult; baseline: Map<s
             {rows.map((r) => (
               <tr key={r.f.id}>
                 <th scope="row" style={{ fontWeight: 600 }}>
-                  {r.name} <span className="muted">({r.f.label})</span>
+                  {displayName(r.name)} <span className="muted">({r.f.label})</span>
                 </th>
                 <td>{fmtFeature(r.f, r.mine)}</td>
                 <td>{fmtFeature(r.f, r.his)}</td>
@@ -219,7 +220,7 @@ const TickNumber = ({ value }: { value: number }) => {
 };
 
 
-const surname = (p: Player) => p.name.split(' ').slice(-1)[0];
+const surname = (p: Player) => displayName(p.name).split(' ').slice(-1)[0];
 /** A player's club colours (his best-known club), or the sealed purple in Mystery mode. */
 const SEALED_STYLE: TeamStyle = { ...MYSTERY_STYLE, c1: '#5b3d8f', c2: '#e0a3ff', text: '#ffffff' };
 const styleOf = (p: Player | null | undefined, sealed = false): TeamStyle => (p && !sealed ? teamStyle(bannerTeamOf(p)) : SEALED_STYLE);
@@ -297,7 +298,7 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
         className={cn('bal-tile filled sealed', fresh && 'slam', landed && 'dim')}
         style={{ ...vars, ...teamVars(st) }}
         disabled
-        aria-label={`${name}: locked from ${slot.player.name}. Value sealed until the reveal.`}
+        aria-label={`${name}: locked from ${displayName(slot.player.name)}. Value sealed until the reveal.`}
       >
         <span className="bal-tile-top">
           <span className="key">{i + 1}</span>
@@ -501,7 +502,7 @@ const ClubCell = ({ club }: { club: string }) => {
 
 const NameCell = ({ p }: { p: Player }) => (
   <div className="bal-namecell" style={teamVars(styleOf(p))}>
-    <span>{p.name}</span>
+    <span>{displayName(p.name)}</span>
   </div>
 );
 
@@ -605,7 +606,7 @@ const Cabinet = ({
                 <span>
                   {pos} · {st.abbr} <InLeague player={target} />
                 </span>
-                <b>{target.name}</b>
+                <b>{displayName(target.name)}</b>
               </span>
               <span className="num">#{numberFor(target)}</span>
             </div>
@@ -817,7 +818,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   useEffect(() => {
     if (landedId == null || !current) return;
     setAnnounce(
-      `The reels landed on the ${teamStyle(clubOf(current)).abbr}: ${current.name}. Pick a lit slot to steal his trait${mystery ? '; his numbers stay sealed until the reveal' : ''}.`,
+      `The reels landed on the ${teamStyle(clubOf(current)).abbr}: ${displayName(current.name)}. Pick a lit slot to steal his trait${mystery ? '; his numbers stay sealed until the reveal' : ''}.`,
     );
     const t = window.setTimeout(() => {
       boardRef.current?.querySelector<HTMLButtonElement>('button.steal')?.focus({ preventScroll: true });
@@ -849,7 +850,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
       const next = slots.map((s, j) => (j === i ? { player: current, value: features[i].get(current) } : s));
       setAnnounce(
         mystery
-          ? `Locked ${traitName(current.position, features[i])} from ${current.name}. Value sealed.`
+          ? `Locked ${traitName(current.position, features[i])} from ${displayName(current.name)}. Value sealed.`
           : `Locked ${traitName(current.position, features[i])}: ${fmtFeature(features[i], features[i].get(current))}.`,
       );
       setSlots(next);
@@ -1087,7 +1088,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
       <>
         <span className="step">Steal</span>
         <span>
-          Tap a lit slot to take one trait from <b style={{ color: inkOf(current) }}>{current.name}</b>.
+          Tap a lit slot to take one trait from <b style={{ color: inkOf(current) }}>{displayName(current.name)}</b>.
           {mystery ? ' His numbers stay sealed until the end.' : ''}
           {respinHint ? <span className="wide"> {respinHint}.</span> : null}
         </span>
@@ -1161,7 +1162,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
         <span className="bal-peek" aria-live="polite">
           {live ? (
             <>
-              Plays like <b style={{ color: inkOf(live.player) }}>{live.player.name}</b> · {Math.round(live.similarity)}%
+              Plays like <b style={{ color: inkOf(live.player) }}>{displayName(live.player.name)}</b> · {Math.round(live.similarity)}%
             </>
           ) : mystery ? (
             'Live match sealed in Mystery'
@@ -1267,7 +1268,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
             </div>
             {top.smallSample && <span className="arc-hint">Small sample: he has played {top.player.games} games.</span>}
             <p className="bal-sr" role="status">
-              Your creation plays like {top.player.name}, {Math.round(sim)}% similar. {verdictFor(sim)}.
+              Your creation plays like {displayName(top.player.name)}, {Math.round(sim)}% similar. {verdictFor(sim)}.
             </p>
             {stage >= 3 && (
               <div className="bal-actions rise">

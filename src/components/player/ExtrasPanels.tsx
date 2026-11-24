@@ -5,6 +5,7 @@ import { formatDecimal } from '@/utils/metricColors';
 import type { FamilyTie, PlayerCardExtras, RealNflCareer } from '@/utils/playerExtras';
 import type { Player } from '@/types/player';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 // Secondary info from player-extras.json; never merged into career totals.
 
@@ -159,12 +160,12 @@ export const FamilyChips = ({
       const target = findByName(tie.name);
       const text = (
         <>
-          <span className="text-muted-foreground">{tie.label}</span> <span className="font-semibold">{tie.name}</span>
+          <span className="text-muted-foreground">{tie.label}</span> <span className="font-semibold">{displayName(tie.name)}</span>
         </>
       );
       return target ? (
         <button
-          key={`${tie.label}:${tie.name}`}
+          key={`${tie.label}:${displayName(tie.name)}`}
           type="button"
           {...peekProps(target)}
           onClick={() => onSelect(target)}
@@ -176,7 +177,7 @@ export const FamilyChips = ({
           {text}
         </button>
       ) : (
-        <span key={`${tie.label}:${tie.name}`} className="rounded-full border border-line/60 px-2.5 py-1">
+        <span key={`${tie.label}:${displayName(tie.name)}`} className="rounded-full border border-line/60 px-2.5 py-1">
           {text}
         </span>
       );

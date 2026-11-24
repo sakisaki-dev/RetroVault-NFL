@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from "react";
+
+import { displayName } from '@/utils/displayName';import type { CSSProperties, ReactNode } from "react";
 import {
   ArrowRight,
   ChevronRight,
@@ -105,7 +106,7 @@ export const NameStrip = ({
         />
       )}
       <span className="rw-strip__text">
-        <span className="rw-strip__name">{p.name}</span>
+        <span className="rw-strip__name">{displayName(p.name)}</span>
         {sub && <span className="rw-strip__sub">{sub}</span>}
       </span>
     </>
@@ -123,7 +124,7 @@ export const NameStrip = ({
       style={clubStyle(team)}
       {...peekProps(pl)}
       onClick={() => onPlayer(pl)}
-      aria-label={`Open ${pl.name}'s card`}
+      aria-label={`Open ${displayName(pl.name)}'s card`}
     >
       {body}
       <ChevronRight className="rw-strip__go h-3.5 w-3.5" aria-hidden="true" />
@@ -305,7 +306,7 @@ const Champion = ({ card, players }: CardProps) => {
       )}
       {star && (
         <p className="rw-caption">
-          Front and centre: <b>{star.name}</b> · {card.ringHolders} ring holders
+          Front and centre: <b>{displayName(star.name)}</b> · {card.ringHolders} ring holders
           on cards
         </p>
       )}

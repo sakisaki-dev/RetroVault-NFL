@@ -6,6 +6,7 @@ import { gameHash } from '@/utils/nflGames';
 import { cn } from '@/lib/utils';
 import { RULES, roundShort, abbrOf, avg, dist, fmtDate, fmtN, parseGames, streaksOf, teamHue, teamOf, type Game } from './gameLogModel';
 import './gameLog.css';
+import { displayName } from '@/utils/displayName';
 
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const PAGE = 12;
@@ -95,7 +96,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
   }, [games]);
 
   if (log === undefined) return <div className="gl-panel gl-empty" role="status">Loading game log…</div>;
-  if (!log || !all.length) return <div className="gl-panel gl-empty">No game-by-game log is on file for {player.name}.</div>;
+  if (!log || !all.length) return <div className="gl-panel gl-empty">No game-by-game log is on file for {displayName(player.name)}.</div>;
 
   const maxKey = Math.max(1, ...chartGames.map((g) => g.key));
   const selGame = sel != null ? chartGames.find((g) => g.i === sel) ?? null : null;
@@ -207,7 +208,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
           <p className="gl-empty">No games for this filter.</p>
         ) : (
           <>
-            <div className="gl-chart" role="list" aria-label={`${player.name} ${rule.keyLabel} by game, ${chartSeason}`}
+            <div className="gl-chart" role="list" aria-label={`${displayName(player.name)} ${rule.keyLabel} by game, ${chartSeason}`}
               onKeyDown={(e) => {
                 if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
                 const bs = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('button'));

@@ -45,6 +45,7 @@ import { useDeferredStage } from '@/hooks/useDeferredStage';
 import './player/playerCard.css';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { RetiredHangers, RetiredStrip } from './teams/RetiredBadge';
+import { displayName } from '@/utils/displayName';
 
 // The collectible art (card faces, kits, autograph canvas) loads only when the Card designs tab is opened
 const CardDesignsPanel = lazy(() => import('./player/CardDesignsPanel'));
@@ -172,7 +173,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
 
   // New player: back to the overview (during render, so a reopened card never renders the last tab it showed first),
   // scrolled to the top
-  const playerId = player ? `${player.position}:${player.name}` : '';
+  const playerId = player ? `${player.position}:${displayName(player.name)}` : '';
   const [tabFor, setTabFor] = useState(playerId);
   if (playerId !== tabFor) {
     setTabFor(playerId);
@@ -244,11 +245,11 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
   const jerseyNumber = numberFor(player);
   const ovr = overallRating(player, officialOvr);
   // SZN (this season, active players) beside CAR (career); a retired player shows CAR only
-  const car = careerOvrMap.get(`${player.position}:${player.name}`) ?? null;
-  const seasonShown = ovrBasis.get(`${player.position}:${player.name}`) === 'season' && ovr != null;
+  const car = careerOvrMap.get(`${player.position}:${displayName(player.name)}`) ?? null;
+  const seasonShown = ovrBasis.get(`${player.position}:${displayName(player.name)}`) === 'season' && ovr != null;
   const score = leagueScore(player);
   const valueRow = valueBoard?.rows.find((r) => r.player.name === player.name) ?? null;
-  const skill = skillMap.get(`${player.position}:${player.name}`) ?? null;
+  const skill = skillMap.get(`${player.position}:${displayName(player.name)}`) ?? null;
   const isDefense = isDefensivePosition(player.position);
   const hof = isHallOfFamer(player);
   const rated = player.trueTalent > 0;
@@ -322,7 +323,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
         <header className="relative">
           <ProPlayerBanner
             size="hero"
-            name={player.name}
+            name={displayName(player.name)}
             position={player.position}
             team={team ?? player.team}
             number={jerseyNumber}
@@ -346,7 +347,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
           {/* His retired number hangs from the top edge, one banner per club that retired it (tap: their rafters) */}
           <RetiredHangers player={player} onLeave={onClose} className="pc-hangers" />
           <DialogDescription className="sr-only">
-            Career profile for {player.name}
+            Career profile for {displayName(player.name)}
             {player.nickname ? `, known as ${player.nickname}` : ''}: overview, career stats, advanced metrics, awards and similar careers.
             {retired ? ` Number ${retired.number} retired by the ${retired.teamLabel}.` : ''}
           </DialogDescription>
@@ -370,7 +371,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
             {/* His Player Tribute, when one has been written (it opens over the card; closing it comes back here) */}
             {!player.isRealLegend && (
               <TributeButton
-                playerKey={`${player.position}:${player.name}`}
+                playerKey={`${player.position}:${displayName(player.name)}`}
                 className="h-8 border border-gold/60 bg-black/55 px-2.5 text-sm text-gold hover:bg-black/70"
               />
             )}
@@ -378,9 +379,9 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
             <ShareImageButton
               look="overlay"
               className="h-8 min-h-0 max-sm:px-2 max-sm:[&>span]:sr-only"
-              shareKey={`${player.position}:${player.name}:${ovr}:${player.games}:${player.rings}:${team?.id ?? ''}:${jerseyNumber ?? ''}`}
+              shareKey={`${player.position}:${displayName(player.name)}:${ovr}:${player.games}:${player.rings}:${team?.id ?? ''}:${jerseyNumber ?? ''}`}
               fileName={shareFileName(player.name)}
-              title={`${player.name} · Retro Vault`}
+              title={`${displayName(player.name)} · Retro Vault`}
               poster={() => (
                 <PlayerSharePoster player={player} team={team} number={jerseyNumber} ovr={ovr} hallOfFamer={hof} retiredBy={retired?.teamLabel ?? null} />
               )}
@@ -452,7 +453,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
 
         <TabsPrimitive.Root value={tab} onValueChange={(v) => setTab(v as TabId)}>
           <div className="pc-tabs">
-            <TabsPrimitive.List className="pc-tablist" aria-label={`${player.name} sections`}>
+            <TabsPrimitive.List className="pc-tablist" aria-label={`${displayName(player.name)} sections`}>
               {TABS.filter(({ id }) => id !== 'cards' || !player.isRealLegend).map(({ id, label, Icon }) => (
                 <TabsPrimitive.Trigger key={id} value={id} className="pc-tab">
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />

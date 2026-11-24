@@ -21,6 +21,7 @@ import ChaseChart from './visual/ChaseChart';
 import { getTeamTextColor } from '@/utils/teamColors';
 import { matchPlayerByName } from '@/utils/leagueContent';
 import { CLUB_RECORD_FOR, SEASON_GROUP, entryName, holderName, setInText, useClubRecords, type ClubRecordRow } from './clubRecords';
+import { displayName } from '@/utils/displayName';
 
 const fmt = (v: number, decimals: number) => formatDecimal(v, decimals);
 
@@ -273,7 +274,7 @@ const LeaderTile = ({ data, onSelect }: { data: RecordBoardData; onSelect: Selec
         type="button"
         onClick={() => onSelect(top.player)}
         {...peekProps(top.player)}
-        aria-label={`${data.title}: ${top.player.name}, ${fmt(top.value, data.decimals)}${data.minLabel ? ` (${data.minLabel})` : ''}${margin ? `, ${margin}` : ''}. Open player`}
+        aria-label={`${data.title}: ${displayName(top.player.name)}, ${fmt(top.value, data.decimals)}${data.minLabel ? ` (${data.minLabel})` : ''}${margin ? `, ${margin}` : ''}. Open player`}
         className="hover-lift cs-card cs-card--fig relative flex h-full w-full flex-col gap-1 overflow-hidden rounded-lg border border-line bg-panel p-3 text-left"
         style={clubStyle(top.player)}
       >
@@ -285,7 +286,7 @@ const LeaderTile = ({ data, onSelect }: { data: RecordBoardData; onSelect: Selec
         </span>
         <span className="flex min-w-0 items-center gap-1.5">
           {top.player.team && <TeamLogo team={top.player.team} size={18} decorative backed />}
-          <span className="truncate text-sm font-semibold text-foreground"><FitName name={top.player.name} /></span>
+          <span className="truncate text-sm font-semibold text-foreground"><FitName name={displayName(top.player.name)} /></span>
         </span>
         {margin && (
           <span className="mt-auto block space-y-0.5 pt-1.5">

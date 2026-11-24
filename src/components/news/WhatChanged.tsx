@@ -34,6 +34,7 @@ import RivalryFilesRow from '@/components/rivalry/RivalryFilesRow';
 import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL } from '@/config/edition';
 import NflSpotlight from './NflSpotlight';
+import { displayName } from '@/utils/displayName';
 
 /**
  * "What changed": the generated headlines in content.json (scripts/build_league_content.py build_headlines(), rules
@@ -92,7 +93,7 @@ const HeadlineItem = ({ h, player, onPlayer, copy, className }: HeadlineButtonPr
       onClick={() => onPlayer(player)}
       {...peekProps(player)}
       tabIndex={copy ? -1 : undefined}
-      aria-label={copy ? undefined : `${h.text}. Open ${player.name}'s card`}
+      aria-label={copy ? undefined : `${h.text}. Open ${displayName(player.name)}'s card`}
     >
       {body}
     </button>
@@ -265,21 +266,21 @@ export const Spotlight = ({
           const note = notes.find((x) => x.name === p.name);
           const c = getTeamColors(p.team);
           return (
-            <li key={`${p.position}:${p.name}`}>
+            <li key={`${p.position}:${displayName(p.name)}`}>
               <button
                 type="button"
                 className="wc-spot__card"
                 style={c ? ({ '--tc': `hsl(${c.primary})`, '--tc2': `hsl(${c.secondary})` } as CSSProperties) : undefined}
                 onClick={() => onPlayer(p)}
                 {...peekProps(p)}
-                aria-label={`Open ${p.name}'s card`}
+                aria-label={`Open ${displayName(p.name)}'s card`}
               >
                 <GameSprite player={p} kind="figure" size="m" className="wc-spot__sprite" />
                 <span className="wc-spot__top">
                   <PositionBadge position={p.position} />
                   <span className="wc-spot__team">{p.team || 'Free agent'}</span>
                 </span>
-                <span className="wc-spot__name">{p.name}</span>
+                <span className="wc-spot__name">{displayName(p.name)}</span>
                 <span className="wc-spot__legacy">
                   Career Legacy <b>{Math.round(p.careerLegacy || 0).toLocaleString('en-US')}</b>
                 </span>

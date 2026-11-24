@@ -10,6 +10,7 @@ import { VARIANTS, cardKey, finishLabel, tierFor, tierLabel, useCollection } fro
 import { fmtNum } from '../analytics/viz';
 import type { RecordBook } from '../records';
 import LeaderboardPeek, { recordPeek } from './LeaderboardPeek';
+import { displayName } from '@/utils/displayName';
 
 const RANK_LABEL = ['Record', '2nd', '3rd', '4th', '5th'];
 
@@ -63,7 +64,7 @@ const DdRecords = ({ player, book, ovr, onOpenPlayer }: { player: Player; book: 
           <ul className="space-y-1 border-t border-line/70 pt-2 text-xs text-muted-foreground">
             {pace.map((p) => (
               <li key={p.recordName}>
-                On pace for <b className="text-foreground">{p.recordName}</b>: {Math.round(p.percentToRecord)}% of {p.recordHolder.name}&rsquo;s {fmtNum(p.recordValue, 0)}, ~
+                On pace for <b className="text-foreground">{p.recordName}</b>: {Math.round(p.percentToRecord)}% of {displayName(p.recordHolder.name)}&rsquo;s {fmtNum(p.recordValue, 0)}, ~
                 {fmtNum(p.seasonsToBreak, 1)} seasons away.
               </li>
             ))}

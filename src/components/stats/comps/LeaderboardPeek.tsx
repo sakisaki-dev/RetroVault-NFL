@@ -11,6 +11,7 @@ import { fmtNum, ordinal } from '../analytics/viz';
 import { GROUP_META, type RecordBoardData } from '../records';
 import { GradeChip } from './ddParts';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /** Rows shown before the divider; the viewed player is appended below it when he sits further down. */
 const TOP = 10;
@@ -73,7 +74,7 @@ const Row = ({ place, row, me, extras, onOpen }: { place: number | null; row: Pe
           {place == null ? 'NQ' : ordinal(place)}
         </span>
         {team ? <TeamLogo team={team} size={22} decorative backed /> : <span className="h-[22px] w-[22px] shrink-0" aria-hidden="true" />}
-        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-chalk">{row.player.name}</span>
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-chalk">{displayName(row.player.name)}</span>
         <span className="shrink-0 rounded bg-panel-2 px-1 py-px font-pixel text-[8px] text-muted-foreground">{row.player.position}</span>
         <span className="w-14 shrink-0 text-right font-mono text-xs tabular-nums text-chalk">{row.display}</span>
         {row.grade !== undefined && <GradeChip grade={row.grade} size="sm" className="h-5 min-w-[1.6rem] text-xs" />}
@@ -106,7 +107,7 @@ const Body = ({ board, player, self, onOpen, sheet }: { board: PeekBoard; player
       </div>
       <ul className="space-y-1" onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
         {board.rows.slice(0, TOP).map((r, i) => (
-          <Row key={`${r.player.position}:${r.player.name}`} place={i + 1} row={r} me={same(r.player, player)} extras={extras} onOpen={onOpen} />
+          <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} extras={extras} onOpen={onOpen} />
         ))}
         {extra && (
           <>

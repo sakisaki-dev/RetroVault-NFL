@@ -10,6 +10,7 @@ import { getScoutLine, isLegend, legendLabel, type GamePlayer, type ScoutStat, u
 import { isHallOfFamer } from '@/config/stats';
 import GameSprite from '../GameSprite';
 import './rosterkit.css';
+import { displayName } from '@/utils/displayName';
 
 /*
  * Shared presentation for the card-dealing games (Blind Rank, Keep 3 Cut 3, Who's the Imposter?):
@@ -60,7 +61,8 @@ export const teamLook = (p: GamePlayer): TeamLook => {
   };
 };
 
-const splitName = (name: string) => {
+const splitName = (rawName: string)  => {
+  const name = displayName(rawName);
   const i = name.lastIndexOf(' ');
   return i > 0 ? [name.slice(0, i), name.slice(i + 1)] : ['', name];
 };
@@ -201,7 +203,7 @@ export const DeckCard = ({
     <article
       className={cn('rk-deck', dragProps && (dragWhole ? 'drag-card' : 'drag-face'), className)}
       style={{ ...look.vars, ...(dragWhole ? dragStyle : null) }}
-      aria-label={`${player.name}, ${player.position}, ${look.name}`}
+      aria-label={`${displayName(player.name)}, ${player.position}, ${look.name}`}
       {...cardDrag}
     >
       <div className="rk-deck-face" style={dragWhole ? undefined : dragStyle} {...faceDrag}>

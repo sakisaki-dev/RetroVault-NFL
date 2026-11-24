@@ -19,6 +19,7 @@ import { kitStamp, kitUniform, type Uniform } from './art/sprite/uniforms';
 import PackTunnel, { type BoardText, type TunnelHandle } from './tunnel/PackTunnel';
 import type { TunnelGeo } from './tunnel/drawTunnel';
 import './kits.css';
+import { displayName } from '@/utils/displayName';
 
 const reducedMotion = () => {
   try {
@@ -687,7 +688,7 @@ const PackOpening = ({ type, onClose, onTear, describe, total, remaining, proven
     if (walking) {
       if (walkFlipped) {
         const info = describe(walking);
-        const surname = info.player.name.split(' ').slice(-1)[0];
+        const surname = displayName(info.player.name).split(' ').slice(-1)[0];
         return { top: surname, bottom: `${info.ovr ?? '–'} CAR`, tone: TIER_LIGHT[walking.tier] };
       }
       // the tier shows only once the card turns
@@ -917,7 +918,7 @@ const PackOpening = ({ type, onClose, onTear, describe, total, remaining, proven
                       )}
                       {shown && (
                         <p className="sr-only" role="status">
-                          {info.player.name}, {variantLabel(c.variant)} variant, {tierLabel(c.tier)} tier, {finishLabel(c.finish)} finish
+                          {displayName(info.player.name)}, {variantLabel(c.variant)} variant, {tierLabel(c.tier)} tier, {finishLabel(c.finish)} finish
                           {kits[i] ? `, ${kits[i]!.era ? 'throwback' : 'alternate'} kit ${kits[i]!.label}` : ''}
                           {parOf(c) ? `, Prizm ${prizmInfo(parOf(c)!.c).label} parallel ${prizmSerial(parOf(c)!)}` : ''}, CAR {info.ovr ?? 'unknown'}
                           {preview ? '' : `, ${TAG_LABEL[tag]}${c.duplicate ? `, plus ${c.shards} shards` : ''}`}

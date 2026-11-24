@@ -13,6 +13,7 @@ import { GRID_ITEM, gridVars } from './grid';
 import { teamMark } from './visual/chartKit';
 import LeaderRadar from './visual/LeaderRadar';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 type Select = (p: Player) => void;
 
@@ -32,7 +33,7 @@ const RaceRow = ({ board, rank, value, player, max, onSelect }: { board: RecordB
         type="button"
         onClick={() => onSelect(player)}
         {...peekProps(player)}
-        aria-label={`Rank ${rank + 1}: ${player.name}${player.team ? `, ${player.team}` : ''}, ${formatDecimal(value, board.decimals)} ${board.title}. Open player`}
+        aria-label={`Rank ${rank + 1}: ${displayName(player.name)}${player.team ? `, ${player.team}` : ''}, ${formatDecimal(value, board.decimals)} ${board.title}. Open player`}
         className={cn(
           'flex h-full w-full flex-col justify-center gap-1 rounded-md px-1.5 text-left transition-colors hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
           leader && 'bg-gradient-to-r from-gold/10 to-transparent',
@@ -43,7 +44,7 @@ const RaceRow = ({ board, rank, value, player, max, onSelect }: { board: RecordB
             {rank + 1}
           </span>
           {player.team ? <TeamLogo team={player.team} size={18} decorative backed /> : <span className="w-[18px]" aria-hidden="true" />}
-          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground"><FitName name={player.name} /></span>
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground"><FitName name={displayName(player.name)} /></span>
           {board.mixed && <PositionBadge position={player.position} className="min-w-[2rem] px-1.5 py-0.5 text-[10px]" />}
           <span className={cn('inline-flex shrink-0 items-center gap-1 font-mono text-sm font-bold tabular-nums', leader ? 'text-gold' : 'text-chalk')}>
             {leader && <Crown className="h-3 w-3" aria-hidden="true" />}

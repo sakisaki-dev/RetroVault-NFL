@@ -16,6 +16,7 @@ import { radarPair } from './compColors';
 import { MIN_RADAR_AXES, type PositionModel } from './compModel';
 import { SmallSampleChip } from './ddParts';
 import { isApproxTotals } from './DdRealComps';
+import { displayName } from '@/utils/displayName';
 
 type Overlay = 'comp' | 'avg' | 'none';
 const AVG_COLOR = 'hsl(226 20% 72%)';
@@ -63,7 +64,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
   const describe = (i: number) => {
     const ft = model.features[i];
     if (!ok[i]) return `${ft.label}: not enough league data`;
-    const a = `${player.name} ${fmtFeature(ft, ft.get(player))}${mine[i] != null ? `, ${ordinal(mine[i] as number)} percentile` : ''}`;
+    const a = `${displayName(player.name)} ${fmtFeature(ft, ft.get(player))}${mine[i] != null ? `, ${ordinal(mine[i] as number)} percentile` : ''}`;
     const b = second?.player ? `; ${second.label} ${fmtFeature(ft, ft.get(second.player))}` : '';
     return `${ft.label}. ${a}${b}. ${ft.definition}`;
   };
@@ -92,7 +93,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             onOverlay(okey);
             setKind('comp');
           }}
-          aria-label={`${i + 1}. ${c.player.name}${nfl ? ', real NFL' : ''}, ${Math.round(c.similarity)}% similar${cOvr != null ? `, OVR ${cOvr}` : ''}. Overlay on the hexagon`}
+          aria-label={`${i + 1}. ${displayName(c.player.name)}${nfl ? ', real NFL' : ''}, ${Math.round(c.similarity)}% similar${cOvr != null ? `, OVR ${cOvr}` : ''}. Overlay on the hexagon`}
           className={cn(
             'grid min-w-0 grid-cols-[1.5rem_auto_minmax(0,1fr)_auto_auto] items-center gap-2 px-2 py-1.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
             nfl ? 'rounded-lg' : 'rounded-l-lg',
@@ -102,7 +103,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           {c.player.team ? <TeamLogo team={c.player.team} size={24} decorative backed /> : <span className="w-6" />}
           <span className="flex min-w-0 flex-col">
             <span className="flex min-w-0 items-center gap-1">
-              <span className="truncate text-sm font-semibold">{c.player.name}</span>
+              <span className="truncate text-sm font-semibold">{displayName(c.player.name)}</span>
               {nfl ? (
                 <span className="shrink-0 rounded bg-red-500/15 px-1 font-pixel text-[8px] uppercase text-red-300 ring-1 ring-red-400/40">NFL</span>
               ) : (
@@ -151,8 +152,8 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             type="button"
             onClick={() => onDive(c.player)}
             className="h-8 rounded-md px-1.5 text-[11px] font-semibold text-muted-foreground hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-            aria-label={`Deep dive into ${c.player.name}`}
-            title={`Deep dive into ${c.player.name}`}
+            aria-label={`Deep dive into ${displayName(c.player.name)}`}
+            title={`Deep dive into ${displayName(c.player.name)}`}
           >
             Dive
           </button>
@@ -160,7 +161,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             type="button"
             onClick={() => onCompare(player, c.player)}
             className="inline-flex h-8 items-center rounded-md border border-line bg-night/60 px-1.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-            aria-label={`Compare ${player.name} and ${c.player.name} in Head-to-Head`}
+            aria-label={`Compare ${displayName(player.name)} and ${displayName(c.player.name)} in Head-to-Head`}
             title="Compare in Head-to-Head"
           >
             <Swords className="h-3.5 w-3.5" aria-hidden="true" />
@@ -192,7 +193,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           axisOk={ok}
           series={[{ label: player.name, values: mine, color: colors.main }, ...(second ? [second] : [])]}
           className="mx-auto block h-auto w-full max-w-[500px]"
-          ariaLabel={`${player.name} style hexagon. Each axis is a percentile among ${player.position}s, outward is better. Focus an axis for its numbers.`}
+          ariaLabel={`${displayName(player.name)} style hexagon. Each axis is a percentile among ${player.position}s, outward is better. Focus an axis for its numbers.`}
           activeAxis={axis}
           onAxis={setAxis}
           axisDescription={describe}
@@ -201,7 +202,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
       <ul className="flex flex-wrap justify-center gap-2" aria-label="Legend">
         <li className="inline-flex items-center gap-2 rounded-full border border-line bg-night/60 py-1 pl-1.5 pr-3 text-sm font-semibold">
           <span className="h-3 w-5 rounded-sm" style={{ background: colors.main }} aria-hidden="true" />
-          {player.name}
+          {displayName(player.name)}
         </li>
         {second && (
           <li className="inline-flex items-center gap-2 rounded-full border border-line bg-night/60 py-1 pl-1.5 pr-3 text-sm font-semibold">
@@ -224,7 +225,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
                 <tbody>
                   <tr>
                     <th scope="row" className="py-0.5 text-left font-semibold" style={{ color: colors.main }}>
-                      {player.name}
+                      {displayName(player.name)}
                     </th>
                     <td className="text-right font-mono tabular-nums">{fmtFeature(f, f.get(player))}</td>
                     <td className="w-14 text-right font-mono text-xs tabular-nums text-muted-foreground">{mine[axis] != null ? ordinal(mine[axis] as number) : '—'}</td>
@@ -262,7 +263,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
       {insufficient ? (
         <>
           <p className="font-display text-lg font-bold uppercase">Insufficient data</p>
-          <p className="max-w-sm text-sm text-muted-foreground">Too few of {player.name}&rsquo;s rates are recorded to draw his shape or find comps.</p>
+          <p className="max-w-sm text-sm text-muted-foreground">Too few of {displayName(player.name)}&rsquo;s rates are recorded to draw his shape or find comps.</p>
         </>
       ) : (
         <>
@@ -296,12 +297,12 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
                       type="button"
                       onClick={() => onDive(c.player)}
                       {...peekProps(c.player)}
-                      aria-label={`${c.player.name}, ${m === 'style' ? 'style match' : 'similarity'} ${Math.round(c.similarity)} of 100. Deep dive into him`}
+                      aria-label={`${displayName(c.player.name)}, ${m === 'style' ? 'style match' : 'similarity'} ${Math.round(c.similarity)} of 100. Deep dive into him`}
                       className="hover-lift flex h-full w-full flex-col gap-1 rounded-lg border border-line bg-panel p-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                     >
                       <span className="flex min-w-0 items-center gap-1.5">
                         {c.player.team && <TeamLogo team={c.player.team} size={18} decorative backed />}
-                        <span className="truncate text-sm font-semibold">{c.player.name}</span>
+                        <span className="truncate text-sm font-semibold">{displayName(c.player.name)}</span>
                       </span>
                       <span className="flex items-baseline justify-between gap-2">
                         <span className="font-display text-2xl font-extrabold leading-none text-chalk">{Math.round(c.similarity)}</span>
@@ -353,7 +354,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
                 : `No other ${player.position}s to compare with.`}
           </p>
         ) : (
-          <ol className="space-y-1.5" aria-label={`Most similar ${player.position}s to ${player.name}`}>
+          <ol className="space-y-1.5" aria-label={`Most similar ${player.position}s to ${displayName(player.name)}`}>
             {comps.map((c, i) => compRow(c, i, false))}
           </ol>
         )}
@@ -364,7 +365,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
               <span className="inline-flex items-center gap-1.5 font-pixel text-[9px] uppercase text-red-300">Real NFL</span>
               <span className="h-px flex-1 bg-line" aria-hidden="true" />
             </div>
-            <ol className="space-y-1.5" aria-label={`Real NFL ${player.position}s most like ${player.name}`}>
+            <ol className="space-y-1.5" aria-label={`Real NFL ${player.position}s most like ${displayName(player.name)}`}>
               {[...realComps]
                 .sort((x, y) => (Number.isFinite(y[mode]) ? y[mode] : -1) - (Number.isFinite(x[mode]) ? x[mode] : -1))
                 .map((c, i) => compRow({ ...c, similarity: Number.isFinite(c[mode]) ? c[mode] : 0 }, i, true))}
@@ -372,7 +373,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           </>
         )}
         <p className="mt-auto text-[11px] text-muted-foreground">
-          Click a comp to overlay him on the hexagon; mini hexagons show the comp (colour) over {player.name.split(' ').slice(-1)[0]} (grey). Dive opens his report; the swords send the pair to
+          Click a comp to overlay him on the hexagon; mini hexagons show the comp (colour) over {displayName(player.name).split(' ').slice(-1)[0]} (grey). Dive opens his report; the swords send the pair to
           Head-to-Head.
         </p>
       </div>

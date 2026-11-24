@@ -12,6 +12,7 @@ import { DECLINE_AGE, DEFENSE, OFFENSE, agePyramid, buildClock, finalAge, improv
 import { RATING_LABEL } from './clockParts';
 import { peekProps } from '@/components/peek/peekProps';
 import './clock.css';
+import { displayName } from '@/utils/displayName';
 
 /**
  * Stats › Graphs › Age curves (#stats/graphs/age-curves): the league's ages from the live save, in the Graphs page's
@@ -117,7 +118,8 @@ const fnv = (s: string) => {
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
   return h >>> 0;
 };
-const shortName = (name: string) => {
+const shortName = (rawName: string)  => {
+  const name = displayName(rawName);
   const parts = name.split(' ');
   return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(' ')}` : name;
 };
@@ -201,7 +203,7 @@ const StarsScatter = ({ all, onSelect }: { all: ClockPlayer[]; onSelect: (p: Pla
             width={w}
             height={h}
             role="img"
-            aria-label={`Age against Career Legacy for ${pts.length} players. Biggest careers: ${top.map((s) => `${s.c.name}, ${s.c.age}, ${formatNumber(Math.round(s.c.legacy))}`).join('; ')}`}
+            aria-label={`Age against Career Legacy for ${pts.length} players. Biggest careers: ${top.map((s) => `${displayName(s.c.name)}, ${s.c.age}, ${formatNumber(Math.round(s.c.legacy))}`).join('; ')}`}
             onPointerMove={onMove}
             onPointerLeave={() => setHover(null)}
             onClick={() => hovered && onSelect(hovered.c.player!)}
@@ -262,7 +264,7 @@ const StarsScatter = ({ all, onSelect }: { all: ClockPlayer[]; onSelect: (p: Pla
                   {...peekProps(s.c.player)}
                   tabIndex={0}
                   role="button"
-                  aria-label={`${s.c.name}, ${s.c.pos}, ${s.c.team}, age ${s.c.age}, Career Legacy ${formatNumber(Math.round(s.c.legacy))}. Open his card`}
+                  aria-label={`${displayName(s.c.name)}, ${s.c.pos}, ${s.c.team}, age ${s.c.age}, Career Legacy ${formatNumber(Math.round(s.c.legacy))}. Open his card`}
                   onKeyDown={(e) => onKey(e, s.c)}
                   onFocus={() => setHover(s.c.key)}
                   onBlur={() => setHover(null)}
@@ -294,7 +296,7 @@ const StarsScatter = ({ all, onSelect }: { all: ClockPlayer[]; onSelect: (p: Pla
           </svg>
           {hovered && (
             <ChartTip x={hovered.x} y={hovered.y} width={w}>
-              <p className="font-semibold text-chalk">{hovered.c.name}</p>
+              <p className="font-semibold text-chalk">{displayName(hovered.c.name)}</p>
               <p className="text-muted-foreground">
                 {hovered.c.pos} · {hovered.c.team} · Age {hovered.c.age}
               </p>
@@ -323,7 +325,7 @@ const StarsScatter = ({ all, onSelect }: { all: ClockPlayer[]; onSelect: (p: Pla
               .map((c) => (
                 <tr key={c.key} {...peekProps(c.player)}>
                   <td>
-                    {c.name} ({c.pos})
+                    {displayName(c.name)} ({c.pos})
                   </td>
                   <td>{c.team}</td>
                   <td>{c.age}</td>

@@ -29,6 +29,7 @@ import {
   teamVars,
   type GamePlayer,
 } from './gameUtils';
+import { displayName } from '@/utils/displayName';
 
 // ---------- Rules (ported from the original arcade) ----------
 
@@ -876,10 +877,10 @@ const PerfectSeason = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap: Map
         key={`${g.label}-${g.t}`}
         className={cn('ps-tile', played ? (g.res === 'W' ? 'is-w' : 'is-l') : 'is-pend', i === season.i - 1 && 'is-just', i === season.i && !season.over && 'is-next', g.po && 'is-po', sb && 'is-sb')}
         style={teamVars(teamStyle(T.fullName))}
-        title={!played && season.over ? `${g.label}: not reached` : `${g.label} ${where(g)} ${T.name}, rating ${Math.round(g.r)}${f ? ` (${f.label})` : ''}`}
+        title={!played && season.over ? `${g.label}: not reached` : `${g.label} ${where(g)} ${displayName(T.name)}, rating ${Math.round(g.r)}${f ? ` (${f.label})` : ''}`}
       >
         <span className="sr-only">
-          {g.label} {where(g) === '@' ? 'at' : 'versus'} {T.name}
+          {g.label} {where(g) === '@' ? 'at' : 'versus'} {displayName(T.name)}
           {g.div ? ', division game' : ''}: {played && g.sc ? `${g.res === 'W' ? 'won' : 'lost'} ${g.sc[0]} to ${g.sc[1]}` : season.over ? 'not reached' : 'not played yet'}.
         </span>
         <span className="ps-tile-wk" aria-hidden="true">

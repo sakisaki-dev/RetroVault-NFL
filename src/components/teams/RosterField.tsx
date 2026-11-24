@@ -5,6 +5,7 @@ import { getReadableTextOn } from '@/utils/teamColors';
 import GameSprite from '../GameSprite';
 import './rosterField.css';
 import { peekProps } from '@/components/peek/peekProps';
+import { displayName } from '@/utils/displayName';
 
 /**
  * The roster as a formation (the owner's private Retro Bowl sprites; TeamSheet shows it only when this Mac has them):
@@ -72,22 +73,22 @@ const RosterField = ({ players, team, numberFor, onOpen }: Props) => {
         </span>
         {spots.map(({ p, x, y }) => (
           <button
-            key={`${p.position}:${p.name}`}
+            key={`${p.position}:${displayName(p.name)}`}
             type="button"
             role="listitem"
             className="rf-spot"
             style={{ left: `${x}%`, top: `${y}%` }}
             onClick={() => onOpen(p)}
             {...peekProps(p)}
-            aria-label={`${p.name}, ${p.position}, number ${numberFor(p) ?? ''}. Open player`}
+            aria-label={`${displayName(p.name)}, ${p.position}, number ${numberFor(p) ?? ''}. Open player`}
           >
             <GameSprite player={p} team={team} kind="figure" size="m" />
           </button>
         ))}
         {/* Name tags on their own layer above every figure, so no sprite ever covers a name */}
         {spots.map(({ p, x, y }) => (
-          <span key={`tag-${p.position}:${p.name}`} className="rf-tag" style={{ left: `${x}%`, top: `${y}%` }} aria-hidden="true">
-            <b>{p.position}</b> {p.name.split(' ').slice(-1)[0]}
+          <span key={`tag-${p.position}:${displayName(p.name)}`} className="rf-tag" style={{ left: `${x}%`, top: `${y}%` }} aria-hidden="true">
+            <b>{p.position}</b> {displayName(p.name).split(' ').slice(-1)[0]}
           </span>
         ))}
       </div>
