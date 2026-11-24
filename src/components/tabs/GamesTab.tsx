@@ -14,6 +14,8 @@ import OverUnder from '../games/OverUnder';
 import BuildALegend from '../games/BuildALegend';
 import ModeArt from '../games/ModeArt';
 import { ERAS, type Era } from '@/utils/gamePool';
+import GameToggles, { useGameSettings } from '../games/GameToggles';
+import { isInLeague } from '@/components/InLeague';
 import { ArcadeButton, Lamp } from '../games/ArcadeUI';
 import { HomeNews } from '../news/WhatChanged';
 import { ArcadeRatingContext, STAT_KEYS, loadGameStat, saveGameStat, useGamePlayers, type ArcadeRating, type GamePlayer } from '../games/gameUtils';
@@ -230,8 +232,18 @@ const GamesTab = () => {
   const [rating, setRating] = useState<ArcadeRating>(() => (loadGameStat('rating:szn', 0) ? 'szn' : 'car'));
   // The era a game draws its players from, by career span (all / 2020s / 2010s / 2000s); CAR mode only, SZN is this season
   const [era, setEra] = useState<Era>(() => ERAS[loadGameStat('era', 0)]?.id ?? 'all');
-  const { players, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, rating, era);
   const [game, setGame] = useState<GameId | null>(null);
+  // Each game keeps its own Players (All / Active) and Rating (SZN / OVR) choice; the hall's switch seeds a game with none saved
+  const gs = useGameSettings(game, rating);
+  const effRating: ArcadeRating = game ? gs.settings.rating : rating;
+  const { players: rawPlayers, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, effRating, era);
+  // Active only: SZN already is; otherwise the active league players. Too few left (under 40): keep the game playable with everyone and say so.
+  const MIN_ACTIVE = 40;
+  const wantActive = !!game && gs.activeOnly;
+  const activeOnly = useMemo(() => rawPlayers.filter((p) => isInLeague(p)), [rawPlayers]);
+  const widened = wantActive && effRating !== 'szn' && activeOnly.length < MIN_ACTIVE;
+  const players = wantActive && !widened ? activeOnly : rawPlayers;
+  const poolNote = widened ? `Only ${activeOnly.length} active players here, so all players are in` : null;
   const [last, setLast] = useState<GameId | null>(readLast);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cameFrom = useRef<GameId | null>(null);
@@ -474,14 +486,15 @@ const GamesTab = () => {
                 </span>
                 <span className="gamebar-t">{active.title}</span>
               </h2>
+              <GameToggles settings={gs.settings} onChange={gs.set} showRating={active.id !== 'grid'} note={poolNote} />
             </div>
             <p id="arcade-game-rule" className="sr-only">
               {active.rule}
             </p>
             {/* Wait for legends.json / exclusions so OVRs are final, and re-mount on data / legends changes */}
             {legendsLoaded ? (
-              <ArcadeRatingContext.Provider value={rating}>
-                <div key={`${active.id}-${dataVersion}-${rating}-${era}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
+              <ArcadeRatingContext.Provider value={effRating}>
+                <div key={`${active.id}-${dataVersion}-${effRating}-${wantActive && !widened ? 'a' : 'p'}-${era}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
               </ArcadeRatingContext.Provider>
             ) : (
               <PixelLoader label="Warming up" what="the player pool" minHeight={320} />
