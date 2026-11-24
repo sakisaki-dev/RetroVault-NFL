@@ -63770,6 +63770,13 @@
        "home": "SF",
        "home_score": 35,
        "line": 4.5
+      },
+      {
+       "away": "CIN",
+       "away_score": 20,
+       "home": "WAS",
+       "home_score": 22,
+       "line": -6.0
       }
      ]
     }
@@ -63805,7 +63812,7 @@
      {
       "team": "Bengals",
       "w": 7,
-      "l": 2,
+      "l": 3,
       "t": 0
      },
      {
@@ -63894,7 +63901,7 @@
      },
      {
       "team": "Commanders",
-      "w": 3,
+      "w": 4,
       "l": 5,
       "t": 1
      },

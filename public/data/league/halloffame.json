@@ -1161,7 +1161,7 @@
    "name": "Joe Greene",
    "pos": "DL",
    "frozenSeason": "1981",
-   "careerLegacy": 6111,
+   "careerLegacy": 6110,
    "rank": 14,
    "score": 92,
    "parts": {
@@ -2668,7 +2668,7 @@
    "name": "Randy Gradishar",
    "pos": "LB",
    "frozenSeason": "1983",
-   "careerLegacy": 5727,
+   "careerLegacy": 5726,
    "rank": 22,
    "score": 71,
    "parts": {
@@ -3521,78 +3521,6 @@
    "real": true
   },
   {
-   "key": "DL:Fred Dean",
-   "name": "Fred Dean",
-   "pos": "DL",
-   "frozenSeason": "1985",
-   "careerLegacy": 5275,
-   "rank": 23,
-   "score": 65,
-   "parts": {
-    "standing": 32,
-    "honours": 5,
-    "records": 0,
-    "peak": 8,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 2,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 163,
-   "nfl": {
-    "elite": 3,
-    "seasons": 11,
-    "est": true
-   },
-   "class": "Class of 2008",
-   "classSeason": "2008",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
-   "key": "DL:Howie Long",
-   "name": "Howie Long",
-   "pos": "DL",
-   "frozenSeason": "1993",
-   "careerLegacy": 5191,
-   "rank": 25,
-   "score": 65,
-   "parts": {
-    "standing": 31,
-    "honours": 2,
-    "records": 0,
-    "peak": 12,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 200,
-   "nfl": {
-    "elite": 4,
-    "seasons": 13,
-    "est": true
-   },
-   "class": "Class of 2000",
-   "classSeason": "2000",
-   "firstBallot": false,
-   "veteran": false,
-   "yearsOnBallot": 0,
-   "real": true
-  },
-  {
    "key": "RB:Earl Campbell",
    "name": "Earl Campbell",
    "pos": "RB",
@@ -3659,6 +3587,42 @@
    },
    "class": "Class of 2003",
    "classSeason": "2003",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Fred Dean",
+   "name": "Fred Dean",
+   "pos": "DL",
+   "frozenSeason": "1985",
+   "careerLegacy": 5274,
+   "rank": 24,
+   "score": 64,
+   "parts": {
+    "standing": 31,
+    "honours": 5,
+    "records": 0,
+    "peak": 8,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 2,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 163,
+   "nfl": {
+    "elite": 3,
+    "seasons": 11,
+    "est": true
+   },
+   "class": "Class of 2008",
+   "classSeason": "2008",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -3871,6 +3835,42 @@
    },
    "class": "Class of 2006",
    "classSeason": "2006",
+   "firstBallot": false,
+   "veteran": false,
+   "yearsOnBallot": 0,
+   "real": true
+  },
+  {
+   "key": "DL:Howie Long",
+   "name": "Howie Long",
+   "pos": "DL",
+   "frozenSeason": "1993",
+   "careerLegacy": 5190,
+   "rank": 26,
+   "score": 62,
+   "parts": {
+    "standing": 30,
+    "honours": 2,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 200,
+   "nfl": {
+    "elite": 4,
+    "seasons": 13,
+    "est": true
+   },
+   "class": "Class of 2000",
+   "classSeason": "2000",
    "firstBallot": false,
    "veteran": false,
    "yearsOnBallot": 0,
@@ -4201,7 +4201,7 @@
    "name": "Cliff Harris",
    "pos": "DB",
    "frozenSeason": "1979",
-   "careerLegacy": 4694,
+   "careerLegacy": 4695,
    "rank": 34,
    "score": 58,
    "parts": {
@@ -4485,7 +4485,7 @@
    "pos": "WR",
    "frozenSeason": "2002",
    "careerLegacy": 5619,
-   "rank": 24,
+   "rank": 25,
    "score": 53,
    "parts": {
     "standing": 31,
@@ -5443,7 +5443,7 @@
    "pos": "LB",
    "frozenSeason": "2014",
    "careerLegacy": 2541,
-   "rank": 109,
+   "rank": 110,
    "score": 17,
    "parts": {
     "standing": 0,
@@ -6502,40 +6502,6 @@
    "classesOnBallot": 0
   },
   {
-   "key": "QB:Joe Theismann",
-   "name": "Joe Theismann",
-   "pos": "QB",
-   "frozenSeason": "1985",
-   "careerLegacy": 5851,
-   "rank": 36,
-   "score": 77,
-   "parts": {
-    "standing": 24,
-    "honours": 23,
-    "records": 0,
-    "peak": 10,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 1,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 167,
-   "nfl": {
-    "elite": 4,
-    "seasons": 12,
-    "est": true
-   },
-   "lastSeason": 1985,
-   "eligibleFrom": 1991,
-   "chance": 94,
-   "classesOnBallot": 36
-  },
-  {
    "key": "DB:Dick Anderson",
    "name": "Dick Anderson",
    "pos": "DB",
@@ -6568,6 +6534,40 @@
    "eligibleFrom": 1983,
    "chance": 94,
    "classesOnBallot": 44
+  },
+  {
+   "key": "QB:Joe Theismann",
+   "name": "Joe Theismann",
+   "pos": "QB",
+   "frozenSeason": "1985",
+   "careerLegacy": 5851,
+   "rank": 37,
+   "score": 76,
+   "parts": {
+    "standing": 23,
+    "honours": 23,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 167,
+   "nfl": {
+    "elite": 4,
+    "seasons": 12,
+    "est": true
+   },
+   "lastSeason": 1985,
+   "eligibleFrom": 1991,
+   "chance": 93,
+   "classesOnBallot": 36
   },
   {
    "key": "DL:Al Baker",
@@ -7309,6 +7309,39 @@
    "classesOnBallot": 13
   },
   {
+   "key": "DL:Jevon Kearse",
+   "name": "Jevon Kearse",
+   "pos": "DL",
+   "frozenSeason": "2009",
+   "careerLegacy": 5190,
+   "rank": 26,
+   "score": 63,
+   "parts": {
+    "standing": 30,
+    "honours": 0,
+    "records": 0,
+    "peak": 13,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 0,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 120,
+   "nfl": {
+    "elite": 6,
+    "seasons": 11
+   },
+   "lastSeason": 2009,
+   "eligibleFrom": 2015,
+   "chance": 67,
+   "classesOnBallot": 12
+  },
+  {
    "key": "TE:Vernon Davis",
    "name": "Vernon Davis",
    "pos": "TE",
@@ -7539,39 +7572,6 @@
    "eligibleFrom": 2020,
    "chance": 64,
    "classesOnBallot": 7
-  },
-  {
-   "key": "DL:Jevon Kearse",
-   "name": "Jevon Kearse",
-   "pos": "DL",
-   "frozenSeason": "2009",
-   "careerLegacy": 5190,
-   "rank": 27,
-   "score": 62,
-   "parts": {
-    "standing": 29,
-    "honours": 0,
-    "records": 0,
-    "peak": 13,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 0,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 120,
-   "nfl": {
-    "elite": 6,
-    "seasons": 11
-   },
-   "lastSeason": 2009,
-   "eligibleFrom": 2015,
-   "chance": 64,
-   "classesOnBallot": 12
   },
   {
    "key": "TE:Greg Olsen",
@@ -8766,39 +8766,6 @@
    "classesOnBallot": 0
   },
   {
-   "key": "TE:Dallas Clark",
-   "name": "Dallas Clark",
-   "pos": "TE",
-   "frozenSeason": "2013",
-   "careerLegacy": 4076,
-   "rank": 39,
-   "score": 54,
-   "parts": {
-    "standing": 22,
-    "honours": 2,
-    "records": 0,
-    "peak": 10,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 0,
-   "opoy": 0,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 138,
-   "nfl": {
-    "elite": 3,
-    "seasons": 11
-   },
-   "lastSeason": 2013,
-   "eligibleFrom": 2019,
-   "chance": 36,
-   "classesOnBallot": 8
-  },
-  {
    "key": "LB:Karlos Dansby",
    "name": "Karlos Dansby",
    "pos": "LB",
@@ -8930,6 +8897,39 @@
    "eligibleFrom": 2025,
    "chance": 33,
    "classesOnBallot": 2
+  },
+  {
+   "key": "TE:Dallas Clark",
+   "name": "Dallas Clark",
+   "pos": "TE",
+   "frozenSeason": "2013",
+   "careerLegacy": 4076,
+   "rank": 40,
+   "score": 53,
+   "parts": {
+    "standing": 21,
+    "honours": 2,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 0,
+   "opoy": 0,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 138,
+   "nfl": {
+    "elite": 3,
+    "seasons": 11
+   },
+   "lastSeason": 2013,
+   "eligibleFrom": 2019,
+   "chance": 33,
+   "classesOnBallot": 8
   },
   {
    "key": "WR:Donald Driver",
@@ -10579,7 +10579,7 @@
    "name": "Davante Adams",
    "pos": "WR",
    "frozenSeason": "2026",
-   "careerLegacy": 6446,
+   "careerLegacy": 6445,
    "rank": 10,
    "score": 73,
    "parts": {
@@ -12130,40 +12130,6 @@
    "classesOnBallot": 23
   },
   {
-   "key": "QB:Joe Theismann",
-   "name": "Joe Theismann",
-   "pos": "QB",
-   "frozenSeason": "1985",
-   "careerLegacy": 5851,
-   "rank": 36,
-   "score": 77,
-   "parts": {
-    "standing": 24,
-    "honours": 23,
-    "records": 0,
-    "peak": 10,
-    "longevity": 20,
-    "pre1999": 0
-   },
-   "records": [],
-   "seasonRecords": [],
-   "rings": 1,
-   "mvp": 1,
-   "opoy": 1,
-   "dpoy": 0,
-   "sbmvp": 0,
-   "games": 167,
-   "nfl": {
-    "elite": 4,
-    "seasons": 12,
-    "est": true
-   },
-   "lastSeason": 1985,
-   "eligibleFrom": 1991,
-   "chance": 94,
-   "classesOnBallot": 36
-  },
-  {
    "key": "DB:Dick Anderson",
    "name": "Dick Anderson",
    "pos": "DB",
@@ -12196,6 +12162,40 @@
    "eligibleFrom": 1983,
    "chance": 94,
    "classesOnBallot": 44
+  },
+  {
+   "key": "QB:Joe Theismann",
+   "name": "Joe Theismann",
+   "pos": "QB",
+   "frozenSeason": "1985",
+   "careerLegacy": 5851,
+   "rank": 37,
+   "score": 76,
+   "parts": {
+    "standing": 23,
+    "honours": 23,
+    "records": 0,
+    "peak": 10,
+    "longevity": 20,
+    "pre1999": 0
+   },
+   "records": [],
+   "seasonRecords": [],
+   "rings": 1,
+   "mvp": 1,
+   "opoy": 1,
+   "dpoy": 0,
+   "sbmvp": 0,
+   "games": 167,
+   "nfl": {
+    "elite": 4,
+    "seasons": 12,
+    "est": true
+   },
+   "lastSeason": 1985,
+   "eligibleFrom": 1991,
+   "chance": 93,
+   "classesOnBallot": 36
   },
   {
    "key": "DL:Al Baker",
@@ -12683,8 +12683,8 @@
    {
     "name": "Fred Dean",
     "pos": "DL",
-    "careerLegacy": 5275,
-    "score": 65,
+    "careerLegacy": 5274,
+    "score": 64,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
@@ -12880,7 +12880,7 @@
    {
     "name": "Randy Gradishar",
     "pos": "LB",
-    "careerLegacy": 5727,
+    "careerLegacy": 5726,
     "score": 71,
     "hof": true,
     "why": "Hall of Famer",
@@ -13256,7 +13256,7 @@
    {
     "name": "Cliff Harris",
     "pos": "DB",
-    "careerLegacy": 4694,
+    "careerLegacy": 4695,
     "score": 58,
     "hof": true,
     "why": "Hall of Famer",
@@ -13728,8 +13728,8 @@
    {
     "name": "Howie Long",
     "pos": "DL",
-    "careerLegacy": 5191,
-    "score": 65,
+    "careerLegacy": 5190,
+    "score": 62,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -14044,7 +14044,7 @@
    {
     "name": "Joe Greene",
     "pos": "DL",
-    "careerLegacy": 6111,
+    "careerLegacy": 6110,
     "score": 92,
     "hof": true,
     "why": "Hall of Famer",
