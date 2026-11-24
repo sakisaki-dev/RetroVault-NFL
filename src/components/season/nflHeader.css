@@ -1,0 +1,20 @@
+/* The Season header scene (NflSeason.tsx HeaderScene): the leading club's crowd and turf, its best three, a scoreboard. */
+.nsh-scene { position: relative; overflow: hidden; isolation: isolate; border-radius: 0.6rem; border: 1px solid hsl(var(--line) / 0.7); height: 11.5rem;
+  background: radial-gradient(100% 80% at 50% 0%, color-mix(in srgb, var(--nsh-tint) 30%, transparent), transparent 70%), linear-gradient(180deg, #070b18, #0d1428); }
+.nsh-scene__crowd { position: absolute; inset: 0 0 auto 0; height: 3.4rem; z-index: 0;
+  background: radial-gradient(circle at 3px 3px, color-mix(in srgb, var(--nsh-tint) 70%, #fff 10%) 1.4px, transparent 2px) 0 0 / 9px 8px, linear-gradient(180deg, #05070f, #111a33); }
+.nsh-scene__crowd--art { background-repeat: repeat-x; background-size: auto 100%; image-rendering: pixelated; filter: brightness(0.72); }
+.nsh-scene__stands { position: absolute; inset: 2.9rem 0 auto 0; height: 0.9rem; z-index: 1; background-repeat: repeat-x; background-size: auto 100%; image-rendering: pixelated; }
+.nsh-scene__turf { position: absolute; inset: auto 0 0 0; height: 4.2rem; z-index: 0; border-top: 2px solid rgb(255 255 255 / 0.22);
+  background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 2px, transparent 2px 64px), linear-gradient(180deg, #1f6b2e, #144d20); }
+.nsh-scene__turf--art { background-repeat: repeat-x; background-size: auto 100%; image-rendering: pixelated; filter: brightness(0.8); }
+.nsh-scene__row { position: absolute; inset: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem; padding: 0 0.75rem 0.3rem; }
+.nsh-scene__figs { display: flex; align-items: flex-end; gap: 0.25rem; min-width: 0; }
+.nsh-fig { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.nsh-fig__name { margin-top: -0.15rem; max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 2px; background: rgb(0 0 0 / 0.65); padding: 0 0.3rem; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; color: #fff; }
+.nsh-board { align-self: center; display: flex; flex-direction: column; align-items: center; padding: 0.4rem 0.7rem; border-radius: 4px; border: 2px solid #3a2a12; box-shadow: 0 0 0 1px hsl(var(--gold) / 0.5), 0 6px 14px rgb(0 0 0 / 0.5);
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 3px), #05070c; }
+.nsh-board__k { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.nsh-board__rec { font-family: var(--font-display); font-size: 2.1rem; font-weight: 800; line-height: 1; color: hsl(var(--gold)); text-shadow: 0 0 10px hsl(var(--gold) / 0.5); }
+.nsh-board__sub { font-family: var(--font-pixel); font-size: 8px; color: #e8e4d0; }
+@media (max-width: 480px) { .nsh-fig__name { max-width: 4.2rem; } .nsh-board__rec { font-size: 1.6rem; } .nsh-scene__row { padding: 0 0.4rem 0.3rem; } }

@@ -210,31 +210,37 @@ interface PodiumEntry {
   team: string;
   value: string;
   detail?: string;
+  sub?: string;
 }
-const STEP = [{ h: 84, n: 1 }, { h: 56, n: 2 }, { h: 38, n: 3 }];
+const STEP = [{ h: 104, n: 1 }, { h: 80, n: 2 }, { h: 64, n: 3 }];
+/** 1st stands in the middle and tallest, 2nd on the left, 3rd on the right; each pedestal carries its rank, figure and detail. */
 const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
   const order = [rows[1], rows[0], rows[2]].map((r, i) => (r ? { r, rank: [2, 1, 3][i] } : null));
   return (
-    <ol className="mx-auto grid max-w-2xl grid-cols-3 items-end gap-2">
-      {order.map((o) => {
-        if (!o) return <li key={Math.random()} />;
+    <ol className="mx-auto grid max-w-2xl grid-cols-3 items-end gap-2" aria-label="Podium: 1st in the middle, 2nd left, 3rd right">
+      {order.map((o, i) => {
+        if (!o) return <li key={`empty-${i}`} />;
         const { r, rank } = o;
         const step = STEP[rank - 1];
         const [pos] = splitKey(r.key);
         return (
           <li key={r.key} className="flex min-w-0 flex-col items-center text-center">
-            <PlayerHit name={displayName(r.name)} pos={pos} className="flex max-w-full flex-col items-center text-center">
-              <StarSprite name={displayName(r.name)} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
-              <p className="mt-1 max-w-full truncate font-display text-sm font-bold uppercase leading-tight">{displayName(r.name)}</p>
+            <PlayerHit name={r.name} pos={pos} className="flex max-w-full flex-col items-center text-center">
+              <StarSprite name={r.name} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
+              <p className="mt-1 max-w-full truncate rounded-sm bg-black/60 px-1.5 font-display text-sm font-bold uppercase leading-tight">{displayName(r.name)}</p>
             </PlayerHit>
-            <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
+            <p className="flex items-center gap-1 text-[11px] text-white/80">
               <TeamLogo team={r.team} decorative className="h-4 w-4" /> {findNFLTeam(r.team)?.name ?? r.team}
             </p>
-            <div className="mt-1 flex w-full flex-col items-center justify-start rounded-t-md border border-b-0 border-white/15 pt-1" style={{ height: step.h, background: `linear-gradient(180deg, ${color(r.team, 0.6)}, hsl(228 55% 6%))` }}>
+            <div
+              className={cn('nsx-step', rank === 1 && 'nsx-step--first')}
+              style={{ height: step.h, background: `linear-gradient(180deg, ${color(r.team, 0.55)}, rgb(8 12 26 / 0.96) 70%), #0b1020` }}
+            >
+              <span className="nsx-step__rank" aria-label={`Rank ${rank}`}>{rank}</span>
               <span className={cn('font-display text-xl font-bold tabular-nums leading-none', rank === 1 ? lampText : 'text-foreground')}>{r.value}</span>
-              <span className="font-pixel text-[8px] uppercase text-muted-foreground">{r.detail ?? unit}</span>
+              <span className="nsx-step__detail">{r.detail ?? unit}</span>
+              {r.sub && <span className="nsx-step__sub">{r.sub}</span>}
             </div>
-            <span className="-mt-px w-full bg-black/60 py-0.5 font-pixel text-[9px] text-muted-foreground">{rank}</span>
           </li>
         );
       })}
@@ -294,9 +300,10 @@ export const Podiums = ({ season, stars, lookup, inProgress }: { season: SeasonV
   const rows = useMemo<PodiumEntry[]>(() => {
     if (!shown) return [];
     if (shown.id.startsWith('aw:'))
-      return (awards?.awards?.[shown.id.slice(3)] ?? []).slice(0, 3).map(([key, , text]) => {
+      return (awards?.awards?.[shown.id.slice(3)] ?? []).slice(0, 3).map(([key, score, text]) => {
         const [, name] = splitKey(key);
-        return { key, name, team: lookup(key)?.team ?? '', value: text.split(',')[0], detail: 'projected' };
+        const parts = text.split(', ');
+        return { key, name, team: lookup(key)?.team ?? '', value: parts[0], detail: parts.slice(1).join(' · ') || 'projected', sub: `Score ${score}` };
       });
     return (stars?.l[shown.id] ?? []).map(([key, name, club, v]) => ({ key, name, team: club, value: v.toLocaleString() }));
   }, [shown, stars, awards, lookup]);
@@ -315,8 +322,8 @@ export const Podiums = ({ season, stars, lookup, inProgress }: { season: SeasonV
       </div>
       <PodiumStage team={rows[0]?.team ?? ''}>
         {rows.length ? <Podium rows={rows} unit={shown?.unit ?? ''} /> : <p className="text-center text-xs text-muted-foreground">No leaders yet.</p>}
-        {shown?.id.startsWith('aw:') && awards?.awardsAbout && <p className="relative mt-2 text-center text-[11px] text-muted-foreground">{awards.awardsAbout}</p>}
       </PodiumStage>
+      {shown?.id.startsWith('aw:') && awards?.awardsAbout && <p className="text-center text-[11px] text-muted-foreground">Ranked by projection score, highest first. {awards.awardsAbout}</p>}
     </div>
   );
 };

@@ -94,3 +94,12 @@
   to { opacity: 1; }
 }
 [data-perf='lite'] .nsx-stage__beam { animation: none; mix-blend-mode: normal; }
+
+/* a pedestal: dark base under the club tint so black-and-silver clubs still read; rank numeral, figure, detail */
+.nsx-step { position: relative; display: flex; width: 100%; flex-direction: column; align-items: center; justify-content: flex-start; gap: 1px; padding-top: 0.2rem;
+  border: 1px solid rgb(255 255 255 / 0.18); border-bottom: 0; border-radius: 0.4rem 0.4rem 0 0; overflow: hidden; }
+.nsx-step--first { border-color: hsl(var(--gold)); box-shadow: 0 0 16px hsl(var(--gold) / 0.35); }
+.nsx-step__rank { font-family: var(--font-pixel); font-size: 11px; line-height: 1; color: hsl(var(--gold)); }
+.nsx-step__detail, .nsx-step__sub { max-width: 100%; padding: 0 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; color: rgb(255 255 255 / 0.75); }
+.nsx-step__sub { color: hsl(var(--gold) / 0.85); }
+@media (max-width: 480px) { .nsx-step__detail { white-space: normal; text-align: center; line-height: 1.15; } }

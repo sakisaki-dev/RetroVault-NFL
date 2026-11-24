@@ -1,0 +1,6 @@
+/* Game records as plaques on a shelf (reuses the Record Book's rb-wall / rb-shelf / rb-plaque look) */
+.gr-plaque { min-height: 0; }
+.gr-sides { display: flex; flex-direction: column; gap: 2px; margin-top: 2px; }
+.gr-side { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.gr-side__name { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; font-size: 13px; font-weight: 700; text-transform: uppercase; line-height: 1.15; }
+.gr-side > :last-child { margin-left: auto; }
