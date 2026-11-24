@@ -51,72 +51,30 @@ export const MIN_SPIN_POOL = 5;
  * are styles (shown, never graded). They are never part of the similarity match: the match reads only the classic traits.
  */
 const MIN_ADV_HOLDERS = 8;
-const pearson = (xs: number[], ys: number[]): number => {
-  const n = xs.length;
-  if (n < 5) return 0;
-  const mx = xs.reduce((a, b) => a + b, 0) / n;
-  const my = ys.reduce((a, b) => a + b, 0) / n;
-  let sxy = 0, sxx = 0, syy = 0;
-  for (let i = 0; i < n; i++) {
-    sxy += (xs[i] - mx) * (ys[i] - my);
-    sxx += (xs[i] - mx) ** 2;
-    syy += (ys[i] - my) ** 2;
-  }
-  return sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
-};
-const quantile = (sorted: number[], q: number) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.round(q * (sorted.length - 1))))];
 
 /**
  * `pool` is the game's own player pool (its All / Active and SZN / OVR settings). An advanced trait is offered only when
- * at least a handful of that pool have data for it, and it is never empty for anyone: a player outside the advanced
- * file stands in with the classic trait that tracks it best (the strongest correlation among players who have both),
- * mapped to the same percentile of the advanced trait's own distribution and labelled "est. from <classic>".
+ * at least a handful of that pool have real data for it. A player outside the advanced file simply has no value for it
+ * (NaN): his card doesn't draw that trait and he can't be locked into its slot. Nothing is estimated.
  */
 export const buildFeatures = (pos: Position, adv: AdvFile | null, pool: Player[] = []): CompFeature[] => {
   const classic = compFeatures(pos);
   if (!IS_NFL || !adv) return classic;
   const atPos = pool.filter((p) => p.position === pos && !isLegend(p));
-  const extra: CompFeature[] = [];
-  for (const [id, m] of Object.entries(adv.metrics)) {
-    if (!m.pos.includes(pos)) continue;
-    const raw = (p: Player) => adv.p[`${p.position}:${p.name}`]?.c?.[id]?.[0] ?? NaN;
-    const holders = atPos.filter((p) => Number.isFinite(raw(p)));
-    if (holders.length < MIN_ADV_HOLDERS) continue;
-    const sortedAdv = holders.map(raw).sort((a, b) => a - b);
-    // the classic trait that tracks this one best
-    let best: { f: CompFeature; r: number; sorted: number[] } | null = null;
-    for (const c of classic) {
-      const both = holders.filter((p) => Number.isFinite(c.get(p)));
-      const r = pearson(both.map(c.get), both.map(raw));
-      if (!best || Math.abs(r) > Math.abs(best.r)) best = { f: c, r, sorted: atPos.map(c.get).filter(Number.isFinite).sort((a, b) => a - b) };
-    }
-    const fb = best;
-    const proxy = (p: Player): number => {
-      if (!fb || !fb.sorted.length) return NaN;
-      const c = fb.f.get(p);
-      if (!Number.isFinite(c)) return NaN;
-      let lo = 0;
-      while (lo < fb.sorted.length && fb.sorted[lo] < c) lo++;
-      let q = fb.sorted.length > 1 ? lo / (fb.sorted.length - 1) : 0.5;
-      if (fb.r < 0) q = 1 - q;
-      return quantile(sortedAdv, Math.min(1, q));
-    };
-    extra.push({
+  const extra = Object.entries(adv.metrics)
+    .filter(([, m]) => m.pos.includes(pos))
+    .map(([id, m]): CompFeature => ({
       id: `adv:${id}`,
       label: m.label,
-      definition: `${m.desc}. Career, ${adv.first}-${adv.season}. Source: ${m.src}.${m.dir === 'style' ? ' A style, not good or bad.' : ''} A player with no tracking data stands in with ${fb?.f.label ?? 'a classic stat'} at the same rank.`,
-      get: (p) => {
-        const v = raw(p);
-        return Number.isFinite(v) ? v : proxy(p);
-      },
+      definition: `${m.desc}. Career, ${adv.first}-${adv.season}. Source: ${m.src}.${m.dir === 'style' ? ' A style, not good or bad.' : ''}`,
+      get: (p) => adv.p[`${p.position}:${p.name}`]?.c?.[id]?.[0] ?? NaN,
       weight: 0,
       decimals: m.dec,
       suffix: m.unit,
       lowerIsBetter: m.dir === 'low',
       style: m.dir === 'style',
-      proxyFor: (p) => (Number.isFinite(raw(p)) || !Number.isFinite(proxy(p)) ? null : fb?.f.label ?? null),
-    });
-  }
+    }))
+    .filter((f) => atPos.filter((p) => Number.isFinite(f.get(p))).length >= MIN_ADV_HOLDERS);
   return [...classic, ...extra];
 };
 
@@ -127,7 +85,7 @@ export const buildBaseline = (players: Player[], pos: Position, features: CompFe
   if (features.length <= n) return base;
   const out = new Map(base);
   const atPos = players.filter((p) => p.position === pos && !isLegend(p));
-  features.slice(n).forEach((f) => out.set(f.id, atPos.filter((p) => !f.proxyFor?.(p)).map(f.get).filter(Number.isFinite).sort((a, b) => a - b)));
+  features.slice(n).forEach((f) => out.set(f.id, atPos.map(f.get).filter(Number.isFinite).sort((a, b) => a - b)));
   return out;
 };
 

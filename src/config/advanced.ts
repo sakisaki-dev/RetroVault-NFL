@@ -572,8 +572,6 @@ export interface CompFeature {
   lowerIsBetter?: boolean;
   /** NFL edition (Build-a-Legend): an advanced trait that is a style, not good or bad (time to throw, aDOT): shown, never graded or blended */
   style?: boolean;
-  /** Build-a-Legend: the classic trait's label standing in for a player with no advanced data (null: his own number) */
-  proxyFor?: (p: Player) => string | null;
 }
 
 /** Players below this many games still get matched, but are flagged as a small sample and don't set the z-score baselines. */

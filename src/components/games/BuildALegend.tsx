@@ -342,7 +342,6 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
             <b>{fmtFeature(f, slot.value)}</b>
             <span>
               {f.label} · {ordinal(pct)}
-              {f.proxyFor?.(slot.player) ? ` · est. from ${f.proxyFor(slot.player)}` : ''}
             </span>
           </span>
         </span>
@@ -430,7 +429,6 @@ const SlotTile = ({ i, f, pos, slot, baseline, landed, mystery, sealValues, fres
             <span>
               {f.label}
               {ok ? ` · ${ordinal(pct)}` : ''}
-              {ok && f.proxyFor?.(landed) ? ` · est. from ${f.proxyFor(landed)}` : ''}
             </span>
           </span>
         </span>
@@ -683,6 +681,8 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
   const [lastLocked, setLastLocked] = useState<number | null>(null);
   const [showLive, setShowLive] = useState(false);
   const [announce, setAnnounce] = useState('');
+  /** Open slots dropped at the end because no one left has real data for them (never estimated) */
+  const [skipped, setSkipped] = useState<number[]>([]);
   const [result, setResult] = useState<BuildResult | null>(null);
   const [stage, setStage] = useState(3);
   const [scanName, setScanName] = useState('');
@@ -764,7 +764,9 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
         }
         if (!r) {
           // No league player has data for any open slot: reveal with what we have rather than stall
-          setAnnounce('No player left has data for your open slots. Revealing your build.');
+          const stuck = features.map((f, i) => (open[i] ? null : f)).filter((f): f is NonNullable<typeof f> => !!f);
+          setSkipped(features.map((_, i) => i).filter((i) => !open[i]));
+          setAnnounce(`Dropped ${stuck.map((f) => f.label).join(', ')}: no one left has it. Revealing your build.`);
           finish(open);
           return;
         }
@@ -839,6 +841,7 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
     setAnyLeft(true);
     setLastLocked(null);
     setResult(null);
+    setSkipped([]);
     setShowLive(false);
     setGame((g) => g + 1);
     setPhase('draft');
@@ -990,7 +993,11 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
         <OvrMedallion overall={ov} sealed={mode === 'draft' && mystery} />
       </div>
       <ol className="bal-slots" ref={mode === 'draft' ? boardRef : undefined}>
-        {features.map((f, i) => (
+        {features.map((f, i) => {
+          // a spun player's card draws only the traits he has real data for; dropped slots stay out of the result
+          if (skipped.includes(i) && !rows[i]) return null;
+          if (mode === 'draft' && current && !rows[i] && !Number.isFinite(f.get(current))) return null;
+          return (
           <li key={f.id}>
             <SlotTile
               i={i}
@@ -1006,7 +1013,8 @@ const BuildALegend = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map
               onSteal={lock}
             />
           </li>
-        ))}
+          );
+        })}
       </ol>
       {foot}
     </section>
