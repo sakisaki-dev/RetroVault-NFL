@@ -15,7 +15,7 @@ import {
   type AdvContext,
   type SimilarityMode,
 } from '@/config/advanced';
-import { playerSkillGrades } from '@/config/skillGrades';
+import { careerPoolLabel, playerSkillGrades } from '@/config/skillGrades';
 import DdSkillsSwitch from './DdSkillsSwitch';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { cn } from '@/lib/utils';
@@ -548,7 +548,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}
           {lowerReady && <>
-          <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={`Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
+          <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={IS_NFL && careerPoolLabel(player.position) ? `Career letter grades by percentile among qualified ${player.position}s (${careerPoolLabel(player.position)}), on rates shrunk by sample size; S = top 10%. A stat with no between-player signal gets no tile.` : `Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 

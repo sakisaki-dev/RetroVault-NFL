@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
-import { careerPoolLabel, foldAdvanced, playerSkillGrades } from '@/config/skillGrades';
+import { careerPool, careerPoolLabel, foldAdvanced, gradeFor, ovrFromPercentile, percentileOf, playerSkillGrades, tierFor } from '@/config/skillGrades';
 import { careerRatingOf } from '@/config/ovr';
 import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 import { cn } from '@/lib/utils';
@@ -46,10 +46,25 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   const base = useSeason ? season! : career;
   // NFL: the advanced factors of the shown scope count as much as the classic traits (skillGrades.ts foldAdvanced)
   const adv = useAdvanced(player.position);
-  const grades = useMemo(
-    () => (IS_NFL && adv ? { ...base, overall: foldAdvanced(base.overall, advancedPcts(adv, key, useSeason ? String(seasonOvr?.season) : 'c')) } : base),
-    [base, adv, key, useSeason, seasonOvr],
-  );
+  const scope = useSeason ? String(seasonOvr?.season) : 'c';
+  // The career overall is the classic overall folded with the advanced factors, then RE-RANKED among the qualified
+  // starters (the fold of two percentiles squeezes toward the middle, so S would otherwise be rare): S stays the top 10%.
+  const foldedPool = useMemo(() => {
+    const pool = IS_NFL && adv && !useSeason ? careerPool(players, player.position) : null;
+    if (!pool) return null;
+    return pool
+      .map((p) => foldAdvanced(playerSkillGrades(players, p).overall, advancedPcts(adv, playerKey(p), 'c'))?.pct)
+      .filter((x): x is number => typeof x === 'number')
+      .sort((a, b) => a - b);
+  }, [adv, useSeason, players, player.position]);
+  const grades = useMemo(() => {
+    if (!(IS_NFL && adv)) return base;
+    const folded = foldAdvanced(base.overall, advancedPcts(adv, key, scope));
+    if (!folded || !foldedPool) return { ...base, overall: folded };
+    const pct = percentileOf(foldedPool, folded.pct);
+    const grade = gradeFor(pct) ?? folded.grade;
+    return { ...base, overall: { ...folded, pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) } };
+  }, [base, adv, key, scope, foldedPool]);
   const label = seasonOvr ? seasonLabel(seasonOvr.season) : 'This season';
 
   return (

@@ -321,6 +321,9 @@ for pos in POS:
 
 # ---------- production and honours, then the career score
 nq = defaultdict(int)
+WEEKLY_G = defaultdict(int)
+for (gs, y), a in acc.items():
+    WEEKLY_G[key_of[gs]] += a["g"]
 for (gs, y), a in acc.items():
     if main_exp(a, a["pos"]) >= THR_SEASON[a["pos"]]:
         nq[key_of[gs]] += 1
@@ -344,7 +347,9 @@ for pos in POS:
     score = {}
     for k in ks:
         p = byk[k]
-        weekly = k in EFF
+        # weekly data must cover most of his career: a pre-1999 star with two weekly seasons is career-totals-only (his
+        # efficiency would be two shrunk seasons and his longevity two seasons)
+        weekly = k in EFF and WEEKLY_G.get(k, 0) >= 0.6 * max(1, p.get("g") or 0)
         prod = 0.7 * pctof(Pq, prod_of(p)) + 0.3 * pctof(Lq, nq.get(k, 0)) if weekly else pctof(Pq, prod_of(p))  # no weekly data: no longevity
         hon = 100.0 * honours(p) / hmax
         ph = 0.5 * prod + 0.5 * hon

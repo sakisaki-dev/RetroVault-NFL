@@ -271,6 +271,9 @@ const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
 };
 const finiteOrNull = (x: number) => (Number.isFinite(x) ? x : null);
 
+/** The qualified players a position's career grades are ranked in (NFL career mode), or null. */
+export const careerPool = (players: Player[], pos: Position): Player[] | null => careerCtx(players, pos)?.pool ?? null;
+
 /** The qualifier label for a position's career pool ("500 career carries"). */
 export const careerPoolLabel = (pos: Position) => CAREER_QUALIFY[pos]?.label;
 
