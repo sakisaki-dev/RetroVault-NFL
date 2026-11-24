@@ -90,8 +90,9 @@ export const missingFor = (g: GameDetail): Missing[] => {
   ];
   if (!g.team) out.push({ id: 'team', label: 'Team totals', note: 'No team box score is recorded for this game.' });
   if (!hasSnaps(g)) out.push({ id: 'snaps', label: 'Snap counts', note: g.season < 2013 ? 'Snap counts begin with the 2013 season, so who played how much (and the offensive linemen, who rarely record a stat) is not available for a game this old. Each roster below is built from the players who recorded a stat.' : 'No snap counts are recorded for this game yet.' });
-  if (!hasPfr(g)) out.push({ id: 'pfr', label: 'Advanced box score (pressures, drops, broken tackles, coverage)', note: g.season < 2018 ? 'The weekly advanced stats from Pro Football Reference begin with the 2018 season: pressures, drops, broken tackles, yards before and after contact, coverage targets and missed tackles.' : 'No advanced box score is recorded for this game yet.' });
-  if (!hasNgs(g)) out.push({ id: 'ngs', label: 'Next Gen Stats (time to throw, separation, rush yards over expected)', note: g.season < 2016 ? 'Next Gen Stats begin with the 2016 season.' : 'No Next Gen Stats are recorded for this game.' });
+  const advanced = hasPfr(g) || hasNgs(g);
+  if (!advanced) out.push({ id: 'pfr', label: 'Advanced box score (pressures, drops, broken tackles, coverage)', note: g.season < 2018 ? 'The weekly advanced stats from Pro Football Reference begin with the 2018 season: pressures, drops, broken tackles, yards before and after contact, coverage targets and missed tackles.' : 'No advanced box score is recorded for this game yet.' });
+  if (!advanced) out.push({ id: 'ngs', label: 'Next Gen Stats (time to throw, separation, rush yards over expected)', note: g.season < 2016 ? 'Next Gen Stats begin with the 2016 season.' : 'No Next Gen Stats are recorded for this game.' });
   return out;
 };
 
@@ -172,15 +173,18 @@ export const lineOf = (p: GamePlayer): string => {
   if (v(s, 'fg_att') || v(s, 'pat_att')) bits.push(`${v(s, 'fg_made')}/${v(s, 'fg_att')} FG, ${v(s, 'pat_made')}/${v(s, 'pat_att')} XP`);
   return bits.slice(0, 2).join(' · ');
 };
+/** The stars of the game: the top three by score (kickers excluded), the podium and the game ball share this order. */
+export const podiumOf = (g: GameDetail): GamePlayer[] => g.players.filter((p) => score(p) > 0 && unitOf(p) !== 'st').sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name)).slice(0, 3);
 /** The game ball, then each club's best on each side of the ball. */
 export const starsOf = (g: GameDetail): { ball: Star | null; others: Star[] } => {
   const all = g.players.filter((p) => score(p) > 0).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name));
   if (!all.length) return { ball: null, others: [] };
   const mk = (p: GamePlayer, kicker: string): Star => ({ player: p, kicker, line: lineOf(p) });
-  const ball = mk(all[0], 'Game ball');
+  const top = podiumOf(g)[0] ?? all[0];
+  const ball = mk(top, 'Game ball');
   const others: Star[] = [];
   for (const side of [0, 1] as Side[]) {
-    const mine = all.filter((p) => p.side === side && p !== all[0]);
+    const mine = all.filter((p) => p.side === side && p !== top);
     const off = mine.find((p) => v(p.s, 'fantasy_points_ppr') >= impact(p.s) && unitOf(p) !== 'st' && ['qb', 'bf', 'rec'].includes(unitOf(p)));
     const def = mine.find((p) => ['dl', 'lb', 'db'].includes(unitOf(p)) && impact(p.s) > 0);
     if (off) others.push(mk(off, side === 0 ? g.away : g.home));
@@ -257,7 +261,12 @@ export const recapOf = (g: GameDetail): string[] => {
   const star = starsOf(g).ball;
   if (star) {
     const club = star.player.side === 0 ? aN : hN;
-    lines.push(`${star.player.name} (${club}) led the way: ${star.line}.`);
+    const best = (side: 0 | 1) => g.players.filter((p) => p.side === side && score(p) > 0 && unitOf(p) !== 'st' && lineOf(p)).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name))[0];
+    const lead = w === null ? star.player : (best(w) ?? star.player);
+    const other = w === null ? undefined : best(w === 0 ? 1 : 0);
+    const leadClub = lead.side === 0 ? aN : hN;
+    if (other && other !== lead) lines.push(`${lead.name} (${leadClub}) led the way: ${lineOf(lead)}, while ${other.name} had ${lineOf(other)} for the ${other.side === 0 ? aN : hN}.`);
+    else lines.push(`${star.player.name} (${club}) led the way: ${star.line}.`);
   }
   if (g.team) {
     const [A, H] = g.team;

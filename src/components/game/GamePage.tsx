@@ -14,7 +14,7 @@ import { useGameSprites } from '@/utils/gameSprites';
 import { hslOf } from '../season/seasonGamesUi';
 import { liftForDarkBg } from '@/utils/teamColors';
 import {
-  atsOf, compareRows, fmtDate, hasNgs, hasPfr, hasSnaps, impact, leadersFor, missingFor, played, recapOf, roofLabel, roundLabel, sitePos, snaps,
+  atsOf, compareRows, podiumOf, fmtDate, hasNgs, hasPfr, hasSnaps, impact, leadersFor, missingFor, played, recapOf, roofLabel, roundLabel, sitePos, snaps,
   lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, type Side, type Star, type Unit,
 } from './gameModel';
 import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, type Linker } from './gameSections';
@@ -173,7 +173,7 @@ const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const covered = atsChip(g);
   const dome = g.roof === 'dome' || g.roof === 'closed';
   const sq = ([0, 1] as Side[]).map((s) => startersOf(g, s));
-  const ball = done ? g.players.filter((p) => score(p) > 0 && unitOf(p) !== 'st' && (w === null || p.side === w)).sort((a, b) => score(b) - score(a))[0] : undefined;
+  const ball = done ? podiumOf(g)[0] : undefined;
   const windy = (g.wind ?? 0) >= 12 && g.roof !== 'dome' && g.roof !== 'closed';
   const cold = g.temp !== undefined && g.temp < 40 && g.roof !== 'dome' && g.roof !== 'closed';
   const fig = (p: GamePlayer, side: Side) => {
@@ -249,7 +249,7 @@ const kickerLine = (g: GameDetail, top: GamePlayer[]): string | null => {
 };
 
 const GamePodium = ({ g, link }: { g: GameDetail; link: Linker }) => {
-  const top = useMemo(() => g.players.filter((p) => score(p) > 0 && unitOf(p) !== 'st').sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name)).slice(0, 3), [g]);
+  const top = useMemo(() => podiumOf(g), [g]);
   if (top.length < 1) return null;
   const order = [top[1], top[0], top[2]].map((p, i) => (p ? { p, rank: [2, 1, 3][i] } : null));
   const winner = winnerOf(g);
