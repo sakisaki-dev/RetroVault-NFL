@@ -214,7 +214,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                         )}
                       >
                         {won ? <Trophy className="h-2.5 w-2.5 fill-gold" aria-hidden="true" /> : null}
-                        Y{y}
+                        {seasonLabel(y)}
                         <span className={won ? 'sr-only' : ''}>{won ? ' won' : ' L'}</span>
                       </li>
                     ))}
