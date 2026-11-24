@@ -14,7 +14,10 @@ import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo, StandingsBanners }
 import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
+import ScoresBrowser from '@/components/season/ScoresBrowser';
 import '@/components/season/season.css';
+import '@/components/stats/visual/statsArena.css';
+import { CrowdDivider, PixelChip, PixelIcon, PixelStepper, SectionHeader } from '@/components/arcade';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
@@ -112,43 +115,33 @@ const SeasonTab = () => {
       : null;
   const span = past.length ? `${past[past.length - 1].season}–${past[0].season}` : '';
 
+  const live1 = (id: string) => id === liveId;
   return (
     <div className="season rv-load-in container mx-auto space-y-4 px-4 py-4 sm:py-6">
-      <section aria-labelledby="season-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 id="season-heading" className="font-display text-lg font-bold uppercase tracking-wide">
-              Season <span className="text-muted-foreground">{shown ?? ''}</span>
-            </h1>
-            <p className="text-xs text-muted-foreground">
-              {IS_NFL
-                ? 'Every score of the NFL season: the games by week, the league by the numbers, the table and the games that stood out.'
-                : isLive
-                ? "The season in progress, read from the game's save: the coached club's scoreboard, the award race, the leaders and the table."
-                : "Every score of the season: the coached club's scoreboard, the league by the numbers, the table and the games that stood out."}
-            </p>
-          </div>
-          {options.length > 1 && (
-            <div role="group" aria-label="Season" className="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-secondary/50 p-0.5 text-xs font-semibold">
-              {options.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  aria-pressed={id === shown}
-                  onClick={() => setPicked(id)}
-                  className={cn(
-                    'inline-flex min-h-[36px] flex-shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                    id === shown ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  {id === liveId && <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[hsl(357_90%_60%)] shadow-[0_0_6px_hsl(357_90%_60%)]" />}
-                  {id}
-                  {id === liveId && <span className="sr-only"> (live)</span>}
-                </button>
-              ))}
+      <section aria-labelledby="season-heading" className="sx-sec">
+        <SectionHeader
+          club={season?.superBowl?.winner ?? season?.table?.[0]?.team}
+          kicker={isLive ? 'Live from the save' : 'Season'}
+          title={<span id="season-heading">Season {shown ?? ''}</span>}
+          right={
+            <div className="flex flex-wrap items-center gap-2">
+              {IS_NFL && (
+                <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="flag" size={12} />}>
+                  Find a game
+                </PixelChip>
+              )}
+              {options.length > 1 && (
+                <PixelStepper
+                  label="Season"
+                  value={Number(shown)}
+                  values={options.map(Number)}
+                  format={(v) => (live1(String(v)) ? `${v} LIVE` : String(v))}
+                  onChange={(v) => setPicked(String(v))}
+                />
+              )}
             </div>
-          )}
-        </div>
+          }
+        />
 
         {loadingSeason ? (
           <PixelLoader label="Season" what={`the ${shown} season`} minHeight="40vh" className="justify-start pt-[8vh]" />
@@ -156,8 +149,10 @@ const SeasonTab = () => {
           <>
             {IS_NFL && <SeasonJumbo season={season} live={isLive || !season.superBowl} />}
             {IS_NFL && <PlayoffBracket season={season} />}
+            {IS_NFL && <CrowdDivider />}
             {IS_NFL && <StandingsBanners season={season} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
             {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
+            {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}
             {!IS_NFL && (
               <>
@@ -166,24 +161,26 @@ const SeasonTab = () => {
                 <GameLog season={season} />
               </>
             )}
+            {IS_NFL && <CrowdDivider />}
             <AroundTheLeague season={season} stars={stars} />
             {isLive && <LiveSections.Players s={live!} lookup={lookup} />}
             {/* a finished season the save still holds (pulled after its Super Bowl): its award ratings and leaders, final */}
             {!isLive && live && shown === seasonLabel(live.season) && <LiveSections.Players s={live} lookup={lookup} final />}
             {season.league && (
-              <div className="space-y-2">
-                <SectionTitle icon={BarChart3}>{season.season} by the numbers</SectionTitle>
+              <div className="sx-block">
+                <SectionTitle kicker="League scoring" club={season.superBowl?.winner}>{season.season} by the numbers</SectionTitle>
                 <NumbersStrip season={season} />
                 <WeeklyChart season={season} />
               </div>
             )}
             {IS_NFL ? <FullTable season={season} /> : <LeagueTable season={season} />}
             {!isLive && (
-              <div className="space-y-2">
+              <div className="sx-block">
                 {!IS_NFL && <SectionTitle icon={Trophy}>Notable games</SectionTitle>}
                 {IS_NFL ? <HighlightReel season={season} stars={stars} /> : <NotableGames season={season} />}
               </div>
             )}
+            {IS_NFL && <CrowdDivider />}
             {isLive && <LiveSections.Injuries s={live!} />}
             {IS_NFL && !isLive && <NflInjuryReport lookup={lookup} season={Number(season.season)} />}
           </>
@@ -192,13 +189,16 @@ const SeasonTab = () => {
         )}
       </section>
 
+      {IS_NFL && <><CrowdDivider /><ScoresBrowser /></>}
+
       {(schedule.records.length > 0 && IS_NFL) && (
-        <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">
-          <h2 id="alltime-heading" className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide">
-            <History className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> Game records
-          </h2>
-          <GameRecords records={schedule.records} />
-        </section>
+        <>
+          <CrowdDivider />
+          <section aria-labelledby="alltime-heading" className="sx-sec">
+            <span id="alltime-heading" className="sr-only">Game records</span>
+            <GameRecords records={schedule.records} />
+          </section>
+        </>
       )}
       {!IS_NFL && (schedule.records.length > 0 || Object.keys(schedule.headToHead).length > 0 || !!live?.coachHistory?.length) && (
         <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">

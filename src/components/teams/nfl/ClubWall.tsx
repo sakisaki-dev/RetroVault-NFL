@@ -13,6 +13,7 @@ import { useSchedule, useScheduleSeason, type TableRow } from '@/utils/schedule'
 import { seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
 import { divisionKey, sortTeams, type FranchiseRecord, type TeamSortKey, type TeamSummary } from '../teamStats';
+import { ArcadeToggle, SectionHeader } from '@/components/arcade';
 import './clubWall.css';
 
 type Conf = 'all' | 'AFC' | 'NFC';
@@ -50,13 +51,7 @@ interface Club {
 }
 
 const Chips = <T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { key: T; label: string }[]; onChange: (v: T) => void }) => (
-  <div role="group" aria-label={label} className="cw-chips">
-    {options.map((o) => (
-      <button key={o.key} type="button" aria-pressed={value === o.key} onClick={() => onChange(o.key)} className={cn('cw-chip', value === o.key && 'is-on')}>
-        {o.label}
-      </button>
-    ))}
-  </div>
+  <ArcadeToggle<T> label={label} size="sm" value={value} onChange={onChange} options={options.map((o) => ({ value: o.key, label: o.label }))} />
 );
 
 const useNarrow = () => {
@@ -109,7 +104,8 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
       type="button"
       onClick={() => onOpen(s.key)}
       aria-label={label({ club, season })}
-      className={cn('cw-tile', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
+      title={`${t.city} ${t.name} · ${last.text}`}
+      className={cn('cw-tile', !leader && 'cw-tile--thin', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
       style={{
         ['--p' as string]: `hsl(${primary})`,
         ['--s' as string]: `hsl(${secondary})`,
@@ -117,35 +113,35 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         color: fg,
       }}
     >
-      {leader && (
-        <span aria-hidden="true" className="cw-bglogo">
-          <TeamLogo team={t} size={340} decorative />
-        </span>
-      )}
-      <span aria-hidden="true" className="cw-abbr">{t.abbreviation}</span>
+      <span aria-hidden="true" className="cw-bglogo">
+        <TeamLogo team={t} size={leader ? 340 : 170} decorative />
+      </span>
       {(row || rec) && (
         <span aria-hidden="true" className={cn('cw-rank', bigRank && 'cw-rank--big')}>
           {leader && !bigRank ? 'DIV LEADER · ' : ''}#{rankOf(club)}
         </span>
       )}
       <span className="cw-text">
-        <span className="cw-city">
-          <TeamLogo team={t} size={20} decorative />
-          {t.city}
-        </span>
+        {leader ? (
+          <span className="cw-city">
+            <TeamLogo team={t} size={20} decorative />
+            {t.city}
+          </span>
+        ) : (
+          <TeamLogo team={t} size={26} decorative className="cw-mini" />
+        )}
         <span className="cw-name">{t.name}</span>
         <span className="cw-row">
-          {row && <span className="cw-rec">{season ? `${seasonLabel(season)} ` : ''}{row.record}</span>}
+          {row && <span className="cw-rec">{leader && season ? `${seasonLabel(season)} ` : ''}{row.record}</span>}
           {titles > 0 && <span className="cw-ttl">{stars(titles)}</span>}
         </span>
-        <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>
+        {leader && <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>}
       </span>
-      {leader && hasSprites && <span aria-hidden="true" className="cw-turf" />}
       {hasSprites && sprites.length > 0 && (
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (
             <span key={p.name + p.position} className="cw-fig">
-              <StarSprite name={p.name} pos={p.position} team={t.name} size={leader ? 'm' : 's'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
+              <StarSprite name={p.name} pos={p.position} team={t.name} size="s" kind={leader ? 'figure' : 'bust'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
             </span>
           ))}
         </span>
@@ -266,12 +262,9 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
   void divisionKey;
 
   return (
-    <section aria-labelledby="club-wall-heading" className="cw space-y-3">
+    <section aria-label="Club wall" className="cw space-y-3">
       <div className="cw-bar">
-        <h2 id="club-wall-heading" className="section-title text-2xl">
-          Club wall
-          <span className="font-pixel text-[9px] text-muted-foreground">{clubs.length}</span>
-        </h2>
+        <SectionHeader title="Club wall" kicker={`${clubs.length} clubs`} className="cw-head" />
         <div className="cw-controls">
           <Chips<WallSort> label="Sort" value={sort} options={SORTS} onChange={setSort} />
           <Chips<Conf> label="Conference" value={conf} options={CONFS} onChange={setConf} />

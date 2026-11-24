@@ -49,6 +49,7 @@ import { usePageSwipeBack } from '@/hooks/usePageSwipeBack';
 import { mergeRefs } from '@/hooks/useSwipeToDismiss';
 import './deepDive.css';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 type Select = (p: Player) => void;
 
@@ -441,12 +442,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
     car == null
       ? undefined
       : cr
-        ? `CAR ${car}: career rating. 50% efficiency (every rate against that season's league average, shrunk by sample size) plus 50% production and honours (MVP 30, OPOY/DPOY 18, SB MVP 12, ring 10, ROY 2), ranked among qualified ${player.position}s.${cr[5] === 1 ? ' Efficiency from career totals (no weekly data).' : ''} Efficiency ${cr[1] == null ? 'n/a' : cr[1].toFixed(0)}, production ${cr[2].toFixed(0)}, honours ${cr[3].toFixed(0)}.`
-        : `CAR ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
+        ? `${CAREER_LABEL} ${car}: career rating. 50% efficiency (every rate against that season's league average, shrunk by sample size) plus 50% production and honours (MVP 30, OPOY/DPOY 18, SB MVP 12, ring 10, ROY 2), ranked among qualified ${player.position}s.${cr[5] === 1 ? ' Efficiency from career totals (no weekly data).' : ''} Efficiency ${cr[1] == null ? 'n/a' : cr[1].toFixed(0)}, production ${cr[2].toFixed(0)}, honours ${cr[3].toFixed(0)}.`
+        : `${CAREER_LABEL} ${car}: career OVR, his whole career ranked within ${player.position}s (every player, active and retired).`;
   // Two ratings (owner, 2026-11-23): SZN = this season alone, CAR = the whole career. A retired player shows CAR only.
   const ovrTitle = IS_NFL
     ? seasonShown
-      ? `How OVR works. SZN ${ovr}: his ${seasonLabel(seasonOvr.season)} season so far ranked within ${player.position}s: per-game production and efficiency (EPA where it applies), scaled by how much he plays (snap share), with small samples pulled toward the position's floor so a few good games do not make a 99. CAR ${car ?? '–'}: his whole career ranked within the position. Price and card tier read 0.8 CAR + 0.2 SZN.`
+      ? `How OVR works. SZN ${ovr}: his ${seasonLabel(seasonOvr.season)} season so far ranked within ${player.position}s: per-game production and efficiency (EPA where it applies), scaled by how much he plays (snap share), with small samples pulled toward the position's floor so a few good games do not make a 99. OVR ${car ?? '–'}: his whole career ranked within the position. Price and card tier read 0.8 OVR + 0.2 SZN.`
       : `How OVR works. ${carTitle ?? ''} No ${seasonLabel(seasonOvr?.season ?? 2026)} games, so there is no SZN${player.status === 'Active' ? '' : ' (retired players are rated on their career alone)'}.`
     : seasonShown
     ? `SZN ${ovr}: season OVR for Y${seasonOvr.season}${seasonOvr.live ? ' so far' : ''}, his season line ranked within ${player.position}s who played it (small samples shrunk toward the position mean).`
@@ -455,8 +456,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
       : player.status === 'Active'
         ? `${carTitle} No games in Y${seasonOvr?.season ?? ''}, so there is no season OVR.`
         : `${carTitle} Retired players have no season OVR; their past seasons appear in the career graphs.`;
-  const ovrLabel = seasonShown ? 'SZN' : 'CAR';
-  const ovrAlt = seasonShown && car != null ? { label: 'CAR', value: car, title: carTitle } : null;
+  const ovrLabel = seasonShown ? 'SZN' : CAREER_LABEL;
+  const ovrAlt = seasonShown && car != null ? { label: CAREER_LABEL, value: car, title: carTitle } : null;
   const insufficient = !hasSimilarityData(player);
   const compare = onCompare ?? openInHeadToHead;
   const vals = posValues.get(position)!;

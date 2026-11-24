@@ -1,7 +1,7 @@
 import { displayName } from '@/utils/displayName';
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
 import { memo, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type TouchEvent as RTouchEvent } from 'react';
-import { Clock, CornerDownLeft, Search, Shield, Star, X } from 'lucide-react';
+import { Clock, CornerDownLeft, Radio, Search, Shield, Star, X } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { isHallOfFamer } from '@/config/stats';
@@ -10,6 +10,8 @@ import { useJerseyNumbers } from '@/utils/jerseys';
 import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
 import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { searchTeams } from '@/utils/teamSearch';
+import type { Meeting } from '@/utils/gameFinder';
+import { MeetingButton, useMeetings } from './GameMeetings';
 import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { useSwipeToDismiss } from '@/hooks/useSwipeToDismiss';
 import { warmPlayerCard } from '@/components/player/warmPlayerCard';
@@ -70,6 +72,8 @@ export interface PlayerSearchSheetProps {
   footer?: ReactNode;
   /** Clubs matching the query lead the results (the header search); picking one calls this */
   onPickTeam?: (team: NFLTeam) => void;
+  /** NFL: two clubs typed list their latest meetings; picking one calls this */
+  onPickGame?: (m: Meeting) => void;
 }
 
 const teamVars = (team?: string): CSSProperties => {
@@ -174,12 +178,13 @@ interface ListProps {
   selectedKey?: string;
   onPick: (p: Player) => void;
   onPickTeam?: (team: NFLTeam) => void;
+  onPickGame?: (m: Meeting) => void;
   /** Reports the Enter target (the first row) */
   firstRef: { current: Player | null };
 }
 
 /** Results for the deferred query: re-renders only when the deferred query, filter or pool change */
-const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, firstRef }: ListProps) => {
+const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickGame, firstRef }: ListProps) => {
   const extras = usePlayerExtras();
   const skills = useSkillRatings();
   const { numberFor } = useJerseyNumbers();
@@ -199,6 +204,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     return [{ id: 'recent', label: 'Recent', players: recent }, ...more].filter((g) => g.players.length);
   }, [query, index, keep, suggestions]);
   const clubs = useMemo(() => (onPickTeam && pos === 'ALL' ? searchTeams(query) : []), [onPickTeam, pos, query]);
+  const meetings = useMeetings(onPickGame ? query : '');
   const firstPlayer = query.trim() ? groups[0]?.players[0] ?? null : null;
   useLayoutEffect(() => {
     firstRef.current = firstPlayer;
@@ -231,7 +237,25 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     </section>
   );
 
-  if (!groups.length && !clubList)
+  const gameList = meetings.length > 0 && (
+    <section aria-label="Games">
+      <h3 className="ss-head">
+        <span className="lamp">
+          <Radio className="h-3 w-3" aria-hidden="true" />
+          Games
+        </span>
+      </h3>
+      <ul className="ss-list">
+        {meetings.map((m) => (
+          <li key={m.id}>
+            <MeetingButton m={m} onOpen={() => onPickGame?.(m)} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+
+  if (!groups.length && !clubList && !gameList)
     return (
       <p className="ss-empty">
         {query.trim() ? (
@@ -247,6 +271,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
   return (
     <>
       {clubList}
+      {gameList}
       {groups.map((g) => (
         <section key={g.id} aria-label={g.label}>
           <h3 className="ss-head">
@@ -306,6 +331,7 @@ const Sheet = ({
   selectedKey,
   footer,
   onPickTeam,
+  onPickGame,
   onGone,
 }: PlayerSearchSheetProps & { onGone: () => void }) => {
   const [query, setQuery] = useState('');
@@ -511,6 +537,7 @@ const Sheet = ({
             selectedKey={selectedKey}
             onPick={pick}
             onPickTeam={onPickTeam}
+            onPickGame={onPickGame}
             firstRef={firstRef}
           />
           {footer && <p className="ss-foot">{footer}</p>}

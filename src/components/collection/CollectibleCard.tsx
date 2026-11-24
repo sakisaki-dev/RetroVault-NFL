@@ -15,6 +15,7 @@ import { cardFaceVars } from './cardFace';
 import { loadMarket } from '@/utils/useMarket';
 import './collection.css';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 const motionOk = () => {
   try {
@@ -323,7 +324,7 @@ const CollectibleCard = ({
 
   const setLabel = setNo != null && setTotal ? `card ${setNo} of ${setTotal}` : null;
   const label = owned
-    ? `${displayName(player.name)}, ${pinned ? 'your display card, ' : ''}${variant ? `${variantLabel(variant)} variant, ` : ''}${par ? `${prizmInfo(par.c).label} parallel ${prizmSerial(par)}, ` : ''}${tierLabel(tier)} tier, ${finishLabel(finish)} finish, ${ovr != null ? `CAR ${ovr}, ` : ''}${posName}${team ? `, ${team.name}` : ''}${number != null ? `, number ${number}` : ''}${setLabel ? `, ${setLabel}` : ''}${mark ? `, ${mark}` : ''}${onOpen ? '. Open card' : ''}`
+    ? `${displayName(player.name)}, ${pinned ? 'your display card, ' : ''}${variant ? `${variantLabel(variant)} variant, ` : ''}${par ? `${prizmInfo(par.c).label} parallel ${prizmSerial(par)}, ` : ''}${tierLabel(tier)} tier, ${finishLabel(finish)} finish, ${ovr != null ? `${CAREER_LABEL} ${ovr}, ` : ''}${posName}${team ? `, ${team.name}` : ''}${number != null ? `, number ${number}` : ''}${setLabel ? `, ${setLabel}` : ''}${mark ? `, ${mark}` : ''}${onOpen ? '. Open card' : ''}`
     : `Locked ${tierLabel(tier)} card, ${posName}${hint ? `. ${hint}` : ''}`;
 
   // The Autograph variant is the whole card (owner: "i want that art to be the card … it deserves to be the full

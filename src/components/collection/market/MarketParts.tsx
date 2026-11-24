@@ -9,6 +9,7 @@ import ChangeBadge from './ChangeBadge';
 import { dirOf, type MarketRow } from './marketRows';
 import { peekKeyProps, peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 const teamVars = (info: CardInfo) => {
   const t = findNFLTeam(info.player.team);
@@ -137,7 +138,7 @@ export const MoverRow = ({ row, rank, maxAbs, onOpen }: { row: MarketRow; rank: 
         <span className="mk-tile__who">
           <span className="mk-tile__name">{displayName(row.info.player.name)}</span>
           <span className="mk-tile__meta">
-            {row.info.cardTeam} · CAR {row.info.ovr ?? '–'}
+            {row.info.cardTeam} · {CAREER_LABEL} {row.info.ovr ?? '–'}
           </span>
           {maxAbs != null && maxAbs > 0 && (
             <span className="mk-tile__bar" aria-hidden="true">

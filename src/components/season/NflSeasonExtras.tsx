@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
-import { gameHash, regularGameId, useGameIds } from '@/utils/nflGames';
+import { openGame, regularGameId, useGameIds } from '@/utils/nflGames';
 import { Flame, Gauge, Medal, Swords, Target, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
@@ -19,6 +19,8 @@ import { keyOfPlayer } from '@/utils/playerSearch';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './nflPodium.css';
+import './sx.css';
+import { ArcadeToggle, clubVars } from '@/components/arcade';
 import { dataResponse } from '@/utils/dataStore';
 import { displayName } from '@/utils/displayName';
 
@@ -78,24 +80,24 @@ export const StarSprite = ({ name, pos, team, size = 'm', kind = 'figure', celeb
 const abbrOf = (season: SeasonView, name: string) => season.table.find((r) => r.team === name)?.abbr ?? findNFLTeam(name)?.abbreviation ?? name;
 const starKey = (week: number, away: string, home: string) => `${week}-${away}-${home}`;
 
-/** The two stars of a game, one per club, sprite and line. */
+/** The two stars of a game, one per club, bust and line, each on his club's flat colour. */
 export const StarStrip = ({ stars, week, away, home, lookup: _l }: { stars: SeasonStars | null; week: number; away: string; home: string; lookup?: PlayerLookup }) => {
   const g = stars?.g[starKey(week, away, home)];
   if (!g) return null;
   return (
-    <div className="grid grid-cols-2 border-t border-white/10 text-[11px]" aria-label="Stars of the game">
+    <div className="grid grid-cols-2 border-t-2 border-[hsl(var(--line))] text-[11px]" aria-label="Stars of the game">
       {([['a', away], ['h', home]] as const).map(([side, team]) => {
         const s = g[side];
         if (!s) return <span key={side} />;
         const [pos, name] = splitKey(s[0]);
         return (
-          <PlayerHit key={side} name={name} pos={pos} className="flex min-w-0 items-center gap-1.5 px-2 py-1" style={{ background: `linear-gradient(${side === 'a' ? '90deg' : '270deg'}, ${color(team, 0.22)}, transparent)` }}>
-            <span className="flex h-9 w-8 flex-shrink-0 items-end justify-center overflow-hidden">
+          <PlayerHit key={side} name={name} pos={pos} className="sx-star" style={clubVars(team) as CSSProperties}>
+            <span className="sx-star__sp">
               <StarSprite name={name} pos={pos} team={team} size="s" kind="bust" />
             </span>
             <span className="min-w-0 leading-tight">
               <span className="block truncate font-semibold">{name}</span>
-              <span className="block truncate text-muted-foreground">{s[2]}</span>
+              <span className="block truncate opacity-85">{s[2]}</span>
             </span>
           </PlayerHit>
         );
@@ -172,36 +174,39 @@ export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: Se
   if (l?.fewestInWin) items.push({ key: 'fewest', kicker: 'Defensive slog', icon: Gauge, g: l.fewestInWin, caption: `${l.fewestInWin.winner} won with ${Math.max(l.fewestInWin.awayScore, l.fewestInWin.homeScore)}` });
   if (!items.length) return null;
   return (
-    <div className="space-y-2">
-      <SectionTitle icon={Zap}>Highlight reel</SectionTitle>
-      <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="sx-block">
+      <SectionTitle kicker="Games that stood out" club={items[0].g.winner}>Highlight reel</SectionTitle>
+      <ul className="sx-games" style={{ listStyle: 'none' }}>
         {items.map(({ key, kicker, icon: Icon, g, caption }) => {
           const aw = abbrOf(season, g.away);
           const hm = abbrOf(season, g.home);
           const win = g.winner;
+          const id = regularGameId(ids, season.season, g.week, aw, hm);
           return (
-            <li key={key} className="relative overflow-hidden rounded-xl border border-[hsl(var(--gold)/0.45)] shadow-[0_8px_22px_hsl(228_60%_2%/0.45)]" style={{ background: BOARD_BG }}>
-              <LampGrid />
-              <div className="relative flex items-center justify-between px-3 py-1.5" style={{ background: 'linear-gradient(90deg, hsl(var(--gold)/0.28), transparent)' }}>
-                <span className="flex items-center gap-1.5 font-pixel text-[9px] uppercase tracking-[0.18em] text-[hsl(var(--gold))]">
-                  <Icon className="h-3.5 w-3.5" aria-hidden /> {kicker}
-                </span>
-                <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">Week {g.week}</span>
+            <li key={key} className="sx-hl" style={clubVars(win) as CSSProperties}>
+              <div className="sx-hl__head">
+                <span className="flex items-center gap-1.5"><Icon className="h-3.5 w-3.5" aria-hidden /> {kicker}</span>
+                <span>Week {g.week}</span>
               </div>
-              <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-3 py-3">
+              <div className="sx-hl__body">
                 {[{ t: g.away, s: g.awayScore }, { t: g.home, s: g.homeScore }].map((x, i) => (
                   <div key={x.t} className={cn('flex items-center gap-2', i === 1 && 'col-start-3 flex-row-reverse text-right', i === 0 && 'col-start-1')}>
                     <TeamLogo team={x.t} decorative className="h-10 w-10 flex-shrink-0" />
                     <div className="min-w-0">
                       <p className={cn('truncate font-display text-sm font-bold uppercase', x.t !== win && 'text-foreground/60')}>{x.t}</p>
-                      <p className={cn('font-display text-3xl font-bold tabular-nums leading-none', x.t === win ? lampText : 'text-foreground/60')}>{x.s}</p>
+                      <p className={cn('font-display text-3xl font-bold tabular-nums leading-none', x.t === win ? 'text-[hsl(var(--gold))]' : 'text-foreground/60')}>{x.s}</p>
                     </div>
                   </div>
                 ))}
                 <span className="col-start-2 row-start-1 font-pixel text-[9px] text-muted-foreground">@</span>
               </div>
               <StarStrip stars={stars} week={g.week} away={aw} home={hm} />
-              {caption && <p className="relative flex items-center justify-between gap-2 border-t border-white/10 px-3 py-1.5 text-[11px] text-muted-foreground"><span>{caption}</span>{regularGameId(ids, season.season, g.week, aw, hm) && <a href={gameHash(regularGameId(ids, season.season, g.week, aw, hm)!)} className="flex-shrink-0 font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:underline">Box score</a>}</p>}
+              {caption && (
+                <p className="flex items-center justify-between gap-2 border-t-2 border-[hsl(var(--line))] px-3 py-1.5 text-[11px] text-muted-foreground">
+                  <span>{caption}</span>
+                  {id && <button type="button" onClick={() => openGame(id)} className="ax-chip flex-shrink-0">Box score</button>}
+                </p>
+              )}
             </li>
           );
         })}
@@ -220,12 +225,12 @@ interface PodiumEntry {
   detail?: string;
   sub?: string;
 }
-const STEP = [{ h: 104, n: 1 }, { h: 80, n: 2 }, { h: 64, n: 3 }];
-/** 1st stands in the middle and tallest, 2nd on the left, 3rd on the right; each pedestal carries its rank, figure and detail. */
+const STEP = [{ h: 128, n: 1 }, { h: 104, n: 2 }, { h: 88, n: 3 }];
+/** 1st stands in the middle and tallest, 2nd on the left, 3rd on the right; each pedestal is the club's flat colour with its rank, figure and detail. */
 const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
   const order = [rows[1], rows[0], rows[2]].map((r, i) => (r ? { r, rank: [2, 1, 3][i] } : null));
   return (
-    <ol className="mx-auto grid max-w-2xl grid-cols-3 items-end gap-2" aria-label="Podium: 1st in the middle, 2nd left, 3rd right">
+    <ol className="mx-auto grid max-w-3xl list-none grid-cols-3 items-end gap-2 p-0" aria-label="Podium: 1st in the middle, 2nd left, 3rd right">
       {order.map((o, i) => {
         if (!o) return <li key={`empty-${i}`} />;
         const { r, rank } = o;
@@ -234,20 +239,16 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
         return (
           <li key={r.key} className="flex min-w-0 flex-col items-center text-center">
             <PlayerHit name={r.name} pos={pos} className="flex max-w-full flex-col items-center text-center">
-              <StarSprite name={r.name} pos={pos} team={r.team} size="m" celebrate={rank === 1} />
-              <p className="mt-1 max-w-full truncate rounded-sm bg-black/60 px-1.5 font-display text-sm font-bold uppercase leading-tight">{displayName(r.name)}</p>
+              <StarSprite name={r.name} pos={pos} team={r.team} size="l" celebrate={rank === 1} />
             </PlayerHit>
-            <p className="flex items-center gap-1 text-[11px] text-white/80">
-              <TeamLogo team={r.team} decorative className="h-4 w-4" /> {findNFLTeam(r.team)?.name ?? r.team}
-            </p>
-            <div
-              className={cn('nsx-step', rank === 1 && 'nsx-step--first')}
-              style={{ height: step.h, background: `linear-gradient(180deg, ${color(r.team, 0.55)}, rgb(8 12 26 / 0.96) 70%), #0b1020` }}
-            >
-              <span className="nsx-step__rank" aria-label={`Rank ${rank}`}>{rank}</span>
-              <span className={cn('font-display text-xl font-bold tabular-nums leading-none', rank === 1 ? lampText : 'text-foreground')}>{r.value}</span>
-              <span className="nsx-step__detail">{r.detail ?? unit}</span>
-              {r.sub && <span className="nsx-step__sub">{r.sub}</span>}
+            <div className={cn('sx-step', rank === 1 && 'sx-step--first')} style={{ minHeight: step.h, ...(clubVars(r.team) as CSSProperties) }}>
+              <span className="sx-step__rank" aria-label={`Rank ${rank}`}>{rank}</span>
+              <PlayerHit name={r.name} pos={pos} className="max-w-full">
+                <span className="sx-step__name"><TeamLogo team={r.team} decorative className="h-5 w-5 flex-shrink-0" /><span>{displayName(r.name)}</span></span>
+              </PlayerHit>
+              <span className="sx-step__val">{r.value}</span>
+              <span className="sx-step__detail">{r.detail ?? unit}</span>
+              {r.sub && <span className="sx-step__detail">{r.sub}</span>}
             </div>
           </li>
         );
@@ -317,17 +318,14 @@ export const Podiums = ({ season, stars, lookup, inProgress }: { season: SeasonV
   }, [shown, stars, awards, lookup]);
   if (!stars && !awardKinds.length) return null;
   return (
-    <div className="space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <SectionTitle icon={Medal}>{inProgress ? 'Award race and leaders' : 'Season leaders'}</SectionTitle>
-        <div role="group" aria-label="Podium" className="scrollbar-none flex max-w-full gap-1 overflow-x-auto rounded-lg bg-secondary/50 p-0.5 text-xs font-semibold">
-          {tabs.map((t) => (
-            <button key={t.id} type="button" aria-pressed={t.id === shown?.id} onClick={() => setTab(t.id)} className={cn('min-h-[32px] flex-shrink-0 rounded-md px-2.5 py-1 transition-colors', t.id === shown?.id ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="sx-block">
+      <SectionTitle
+        kicker={inProgress ? 'Projected by the season so far' : 'Final standings'}
+        club={rows[0]?.team}
+        right={<ArcadeToggle label="Podium" size="sm" value={shown?.id ?? ''} onChange={(v) => setTab(String(v))} options={tabs.map((t) => ({ value: t.id, label: t.label }))} />}
+      >
+        {inProgress ? 'Award race and leaders' : 'Season leaders'}
+      </SectionTitle>
       <PodiumStage team={rows[0]?.team ?? ''}>
         {rows.length ? <Podium rows={rows} unit={shown?.unit ?? ''} /> : <p className="text-center text-xs text-muted-foreground">No leaders yet.</p>}
       </PodiumStage>

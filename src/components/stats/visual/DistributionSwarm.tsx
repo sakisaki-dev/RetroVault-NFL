@@ -18,6 +18,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { POSITION_COLORS } from '../graph/graphConfig';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /** A player's dot wears his club's colour (where he is best known): the league as a crowd of jerseys */
 const clubFill = (p: Player) => {
@@ -29,7 +30,7 @@ type MetricId = 'legacy' | 'ovr' | 'tpg';
 
 const METRICS: { id: MetricId; label: string; short: string; decimals: number }[] = [
   { id: 'legacy', label: 'Career Legacy', short: 'Legacy', decimals: 0 },
-  { id: 'ovr', label: 'Rating (SZN active, CAR retired)', short: 'SZN/CAR', decimals: 0 },
+  { id: 'ovr', label: `Rating (SZN active, ${CAREER_LABEL} retired)`, short: `SZN/${CAREER_LABEL}`, decimals: 0 },
   { id: 'tpg', label: 'Talent per game', short: 'TPG', decimals: 2 },
 ];
 

@@ -1,0 +1,19 @@
+.cg-ticket { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 6px 8px 7px; text-align: left; background: hsl(var(--card)); border: 1px solid hsl(var(--line) / .7); border-radius: 12px; box-shadow: inset 4px 0 0 var(--ax-c1); padding-left: 12px; transition: transform .12s, border-color .12s; }
+.cg-ticket:hover { transform: translateY(-2px); border-color: hsl(var(--gold) / .7); }
+.cg-ticket:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.cg-ticket.is-post { border-color: hsl(var(--gold) / .6); }
+.cg-ticket__wk { font: 700 12px/1 var(--font-display, inherit); letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.cg-ticket.is-post .cg-ticket__wk { color: hsl(var(--gold)); }
+.cg-ticket__main { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.cg-ticket__opp { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 14px/1 var(--font-display, inherit); text-transform: uppercase; }
+.cg-ticket__score { display: flex; gap: 3px; font: 700 16px/1 var(--font-display, inherit); font-variant-numeric: tabular-nums; }
+.cg-ticket__score b { color: hsl(var(--muted-foreground)); font-weight: 700; }
+.cg-ticket__score b.is-lit { color: hsl(var(--gold)); }
+.cg-ticket__score i { font-style: normal; color: hsl(var(--muted-foreground) / .6); }
+.cg-lamp { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; font: 700 13px/1 var(--font-display, inherit); border-radius: 50%; background: hsl(var(--muted) / .4); color: hsl(var(--muted-foreground)); border: 1px solid hsl(var(--line)); }
+.cg-lamp.is-W { background: hsl(145 63% 42%); color: #04140a; border-color: hsl(145 63% 62%); }
+.cg-lamp.is-L { background: hsl(357 80% 58%); color: #fff; border-color: hsl(357 80% 74%); }
+.cg-lamp.is-T { background: hsl(43 90% 55%); color: #1a1200; border-color: hsl(43 100% 70%); }
+.cg-sb { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 3px 6px; color: hsl(var(--gold)); background: hsl(var(--card)); border: 1px solid hsl(var(--gold) / .7); border-radius: 999px; }
+.cg-sb:hover { background: hsl(var(--gold) / .14); }
+@media (max-width: 639px) { .cg-ticket { min-height: 44px; } }

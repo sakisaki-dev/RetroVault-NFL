@@ -6,6 +6,7 @@ import { ordinal } from '../analytics/viz';
 import { DdBar, GradeChip } from './ddParts';
 import LeaderboardPeek, { type PeekBoard } from './LeaderboardPeek';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 interface Props {
   player: Player;
@@ -31,7 +32,7 @@ const toPeek = (title: string, metric: string, pos: string, b: SkillBoard): Peek
 });
 
 /** Broadcast-style rating cards: one letter grade per play-style skill, graded by percentile within the position. */
-const DdSkills = ({ player, ovr, ovrLabel = 'CAR', traits, overall, players, onOpenPlayer }: Props) => {
+const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, players, onOpenPlayer }: Props) => {
   const graded = traits.filter((t) => t.grade);
   if (!graded.length) {
     return (

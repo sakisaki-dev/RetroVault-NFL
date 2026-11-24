@@ -1,0 +1,110 @@
+/* Game page lower sections on the arcade kit: rounded cards, flat club colour, smooth bars, sprites on club floors. */
+.gm-sech { display: inline-flex; align-items: center; gap: 0.5rem; }
+.gm-sech__clubs { display: inline-flex; gap: 6px; }
+@media (max-width: 520px) { .gm-sech__clubs { display: none; } }
+
+/* name strips (ClubStrip) inside the hero and rows: never clipped to an ellipsis for a surname */
+.gm-strip { font-size: 0.95rem; }
+.gm-mu__name { max-width: 100%; justify-content: center; font-size: 0.8rem; padding: 1px 6px 1px 10px; }
+.gm-mu__name .ax-strip__txt { overflow: visible; text-overflow: clip; white-space: normal; text-align: center; line-height: 1.05; overflow-wrap: anywhere; }
+.gm-pod__name .ax-strip__txt, .gm-ball .ax-strip__txt { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.05; }
+@media (max-width: 767px) {
+  .gm-mu__fig { width: 4.6rem; }
+  .gm-mu__name { font-size: 0.64rem; padding: 1px 3px 1px 7px; box-shadow: inset 3px 0 0 var(--ax-c2); }
+}
+
+/* data panels */
+.gm-card { background: hsl(var(--panel)); box-shadow: none; padding: 0.6rem 0.7rem 0.7rem; }
+.gm-card__head { border-bottom: 2px solid hsl(var(--gold) / 0.6); }
+.gm-card__head h2 { font-style: italic; }
+.gm-clubs__col.ax-panel { padding: 0.4rem 0.45rem 0.5rem 0.65rem; background: hsl(var(--card)); gap: 0.3rem; }
+.gm-clubs__col .ax-panel__mark { opacity: 0.09; }
+.gm-clubs__head { background: none; border: 0; padding: 0; font-size: 1.05rem; }
+.gm-lb { background: hsl(0 0% 100% / 0.04); border-radius: 10px; }
+.gm-lb .gm-lb__spr { width: 36px; height: 40px; display: block; align-self: end; }
+.gm-lb:not(:has(.gm-lb__spr)) { grid-template-columns: minmax(0, 1fr); }
+.gm-lb__d { color: hsl(var(--muted-foreground)); }
+/* smooth rounded bars in flat club colours */
+.gm-bar { height: 10px; border-radius: 999px; overflow: hidden; background: hsl(0 0% 100% / 0.08); }
+.gm-bar i { border-radius: 999px; background: var(--ax-c1); box-shadow: none; }
+.gm-bar em { z-index: 1; }
+.gm-fan li { border-left: 0; border-radius: 10px; box-shadow: inset 3px 0 0 var(--ax-c1); padding-left: 0.6rem; }
+.gm-fan .gm-bar { --ax-c1: var(--ax-c1); }
+.gm-st li { border-left: 0; border-radius: 10px; box-shadow: inset 3px 0 0 var(--tc, var(--ax-c1)); }
+
+/* tale of the tape */
+.gm-compare.ax-panel { padding: 0.7rem 0.8rem 0.8rem; }
+.gm-compare__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-family: inherit; }
+.gm-cmp { grid-template-columns: auto 1fr auto; grid-template-areas: 'a lab h' 'bar bar bar'; row-gap: 0.25rem; align-items: center; padding: 0.4rem 0; border-top: 1px solid hsl(0 0% 100% / 0.07); }
+.gm-cmp__n { opacity: 0.55; line-height: 0; } .gm-cmp__n.is-better { opacity: 1; }
+.gm-cmp__n:first-child { grid-area: a; } .gm-cmp__n--h { grid-area: h; justify-self: end; }
+.gm-cmp__l { grid-area: lab; color: hsl(var(--muted-foreground)); }
+.gm-cmp__seg { grid-area: bar; position: relative; display: flex; gap: 2px; height: 8px; border-radius: 999px; background: hsl(0 0% 100% / 0.06); overflow: hidden; }
+.gm-cmp__seg i { display: block; height: 100%; }
+.gm-cmp__seg .a { background: var(--ca); } .gm-cmp__seg .h { background: var(--ch); }
+@media (max-width: 480px) { .gm-cmp { grid-template-columns: auto 1fr auto; } }
+
+/* QB duel in the kit */
+.gm-qb__who { background: var(--ax-c1); box-shadow: inset 0 -2px 0 var(--ax-c2); border-radius: 12px; color: var(--ax-ink); }
+.gm-qb__who.is-home { background: var(--ax-c1); }
+.gm-qb__id small, .gm-qb__line { color: var(--ax-ink); opacity: 0.9; }
+.gm-qb__name { background: none; box-shadow: none; padding: 0; color: var(--ax-ink); }
+.gm-qb__name .ax-strip__txt { font-size: 1.5rem; }
+.gm-qb__split { height: 8px; border-radius: 999px; overflow: hidden; position: relative; }
+.gm-qb__row b.is-better { text-shadow: none; }
+
+/* efficiency tiles */
+.gm-led { border-radius: 12px; }
+
+/* podium steps: flat club colour, rounded tops */
+.gm-pod__step.nsx-step { background: var(--ax-c1); border: 1px solid var(--ax-c2); border-radius: 12px 12px 0 0; color: var(--ax-ink); box-shadow: none; }
+.gm-pod__step .gm-pod__rank { color: var(--ax-ink); }
+.gm-pod__team, .gm-pod__line { color: var(--ax-ink); }
+
+/* top performers: each stands on a club-colour floor */
+.gm-perf__club.ax-panel { padding: 0.5rem 0.55rem 0.6rem 0.8rem; }
+.gm-perf__row { display: flex; align-items: flex-end; gap: 0.6rem; padding: 0; border: 0; background: none; border-radius: 0; margin-bottom: 0.35rem; min-width: 0; }
+.gm-perf__floor { position: relative; flex: none; display: flex; justify-content: center; align-items: flex-end; width: 96px; height: 84px; overflow: hidden;
+  border-radius: 12px; background: linear-gradient(180deg, transparent 0 62%, var(--ax-c1) 62% 100%); }
+.gm-perf__floor .game-sprite { transform: scale(0.62); transform-origin: bottom center; margin-bottom: -4px; }
+.gm-perf__txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-bottom: 6px; }
+.gm-perf__n { align-self: flex-start; }
+.gm-perf__line { color: hsl(var(--muted-foreground)); }
+.gm-perf__row.is-top .gm-perf__n { box-shadow: inset 3px 0 0 hsl(var(--gold)); }
+
+/* dig deeper chips */
+.gm-deeper { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.gm-deeper .ax-chip small { margin-left: 6px; font-family: Inter, inherit; font-size: 10px; letter-spacing: 0; text-transform: none; opacity: 0.75; max-width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 767px) { .gm-deeper .ax-chip small { display: none; } }
+
+/* more from the week: score tiles */
+.gm-more { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.6rem; }
+.gm-more li { min-width: 0; }
+
+/* Super Bowl */
+.gm-sbban { position: relative; overflow: hidden; }
+.gm-sbban { border-radius: var(--ax-r, 12px); }
+.gm-sbban .ax-marquee { background: hsl(43 100% 56%); box-shadow: inset 0 -3px 0 #7a4a00; padding: 14px 18px; }
+.gm-sbban .ax-marquee .ax-kicker { color: #4a2c00; }
+.gm-sbban .ax-marquee__title { color: #1a1000; font-size: clamp(1.6rem, 6vw, 2.8rem); letter-spacing: 0.06em; }
+.gm-sbban__champ { display: inline-flex; align-items: center; gap: 8px; }
+.gm-sbban__cup { width: 34px; height: 52px; }
+.gm-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.gm-confetti i { position: absolute; width: 6px; height: 9px; border-radius: 2px; opacity: 0.95; }
+@media (prefers-reduced-motion: no-preference) {
+  .gm-confetti i { animation: gm-fall linear infinite; }
+  .lite .gm-confetti i { animation: none; }
+}
+@keyframes gm-fall { from { translate: 0 -30px; } to { translate: 0 110px; } }
+.gm-champs { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 1rem; }
+.gm-champs__cup { display: block; padding: 0 0.5rem 1.2rem; }
+.gm-champs__svg { width: 72px; height: 112px; }
+@media (max-width: 640px) { .gm-champs { grid-template-columns: minmax(0, 1fr); } .gm-champs__cup { display: flex; justify-content: center; padding: 0; } .gm-champs__svg { width: 54px; height: 84px; } }
+.gm-sbban .ax-marquee__text { position: relative; z-index: 1; padding-right: 0.5rem; }
+.gm-sbban .ax-marquee__title { overflow: visible; padding-right: 0.6em; margin-right: -0.2em; white-space: normal; }
+.gm-sbban .ax-marquee__text { flex: 1 1 14rem; }
+.gm-sbban .ax-marquee__right { position: relative; z-index: 1; }
+@media (max-width: 767px) {
+  .gm-qb__name .ax-strip__txt { font-size: 1.05rem; white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.05; }
+  .gm-qb__id { padding-bottom: 0.2rem; }
+}

@@ -14,11 +14,14 @@ import OverUnder from '../games/OverUnder';
 import BuildALegend from '../games/BuildALegend';
 import ModeArt from '../games/ModeArt';
 import { ERAS, type Era } from '@/utils/gamePool';
+import GameToggles, { useGameSettings } from '../games/GameToggles';
+import { isInLeague } from '@/components/InLeague';
 import { ArcadeButton, Lamp } from '../games/ArcadeUI';
 import { HomeNews } from '../news/WhatChanged';
 import { ArcadeRatingContext, STAT_KEYS, loadGameStat, saveGameStat, useGamePlayers, type ArcadeRating, type GamePlayer } from '../games/gameUtils';
 import { fnv1a } from '@/utils/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { CAREER_LABEL } from '@/config/ovr';
 
 type GameId = 'rank' | 'perfect' | 'kc' | 'legend' | 'hol' | 'grid' | 'imposter' | 'sixdeg' | 'ou' | 'build';
 
@@ -63,8 +66,8 @@ const GAMES: GameDef[] = [
   {
     id: 'rank',
     title: 'Blind Rank',
-    pitch: 'Slot five players by rating (CAR, or SZN) before you see who comes next.',
-    rule: 'Five players arrive one at a time. Slot each from 1 to 5 by rating (CAR, or SZN) before you see who comes next. No moving them later.',
+    pitch: `Slot five players by rating (${CAREER_LABEL}, or SZN) before you see who comes next.`,
+    rule: `Five players arrive one at a time. Slot each from 1 to 5 by rating (${CAREER_LABEL}, or SZN) before you see who comes next. No moving them later.`,
     color: 'var(--gold)',
     record: best(STAT_KEYS.rankBest, 'Best round', (n) => `${n}/10`),
     render: (players, ovrMap) => <BlindRank players={players} ovrMap={ovrMap} />,
@@ -73,7 +76,7 @@ const GAMES: GameDef[] = [
     id: 'kc',
     title: 'Keep 3, Cut 3',
     pitch: 'Six players, three roster spots. Every call is final.',
-    rule: 'Six players arrive one at a time. Keep the three highest ratings (CAR, or SZN) and cut the rest. Every call is final.',
+    rule: `Six players arrive one at a time. Keep the three highest ratings (${CAREER_LABEL}, or SZN) and cut the rest. Every call is final.`,
     color: 'var(--flag)',
     record: () => {
       const n = loadGameStat(STAT_KEYS.kcRounds, 0);
@@ -229,8 +232,18 @@ const GamesTab = () => {
   const [rating, setRating] = useState<ArcadeRating>(() => (loadGameStat('rating:szn', 0) ? 'szn' : 'car'));
   // The era a game draws its players from, by career span (all / 2020s / 2010s / 2000s); CAR mode only, SZN is this season
   const [era, setEra] = useState<Era>(() => ERAS[loadGameStat('era', 0)]?.id ?? 'all');
-  const { players, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, rating, era);
   const [game, setGame] = useState<GameId | null>(null);
+  // Each game keeps its own Players (All / Active) and Rating (SZN / OVR) choice; the hall's switch seeds a game with none saved
+  const gs = useGameSettings(game, rating);
+  const effRating: ArcadeRating = game ? gs.settings.rating : rating;
+  const { players: rawPlayers, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, effRating, era);
+  // Active only: SZN already is; otherwise the active league players. Too few left (under 40): keep the game playable with everyone and say so.
+  const MIN_ACTIVE = 40;
+  const wantActive = !!game && gs.activeOnly;
+  const activeOnly = useMemo(() => rawPlayers.filter((p) => isInLeague(p)), [rawPlayers]);
+  const widened = wantActive && effRating !== 'szn' && activeOnly.length < MIN_ACTIVE;
+  const players = wantActive && !widened ? activeOnly : rawPlayers;
+  const poolNote = widened ? `Only ${activeOnly.length} active players here, so all players are in` : null;
   const [last, setLast] = useState<GameId | null>(readLast);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cameFrom = useRef<GameId | null>(null);
@@ -312,9 +325,9 @@ const GamesTab = () => {
           </div>
           <div className="hall-switches">
             <Lamp label="Players" value={IS_NFL ? players.length : league.length} />
-            <button type="button" role="switch" aria-checked={rating === 'szn'} className="toggle" onClick={toggleRating} title="Rank by CAR (career OVR, everyone) or SZN (this season's OVR, active players only)">
+            <button type="button" role="switch" aria-checked={rating === 'szn'} className="toggle" onClick={toggleRating} title={`Rank by ${CAREER_LABEL} (career rating, everyone) or SZN (this season's OVR, active players only)`}>
               <span className="track" aria-hidden="true" />
-              {rating === 'szn' ? 'SZN · this season' : 'CAR · career'}
+              {rating === 'szn' ? 'SZN · this season' : `${CAREER_LABEL} · career`}
             </button>
             {IS_NFL && (
               <div className="hall-era" role="group" aria-label="Era">
@@ -473,14 +486,15 @@ const GamesTab = () => {
                 </span>
                 <span className="gamebar-t">{active.title}</span>
               </h2>
+              <GameToggles settings={gs.settings} onChange={gs.set} showRating={active.id !== 'grid'} note={poolNote} />
             </div>
             <p id="arcade-game-rule" className="sr-only">
               {active.rule}
             </p>
             {/* Wait for legends.json / exclusions so OVRs are final, and re-mount on data / legends changes */}
             {legendsLoaded ? (
-              <ArcadeRatingContext.Provider value={rating}>
-                <div key={`${active.id}-${dataVersion}-${rating}-${era}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
+              <ArcadeRatingContext.Provider value={effRating}>
+                <div key={`${active.id}-${dataVersion}-${effRating}-${wantActive && !widened ? 'a' : 'p'}-${era}-${includeLegends ? legends.length : 0}`}>{active.render(players, ovrMap)}</div>
               </ArcadeRatingContext.Provider>
             ) : (
               <PixelLoader label="Warming up" what="the player pool" minHeight={320} />

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Medal, Minus, TrendingDown, TrendingUp } from 'lucide-react';
+import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { ScheduleSeason, TeamSeasonRow } from '@/utils/schedule';
-import TeamLogo from '../timeline/TeamLogo';
-import { BOARD_BG, color, lampText, signed } from '../season/seasonGamesUi';
+import { lampText, signed } from '../season/seasonGamesUi';
+import { ArcadeToggle, ClubBadge, SectionHeader, clubPlate, clubVars } from '../arcade';
 import './powerBoards.css';
 
 /**
@@ -51,48 +51,41 @@ export const ClubLadder = ({
   const prev = season.prevPower;
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="flex items-center gap-2 font-display text-lg font-bold uppercase tracking-wide text-gold">
-          <Medal className="h-4 w-4" aria-hidden /> Power ladder
-        </h3>
-        <button
-          type="button"
-          onClick={() => setAll((v) => !v)}
-          aria-expanded={all}
-          className="rounded-full border border-border/50 px-2.5 py-1 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
-        >
-          {all ? 'Top 10' : `All ${rows.length}`}
-        </button>
-      </div>
+      <SectionHeader
+        as="h3"
+        kicker="Season power ranking"
+        title="Power ladder"
+        className="pb-head"
+        right={<ArcadeToggle size="sm" label="Ladder length" value={all ? 'all' : 'top'} onChange={(v) => setAll(v === 'all')} options={[{ value: 'top', label: 'Top 10' }, { value: 'all', label: `All ${rows.length}` }]} />}
+      />
       <ol className="grid gap-1.5 md:grid-cols-2">
         {shown.map((r) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
-          const tone = `hsl(${findNFLTeam(r.team)?.primaryColor ?? '220 10% 55%'})`;
+          const tone = clubPlate(r.team).fill;
           const Row = onTrack ? 'button' : 'div';
           return (
             <li key={r.abbr} className="min-w-0">
               <Row
                 {...(onTrack ? { type: 'button' as const, onClick: () => onTrack(r.team), title: `Show ${r.team} progression` } : {})}
-                className="pb-row relative flex w-full items-center gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.6)] px-2 py-1.5 text-left"
-                style={{ background: BOARD_BG }}
+                className="pb-row relative flex w-full items-center gap-2 overflow-hidden px-2 py-1.5 text-left"
+                style={clubVars(r.team)}
               >
-                <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: tone }} />
-                <span aria-hidden className="absolute inset-y-0 left-0 opacity-70" style={{ width: `${8 + (88 * (r.powerScore - min)) / Math.max(1, max - min)}%`, background: `linear-gradient(90deg, ${color(r.team, 0.5)}, transparent)` }} />
-                <span className={cn('relative w-7 text-center font-display text-xl font-bold tabular-nums', r.power <= 3 ? lampText : 'text-foreground/80')}>{r.power}</span>
-                <TeamLogo team={r.team} decorative className="relative h-7 w-7 flex-shrink-0" />
-                <span className="relative min-w-0 flex-1 truncate font-display text-sm font-bold uppercase">{nick(r.team)}</span>
-                <span className="relative hidden min-[420px]:block">
+                <span className={cn('w-7 text-center font-display text-xl font-bold tabular-nums', r.power <= 3 ? lampText : 'text-foreground/80')}>{r.power}</span>
+                <ClubBadge club={r.team} size="sm" />
+                <span className="min-w-0 flex-1 truncate font-display text-sm font-bold uppercase">{nick(r.team)}</span>
+                <span className="hidden min-[420px]:block">
                   <Spark rows={progression[r.team] ?? []} clubs={rows.length} tone={tone} />
                 </span>
-                <span className="relative text-xs tabular-nums text-foreground/85">{r.record}</span>
-                <span className="relative hidden w-9 text-right text-[11px] tabular-nums text-muted-foreground sm:block">{signed(r.diff)}</span>
+                <span className="text-xs tabular-nums text-foreground/85">{r.record}</span>
+                <span className="hidden w-9 text-right text-[11px] tabular-nums text-muted-foreground sm:block">{signed(r.diff)}</span>
                 <span
-                  className={cn('relative flex w-9 items-center justify-end gap-0.5 text-[11px] font-semibold tabular-nums', move === null ? 'text-muted-foreground' : move > 0 ? 'text-[hsl(145_63%_55%)]' : move < 0 ? 'text-[hsl(357_80%_70%)]' : 'text-muted-foreground')}
+                  className={cn('flex w-9 items-center justify-end gap-0.5 text-[11px] font-semibold tabular-nums', move === null ? 'text-muted-foreground' : move > 0 ? 'text-[hsl(145_63%_55%)]' : move < 0 ? 'text-[hsl(357_80%_70%)]' : 'text-muted-foreground')}
                   title={before ? `Ranked ${before} the season before` : 'Not ranked the season before'}
                 >
                   {move === null ? <span className="font-pixel text-[7px]">NEW</span> : move > 0 ? <><TrendingUp className="h-3 w-3" aria-hidden />{move}</> : move < 0 ? <><TrendingDown className="h-3 w-3" aria-hidden />{-move}</> : <Minus className="h-3 w-3" aria-hidden />}
                 </span>
+                <span aria-hidden className="pb-bar" style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%` }} />
               </Row>
             </li>
           );

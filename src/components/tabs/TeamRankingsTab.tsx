@@ -31,6 +31,9 @@ import { buildHash, useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import '../teams/powerBoards.css';
+import { StadiumHeader, LedBoard, PixelChip, PixelPanel, SectionHeader } from '../arcade';
+import { useSchedule, useScheduleSeason } from '@/utils/schedule';
+import { findNFLTeam } from '@/utils/nflTeams';
 import ClubWall from '../teams/nfl/ClubWall';
 import { displayName } from '@/utils/displayName';
 
@@ -172,6 +175,20 @@ const TeamRankingsTab = () => {
     [superBowls, league],
   );
 
+  const schedule = useSchedule();
+  const topSeason = useMemo(() => (schedule ? Object.keys(schedule.seasons).sort((x, y) => Number(y) - Number(x))[0] ?? null : null), [schedule]);
+  const topSched = useScheduleSeason(schedule, topSeason) ?? null;
+  const stage = useMemo(() => {
+    const leader = topSched?.table.find((r) => r.power === 1)?.team ?? teams[0]?.team?.name ?? 'Eagles';
+    const name = findNFLTeam(leader)?.name ?? leader;
+    const pool = league
+      .filter((p) => !p.isRealLegend && findNFLTeam(p.team)?.name === name)
+      .sort((x, y) => (y.careerLegacy ?? 0) - (x.careerLegacy ?? 0))
+      .slice(0, 3);
+    const players = pool.length === 3 ? [pool[1], pool[0], pool[2]] : pool;
+    return { club: name, players, label: topSeason ? `${seasonLabel(Number(topSeason))} power No. 1` : '' };
+  }, [topSched, teams, league, topSeason]);
+
   if (!careerData) {
     return (
       <div className="container py-16 text-center">
@@ -187,24 +204,28 @@ const TeamRankingsTab = () => {
 
   return (
     <div className="container py-6 sm:py-8 space-y-6">
-      {/* Page header */}
-      <header className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="min-w-0">
-          <p className="font-pixel text-[10px] uppercase text-gold">League Hub · Franchises</p>
-          <h1 className="font-display text-5xl sm:text-6xl font-extrabold italic uppercase leading-none">Teams</h1>
-          <p className="mt-2 text-sm text-muted-foreground max-w-xl">
-            Every franchise {firstSeason && lastSeason ? `from ${seasonLabel(firstSeason)} to ${seasonLabel(lastSeason)}` : 'in the league'}: who won, who built dynasties, and who is on the roster now. Pick a team for its
-            franchise page.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <span className="lamp">Franchises <b><CountUp value={teams.length} /></b></span>
-          <span className="lamp">Super Bowls <b><CountUp value={superBowls.length} /></b></span>
-          <span className="lamp">Champions <b><CountUp value={totals.champions} /></b></span>
-          {!IS_NFL && <span className="lamp">Your titles <b><CountUp value={totals.yourTitles} /></b></span>}
-          <span className="lamp">Hall of Famers <b><CountUp value={totals.hof} /></b></span>
-        </div>
-      </header>
+      {/* Page header: the power ladder leader's stadium and stars, the franchise counts as scoreboards */}
+      <StadiumHeader
+        club={stage.club}
+        players={stage.players}
+        kind="figure"
+        size="m"
+        kicker="League Hub"
+        height={290}
+        className="teams-stage"
+        title="Teams"
+        right={
+          <div className="flex flex-wrap justify-end gap-1.5 sm:gap-2">
+            <LedBoard label="Franchises" value={teams.length} dot={2} />
+            <LedBoard label="Super Bowls" value={superBowls.length} dot={2} />
+            <LedBoard label="Champions" value={totals.champions} dot={2} />
+          </div>
+        }
+      >
+        <p className="sr-only">
+          Every franchise {firstSeason && lastSeason ? `from ${seasonLabel(firstSeason)} to ${seasonLabel(lastSeason)}` : 'in the league'}: who won, who built dynasties, and who is on the roster now.
+        </p>
+      </StadiumHeader>
 
       {/* League overview: power ranking + dynasty timeline */}
       {IS_NFL && teams.length > 0 && <ClubWall teams={teams} records={records} league={league} firstSeason={firstSeason} onOpen={openClub} />}
@@ -275,14 +296,8 @@ const TeamRankingsTab = () => {
 
       {/* Players with no club in the league sheet (free agents) */}
       {unassigned.length > 0 && (
-        <section className="glass-card p-4 sm:p-5" aria-labelledby="unassigned-heading">
-          <div className="flex flex-wrap items-center gap-2">
-            <UserX className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-            <h2 id="unassigned-heading" className="font-display text-2xl font-bold uppercase">
-              Free agents
-            </h2>
-            <span className="lamp">Players <b>{unassigned.length}</b></span>
-          </div>
+        <PixelPanel as="section" aria-labelledby="unassigned-heading">
+          <SectionHeader kicker={`${unassigned.length} players`} title={<span id="unassigned-heading">Free agents</span>} />
           <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {[...unassigned]
               .sort((a, b) => (b.careerLegacy || 0) - (a.careerLegacy || 0))
@@ -293,7 +308,7 @@ const TeamRankingsTab = () => {
                     type="button"
                     {...peekProps(p)}
                     onClick={() => setSelectedPlayer(p)}
-                    className="flex w-full items-center gap-3 rounded-lg border border-border bg-secondary/30 px-3 py-2 text-left hover:bg-secondary"
+                    className="flex w-full items-center gap-3 border-2 border-[hsl(var(--line)/0.7)] bg-card px-3 py-2 text-left hover:border-gold/70"
                   >
                     <PositionBadge position={p.position} />
                     <span className="min-w-0 flex-1">
@@ -308,11 +323,11 @@ const TeamRankingsTab = () => {
               ))}
           </ul>
           {unassigned.length > 12 && (
-            <button type="button" aria-expanded={allFa} onClick={() => setAllFa((v) => !v)} className="mt-3 rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
+            <PixelChip className="mt-3" pressed={allFa} aria-expanded={allFa} onClick={() => setAllFa((v) => !v)}>
               {allFa ? 'Show the top 12' : `Show all ${unassigned.length}`}
-            </button>
+            </PixelChip>
           )}
-        </section>
+        </PixelPanel>
       )}
 
       <TeamSheet

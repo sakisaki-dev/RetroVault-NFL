@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState, type KeyboardEvent } from 'react';
 import { Trophy } from 'lucide-react';
+import { ArcadeToggle, ClubStrip, PixelChip, PixelIcon, PixelPanel, SectionHeader } from '../arcade';
+import GameSprite from '../GameSprite';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -17,6 +19,7 @@ import RetiredRafters from './RetiredRafters';
 import { useRafters } from '@/utils/rafters';
 import type { RingOfHonorEntry } from '@/utils/hallOfFame';
 import StadiumWeather from './StadiumWeather';
+import ClubGames from './nfl/ClubGames';
 import TitlesTimeline from './TitlesTimeline';
 import PositionRadar from './PositionRadar';
 import { peekProps } from '@/components/peek/peekProps';
@@ -212,8 +215,8 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                           won ? 'bg-black/80 text-gold ring-1 ring-gold/70' : 'bg-black/35 text-white/85 ring-1 ring-white/30',
                         )}
                       >
-                        {won ? <Trophy className="h-2.5 w-2.5 fill-gold" aria-hidden="true" /> : null}
-                        Y{y}
+                        <PixelIcon name="trophy" size={11} color={won ? 'hsl(var(--gold))' : 'rgba(255,255,255,.7)'} />
+                        {seasonLabel(y)}
                         <span className={won ? 'sr-only' : ''}>{won ? ' won' : ' L'}</span>
                       </li>
                     ))}
@@ -276,9 +279,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                   <>
                     {record && (
                       <section aria-labelledby="titles-timeline">
-                        <h3 id="titles-timeline" className="section-title text-base mb-2">
-                          Super Bowl history
-                        </h3>
+                        <SectionHeader as="h3" kicker="Franchise" title="Super Bowl history" club={t?.name} className="mb-2" />
                         <TitlesTimeline
                           teamName={summary.label}
                           primary={primary}
@@ -290,11 +291,10 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                       </section>
                     )}
                     <StadiumWeather teamName={t?.name ?? summary.label} accent={accent} />
+                    <ClubGames teamName={t?.name ?? summary.label} />
                     {legends.length > 0 && (
                       <section aria-labelledby="franchise-icons">
-                        <h3 id="franchise-icons" className="section-title text-base mb-2">
-                          Franchise icons
-                        </h3>
+                        <SectionHeader as="h3" kicker="Best of the franchise" title="Franchise icons" club={t?.name} className="mb-2" />
                         <ul className="grid gap-2 sm:grid-cols-3">
                           {legends.slice(0, 3).map((l, i) => (
                             <li key={`${l.player.position}:${displayName(l.player.name)}`} className="min-w-0">
@@ -302,9 +302,12 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                                 type="button"
                                 onClick={() => setSelectedPlayer(l.player)}
                                 {...peekProps(l.player)}
-                                className="flex w-full min-w-0 items-center gap-3 rounded-lg border border-border bg-secondary/30 p-2.5 text-left hover:border-line"
+                                className="ts-icon flex w-full min-w-0 items-center gap-3 p-2.5 text-left"
                                 aria-label={`Number ${i + 1} franchise icon: ${displayName(l.player.name)}, ${l.player.position}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
                               >
+                                {sprites ? (
+                                  <span className="flex-none" aria-hidden="true"><GameSprite player={l.player} team={t?.name ?? summary.label} kind="bust" size="s" /></span>
+                                ) : null}
                                 <span className="font-display text-3xl font-extrabold italic leading-none text-gold" aria-hidden="true">
                                   {i + 1}
                                 </span>
@@ -324,9 +327,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                     <RetiredRafters team={t} retired={retired} yearsFor={yearsFor} onSelect={openRetired} ring={ringFor(t)} onRing={openRing} />
                     {summary.franchisePlayers.length > 0 && (
                       <section aria-labelledby="position-strength">
-                        <h3 id="position-strength" className="section-title text-base mb-1">
-                          All-time strength
-                        </h3>
+                        <SectionHeader as="h3" kicker="By position" title="All-time strength" club={t?.name} className="mb-1" />
                         <p className="mb-3 text-xs text-muted-foreground">
                           Best player ever at each position here, as a league percentile of Career Legacy at that position.
                         </p>
@@ -338,10 +339,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
 
                 {tab === 'legends' && (
                   <section aria-labelledby="franchise-legends">
-                    <h3 id="franchise-legends" className="section-title text-base mb-1">
-                      Notable players
-                      <span className="font-pixel text-[9px] text-muted-foreground">{legends.length}</span>
-                    </h3>
+                    <SectionHeader as="h3" kicker={`${legends.length} players`} title="Notable players" club={t?.name} className="mb-1" />
                     <p className="mb-3 text-xs text-muted-foreground">
                       Everyone whose career ran through {teamName}, from reconstructed career stints. Years are approximate.
                     </p>
@@ -388,14 +386,9 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                           })}
                         </ul>
                         {legends.length > LEGENDS_SHOWN && (
-                          <button
-                            type="button"
-                            aria-expanded={showAll}
-                            onClick={() => setTabState({ key: summary.key, tab: 'legends', all: !showAll })}
-                            className="mt-3 w-full rounded-md border border-border py-2 font-display text-xs font-bold uppercase tracking-wide text-muted-foreground hover:border-line hover:text-foreground"
-                          >
+                          <PixelChip className="mt-3 w-full justify-center" pressed={showAll} onClick={() => setTabState({ key: summary.key, tab: 'legends', all: !showAll })}>
                             {showAll ? `Show top ${LEGENDS_SHOWN}` : `Show all ${legends.length}`}
-                          </button>
+                          </PixelChip>
                         )}
                       </>
                     )}
@@ -405,22 +398,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                 {tab === 'roster' && roster.length > 0 && sprites && (
                   // The private Retro Bowl sprites (this Mac only): the roster as a formation, the list a tap away
                   <div className="flex justify-end">
-                    <div className="inline-flex rounded-full border border-line bg-card p-0.5" role="group" aria-label="Roster view">
-                      {(['field', 'list'] as const).map((v) => (
-                        <button
-                          key={v}
-                          type="button"
-                          aria-pressed={rosterView === v}
-                          onClick={() => setRosterView(v)}
-                          className={cn(
-                            'min-h-[32px] rounded-full px-3 text-sm font-semibold capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
-                            rosterView === v ? 'bg-gold text-night' : 'text-muted-foreground hover:text-chalk',
-                          )}
-                        >
-                          {v === 'field' ? 'Field' : 'List'}
-                        </button>
-                      ))}
-                    </div>
+                    <ArcadeToggle<"field" | "list"> size="sm" label="Roster view" club={t?.name} value={rosterView} onChange={setRosterView} options={[{ value: 'field', label: 'Field' }, { value: 'list', label: 'List' }]} />
                   </div>
                 )}
                 {tab === 'roster' && roster.length > 0 && sprites && rosterView === 'field' && (
@@ -433,10 +411,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                   ) : (
                     roster.map(({ position, players }) => (
                       <section key={position} aria-labelledby={`roster-${position}`}>
-                        <h3 id={`roster-${position}`} className="section-title text-base mb-2">
-                          {POSITION_LABELS[position]}
-                          <span className="font-pixel text-[9px] text-muted-foreground">{players.length}</span>
-                        </h3>
+                        <SectionHeader as="h3" kicker={`${players.length}`} title={POSITION_LABELS[position]} className="mb-2" />
                         <ul className="grid gap-2 sm:grid-cols-2">
                           {players.map((p) => (
                             <li key={`${p.position}:${displayName(p.name)}`} className="min-w-0">
@@ -472,9 +447,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
 
                 {tab === 'leaders' && (
                   <section aria-labelledby="franchise-leaders">
-                    <h3 id="franchise-leaders" className="section-title text-base mb-1">
-                      Franchise leaders
-                    </h3>
+                    <SectionHeader as="h3" kicker="Career totals" title="Franchise leaders" club={t?.name} className="mb-1" />
                     <p className="mb-3 text-xs text-muted-foreground">
                       Career totals of everyone who played for {teamName}. Single-season and per-team splits aren't tracked.
                     </p>
@@ -483,24 +456,22 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                     ) : (
                       <ul className="grid gap-2 sm:grid-cols-2">
                         {leaders.map(({ stat, top }) => (
-                          <li key={stat.key} className="min-w-0 rounded-lg border border-border bg-secondary/25 p-3">
+                          <li key={stat.key} className="min-w-0"><PixelPanel club={t?.name} tone="stripe" pad="sm" className="h-full">
                             <p className="font-pixel text-[8px] uppercase text-gold">{stat.label}</p>
                             <ol className="mt-1.5 space-y-1">
                               {top.map(({ player, value }, i) => (
                                 <li key={`${player.position}:${displayName(player.name)}`} className="flex min-w-0 items-baseline gap-2">
                                   <span className="w-3 shrink-0 font-pixel text-[8px] text-muted-foreground">{i + 1}</span>
-                                  <button
-                                    type="button"
+                                  <ClubStrip
+                                    club={t?.name}
+                                    size="sm"
+                                    logo={i === 0}
                                     onClick={() => setSelectedPlayer(player)}
                                     {...peekProps(player)}
-                                    className={cn(
-                                      'min-w-0 flex-1 truncate text-left hover:text-gold',
-                                      i === 0 ? 'font-display text-lg font-bold uppercase leading-tight' : 'text-sm',
-                                    )}
+                                    className={cn('min-w-0 flex-1 justify-start', i === 0 && 'ts-lead')}
                                   >
-                                    {displayName(player.name)}
-                                    <span className="ml-1 text-xs font-normal normal-case text-muted-foreground">{player.position}</span>
-                                  </button>
+                                    {displayName(player.name)} <small>{player.position}</small>
+                                  </ClubStrip>
                                   <span
                                     className={cn('shrink-0 font-display font-extrabold tabular-nums', i === 0 ? 'text-xl' : 'text-sm text-muted-foreground')}
                                     style={i === 0 ? { color: accent } : undefined}
@@ -510,7 +481,7 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                                 </li>
                               ))}
                             </ol>
-                          </li>
+                          </PixelPanel></li>
                         ))}
                       </ul>
                     )}

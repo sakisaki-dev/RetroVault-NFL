@@ -1,64 +1,67 @@
-import { useMemo, useState } from 'react';
-import { Crown, LayoutGrid, ListOrdered, Medal, Minus, Star, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
-import { gameHash, playoffGameId, useGameIds } from '@/utils/nflGames';
+import { openGame, playoffGameId, useGameIds } from '@/utils/nflGames';
 import { PlayerHit, StarSprite, clinchTags, playoffSeeds, type Clinch } from './NflSeasonExtras';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { SeasonView } from '@/utils/seasonLive';
-import type { PlayerLookup } from './LivePanels';
-import { BOARD_BG, LampGrid, color, lampText, signed } from './seasonGamesUi';
+import { signed } from './seasonGamesUi';
 import { LeagueTable, SectionTitle } from './SeasonGames';
-import { useFieldArt } from '@/components/teamlab/fieldArt';
 import { useLeague } from '@/context/LeagueContext';
 import { isInLeague } from '@/components/InLeague';
-import './nflHeader.css';
+import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, StadiumHeader, clubVars, type StagePlayer } from '@/components/arcade';
+import './sx.css';
 
 /**
- * NFL edition Season page pieces in the site's pixel-stadium style: the season jumbotron (champion, Super Bowl, AP
- * award winners with sprites), the playoff bracket on a turf board, division banners with playoff marks and the power
- * ladder with movement against the season before. All rules over the per-season schedule file.
+ * NFL edition Season page pieces (arcade kit, flat club colours): the season header (the leading club's stadium and
+ * stars, its record on an LED board, the champion plate, AP award winners with sprites), the playoff bracket as score
+ * tiles on a turf board, division boards and the power ladder with movement against the season before. All rules over
+ * the per-season schedule file.
  */
 
 const nick = (team: string) => findNFLTeam(team)?.name ?? team;
-const FIELD = 'linear-gradient(180deg, hsl(142 38% 17%), hsl(142 42% 12%))';
+const cv = (club?: string | null) => clubVars(club) as CSSProperties;
 
 const AWARD_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'Offensive POY', dpoy: 'Defensive POY', oroy: 'Offensive ROY', droy: 'Defensive ROY', sbmvp: 'Super Bowl MVP' };
 
-const AwardPlate = ({ kind, a, big }: { kind: string; a: { player: string; team: string; position: string }; big?: boolean }) => (
-  <li className={cn('min-w-0', big && 'col-span-2 sm:col-span-3 lg:col-span-1 lg:row-span-2')}>
-  <PlayerHit name={a.player} pos={a.position}
-    className={cn('relative flex h-full w-full min-w-0 items-end gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.7)] px-2 pt-1.5', big ? 'lg:flex-col lg:items-center lg:px-3 lg:pt-3' : '')}
-    style={{ background: `linear-gradient(135deg, ${color(a.team, 0.45)}, hsl(228 55% 6%) 75%)` }}
-  >
-    <div className={cn('flex-shrink-0 self-end', big && 'lg:order-2')} style={{ marginBottom: big ? -6 : -4 }}>
-      <StarSprite name={a.player} pos={a.position} team={a.team} size={big ? 'l' : 'm'} celebrate={kind === 'mvp' || kind === 'sbmvp'} />
-    </div>
-    <div className={cn('min-w-0 flex-1 pb-2', big && 'lg:order-1 lg:text-center')}>
-      <p className="flex items-center gap-1 font-pixel text-[9px] uppercase tracking-wider text-[hsl(var(--gold))] lg:justify-[inherit]">
-        {kind === 'mvp' && <Crown className="h-3 w-3" aria-hidden />}
-        {AWARD_LABEL[kind] ?? kind}
-      </p>
-      <p className={cn('break-words font-display font-bold leading-tight', big ? 'text-xl' : 'text-sm')}>{a.player}</p>
-      <p className="truncate text-[11px] text-muted-foreground">
-        {a.position} · {nick(a.team)}
-      </p>
-    </div>
-  </PlayerHit>
+const AwardPlate = ({ kind, a }: { kind: string; a: { player: string; team: string; position: string } }) => (
+  <li className="min-w-0">
+    <PlayerHit name={a.player} pos={a.position} className={cn('sx-award', kind === 'mvp' && 'sx-award--mvp')} style={cv(a.team)}>
+      <span className="sx-award__sprite">
+        <StarSprite name={a.player} pos={a.position} team={a.team} size="m" celebrate={kind === 'mvp' || kind === 'sbmvp'} />
+      </span>
+      <span className="sx-award__txt">
+        <span className="sx-award__kick">
+          {kind === 'mvp' || kind === 'sbmvp' ? <PixelIcon name={kind === 'mvp' ? 'crown' : 'trophy'} size={12} /> : <PixelIcon name="star" size={12} />}
+          {AWARD_LABEL[kind] ?? kind}
+        </span>
+        <span className="sx-award__name block">{displayName(a.player)}</span>
+        <span className="sx-award__sub block">
+          {a.position} · {nick(a.team)}
+        </span>
+      </span>
+    </PlayerHit>
   </li>
 );
 
+const CONFETTI = Array.from({ length: 18 }, (_, i) => ({ left: `${(i * 37) % 100}%`, delay: `${-((i * 0.7) % 5).toFixed(1)}s`, d: `${4 + (i % 4)}s` }));
 
 /**
- * The season header's scene: the leading club's crowd and turf (useFieldArt), its three best players standing on the
- * turf as game sprites and the record on a pixel scoreboard (CSS stand-ins and logos where the game art is absent).
+ * The season header: the leading club's stadium (the game's crowd and turf painted to it) with its three best players
+ * standing on it and the record on an LED board, then the champion plate and the AP award winners.
  */
-const HeaderScene = ({ season, team, live }: { season: SeasonView; team: string; live: boolean }) => {
-  const art = useFieldArt(team, 'night');
+export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolean }) => {
+  const sb = season.superBowl;
+  const aw = season.awards ?? {};
+  const kinds = ['mvp', 'opoy', 'dpoy', 'oroy', 'droy', 'sbmvp'].filter((k) => aw[k]);
+  const [w, l] = (sb?.score ?? '').split('-');
+  const top = [...season.table].sort((a, b) => b.pct - a.pct || b.diff - a.diff)[0];
+  const lead = sb?.winner ?? top?.team;
   const { getAllPlayers, dataVersion } = useLeague();
-  const id = findNFLTeam(team)?.name;
+  const id = findNFLTeam(lead ?? '')?.name;
   const best = useMemo(
     () =>
       getAllPlayers()
@@ -68,83 +71,73 @@ const HeaderScene = ({ season, team, live }: { season: SeasonView; team: string;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [getAllPlayers, dataVersion, id, live],
   );
-  const row = season.table.find((r) => r.team === team);
-  const t = findNFLTeam(team);
-  const order = best.length === 3 ? [best[1], best[0], best[2]] : best;
+  const stage = useMemo<StagePlayer[]>(() => (best.length === 3 ? [best[1], best[0], best[2]] : best).map((p) => ({ player: p, action: p === best[0] ? 'celebrate' : undefined })), [best]);
+  const row = season.table.find((r) => r.team === lead);
+  const wk = season.weeks?.filter((x) => x.games.some((g) => g.awayScore !== undefined)).length;
   return (
-    <div className="nsh-scene" style={{ ['--nsh-tint' as string]: t ? `hsl(${t.primaryColor})` : 'hsl(var(--gold))' }}>
-      <div className={cn('nsh-scene__crowd', art.crowd && 'nsh-scene__crowd--art')} style={art.crowd ? { backgroundImage: `url(${art.crowd})` } : undefined} aria-hidden="true" />
-      {art.stands && <div className="nsh-scene__stands" style={{ backgroundImage: `url(${art.stands})` }} aria-hidden="true" />}
-      <div className={cn('nsh-scene__turf', art.turf && 'nsh-scene__turf--art')} style={art.turf ? { backgroundImage: `url(${art.turf})` } : undefined} aria-hidden="true" />
-      <div className="nsh-scene__row">
-        <div className="nsh-scene__figs">
-          {order.map((p) => (
-            <PlayerHit key={p.name} name={p.name} pos={p.position} className="nsh-fig">
-              <StarSprite name={p.name} pos={p.position} team={team} size="m" celebrate={p === best[0]} />
-              <span className="nsh-fig__name">{displayName(p.name)}</span>
+    <section aria-label={`${season.season} season`} className="sx-block">
+      {lead && (
+        <StadiumHeader
+          club={lead}
+          players={stage}
+          size="m"
+          kicker={live ? `${season.season} season · in progress${wk ? ` · week ${wk}` : ''}` : `${season.season} season${sb ? ` · Super Bowl ${sb.roman}` : ''}`}
+          title={nick(lead)}
+          height={240}
+          right={row ? <LedBoard label={live ? 'Best record' : 'Final record'} value={row.record} sub={`${signed(row.diff)} pts · power #${Number.isFinite(row.power) ? row.power : '–'}`} dot={3} /> : undefined}
+        />
+      )}
+      {best.length > 0 && (
+        <div className="sx-stars" aria-label={`${nick(lead ?? '')} stars`}>
+          {best.map((p) => (
+            <PlayerHit key={p.name} name={p.name} pos={p.position} className="max-w-full">
+              <ClubStrip club={lead} size="sm">{displayName(p.name)}</ClubStrip>
             </PlayerHit>
           ))}
         </div>
-        <div className="nsh-board" aria-label={`${team} record`}>
-          <span className="nsh-board__k">{live ? 'Best record' : 'Final record'}</span>
-          <span className="nsh-board__rec">{row?.record ?? ''}</span>
-          {row && <span className="nsh-board__sub">{signed(row.diff)} pts · power #{Number.isFinite(row.power) ? row.power : '–'}</span>}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolean }) => {
-  const sb = season.superBowl;
-  const aw = season.awards ?? {};
-  const kinds = ['mvp', 'opoy', 'dpoy', 'oroy', 'droy', 'sbmvp'].filter((k) => aw[k]);
-  const [w, l] = (sb?.score ?? '').split('-');
-  const top = [...season.table].sort((a, b) => b.pct - a.pct || b.diff - a.diff)[0];
-  const lead = sb?.winner ?? top?.team;
-  return (
-    <section aria-label={`${season.season} season`} className="relative overflow-hidden rounded-xl border border-[hsl(var(--gold)/0.55)] shadow-[0_0_24px_hsl(var(--gold)/0.12)]" style={{ background: BOARD_BG }}>
-      <span aria-hidden className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 18% 0%, ${color(lead, 0.5)}, transparent 62%)` }} />
-      <LampGrid />
-      {lead && <div className="relative p-3 pb-0 sm:p-4 sm:pb-0"><HeaderScene season={season} team={lead} live={live} /></div>}
-      <div className="relative grid gap-3 p-3 sm:p-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-          {lead && <TeamLogo team={lead} decorative className="h-20 w-20 flex-shrink-0 drop-shadow-[0_0_18px_hsl(0_0%_100%/0.2)] sm:h-28 sm:w-28" />}
-          <div className="min-w-0">
-            <p className="font-pixel text-[9px] uppercase tracking-[0.2em] text-[hsl(var(--gold))]">
-              {live ? `${season.season} season · in progress` : `${season.season} season${sb ? ` · Super Bowl ${sb.roman}` : ''}`}
-            </p>
+      )}
+      {lead && sb && (
+        <div className="sx-champ" style={cv(lead)}>
+          {sb && (
+            <span className="sx-confetti" aria-hidden>
+              {CONFETTI.map((c, i) => (
+                <i key={i} style={{ left: c.left, animationDelay: c.delay, animationDuration: c.d }} />
+              ))}
+            </span>
+          )}
+          <span className="sx-champ__logo"><TeamLogo team={lead} decorative className="h-16 w-16" /></span>
+          <div className="sx-champ__txt">
             {sb ? (
               <>
-                <p className="flex items-center gap-1.5 font-display text-2xl font-bold uppercase leading-tight sm:text-3xl">
-                  <Trophy className="h-6 w-6 flex-shrink-0 text-[hsl(var(--gold))]" aria-hidden /> {nick(sb.winner)}
-                </p>
-                <p className={cn('font-display text-3xl font-bold tabular-nums leading-none sm:text-4xl', lampText)}>
-                  {w}–{l}
-                </p>
-                <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                  over <TeamLogo team={sb.loser} decorative className="h-4 w-4" /> {nick(sb.loser)}
-                </p>
+                <span className="sx-champ__kick">Super Bowl {sb.roman} champions</span>
+                <span className="sx-champ__name"><PixelIcon name="trophy" size={26} /> {nick(sb.winner)}</span>
+                <span className="sx-champ__over">over <TeamLogo team={sb.loser} decorative className="h-5 w-5" /> {nick(sb.loser)}</span>
               </>
             ) : top ? (
               <>
-                <p className="font-display text-2xl font-bold uppercase leading-tight">{nick(top.team)}</p>
-                <p className={cn('font-display text-3xl font-bold tabular-nums leading-none', lampText)}>{top.record}</p>
-                <p className="mt-1 text-xs text-muted-foreground">best record so far · Super Bowl still to play</p>
+                <span className="sx-champ__kick">Best record so far</span>
+                <span className="sx-champ__name">{nick(top.team)}</span>
+                <span className="sx-champ__over">{top.record} · Super Bowl still to play</span>
               </>
             ) : null}
           </div>
+          {sb && w && l && (
+            <span className="sx-champ__led ax-ledboard" role="img" aria-label={`Final score ${w} to ${l}`}>
+              <span className="ax-kicker">Final</span>
+              <LedDigits value={`${w}-${l}`} dot={4} />
+            </span>
+          )}
         </div>
-        {kinds.length > 0 ? (
-          <ul className="grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-[1.25fr_1fr_1fr]" aria-label="AP award winners">
-            {kinds.map((k, i) => (
-              <AwardPlate key={k} kind={k} a={aw[k]} big={i === 0} />
-            ))}
-          </ul>
-        ) : (
-          <p className="self-center font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">Awards are announced after the Super Bowl</p>
-        )}
-      </div>
+      )}
+      {kinds.length > 0 ? (
+        <ul className="sx-awards" aria-label="AP award winners">
+          {kinds.map((k) => (
+            <AwardPlate key={k} kind={k} a={aw[k]} />
+          ))}
+        </ul>
+      ) : (
+        <p className="sx-note">Awards are announced after the Super Bowl.</p>
+      )}
     </section>
   );
 };
@@ -153,25 +146,20 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
 
 type PGame = NonNullable<SeasonView['playoffs']>[number]['games'][number];
 
-const BracketGame = ({ g, final, seeds, href }: { g: PGame; final?: boolean; seeds: Map<string, number>; href?: string }) => {
-  const rows = [
-    { t: g.away, s: g.away_score, w: g.away_score > g.home_score },
-    { t: g.home, s: g.home_score, w: g.home_score > g.away_score },
-  ];
+const BracketGame = ({ g, final, seeds, id }: { g: PGame; final?: boolean; seeds: Map<string, number>; id?: string }) => {
   const fav = g.line === undefined || g.line === 0 ? null : g.line > 0 ? g.home : g.away;
-  const upset = fav && rows.find((r) => r.w)?.t !== fav && Math.abs(g.line!) >= 2.5;
+  const winner = g.away_score > g.home_score ? g.away : g.home;
+  const upset = fav && winner !== fav && Math.abs(g.line!) >= 2.5;
+  const seed = (t: string) => (seeds.has(t) ? `#${seeds.get(t)}` : undefined);
   return (
-    <li className={cn('overflow-hidden rounded-md border bg-black/55 backdrop-blur-sm', final ? 'border-[hsl(var(--gold))] shadow-[0_0_18px_hsl(var(--gold)/0.35)]' : 'border-white/15')}>
-      {rows.map((r) => (
-        <div key={r.t} className="flex items-center gap-1.5 px-2 py-1" style={{ background: `linear-gradient(90deg, ${color(r.t, r.w ? 0.55 : 0.12)}, transparent 85%)` }}>
-          {seeds.has(r.t) && <span className="w-3 text-center font-pixel text-[8px] text-white/60" title="Playoff seed">{seeds.get(r.t)}</span>}
-          <TeamLogo team={r.t} decorative className="h-5 w-5 flex-shrink-0" />
-          <span className={cn('flex-1 truncate font-display text-sm font-bold uppercase', !r.w && 'text-foreground/55')}>{r.t}</span>
-          <span className={cn('font-display text-base font-bold tabular-nums', r.w ? lampText : 'text-foreground/55')}>{r.s}</span>
-        </div>
-      ))}
-      {href && <a href={href} className="block bg-white/10 px-2 py-0.5 text-center font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))] hover:bg-white/20">Box score</a>}
-      {upset && <p className="bg-[hsl(var(--gold)/0.18)] px-2 py-0.5 text-center font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))]">Upset · line {fav} −{Math.abs(g.line!)}</p>}
+    <li className="min-w-0">
+      <ScoreTile
+        away={{ club: g.away, score: g.away_score, record: seed(g.away) }}
+        home={{ club: g.home, score: g.home_score, record: seed(g.home) }}
+        footer={upset ? `UPSET · LINE ${fav} −${Math.abs(g.line!)}` : final ? 'SUPER BOWL' : 'FINAL'}
+        onClick={id ? () => openGame(id) : undefined}
+        className={cn('sx-bracket-tile', final && 'is-final')}
+      />
     </li>
   );
 };
@@ -179,40 +167,39 @@ const BracketGame = ({ g, final, seeds, href }: { g: PGame; final?: boolean; see
 export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
   const ids = useGameIds(IS_NFL);
   const rounds = season.playoffs ?? [];
+  const seeds = useMemo(() => playoffSeeds(season), [season]);
   if (!rounds.length) return null;
   const sb = season.superBowl;
-  const seeds = useMemo(() => playoffSeeds(season), [season]);
   return (
-    <div className="space-y-2">
-      <SectionTitle icon={Trophy}>Road to the Super Bowl</SectionTitle>
-      <div className="relative overflow-x-auto rounded-xl border border-[hsl(142_30%_28%)] p-3" style={{ background: FIELD }}>
-        <span aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), hsl(0 0% 100% / 0.5) calc(10% - 2px) 10%)' }} />
+    <div className="sx-block">
+      <SectionTitle kicker="Postseason" club={sb?.winner}>Road to the Super Bowl</SectionTitle>
+      <div className="sx-field">
         <div className="relative flex min-w-[640px] items-stretch gap-3">
           {rounds.map((r) => (
             <div key={r.round} className="flex min-w-0 flex-1 flex-col">
-              <p className={cn('mb-2 text-center font-pixel text-[9px] uppercase tracking-widest', r.round === 'Super Bowl' ? 'text-[hsl(var(--gold))]' : 'text-white/70')}>{r.round}</p>
-              <ul className="flex flex-1 flex-col justify-around gap-2">
+              <p className={cn('sx-field__round', r.round === 'Super Bowl' && 'is-sb')}>{r.round}</p>
+              <ul className="flex flex-1 list-none flex-col justify-around gap-2 p-0">
                 {r.games.map((g) => (
-                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} href={(() => { const id = playoffGameId(ids, season.season, g.away, g.home); return id ? gameHash(id) : undefined; })()} />
+                  <BracketGame key={`${g.away}-${g.home}`} g={g} final={r.round === 'Super Bowl'} seeds={seeds} id={playoffGameId(ids, season.season, g.away, g.home)} />
                 ))}
               </ul>
             </div>
           ))}
           {sb && (
-            <div className="flex w-24 flex-shrink-0 flex-col items-center justify-center gap-1 text-center">
-              <Trophy className="h-14 w-14 text-[hsl(var(--gold))] drop-shadow-[0_0_14px_hsl(var(--gold)/0.7)]" aria-hidden />
+            <div className="sx-field__cup">
+              <PixelIcon name="trophy" size={56} color="hsl(var(--gold))" />
               <TeamLogo team={sb.winner} decorative className="h-9 w-9" />
-              <span className="font-pixel text-[8px] uppercase tracking-wider text-[hsl(var(--gold))]">Champions</span>
+              <span>Champions</span>
             </div>
           )}
         </div>
       </div>
-      {seeds.size > 0 && <p className="text-[11px] text-muted-foreground">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</p>}
+      {seeds.size > 0 && <p className="sx-note">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</p>}
     </div>
   );
 };
 
-/* ---------------- Division banners ---------------- */
+/* ---------------- Division boards ---------------- */
 
 export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upcoming?: { away: string; home: string }[] }) => {
   const seeds = useMemo(() => playoffSeeds(season), [season]);
@@ -237,37 +224,39 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
   if (!divisions.length) return null;
   const old = Number(season.season) < 2002;
   return (
-    <div className="space-y-2">
-      <SectionTitle icon={LayoutGrid}>Division banners</SectionTitle>
-      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="sx-block">
+      <SectionTitle kicker="Standings" club={divisions[0][1][0].team}>Division boards</SectionTitle>
+      <ul className="sx-divs">
         {divisions.map(([name, rows]) => (
-          <li key={name} className="relative">
-            <span aria-hidden className="absolute -top-2 left-4 right-4 h-2 rounded-t border border-b-0 border-white/20 bg-[hsl(228_30%_16%)]" />
-            <div className="overflow-hidden rounded-b-xl rounded-t-sm border border-[hsl(var(--line)/0.7)]" style={{ background: `linear-gradient(180deg, ${color(rows[0].team, 0.6)}, hsl(228 55% 6%) 55%)`, clipPath: 'polygon(0 0, 100% 0, 100% 94%, 50% 100%, 0 94%)' }}>
-              <p className="px-3 pt-2 font-pixel text-[9px] uppercase tracking-widest text-white/80">{name}</p>
-              <ol className="space-y-px px-1.5 pb-5 pt-1">
-                {rows.map((r, i) => {
-                  const champ = season.superBowl?.winner === r.team;
-                  const post = made.has(r.abbr);
-                  return (
-                    <li key={r.abbr} className={cn('flex items-center gap-1.5 rounded px-1.5 py-1', i === 0 ? 'bg-black/40' : '')}>
-                      <TeamLogo team={r.team} decorative className="h-5 w-5 flex-shrink-0" />
-                      <span className={cn('min-w-0 flex-1 truncate text-[13px] font-semibold uppercase', done && !post && 'text-foreground/50')}>{r.team}</span>
-                      {seeds.has(r.abbr) && <span className="rounded bg-black/50 px-1 font-pixel text-[8px] text-[hsl(var(--gold))]" title="Playoff seed">#{seeds.get(r.abbr)}</span>}
-                      {tags.get(r.abbr) && <span className={cn('rounded px-1 font-pixel text-[7px] uppercase', tags.get(r.abbr) === 'out' ? 'bg-black/40 text-foreground/45' : 'bg-[hsl(var(--gold)/0.22)] text-[hsl(var(--gold))]')} title="Clinched or eliminated by the games left">{tags.get(r.abbr) === 'div' ? 'Div' : tags.get(r.abbr) === 'in' ? 'In' : 'Out'}</span>}
-                      {champ ? <Trophy className="h-3.5 w-3.5 text-[hsl(var(--gold))]" aria-label="Champion" /> : done && post ? <Star className="h-3 w-3 fill-[hsl(var(--gold))] text-[hsl(var(--gold))]" aria-label="Made the playoffs" /> : done ? <span className="font-pixel text-[7px] uppercase text-foreground/40">out</span> : null}
-                      <span className="w-[52px] text-right text-xs tabular-nums text-foreground/90">{r.record}</span>
-                      <span className="w-8 text-right text-[11px] tabular-nums text-muted-foreground">{signed(r.diff)}</span>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
+          <li key={name} className="sx-div" style={cv(rows[0].team)}>
+            <p className="sx-div__head">
+              <TeamLogo team={rows[0].team} decorative className="h-6 w-6 p-px" />
+              {name}
+            </p>
+            <ol className="m-0 list-none p-0">
+              {rows.map((r, i) => {
+                const champ = season.superBowl?.winner === r.team;
+                const post = made.has(r.abbr);
+                return (
+                  <li key={r.abbr} className={cn('sx-div__row', i === 0 && 'is-lead', done && !post && 'is-out')} style={cv(r.team)}>
+                    <TeamLogo team={r.team} decorative className="h-7 w-7 flex-shrink-0" />
+                    <span className="sx-div__name">
+                      <span>{r.team}</span>
+                      {seeds.has(r.abbr) && <span className="sx-tag" title="Playoff seed">#{seeds.get(r.abbr)}</span>}
+                      {tags.get(r.abbr) && <span className={cn('sx-tag', tags.get(r.abbr) === 'out' && 'sx-tag--out')} title="Clinched or eliminated by the games left">{tags.get(r.abbr) === 'div' ? 'Div' : tags.get(r.abbr) === 'in' ? 'In' : 'Out'}</span>}
+                      {champ ? <PixelIcon name="trophy" size={14} color="hsl(var(--gold))" label="Champion" /> : done && post ? <PixelIcon name="star" size={12} color="hsl(var(--gold))" label="Made the playoffs" /> : null}
+                    </span>
+                    <span className="sx-div__rec">{r.record}</span>
+                    <span className="sx-div__diff">{signed(r.diff)}</span>
+                  </li>
+                );
+              })}
+            </ol>
           </li>
         ))}
       </ul>
-      {old && <p className="text-[11px] text-muted-foreground">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
-      {tags.size > 0 && <p className="text-[11px] text-muted-foreground">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
+      {old && <p className="sx-note">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
+      {tags.size > 0 && <p className="sx-note">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
     </div>
   );
 };
@@ -275,36 +264,37 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
 /* ---------------- Power ladder ---------------- */
 
 export const PowerLadder = ({ season }: { season: SeasonView }) => {
-  const [all, setAll] = useState(false);
+  const [all, setAll] = useState<'10' | 'all'>('10');
   const rows = [...season.table].filter((r) => Number.isFinite(r.power)).sort((a, b) => a.power - b.power);
   if (!rows.length) return null;
   const max = Math.max(...rows.map((r) => r.powerScore));
   const min = Math.min(...rows.map((r) => r.powerScore));
-  const shown = all ? rows : rows.slice(0, 10);
+  const shown = all === 'all' ? rows : rows.slice(0, 10);
   const prev = season.prevPower;
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <SectionTitle icon={Medal}>Power ladder</SectionTitle>
-        <button type="button" onClick={() => setAll((v) => !v)} className="rounded-full border border-border/50 px-2.5 py-1 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
-          {all ? 'Top 10' : `All ${rows.length}`}
-        </button>
-      </div>
-      <ol className="grid gap-1.5 md:grid-cols-2">
+    <div className="sx-block">
+      <SectionTitle
+        kicker="Rankings"
+        club={rows[0].team}
+        right={<ArcadeToggle label="Ladder length" size="sm" value={all} onChange={(v) => setAll(v as '10' | 'all')} options={[{ value: '10', label: 'Top 10' }, { value: 'all', label: `All ${rows.length}` }]} />}
+      >
+        Power ladder
+      </SectionTitle>
+      <ol className="sx-ladder">
         {shown.map((r) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
           return (
-            <li key={r.abbr} className="relative flex items-center gap-2 overflow-hidden rounded-lg border border-[hsl(var(--line)/0.6)] px-2 py-1.5" style={{ background: BOARD_BG }}>
-              <span aria-hidden className="absolute inset-y-0 left-0 opacity-70" style={{ width: `${8 + (88 * (r.powerScore - min)) / Math.max(1, max - min)}%`, background: `linear-gradient(90deg, ${color(r.team, 0.5)}, transparent)` }} />
-              <span className={cn('relative w-7 text-center font-display text-xl font-bold tabular-nums', r.power <= 3 ? lampText : 'text-foreground/80')}>{r.power}</span>
-              <TeamLogo team={r.team} decorative className="relative h-7 w-7 flex-shrink-0" />
-              <span className="relative min-w-0 flex-1 truncate font-display text-sm font-bold uppercase">{r.team}</span>
-              <span className="relative text-xs tabular-nums text-foreground/85">{r.record}</span>
-              <span className="relative w-9 text-right text-[11px] tabular-nums text-muted-foreground">{signed(r.diff)}</span>
-              <span className={cn('relative flex w-9 items-center justify-end gap-0.5 text-[11px] font-semibold tabular-nums', move === null ? 'text-muted-foreground' : move > 0 ? 'text-[hsl(145_63%_55%)]' : move < 0 ? 'text-[hsl(357_80%_70%)]' : 'text-muted-foreground')} title={before ? `Ranked ${before} the season before` : 'Not ranked the season before'}>
+            <li key={r.abbr} className={cn('sx-rung', r.power <= 3 && 'is-top')} style={cv(r.team)}>
+              <span className="sx-rung__n">{r.power}</span>
+              <TeamLogo team={r.team} decorative className="h-8 w-8 flex-shrink-0" />
+              <span className="sx-rung__name">{r.team}</span>
+              <span className="sx-rung__rec">{r.record}</span>
+              <span className="sx-rung__diff">{signed(r.diff)}</span>
+              <span className={cn('sx-rung__mv', move === null ? 'text-muted-foreground' : move > 0 ? 'text-[hsl(145_63%_55%)]' : move < 0 ? 'text-[hsl(357_80%_70%)]' : 'text-muted-foreground')} title={before ? `Ranked ${before} the season before` : 'Not ranked the season before'}>
                 {move === null ? <span className="font-pixel text-[7px]">NEW</span> : move > 0 ? <><TrendingUp className="h-3 w-3" aria-hidden />{move}</> : move < 0 ? <><TrendingDown className="h-3 w-3" aria-hidden />{-move}</> : <Minus className="h-3 w-3" aria-hidden />}
               </span>
+              <span className="sx-rung__bar" aria-hidden><i style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%` }} /></span>
             </li>
           );
         })}
@@ -317,10 +307,12 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
 export const FullTable = ({ season }: { season: SeasonView }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="space-y-2">
-      <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="flex items-center gap-2 rounded-full border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
-        <ListOrdered className="h-3.5 w-3.5" aria-hidden /> {open ? 'Hide the full league table' : 'Full league table'}
-      </button>
+    <div className="sx-block">
+      <div>
+        <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="ax-chip">
+          {open ? 'Hide the full league table' : 'Full league table'}
+        </button>
+      </div>
       {open && <LeagueTable season={season} />}
     </div>
   );

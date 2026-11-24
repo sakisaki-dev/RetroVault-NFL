@@ -31,6 +31,7 @@ import {
 import { Card, GradeChip, ScoreBar } from '../parts';
 import type { SavedLab } from './useNflLab';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 const GROUPS: { title: string; units: UnitId[] }[] = [
   { title: 'Offense', units: OFFENSE_UNITS },
@@ -66,7 +67,7 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
     <div className="lab-analysis nfl-report">
       <Card title="Unit ratings" className="lab-order-1" icon={<TrendingUp className="h-5 w-5 text-gold" aria-hidden="true" />}>
         <p className="mb-3 text-xs text-muted-foreground">
-          Each score is a percentile against {BENCH_SIZE} random {lineup.off} / {lineup.def} lineups of today's depth-chart starters: 80 means better than 80% of possible teams. Offense {Math.round(UNIT_WEIGHTS.team.offense * 100)}%, defense {Math.round(UNIT_WEIGHTS.team.defense * 100)}%, star power {Math.round(UNIT_WEIGHTS.team.star * 100)}% of the team grade. Ratings: {RATING_SOURCES.find((r) => r.id === src)?.label}.{carFallback.length > 0 && ` No 2026 snaps, so rated on CAR: ${carFallback.slice(0, 6).join(', ')}${carFallback.length > 6 ? ` and ${carFallback.length - 6} more` : ''}.`}
+          Each score is a percentile against {BENCH_SIZE} random {lineup.off} / {lineup.def} lineups of today's depth-chart starters: 80 means better than 80% of possible teams. Offense {Math.round(UNIT_WEIGHTS.team.offense * 100)}%, defense {Math.round(UNIT_WEIGHTS.team.defense * 100)}%, star power {Math.round(UNIT_WEIGHTS.team.star * 100)}% of the team grade. Ratings: {RATING_SOURCES.find((r) => r.id === src)?.label}.{carFallback.length > 0 && ` No 2026 snaps, so rated on ${CAREER_LABEL}: ${carFallback.slice(0, 6).join(', ')}${carFallback.length > 6 ? ` and ${carFallback.length - 6} more` : ''}.`}
         </p>
         <div className="space-y-4">
           {GROUPS.map((g) => (

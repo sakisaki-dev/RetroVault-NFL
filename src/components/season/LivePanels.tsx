@@ -15,6 +15,8 @@ import { SectionTitle, Toggle } from './SeasonGames';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './nflLocker.css';
 import { useInjuryList, type InjuryCode } from '@/utils/injuries';
+import { ArcadeToggle, PixelIcon, clubVars } from '@/components/arcade';
+import './sx.css';
 import { displayName } from '@/utils/displayName';
 
 /**
@@ -391,66 +393,60 @@ export const NflInjuryReport = ({ lookup, season }: { lookup: PlayerLookup; seas
   const shown = all ? rows : rows.slice(0, 24);
   const total = list.entries.filter((e) => lookup(e.key)).length;
   return (
-    <div className="space-y-2">
-      <SectionTitle icon={HeartPulse}>Injury report · week {list.week}</SectionTitle>
-      <div className="nsl" role="region" aria-label="Injury report">
-        <div className="nsl__banner">
-          <span className="nsl__count">{total}</span>
-          <span className="nsl__title">Players on the report</span>
-          <span className="nsl__lamps">
+    <div className="sx-block">
+      <SectionTitle kicker="Locker room" club={rows[0] ? rows[0].p!.bannerTeam || rows[0].p!.team : undefined}>Injury report · week {list.week}</SectionTitle>
+      <div className="sx-locker" role="region" aria-label="Injury report">
+        <div className="sx-locker__banner">
+          <PixelIcon name="whistle" size={22} color="#fff" />
+          <span className="sx-locker__count">{total}</span>
+          <span className="sx-locker__title">Players on the report</span>
+          <span className="sx-locker__lamps">
             {(['IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => (
-              <span key={c} className="nsl__lamp" style={{ color: HURT[c].ink }}>
-                <i aria-hidden style={{ background: HURT[c].ink, boxShadow: `0 0 6px ${HURT[c].ink}` }} />
+              <span key={c} className="sx-locker__lamp" style={{ color: '#fff' }}>
+                <i aria-hidden style={{ color: HURT[c].ink }} />
                 {HURT[c].label} {counts(c)}
               </span>
             ))}
           </span>
         </div>
-        <div className="nsl__body">
-      <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by status">
-        {(['all', 'IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => (
-          <button
-            key={c}
-            type="button"
-            aria-pressed={only === c}
-            onClick={() => setOnly(c)}
-            className={cn('rounded-full border px-2.5 py-1 font-pixel text-[9px] uppercase tracking-wider', only === c ? 'border-[hsl(var(--gold))] bg-[hsl(var(--gold)/0.15)] text-[hsl(var(--gold))]' : 'border-border/50 text-muted-foreground')}
-          >
-            {c === 'all' ? `All ${total}` : `${HURT[c].label} ${counts(c)}`}
-          </button>
-        ))}
-      </div>
-      <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-        {shown.map((e) => {
-          const p = e.p!;
-          const club = p.bannerTeam || p.team;
-          const h = HURT[e.code];
-          return (
-            <li key={e.key} {...peekKeyProps(e.key)} className="nsl__row relative flex min-h-[72px] items-center gap-3 overflow-hidden rounded-lg border border-border/40 px-3 py-2 text-sm" style={{ background: `linear-gradient(100deg, ${color(club)}33, hsl(222 47% 9% / 0.9) 55%)` }}>
-              <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: color(club) }} />
-              <span className="relative h-[54px] w-[44px] flex-shrink-0 overflow-hidden">
-                <GameSprite player={{ name: p.name, position: p.position, team: p.team, bannerTeam: p.bannerTeam }} team={club} kind="bust" size="s" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <PlayerStrip name={displayName(p.name)} position={p.position} team={club} size="sm" />
-                <p className="mt-1 truncate text-[11px] capitalize text-muted-foreground">
-                  {p.position} · {p.team === 'FA' ? 'Free agent' : p.team}
-                  {e.part ? ` · ${e.part}` : ''}
-                </p>
-              </div>
-              <span className="flex flex-shrink-0 items-center gap-1.5 rounded-sm bg-black/60 px-1.5 py-1 font-pixel text-[9px] tracking-widest" style={{ color: h.ink, boxShadow: `inset 0 0 0 1px ${h.ink}55` }}>
-                <i aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: h.ink, boxShadow: `0 0 6px ${h.ink}` }} />
-                {h.label}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-      {rows.length > 24 && (
-        <button type="button" onClick={() => setAll(!all)} className="rounded-md border border-border/50 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground hover:text-foreground">
-          {all ? 'Show fewer' : `Show all ${rows.length}`}
-        </button>
-      )}
+        <div className="sx-locker__body">
+          <ArcadeToggle
+            label="Filter by status"
+            size="sm"
+            value={only}
+            onChange={(v) => setOnly(v as InjuryCode | 'all')}
+            options={(['all', 'IR', 'Out', 'Doubtful', 'Questionable'] as const).map((c) => ({ value: c, label: c === 'all' ? `All ${total}` : `${HURT[c].label} ${counts(c)}` }))}
+          />
+          <ul className="sx-locker__list">
+            {shown.map((e) => {
+              const p = e.p!;
+              const club = p.bannerTeam || p.team;
+              const h = HURT[e.code];
+              return (
+                <li key={e.key} {...peekKeyProps(e.key)} className="sx-stall" style={clubVars(club) as CSSProperties}>
+                  <span className="sx-stall__bust">
+                    <GameSprite player={{ name: p.name, position: p.position, team: p.team, bannerTeam: p.bannerTeam }} team={club} kind="bust" size="s" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <PlayerStrip name={displayName(p.name)} position={p.position} team={club} size="sm" />
+                    <p className="mt-1 truncate text-[11px] capitalize text-muted-foreground">
+                      {p.position} · {p.team === 'FA' ? 'Free agent' : p.team}
+                      {e.part ? ` · ${e.part}` : ''}
+                    </p>
+                  </div>
+                  <span className="sx-stall__tag" style={{ color: h.ink }}>
+                    <i aria-hidden />
+                    {h.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          {rows.length > 24 && (
+            <button type="button" onClick={() => setAll(!all)} className="ax-chip justify-self-start">
+              {all ? 'Show fewer' : `Show all ${rows.length}`}
+            </button>
+          )}
         </div>
       </div>
     </div>

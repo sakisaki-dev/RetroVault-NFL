@@ -9,6 +9,7 @@ import { BOX, groupOf, seasonRates } from './statDefs';
 import type { SeasonPoint } from './careerModel';
 import type { EventKind } from './careerStory';
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /** One chartable metric over his seasons (the hero's chips, the comparison overlay). */
 export interface GraphMetric {
@@ -39,7 +40,7 @@ export const graphMetrics = (pos: Position): GraphMetric[] => {
   if (hit) return hit;
   const card: GraphMetric[] = [
     { id: 'ovr', label: 'SZN · season OVR', short: 'SZN', group: 'Card', get: (p) => p.ovr, fmt: int, definition: 'His OVR for that season alone: the season\'s line ranked within his position among the players who played it (small samples shrunk toward the position floor).' },
-    { id: 'car', label: 'CAR · career OVR', short: 'CAR', group: 'Card', get: (p) => p.car, fmt: int, definition: 'His CAR at the season end: the whole career to that point ranked within his position (the card rating).' },
+    { id: 'car', label: `${CAREER_LABEL} · career rating`, short: CAREER_LABEL, group: 'Card', get: (p) => p.car, fmt: int, definition: `His ${CAREER_LABEL} at the season end: the whole career to that point ranked within his position (the card rating).` },
     { id: 'value', label: 'Card value', short: 'Value', group: 'Card', get: (p) => p.value, fmt: (v) => `${shortNum(v)} c`, definition: 'Base card value in coins at the season end.' },
     { id: 'legacy', label: 'Career Legacy', short: 'Legacy', group: 'Card', get: (p) => p.legacy, fmt: int, definition: 'Career Legacy at the season end (re-scaled with the league on every upload).' },
     { id: 'rank', label: 'Legacy rank', short: 'Rank', group: 'Card', get: (p) => p.legacyRank || null, fmt: (v) => `#${int(v)}`, invert: true, definition: 'His Career Legacy rank among every recorded player at the season end.' },

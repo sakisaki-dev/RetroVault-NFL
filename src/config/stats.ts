@@ -1,5 +1,6 @@
 // Single source of truth for league stat formulas and thresholds.
 // See docs/STATS_REFERENCE.md for where each value is used.
+import { IS_NFL } from './edition';
 
 interface MetricInputs {
   games: number;
@@ -57,6 +58,39 @@ export const NORMALIZATION_BENCHMARK_TOP_N = 3;
 export const DEFENSIVE_POSITIONS = ['LB', 'DB', 'DL'] as const;
 export const isDefensivePosition = (pos: string) => (DEFENSIVE_POSITIONS as readonly string[]).includes(pos);
 
+/**
+ * TPG scale (NFL edition only). The position factor above equalizes the top-3 CAREER TOTALS, which longevity drives,
+ * so per-game TPG sat on different scales (QB, OL and TE far above RB, WR and defenders). TPG gets its own per-position
+ * factor, benchmarked per game: the 90th-percentile TPG of qualified players (games >= min(32, the position's median
+ * games)) is aligned to the mean of the positions' 90th percentiles. True Talent, Dominance and Career Legacy are untouched.
+ */
+export const TPG_SCALE_ENABLED = IS_NFL;
+export const TPG_QUALIFY_GAMES = 32;
+export const TPG_BENCHMARK_PERCENTILE = 0.9;
+
+const percentile = (sorted: number[], f: number) => sorted[Math.min(sorted.length - 1, Math.floor(f * (sorted.length - 1) + 0.5))];
+
+/** Per-position multiplier for TPG (see TPG_SCALE_ENABLED); input players carry the position-normalized True Talent. */
+export const computeTpgFactors = (players: { position: string; games: number; trueTalent: number; isRealLegend?: boolean }[]): Record<string, number> => {
+  const byPos = new Map<string, { games: number; tpg: number }[]>();
+  players.forEach((p) => {
+    if (p.isRealLegend || !(p.trueTalent > 0)) return;
+    byPos.set(p.position, [...(byPos.get(p.position) ?? []), { games: p.games, tpg: p.trueTalent / (p.games + 50) }]);
+  });
+  const bench = new Map<string, number>();
+  byPos.forEach((rows, pos) => {
+    const gs = rows.map((r) => r.games).sort((a, b) => a - b);
+    const minG = Math.min(TPG_QUALIFY_GAMES, gs[Math.floor(gs.length / 2)]);
+    const t = rows.filter((r) => r.games >= minG).map((r) => r.tpg).sort((a, b) => a - b);
+    if (t.length) bench.set(pos, percentile(t, TPG_BENCHMARK_PERCENTILE));
+  });
+  if (bench.size === 0) return {};
+  const reference = [...bench.values()].reduce((a, b) => a + b, 0) / bench.size;
+  const out: Record<string, number> = {};
+  bench.forEach((b, pos) => { if (b > 0) out[pos] = reference / b; });
+  return out;
+};
+
 interface NormalizablePlayer extends MetricInputs {
   position: string;
   isRealLegend?: boolean;
@@ -105,6 +139,9 @@ export const computePositionFactors = (players: NormalizablePlayer[]): Record<st
 export const normalizeLeague = <T extends NormalizablePlayer>(players: T[]): T[] => {
   if (!POSITION_NORMALIZATION_ENABLED) return players;
   const factors = computePositionFactors(players);
+  const tpgFactors = TPG_SCALE_ENABLED
+    ? computeTpgFactors(players.map((p) => ({ ...p, trueTalent: round(getRawTrueTalent(p) * (factors[p.position] ?? 1), 1) })))
+    : {};
 
   return players.map((p) => {
     const raw = getRawTrueTalent(p);
@@ -118,7 +155,7 @@ export const normalizeLeague = <T extends NormalizablePlayer>(players: T[]): T[]
       positionFactor,
       dominance,
       careerLegacy: round(calcCareerLegacy(adjusted, dominance), 3),
-      tpg: round(calcTPG(adjusted), 2),
+      tpg: round(calcTPG(adjusted) * (tpgFactors[p.position] ?? 1), 2),
     };
   });
 };

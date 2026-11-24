@@ -25,6 +25,7 @@ import { FINISH_ICON, FINISH_TEXT } from './rarityIcons';
 import type { CardInfo } from './useCardPool';
 import { dur, ease } from '@/utils/motion';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /*
  * Swipe browser: a full-screen carousel over the binder's current filter and sort (owned cards only). One large card
@@ -680,7 +681,7 @@ const CardBrowser = ({ open, list, owned, display, total, covered = false, focus
               <p className="cbw__name">{displayName(cur.player.name)}</p>
               <p className="cbw__team">
                 {cur.player.position} · {cur.cardTeam}
-                {cur.ovr != null && <> · CAR {cur.ovr}</>}
+                {cur.ovr != null && <> · {CAREER_LABEL} {cur.ovr}</>}
               </p>
               <ul className="cbw__chips" aria-label="Card">
                 <li className={cn('cbw__chip col-gem', `col-gem--${cur.tier}`)}>

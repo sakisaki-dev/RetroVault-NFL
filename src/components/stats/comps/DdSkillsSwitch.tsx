@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
 import DdAdvancedFactors from './DdAdvancedFactors';
 import { IS_NFL } from '@/config/edition';
+import { CAREER_LABEL } from '@/config/ovr';
 
 interface Props {
   player: Player;
@@ -95,7 +96,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
       <DdSkills
         player={useSeason ? seasonMe! : player}
         ovr={useSeason ? seasonOvr?.ovr[key] : car}
-        ovrLabel={useSeason ? 'SZN' : 'CAR'}
+        ovrLabel={useSeason ? 'SZN' : CAREER_LABEL}
         traits={grades.traits}
         overall={grades.overall}
         players={useSeason ? seasonPlayers : players}

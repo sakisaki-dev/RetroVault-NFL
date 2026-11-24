@@ -14,6 +14,7 @@ import {
 import { leagueScore, playerKey } from '@/config/ovr';
 import type { Overall } from '@/config/skillGrades';
 import { fmtFixed } from '@/utils/numberFormat';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * Graph Builder stat catalogue: every stat that can go on an axis, with its label, definition, direction and
@@ -160,7 +161,7 @@ const metricStats = (): GraphStat[] =>
   });
 
 const RATINGS: GraphStat[] = [
-  { id: 'ovr', label: 'Rating (SZN active, CAR retired)', short: 'SZN/CAR', group: 'Ratings', definition: 'Official overall rating (career production and awards), same as the arcade.', positions: POSITIONS, decimals: 0, get: (p, d) => d.ovrMap.get(playerKey(p)) ?? null },
+  { id: 'ovr', label: `Rating (SZN active, ${CAREER_LABEL} retired)`, short: `SZN/${CAREER_LABEL}`, group: 'Ratings', definition: 'Official overall rating (career production and awards), same as the arcade.', positions: POSITIONS, decimals: 0, get: (p, d) => d.ovrMap.get(playerKey(p)) ?? null },
   { id: 'skill', label: 'Skill rating', short: 'Skill', group: 'Ratings', definition: 'Per-game skills graded against the position, on the OVR curve. League players only.', positions: POSITIONS, decimals: 0, get: (p, d) => d.skillMap.get(playerKey(p))?.rating ?? null },
   { id: 'careerLegacy', label: 'Career Legacy', short: 'Legacy', group: 'Ratings', definition: 'Career Legacy = 4·TT + 4·Dominance + 2·G.' + (IS_NFL ? '' : ' 7,000+ is the Hall of Fame.'), positions: POSITIONS, decimals: 0, get: (p) => positive(field(p, 'careerLegacy')) },
   { id: 'trueTalent', label: 'True Talent', short: 'TT', group: 'Ratings', definition: 'True Talent, position-normalised.', positions: POSITIONS, decimals: 1, get: (p) => positive(field(p, 'trueTalent')) },

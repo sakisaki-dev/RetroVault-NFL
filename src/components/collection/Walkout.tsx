@@ -17,6 +17,7 @@ import AutographCanvas from './autograph/AutographCanvas';
 import { useAutographFor } from './autograph/sample';
 import { autographValue, fmtMult, inkRowOf, parallelOf, serialStr } from '@/config/autographs';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /** Firework bursts: [left %, top %, delay s]; Legendary fires a second volley. */
 const VOLLEY = [
@@ -302,9 +303,9 @@ const Walkout = ({ card, info, total, beats, step, reduced, badge, onAdvance, on
                 </span>
               )}
               {hero === 'ovr' && (
-                <span key="ovr" className="wk__ovr" aria-label={`CAR ${info.ovr ?? 'unknown'}`}>
+                <span key="ovr" className="wk__ovr" aria-label={`${CAREER_LABEL} ${info.ovr ?? 'unknown'}`}>
                   <OvrCount to={info.ovr} ms={Math.min(1100, ovrBeat * 0.75)} />
-                  <span className="wk__ovr-label">CAR</span>
+                  <span className="wk__ovr-label">{CAREER_LABEL}</span>
                 </span>
               )}
             </div>

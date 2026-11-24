@@ -14,6 +14,7 @@ import { POSITION_NAMES } from '@/utils/playerMeta';
 import { tributeEntryOf, useLeagueContent, useTribute, type StoryStat, type Tribute, type TributeChapter, type TributeIndexEntry } from '@/utils/leagueContent';
 import './tribute.css';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * A Player Tribute (the fifth AI-authored lane: data/y80/tributes.json, written only by tribute.set; every figure
@@ -126,7 +127,7 @@ const TradeCard = ({ c, subject }: { c: TributeChapter; subject: string }) => {
                       <span className="trib-trade__pos">{p.pos}</span>
                     </span>
                     <span className="trib-trade__line">
-                      {p.ovr != null ? `CAR ${p.ovr}` : ''}
+                      {p.ovr != null ? `${CAREER_LABEL} ${p.ovr}` : ''}
                       {p.grade ? ` · ${p.grade}` : ''}
                       {p.value != null ? ` · ${fmt(p.value)}` : ''}
                     </span>

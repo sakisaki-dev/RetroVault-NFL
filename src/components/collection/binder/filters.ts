@@ -1,6 +1,7 @@
 import type { Position } from '@/types/player';
 import type { Finish, Tier } from '@/utils/collection';
 import type { CardInfo } from '../useCardPool';
+import { CAREER_LABEL } from '@/config/ovr';
 
 /** The binder's view, search, filters and sort (Binder.tsx) */
 export type BinderSort = 'set' | 'ovr' | 'tier' | 'finish' | 'recent' | 'name' | 'pos' | 'club';
@@ -23,7 +24,7 @@ export const SORTS: { key: BinderSort; label: string }[] = [
   { key: 'recent', label: 'Newest' },
   { key: 'tier', label: 'Rarity' },
   { key: 'finish', label: 'Finish' },
-  { key: 'ovr', label: 'CAR' },
+  { key: 'ovr', label: CAREER_LABEL },
   { key: 'name', label: 'Name' },
   { key: 'pos', label: 'Position' },
   { key: 'club', label: 'Club' },
