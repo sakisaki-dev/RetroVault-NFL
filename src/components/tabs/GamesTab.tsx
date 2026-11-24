@@ -19,6 +19,7 @@ import { HomeNews } from '../news/WhatChanged';
 import { ArcadeRatingContext, STAT_KEYS, loadGameStat, saveGameStat, useGamePlayers, type ArcadeRating, type GamePlayer } from '../games/gameUtils';
 import { fnv1a } from '@/utils/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { CAREER_LABEL } from '@/config/ovr';
 
 type GameId = 'rank' | 'perfect' | 'kc' | 'legend' | 'hol' | 'grid' | 'imposter' | 'sixdeg' | 'ou' | 'build';
 
@@ -63,8 +64,8 @@ const GAMES: GameDef[] = [
   {
     id: 'rank',
     title: 'Blind Rank',
-    pitch: 'Slot five players by rating (CAR, or SZN) before you see who comes next.',
-    rule: 'Five players arrive one at a time. Slot each from 1 to 5 by rating (CAR, or SZN) before you see who comes next. No moving them later.',
+    pitch: `Slot five players by rating (${CAREER_LABEL}, or SZN) before you see who comes next.`,
+    rule: `Five players arrive one at a time. Slot each from 1 to 5 by rating (${CAREER_LABEL}, or SZN) before you see who comes next. No moving them later.`,
     color: 'var(--gold)',
     record: best(STAT_KEYS.rankBest, 'Best round', (n) => `${n}/10`),
     render: (players, ovrMap) => <BlindRank players={players} ovrMap={ovrMap} />,
@@ -73,7 +74,7 @@ const GAMES: GameDef[] = [
     id: 'kc',
     title: 'Keep 3, Cut 3',
     pitch: 'Six players, three roster spots. Every call is final.',
-    rule: 'Six players arrive one at a time. Keep the three highest ratings (CAR, or SZN) and cut the rest. Every call is final.',
+    rule: `Six players arrive one at a time. Keep the three highest ratings (${CAREER_LABEL}, or SZN) and cut the rest. Every call is final.`,
     color: 'var(--flag)',
     record: () => {
       const n = loadGameStat(STAT_KEYS.kcRounds, 0);
@@ -312,9 +313,9 @@ const GamesTab = () => {
           </div>
           <div className="hall-switches">
             <Lamp label="Players" value={IS_NFL ? players.length : league.length} />
-            <button type="button" role="switch" aria-checked={rating === 'szn'} className="toggle" onClick={toggleRating} title="Rank by CAR (career OVR, everyone) or SZN (this season's OVR, active players only)">
+            <button type="button" role="switch" aria-checked={rating === 'szn'} className="toggle" onClick={toggleRating} title={`Rank by ${CAREER_LABEL} (career rating, everyone) or SZN (this season's OVR, active players only)`}>
               <span className="track" aria-hidden="true" />
-              {rating === 'szn' ? 'SZN · this season' : 'CAR · career'}
+              {rating === 'szn' ? 'SZN · this season' : `${CAREER_LABEL} · career`}
             </button>
             {IS_NFL && (
               <div className="hall-era" role="group" aria-label="Era">

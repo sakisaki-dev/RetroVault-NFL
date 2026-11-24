@@ -47,6 +47,7 @@ import './player/playerCard.css';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { RetiredHangers, RetiredStrip } from './teams/RetiredBadge';
 import { displayName } from '@/utils/displayName';
+import { CAREER_LABEL } from '@/config/ovr';
 
 // The collectible art (card faces, kits, autograph canvas) loads only when the Card designs tab is opened
 const CardDesignsPanel = lazy(() => import('./player/CardDesignsPanel'));
@@ -264,8 +265,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
   const points = awardPoints(player);
 
   const scoreboard = [
-    { key: 'ovr', label: seasonShown ? 'SZN' : 'CAR', title: seasonShown ? 'Season OVR (62–99): this season ranked within the position among players who played it' : 'Career OVR (62–99), League Score rank within the position', value: ovr, decimals: 0 },
-    ...(seasonShown && car != null ? [{ key: 'car', label: 'CAR', title: 'Career OVR (62–99): the whole career ranked within the position', value: car, decimals: 0 }] : []),
+    { key: 'ovr', label: seasonShown ? 'SZN' : CAREER_LABEL, title: seasonShown ? 'Season OVR (62–99): this season ranked within the position among players who played it' : 'Career OVR (62–99), League Score rank within the position', value: ovr, decimals: 0 },
+    ...(seasonShown && car != null ? [{ key: 'car', label: CAREER_LABEL, title: 'Career OVR (62–99): the whole career ranked within the position', value: car, decimals: 0 }] : []),
     ...(skill ? [{ key: 'skill', label: `Skill · ${skill.grade.grade}`, title: 'Skill rating: per-game skills graded against the position, ignores career length and awards', value: skill.rating, decimals: 0 }] : []),
     { key: 'score', label: 'League Score', title: 'Production + awards (the input to OVR)', value: score, decimals: 0 },
     ...(player.games > 0
@@ -330,8 +331,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
             team={team ?? player.team}
             number={jerseyNumber}
             ovr={ovr}
-            ovrLabel={seasonShown ? 'SZN' : 'CAR'}
-            ovrAlt={seasonShown && car != null ? { label: 'CAR', value: car } : null}
+            ovrLabel={seasonShown ? 'SZN' : CAREER_LABEL}
+            ovrAlt={seasonShown && car != null ? { label: CAREER_LABEL, value: car } : null}
             hallOfFamer={hof}
             // the hanging banner (RetiredHangers below) carries the retired number in the hero
             retiredBy={null}

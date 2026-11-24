@@ -26,6 +26,7 @@ import TeamLogo from "@/components/brand/TeamLogo";
 import CountUp from "@/components/brand/CountUp";
 import { HeatMeter } from "@/components/news/HotTakes";
 import { peekProps } from "@/components/peek/peekProps";
+import { CAREER_LABEL } from '@/config/ovr';
 
 /**
  * Season Rewind cards (one per kind, scripts/season_rewind.py builds their data): the card's club colours as its
@@ -497,7 +498,7 @@ const Market = ({ card, players, onPlayer }: CardProps) => (
           <span className="rw-mover__val">
             {p.was?.toLocaleString("en-US")} →{" "}
             {p.value?.toLocaleString("en-US")} coins
-            {p.ovr ? ` · CAR ${p.ovr}` : ""}
+            {p.ovr ? ` · ${CAREER_LABEL} ${p.ovr}` : ""}
             {p.grade ? ` · ${p.grade}` : ""}
           </span>
           <NameStrip p={p} players={players} onPlayer={onPlayer} />

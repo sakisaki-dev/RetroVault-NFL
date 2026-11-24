@@ -6,6 +6,7 @@ import { leagueScore, playerKey, type GamePlayer } from '@/config/ovr';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { inEra, loadGamePool, type Era } from '@/utils/gamePool';
 import { usePlayerExtras } from '@/utils/playerExtras';
+import { CAREER_LABEL } from '@/config/ovr';
 
 // The official OVR lives in src/config/ovr.ts (shared with the stats pages); re-exported for the games.
 export { leagueScore, ovr, playerKey, pyRound, type GamePlayer, type LegendPhoto } from '@/config/ovr';
@@ -416,7 +417,7 @@ export const saveGameStat = (key: string, value: number) => {
 export type ArcadeRating = 'car' | 'szn';
 export const ArcadeRatingContext = createContext<ArcadeRating>('car');
 /** "CAR" or "SZN": the label for any rating a game prints */
-export const useRatingTag = (): 'CAR' | 'SZN' => (useContext(ArcadeRatingContext) === 'szn' ? 'SZN' : 'CAR');
+export const useRatingTag = (): 'OVR' | 'CAR' | 'SZN' => (useContext(ArcadeRatingContext) === 'szn' ? 'SZN' : CAREER_LABEL);
 
 export const useGamePlayers = (includeLegends: boolean, rating: 'car' | 'szn' = 'car', era: Era = 'all') => {
   const { league, legends, careerOvrMap, ovrMap: shownMap, seasonOvr, ovrBasis, loaded, dataVersion } = useGamePool();
