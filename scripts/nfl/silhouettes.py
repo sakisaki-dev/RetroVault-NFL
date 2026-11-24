@@ -56,7 +56,11 @@ def skin_set(a):
     """The donor's own skin colours: the warm colours of his face and neck (rows 8-28), so cloth that happens to be
     brown (the Browns' jersey) is never taken for skin."""
     cnt = collections.Counter(tuple(int(v) for v in a[y, x, :3]) for y in range(8, 29) for x in range(20, 44) if a[y, x, 3] and skinish(tuple(int(v) for v in a[y, x, :3])))
-    return {c for c, n in cnt.items() if n >= 3}
+    # Cloth is never skin: a red or orange helmet (Chiefs, Cardinals, 49ers, Buccaneers, Broncos) is "warm" too, and taking
+    # its colour for skin blacked out the whole jersey (Emmett Johnson's Chiefs kit came out near-black). Any colour that is
+    # also on the torso or the pants (centre columns, rows 33-52: no skin there) is cloth.
+    cloth = {tuple(int(v) for v in a[y, x, :3]) for y in range(33, 53) for x in range(26, 38) if a[y, x, 3]}
+    return {c for c, n in cnt.items() if n >= 3 and c not in cloth}
 
 
 def main():

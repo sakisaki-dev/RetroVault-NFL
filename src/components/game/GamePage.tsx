@@ -17,6 +17,7 @@ import {
 } from './gameModel';
 import './game.css';
 import { displayName } from '@/utils/displayName';
+import { stripKeySuffix } from '@/utils/nameSuffix';
 
 const MoreGames = lazy(() => import('./MoreGames'));
 
@@ -469,11 +470,22 @@ const Missing = ({ g }: { g: GameDetail }) => {
 
 const GameView = ({ g }: { g: GameDetail }) => {
   const { getAllPlayers } = useLeague();
-  const pool = useMemo(() => new Set(getAllPlayers().map((p) => `${p.position}:${displayName(p.name)}`)), [getAllPlayers]);
+  // nflverse lines carry no suffix ("James Cook"); the sheet does ("James Cook III"): exact key first, else the one suffixed match
+  const pool = useMemo(() => {
+    const m = new Map<string, string | null>();
+    getAllPlayers().forEach((p) => {
+      const k = `${p.position}:${displayName(p.name)}`;
+      m.set(k, k);
+      const b = stripKeySuffix(k);
+      if (b !== k && !m.has(b)) m.set(b, k);
+      else if (b !== k && m.get(b) !== k) m.set(b, null);
+    });
+    return m;
+  }, [getAllPlayers]);
   const link: Linker = (p) => {
     if (!hasCardPos(p.pos)) return null;
-    const key = `${sitePos(p.pos)}:${displayName(p.name)}`;
-    return pool.has(key) ? buildHash({ tab: 'career', sub: 'deepdive', p: key }) : null;
+    const key = pool.get(`${sitePos(p.pos)}:${displayName(p.name)}`);
+    return key ? buildHash({ tab: 'career', sub: 'deepdive', p: key }) : null;
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);
   const done = played(g);

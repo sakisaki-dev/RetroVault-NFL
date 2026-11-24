@@ -16,6 +16,7 @@ has one). Deterministic.
 import csv
 import gzip
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,6 +26,23 @@ ALIAS = {"LA": "LAR", "OAK": "LV", "SD": "LAC", "STL": "LAR", "WSH": "WAS", "JAC
 SITE_POS = {"QB": "QB", "RB": "RB", "FB": "RB", "WR": "WR", "TE": "TE", "DE": "DL", "DT": "DL", "NT": "DL", "DL": "DL",
             "LB": "LB", "ILB": "LB", "OLB": "LB", "MLB": "LB", "CB": "DB", "S": "DB", "FS": "DB", "SS": "DB", "DB": "DB"}
 OFF = {"QB", "RB", "WR", "TE"}
+SUFFIX = re.compile(r"\s+(Jr|Sr|II|III|IV|V)\.?$")
+
+
+def site_keys():
+    """gsis id -> the site's POS:Name (the card), and bare POS:Name -> the one suffixed card ("RB:James Cook" ->
+    "RB:James Cook III": nflverse drops Jr./III, the league sheet keeps it). Keys with two cards sharing a bare name stay raw."""
+    pj = ROOT / "data" / "y80" / "players.json"
+    by_gsis, bare, seen = {}, {}, set()
+    for p in json.loads(pj.read_text()) if pj.exists() else []:
+        k = f"{p['pos']}:{p['n']}"
+        seen.add(k)
+        if (p.get("nfl") or {}).get("gsis"):
+            by_gsis[p["nfl"]["gsis"]] = k
+        b = SUFFIX.sub("", k) if len(p["n"].split()) > 2 else k
+        if b != k:
+            bare[b] = None if b in bare else k
+    return by_gsis, {b: k for b, k in bare.items() if k and b not in seen}
 
 
 def f(r, k):
@@ -70,6 +88,13 @@ def line(pos, r):
 
 
 def main():
+    by_gsis, bare = site_keys()
+
+    def keyname(pos, r):
+        """(key, name) as the site knows him: his gsis card, else the bare-name card, else nflverse's own name."""
+        k = by_gsis.get(r.get("player_id", "")) or bare.get(f"{pos}:{r['player_display_name']}") or f"{pos}:{r['player_display_name']}"
+        return k, re.sub(r"\s*\([^)]*\)$", "", k.split(":", 1)[1]) if k in by_gsis.values() or k in bare.values() else r["player_display_name"]
+
     games = {}
     for r in csv.DictReader(gzip.open(CACHE / "games.csv.gz", "rt")):
         games[r["game_id"]] = (int(r["week"]), ALIAS.get(r["away_team"], r["away_team"]), ALIAS.get(r["home_team"], r["home_team"]))
@@ -85,7 +110,7 @@ def main():
             if not pos or not gm:
                 continue
             if r["season_type"] == "REG":
-                t = tot.setdefault((f"{pos}:{r['player_display_name']}", r["player_display_name"]), {"team": ""})
+                t = tot.setdefault(keyname(pos, r), {"team": ""})
                 t["team"] = ALIAS.get(r["team"], r["team"])
                 for stat, col in (("passing", "passing_yards"), ("rushing", "rushing_yards"), ("receiving", "receiving_yards"),
                                   ("sacks", "def_sacks"), ("interceptions", "def_interceptions")):
@@ -106,7 +131,7 @@ def main():
                 continue
             sc, r, pos = pick
             wk, away, home = gm = games[gid]
-            out.setdefault(f"{wk}-{away}-{home}", {})[side] = [f"{pos}:{r['player_display_name']}", r["player_display_name"], line(pos, r)]
+            out.setdefault(f"{wk}-{away}-{home}", {})[side] = [*keyname(pos, r), line(pos, r)]
         leaders = {}
         for stat in ("passing", "rushing", "receiving", "sacks", "interceptions"):
             top = sorted(((v.get(stat, 0), k) for k, v in tot.items() if v.get(stat, 0) > 0), key=lambda x: (-x[0], x[1]))[:3]
