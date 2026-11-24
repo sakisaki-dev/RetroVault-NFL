@@ -1,0 +1,64 @@
+/* Top performers: a themed block a club. Rounded, flat club colour, sprites doing the work. */
+.gm-pf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+@media (max-width: 767px) { .gm-pf { grid-template-columns: minmax(0, 1fr); } }
+.gm-pf__club { min-width: 0; overflow: hidden; border-radius: 16px; background: hsl(var(--panel) / 0.8); border: 1px solid hsl(var(--tc) / 0.45); }
+
+.gm-pf__band { position: relative; display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 0.9rem; background: var(--ax-c1); color: var(--ax-ink); border-bottom: 3px solid var(--ax-c2); }
+.gm-pf__logo { flex: none; width: 2.5rem; height: 2.5rem; filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.35)); }
+.gm-pf__name { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.05; font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gm-pf__name small { font-family: Inter, inherit; font-weight: 600; font-size: 10px; letter-spacing: 0.12em; opacity: 0.75; }
+.gm-pf__res { flex: none; display: inline-flex; align-items: baseline; gap: 0.35rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: rgb(0 0 0 / 0.32); color: #fff; font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.15rem; letter-spacing: 0.02em; }
+.gm-pf__res b { font-size: 1.05rem; color: hsl(var(--muted-foreground)); }
+.gm-pf__res.is-W b { color: hsl(var(--gold)); }
+
+.gm-pf__list { display: grid; gap: 0.55rem; padding: 0.65rem; }
+.gm-pf__card { position: relative; display: grid; grid-template-columns: 6.2rem minmax(0, 1fr); gap: 0.7rem; align-items: end; min-width: 0; padding: 0.55rem 0.7rem 0.6rem 0.55rem; border-radius: 14px;
+  background: hsl(var(--tc) / 0.09); border: 1px solid hsl(var(--tc) / 0.28); }
+.gm-pf__card.is-top { background: hsl(var(--tc) / 0.17); border-color: hsl(var(--tc) / 0.7); box-shadow: 0 0 0 1px hsl(var(--tc) / 0.25), 0 6px 18px -10px hsl(var(--tc) / 0.9); }
+.gm-pf__card.is-ball { border-color: hsl(var(--gold) / 0.75); }
+
+.gm-pf__floor { position: relative; align-self: stretch; display: flex; align-items: flex-end; justify-content: center; min-height: 6.4rem; border-radius: 12px; overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 100%, hsl(var(--tc) / 0.75), hsl(var(--tc) / 0.18) 62%, transparent 72%); }
+.gm-pf__floor::after { content: ''; position: absolute; left: 14%; right: 14%; bottom: 5px; height: 9px; border-radius: 50%; background: rgb(0 0 0 / 0.35); filter: blur(2px); }
+.gm-pf__floor > * { position: relative; z-index: 1; }
+.gm-pf__floor .game-sprite { transform: scale(0.74); transform-origin: bottom center; margin-bottom: 2px; }
+
+.gm-pf__body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.gm-pf__who { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.45rem; min-width: 0; }
+.gm-pf__n.gm-strip { border-radius: 999px; padding: 0 0.65rem; background: var(--ax-c1); color: var(--ax-ink); text-shadow: none; box-shadow: inset 0 0 0 1px var(--ax-c2); }
+.gm-pf__pos { padding: 0 0.45rem; border-radius: 999px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; color: hsl(var(--muted-foreground)); background: hsl(0 0% 100% / 0.06); }
+.gm-pf__ball { margin-left: auto; padding: 0.05rem 0.55rem; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #3a2400; background: hsl(var(--gold)); box-shadow: 0 0 10px hsl(var(--gold) / 0.45); }
+
+.gm-pf__big { display: flex; align-items: baseline; gap: 0.4rem; margin: 0; line-height: 1; }
+.gm-pf__big b { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 2.5rem; letter-spacing: -0.01em; color: var(--tl); font-variant-numeric: tabular-nums; }
+.gm-pf__big span { font-family: 'Barlow Condensed', inherit; font-weight: 700; font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--chalk) / 0.85); }
+.gm-pf__card.is-top .gm-pf__big b { font-size: 2.9rem; }
+.gm-pf__line { margin: 0; font-size: 12.5px; line-height: 1.35; color: hsl(var(--muted-foreground)); }
+
+.gm-pf__chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.1rem; }
+.gm-pf__chips li { display: inline-flex; flex-direction: column; align-items: flex-start; min-width: 3.1rem; padding: 0.15rem 0.55rem 0.2rem; border-radius: 10px; background: hsl(var(--panel) / 0.9); border: 1px solid hsl(0 0% 100% / 0.08); line-height: 1.1; }
+.gm-pf__chips b { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.05rem; color: hsl(var(--chalk)); font-variant-numeric: tabular-nums; }
+.gm-pf__chips span { font-size: 9.5px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: hsl(var(--muted-foreground)); white-space: nowrap; }
+
+.gm-pf__share { display: grid; gap: 0.2rem; margin-top: 0.1rem; }
+.gm-pf__track { display: block; height: 7px; border-radius: 999px; background: hsl(0 0% 100% / 0.08); overflow: hidden; }
+.gm-pf__track i { display: block; height: 100%; border-radius: 999px; background: var(--tl); --mo-o: 0%; }
+.gm-pf__sharet { font-size: 11px; color: hsl(var(--muted-foreground)); }
+.gm-pf__sharet b { color: hsl(var(--chalk)); font-family: 'Barlow Condensed', inherit; font-size: 0.95rem; }
+.gm-pf__none { padding: 0.5rem; font-size: 12px; color: hsl(var(--muted-foreground)); }
+
+@media (max-width: 767px) {
+  .gm-pf__band { padding: 0.6rem 0.75rem; } .gm-pf__name { font-size: 1.15rem; } .gm-pf__logo { width: 2.1rem; height: 2.1rem; }
+  .gm-pf__list { padding: 0.5rem; gap: 0.5rem; }
+  .gm-pf__card { grid-template-columns: 4.6rem minmax(0, 1fr); gap: 0.5rem; padding: 0.5rem; }
+  .gm-pf__floor { min-height: 5.2rem; }
+  .gm-pf__floor .game-sprite { transform: scale(0.6); }
+  .gm-pf__big b { font-size: 2rem; } .gm-pf__card.is-top .gm-pf__big b { font-size: 2.2rem; }
+  .gm-pf__ball { margin-left: 0; }
+}
+@media (max-width: 767px) {
+  .gm-pf__chips { gap: 0.25rem; }
+  .gm-pf__chips li { min-width: 2.5rem; padding: 0.12rem 0.4rem 0.15rem; }
+  .gm-pf__chips b { font-size: 0.95rem; } .gm-pf__chips span { font-size: 9px; letter-spacing: 0.04em; }
+}
+@media (max-width: 767px) { .gm-pf__name { white-space: normal; font-size: 1.05rem; line-height: 1; } .gm-pf__res { font-size: 1rem; padding: 0.15rem 0.55rem; } }

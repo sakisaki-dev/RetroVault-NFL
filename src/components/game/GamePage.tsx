@@ -19,6 +19,7 @@ import {
 } from './gameModel';
 import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, matchupTabs, type Linker } from './gameSections';
 import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, ArcadeToggle, CrowdDivider, ClubStrip } from '@/components/arcade';
+import { Performers } from './GamePerformers';
 import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
@@ -285,32 +286,6 @@ const GamePodium = ({ g, link, champions }: { g: GameDetail; link: Linker; champ
     </>
   );
 };
-
-/* ---- top performers: per club, four colour strips ---- */
-
-const Performers = ({ g, link }: { g: GameDetail; link: Linker }) => (
-  <Reveal className="gm-perf">
-    {([0, 1] as Side[]).map((s) => {
-      const abbr = s === 0 ? g.away : g.home;
-      const rows = g.players.filter((p) => p.side === s && score(p) > 0 && lineOf(p)).sort((a, b) => score(b) - score(a)).slice(0, 4);
-      return (
-        <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-perf__club mo-fade" style={{ ['--tc' as string]: toneOf(abbr), ['--i' as string]: s }}>
-          <p className="gm-perf__head"><TeamLogo team={abbr} decorative className="h-6 w-6" /> <span>{findNFLTeam(abbr)?.fullName ?? abbr}</span></p>
-          <ul>
-            {rows.map((p, i) => (
-              <li key={p.gsis + p.name} className={cn('gm-perf__row mo-rise', i === 0 && 'is-top')} style={stag(i + 1 + s)}>
-                <span className="gm-perf__floor"><SpriteOf p={p} g={g} size="m" celebrate={i === 0} /></span>
-                <span className="gm-perf__txt"><NameStrip p={p} g={g} link={link} className="gm-perf__n" /><span className="gm-perf__line">{p.pos} · {readableOf(p)}</span></span>
-              </li>
-            ))}
-            {!rows.length && <li className="gm-perf__none">No stat lines recorded for this club.</li>}
-          </ul>
-        </PixelPanel>
-      );
-    })}
-  </Reveal>
-);
-
 
 /* ---------------- rosters ---------------- */
 
