@@ -13,6 +13,7 @@ import { teamThemeVars } from '../../player/teamTheme';
 import '../../player/playerCard.css';
 import { VIZ, fmtNum, ordinal } from '../analytics/viz';
 import { DdBar } from './ddParts';
+import { LedBoard } from '@/components/arcade';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
 
@@ -55,7 +56,14 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
   const score = standing?.entry.score ?? null;
   const progress = score == null ? 0 : inHall ? score : Math.min(100, (score / bar) * 100);
 
+  const rings = Number((player as unknown as Record<string, number>).rings ?? 0);
   return (
+    <div className="space-y-3">
+    <div className="grid grid-cols-3 gap-2" style={{ maxWidth: 560 }}>
+      <LedBoard label="Games" value={player.games} dot={3} />
+      <LedBoard label="Rings" value={rings} dot={3} color="green" />
+      <LedBoard label={posStats[0]?.label ?? 'True Talent'} value={Math.round(posStats[0]?.value ?? 0)} dot={3} color="red" />
+    </div>
     <div className="grid gap-3 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div className="pc-root glass-card min-w-0 space-y-3 rounded-xl p-3 sm:p-4" style={theme.vars}>
         <h3 id="dd-arc-title" className="font-display text-base font-bold uppercase tracking-wide">
@@ -159,6 +167,7 @@ const DdCareer = ({ player, posStats }: { player: Player; posStats: PosStat[] })
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 };

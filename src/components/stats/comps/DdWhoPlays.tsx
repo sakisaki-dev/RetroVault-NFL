@@ -8,7 +8,9 @@ import { fmtFeature } from '@/config/skillGrades';
 import { cn } from '@/lib/utils';
 import TeamLogo from '../../brand/TeamLogo';
 import { peekProps } from '../../peek/peekProps';
-import Chips from '../analytics/Chips';
+import { ArcadeToggle, ClubStrip } from '@/components/arcade';
+import GameSprite from '../../GameSprite';
+import { bannerTeamOf } from '@/utils/playerExtras';
 import { VIZ, fmtNum, ordinal } from '../analytics/viz';
 import { keyOf } from '../records';
 import CompRadar from './CompRadar';
@@ -176,10 +178,11 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
     <div className="flex min-w-0 flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-display text-xs font-bold uppercase tracking-wide text-muted-foreground">Overlay</span>
-        <Chips
+        <ArcadeToggle
+          size="sm"
           label="Radar overlay"
           value={kind}
-          onChange={setKind}
+          onChange={(v) => setKind(v as Overlay)}
           options={[
             { value: 'comp', label: 'Selected comp' },
             { value: 'avg', label: `${player.position} average` },
@@ -298,11 +301,15 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
                       onClick={() => onDive(c.player)}
                       {...peekProps(c.player)}
                       aria-label={`${displayName(c.player.name)}, ${m === 'style' ? 'style match' : 'similarity'} ${Math.round(c.similarity)} of 100. Deep dive into him`}
-                      className="hover-lift flex h-full w-full flex-col gap-1 rounded-lg border border-line bg-panel p-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                      className="hover-lift flex h-full w-full flex-col gap-1.5 border-2 border-line bg-panel p-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                     >
-                      <span className="flex min-w-0 items-center gap-1.5">
-                        {c.player.team && <TeamLogo team={c.player.team} size={18} decorative backed />}
-                        <span className="truncate text-sm font-semibold">{displayName(c.player.name)}</span>
+                      <span className="flex min-w-0 items-end gap-1.5">
+                        <span className="grid h-9 w-8 shrink-0 place-items-end overflow-hidden">
+                          <GameSprite player={c.player} team={bannerTeamOf(c.player)} kind="bust" size="s" />
+                        </span>
+                        <ClubStrip club={bannerTeamOf(c.player) ?? c.player.team} size="sm" className="min-w-0 flex-1">
+                          {displayName(c.player.name).split(' ').slice(-1)[0]}
+                        </ClubStrip>
                       </span>
                       <span className="flex items-baseline justify-between gap-2">
                         <span className="font-display text-2xl font-extrabold leading-none text-chalk">{Math.round(c.similarity)}</span>
@@ -338,11 +345,12 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           <h3 className="font-display text-sm font-bold uppercase tracking-wide text-muted-foreground" title={SIMILARITY_DEFINITIONS[mode]}>
             Top comps
           </h3>
-          <Chips
+          <ArcadeToggle
+            size="sm"
             label="Similarity mode"
             value={mode}
-            onChange={onMode}
-            options={(['style', 'level'] as const).map((m) => ({ value: m, label: m === 'style' ? 'Plays like' : 'Closest overall', title: `${SIMILARITY_LABELS[m]}: ${SIMILARITY_DEFINITIONS[m]}` }))}
+            onChange={(v) => onMode(v as SimilarityMode)}
+            options={(['style', 'level'] as const).map((m) => ({ value: m, label: m === 'style' ? 'Plays like' : 'Closest overall' }))}
           />
         </div>
         {comps.length === 0 ? (

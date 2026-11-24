@@ -380,7 +380,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
               <tbody>
                 {slice.map((g) => (
                   <tr key={g.i} className={cn(g.post && 'gl-post', typeof g.r.game === 'string' && 'cursor-pointer hover:bg-white/5')} onClick={typeof g.r.game === 'string' ? (e) => { if (!(e.target as HTMLElement).closest('a')) openGame(g.r.game as string); } : undefined}>
-                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
+                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={26} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
                     <td><Result g={g} /></td>
                     {rule.line.map((c) => <td key={c.id} className={c.get(g.r) === 0 ? 'opacity-40' : ''}>{c.fmt ? c.fmt(g.r) : fmtN(c.get(g.r))}</td>)}
                     <td className="font-bold text-gold">{fmtN(g.key)}</td>

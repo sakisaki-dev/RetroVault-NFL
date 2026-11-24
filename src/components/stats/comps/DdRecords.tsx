@@ -7,11 +7,13 @@ import { priceRating } from '@/utils/cardMarket';
 import { playerKey } from '@/config/ovr';
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { VARIANTS, cardKey, finishLabel, tierFor, tierLabel, useCollection } from '@/utils/collection';
+import { PixelIcon, type PixelIconName } from '@/components/arcade';
 import { fmtNum } from '../analytics/viz';
 import type { RecordBook } from '../records';
 import LeaderboardPeek, { recordPeek } from './LeaderboardPeek';
 import { displayName } from '@/utils/displayName';
 
+const AWARD_ICON: Record<string, PixelIconName> = { rings: 'trophy', mvp: 'crown', opoy: 'star', dpoy: 'star', roty: 'helmet', sbmvp: 'ball' };
 const RANK_LABEL = ['Record', '2nd', '3rd', '4th', '5th'];
 
 /** Records held and top-5 ranks (each opens its leaderboard), the trophy shelf, and his collection card. */
@@ -75,16 +77,17 @@ const DdRecords = ({ player, book, ovr, onOpenPlayer }: { player: Player; book: 
       <div className="flex flex-col gap-3">
         <div className="glass-card space-y-2 p-3 sm:p-4">
           <h3 className="font-display text-base font-bold uppercase tracking-wide">Trophy shelf</h3>
-          <ul className="grid grid-cols-5 gap-1.5">
+          <ul className="grid grid-cols-5 gap-1.5 border-b-4 border-line pb-1.5">
             {awards.map((a) => {
               const n = (player as unknown as Record<string, number>)[a.key] ?? 0;
               return (
                 <li
                   key={a.key}
-                  className={cn('flex flex-col items-center gap-1 rounded-lg border p-2 text-center', n > 0 ? 'border-line bg-panel' : 'border-line/50 opacity-40')}
+                  className={cn('flex flex-col items-center gap-1 border-2 p-2 text-center', n > 0 ? 'bg-panel' : 'border-line/50 opacity-40')}
+                  style={n > 0 ? { borderColor: `hsl(${a.hsl})` } : undefined}
                   title={`${a.long}: ${n}`}
                 >
-                  <a.Icon className="h-6 w-6" style={{ color: n > 0 ? `hsl(${a.hsl})` : undefined }} aria-hidden="true" />
+                  <PixelIcon name={AWARD_ICON[a.key] ?? 'trophy'} size={24} color={n > 0 ? `hsl(${a.hsl})` : undefined} />
                   <span className="font-display text-xl font-extrabold leading-none">{n}</span>
                   <span className="font-pixel text-[7px] uppercase text-muted-foreground">{a.label}</span>
                   <span className="sr-only">{a.long}</span>

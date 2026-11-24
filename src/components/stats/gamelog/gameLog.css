@@ -37,8 +37,8 @@
 .gl-grid i { position: absolute; left: -26px; top: -7px; width: 22px; text-align: right; font: normal 9px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
 .gl-col { position: relative; flex: 1 1 0; max-width: 40px; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; min-width: 0; }
 .gl-bar { display: block; width: 100%; min-height: 3px; border: 0; border-radius: 3px 3px 0 0; cursor: pointer; padding: 0; transform-origin: bottom; position: relative; margin-bottom: 0; }
-.gl-bar--w { background: linear-gradient(180deg, hsl(var(--gl-w)), hsl(var(--turf-deep))); }
-.gl-bar--l { background: linear-gradient(180deg, hsl(var(--gl-l)), hsl(354 60% 32%)); }
+.gl-bar--w { background: hsl(var(--gl-w)); }
+.gl-bar--l { background: hsl(var(--gl-l)); }
 .gl-bar--t { background: linear-gradient(180deg, hsl(var(--sky)), hsl(199 60% 30%)); }
 .gl-bar--post { box-shadow: 0 -4px 0 hsl(var(--gold)); }
 .gl-bar:hover, .gl-bar.is-sel { filter: brightness(1.3); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85), 0 0 14px hsl(var(--gold) / 0.45); z-index: 2; }
@@ -110,3 +110,10 @@
 .gl-streak__n { grid-row: span 2; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1; color: hsl(var(--gold)); min-width: 2ch; text-align: center; }
 .gl-streak__l { font-size: 12px; font-weight: 600; line-height: 1.2; }
 .gl-streak__s { font-size: 10.5px; color: hsl(var(--muted-foreground)); }
+
+/* Game log rows: a flat W / L lamp, the score in bold, taller rows with a result stripe (the row click opens the game). */
+.gl-res--w b, .gl-res--l b, .gl-res--t b { display: inline-block; min-width: 18px; text-align: center; padding: 2px 4px; border-radius: 0; color: #0b1020; font-family: 'Silkscreen', monospace; font-size: 10px; }
+.gl-res--w b { background: hsl(var(--gl-w)); } .gl-res--l b { background: hsl(var(--gl-l)); } .gl-res--t b { background: hsl(var(--sky)); }
+.gl-res { font-weight: 700; font-variant-numeric: tabular-nums; }
+.gl-log tbody td, .gl-log tbody th { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.gl-log tbody tr:nth-child(even) { background: hsl(var(--line) / 0.12); }
