@@ -103,11 +103,19 @@ def pctof(sorted_vals, v):
 
 # ---------- weekly stats -> per player-season sums
 acc = defaultdict(lambda: {"g": 0})
+LGW = defaultdict(lambda: defaultdict(float))   # league-wide weekly sums per season (every player row), the same definitions as the PFR totals
+TGAMES = defaultdict(set)
 for y in range(1999, NOW + 1):
     with gzip.open(CACHE / f"stats_player_week_{y}.csv.gz", "rt") as fh:
         for r in csv.DictReader(fh):
             if r["season_type"] != "REG":
                 continue
+            lw = LGW[y]
+            TGAMES[y].add((r.get("team"), r.get("week")))
+            for c_, k_ in (("completions", "cmp"), ("attempts", "att"), ("passing_yards", "pyds"), ("passing_tds", "ptd"), ("passing_interceptions", "int"),
+                           ("sacks_suffered", "sacked"), ("carries", "ratt"), ("rushing_yards", "ryds"), ("rushing_tds", "rtd"), ("def_sacks", "dsacks"),
+                           ("def_interceptions", "dint")):
+                lw[k_] += fl(r.get(c_))
             m = gmap.get(r["player_id"])
             if not m or m[0] not in SPECS:
                 continue
@@ -379,17 +387,111 @@ for k, p in byk.items():
         t = tot_traits(p)
         if t:
             TOT[k] = (centre(k), t)
+
+# ---- the baseline: the league average of the seasons he played (owner, 2026-11-23: peer pools of 1980s greats were selection bias).
+# 1999+ seasons: the weekly league rate of his position (`lg`, and receptions / yards per player-game for rec_g, recyds_g).
+# 1970-1998: real league totals per season (Pro Football Reference's yearly pages through web.archive.org copies, parsed by
+# scripts/nfl/league_totals.py into the git-ignored data/nfl/league_cache/): Y/A, Cmp%, TD%, INT% (QBs, directly), and for the
+# other traits the league series as a ratio to its 1999-2003 level times his position's 1999-2003 weekly rate (so a WR's yards per
+# catch sits at the WR level, not the all-receiver level): Y/C, Y/R, TD per catch, catches, yards and rush yards per team-game,
+# sacks (from 1982) and INT per team-game. Tackles and forced fumbles have no pre-1999 league data: the 1999-2003 constant.
+# Seasons before 1970 use 1970. His baseline is the mean over debut..last (equal weight per season).
+LT = {int(y): v for y, v in json.loads((ROOT / "data/nfl/league_cache/league_totals.json").read_text()).items()}
+REF = range(1999, 2004)
+LI = {}   # league index series per name per season
+for y in range(1970, NOW + 1):
+    if y < 1999:
+        t = LT[y]; tg = t["team_games"]
+        att, cmp_ = t["pass_att"], t["pass_cmp"]
+        d = {"cmp_att": cmp_ / att, "ya": t["pass_yds"] / att, "td_att": t["pass_td"] / att, "int_att": t["pass_int"] / att,
+             "ypc": t["rush_yds"] / t["rush_att"], "ypr": t["pass_yds"] / cmp_, "td_cmp": t["pass_td"] / cmp_, "rtd_att": t["rush_td"] / t["rush_att"],
+             "cmp_tg": cmp_ / tg, "pyds_tg": t["pass_yds"] / tg, "ryds_tg": t["rush_yds"] / tg, "int_tg": t["pass_int"] / tg,
+             "sack_tg": (t["pass_sacked"] / tg) if y >= 1982 else None}
+    else:
+        w = LGW[y]; tg = len(TGAMES[y])
+        d = {"cmp_att": w["cmp"] / w["att"], "ya": w["pyds"] / w["att"], "td_att": w["ptd"] / w["att"], "int_att": w["int"] / w["att"],
+             "ypc": w["ryds"] / w["ratt"], "ypr": w["pyds"] / w["cmp"], "td_cmp": w["ptd"] / w["cmp"], "rtd_att": w["rtd"] / w["ratt"],
+             "cmp_tg": w["cmp"] / tg, "pyds_tg": w["pyds"] / tg, "ryds_tg": w["ryds"] / tg, "int_tg": w["dint"] / tg, "sack_tg": w["dsacks"] / tg}
+    LI[y] = d
+LIREF = {n: float(np.mean([LI[y][n] for y in REF])) for n in LI[1999]}
+ratio = lambda n, y: (LI[y][n] / LIREF[n]) if LI[y].get(n) is not None else 1.0
+
+# position rates per player-game for the receiving / rushing volume traits, from the weekly sums of the players in the data
+PG = {}
+for (pos, y), lst in by_pos_season.items():
+    gsum = sum(a["g"] for _, a in lst)
+    if gsum:
+        PG[(pos, y)] = {"rec_g": sum(a["raw"]["receptions"] for _, a in lst) / gsum}
+
+
+def wk_base(pos, y, tn, stat):
+    """the weekly-era league rate for trait `tn` of position `pos` in season y (>= 1999)"""
+    if tn == "rec_g":
+        return PG.get((pos, y), {}).get("rec_g")
+    return lg.get((pos, y, stat))
+
+
+WK_REF = {}
+
+
+def ref_base(pos, tn, stat):
+    key = (pos, tn)
+    if key not in WK_REF:
+        v = [wk_base(pos, y, tn, stat) for y in REF]
+        v = [x for x in v if x is not None]
+        WK_REF[key] = float(np.mean(v)) if v else 0.0
+    return WK_REF[key]
+
+
+def index_ratio(pos, tn, y):
+    r = lambda n: ratio(n, y)
+    if pos == "RB":
+        return {"ypc": r("ypc"), "ypt": 0.8 * r("ypc") + 0.2 * r("ypr"), "td_touch": 0.8 * r("rtd_att") + 0.2 * r("td_cmp"), "ryds_g": r("ryds_tg")}.get(tn, 1.0)
+    if pos in ("WR", "TE"):
+        return {"ypr": r("ypr"), "td_rec": r("td_cmp"), "recyds_g": r("pyds_tg"), "rec_g": r("cmp_tg")}.get(tn, 1.0)
+    if pos in ("LB", "DB", "DL"):
+        return {"sack_g": r("sack_tg"), "int_g": r("int_tg")}.get(tn, 1.0)
+    return 1.0
+
+
+def season_base(pos, tn, stat, y):
+    if y >= 1999:
+        return wk_base(pos, y, tn, stat)
+    y = max(y, 1970)
+    if pos == "QB":
+        return {"ya": LI[y]["ya"], "cmp": LI[y]["cmp_att"], "td": LI[y]["td_att"], "int": LI[y]["int_att"]}.get(tn)
+    return ref_base(pos, tn, stat) * index_ratio(pos, tn, y)
+
+
+def baseline(k, pos, tn, stat):
+    p = byk[k]; nf = p.get("nfl") or {}
+    d0, d1 = nf.get("debut"), nf.get("last")
+    ys = weekly_span.get(k)
+    if not d0 and ys:
+        d0 = min(ys)
+    if not d1 and ys:
+        d1 = max(ys)
+    if not d0 or not d1:
+        return None
+    vals = [season_base(pos, tn, stat, y) for y in range(int(d0), min(int(d1), NOW) + 1)]
+    vals = [v for v in vals if v is not None]
+    return float(np.mean(vals)) if vals else None
+
+
 TOT_EFF = {}
+BASE_USED = {}
 for pos in POS:
     ks = [k for k in TOT if byk[k]["pos"] == pos]
     traits = sorted({tn for k in ks for tn in TOT[k][1]})
     ex = {}
     for k in ks:
         c, t = TOT[k]
-        peers = [j for j in ks if c is None or TOT[j][0] is None or abs(TOT[j][0] - c) <= 5]
         for tn, (num, den, stat) in t.items():
-            pn = sum(TOT[j][1][tn][0] for j in peers if tn in TOT[j][1]); pd_ = sum(TOT[j][1][tn][1] for j in peers if tn in TOT[j][1])
-            ex[(k, tn)] = (num / den - (pn / pd_ if pd_ else 0.0), den, stat)
+            b = baseline(k, pos, tn, stat)
+            if b is None:
+                continue
+            BASE_USED[(k, tn)] = b
+            ex[(k, tn)] = (num / den - b, den, stat)
     mu = {}
     for tn in traits:
         v = [ex[(k, tn)][0] for k in ks if (k, tn) in ex and qual[k]]
