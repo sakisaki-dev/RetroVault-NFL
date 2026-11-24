@@ -180,17 +180,17 @@ export const VALUE_WEIGHTS: Record<string, Record<string, number>> = {
   OL: { blocksG: 1 },
 };
 /**
- * NFL season grades (owner, 2026-11-24): weights read from the career efficiency model's fitted shape (rushing and receiving
- * balanced for RBs, volume and per-catch efficiency for WR/TE, completion / TD / INT for QBs), with TD rate and volume counting.
- * Fumbles weigh 0 (no signal), and so do pure style descriptors (receiving share, rush share). Defenders keep VALUE_WEIGHTS.
+ * NFL season grades (owner, 2026-11-24: "count fumbles and learn the weights from the data"): the weights are fitted by
+ * scripts/nfl/season_skill_weights.py (non-negative ridge on 1999-2025 player-seasons against total EPA per game; defenders a
+ * playmaking composite) and read from career_rating.json `seasonWeights`. A trait the fit leaves out (receiving share, rush
+ * share) weighs 0. Without the file the career weights stand in.
  */
-export const SEASON_VALUE_WEIGHTS: Record<string, Record<string, number>> = {
-  QB: { cmp: 0.25, ya: 0.15, tdPct: 0.2, intPct: 0.15, rating: 0.05, passYdsG: 0.15, rushYdsG: 0.05, rushShare: 0 },
-  RB: { ypc: 0.2, rushYdsG: 0.22, recYdsG: 0.3, ypt: 0.08, td16: 0.2, fumRate: 0, recShare: 0 },
-  REC: { recYdsG: 0.4, ypr: 0.25, recG: 0.2, tdPerRec: 0.15, fumRate: 0 },
+const valueWeight = (pos: Position, id: string, season = false) => {
+  if (isNoSignal(pos, id, season)) return 0;
+  const learned = season ? careerRatingMeta()?.seasonWeights?.[pos] : undefined;
+  if (learned) return learned[id] ?? 0;
+  return VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0;
 };
-const valueWeight = (pos: Position, id: string, season = false) =>
-  isNoSignal(pos, id) ? 0 : (season ? SEASON_VALUE_WEIGHTS[traitGroup(pos)]?.[id] : undefined) ?? VALUE_WEIGHTS[traitGroup(pos)]?.[id] ?? VALUE_WEIGHTS[pos]?.[id] ?? 0;
 /** Share of the overall that comes from the player's three best traits, so excellence isn't averaged away. */
 export const OVERALL_TOP3_MIX = 0.4;
 
@@ -216,13 +216,16 @@ SHRINK.DB = SHRINK.LB;
 SHRINK.DL = SHRINK.LB;
 const NO_SIGNAL_K = 5000;
 const shrinkSpec = (pos: Position, id: string) => (IS_NFL && careerRatingMeta() ? SHRINK[pos]?.[id] : undefined);
-const kOf = (pos: Position, id: string): number | null | undefined => {
+const kOf = (pos: Position, id: string, season = false): number | null | undefined => {
   const s = shrinkSpec(pos, id);
-  return s ? careerRatingMeta()!.k[pos]?.[s.stat] : undefined;
+  if (!s) return undefined;
+  // a season grade counts fumbles lost (career_rating.json seasonK): over a career they are noise, over a season a real penalty
+  const sk = season ? careerRatingMeta()!.seasonK?.[`${pos}:${s.stat}`] : undefined;
+  return sk ?? careerRatingMeta()!.k[pos]?.[s.stat];
 };
 /** True for a trait whose stat has no between-player signal in the data (NFL career grades): no tile, no weight. */
-export const isNoSignal = (pos: Position, id: string): boolean => {
-  const k = kOf(pos, id);
+export const isNoSignal = (pos: Position, id: string, season = false): boolean => {
+  const k = kOf(pos, id, season);
   return k !== undefined && (k === null || k >= NO_SIGNAL_K);
 };
 const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g') => {
@@ -269,10 +272,10 @@ interface CareerCtx {
   label: string;
 }
 const careerCache = new WeakMap<readonly Player[], Map<Position, CareerCtx | null>>();
-const shrunkOf = (ctx: Pick<CareerCtx, 'mean'>, pos: Position, f: CompFeature, p: Player): number => {
+const shrunkOf = (ctx: Pick<CareerCtx, 'mean' | 'season'>, pos: Position, f: CompFeature, p: Player): number => {
   const v = f.get(p);
   const s = shrinkSpec(pos, f.id);
-  const k = kOf(pos, f.id);
+  const k = kOf(pos, f.id, ctx.season);
   if (!s || !Number.isFinite(v) || k == null || k >= NO_SIGNAL_K) return v;
   const mu = ctx.mean.get(f.id);
   if (mu == null) return v;
@@ -301,10 +304,10 @@ const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
   });
   const ctx: CareerCtx = { features, pool, mean, baseline: new Map(), overallSorted: [], season, label };
   features.forEach((f) =>
-    ctx.baseline.set(f.id, isNoSignal(pos, f.id) ? [] : pool.map((p) => shrunkOf(ctx, pos, f, p)).filter(Number.isFinite).sort((a, b) => a - b)),
+    ctx.baseline.set(f.id, isNoSignal(pos, f.id, ctx.season) ? [] : pool.map((p) => shrunkOf(ctx, pos, f, p)).filter(Number.isFinite).sort((a, b) => a - b)),
   );
   ctx.overallSorted = pool
-    .map((p) => overallFor(features, ctx.baseline, features.map((f) => (isNoSignal(pos, f.id) ? null : finiteOrNull(shrunkOf(ctx, pos, f, p)))), pos, season)?.pct)
+    .map((p) => overallFor(features, ctx.baseline, features.map((f) => (isNoSignal(pos, f.id, ctx.season) ? null : finiteOrNull(shrunkOf(ctx, pos, f, p)))), pos, season)?.pct)
     .filter((x): x is number => typeof x === 'number')
     .sort((a, b) => a - b);
   byPos.set(pos, ctx);
@@ -380,11 +383,11 @@ export const playerSkillGrades = (players: Player[], player: Player): { traits: 
     const pos = player.position;
     const rows = traits.map((t): SkillGrade => {
       const value = t.get(player);
-      if (isNoSignal(pos, t.id)) return { trait: t, value, display: fmtFeature(t, value), percentile: NaN, grade: null, noSignal: true };
+      if (isNoSignal(pos, t.id, cc.season)) return { trait: t, value, display: fmtFeature(t, value), percentile: NaN, grade: null, noSignal: true };
       const percentile = skillPct(t, cc.baseline.get(t.id) ?? [], shrunkOf(cc, pos, t, player));
       return { trait: t, value, display: fmtFeature(t, value), percentile, grade: gradeFor(percentile) };
     });
-    const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos, cc.season);
+    const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id, cc.season) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos, cc.season);
     let overall: Overall | null = null;
     if (raw) {
       const pct = percentileOf(cc.overallSorted, raw.pct);
@@ -428,7 +431,7 @@ export const skillBoard = (players: Player[], position: Position, traitId: strin
   const t = skillTraits(position).find((x) => x.id === traitId);
   const cc = careerCtx(players, position);
   if (cc && t) {
-    if (isNoSignal(position, traitId)) return null;
+    if (isNoSignal(position, traitId, cc.season)) return null;
     const sorted = cc.baseline.get(traitId) ?? [];
     const entries = cc.pool
       .map((p) => {

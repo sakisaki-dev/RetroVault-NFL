@@ -88,6 +88,9 @@ export interface CareerRatingFile {
   /** per position and stat: the reliability constant k (null: no between-player signal) */
   k: Record<string, Record<string, number | null>>;
   weights: Record<string, Record<string, number>>;
+  /** season grade weights learned by scripts/nfl/season_skill_weights.py, and the fumbles-lost k per stat */
+  seasonWeights?: Record<string, Record<string, number>>;
+  seasonK?: Record<string, number>;
   /** key -> [CAR percentile, efficiency pct (null: career totals only), production pct, honours pct, honours points, totals-only flag] */
   p: Record<string, [number, number | null, number, number, number, number]>;
 }
