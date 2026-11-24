@@ -1,4 +1,4 @@
-import { findNFLTeam } from '@/utils/nflTeams';
+import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
 import { searchTeams } from '@/utils/teamSearch';
 import type { GameDetail, GameIds } from '@/utils/nflGames';
 
@@ -60,18 +60,30 @@ export const clubGamesOf = (ids: GameIds | null, season: number, abbr: string): 
   return out.sort((p, q) => p.week - q.week);
 };
 
-const strip = /^(vs?\.?|@|at|-|–|—|and|&)$/i;
-/** One club the words name: a single match, or the one whose name or abbreviation the words spell out. */
+const strip = /^(vs?\.?|@|at|-|–|—|and|&|\/)$/i;
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+/** One club the words name: an exact name / abbreviation / city, a single match, or the one nickname the words start. */
 const oneClub = (words: string[]) => {
-  const q = words.join(' ');
-  const hits = searchTeams(q, 3);
+  const q = fold(words.join(' '));
+  const hits = searchTeams(q, 8);
   if (!hits.length) return null;
-  const exact = hits.find((t) => [t.name, t.abbreviation, t.city, t.fullName].some((s) => s.toLowerCase() === q.toLowerCase()));
-  return exact ?? (hits.length === 1 ? hits[0] : null);
+  const exact = hits.find((t) => [t.name, t.abbreviation, t.city, t.fullName].some((s) => fold(s) === q));
+  if (exact) return exact;
+  if (hits.length === 1) return hits[0];
+  const byName = hits.filter((t) => fold(t.name).startsWith(q));
+  return byName.length === 1 ? byName[0] : null;
 };
-/** "bengals commanders", "cin was", "chiefs vs eagles": the two clubs a query names, else null. */
+/**
+ * "bengals commanders", "cin was", "bengals at commanders", "bengals @ commanders", "chiefs-eagles", "kc/phi",
+ * "bengals com" (a prefix on the last word): the two clubs a query names, else null. Splits on spaces, "vs", "v",
+ * "at", "@", "-" and "/", then tries every split of the words into a left and a right club.
+ */
 export const clubPairOf = (query: string): [string, string] | null => {
-  const words = query.trim().split(/\s+/).filter((w) => w && !strip.test(w));
+  const words = query
+    .replace(/[@/–—]|(?<=\S)-(?=\S)/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w && !strip.test(w));
   if (words.length < 2 || words.length > 6) return null;
   for (let k = 1; k < words.length; k++) {
     const l = oneClub(words.slice(0, k));
@@ -79,6 +91,26 @@ export const clubPairOf = (query: string): [string, string] | null => {
     if (l && r && l.id !== r.id) return [l.abbreviation, r.abbreviation];
   }
   return null;
+};
+
+/**
+ * The clubs a query names, for the Teams group: both clubs of a pair ("bengals commanders"), else the clubs the words
+ * match, ignoring connectors ("bengals vs", "bengals at") and, when nothing matches, dropping trailing words.
+ */
+export const clubsOfQuery = (query: string, limit = 4): NFLTeam[] => {
+  const pair = clubPairOf(query);
+  if (pair) return pair.map((a) => findNFLTeam(a)).filter((t): t is NFLTeam => !!t);
+  const words = query
+    .replace(/[@/–—]|(?<=\S)-(?=\S)/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w && !strip.test(w));
+  for (let n = words.length; n >= 1; n--) {
+    const hits = searchTeams(words.slice(0, n).join(' '), limit);
+    if (hits.length) return hits;
+    if (words.length > 3) break;
+  }
+  return [];
 };
 
 /** Kickoff in words: "Sun · Nov 8 · 1:00 PM ET" pieces, and the primetime tag. */
