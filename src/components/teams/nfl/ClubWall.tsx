@@ -14,6 +14,7 @@ import { seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
 import { divisionKey, sortTeams, type FranchiseRecord, type TeamSortKey, type TeamSummary } from '../teamStats';
 import { ArcadeToggle, SectionHeader } from '@/components/arcade';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './clubWall.css';
 
 type Conf = 'all' | 'AFC' | 'NFC';
@@ -75,6 +76,8 @@ interface TileProps {
   leader?: boolean;
   hasSprites: boolean;
   narrow: boolean;
+  /** place in the wall, for the stagger */
+  at?: number;
 }
 
 const lastTitleLine = (rec: FranchiseRecord | undefined, firstSeason: number) => {
@@ -90,7 +93,7 @@ const label = ({ club, season }: { club: Club; season: number | null }) => {
 /** The 2026 power rank (the ladder's number), else the all-time one */
 const rankOf = (c: Club) => c.row?.power ?? c.rec?.powerRank ?? 99;
 
-const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, narrow }: TileProps) => {
+const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, narrow, at = 0 }: TileProps) => {
   const { s, rec, row, top } = club;
   const t = s.team!;
   const primary = t.primaryColor;
@@ -105,8 +108,9 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
       onClick={() => onOpen(s.key)}
       aria-label={label({ club, season })}
       title={`${t.city} ${t.name} · ${last.text}`}
-      className={cn('cw-tile', !leader && 'cw-tile--thin', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
+      className={cn('cw-tile mo-rise', !leader && 'cw-tile--thin', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
       style={{
+        ...stag(at, 40),
         ['--p' as string]: `hsl(${primary})`,
         ['--s' as string]: `hsl(${secondary})`,
         background: `linear-gradient(155deg, hsl(${primary}) 0%, hsl(${primary}) 55%, hsl(${secondary}) 150%)`,
@@ -140,7 +144,7 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
       {hasSprites && sprites.length > 0 && (
         <span className={cn('cw-sprites', leader && 'cw-sprites--lead')} aria-hidden="true">
           {sprites.map((p, i) => (
-            <span key={p.name + p.position} className="cw-fig">
+            <span key={p.name + p.position} className="cw-fig mo-rise" style={stag(at + i + 2, 70)}>
               <StarSprite name={p.name} pos={p.position} team={t.name} size="s" kind={leader ? 'figure' : 'bust'} celebrate={leader ? i === (sprites.length === 3 ? 1 : 0) : false} />
             </span>
           ))}
@@ -150,7 +154,7 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
   );
 };
 
-const Strip = ({ club, place, season, onOpen }: { club: Club; place: number; season: number | null; onOpen: (key: string) => void }) => {
+const Strip = ({ club, place, season, onOpen, at = 0 }: { club: Club; place: number; season: number | null; onOpen: (key: string) => void; at?: number }) => {
   const { s, rec, row } = club;
   const t = s.team!;
   const fg = getReadableTextOn(t.primaryColor);
@@ -160,8 +164,8 @@ const Strip = ({ club, place, season, onOpen }: { club: Club; place: number; sea
       type="button"
       onClick={() => onOpen(s.key)}
       aria-label={label({ club, season })}
-      className="cw-strip"
-      style={{ background: `linear-gradient(100deg, hsl(${t.primaryColor}) 0%, hsl(${t.primaryColor}) 60%, hsl(${t.secondaryColor !== t.primaryColor ? t.secondaryColor : '226 33% 18%'}) 160%)`, color: fg }}
+      className="cw-strip mo-rise mo-lift"
+      style={{ ...stag(at, 30), background: `linear-gradient(100deg, hsl(${t.primaryColor}) 0%, hsl(${t.primaryColor}) 60%, hsl(${t.secondaryColor !== t.primaryColor ? t.secondaryColor : '226 33% 18%'}) 160%)`, color: fg }}
     >
       <span className="cw-strip__n">{place}</span>
       <span className="cw-strip__abbr">{t.abbreviation}</span>
@@ -275,32 +279,32 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
       {boards ? (
         <div className="cw-boards">
           {boards.map((b) => (
-            <div key={b.label} className="cw-board">
+            <Reveal key={b.label} className="cw-board">
               <h3 className="cw-board__h">{b.label}</h3>
               <div className={view === 'wall' ? 'cw-board__tiles' : 'cw-board__strips'}>
                 {b.clubs.map((c, i) =>
                   view === 'wall' ? (
-                    <Tile key={c.s.key} club={c} leader={i === 0 && !!c.row} {...tileProps} />
+                    <Tile key={c.s.key} club={c} leader={i === 0 && !!c.row} at={i} {...tileProps} />
                   ) : (
-                    <Strip key={c.s.key} club={c} place={i + 1} season={season} onOpen={onOpen} />
+                    <Strip key={c.s.key} club={c} place={i + 1} season={season} onOpen={onOpen} at={i} />
                   ),
                 )}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       ) : view === 'wall' ? (
-        <div className="cw-wall">
-          {clubs.map((c) => (
-            <Tile key={c.s.key} club={c} bigRank={sort === 'power'} {...tileProps} />
-          ))}
-        </div>
-      ) : (
-        <div className="cw-strips">
+        <Reveal className="cw-wall">
           {clubs.map((c, i) => (
-            <Strip key={c.s.key} club={c} place={sort === 'power' ? rankOf(c) : i + 1} season={season} onOpen={onOpen} />
+            <Tile key={c.s.key} club={c} bigRank={sort === 'power'} at={i % 12} {...tileProps} />
           ))}
-        </div>
+        </Reveal>
+      ) : (
+        <Reveal className="cw-strips">
+          {clubs.map((c, i) => (
+            <Strip key={c.s.key} club={c} place={sort === 'power' ? rankOf(c) : i + 1} season={season} onOpen={onOpen} at={i % 12} />
+          ))}
+        </Reveal>
       )}
     </section>
   );

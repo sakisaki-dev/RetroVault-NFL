@@ -1,0 +1,78 @@
+import { createElement, useCallback, useEffect, useState, type CSSProperties, type ElementType, type HTMLAttributes, type ReactNode, type RefCallback } from 'react';
+import CountUp from '@/components/brand/CountUp';
+import { isLite } from '@/hooks/usePerfMode';
+import '@/hooks/motion.css';
+
+/**
+ * Scroll-in motion, once. The container is "wait" while its mo-* children are held back and "go" after it first
+ * scrolls into view (one shared IntersectionObserver). Reduced motion and lite mode never hold anything back.
+ */
+const motionOk = () => {
+  if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return false;
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  } catch {
+    /* no matchMedia */
+  }
+  return !isLite();
+};
+
+let io: IntersectionObserver | null = null;
+const shared = () =>
+  (io ??= new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const t = e.target as HTMLElement;
+        t.dataset.mo = 'go';
+        io?.unobserve(t);
+      }),
+    { threshold: 0.06, rootMargin: '0px 0px -24px 0px' },
+  ));
+
+/** A callback ref: the element waits, then goes once when it is on screen. */
+export const useReveal = <T extends HTMLElement>(): RefCallback<T> =>
+  useCallback((el: T | null) => {
+    if (!el || !motionOk()) return;
+    el.dataset.mo = 'wait';
+    shared().observe(el);
+  }, []);
+
+type RevealProps<T extends ElementType> = { as?: T; className?: string; style?: CSSProperties; children?: ReactNode } & Omit<HTMLAttributes<HTMLElement>, 'className' | 'style' | 'children'>;
+
+/** A wrapper element (div by default) that reveals its mo-* children when scrolled into view. */
+export const Reveal = <T extends ElementType = 'div'>({ as, ...rest }: RevealProps<T>) => {
+  const ref = useReveal<HTMLElement>();
+  return createElement((as ?? 'div') as ElementType, { ref, ...rest });
+};
+
+/** `--i` for a stagger. */
+export const stag = (i: number, gap?: number): CSSProperties => ({ ['--i' as string]: i, ...(gap ? { ['--mo-gap' as string]: `${gap}ms` } : {}) });
+
+/**
+ * A figure that counts up from 0 the first time it is on screen. The final text holds the width (no layout shift) and
+ * is what a screen reader and a reduced-motion viewer get.
+ */
+export const ViewCount = ({ value, decimals = 0, prefix = '', suffix = '', duration = 700, className }: { value: number; decimals?: number; prefix?: string; suffix?: string; duration?: number; className?: string }) => {
+  const [ready] = useState(motionOk);
+  const [seen, setSeen] = useState(false);
+  const [el, setEl] = useState<HTMLSpanElement | null>(null);
+  useEffect(() => {
+    if (!el || !ready) return;
+    const o = new IntersectionObserver((e) => e.some((x) => x.isIntersecting) && (setSeen(true), o.disconnect()), { threshold: 0.2 });
+    o.observe(el);
+    return () => o.disconnect();
+  }, [el, ready]);
+  const final = `${prefix}${value.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
+  if (!ready) return <span className={className}>{final}</span>;
+  return (
+    <span ref={setEl} className={`mo-count ${className ?? ''}`} data-live={seen ? '1' : '0'} aria-label={final}>
+      <span className="mo-count__size" aria-hidden={seen}>{final}</span>
+      {seen && (
+        <span className="mo-count__live" aria-hidden>
+          {prefix}<CountUp value={value} decimals={decimals} duration={duration} />{suffix}
+        </span>
+      )}
+    </span>
+  );
+};

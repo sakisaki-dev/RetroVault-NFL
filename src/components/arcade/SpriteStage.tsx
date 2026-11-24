@@ -7,6 +7,7 @@ import GameSprite, { type SpriteSize } from '../GameSprite';
 import TeamLogo from '../brand/TeamLogo';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { clubVars } from './clubInk';
+import { stag, useReveal } from '@/components/motion/Reveal';
 import './arcade.css';
 
 /**
@@ -61,8 +62,9 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
     ...(art.stands ? { '--ax-stands': `url(${art.stands})` } : {}),
   } as CSSProperties;
   const mid = (list.length - 1) / 2;
+  const reveal = useReveal<HTMLDivElement>();
   return (
-    <div className={cn('ax-stage', `ax-stage--${time}`, art.turf && 'ax-stage--art', className)} style={style}>
+    <div ref={reveal} className={cn('ax-stage', `ax-stage--${time}`, art.turf && 'ax-stage--art', className)} style={style}>
       <div className="ax-stage__stands" aria-hidden="true" />
       <div className="ax-stage__crowd" aria-hidden="true" />
       <div className="ax-stage__turf" aria-hidden="true" />
@@ -73,7 +75,7 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
             const c = p.club ?? bannerTeamOf(p.player) ?? club;
             const star = i === Math.round(mid);
             return (
-              <span key={`${p.player.name}-${i}`} className={cn('ax-stage__fig', hidden.has(i) && 'ax-stage__fig--extra')} style={{ zIndex: star ? 2 : 1 }}>
+              <span key={`${p.player.name}-${i}`} className={cn('ax-stage__fig', star ? 'mo-pop' : i < mid ? 'mo-run-l' : 'mo-run-r', hidden.has(i) && 'ax-stage__fig--extra')} style={{ zIndex: star ? 2 : 1, ...stag(star ? 3 : Math.abs(i - mid) + 1, 90) }}>
                 {sprites && !p.player.isRealLegend ? (
                   <GameSprite player={p.player} team={c} kind={kind} size={size} action={p.action ?? (star && action === 'idle' && list.length > 1 ? 'idle' : action)} />
                 ) : (

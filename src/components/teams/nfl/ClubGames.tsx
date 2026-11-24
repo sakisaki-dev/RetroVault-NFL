@@ -7,6 +7,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { openGame, useGameIds, useSeasonGames, useSuperBowlIds, type GameDetail } from '@/utils/nflGames';
 import { ROUND_LABEL, parseGameId } from '@/utils/gameFinder';
 import { ScoresSkeleton, gameOrder, played } from '@/components/season/ScoresBrowser';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './clubGames.css';
 
 /**
@@ -19,7 +20,7 @@ const now = (a: string) => NOW[a] ?? a;
 const sbSides = (id: string) => { const g = parseGameId(id); return { away: now(g.away), home: now(g.home) }; };
 
 /** One game of the club's season as a ticket: week kicker, W/L lamp, opponent logo, the score with the winner lit */
-const Ticket = ({ g, abbr }: { g: GameDetail; abbr: string }) => {
+const Ticket = ({ g, abbr, i = 0 }: { g: GameDetail; abbr: string; i?: number }) => {
   const home = g.home === abbr;
   const opp = home ? g.away : g.home;
   const done = played(g);
@@ -28,7 +29,7 @@ const Ticket = ({ g, abbr }: { g: GameDetail; abbr: string }) => {
   const r = !done ? null : pf > pa ? 'W' : pf < pa ? 'L' : 'T';
   const wk = g.type === 'REG' ? `WEEK ${g.week}` : (ROUND_LABEL[g.type] ?? g.type).toUpperCase();
   return (
-    <li className="min-w-0">
+    <li className="min-w-0 mo-rise" style={stag(i, 35)}>
       <button
         type="button"
         onClick={() => openGame(g.id)}
@@ -72,17 +73,17 @@ const ClubGames = ({ teamName }: { teamName: string }) => {
         <PixelStepper label="Season" value={year} onChange={setPicked} values={years} />
       </div>
       {all === undefined ? <ScoresSkeleton n={6} /> : !games?.length ? <p className="text-sm text-muted-foreground">No games found for {year}.</p> : (
-        <ul className="grid grid-cols-2 gap-2 md:grid-cols-3">{games.map((g) => <Ticket key={g.id} g={g} abbr={abbr} />)}</ul>
+        <Reveal as="ul" key={year} className="grid grid-cols-2 gap-2 md:grid-cols-3">{games.map((g, i) => <Ticket key={g.id} g={g} abbr={abbr} i={i} />)}</Reveal>
       )}
       {bowls.length > 0 && (
         <div className="mt-4">
           <p className="ax-kicker mb-1.5 flex items-center gap-1.5"><PixelIcon name="trophy" size={14} color="hsl(var(--gold))" /> Super Bowl appearances</p>
-          <ul className="flex flex-wrap gap-1.5">
-            {bowls.map(([y, id]) => {
+          <Reveal as="ul" className="flex flex-wrap gap-1.5">
+            {bowls.map(([y, id], bi) => {
               const g = sbSides(id);
               const opp = g.away === abbr ? g.home : g.away;
               return (
-                <li key={y}>
+                <li key={y} className="mo-pop" style={stag(bi)}>
                   <button type="button" onClick={() => openGame(id)} aria-label={`${y} Super Bowl against ${opp}. Open the game`} className="cg-sb">
                     <PixelIcon name="trophy" size={14} />
                     <span className="font-display text-sm font-bold tabular-nums">{y}</span>
@@ -92,7 +93,7 @@ const ClubGames = ({ teamName }: { teamName: string }) => {
                 </li>
               );
             })}
-          </ul>
+          </Reveal>
         </div>
       )}
     </section>

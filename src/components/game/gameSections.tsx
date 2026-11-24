@@ -9,6 +9,7 @@ import { hslOf } from '../season/seasonGamesUi';
 import { displayName } from '@/utils/displayName';
 import { PixelPanel, ClubStrip, clubVars } from '@/components/arcade';
 import { liftForDarkBg } from '@/utils/teamColors';
+import { Reveal, ViewCount, stag } from '@/components/motion/Reveal';
 import { score, sitePos, unitOf, v, impact, type Side } from './gameModel';
 
 /** Shared bits and the data-dense sections of the game page (QB duel, ground game, air attack, pass rush, tiles, fantasy, special teams). */
@@ -106,7 +107,7 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const qh = qbOf(g, 1);
   if (!qa || !qh) return null;
   const head = (p: GamePlayer, side: Side) => (
-    <div className={cn('gm-qb__who', side === 1 && 'is-home')} style={{ ...sideStyle(toneOf(clubOf(g, side))), ...clubVars(clubOf(g, side)) }}>
+    <div className={cn('gm-qb__who', side === 1 ? 'is-home mo-run-r' : 'mo-run-l')} style={{ ...sideStyle(toneOf(clubOf(g, side))), ...clubVars(clubOf(g, side)) }}>
       <span className="gm-qb__spr"><SpriteOf p={p} g={g} size="m" /></span>
       <span className="gm-qb__id">
         <small>{abbrOf(clubOf(g, side))} · {side === 0 ? 'Away' : 'Home'}</small>
@@ -117,32 +118,33 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
   );
   return (
     <Card title="QB duel" kicker="Passer against passer" className="gm-qb">
-      <div className="gm-qb__top">{head(qa, 0)}<span className="gm-qb__vs" aria-hidden>VS</span>{head(qh, 1)}</div>
-      <div className="gm-qb__body" style={{ ['--ca' as string]: liftForDarkBg(toneOf(g.away), 46), ['--ch' as string]: liftForDarkBg(toneOf(g.home), 46) }}>
-        {QB_GROUPS.map((grp) => {
+      <Reveal className="gm-qb__top">{head(qa, 0)}<span className="gm-qb__vs mo-pop" style={stag(2)} aria-hidden>VS</span>{head(qh, 1)}</Reveal>
+      <Reveal className="gm-qb__body" style={{ ['--ca' as string]: liftForDarkBg(toneOf(g.away), 46), ['--ch' as string]: liftForDarkBg(toneOf(g.home), 46) }}>
+        {QB_GROUPS.map((grp, gi) => {
           const rows = grp.rows.filter((r) => r.get(qa.s) !== undefined || r.get(qh.s) !== undefined);
           if (!rows.length) return null;
           return (
             <div key={grp.title} className="gm-qb__grp">
               <p className="gm-qb__gh">{grp.title}</p>
-              {rows.map((r) => {
+              {rows.map((r, ri) => {
+                const ord = gi * 3 + ri;
                 const a = r.get(qa.s);
                 const h = r.get(qh.s);
                 const win = (x?: number, y?: number) => !!r.better && x !== undefined && y !== undefined && x !== y && (r.better === 'hi' ? x > y : x < y);
                 const split = a !== undefined && h !== undefined ? splitOf(a, h, r.better) : 50;
                 return (
-                  <div key={r.label} className="gm-qb__row">
+                  <div key={r.label} className="gm-qb__row mo-rise" style={stag(ord)}>
                     <b className={cn(win(a, h) ? 'is-better' : r.better && win(h, a) && 'is-worse')}>{a === undefined ? '–' : r.fmt(a, qa.s)}</b>
                     <span className="gm-qb__lab">{r.label}{r.better === 'lo' ? ' (lower wins)' : ''}</span>
                     <b className={cn(win(h, a) ? 'is-better' : r.better && win(a, h) && 'is-worse')}>{h === undefined ? '–' : r.fmt(h, qh.s)}</b>
-                    <span className={cn('gm-qb__split', !r.better && 'is-neutral')} aria-hidden><i className="a" style={{ width: `${split}%` }} /><i className="h" style={{ width: `${100 - split}%` }} /></span>
+                    <span className={cn('gm-qb__split', !r.better && 'is-neutral')} aria-hidden><i className="a mo-grow" style={{ width: `${split}%`, ['--i' as string]: ord + 1 }} /><i className="h mo-grow mo-grow--r" style={{ width: `${100 - split}%`, ['--i' as string]: ord + 1 }} /></span>
                   </div>
                 );
               })}
             </div>
           );
         })}
-      </div>
+      </Reveal>
     </Card>
   );
 };
@@ -150,18 +152,18 @@ export const QbDuel = ({ g, link }: { g: GameDetail; link: Linker }) => {
 /* ---------------- two-club leaderboards (ground, air, pass rush) ---------------- */
 
 const Clubs = ({ g, render }: { g: GameDetail; render: (s: Side) => ReactNode }) => (
-  <div className="gm-clubs">
+  <Reveal className="gm-clubs">
     {side2(g).map(({ s, abbr, tone }) => (
-      <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-clubs__col" style={sideStyle(tone)}>
+      <PixelPanel key={s} club={abbr} tone="stripe" watermark pad="sm" className="gm-clubs__col mo-fade" style={{ ...sideStyle(tone), ['--i' as string]: s }}>
         <p className="gm-clubs__head"><TeamLogo team={abbr} decorative className="h-5 w-5" /> {abbrOf(abbr)}</p>
         {render(s)}
       </PixelPanel>
     ))}
-  </div>
+  </Reveal>
 );
 
 const Bar = ({ pct, label }: { pct: number; label?: string }) => (
-  <span className="gm-bar" aria-hidden><i style={{ width: `${Math.max(3, Math.min(100, pct))}%` }} />{label && <em>{label}</em>}</span>
+  <span className="gm-bar" aria-hidden><i className="mo-grow" style={{ width: `${Math.max(3, Math.min(100, pct))}%`, ['--i' as string]: 2 }} />{label && <em>{label}</em>}</span>
 );
 
 const bits = (xs: (string | false | null | undefined)[]) => xs.filter(Boolean).join(' · ');
@@ -174,10 +176,10 @@ export const GroundGame = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const max = Math.max(1, ...g.players.filter((p) => v(p.s, 'carries') > 0 && p.pos !== 'QB').map((p) => Math.abs(v(p.s, 'rushing_yards'))));
   return (
     <Card title="Ground game" kicker="Rushing, by runner">
-      <Clubs g={g} render={(s) => rushers(s).map((p) => {
+      <Clubs g={g} render={(s) => rushers(s).map((p, i) => {
         const c = v(p.s, 'carries');
         return (
-          <div key={p.gsis + p.name} className="gm-lb">
+          <div key={p.gsis + p.name} className="gm-lb mo-rise" style={stag(i + 1)}>
             <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>
             <NameStrip p={p} g={g} link={link} className="gm-lb__n" />
             <Bar pct={(Math.max(0, v(p.s, 'rushing_yards')) / max) * 100} label={`${v(p.s, 'rushing_yards')} yds`} />
@@ -203,7 +205,7 @@ export const AirAttack = ({ g, link }: { g: GameDetail; link: Linker }) => {
         return all.slice(0, 5).map((p, i) => {
           const t = v(p.s, 'targets');
           return (
-            <div key={p.gsis + p.name} className={cn('gm-lb', i === 0 && 'is-top')}>
+            <div key={p.gsis + p.name} className={cn('gm-lb mo-rise', i === 0 && 'is-top')} style={stag(i + 1)}>
               <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>
               <NameStrip p={p} g={g} link={link} className="gm-lb__n" />
               <Bar pct={(t / total) * 100} label={`${Math.round((t / total) * 100)}%`} />
@@ -225,8 +227,8 @@ export const PassRush = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const max = Math.max(1, ...g.players.map((p) => defScore(p.s)));
   return (
     <Card title="Pass rush and defense" kicker="Disruption, by player">
-      <Clubs g={g} render={(s) => defs(s).map((p) => (
-        <div key={p.gsis + p.name} className="gm-lb is-def">
+      <Clubs g={g} render={(s) => defs(s).map((p, i) => (
+        <div key={p.gsis + p.name} className="gm-lb is-def mo-rise" style={stag(i + 1)}>
           <span className="gm-lb__spr"><SpriteOf p={p} g={g} kind="bust" /></span>
           <NameStrip p={p} g={g} link={link} className="gm-lb__n"><b>{displayName(p.name)}</b> <small>{p.pos}</small></NameStrip>
           <Bar pct={(defScore(p.s) / max) * 100} />
@@ -241,12 +243,13 @@ export const PassRush = ({ g, link }: { g: GameDetail; link: Linker }) => {
 
 /* ---------------- efficiency tiles ---------------- */
 
-export const Efficiency = ({ g }: { g: GameDetail }) => {
-  if (!g.team) return null;
+type Tile = { label: string; a: string; h: string; ba?: boolean; bh?: boolean };
+const effTiles = (g: GameDetail): Tile[] => {
+  if (!g.team) return [];
   const [A, H] = g.team;
   const plays = (s: Stat) => v(s, 'attempts') + v(s, 'sacks_suffered') + v(s, 'carries');
   const epaOk = has(A, 'passing_epa') || has(H, 'passing_epa');
-  const tiles: { label: string; a: string; h: string; ba?: boolean; bh?: boolean }[] = [];
+  const tiles: Tile[] = [];
   const add = (label: string, a: number, h: number, fmt: (n: number) => string, hi = true) => tiles.push({ label, a: fmt(a), h: fmt(h), ba: a !== h && (hi ? a > h : a < h), bh: a !== h && (hi ? h > a : h < a) });
   if (epaOk) {
     add('Pass EPA', v(A, 'passing_epa'), v(H, 'passing_epa'), (n) => sg(n));
@@ -261,17 +264,22 @@ export const Efficiency = ({ g }: { g: GameDetail }) => {
     const yd = (s: Stat) => v(s, 'passing_yards') - v(s, 'sack_yards_lost') + v(s, 'rushing_yards');
     add('Yards / play', yd(A) / plays(A), yd(H) / plays(H), (n) => n.toFixed(1));
   }
-  if (tiles.length < 3) return null;
+  return tiles.length < 3 ? [] : tiles;
+};
+
+export const Efficiency = ({ g }: { g: GameDetail }) => {
+  const tiles = effTiles(g);
+  if (!tiles.length) return null;
   return (
     <section className="gm-led" aria-label="Efficiency" style={{ ['--ca' as string]: liftTone(g.away), ['--ch' as string]: liftTone(g.home) }}>
-      <div className="gm-led__grid">
-        {tiles.map((t) => (
-          <div key={t.label} className="gm-led__tile">
+      <Reveal className="gm-led__grid">
+        {tiles.map((t, i) => (
+          <div key={t.label} className="gm-led__tile mo-pop" style={stag(i)}>
             <span className="gm-led__l">{t.label}</span>
             <span className="gm-led__v"><b className={cn('is-a', t.ba && 'is-better')}>{t.a}</b><b className={cn('is-h', t.bh && 'is-better')}>{t.h}</b></span>
           </div>
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 };
@@ -289,16 +297,16 @@ export const Fantasy = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const max = v(top[0].s, 'fantasy_points_ppr');
   return (
     <Card title="Fantasy" kicker="Top PPR scores">
-      <ol className="gm-fan">
+      <Reveal as="ol" className="gm-fan">
         {top.map((p, i) => (
-          <li key={p.gsis + p.name} style={{ ...sideStyle(toneOf(clubOf(g, p.side))), ...clubVars(clubOf(g, p.side)) }}>
+          <li key={p.gsis + p.name} className="mo-rise" style={{ ...sideStyle(toneOf(clubOf(g, p.side))), ...clubVars(clubOf(g, p.side)), ...stag(i) }}>
             <span className="gm-fan__r">{i + 1}</span>
             <span className="gm-fan__bust"><SpriteOf p={p} g={g} kind="bust" /></span>
             <span className="gm-fan__who"><NameStrip p={p} g={g} link={link} className="gm-lb__n" /><Bar pct={(v(p.s, 'fantasy_points_ppr') / max) * 100} /></span>
-            <b>{v(p.s, 'fantasy_points_ppr').toFixed(1)}</b>
+            <b><ViewCount value={v(p.s, 'fantasy_points_ppr')} decimals={1} /></b>
           </li>
         ))}
-      </ol>
+      </Reveal>
     </Card>
   );
 };
@@ -316,16 +324,33 @@ export const SpecialTeams = ({ g }: { g: GameDetail }) => {
   if (!rows.length) return null;
   return (
     <Card title="Special teams" kicker="Kicking, punting, returns">
-      <ul className="gm-st">
-        {rows.slice(0, 8).map((r) => (
-          <li key={r.key} style={sideStyle(toneOf(clubOf(g, r.side)))}>
+      <Reveal as="ul" className="gm-st">
+        {rows.slice(0, 8).map((r, i) => (
+          <li key={r.key} className="mo-rise" style={{ ...sideStyle(toneOf(clubOf(g, r.side))), ...stag(i) }}>
             <TeamLogo team={clubOf(g, r.side)} decorative className="h-4 w-4" />
             <span className="gm-st__t">{r.tag}</span><b>{r.who}</b><span>{r.line}</span>
           </li>
         ))}
-      </ul>
+      </Reveal>
     </Card>
   );
+};
+
+/** The matchup tabs this game has data for (a tab with nothing to show is left out). */
+export const matchupTabs = (g: GameDetail): { value: 'eff' | 'ground' | 'air' | 'rush' | 'fan' | 'st'; label: string }[] => {
+  const mine = g.players;
+  const defs = (s: Side) => mine.some((p) => p.side === s && defScore(p.s) > 0);
+  const has2 = (f: (s: Side) => boolean) => f(0) || f(1);
+  const stRows = mine.some((p) => v(p.s, 'fg_att') || v(p.s, 'pat_att') || v(p.s, 'pt_att') || v(p.s, 'punt_returns') + v(p.s, 'kickoff_returns'));
+  const all: { value: 'eff' | 'ground' | 'air' | 'rush' | 'fan' | 'st'; label: string; on: boolean }[] = [
+    { value: 'eff', label: 'Efficiency', on: effTiles(g).length > 0 },
+    { value: 'ground', label: 'Ground game', on: has2((s) => mine.some((p) => p.side === s && v(p.s, 'carries') > 0 && p.pos !== 'QB')) },
+    { value: 'air', label: 'Air attack', on: has2((s) => mine.some((p) => p.side === s && v(p.s, 'targets') > 0)) },
+    { value: 'rush', label: 'Pass rush', on: has2(defs) },
+    { value: 'fan', label: 'Fantasy', on: mine.filter((p) => v(p.s, 'fantasy_points_ppr') > 0).length >= 3 },
+    { value: 'st', label: 'Special teams', on: stRows },
+  ];
+  return all.filter((t) => t.on).map(({ value, label }) => ({ value, label }));
 };
 
 export { score };

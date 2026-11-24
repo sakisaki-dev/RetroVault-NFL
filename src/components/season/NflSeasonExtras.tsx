@@ -18,6 +18,7 @@ import { stripSuffix } from '@/utils/nameSuffix';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './nflPodium.css';
 import './sx.css';
 import { ArcadeToggle, clubVars } from '@/components/arcade';
@@ -176,14 +177,14 @@ export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: Se
   return (
     <div className="sx-block">
       <SectionTitle kicker="Games that stood out" club={items[0].g.winner}>Highlight reel</SectionTitle>
-      <ul className="sx-games" style={{ listStyle: 'none' }}>
-        {items.map(({ key, kicker, icon: Icon, g, caption }) => {
+      <Reveal as="ul" className="sx-games" style={{ listStyle: 'none' }}>
+        {items.map(({ key, kicker, icon: Icon, g, caption }, ii) => {
           const aw = abbrOf(season, g.away);
           const hm = abbrOf(season, g.home);
           const win = g.winner;
           const id = regularGameId(ids, season.season, g.week, aw, hm);
           return (
-            <li key={key} className="sx-hl" style={clubVars(win) as CSSProperties}>
+            <li key={key} className="sx-hl mo-rise" style={{ ...(clubVars(win) as CSSProperties), ...stag(ii, 80) }}>
               <div className="sx-hl__head">
                 <span className="flex items-center gap-1.5"><Icon className="h-3.5 w-3.5" aria-hidden /> {kicker}</span>
                 <span>Week {g.week}</span>
@@ -210,7 +211,7 @@ export const HighlightReel = ({ season, stars }: { season: SeasonView; stars: Se
             </li>
           );
         })}
-      </ul>
+      </Reveal>
     </div>
   );
 };
@@ -230,14 +231,14 @@ const STEP = [{ h: 128, n: 1 }, { h: 104, n: 2 }, { h: 88, n: 3 }];
 const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
   const order = [rows[1], rows[0], rows[2]].map((r, i) => (r ? { r, rank: [2, 1, 3][i] } : null));
   return (
-    <ol className="mx-auto grid max-w-3xl list-none grid-cols-3 items-end gap-2 p-0" aria-label="Podium: 1st in the middle, 2nd left, 3rd right">
+    <Reveal as="ol" className="mx-auto grid max-w-3xl list-none grid-cols-3 items-end gap-2 p-0" aria-label="Podium: 1st in the middle, 2nd left, 3rd right">
       {order.map((o, i) => {
         if (!o) return <li key={`empty-${i}`} />;
         const { r, rank } = o;
         const step = STEP[rank - 1];
         const [pos] = splitKey(r.key);
         return (
-          <li key={r.key} className="flex min-w-0 flex-col items-center text-center">
+          <li key={r.key} className="mo-step flex min-w-0 flex-col items-center text-center" style={stag(rank === 1 ? 3 : rank === 2 ? 2 : 0, 110)}>
             <PlayerHit name={r.name} pos={pos} className="flex max-w-full flex-col items-center text-center">
               <StarSprite name={r.name} pos={pos} team={r.team} size="l" celebrate={rank === 1} />
             </PlayerHit>
@@ -253,7 +254,7 @@ const Podium = ({ rows, unit }: { rows: PodiumEntry[]; unit: string }) => {
           </li>
         );
       })}
-    </ol>
+    </Reveal>
   );
 };
 

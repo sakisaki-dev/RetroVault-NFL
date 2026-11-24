@@ -10,6 +10,7 @@ import { lastGameIdOf, openGame, useGameDetail, useGameIds, useSuperBowlIds } fr
 import { fmtDate, starsOf } from '@/components/game/gameModel';
 import { teamKeyFor, POWER_WEIGHTS, type FranchiseRecord, type TeamSummary } from '../teamStats';
 import StripRail from './StripRail';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import '@/components/game/game.css';
 import { displayName } from '@/utils/displayName';
 
@@ -137,7 +138,7 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
   const best = [...wins.entries()].sort((a, b) => b[1] - a[1])[0];
 
   return (
-    <section className="ts" aria-labelledby="sb-strip-h">
+    <Reveal as="section" className="ts" aria-labelledby="sb-strip-h">
       <div className="ts__head">
         <div className="min-w-0">
           <p className="font-pixel text-[9px] uppercase text-gold">Super Bowl timeline</p>
@@ -148,7 +149,7 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
         {best && <p className="text-xs text-muted-foreground">Most titles in the span: <b className="text-foreground">{best[0]}</b> ({best[1]}). Hover a season for its game, click to open it.</p>}
       </div>
       <StripRail label="Super Bowl champions by season, scroll sideways" start="end">
-        {list.map((sb) => {
+        {list.map((sb, si) => {
           const t = findNFLTeam(sb.winner);
           const key = teamKeyFor(sb.winner);
           const id = ids?.[String(sb.year)];
@@ -160,7 +161,8 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
             <button
               key={sb.year}
               type="button"
-              className={cn('ts-sb', dim && 'is-dim')}
+              className={cn('ts-sb mo-rise', dim && 'is-dim')}
+              style={stag(si, 18)}
               aria-label={`${label}. Open the game`}
               disabled={!id}
               onClick={() => id && (hide(), openGame(id))}
@@ -177,7 +179,7 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
               </span>
               <span className="ts-sb__vs">over {findNFLTeam(sb.loser)?.abbreviation ?? sb.loser}</span>
               <span className="ts-sb__pow" style={{ ['--tc' as string]: t?.primaryColor ?? '225 30% 30%' }} title={pw !== undefined ? `${t?.name} power score that season: ${pw.toFixed(1)}` : undefined}>
-                {pw !== undefined && <i style={{ height: `${Math.max(6, Math.min(100, pw))}%` }} />}
+                {pw !== undefined && <i className="mo-grow-y" style={{ height: `${Math.max(6, Math.min(100, pw))}%`, ['--i' as string]: si * 0.4 + 6 }} />}
                 {pw !== undefined && <b>{Math.round(pw)}</b>}
               </span>
             </button>
@@ -189,7 +191,7 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
         <span>Bar under it: the champion's power score that season (100 × win % + 1.5 × point differential per game + 40 × schedule strength)</span>
       </p>
       {el}
-    </section>
+    </Reveal>
   );
 };
 
@@ -243,7 +245,7 @@ export const StrengthStrip = ({ teams, records, superBowls, onOpen, highlight, o
   const takeaway = top && top.v > 0 ? `The ${top.t.team?.name} lead on ${meta.unit} (${fmt(top.v, metric)})${rows[1] ? `, ahead of the ${rows[1].t.team?.name} (${fmt(rows[1].v, metric)})` : ''}.` : '';
 
   return (
-    <section className="ts" aria-labelledby="strength-strip-h">
+    <Reveal as="section" className="ts" aria-labelledby="strength-strip-h">
       <div className="ts__head">
         <div className="min-w-0">
           <p className="font-pixel text-[9px] uppercase text-gold">Team strength and titles</p>
@@ -270,7 +272,8 @@ export const StrengthStrip = ({ teams, records, superBowls, onOpen, highlight, o
             <button
               key={t.key}
               type="button"
-              className={cn('ts-col', dim && 'is-dim', pick === t.key && 'is-pick')}
+              className={cn('ts-col mo-rise', dim && 'is-dim', pick === t.key && 'is-pick')}
+              style={stag(i, 22)}
               aria-pressed={pick === t.key}
               aria-label={`${i + 1}. ${t.label}: ${fmt(v, metric)} ${meta.unit}${rec ? `, ${rec.titles} titles` : ''}. ${pick === t.key ? 'Selected' : 'Show its seasons'}`}
               onClick={() => (hide(), setPick(pick === t.key ? null : t.key))}
@@ -291,7 +294,7 @@ export const StrengthStrip = ({ teams, records, superBowls, onOpen, highlight, o
               <span className="ts-col__rank">{i + 1}</span>
               <span className="ts-col__plot" style={{ ['--tc' as string]: prime, ['--tcl' as string]: liftForDarkBg(prime, 48) }}>
                 <span className="ts-col__v" style={{ bottom: `${pct}%` }}>{fmt(v, metric)}</span>
-                <span className="ts-col__bar" style={{ height: `${pct}%` }} />
+                <span className="ts-col__bar mo-grow-y" style={{ height: `${pct}%`, ['--i' as string]: i * 0.4 + 4 }} />
               </span>
               <TeamLogo team={t.team?.abbreviation} decorative className="h-9 w-9" />
               <span className="ts-col__pips" aria-hidden>{rec && rec.titles > 0 ? (rec.titles <= 4 ? '★'.repeat(rec.titles) : `★${rec.titles}`) : ''}</span>
@@ -305,7 +308,7 @@ export const StrengthStrip = ({ teams, records, superBowls, onOpen, highlight, o
         </div>
       )}
       {el}
-    </section>
+    </Reveal>
   );
 };
 
@@ -317,13 +320,13 @@ const ClubSeasons = ({ team, years, power, ids, superBowls, onOpenTeam }: { team
   const won = new Set(superBowls.filter((s) => findNFLTeam(s.winner)?.id === t.id).map((s) => s.year));
   const lost = new Set(superBowls.filter((s) => findNFLTeam(s.loser)?.id === t.id).map((s) => s.year));
   return (
-    <>
+    <Reveal>
       <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
         <p className="flex items-center gap-2 font-display text-lg font-extrabold uppercase"><TeamLogo team={t.abbreviation} decorative className="h-7 w-7" /> {t.fullName} by season <span className="font-pixel text-[9px] font-normal text-muted-foreground">power score · gold = title · outlined = Super Bowl</span></p>
         <button type="button" onClick={onOpenTeam} className="rounded-md border border-border px-2.5 py-1 font-display text-xs font-bold uppercase tracking-wide text-muted-foreground hover:border-gold hover:text-gold">Open team page</button>
       </div>
       <StripRail label={`${t.fullName} power by season, scroll sideways`} start="end">
-        {years.map((y) => {
+        {years.map((y, yi) => {
           const pw = power?.get(y)?.get(t.name) ?? power?.get(y)?.get(t.abbreviation);
           const isW = won.has(y);
           const isL = lost.has(y);
@@ -332,21 +335,21 @@ const ClubSeasons = ({ team, years, power, ids, superBowls, onOpenTeam }: { team
             <button
               key={y}
               type="button"
-              className={cn('ts-ss', isW && 'is-title', (isW || isL) && 'is-final')}
-              style={{ ['--tc' as string]: prime }}
+              className={cn('ts-ss mo-rise', isW && 'is-title', (isW || isL) && 'is-final')}
+              style={{ ['--tc' as string]: prime, ...stag(yi, 14) }}
               disabled={!id}
               aria-label={`${y}: power ${pw !== undefined ? pw.toFixed(1) : 'unknown'}${isW ? ', Super Bowl champions' : isL ? ', lost the Super Bowl' : ''}. Open ${isW || isL ? 'the Super Bowl' : 'its last game'}`}
               onClick={() => id && (hide(), openGame(id))}
               {...(id ? bind(<GamePreview id={id} kicker={`${y} · ${isW ? 'Won the Super Bowl' : isL ? 'Lost the Super Bowl' : 'Final game of the season'} · power ${pw !== undefined ? pw.toFixed(1) : '–'}`} />) : {})}
             >
               <span className="ts-ss__m" aria-hidden>{isW ? '★' : isL ? '◆' : ''}</span>
-              <span className="ts-ss__plot"><i className="ts-ss__bar" style={{ height: `${pw === undefined ? 4 : Math.max(5, Math.min(100, pw))}%` }} /></span>
+              <span className="ts-ss__plot"><i className="ts-ss__bar mo-grow-y" style={{ height: `${pw === undefined ? 4 : Math.max(5, Math.min(100, pw))}%`, ['--i' as string]: yi * 0.4 + 4 }} /></span>
               <span className="ts-ss__y">{String(y).slice(2)}</span>
             </button>
           );
         })}
       </StripRail>
       {el}
-    </>
+    </Reveal>
   );
 };

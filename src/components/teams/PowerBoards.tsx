@@ -1,3 +1,4 @@
+import { Reveal, stag } from '@/components/motion/Reveal';
 import { useState } from 'react';
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -58,14 +59,14 @@ export const ClubLadder = ({
         className="pb-head"
         right={<ArcadeToggle size="sm" label="Ladder length" value={all ? 'all' : 'top'} onChange={(v) => setAll(v === 'all')} options={[{ value: 'top', label: 'Top 10' }, { value: 'all', label: `All ${rows.length}` }]} />}
       />
-      <ol className="grid gap-1.5 md:grid-cols-2">
-        {shown.map((r) => {
+      <Reveal as="ol" className="grid gap-1.5 md:grid-cols-2">
+        {shown.map((r, ri) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
           const tone = clubPlate(r.team).fill;
           const Row = onTrack ? 'button' : 'div';
           return (
-            <li key={r.abbr} className="min-w-0">
+            <li key={r.abbr} className="min-w-0 mo-rise" style={stag(ri, 40)}>
               <Row
                 {...(onTrack ? { type: 'button' as const, onClick: () => onTrack(r.team), title: `Show ${r.team} progression` } : {})}
                 className="pb-row relative flex w-full items-center gap-2 overflow-hidden px-2 py-1.5 text-left"
@@ -85,12 +86,12 @@ export const ClubLadder = ({
                 >
                   {move === null ? <span className="font-pixel text-[7px]">NEW</span> : move > 0 ? <><TrendingUp className="h-3 w-3" aria-hidden />{move}</> : move < 0 ? <><TrendingDown className="h-3 w-3" aria-hidden />{-move}</> : <Minus className="h-3 w-3" aria-hidden />}
                 </span>
-                <span aria-hidden className="pb-bar" style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%` }} />
+                <span aria-hidden className="pb-bar mo-grow" style={{ width: `${8 + (92 * (r.powerScore - min)) / Math.max(1, max - min)}%`, ['--i' as string]: ri * 0.7 + 3 }} />
               </Row>
             </li>
           );
         })}
-      </ol>
+      </Reveal>
     </div>
   );
 };
