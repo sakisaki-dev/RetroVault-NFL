@@ -8,14 +8,17 @@ import PixelLoader from '@/components/ui/PixelLoader';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openTeamPage } from '@/utils/teamSearch';
 import { useGameDetail, type GameDetail, type GamePlayer, type Stat } from '@/utils/nflGames';
-import { buildHash } from '../stats/hub/hashRoute';
+import { buildHash, canGoBackInApp, useHubRoute } from '../stats/hub/hashRoute';
+import { PodiumStage } from '../season/NflSeasonExtras';
+import { useGameSprites } from '@/utils/gameSprites';
 import { hslOf } from '../season/seasonGamesUi';
 import { liftForDarkBg } from '@/utils/teamColors';
 import {
   atsOf, compareRows, fmtDate, hasNgs, hasPfr, hasSnaps, impact, leadersFor, missingFor, played, recapOf, roofLabel, roundLabel, sitePos, snaps,
-  starsOf, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, type Side, type Star, type Unit,
+  lineOf, rank, score, tackles, teamName, unitOf, unitsOf, v, winnerOf, hasCardPos, type Side, type Star, type Unit,
 } from './gameModel';
 import './game.css';
+import './gameStage.css';
 import { displayName } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
 
@@ -68,79 +71,75 @@ const Section = ({ id, icon: Icon, title, kicker, children, className }: { id: s
 const topQb = (g: GameDetail, side: Side): GamePlayer | undefined =>
   g.players.filter((p) => p.side === side && unitOf(p) === 'qb').sort((a, b) => v(b.s, 'attempts') - v(a.s, 'attempts') || snaps(b) - snaps(a))[0];
 
-const Hero = ({ g }: { g: GameDetail }) => {
+/** A kickoff at 7 pm or later (the file's times are Eastern) or the Super Bowl plays under the lights. */
+const isNight = (g: GameDetail) => g.type === 'SB' || (!!g.time && parseInt(g.time, 10) >= 19);
+
+const Stadium = ({ g }: { g: GameDetail }) => {
   const done = played(g);
   const w = winnerOf(g);
   const ats = atsOf(g);
   const total = done && g.total !== undefined ? g.awayScore! + g.homeScore! : null;
   const sides: [Side, string][] = [[0, g.away], [1, g.home]];
   const weather = [g.temp !== undefined ? `${Math.round(g.temp)}°F` : null, g.wind !== undefined ? `${Math.round(g.wind)} mph wind` : null].filter(Boolean).join(' · ');
+  const night = isNight(g);
   return (
-    <header className="gm-hero" style={{ ['--ca' as string]: hslOf(g.away), ['--ch' as string]: hslOf(g.home) }}>
-      <span aria-hidden className="gm-hero__lights" />
-      <p className="gm-hero__kicker">
-        <span className="text-[hsl(var(--gold))]">{roundLabel(g)}</span>
-        <span>·</span>
-        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3 w-3" aria-hidden /> {fmtDate(g.date)}</span>
-        {g.stadium && (
-          <>
-            <span>·</span>
-            <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" aria-hidden /> {g.stadium}</span>
-          </>
-        )}
-      </p>
-      <div className="gm-hero__board">
-        {sides.map(([side, abbr]) => {
-          const qb = topQb(g, side);
-          const win = w === side;
-          const coach = side === 0 ? g.awayCoach : g.homeCoach;
-          const qbName = qb?.name ?? (side === 0 ? g.awayQb : g.homeQb);
-          return (
-            <div key={abbr} className={cn('gm-hero__club', side === 1 && 'gm-hero__club--home', done && w !== null && !win && 'is-lost')}>
-              <button type="button" className="gm-hero__logo" onClick={() => openTeamPage(teamName(abbr))} aria-label={`${teamName(abbr)} team page`}>
-                <TeamLogo team={abbr} decorative className="h-full w-full drop-shadow-[0_0_18px_hsl(0_0%_100%/0.25)]" />
-              </button>
-              <div className="min-w-0">
-                <p className="gm-hero__role">{side === 0 ? 'Away' : 'Home'}</p>
-                <p className="gm-hero__name">{findNFLTeam(abbr)?.name ?? abbr}</p>
-                <p className="gm-hero__sub">{[qbName ? `QB ${qbName}` : null, coach ? `Coach ${coach}` : null].filter(Boolean).join(' · ')}</p>
+    <PodiumStage team={g.home} turf={night ? 'night' : 'day'} className="gm-stage">
+      <div style={{ ['--ca' as string]: hslOf(g.away), ['--ch' as string]: hslOf(g.home) }}>
+        <p className="gm-hero__kicker">
+          <span className="text-[hsl(var(--gold))]">{roundLabel(g)}</span>
+          {night && <><span>·</span><span>{g.type === 'SB' ? 'Under the lights' : 'Primetime'}</span></>}
+          <span>·</span>
+          <span className="inline-flex items-center gap-1"><CalendarDays className="h-3 w-3" aria-hidden /> {fmtDate(g.date)}</span>
+          {g.stadium && <><span>·</span><span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" aria-hidden /> {g.stadium}</span></>}
+        </p>
+        <div className="gm-hero__board">
+          {sides.map(([side, abbr]) => {
+            const qb = topQb(g, side);
+            const win = w === side;
+            const coach = side === 0 ? g.awayCoach : g.homeCoach;
+            const qbName = qb?.name ?? (side === 0 ? g.awayQb : g.homeQb);
+            return (
+              <div key={abbr} className={cn('gm-hero__club', side === 1 && 'gm-hero__club--home', done && w !== null && !win && 'is-lost')}>
+                <button type="button" className="gm-hero__logo" onClick={() => openTeamPage(teamName(abbr))} aria-label={`${teamName(abbr)} team page`}>
+                  <TeamLogo team={abbr} decorative className="h-full w-full drop-shadow-[0_0_18px_hsl(0_0%_100%/0.25)]" />
+                </button>
+                <div className="min-w-0">
+                  <p className="gm-hero__role">{side === 0 ? 'Away' : 'Home'}</p>
+                  <p className="gm-hero__name">{findNFLTeam(abbr)?.name ?? abbr}</p>
+                  <p className="gm-hero__sub">{[qbName ? `QB ${displayName(qbName)}` : null, coach ? `Coach ${coach}` : null].filter(Boolean).join(' · ')}</p>
+                </div>
               </div>
-              {qb && (
-                <span className="gm-hero__qb" aria-hidden>
-                  <GameSprite player={{ name: qb.name, position: 'QB', team: abbr, bannerTeam: abbr }} team={abbr} season={g.season} size="m" action={win ? 'celebrate' : undefined} />
-                </span>
-              )}
-            </div>
-          );
-        })}
-        <div className="gm-hero__score" aria-label={done ? `${teamName(g.away)} ${g.awayScore}, ${teamName(g.home)} ${g.homeScore}` : 'Not played yet'}>
-          {done ? (
-            <>
-              <span className={cn('gm-num', w === 0 && 'is-win')}>{g.awayScore}</span>
-              <span className="gm-dash">–</span>
-              <span className={cn('gm-num', w === 1 && 'is-win')}>{g.homeScore}</span>
-            </>
-          ) : (
-            <span className="font-display text-3xl font-bold uppercase text-muted-foreground">To play</span>
-          )}
-          <span className="gm-final">{done ? `Final${g.ot ? ' · OT' : ''}${w === null ? ' · Tie' : ''}` : (g.time ?? '')}</span>
+            );
+          })}
+          <div className="gm-hero__score gm-board" aria-label={done ? `${teamName(g.away)} ${g.awayScore}, ${teamName(g.home)} ${g.homeScore}` : 'Not played yet'}>
+            {done ? (
+              <>
+                <span className={cn('gm-num', w === 0 && 'is-win')}>{g.awayScore}</span>
+                <span className="gm-dash">–</span>
+                <span className={cn('gm-num', w === 1 && 'is-win')}>{g.homeScore}</span>
+              </>
+            ) : (
+              <span className="font-display text-3xl font-bold uppercase text-muted-foreground">To play</span>
+            )}
+            <span className="gm-final">{done ? `Final${g.ot ? ' · OT' : ''}${w === null ? ' · Tie' : ''}` : (g.time ?? '')}</span>
+          </div>
         </div>
+        <ul className="gm-chips" aria-label="Game conditions">
+          {g.roof && <li><CloudSun className="h-3 w-3" aria-hidden /> {roofLabel(g.roof)}{g.surface ? ` · ${g.surface}` : ''}</li>}
+          {weather && <li><Wind className="h-3 w-3" aria-hidden /> {weather}</li>}
+          {g.spread !== undefined && (
+            <li title="Closing spread">
+              <Gauge className="h-3 w-3" aria-hidden /> Line {g.spread === 0 ? 'pick' : `${abbrOf(g.spread > 0 ? g.home : g.away)} −${Math.abs(g.spread)}`}
+              {ats && !ats.push && ats.points > 0 ? ` · ${abbrOf(ats.favorite === 0 ? g.away : g.home)} ${ats.covered ? 'covered' : 'did not cover'}` : ats?.push ? ' · push' : ''}
+            </li>
+          )}
+          {g.total !== undefined && <li title="Closing total">O/U {g.total}{total !== null ? ` · ${total > g.total ? 'over' : total < g.total ? 'under' : 'push'} (${total})` : ''}</li>}
+          {g.moneyline && <li title="Closing moneyline">ML {abbrOf(g.away)} {g.moneyline[0] > 0 ? '+' : ''}{g.moneyline[0]} / {abbrOf(g.home)} {g.moneyline[1] > 0 ? '+' : ''}{g.moneyline[1]}</li>}
+          {g.referee && <li>Ref {g.referee}</li>}
+          {g.rest[0] !== undefined && g.rest[1] !== undefined && <li title="Days of rest">Rest {abbrOf(g.away)} {g.rest[0]}d / {abbrOf(g.home)} {g.rest[1]}d</li>}
+        </ul>
       </div>
-      <ul className="gm-chips" aria-label="Game conditions">
-        {g.roof && <li><CloudSun className="h-3 w-3" aria-hidden /> {roofLabel(g.roof)}{g.surface ? ` · ${g.surface}` : ''}</li>}
-        {weather && <li><Wind className="h-3 w-3" aria-hidden /> {weather}</li>}
-        {g.spread !== undefined && (
-          <li title="Closing spread">
-            <Gauge className="h-3 w-3" aria-hidden /> Line {g.spread === 0 ? 'pick' : `${abbrOf(g.spread > 0 ? g.home : g.away)} −${Math.abs(g.spread)}`}
-            {ats && !ats.push && ats.points > 0 ? ` · ${abbrOf(ats.favorite === 0 ? g.away : g.home)} ${ats.covered ? 'covered' : 'did not cover'}` : ats?.push ? ' · push' : ''}
-          </li>
-        )}
-        {g.total !== undefined && <li title="Closing total">O/U {g.total}{total !== null ? ` · ${total > g.total ? 'over' : total < g.total ? 'under' : 'push'} (${total})` : ''}</li>}
-        {g.moneyline && <li title="Closing moneyline">ML {abbrOf(g.away)} {g.moneyline[0] > 0 ? '+' : ''}{g.moneyline[0]} / {abbrOf(g.home)} {g.moneyline[1] > 0 ? '+' : ''}{g.moneyline[1]}</li>}
-        {g.referee && <li>Ref {g.referee}</li>}
-        {g.rest[0] !== undefined && g.rest[1] !== undefined && <li title="Days of rest">Rest {abbrOf(g.away)} {g.rest[0]}d / {abbrOf(g.home)} {g.rest[1]}d</li>}
-      </ul>
-    </header>
+    </PodiumStage>
   );
 };
 
@@ -189,39 +188,120 @@ const Compare = ({ g }: { g: GameDetail }) => {
 
 type Linker = (p: GamePlayer) => string | null;
 
-const StarCard = ({ s, g, big, link }: { s: Star; g: GameDetail; big?: boolean; link: Linker }) => {
-  const abbr = s.player.side === 0 ? g.away : g.home;
-  const href = link(s.player);
-  const body = (
-    <>
-      <span className="gm-star__sprite">
-        <GameSprite player={{ name: s.player.name, position: sitePos(s.player.pos), team: abbr, bannerTeam: abbr }} team={abbr} season={g.season} size={big ? 'l' : 'm'} action={big ? 'celebrate' : undefined} />
-      </span>
-      <span className="min-w-0">
-        <span className="gm-star__k">{big ? <><Trophy className="mr-1 inline h-3 w-3" aria-hidden />Game ball</> : s.kicker}</span>
-        <span className="gm-star__n">{displayName(s.player.name)}</span>
-        <span className="gm-star__l">{s.player.pos} · {abbrOf(abbr)}</span>
-        <span className="gm-star__s">{s.line}</span>
-      </span>
-    </>
-  );
-  const cls = cn('gm-star', big && 'gm-star--big');
+/** A name as a club-colour banner strip: the Deep Dive when he has a card, a plain strip when he has none. */
+const NameStrip = ({ p, g, link, children, className }: { p: GamePlayer; g: GameDetail; link: Linker; children?: ReactNode; className?: string }) => {
+  const abbr = p.side === 0 ? g.away : g.home;
+  const href = link(p);
+  const cls = cn('gm-strip', className);
   const st = { ['--tc' as string]: hslOf(abbr) };
-  return href ? <a href={href} className={cls} style={st}>{body}</a> : <div className={cls} style={st}>{body}</div>;
+  const body = children ?? displayName(p.name);
+  return href ? <a href={href} className={cls} style={st} title={`${displayName(p.name)}: open Deep Dive`}>{body}</a> : <span className={cls} style={st}>{body}</span>;
 };
 
-const Stars = ({ g, link }: { g: GameDetail; link: Linker }) => {
-  const { ball, others } = useMemo(() => starsOf(g), [g]);
-  if (!ball) return null;
+const SpriteOf = ({ p, g, size = 's', celebrate, kind = 'figure' }: { p: GamePlayer; g: GameDetail; size?: 's' | 'm' | 'l'; celebrate?: boolean; kind?: 'figure' | 'bust' }) => {
+  const abbr = p.side === 0 ? g.away : g.home;
+  const sprites = useGameSprites();
+  if (!sprites) return <TeamLogo team={abbr} decorative className={size === 's' ? 'h-9 w-9' : 'h-14 w-14'} />;
+  return <GameSprite player={{ name: p.name, position: sitePos(p.pos), team: abbr, bannerTeam: abbr }} team={abbr} season={g.season} kind={kind} size={size} action={celebrate ? 'celebrate' : undefined} />;
+};
+
+/* ---- matchup: both clubs' starters squared up on the turf ---- */
+
+const startersOf = (g: GameDetail, side: Side): GamePlayer[] => {
+  const mine = g.players.filter((p) => p.side === side && hasCardPos(p.pos));
+  const pick = (ids: string[], n: number, used: GamePlayer[]) => mine.filter((p) => ids.includes(unitOf(p)) && !used.includes(p)).sort((a, b) => rank(b) - rank(a)).slice(0, n);
+  const out: GamePlayer[] = [];
+  out.push(...pick(['qb'], 1, out));
+  out.push(...pick(['bf'], 1, out));
+  out.push(...pick(['rec'], 2, out));
+  out.push(...pick(['dl', 'lb', 'db'], 2, out));
+  return out;
+};
+
+const Matchup = ({ g, link }: { g: GameDetail; link: Linker }) => {
+  const away = startersOf(g, 0).reverse();
+  const home = startersOf(g, 1);
+  const w = winnerOf(g);
+  if (!away.length && !home.length) return null;
+  const fig = (p: GamePlayer, side: Side) => {
+    const parts = displayName(p.name).split(' ');
+    return (
+      <li key={p.gsis + p.name} className={cn('gm-mu__fig', side === 1 && 'gm-mu__fig--home')}>
+        <span className="gm-mu__spr"><SpriteOf p={p} g={g} celebrate={w === side && unitOf(p) === 'qb'} /></span>
+        <NameStrip p={p} g={g} link={link} className="gm-mu__name">{parts.slice(1).join(' ') || p.name}</NameStrip>
+        <span className="gm-mu__pos">{p.pos}</span>
+      </li>
+    );
+  };
   return (
-    <div className="gm-stars">
-      <StarCard s={ball} g={g} big link={link} />
-      <div className="gm-stars__rest">
-        {others.map((s) => <StarCard key={s.player.gsis + s.player.name} s={s} g={g} link={link} />)}
+    <PodiumStage team={g.home} turf={isNight(g) ? 'night' : 'day'} className="gm-stage gm-stage--mu">
+      <div className="gm-mu" style={{ ['--ca' as string]: hslOf(g.away), ['--ch' as string]: hslOf(g.home) }}>
+        <ul className="gm-mu__side gm-mu__side--away" aria-label={`${teamName(g.away)} starters`}>{away.map((p) => fig(p, 0))}</ul>
+        <span className="gm-mu__vs" aria-hidden>VS</span>
+        <ul className="gm-mu__side gm-mu__side--home" aria-label={`${teamName(g.home)} starters`}>{home.map((p) => fig(p, 1))}</ul>
       </div>
-    </div>
+    </PodiumStage>
   );
 };
+
+/* ---- stars of the game: top three on a podium ---- */
+
+const GamePodium = ({ g, link }: { g: GameDetail; link: Linker }) => {
+  const top = useMemo(() => g.players.filter((p) => score(p) > 0).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name)).slice(0, 3), [g]);
+  if (top.length < 1) return null;
+  const order = [top[1], top[0], top[2]].map((p, i) => (p ? { p, rank: [2, 1, 3][i] } : null));
+  const winner = winnerOf(g);
+  return (
+    <PodiumStage team={top[0].side === 0 ? g.away : g.home} turf={isNight(g) ? 'night' : 'day'}>
+      <ol className="mx-auto grid max-w-2xl grid-cols-3 items-end gap-2" aria-label="Stars of the game: 1st in the middle, 2nd left, 3rd right">
+        {order.map((o, i) => {
+          if (!o) return <li key={`e${i}`} />;
+          const { p, rank: r } = o;
+          const abbr = p.side === 0 ? g.away : g.home;
+          return (
+            <li key={p.gsis + p.name} className="flex min-w-0 flex-col items-center text-center">
+              <SpriteOf p={p} g={g} size="m" celebrate={r === 1 || winner === p.side} />
+              <NameStrip p={p} g={g} link={link} className="gm-pod__name" />
+              <p className="flex items-center gap-1 text-[11px] text-white/80"><TeamLogo team={abbr} decorative className="h-4 w-4" /> {abbrOf(abbr)} · {p.pos}</p>
+              <div className={cn('nsx-step gm-pod__step', r === 1 && 'nsx-step--first')} style={{ minHeight: [92, 112, 84][r - 1], background: `linear-gradient(180deg, hsl(${hslOf(abbr)} / 0.55), rgb(8 12 26 / 0.96) 72%), #0b1020` }}>
+                <span className="nsx-step__rank">{r === 1 ? 'GAME BALL' : r}</span>
+                <span className="gm-pod__line">{lineOf(p)}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </PodiumStage>
+  );
+};
+
+/* ---- player stats: per club, banner strips with busts ---- */
+
+const Performers = ({ g, link }: { g: GameDetail; link: Linker }) => (
+  <div className="gm-perf">
+    {([0, 1] as Side[]).map((s) => {
+      const abbr = s === 0 ? g.away : g.home;
+      const rows = g.players.filter((p) => p.side === s && score(p) > 0 && lineOf(p)).sort((a, b) => score(b) - score(a)).slice(0, 8);
+      return (
+        <div key={s} className="gm-perf__club" style={{ ['--tc' as string]: hslOf(abbr) }}>
+          <p className="gm-perf__head"><TeamLogo team={abbr} decorative className="h-7 w-7" /> <span>{findNFLTeam(abbr)?.fullName ?? abbr}</span></p>
+          <ul>
+            {rows.map((p) => (
+              <li key={p.gsis + p.name}>
+                <span className="gm-perf__bust"><SpriteOf p={p} g={g} kind="bust" /></span>
+                <span className="min-w-0">
+                  <NameStrip p={p} g={g} link={link} className="gm-perf__strip"><b>{displayName(p.name)}</b><small>{p.pos}</small></NameStrip>
+                  <span className="gm-perf__line">{lineOf(p)}</span>
+                </span>
+              </li>
+            ))}
+            {!rows.length && <li className="gm-perf__none">No stat lines recorded for this club.</li>}
+          </ul>
+        </div>
+      );
+    })}
+  </div>
+);
 
 /* ---------------- rosters ---------------- */
 
@@ -494,88 +574,90 @@ const GameView = ({ g }: { g: GameDetail }) => {
   const away = teamName(g.away);
   const home = teamName(g.home);
 
+  const [deep, setDeep] = useState<'box' | 'rosters' | 'adv' | 'snaps' | null>(null);
+  const { navigate } = useHubRoute();
+  const back = () => {
+    if (canGoBackInApp()) window.history.back();
+    else navigate({ tab: 'career', sub: 'teams' });
+  };
+  const tabs = [
+    { id: 'box' as const, label: 'Full box score', icon: ScrollText, on: g.players.length > 0 },
+    { id: 'rosters' as const, label: 'Rosters', icon: Users, on: g.players.length > 0 },
+    { id: 'adv' as const, label: 'Advanced stats', icon: Sparkles, on: advOk },
+    { id: 'snaps' as const, label: 'Snap counts', icon: Shield, on: snapOk },
+  ].filter((t) => t.on);
+  const pair = (render: (s: Side) => ReactNode) => (
+    <>
+      <SideTabs g={g} side={side} onSide={setSide} />
+      <div className="gm-pair">{([0, 1] as Side[]).map((s) => <div key={s} className="gm-team" data-active={side === s}>{render(s)}</div>)}</div>
+    </>
+  );
+
   return (
-    <div className="container gm space-y-8 py-5 sm:py-7">
+    <div className="container gm space-y-7 py-5 sm:py-7">
       <nav aria-label="Game navigation" className="flex flex-wrap items-center gap-2 text-sm">
-        <a href={`#season?y=${g.season}`} className="gm-back"><ArrowLeft className="h-4 w-4" aria-hidden /> {g.season} season</a>
+        <button type="button" data-gm-back className="gm-back gm-back--main" onClick={back}><ArrowLeft className="h-4 w-4" aria-hidden /> {canGoBackInApp() ? 'Back' : 'Teams'}</button>
+        <a href={`#season?y=${g.season}`} className="gm-back">{g.season} season</a>
         <button type="button" className="gm-back" onClick={() => openTeamPage(away)}>{away}</button>
         <button type="button" className="gm-back" onClick={() => openTeamPage(home)}>{home}</button>
-        <a href="#stats/teams" className="gm-back">All franchises</a>
       </nav>
 
-      <Hero g={g} />
+      <Stadium g={g} />
 
       {done ? (
         <>
           <Recap g={g} />
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-            <Compare g={g} />
-            <Stars g={g} link={link} />
-          </div>
+          {g.players.length > 0 && (
+            <Section id="gm-matchup" icon={Swords} title="The matchup" kicker={`${g.season} kits`}>
+              <Matchup g={g} link={link} />
+            </Section>
+          )}
+          {g.players.length > 0 && (
+            <Section id="gm-stars" icon={Trophy} title="Stars of the game">
+              <GamePodium g={g} link={link} />
+            </Section>
+          )}
+          {g.team && (
+            <Section id="gm-tape" icon={Gauge} title="Tale of the tape" kicker="Team stats">
+              <Compare g={g} />
+            </Section>
+          )}
+          {g.players.length > 0 && (
+            <Section id="gm-players" icon={Users} title="Player stats" kicker="Top performers by club">
+              <Performers g={g} link={link} />
+            </Section>
+          )}
+
+          {tabs.length > 0 && (
+            <section id="gm-deeper" aria-label="More of the game's data" className="space-y-3">
+              <div role="group" aria-label="Dig deeper" className="gm-deeper">
+                {tabs.map((t) => (
+                  <button key={t.id} type="button" aria-pressed={deep === t.id} onClick={() => setDeep(deep === t.id ? null : t.id)}>
+                    <t.icon className="h-4 w-4" aria-hidden /> {t.label}
+                  </button>
+                ))}
+              </div>
+              {deep === 'box' && pair((s) => <TeamTables g={g} side={s} link={link} kind="box" />)}
+              {deep === 'rosters' && (
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    {snapOk ? 'Everyone who was on the field, by snap count.' : 'Everyone who recorded a stat in this game; snap counts begin in 2013, so linemen and players with no stat line are not listed.'} Tap a player for his Deep Dive.
+                  </p>
+                  {pair((s) => <Roster g={g} side={s} link={link} />)}
+                </>
+              )}
+              {deep === 'adv' && (
+                <>
+                  <p className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">{[hasPfr(g) ? 'Pro Football Reference' : '', hasNgs(g) ? 'Next Gen Stats' : ''].filter(Boolean).join(' · ')}</p>
+                  {pair((s) => <TeamTables g={g} side={s} link={link} kind="adv" />)}
+                </>
+              )}
+              {deep === 'snaps' && pair((s) => <SnapBars g={g} side={s} link={link} />)}
+            </section>
+          )}
         </>
       ) : (
         <p className="gm-recap">This game has not been played yet. Kickoff {g.time ? `at ${g.time} ET` : 'time to be set'} on {fmtDate(g.date)}; the roster, box score and advanced stats appear here once it is final.</p>
-      )}
-
-      {done && g.players.length > 0 && (
-        <>
-          <Section id="gm-rosters" icon={Users} title="Rosters" kicker={`${g.season} kits`}>
-            <p className="text-sm text-muted-foreground">
-              {snapOk ? 'Everyone who was on the field, by snap count.' : 'Everyone who recorded a stat in this game; snap counts begin in 2013, so linemen and players with no stat line are not listed.'} Tap a player for his Deep Dive.
-            </p>
-            <SideTabs g={g} side={side} onSide={setSide} />
-            <div className="gm-pair">
-              {([0, 1] as Side[]).map((s) => <div key={s} className="gm-team" data-active={side === s}><Roster g={g} side={s} link={link} /></div>)}
-            </div>
-          </Section>
-
-          <Section id="gm-leaders" icon={Swords} title="Game leaders">
-            <div className="gm-leaders">
-              {([0, 1] as Side[]).map((s) => (
-                <div key={s} className="gm-leader" style={{ ['--tc' as string]: hslOf(s === 0 ? g.away : g.home) }}>
-                  <p className="gm-team-tag"><TeamLogo team={s === 0 ? g.away : g.home} decorative className="h-5 w-5" /> {abbrOf(s === 0 ? g.away : g.home)}</p>
-                  <ul>
-                    {leadersFor(g, s).map((l) => {
-                      const href = link(l.player);
-                      return (
-                        <li key={l.label}>
-                          <span className="gm-leader__k">{l.label}</span>
-                          <span className="gm-leader__n">{href ? <a href={href}>{displayName(l.player.name)}</a> : l.player.name}</span>
-                          <span className="gm-leader__v">{l.line}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          <Section id="gm-box" icon={ScrollText} title="Box score" kicker="Per player">
-            <SideTabs g={g} side={side} onSide={setSide} />
-            <div className="gm-pair">
-              {([0, 1] as Side[]).map((s) => <div key={s} className="gm-team" data-active={side === s}><TeamTables g={g} side={s} link={link} kind="box" /></div>)}
-            </div>
-          </Section>
-
-          {advOk && (
-            <Section id="gm-adv" icon={Sparkles} title="Advanced stats" kicker={[hasPfr(g) ? 'Pro Football Reference' : '', hasNgs(g) ? 'Next Gen Stats' : ''].filter(Boolean).join(' · ')}>
-              <SideTabs g={g} side={side} onSide={setSide} />
-              <div className="gm-pair">
-                {([0, 1] as Side[]).map((s) => <div key={s} className="gm-team" data-active={side === s}><TeamTables g={g} side={s} link={link} kind="adv" /></div>)}
-              </div>
-            </Section>
-          )}
-
-          {snapOk && (
-            <Section id="gm-snaps" icon={Shield} title="Snap counts" kicker="Who played how much">
-              <SideTabs g={g} side={side} onSide={setSide} />
-              <div className="gm-pair">
-                {([0, 1] as Side[]).map((s) => <div key={s} className="gm-team" data-active={side === s}><SnapBars g={g} side={s} link={link} /></div>)}
-              </div>
-            </Section>
-          )}
-        </>
       )}
 
       <Missing g={g} />
