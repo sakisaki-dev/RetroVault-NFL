@@ -159,3 +159,8 @@
 .sx-sec > *, .sx-block > * { min-width: 0; max-width: 100%; }
 .sx-step__name { display: flex; max-width: 100%; align-items: center; justify-content: center; gap: 4px; font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 1.05; text-transform: uppercase; }
 .sx-step__name span { overflow-wrap: anywhere; }
+
+/* Standings and ladder rows open the club sheet */
+.sx-club-link { cursor: pointer; }
+.sx-club-link:hover { background: hsl(var(--gold) / 0.12); }
+.sx-club-link:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: -2px; }

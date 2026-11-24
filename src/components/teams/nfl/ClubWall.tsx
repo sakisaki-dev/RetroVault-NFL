@@ -15,6 +15,8 @@ import { displayName } from '@/utils/displayName';
 import { divisionKey, sortTeams, type FranchiseRecord, type TeamSortKey, type TeamSummary } from '../teamStats';
 import { ArcadeToggle, SectionHeader } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
+import { openSeasonStandings } from '@/utils/seasonLink';
+import { recordLine, useAllTimeRecords, type AllTime } from './allTime';
 import './clubWall.css';
 
 type Conf = 'all' | 'AFC' | 'NFC';
@@ -76,6 +78,7 @@ interface TileProps {
   leader?: boolean;
   hasSprites: boolean;
   narrow: boolean;
+  allTime: AllTime | null;
   /** place in the wall, for the stagger */
   at?: number;
 }
@@ -93,7 +96,7 @@ const label = ({ club, season }: { club: Club; season: number | null }) => {
 /** The 2026 power rank (the ladder's number), else the all-time one */
 const rankOf = (c: Club) => c.row?.power ?? c.rec?.powerRank ?? 99;
 
-const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, narrow, at = 0 }: TileProps) => {
+const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, allTime, at = 0 }: TileProps) => {
   const { s, rec, row, top } = club;
   const t = s.team!;
   const primary = t.primaryColor;
@@ -101,13 +104,13 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
   const fg = getReadableTextOn(primary);
   const titles = rec?.titles ?? 0;
   const last = lastTitleLine(rec, firstSeason);
+  const apps = rec?.appearances ?? 0;
+  const atRec = allTime?.byClub.get(t.name);
+  const facts = `SB ${apps}${atRec ? ` · ${recordLine(atRec)}` : ''}`;
+  const factsFull = `Super Bowl appearances: ${apps} (${titles} ${titles === 1 ? 'title' : 'titles'})${atRec && allTime ? `. Regular season ${allTime.from}–${allTime.to}: ${recordLine(atRec)}` : ''}`;
   const sprites = leader ? (top.length === 3 ? [top[1], top[0], top[2]] : top) : top.slice(0, 1);
   return (
-    <button
-      type="button"
-      onClick={() => onOpen(s.key)}
-      aria-label={label({ club, season })}
-      title={`${t.city} ${t.name} · ${last.text}`}
+    <div
       className={cn('cw-tile mo-rise', !leader && 'cw-tile--thin', leader && 'cw-tile--lead', titles > 0 && 'cw-tile--champ', bigRank && 'cw-tile--rank')}
       style={{
         ...stag(at, 40),
@@ -117,12 +120,14 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         color: fg,
       }}
     >
+      {/* the whole tile opens the club sheet; the season chip sits above it and opens the standings */}
+      <button type="button" className="cw-hit" onClick={() => onOpen(s.key)} aria-label={label({ club, season })} title={`${t.city} ${t.name} · ${last.text} · ${factsFull}`} />
       <span aria-hidden="true" className="cw-bglogo">
         <TeamLogo team={t} size={leader ? 340 : 170} decorative />
       </span>
-      {(row || rec) && (
+      {(leader || bigRank) && (row || rec) && (
         <span aria-hidden="true" className={cn('cw-rank', bigRank && 'cw-rank--big')}>
-          {leader && !bigRank ? 'DIV LEADER · ' : ''}#{rankOf(club)}
+          {leader && !bigRank ? 'DIV LEADER' : `#${rankOf(club)}`}
         </span>
       )}
       <span className="cw-text">
@@ -134,9 +139,22 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
         ) : (
           <TeamLogo team={t} size={26} decorative className="cw-mini" />
         )}
-        <span className="cw-name">{t.name}</span>
+        <span className="cw-id">
+          <span className="cw-name">{t.name}</span>
+          <span className="cw-facts">{facts}</span>
+        </span>
         <span className="cw-row">
-          {row && <span className="cw-rec">{leader && season ? `${seasonLabel(season)} ` : ''}{row.record}</span>}
+          {row && season && (
+            <button
+              type="button"
+              className="cw-rec cw-rec--link"
+              onClick={() => openSeasonStandings(season)}
+              aria-label={`${seasonLabel(season)} record ${row.record}, power rank ${row.power}. Open the ${seasonLabel(season)} standings`}
+              title={`Open the ${seasonLabel(season)} standings`}
+            >
+              {leader ? `${seasonLabel(season)} · ` : ''}{row.record} · #{row.power} <span aria-hidden="true">→</span>
+            </button>
+          )}
           {titles > 0 && <span className="cw-ttl">{stars(titles)}</span>}
         </span>
         {leader && <span className={cn('cw-last', last.none && 'is-none')}>{last.text}</span>}
@@ -150,7 +168,7 @@ const Tile = ({ club, firstSeason, season, onOpen, bigRank, leader, hasSprites, 
           ))}
         </span>
       )}
-    </button>
+    </div>
   );
 };
 
@@ -197,6 +215,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
   const [conf, setConf] = useState<Conf>('all');
   const [view, setView] = useState<View>(readView);
   const sprites = useGameSprites();
+  const allTime = useAllTimeRecords();
   const narrow = useNarrow();
   void narrow;
   const { dataVersion } = useLeague();
@@ -262,7 +281,7 @@ const ClubWall = ({ teams, records, league, firstSeason, onOpen }: Props) => {
     return out;
   }, [clubs, sort]);
 
-  const tileProps = { firstSeason, season, onOpen, hasSprites: !!sprites, narrow };
+  const tileProps = { firstSeason, season, onOpen, hasSprites: !!sprites, narrow, allTime };
   void divisionKey;
 
   return (

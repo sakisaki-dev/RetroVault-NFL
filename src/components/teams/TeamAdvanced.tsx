@@ -3,11 +3,8 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Dice5, Gauge, Home, Scale, Shield, Tre
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { useCurrentClub } from '@/utils/club';
-import { reducedMotion } from '@/utils/motion';
 import { scheduleSeasons, useSchedule, type ScheduleSeason, type TableRow, type TeamSeasonRow } from '@/utils/schedule';
 import TeamLogo from '../timeline/TeamLogo';
-import SectionIntro from '../stats/SectionIntro';
-import { ClubLadder } from './PowerBoards';
 import { ArcadeToggle, ClubBadge, PixelChip, PixelPanel, PixelSelect, SectionHeader } from '../arcade';
 import { teamMark } from '../stats/visual/chartKit';
 
@@ -180,15 +177,6 @@ const LEGEND: Partial<Record<SortKey, string>> = {
 const thBase = 'px-1.5 py-2 font-semibold sm:px-2';
 const tdBase = 'px-1.5 py-1.5 tabular-nums whitespace-nowrap sm:px-2';
 const alignClass = (a: Column['align']) => (a === 'left' ? 'text-left' : a === 'center' ? 'text-center' : 'text-right');
-
-/** Season toggle; nothing to pick (one season) = not shown. */
-const SeasonPicker = ({ seasons, value, onChange }: { seasons: ScheduleSeason[]; value: string; onChange: (s: string) => void }) =>
-  seasons.length < 2 ? null : (
-    <div className="flex min-w-0 items-center gap-2">
-      <span className="ax-kicker shrink-0">Season</span>
-      <ArcadeToggle size="sm" label="Season" value={value} onChange={onChange} options={seasons.map((s) => ({ value: s.season, label: s.season }))} />
-    </div>
-  );
 
 const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; compact: boolean; onTrack?: (team: string) => void }) => {
   const [sort, setSort] = useState<{ key: SortKey; asc: boolean }>({ key: 'power', asc: true });
@@ -835,95 +823,83 @@ const Movers = ({ progression, season, seasonsWithData, onTrack }: { progression
 /* ---------------- Section ---------------- */
 
 /** Lead line for the section, by rule: the season's No. 1 and the club that beat its points the most. */
-const advancedTakeaway = (season: ScheduleSeason): string | null => {
-  const top = [...season.table].sort((a, b) => a.power - b.power)[0];
-  if (!top) return null;
-  const lucky = pick(season.table, (r) => r.luck, 'max');
-  const luck = lucky && lucky.luck != null && lucky.luck >= 0.5 ? ` The ${lucky.team} won ${lucky.luck.toFixed(1)} more games than their points scored and allowed predict.` : '';
-  return `The ${top.team} top the ${season.season} power ranking at ${top.w}-${top.l}-${top.t}.${luck}`;
-};
-
 const prefersCompact = () => !!(typeof window !== 'undefined' && window.matchMedia?.('(max-width: 639px)').matches);
 
+/**
+ * "Power & advanced" for ONE season, on the Season page (it follows that page's season switcher): the insight cards and
+ * the advanced table. Nothing here picks its own season.
+ */
+export const PowerAdvanced = ({ season: view }: { season: { season: string; table: unknown[] } }) => {
+  const season = view as unknown as ScheduleSeason;
+  const [compact, setCompact] = useState<boolean>(prefersCompact);
+  const [fullTable, setFullTable] = useState(false);
+  // a season in progress has no advanced numbers yet (no points for the other clubs): nothing to show
+  if (!season.table.some((r) => Number.isFinite(r.powerScore) && r.luck != null)) return null;
+  return (
+    <section aria-labelledby="advanced-heading" className="space-y-4">
+      <SectionHeader kicker="Weekly league scores" title={<span id="advanced-heading">Power &amp; advanced</span>} />
+      <p className="text-xs text-muted-foreground">
+        Pythagorean expected wins (points scored and allowed), luck (wins above or below them), margin adjusted for the schedule, consistency of game
+        margins and the home edge, for {season.season}.
+      </p>
+      <InsightCards season={season} />
+      <div className="flex flex-wrap items-center justify-between gap-2.5">
+        <PixelChip pressed={fullTable} aria-expanded={fullTable} onClick={() => setFullTable((v) => !v)}>
+          {fullTable ? 'Hide the advanced table' : 'Advanced table, every column'}
+        </PixelChip>
+        {fullTable && (
+          <div className="flex items-center gap-2">
+            <span className="ax-kicker">Columns</span>
+            <ArcadeToggle size="sm" label="Columns" value={compact ? 'key' : 'all'} onChange={(v) => setCompact(v === 'key')} options={[{ value: 'key', label: 'Key' }, { value: 'all', label: 'All' }]} />
+          </div>
+        )}
+      </div>
+      {fullTable && <AdvancedTable season={season} compact={compact} />}
+    </section>
+  );
+};
+
+/** Stats → Teams: each club's progression across the seasons with weekly scores (the franchise view; the season view is the Season page). */
 const TeamAdvanced = () => {
   const schedule = useSchedule();
   const currentClub = useCurrentClub();
   const seasons = useMemo(() => (schedule ? scheduleSeasons(schedule) : []), [schedule]);
-  const [picked, setPicked] = useState<string | null>(null);
-  const [compact, setCompact] = useState<boolean>(prefersCompact);
   const [tracked, setTracked] = useState<string | null>(null);
-  const [fullTable, setFullTable] = useState(false);
-  const progressionRef = useRef<HTMLElement>(null);
 
   if (!schedule) return null;
 
   if (!seasons.length) {
     return (
-      <section aria-labelledby="advanced-heading" className="space-y-3">
-        <SectionHeader title="Advanced team stats" kicker="Weekly scores" />
+      <section aria-labelledby="progression-heading" className="space-y-3">
+        <SectionHeader title={<span id="progression-heading">Progression</span>} kicker="Weekly scores" />
         <p className="ax-panel p-4 text-sm text-muted-foreground">
-          No weekly scores yet. Advanced team stats (expected wins, luck, consistency, home edge) and each club's progression come from the LEAGUE
-          schedule screens, one per week, plus the standings; they appear here once a season of them is uploaded.
+          No weekly scores yet. Each club's progression comes from the LEAGUE schedule screens, one per week, plus the standings; it appears here once a
+          season of them is uploaded.
         </p>
       </section>
     );
   }
 
-  const season = seasons.find((s) => s.season === picked) ?? seasons[0];
+  const season = seasons[0];
   const progression = schedule.progression ?? {};
   const defaultTeam = [currentClub, seasons[0].coachTeam, Object.keys(progression).sort()[0]].find((t) => t && progression[t]) ?? null;
   const team = tracked && progression[tracked] ? tracked : defaultTeam;
   // Progression and risers / fallers need two seasons of weekly scores; until then one line stands in for them
   const multi = seasons.length >= 2;
-  const track = (t: string) => {
-    setTracked(t);
-    progressionRef.current?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
-  };
 
   return (
-    <>
-      <section aria-labelledby="advanced-heading" className="space-y-4">
-        <div className="flex flex-col gap-1">
-          <SectionHeader kicker="Weekly league scores" title={<span id="advanced-heading">{season.season} power &amp; advanced stats</span>} />
-          <SectionIntro id="team-advanced" takeaway={advancedTakeaway(season)}>
-            From the weekly league scores: the season power ranking (the # column; a different thing from All-time power above), Pythagorean expected
-            wins (points scored and allowed), luck (wins above or below them), margin adjusted for the schedule, consistency of game margins and the
-            home edge.{multi ? ' Pick a club to follow its progression.' : ''}
-          </SectionIntro>
-        </div>
-        <div className={cn('flex flex-col gap-2.5 sm:flex-row sm:items-center', multi ? 'sm:justify-between' : 'sm:justify-end')}>
-          <SeasonPicker seasons={seasons} value={season.season} onChange={setPicked} />
-          <div className="flex items-center gap-2">
-            <span className="ax-kicker">Columns</span>
-            <ArcadeToggle size="sm" label="Columns" value={compact ? 'key' : 'all'} onChange={(v) => setCompact(v === 'key')} options={[{ value: 'key', label: 'Key' }, { value: 'all', label: 'All' }]} />
-          </div>
-        </div>
-
-        <InsightCards season={season} />
-        <ClubLadder season={season} progression={progression} onTrack={multi ? track : undefined} />
-        <PixelChip pressed={fullTable} aria-expanded={fullTable} onClick={() => setFullTable((v) => !v)}>
-          {fullTable ? 'Hide the advanced table' : 'Advanced table, every column'}
-        </PixelChip>
-        {fullTable && <AdvancedTable season={season} compact={compact} onTrack={multi ? track : undefined} />}
-      </section>
-
-      <section ref={progressionRef} aria-labelledby="progression-heading" className="scroll-mt-20 space-y-4">
-        <SectionHeader kicker={`${seasons.length} season${seasons.length === 1 ? '' : 's'} with weekly scores`} title={<span id="progression-heading">Progression</span>} />
-        {!multi ? (
-          <p className="ax-panel p-4 text-sm text-muted-foreground">
-            Each club's season-by-season charts appear once a second season of weekly scores is uploaded (only {season.season} so far).
-          </p>
-        ) : (
-          <>
-            {team ? (
-              <Progression progression={progression} clubs={season.table.length || 32} team={team} onTeam={setTracked} />
-            ) : (
-              <p className="ax-panel p-4 text-sm text-muted-foreground">No club has a season of weekly scores yet.</p>
-            )}
-          </>
-        )}
-      </section>
-    </>
+    <section aria-labelledby="progression-heading" className="scroll-mt-20 space-y-4">
+      <SectionHeader kicker={`${seasons.length} season${seasons.length === 1 ? '' : 's'} with weekly scores`} title={<span id="progression-heading">Progression</span>} />
+      {!multi ? (
+        <p className="ax-panel p-4 text-sm text-muted-foreground">
+          Each club's season-by-season charts appear once a second season of weekly scores is uploaded (only {season.season} so far).
+        </p>
+      ) : team ? (
+        <Progression progression={progression} clubs={season.table.length || 32} team={team} onTeam={setTracked} />
+      ) : (
+        <p className="ax-panel p-4 text-sm text-muted-foreground">No club has a season of weekly scores yet.</p>
+      )}
+    </section>
   );
 };
 

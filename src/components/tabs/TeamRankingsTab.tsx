@@ -35,6 +35,9 @@ import { StadiumHeader, LedBoard, PixelChip, PixelPanel, SectionHeader } from '.
 import { useSchedule, useScheduleSeason } from '@/utils/schedule';
 import { findNFLTeam } from '@/utils/nflTeams';
 import ClubWall from '../teams/nfl/ClubWall';
+import SuperBowlList from '../teams/nfl/SuperBowlList';
+import { GameRecords } from '../season/SeasonGames';
+import '@/components/season/season.css';
 import { displayName } from '@/utils/displayName';
 
 type ConferenceFilter = 'all' | 'AFC' | 'NFC';
@@ -226,6 +229,11 @@ const TeamRankingsTab = () => {
           Every franchise {firstSeason && lastSeason ? `from ${seasonLabel(firstSeason)} to ${seasonLabel(lastSeason)}` : 'in the league'}: who won, who built dynasties, and who is on the roster now.
         </p>
       </StadiumHeader>
+      {IS_NFL && (
+        <p className="-mt-3 text-sm text-muted-foreground">
+          Every franchise from {firstSeason ? seasonLabel(firstSeason) : '1999'}: titles, Super Bowl trips, all-time records and club sheets. For one season at a time, open the Season page.
+        </p>
+      )}
 
       {/* League overview: power ranking + dynasty timeline */}
       {IS_NFL && teams.length > 0 && <ClubWall teams={teams} records={records} league={league} firstSeason={firstSeason} onOpen={openClub} />}
@@ -242,8 +250,15 @@ const TeamRankingsTab = () => {
         </div>
       )}
 
-      {/* Weekly scores: advanced team stats, insights and each club's progression */}
+      {/* The champions, each club's progression across seasons, the all-time game records (the season-by-season views live on the Season page) */}
+      {IS_NFL && superBowls.length > 0 && <SuperBowlList superBowls={superBowls} />}
       <TeamAdvanced />
+      {IS_NFL && !!schedule?.records.length && (
+        <section aria-labelledby="alltime-heading" className="season">
+          <span id="alltime-heading" className="sr-only">All-time game records</span>
+          <GameRecords records={schedule.records} title="All-time game records" />
+        </section>
+      )}
 
       {/* Controls */}
       {!IS_NFL && (

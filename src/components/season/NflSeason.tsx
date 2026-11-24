@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { displayName } from '@/utils/displayName';
@@ -14,6 +14,7 @@ import { useLeague } from '@/context/LeagueContext';
 import { isInLeague } from '@/components/InLeague';
 import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, StadiumHeader, clubVars, type StagePlayer } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
+import { openTeamPage } from '@/utils/teamSearch';
 import './sx.css';
 
 /**
@@ -200,6 +201,19 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
   );
 };
 
+/** A standings or ladder row opens that club's sheet (Teams); keyboard and screen-reader reachable. */
+const clubLink = (team: string) => ({
+  role: 'link' as const,
+  tabIndex: 0,
+  onClick: () => openTeamPage(team),
+  onKeyDown: (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openTeamPage(team);
+    }
+  },
+});
+
 /* ---------------- Division boards ---------------- */
 
 export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upcoming?: { away: string; home: string }[] }) => {
@@ -225,7 +239,7 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
   if (!divisions.length) return null;
   const old = Number(season.season) < 2002;
   return (
-    <div className="sx-block">
+    <div className="sx-block" id="season-standings" style={{ scrollMarginTop: 80 }}>
       <SectionTitle kicker="Standings" club={divisions[0][1][0].team}>Division boards</SectionTitle>
       <Reveal as="ul" className="sx-divs">
         {divisions.map(([name, rows], di) => (
@@ -239,7 +253,7 @@ export const StandingsBanners = ({ season, upcoming }: { season: SeasonView; upc
                 const champ = season.superBowl?.winner === r.team;
                 const post = made.has(r.abbr);
                 return (
-                  <li key={r.abbr} className={cn('sx-div__row mo-rise', i === 0 && 'is-lead', done && !post && 'is-out')} style={{ ...cv(r.team), ...stag(di + i + 1, 60) }}>
+                  <li key={r.abbr} className={cn('sx-div__row sx-club-link mo-rise', i === 0 && 'is-lead', done && !post && 'is-out')} style={{ ...cv(r.team), ...stag(di + i + 1, 60) }} {...clubLink(r.team)}>
                     <TeamLogo team={r.team} decorative className="h-7 w-7 flex-shrink-0" />
                     <span className="sx-div__name">
                       <span>{r.team}</span>
@@ -286,7 +300,7 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
           return (
-            <li key={r.abbr} className={cn('sx-rung mo-rise', r.power <= 3 && 'is-top')} style={{ ...cv(r.team), ...stag(ri, 40) }}>
+            <li key={r.abbr} className={cn('sx-rung sx-club-link mo-rise', r.power <= 3 && 'is-top')} style={{ ...cv(r.team), ...stag(ri, 40) }} {...clubLink(r.team)}>
               <span className="sx-rung__n">{r.power}</span>
               <TeamLogo team={r.team} decorative className="h-8 w-8 flex-shrink-0" />
               <span className="sx-rung__name">{r.team}</span>

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BarChart3, History, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -15,12 +15,14 @@ import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflS
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import ScoresBrowser from '@/components/season/ScoresBrowser';
+import { PowerAdvanced } from '@/components/teams/TeamAdvanced';
 import '@/components/season/season.css';
 import '@/components/stats/visual/statsArena.css';
 import { CrowdDivider, PixelChip, PixelIcon, PixelStepper, SectionHeader } from '@/components/arcade';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
+import { clearSeasonJump, peekSeasonJump } from '@/utils/seasonLink';
 
 /**
  * The Season page. Its backbone is the design that lived on the Timeline as "Season games" (scoreboard, club splits,
@@ -93,10 +95,22 @@ const SeasonTab = () => {
     return [...(liveId ? [liveId] : []), ...ids].sort((a, b) => seasonNum(b) - seasonNum(a));
   }, [past, liveId, schedule]);
   // a deep link, #season?y=2003
-  const [picked, setPicked] = useState<string | null>(() => new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('y'));
+  const [picked, setPicked] = useState<string | null>(() => peekSeasonJump()?.year ?? new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('y'));
   const wanted = picked && options.includes(picked) ? picked : options[0] ?? null;
   // the shown season's own file (NFL: one per season, loaded when picked)
   const fetched = useScheduleSeason(schedule, wanted);
+
+  // the Teams club wall's chip: scroll to the standings once the season has drawn
+  const ready = !!wanted && (!!fetched || past.some((p) => p.season === wanted) || wanted === liveId);
+  useEffect(() => {
+    const j = peekSeasonJump();
+    if (!j || !ready) return;
+    const t = window.setTimeout(() => {
+      document.getElementById('season-standings')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      clearSeasonJump();
+    }, 250);
+    return () => window.clearTimeout(t);
+  }, [ready]);
 
   const upcoming = useUpcoming(); // a hook: before the early return below
   const stars = useSeasonStars(IS_NFL ? wanted : null);
@@ -142,6 +156,11 @@ const SeasonTab = () => {
             </div>
           }
         />
+        {IS_NFL && (
+          <p className="sx-note">
+            One season at a time: switch the year above to see that season's standings, power ladder, awards and every game. Each franchise's history lives on Teams.
+          </p>
+        )}
 
         {loadingSeason ? (
           <PixelLoader label="Season" what={`the ${shown} season`} minHeight="40vh" className="justify-start pt-[8vh]" />
@@ -154,6 +173,7 @@ const SeasonTab = () => {
             {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}
+            {IS_NFL && <PowerAdvanced season={season} />}
             {!IS_NFL && (
               <>
                 <SeasonScoreboard season={season} status={isLive ? liveStatus(season) : undefined} badge={isLive ? perfectWatch(live!, season) : undefined} />
@@ -191,15 +211,6 @@ const SeasonTab = () => {
 
       {IS_NFL && <><CrowdDivider /><ScoresBrowser /></>}
 
-      {(schedule.records.length > 0 && IS_NFL) && (
-        <>
-          <CrowdDivider />
-          <section aria-labelledby="alltime-heading" className="sx-sec">
-            <span id="alltime-heading" className="sr-only">Game records</span>
-            <GameRecords records={schedule.records} />
-          </section>
-        </>
-      )}
       {!IS_NFL && (schedule.records.length > 0 || Object.keys(schedule.headToHead).length > 0 || !!live?.coachHistory?.length) && (
         <section aria-labelledby="alltime-heading" className="space-y-4 rounded-xl border border-border/40 bg-card p-3 sm:p-4">
           <div>
