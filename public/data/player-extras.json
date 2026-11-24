@@ -207,11 +207,6 @@
    "Buffalo Bills",
    "Cleveland Browns"
   ],
-  "Mike Edwards": [
-   "Buffalo Bills",
-   "Kansas City Chiefs",
-   "Tampa Bay Buccaneers"
-  ],
   "Ryan Van Demark": [
    "Buffalo Bills",
    "Minnesota Vikings"
@@ -1014,7 +1009,7 @@
    "Denver Broncos"
   ],
   "Brandon Johnson": [
-   "Philadelphia Eagles",
+   "Denver Broncos",
    "Pittsburgh Steelers"
   ],
   "Tim Patrick": [
@@ -1258,6 +1253,11 @@
   "Bryan Cook": [
    "Cincinnati Bengals",
    "Kansas City Chiefs"
+  ],
+  "Mike Edwards": [
+   "Buffalo Bills",
+   "Kansas City Chiefs",
+   "Tampa Bay Buccaneers"
   ],
   "Justin Reid": [
    "Houston Texans",
@@ -1753,8 +1753,8 @@
    "Los Angeles Chargers",
    "Minnesota Vikings"
   ],
-  "Byron Young": [
-   "Los Angeles Rams",
+  "Byron Young (DL, Eagles)": [
+   "Las Vegas Raiders",
    "Philadelphia Eagles"
   ],
   "Ben Brown": [
@@ -2809,10 +2809,6 @@
    "Houston Texans",
    "Minnesota Vikings"
   ],
-  "Marcus Harris": [
-   "Kansas City Chiefs",
-   "Tennessee Titans"
-  ],
   "Jamal Hill": [
    "Houston Texans",
    "Jacksonville Jaguars"
@@ -3151,10 +3147,6 @@
    "Arizona Cardinals",
    "Houston Texans",
    "Jacksonville Jaguars",
-   "San Francisco 49ers"
-  ],
-  "Jaylon Moore": [
-   "Kansas City Chiefs",
    "San Francisco 49ers"
   ],
   "Calvin Ridley": [
@@ -4593,10 +4585,8 @@
    "New York Giants"
   ],
   "Jonah Williams": [
-   "Detroit Lions",
-   "Los Angeles Rams",
-   "Minnesota Vikings",
-   "New Orleans Saints"
+   "Arizona Cardinals",
+   "Cincinnati Bengals"
   ],
   "Luke Tenuta": [
    "Green Bay Packers",
@@ -4763,6 +4753,12 @@
    "Los Angeles Rams",
    "Tampa Bay Buccaneers"
   ],
+  "Jonah Williams (DL, Cardinals)": [
+   "Detroit Lions",
+   "Los Angeles Rams",
+   "Minnesota Vikings",
+   "New Orleans Saints"
+  ],
   "Larrell Murchison": [
    "Los Angeles Rams",
    "Tennessee Titans"
@@ -4774,10 +4770,6 @@
   "Charles Woods": [
    "Los Angeles Rams",
    "New England Patriots"
-  ],
-  "Tyler Davis": [
-   "Green Bay Packers",
-   "Jacksonville Jaguars"
   ],
   "Cory Durden": [
    "Los Angeles Rams",
@@ -4893,6 +4885,10 @@
   ],
   "Spencer Burford": [
    "Las Vegas Raiders",
+   "San Francisco 49ers"
+  ],
+  "Jaylon Moore": [
+   "Kansas City Chiefs",
    "San Francisco 49ers"
   ],
   "Matt Pryor": [
@@ -5692,6 +5688,10 @@
    "Green Bay Packers",
    "Philadelphia Eagles"
   ],
+  "Tyler Davis (TE, FA)": [
+   "Green Bay Packers",
+   "Jacksonville Jaguars"
+  ],
   "Josiah Deguara": [
    "Arizona Cardinals",
    "Green Bay Packers",
@@ -5885,10 +5885,6 @@
    "Chicago Bears",
    "Minnesota Vikings",
    "New England Patriots"
-  ],
-  "Justin Jefferson": [
-   "Cleveland Browns",
-   "Minnesota Vikings"
   ],
   "Jalen Nailor": [
    "Las Vegas Raiders",
@@ -18448,7 +18444,7 @@
    "New England Patriots",
    "New York Jets"
   ],
-  "D.J. Moore": [
+  "D.J. Moore (DB, Panthers)": [
    "Carolina Panthers",
    "Chicago Bears"
   ],
@@ -24603,43 +24599,8 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
-  "Mike Edwards": {
-   "stints": [
-    {
-     "team": "Buccaneers",
-     "from": 2019,
-     "to": 2022,
-     "rings": [
-      2020
-     ]
-    },
-    {
-     "team": "Chiefs",
-     "from": 2023,
-     "to": 2023,
-     "rings": [
-      2023
-     ]
-    },
-    {
-     "team": "Buccaneers",
-     "from": 2024,
-     "to": 2024,
-     "rings": []
-    },
-    {
-     "team": "Bills",
-     "from": 2024,
-     "to": 2024,
-     "rings": []
-    },
-    {
-     "team": "Chiefs",
-     "from": 2025,
-     "to": 2025,
-     "rings": []
-    }
-   ],
+  "Mike Edwards (OL, FA)": {
+   "stints": [],
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
@@ -29432,9 +29393,21 @@
   "Brandon Johnson": {
    "stints": [
     {
-     "team": "Eagles",
-     "from": 2025,
-     "to": 2025,
+     "team": "Broncos",
+     "from": 2022,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -31229,6 +31202,46 @@
      "team": "Bengals",
      "from": 2026,
      "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Mike Edwards": {
+   "stints": [
+    {
+     "team": "Buccaneers",
+     "from": 2019,
+     "to": 2022,
+     "rings": [
+      2020
+     ]
+    },
+    {
+     "team": "Chiefs",
+     "from": 2023,
+     "to": 2023,
+     "rings": [
+      2023
+     ]
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2025,
+     "to": 2025,
      "rings": []
     }
    ],
@@ -34343,11 +34356,17 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
-  "Byron Young": {
+  "Byron Young (DL, Eagles)": {
    "stints": [
     {
-     "team": "Rams",
+     "team": "Raiders",
      "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Eagles",
+     "from": 2025,
      "to": 2026,
      "rings": []
     }
@@ -41131,11 +41150,11 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
-  "Marcus Harris": {
+  "Marcus Harris (DL, Chiefs)": {
    "stints": [
     {
-     "team": "Titans",
-     "from": 2025,
+     "team": "Chiefs",
+     "from": 2026,
      "to": 2026,
      "rings": []
     }
@@ -43191,21 +43210,8 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
-  "Jaylon Moore": {
-   "stints": [
-    {
-     "team": "49ers",
-     "from": 2021,
-     "to": 2024,
-     "rings": []
-    },
-    {
-     "team": "Chiefs",
-     "from": 2025,
-     "to": 2026,
-     "rings": []
-    }
-   ],
+  "Jaylon Moore (WR, FA)": {
+   "stints": [],
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
@@ -52063,26 +52069,14 @@
   "Jonah Williams": {
    "stints": [
     {
-     "team": "Rams",
-     "from": 2021,
-     "to": 2024,
+     "team": "Bengals",
+     "from": 2020,
+     "to": 2023,
      "rings": []
     },
     {
-     "team": "Lions",
+     "team": "Cardinals",
      "from": 2024,
-     "to": 2024,
-     "rings": []
-    },
-    {
-     "team": "Vikings",
-     "from": 2024,
-     "to": 2024,
-     "rings": []
-    },
-    {
-     "team": "Saints",
-     "from": 2025,
      "to": 2025,
      "rings": []
     }
@@ -52876,6 +52870,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Byron Young": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 2023,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Cobie Durant": {
    "stints": [
     {
@@ -53140,6 +53146,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jonah Williams (DL, Cardinals)": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 2021,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Larrell Murchison": {
    "stints": [
     {
@@ -53245,15 +53281,9 @@
   "Tyler Davis": {
    "stints": [
     {
-     "team": "Jaguars",
-     "from": 2020,
-     "to": 2020,
-     "rings": []
-    },
-    {
-     "team": "Packers",
-     "from": 2021,
-     "to": 2022,
+     "team": "Rams",
+     "from": 2024,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -53995,6 +54025,24 @@
     {
      "team": "49ers",
      "from": 2020,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jaylon Moore": {
+   "stints": [
+    {
+     "team": "49ers",
+     "from": 2021,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2025,
      "to": 2026,
      "rings": []
     }
@@ -59040,6 +59088,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Tyler Davis (TE, FA)": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Packers",
+     "from": 2021,
+     "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Josiah Deguara": {
    "stints": [
     {
@@ -60329,8 +60395,8 @@
   "Justin Jefferson": {
    "stints": [
     {
-     "team": "Browns",
-     "from": 2026,
+     "team": "Vikings",
+     "from": 2020,
      "to": 2026,
      "rings": []
     }
@@ -69318,6 +69384,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Marcus Harris": {
+   "stints": [
+    {
+     "team": "Titans",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Kalel Mullings": {
    "stints": [
     {
@@ -69848,6 +69926,18 @@
   },
   "Luke Felix-Fualalo": {
    "stints": [],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Brandon Johnson (DB, Seahawks)": {
+   "stints": [
+    {
+     "team": "Eagles",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
@@ -73154,6 +73244,18 @@
   },
   "Parker Brailsford": {
    "stints": [],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Justin Jefferson (LB, Browns)": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    }
+   ],
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
@@ -138248,7 +138350,7 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
-  "D.J. Moore": {
+  "D.J. Moore (DB, Panthers)": {
    "stints": [
     {
      "team": "Bears",
@@ -171697,7 +171799,7 @@
   "DL:DeWayne Carter": 90,
   "LB:Joe Andreessen": 44,
   "LB:Edefuan Ulofoshio": 54,
-  "OL:Mike Edwards": 65,
+  "OL:Mike Edwards (OL, FA)": 65,
   "OL:Alec Anderson": 70,
   "OL:Spencer Brown": 79,
   "OL:Dion Dawkins": 73,
@@ -172179,7 +172281,7 @@
   "DL:Bilal Nichols": 92,
   "DL:Nesta Jade Silvera": 60,
   "DL:Jerry Tillery": 94,
-  "DL:Byron Young": 94,
+  "DL:Byron Young (DL, Eagles)": 94,
   "TE:Brock Bowers": 89,
   "OL:Jackson Powers-Johnson": 58,
   "OL:Ben Brown": 77,
@@ -172530,7 +172632,7 @@
   "DB:Kamari Lassiter": 3,
   "DB:Kris Boyd": 17,
   "DL:Solomon Byrd": 50,
-  "DL:Marcus Harris": 68,
+  "DL:Marcus Harris (DL, Chiefs)": 68,
   "LB:Jamal Hill": 56,
   "OL:Blake Fisher": 57,
   "OL:Tytus Howard": 71,
@@ -172638,7 +172740,7 @@
   "WR:Tim Jones": 13,
   "WR:Zay Jones": 17,
   "WR:Christian Kirk": 3,
-  "WR:Jaylon Moore": 83,
+  "WR:Jaylon Moore (WR, FA)": 83,
   "WR:Calvin Ridley": 0,
   "WR:Parker Washington": 11,
   "TE:Evan Engram": 1,
@@ -173148,7 +173250,7 @@
   "DL:Kobie Turner": 91,
   "DL:Earnest Brown IV": 99,
   "DL:Desjuan Johnson": 94,
-  "DL:Jonah Williams": 92,
+  "DL:Jonah Williams (DL, Cardinals)": 92,
   "DL:Larrell Murchison": 52,
   "DL:Jared Verse": 8,
   "DB:Josh Wallace": 30,
@@ -173450,7 +173552,7 @@
   "WR:Samori Toure": 46,
   "WR:Christian Watson": 9,
   "WR:Dontayvion Wicks": 13,
-  "TE:Tyler Davis": 84,
+  "TE:Tyler Davis (TE, FA)": 84,
   "TE:Josiah Deguara": 47,
   "TE:Tucker Kraft": 85,
   "TE:Luke Musgrave": 88,
@@ -174165,7 +174267,7 @@
   "WR:Darius Cooper": 80,
   "OL:Willie Lampkin": 61,
   "OL:Luke Felix-Fualalo": 72,
-  "DB:Brandon Johnson": 36,
+  "DB:Brandon Johnson (DB, Seahawks)": 36,
   "OL:Hollin Pierce": 63,
   "OL:Jake Majors": 75,
   "OL:Josh Conerly Jr.": 72,
@@ -174489,7 +174591,7 @@
   "DB:Emmanuel McNeil-Warren": 28,
   "OL:Austin Barber": 58,
   "OL:Parker Brailsford": 52,
-  "LB:Justin Jefferson": 17,
+  "LB:Justin Jefferson (LB, Browns)": 17,
   "TE:Joe Royer": 18,
   "QB:Taylen Green": 15,
   "TE:Carsen Ryan": 48,
@@ -177185,7 +177287,7 @@
   "WR:Mike Sims-Walker": 15,
   "DL:Clifton Ryan": 95,
   "RB:Lex Hilliard": 36,
-  "DB:D.J. Moore": 20,
+  "DB:D.J. Moore (DB, Panthers)": 20,
   "LB:Everette Brown": 90,
   "LB:Jason Williams": 52,
   "WR:Marcus Easley": 81,
@@ -180994,7 +181096,8 @@
   "Brandon Hughes": "Philadelphia Eagles",
   "Brandon Jackson": "Green Bay Packers",
   "Brandon Jacobs": "New York Giants",
-  "Brandon Johnson": "Philadelphia Eagles",
+  "Brandon Johnson": "Pittsburgh Steelers",
+  "Brandon Johnson (DB, Seahawks)": "Philadelphia Eagles",
   "Brandon Johnson (LB, Steelers)": "Cincinnati Bengals",
   "Brandon Jones": "Denver Broncos",
   "Brandon Jones (WR, 49ers)": "Tennessee Titans",
@@ -181216,6 +181319,7 @@
   "Byron Pringle": "Kansas City Chiefs",
   "Byron Westbrook": "Washington Commanders",
   "Byron Young": "Los Angeles Rams",
+  "Byron Young (DL, Eagles)": "Philadelphia Eagles",
   "C.C. Brown": "Houston Texans",
   "C.J. Ah You": "Los Angeles Rams",
   "C.J. Anderson": "Denver Broncos",
@@ -181873,7 +181977,7 @@
   "D.J. Johnson": "Carolina Panthers",
   "D.J. Jones": "Denver Broncos",
   "D.J. Montgomery": "Indianapolis Colts",
-  "D.J. Moore": "Chicago Bears",
+  "D.J. Moore (DB, Panthers)": "Chicago Bears",
   "D.J. Reed": "Detroit Lions",
   "D.J. Smith": "Green Bay Packers",
   "D.J. Swearinger": "Arizona Cardinals",
@@ -183973,7 +184077,8 @@
   "Jonah Laulu": "Tennessee Titans",
   "Jonah Monheim": "Jacksonville Jaguars",
   "Jonah Savaiinaea": "Miami Dolphins",
-  "Jonah Williams": "New Orleans Saints",
+  "Jonah Williams": "Cincinnati Bengals",
+  "Jonah Williams (DL, Cardinals)": "New Orleans Saints",
   "Jonas Gray": "Miami Dolphins",
   "Jonas Griffith": "Denver Broncos",
   "Jonas Sanker": "New Orleans Saints",
@@ -184265,7 +184370,8 @@
   "Justin Houston": "Kansas City Chiefs",
   "Justin Hunter": "Tennessee Titans",
   "Justin Jackson": "Los Angeles Chargers",
-  "Justin Jefferson": "Cleveland Browns",
+  "Justin Jefferson": "Minnesota Vikings",
+  "Justin Jefferson (LB, Browns)": "Cleveland Browns",
   "Justin Jenkins": "Buffalo Bills",
   "Justin Joly": "Miami Dolphins",
   "Justin Jones": "Los Angeles Chargers",
@@ -185076,6 +185182,7 @@
   "Marcus Epps": "Philadelphia Eagles",
   "Marcus Gilchrist": "Los Angeles Chargers",
   "Marcus Harris": "Tennessee Titans",
+  "Marcus Harris (DL, Chiefs)": "Kansas City Chiefs",
   "Marcus Harrison": "Chicago Bears",
   "Marcus Johnson": "Indianapolis Colts",
   "Marcus Jones": "New England Patriots",
@@ -187166,7 +187273,8 @@
   "Tyler Brayton": "Las Vegas Raiders",
   "Tyler Clutts": "Dallas Cowboys",
   "Tyler Conklin": "Detroit Lions",
-  "Tyler Davis": "Green Bay Packers",
+  "Tyler Davis": "Los Angeles Rams",
+  "Tyler Davis (TE, FA)": "Green Bay Packers",
   "Tyler Eifert": "Cincinnati Bengals",
   "Tyler Ervin": "Houston Texans",
   "Tyler Goodson": "Dallas Cowboys",
@@ -187596,6 +187704,7 @@
   "Bralen Trice": "Atlanta Falcons",
   "Brandin Echols": "New York Jets",
   "Brandon Codrington": "Buffalo Bills",
+  "Brandon Johnson": "Denver Broncos",
   "Brandon Jones": "Miami Dolphins",
   "Brandon Stephens": "Baltimore Ravens",
   "Brant Banks": "Green Bay Packers",
@@ -187941,7 +188050,7 @@
   "Jon Runyan": "Green Bay Packers",
   "Jonah Jackson": "Detroit Lions",
   "Jonah Laulu": "Las Vegas Raiders",
-  "Jonah Williams": "Los Angeles Rams",
+  "Jonah Williams (DL, Cardinals)": "Los Angeles Rams",
   "Jonathan Allen": "Washington Commanders",
   "Jonathan Bullard": "Minnesota Vikings",
   "Jonathan Greenard": "Houston Texans",
