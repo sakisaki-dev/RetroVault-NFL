@@ -13,7 +13,8 @@ import { realNumberOf } from '@/utils/gameSprites';
 import { resultOf, ticketsOf, useClubSeason } from '@/utils/clubSeason';
 import ClubSeasonHero, { type HeroPlayer } from './ClubSeasonHero';
 import ClubSeasonInk from './ClubSeasonInk';
-import { CapBreakdown, Leaders, Roster, Tickets, type RosterEntry } from './ClubSeasonParts';
+import { Section } from './ClubSeasonSection';
+import { CapBreakdown, Leaders, Roster, SeasonStrip, Tickets, type RosterEntry } from './ClubSeasonParts';
 import './clubSeason.css';
 
 interface Props {
@@ -22,13 +23,6 @@ interface Props {
   open: boolean;
   onClose: () => void;
 }
-
-const Block = ({ title, kicker, children }: { title: string; kicker: string; children: React.ReactNode }) => (
-  <section className="cs-block">
-    <header className="cs-block__h"><span>{kicker}</span><h3>{title}</h3></header>
-    {children}
-  </section>
-);
 
 /**
  * The club season sheet (concept 6): full screen on a phone (swipe down to close, a history entry like the other
@@ -147,23 +141,31 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     pf={data.cell?.pf}
                     pa={data.cell?.pa}
                     power={data.cell?.power}
+                    division={data.cell?.division}
+                    divisionRank={data.cell?.divisionRank}
                     result={result}
                     onPick={pick}
                   />
                   <div className="cs-body">
-                    <Block kicker="Every game" title="Game log">
-                      {tickets.length ? <Tickets tickets={tickets} onOpen={openGameFromSheet} /> : <p className="cs-note">No games on file for {year}.</p>}
-                    </Block>
+                    <Section kicker="Season at a glance" title="Every game" club={team.name}>
+                      {tickets.length ? (
+                        <>
+                          <SeasonStrip tickets={tickets} onOpen={openGameFromSheet} />
+                          <h4 className="cs-sub">Game log</h4>
+                          <Tickets tickets={tickets} onOpen={openGameFromSheet} />
+                        </>
+                      ) : <p className="cs-note">No games on file for {year}.</p>}
+                    </Section>
+                    <Section kicker="Best on the team" title="Team leaders" club={team.name}>
+                      <Leaders rows={rows} club={club} year={year} onPick={pick} />
+                    </Section>
                     <ClubSeasonInk club={abbr} season={year} onPick={pick} />
-                    <Block kicker="Season lines" title="Roster">
-                      {rows.length ? <Roster rows={rows} club={club} onPick={pick} /> : <p className="cs-note">No roster lines on file for {year}.</p>}
-                    </Block>
-                    <Block kicker="Best on the team" title="Team leaders">
-                      <Leaders rows={rows} club={club} onPick={pick} />
-                    </Block>
-                    <Block kicker="Contracts" title="Season cap breakdown">
-                      <CapBreakdown cap={data.cap} club={abbr} year={year} />
-                    </Block>
+                    <Section kicker="Season lines" title="Roster" club={team.name}>
+                      {rows.length ? <Roster rows={rows} club={club} year={year} onPick={pick} /> : <p className="cs-note">No roster lines on file for {year}.</p>}
+                    </Section>
+                    <Section kicker="Contracts" title="Season cap breakdown" club={team.name}>
+                      <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
+                    </Section>
                   </div>
                 </>
               )}
