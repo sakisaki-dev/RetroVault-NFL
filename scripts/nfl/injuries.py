@@ -11,11 +11,12 @@ IR beats a report line. The week is the latest report week of the season. Determ
 """
 import csv
 import json
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / "data" / "nfl-cache"
-SEASON = 2026
+SEASON = date.today().year if date.today().month >= 8 else date.today().year - 1  # the season in progress (as fetch.py)
 CODE = {"Out": "Out", "Doubtful": "Doubtful", "Questionable": "Questionable"}
 
 

@@ -45,6 +45,19 @@ jobs:
           else
             echo "::warning::no widget-data branch: /widget/widget.json is not served"
           fi
+      # The site's live-season files (This season, fantasy and the trade simulator, injuries, playoff odds, depth charts) are
+      # rebuilt every morning by nfl-widget-daily.yml and kept on widget-data under site/nfl/. They go over main's copies
+      # (the fallback) in dist, and their data/manifest.json versions are updated so the data store refetches them. Main's
+      # files stay when a hand rebuild pushed to main is newer (overlay_live.py compares season and week).
+      - name: Add the live-season data
+        run: |
+          if git fetch --depth 1 origin widget-data; then
+            rm -rf /tmp/live && mkdir -p /tmp/live
+            git archive FETCH_HEAD site/nfl | tar -x -C /tmp/live || true
+            python3 scripts/nfl/overlay_live.py /tmp/live/site/nfl dist
+          else
+            echo "::warning::no widget-data branch: main's live-season files are served"
+          fi
       # Deep links fall back to the app instead of GitHub's 404 page
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
