@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -56,7 +57,7 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
         {d?.picks[0] && <span className="dn-rtabs__note">{d.picks[0][2]} on the clock: the No. 1 pick's home crowd sets the scene</span>}
       </div>
 
-      {d === undefined && <p className="cl-loading" role="status">Loading the {year} draft…</p>}
+      {d === undefined && <PixelLoader what={`the ${year} draft`} minHeight={420} />}
       {d === null && <p className="cl-note">No draft file for {year}.</p>}
 
       {d &&

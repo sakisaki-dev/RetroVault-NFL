@@ -341,6 +341,11 @@
   position: absolute; left: 0; right: 0; bottom: 6px;
   display: flex; justify-content: center; align-items: flex-end;
 }
+/* the veil holds the stage while its art loads, then fades out once (SpriteStage.tsx) */
+.ax-stage__veil { position: absolute; inset: 0; z-index: 3; background: #151b3a; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; }
+.ax-stage--day .ax-stage__veil { background: #5fa8e8; }
+.ax-stage__veil.is-out { animation: rv-fade-out var(--dur-3) var(--ease-out) forwards; }
+.ax-stage__loader.pl--block { padding: 0 0 14px; }
 .ax-stage__fig { display: block; position: relative; margin-inline: -6px; }
 .ax-stage__over { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .ax-stage__over > * { pointer-events: auto; }

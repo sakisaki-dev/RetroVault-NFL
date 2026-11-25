@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useEffect } from 'react';
 import type { Player } from '@/types/player';
 import { ArcadeToggle } from '@/components/arcade';
@@ -44,7 +45,7 @@ const WarRoom = ({ focus, view, onView }: { focus?: string; view: WarRoomView; o
     const t = window.setTimeout(() => document.getElementById(`wr-${focus}`)?.scrollIntoView({ block: 'center' }), 140);
     return () => window.clearTimeout(t);
   }, [focus, ready]);
-  if (!odds || needs === undefined) return <p className="cl-loading" role="status">Loading the war room…</p>;
+  if (!odds || needs === undefined) return <PixelLoader what="the war room" minHeight={420} />;
   if (!odds.draft) return <p className="cl-note">The playoff model has no draft projection yet.</p>;
   const { year, order, rule } = odds.draft;
   const groups = needs ? needs.groups.map((g) => g[0]).join(', ') : '';

@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect } from 'react';
 import { ArcadeToggle } from '@/components/arcade';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
@@ -39,7 +40,7 @@ const CollegeTab = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [legacy]);
 
-  if (idx === undefined) return <p className="cl-loading container py-6" role="status">Loading the draft room…</p>;
+  if (idx === undefined) return <PixelLoader what="the draft room" minHeight={420} className="container py-6" />;
   if (idx === null || year == null) return <p className="cl-note container py-6">The college data isn't built yet (npm run nfl:rebuild).</p>;
 
   return (

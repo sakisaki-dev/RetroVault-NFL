@@ -23,20 +23,24 @@ const shared = () =>
     (entries) =>
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
+        // a tall block (a long list) never shows 6% of itself in a phone's window: a slice of 60px is enough
+        if (!e.isIntersecting || (e.intersectionRatio < 0.06 && e.intersectionRect.height < 60)) return;
         const t = e.target as HTMLElement;
         t.dataset.mo = 'go';
         io?.unobserve(t);
       }),
-    { threshold: 0.06, rootMargin: '0px 0px -24px 0px' },
+    { threshold: [0, 0.002, 0.02, 0.06], rootMargin: '0px 0px -24px 0px' },
   ));
 
 /** A callback ref: the element waits, then goes once when it is on screen. */
-export const useReveal = <T extends HTMLElement>(): RefCallback<T> =>
+export const useReveal = <T extends HTMLElement>(skipFold = false): RefCallback<T> =>
   useCallback((el: T | null) => {
     if (!el || !motionOk()) return;
+    // skipFold: a block already on screen when it mounts stays as it is (no blank flash); the rest wait for the scroll
+    if (skipFold && el.getBoundingClientRect().top < window.innerHeight - 24) return;
     el.dataset.mo = 'wait';
     shared().observe(el);
-  }, []);
+  }, [skipFold]);
 
 type RevealProps<T extends ElementType> = { as?: T; className?: string; style?: CSSProperties; children?: ReactNode } & Omit<HTMLAttributes<HTMLElement>, 'className' | 'style' | 'children'>;
 
@@ -47,7 +51,7 @@ export const Reveal = <T extends ElementType = 'div'>({ as, ...rest }: RevealPro
 };
 
 /**
- * Reveal a page's sections without editing each one: every direct child of a `<section aria-labelledby>` under the
+ * Reveal a page's sections without editing each one: every direct child of a `<section aria-labelledby>` (or of any `data-mo-stack` element) under the
  * ref'd element (heading block, chip bar, panel, grid) waits and rises in, once, as it scrolls into view, staggered
  * by its place (capped). Sections already inside a Reveal keep that Reveal's motion; later children (a tab's panel,
  * a lazy chunk) are picked up as they mount. Motion off (reduced motion, lite mode) leaves everything as is.
@@ -55,16 +59,29 @@ export const Reveal = <T extends ElementType = 'div'>({ as, ...rest }: RevealPro
 export const useAutoReveal = <T extends HTMLElement>(): RefCallback<T> =>
   useCallback((root: T | null) => {
     if (!root || !motionOk()) return;
-    const scan = () =>
-      root.querySelectorAll<HTMLElement>('section[aria-labelledby] > *').forEach((el) => {
-        if (el.dataset.mo || el.closest('[data-mo]')) return;
+    let first = true;
+    const scan = () => {
+      // what is already on screen when the page opens is never held back (no blank flash on load); a section that
+      // lands later (a lazy chunk, a fetched file) rises in as it arrives
+      const fold = first ? window.innerHeight : -1;
+      first = false;
+      root.querySelectorAll<HTMLElement>('section[aria-labelledby] > *, [data-mo-stack] > *').forEach((el) => {
+        if (el.dataset.mo || el.closest('[data-mo], [data-no-mo]')) return;
+        if (fold > 0 && el.getBoundingClientRect().top < fold - 24) {
+          el.dataset.mo = 'seen'; // on screen at load: never held back, never rescanned
+          return;
+        }
         el.classList.add('mo-auto');
         el.style.setProperty('--i', String(Math.min(Array.prototype.indexOf.call(el.parentElement?.children ?? [], el), 4)));
         el.dataset.mo = 'wait';
         shared().observe(el);
       });
+    };
     scan();
-    new MutationObserver(scan).observe(root, { childList: true, subtree: true });
+    let frame = 0;
+    new MutationObserver(() => {
+      if (!frame) frame = requestAnimationFrame(() => ((frame = 0), scan()));
+    }).observe(root, { childList: true, subtree: true });
   }, []);
 
 /** `--i` for a stagger. */

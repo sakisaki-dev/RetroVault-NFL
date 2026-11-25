@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useMemo, useState, type CSSProperties } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -18,7 +19,7 @@ const XI = ['QB', 'RB', 'WR', 'WR', 'TE', 'OL', 'DL', 'DL', 'LB', 'DB', 'DB'];
 /** A school's page: loads its file, then the page */
 const SchoolPage = ({ idx, slug, onBack, onYear }: { idx: CollegeIndex; slug: string; onBack: () => void; onYear: (y: number, round: number) => void }) => {
   const s = useSchool(slug);
-  if (s === undefined) return <p className="cl-loading" role="status">Loading the school…</p>;
+  if (s === undefined) return <PixelLoader what="the school" minHeight={420} />;
   if (s === null)
     return (
       <section className="cl-sec">

@@ -1,7 +1,8 @@
-import { useMemo, type CSSProperties, type ReactNode } from 'react';
+import { useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
-import { useGameSprites, type SpriteAction } from '@/utils/gameSprites';
+import { useGameSprites, useSpritesLoading, type SpriteAction } from '@/utils/gameSprites';
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useFieldArt } from '@/components/teamlab/fieldArt';
 import GameSprite, { type SpriteSize } from '../GameSprite';
 import TeamLogo from '../brand/TeamLogo';
@@ -47,6 +48,12 @@ const SIZE_H: Record<SpriteSize, number> = { s: 150, m: 220, l: 290 };
 export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure', size = 'm', action = 'idle', maxMobile = 3, height, children, className }: SpriteStageProps) => {
   const art = useFieldArt(club, time);
   const sprites = useGameSprites();
+  // the painted stadium and the sprite index are fetched: until they land the stage holds its size under a veil and the
+  // football, then the veil fades out (no CSS-turf flash, no logos swapping to sprites)
+  const spritesLoading = useSpritesLoading();
+  const waiting = !!art.pending || (spritesLoading && players.length > 0);
+  const waited = useRef(false);
+  if (waiting) waited.current = true;
   const list = useMemo(() => players.map((p) => (isStage(p) ? p : { player: p })), [players]);
   const hidden = useMemo(() => {
     const mid = (list.length - 1) / 2;
@@ -69,6 +76,11 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
       <div className="ax-stage__crowd" aria-hidden="true" />
       <div className="ax-stage__turf" aria-hidden="true" />
       <div className="ax-stage__rail" aria-hidden="true" />
+      {(waiting || waited.current) && (
+        <div className={cn('ax-stage__veil', !waiting && 'is-out')} aria-hidden={!waiting}>
+          {waiting && <PixelLoader size="sm" what="the stadium" variant="block" className="ax-stage__loader" />}
+        </div>
+      )}
       {list.length > 0 && (
         <div className="ax-stage__line" aria-hidden="true">
           {list.map((p, i) => {
@@ -76,7 +88,7 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
             const star = i === Math.round(mid);
             return (
               <span key={`${p.player.name}-${i}`} className={cn('ax-stage__fig', star ? 'mo-pop' : i < mid ? 'mo-run-l' : 'mo-run-r', hidden.has(i) && 'ax-stage__fig--extra')} style={{ zIndex: star ? 2 : 1, ...stag(star ? 3 : Math.abs(i - mid) + 1, 90) }}>
-                {sprites && !p.player.isRealLegend ? (
+                {waiting ? null : sprites && !p.player.isRealLegend ? (
                   <GameSprite player={p.player} team={c} kind={kind} size={size} action={p.action ?? (star && action === 'idle' && list.length > 1 ? 'idle' : action)} />
                 ) : (
                   <TeamLogo team={c} size={size === 's' ? 44 : size === 'm' ? 72 : 96} decorative />

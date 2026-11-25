@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { GameRef, ScheduleSeason, TableRow } from '@/utils/schedule';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { BOARD_BG, BoardTile, LampGrid, ScoreSide, color, pct, rate, signed } from './seasonGamesUi';
+import { Reveal, ViewCount, stag } from '@/components/motion/Reveal';
 import './sx.css';
 
 /**
@@ -17,24 +18,24 @@ export const NumbersStrip = ({ season }: { season: ScheduleSeason }) => {
   const l = season.league;
   if (!l) return null;
   const tiles = [
-    { label: 'Points per club', value: l.ppg.toFixed(1), sub: 'Per game' },
-    { label: 'Combined', value: l.combinedAvg.toFixed(1), sub: 'Points per game' },
-    { label: 'Avg margin', value: l.avgMargin.toFixed(1), sub: 'Points' },
+    { label: 'Points per club', value: <ViewCount value={Number(l.ppg.toFixed(1))} decimals={1} />, sub: 'Per game' },
+    { label: 'Combined', value: <ViewCount value={Number(l.combinedAvg.toFixed(1))} decimals={1} />, sub: 'Points per game' },
+    { label: 'Avg margin', value: <ViewCount value={Number(l.avgMargin.toFixed(1))} decimals={1} />, sub: 'Points' },
     { label: 'Home win %', value: rate(l.homeWinPct), sub: `${l.homeWins} home, ${l.awayWins} away wins` },
-    { label: 'One-score games', value: pct(l.oneScoreShare), sub: `${l.oneScoreGames} of ${l.games} by 8 or fewer` },
-    { label: '50-point games', value: l.fiftyPointGames, sub: 'A club scored 50+' },
-    { label: 'Ties', value: l.ties.length, sub: `${l.games} games, ${l.points.toLocaleString()} points` },
+    { label: 'One-score games', value: <ViewCount value={Math.round(l.oneScoreShare * 100)} suffix="%" />, sub: `${l.oneScoreGames} of ${l.games} by 8 or fewer` },
+    { label: '50-point games', value: <ViewCount value={l.fiftyPointGames} />, sub: 'A club scored 50+' },
+    { label: 'Ties', value: <ViewCount value={l.ties.length} />, sub: `${l.games} games, ${l.points.toLocaleString()} points` },
   ];
   return (
-    <dl className="sx-plaques sx-plaques--7">
+    <Reveal as="dl" className="sx-plaques sx-plaques--7">
       {tiles.map((t, i) => (
-        <div key={t.label} className={cn('sx-plaque', i === tiles.length - 1 && 'col-span-2 md:col-span-1')} style={{ ['--ax-c1' as string]: 'hsl(var(--gold))' }}>
+        <div key={t.label} className={cn('sx-plaque mo-rise', i === tiles.length - 1 && 'col-span-2 md:col-span-1')} style={{ ['--ax-c1' as string]: 'hsl(var(--gold))', ...stag(i) }}>
           <dt className="sx-plaque__k">{t.label}</dt>
           <dd className="sx-plaque__v">{t.value}</dd>
           <dd className="sx-plaque__sub">{t.sub}</dd>
         </div>
       ))}
-    </dl>
+    </Reveal>
   );
 };
 
