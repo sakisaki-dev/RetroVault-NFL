@@ -16,7 +16,7 @@ import GameSprite from '../../GameSprite';
 import TributeButton from '../../tribute/TributeButton';
 import { RetiredHangers } from '../../teams/RetiredBadge';
 import { keyOf } from '../records';
-import DraftTiles from '@/components/player/DraftTiles';
+import { DraftPills } from '@/components/player/DraftTiles';
 import '@/components/player/playerCard.css';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
@@ -127,10 +127,6 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
       <RetiredHangers player={player} className="dd-hangers" />
       </div>
 
-      <div className="pc-ids pc-ids--draft pc-ids--hero">
-        <DraftTiles playerKey={keyOf(player)} bannerClub={team?.name ?? null} />
-      </div>
-
       <div className="flex flex-wrap items-center gap-1.5">
         {/* His Player Tribute, when one has been written */}
         <TributeButton playerKey={keyOf(player)} label="Read his tribute" className="h-8 border border-gold/60 bg-gold/10 px-2.5 text-sm text-gold hover:bg-gold/20" />
@@ -156,6 +152,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             Family <b style={{ color: family.color }}>{displayName(family.name)}</b>
           </button>
         )}
+        <DraftPills playerKey={keyOf(player)} />
         {franchises.length > 0 && (
           <ul className="flex flex-wrap items-center gap-1.5" aria-label="Franchise history">
             {franchises.map((f, i) => (
