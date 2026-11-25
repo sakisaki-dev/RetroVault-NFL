@@ -9,6 +9,8 @@ import TeamLogo from '../brand/TeamLogo';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { clubVars } from './clubInk';
 import { stag, useReveal } from '@/components/motion/Reveal';
+import { peekProps } from '@/components/peek/peekProps';
+import { buildHash } from '@/components/stats/hub/hashRoute';
 import './arcade.css';
 
 /**
@@ -82,18 +84,35 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
         </div>
       )}
       {list.length > 0 && (
-        <div className="ax-stage__line" aria-hidden="true">
+        <div className="ax-stage__line">
           {list.map((p, i) => {
             const c = p.club ?? bannerTeamOf(p.player) ?? club;
             const star = i === Math.round(mid);
+            // owner: "there's sprites on the field but they're not clickable": a tap opens his Deep Dive, a hold the quick look
+            const tappable = !p.player.isRealLegend && !!p.player.position && !!p.player.name;
+            const Tag = tappable ? 'button' : 'span';
             return (
-              <span key={`${p.player.name}-${i}`} className={cn('ax-stage__fig', star ? 'mo-pop' : i < mid ? 'mo-run-l' : 'mo-run-r', hidden.has(i) && 'ax-stage__fig--extra')} style={{ zIndex: star ? 2 : 1, ...stag(star ? 3 : Math.abs(i - mid) + 1, 90) }}>
+              <Tag
+                key={`${p.player.name}-${i}`}
+                {...(tappable
+                  ? {
+                      type: 'button' as const,
+                      ...peekProps(p.player),
+                      'aria-label': `Open ${p.player.name}'s Deep Dive`,
+                      onClick: () => {
+                        window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: `${p.player.position}:${p.player.name}` });
+                      },
+                    }
+                  : { 'aria-hidden': true })}
+                className={cn('ax-stage__fig', tappable && 'ax-stage__fig--btn', star ? 'mo-pop' : i < mid ? 'mo-run-l' : 'mo-run-r', hidden.has(i) && 'ax-stage__fig--extra')}
+                style={{ zIndex: star ? 2 : 1, ...stag(star ? 3 : Math.abs(i - mid) + 1, 90) }}
+              >
                 {waiting ? null : sprites && !p.player.isRealLegend ? (
                   <GameSprite player={p.player} team={c} kind={kind} size={size} action={p.action ?? (star && action === 'idle' && list.length > 1 ? 'idle' : action)} />
                 ) : (
                   <TeamLogo team={c} size={size === 's' ? 44 : size === 'm' ? 72 : 96} decorative />
                 )}
-              </span>
+              </Tag>
             );
           })}
         </div>
