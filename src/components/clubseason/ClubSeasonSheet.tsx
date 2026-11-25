@@ -123,8 +123,8 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     onClose();
     window.setTimeout(() => openGame(id), AFTER_CLOSE_MS);
   };
-  // the Draft outlook's links: the College tab's projected order or needs mock, this club in focus
-  const toCollege = (section: 'order' | 'mock') => {
+  // the Draft outlook's link: the College tab's war room, this club in focus
+  const toCollege = (section: 'warroom') => {
     onClose();
     window.setTimeout(() => openCollege(section, { club: abbr ?? '' }), AFTER_CLOSE_MS);
   };

@@ -225,14 +225,18 @@ def main():
                  "picks": [[y, p["r"], p["p"], p["club"], p["n"], p["pos"], p["k"], p["ovr"], p["pb"], p["ap"], p["hof"]]
                            for y, p in sorted(sp, key=lambda x: (-x[0], x[1]["p"]))]}
         (OUT / "schools" / f"{slug}.json").write_text(json.dumps(sfile, separators=(",", ":"), ensure_ascii=False))
+        # the school's Hall of Famers: its picks the draft file or the site calls one, and its undrafted site Hall of Famers
+        hof_n = len({p["k"] or f'{y}:{p["p"]}' for y, p in sp if p["hof"]} | {p["k"] for p in pl if p["hof"]})
+        best = next(([p["k"], p["ovr"]] for p in pl if p["ovr"] is not None), None)
         rows_out.append([slug, info["name"], info["s"], info.get("id"), info.get("c"), info.get("a"), info.get("w", 0),
                          len(sp), rounds.get(1, 0), len(no1), len(pl), sum(1 for p in pl if p["a"]),
-                         {str(k): v for k, v in sorted(eras.items()) if k}])
+                         {str(k): v for k, v in sorted(eras.items()) if k}, hof_n, best])
 
     idx = {
         "_about": "scripts/nfl/college.py: draft boards per year (college/draft/<y>.json), schools (college/schools/<slug>.json). "
                   "schools rows: [slug, name, short, espn id, colour, alt colour, white puck, drafted, first-rounders, No. 1 picks, "
-                  "site players, active, per draft decade {decade: [drafted, first-rounders, total career OVR, rated players]}]",
+                  "site players, active, per draft decade {decade: [drafted, first-rounders, total career OVR, rated players]}, "
+                  "Hall of Famers, best alumnus [site key, career OVR] or null]",
         "latest": latest, "judgeAfter": JUDGE_AFTER, "stealBar": steal_bar, "bustBar": bust_bar,
         "years": years, "schools": rows_out,
     }

@@ -6,9 +6,9 @@ import { Section } from './ClubSeasonSection';
  * The programme's "Draft outlook" band for the season in progress: the club's projected first-round pick in the next
  * draft (the most likely slot and the middle 90% of the 10,000 simulated seasons, scripts/nfl/playoff_odds.py) with the
  * slot spread as bars, and its top positional needs from its depth chart (scripts/nfl/college.py needs.json). Nothing
- * for a past season or before the projection is built. `onOpen` leaves the sheet for the College tab.
+ * for a past season or before the projection is built. `onOpen` leaves the sheet for the College tab's war room (the projected order and the needs on one board).
  */
-const ClubSeasonDraft = ({ abbr, clubName, year, onOpen }: { abbr: string; clubName: string; year: number; onOpen: (section: 'order' | 'mock') => void }) => {
+const ClubSeasonDraft = ({ abbr, clubName, year, onOpen }: { abbr: string; clubName: string; year: number; onOpen: (section: 'warroom') => void }) => {
   const odds = usePlayoffOdds();
   const needs = useNeeds();
   const c = odds?.clubs[abbr];
@@ -52,8 +52,7 @@ const ClubSeasonDraft = ({ abbr, clubName, year, onOpen }: { abbr: string; clubN
             <p className="pg-note">No rated starters on file.</p>
           )}
           <div className="pg-dr__links">
-            <button type="button" onClick={() => onOpen('order')}>Projected order <span aria-hidden="true">→</span></button>
-            <button type="button" onClick={() => onOpen('mock')}>Needs mock <span aria-hidden="true">→</span></button>
+            <button type="button" onClick={() => onOpen('warroom')}>The {odds.draft.year} war room <span aria-hidden="true">→</span></button>
           </div>
         </div>
       </div>
