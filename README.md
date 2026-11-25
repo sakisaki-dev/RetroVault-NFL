@@ -27,16 +27,15 @@ The dock has **Season**, **Stats**, **Arcade** and **News**; **More** holds Coll
 
 | Tab | What it does |
 |---|---|
-| **Season** | The season as it is played: standings, scores and games, league leaders, the playoff race with odds, a club wall, playoff history and a "by the numbers" page |
+| **Season** | The season as it is played: standings, scores and games, league leaders, the playoff race with odds and a club wall |
 | **Stats** | **Players** (record book, leaderboards, analytics), **Teams** (a sheet per club), **Graphs** (scatter and comparison charts), **Head-to-Head** (two players side by side) and **Deep Dive** (one player's career graphs, comps and ratings) |
 | **Arcade** | Ten games on the same data: Can you go 18-0?, Blind Rank, Keep 3 / Cut 3, Guess the Legend, Higher or Lower, League Grid, Who's the Imposter?, Six Degrees of the NFL, Over/Under, Build-a-Legend |
-| **News** | Live NFL headlines and video from ESPN, with a link out to each article |
+| **News** | Live NFL headlines and video from ESPN, read inside the site |
 | **College** | Draft boards, a page per school and a draft war room |
 | **Team Lab** | Build a lineup and get a scouting report |
 | **Collection** | Card packs, a binder, shard workshop, card market and exchange, kept in the browser |
 
-Also: quick search for players and clubs, a player card on every name, a desktop screensaver, Season Rewind
-recaps and share-as-picture. The Hall of Fame is shown as a plain fact on a player's card (the real Pro Football
+Also: quick search for players and clubs and a player card on every name. The Hall of Fame is shown as a plain fact on a player's card (the real Pro Football
 Hall of Fame inductees).
 
 ## Data
@@ -120,7 +119,7 @@ Building for a static host (what the Pages workflow does):
 |---|---|
 | `VITE_EDITION=nfl` | Build the NFL edition |
 | `BASE_PATH=/RetroVault-NFL/` | URL path the site is served under |
-| `VITE_STATIC_HOST=1` | No dev proxy for ESPN articles: News shows the summary and a "Read on ESPN" link |
+| `VITE_STATIC_HOST=1` | No dev proxy: ESPN articles are fetched straight from ESPN |
 
 ## Tech stack
 
