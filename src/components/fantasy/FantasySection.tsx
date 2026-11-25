@@ -193,8 +193,8 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
             <Tile i={2} k="Ceiling" v={f1(rec.ce)} sub="75th percentile" />
             <Tile i={3} k="Std dev" v={f1(rec.sd)} sub={rec.cv != null ? `CV ${rec.cv.toFixed(2)}` : undefined} />
             <Tile i={4} k="Start-worthy" v={`${pctOf(rec.sw, rec.g)}%`} sub={`${rec.sw} of ${rec.g} weeks`} tone="good" />
-            <Tile i={5} k="Boom" v={`${pctOf(rec.bm, rec.g)}%`} sub={`${rec.bm} weeks`} />
-            <Tile i={6} k="Bust" v={`${pctOf(rec.bu, rec.g)}%`} sub={`${rec.bu} weeks`} tone={rec.bu ? 'bad' : undefined} />
+            <Tile i={5} k="Boom" v={`${pctOf(rec.bm, rec.g)}%`} sub={`${rec.bm} ${rec.bm === 1 ? 'week' : 'weeks'}`} />
+            <Tile i={6} k="Bust" v={`${pctOf(rec.bu, rec.g)}%`} sub={`${rec.bu} ${rec.bu === 1 ? 'week' : 'weeks'}`} tone={rec.bu ? 'bad' : undefined} />
           </div>
         </div>
       )}

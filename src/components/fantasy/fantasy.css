@@ -50,7 +50,7 @@
 .fx-grid i { position: absolute; left: -24px; top: -7px; width: 20px; text-align: right; font: normal 10px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
 .fx-band { position: absolute; left: 0; right: 0; background: hsl(var(--fx-blue) / 0.13); border-top: 1px solid hsl(var(--fx-blue) / 0.4); border-bottom: 1px solid hsl(var(--fx-blue) / 0.4); }
 .fx-med { position: absolute; left: 0; right: 0; height: 0; border-top: 2px dotted hsl(var(--fx-blue) / 0.85); text-decoration: none; }
-.fx-col { position: relative; flex: 1 1 0; min-width: 0; max-width: 34px; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; }
+.fx-col { position: relative; flex: 1 1 0; min-width: 0; max-width: 56px; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; }
 .fx-bar { display: block; width: 100%; border: 0; border-radius: 3px 3px 0 0; padding: 0; cursor: pointer; transform-origin: bottom; position: relative; z-index: 1; }
 .fx-bar::after { content: ''; position: absolute; inset: -4px -2px -2px; } /* a taller touch target than the bar */
 .fx-bar--boom { background: hsl(var(--gold)); } .fx-bar--start { background: hsl(var(--fx-good)); }
