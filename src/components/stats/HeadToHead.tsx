@@ -25,6 +25,7 @@ import { onHeadToHeadRequest, takeHeadToHeadRequest } from './comps/compFinderLi
 import { LEAGUE_DEFS, buildMatchup, type Cell, type Matchup, type Row, type Side } from './matchup';
 import { peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
+import { IS_NFL } from '@/config/edition';
 
 type Select = (p: Player) => void;
 
@@ -320,6 +321,8 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
   const { legends } = useGamePool();
   // Real NFL players can be picked too (games-only pool); every number stays on the league's scale
   const [withLegends, setWithLegends] = useState(() => {
+    // the NFL edition has no separate real-player pool: everyone is already in the league
+    if (IS_NFL) return true;
     try {
       return localStorage.getItem('retroVault:h2h:legends') === '1';
     } catch {
@@ -381,7 +384,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
           Any two league players, every shared stat
           <InfoTip>Advanced metrics show the + index (100 = position average) and the percentile within the position; tap or hover an underlined metric for its definition.</InfoTip>
         </p>
-        <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-full border border-line bg-night/60 px-3 py-1.5 text-xs font-semibold">
+        {!IS_NFL && <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-full border border-line bg-night/60 px-3 py-1.5 text-xs font-semibold">
           <input
             type="checkbox"
             checked={withLegends}
@@ -390,7 +393,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
           />
           Include real NFL players
           <span className="font-normal text-muted-foreground">(scored on the league&rsquo;s scale)</span>
-        </label>
+        </label>}
       </div>
 
       <div className="glass-card relative overflow-hidden p-3 sm:p-5" style={{ boxShadow: 'inset 0 4px 0 hsl(var(--gold)), var(--shadow-card)' }}>
