@@ -37,7 +37,7 @@ export const ModeSwitch = ({ mode, onMode }: { mode: 'team' | 'fantasy'; onMode:
   <div className="nfl-seg" role="tablist" aria-label="Team Lab mode">
     {(['team', 'fantasy'] as const).map((m) => (
       <button key={m} type="button" role="tab" aria-selected={mode === m} className={cn('nfl-seg-btn', mode === m && 'is-on')} onClick={() => onMode(m)}>
-        {m === 'team' ? 'Team Lab' : 'Fantasy'}
+        {m === 'team' ? 'Real football' : 'Fantasy'}
       </button>
     ))}
   </div>
