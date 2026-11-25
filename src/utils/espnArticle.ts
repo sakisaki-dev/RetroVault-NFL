@@ -28,11 +28,13 @@ export interface Article {
 const CACHE = 'espn:article:v1:';
 const PROXY = '/espn-content/';
 /**
- * A static host (the public GitHub Pages site, built with VITE_STATIC_HOST=1) has no /espn-content proxy, and ESPN's
- * content API refuses cross-origin reads, so the reader shows the feed's summary and a "Read on ESPN" link there without
- * trying either.
+ * Full articles load everywhere: ESPN's content API answers browsers cross-origin (access-control-allow-origin: *), so a
+ * static host (the public GitHub Pages site, VITE_STATIC_HOST=1) reads it directly. Its bot check refuses headless and
+ * scripted clients, which is why tests saw 403s. If a read still fails, the reader falls back to the summary and a
+ * "Read on ESPN" link.
  */
-export const FULL_ARTICLES = import.meta.env.VITE_STATIC_HOST !== '1';
+export const FULL_ARTICLES = true;
+const STATIC_HOST = import.meta.env.VITE_STATIC_HOST === '1';
 /** No request hangs the reader: each gives up after this long */
 const TIMEOUT_MS = 8000;
 const DIRECT = 'https://content.core.api.espn.com/';
@@ -164,10 +166,13 @@ export const fetchArticle = async (api: string, id: string): Promise<Article> =>
   if (hit) return hit;
   const path = api.replace(/^https?:\/\/content\.core\.api\.espn\.com\//, '');
   let raw: { headlines?: RawArticle[] };
-  try {
-    raw = (await getJson(PROXY + path)) as typeof raw; // a static host answers with its index page: not JSON, so it falls through
-  } catch {
-    raw = (await getJson(DIRECT + path)) as typeof raw;
+  if (STATIC_HOST) raw = (await getJson(DIRECT + path)) as typeof raw;
+  else {
+    try {
+      raw = (await getJson(PROXY + path)) as typeof raw;
+    } catch {
+      raw = (await getJson(DIRECT + path)) as typeof raw;
+    }
   }
   const first = raw.headlines?.[0];
   if (!first) throw new Error('no article');
@@ -186,10 +191,13 @@ export const fetchClipArticle = async (api: string, id: string, fallback: { head
   if (hit) return hit;
   const path = api.replace(/^https?:\/\/content\.core\.api\.espn\.com\//, '');
   let raw: { videos?: RawVideo[] };
-  try {
-    raw = (await getJson(PROXY + path)) as typeof raw;
-  } catch {
-    raw = (await getJson(DIRECT + path)) as typeof raw;
+  if (STATIC_HOST) raw = (await getJson(DIRECT + path)) as typeof raw;
+  else {
+    try {
+      raw = (await getJson(PROXY + path)) as typeof raw;
+    } catch {
+      raw = (await getJson(DIRECT + path)) as typeof raw;
+    }
   }
   const v = raw.videos?.[0];
   if (!v) throw new Error('no clip');
