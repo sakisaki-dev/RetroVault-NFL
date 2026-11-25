@@ -828,6 +828,7 @@ const SpotlightScene = ({ player, roll, rank, number, ovr, sprites }: { player: 
             eyebrow={t ? `${t.fullName}` : undefined}
             figure={sprites ? <GameSprite player={player} team={t?.name} kind="figure" size="l" showKit /> : undefined}
             stats={bannerStats(player)}
+            statsKicker="Career"
           />
         </div>
         <p className="sv-cap">

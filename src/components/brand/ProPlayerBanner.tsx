@@ -59,6 +59,8 @@ export interface ProPlayerBannerProps {
   figure?: ReactNode;
   /** Career numbers shown beside the pedestal (hero, only when the sprite stands there), e.g. careerLine(p) */
   stats?: { label: string; value: string | number }[];
+  /** Small label above the stats stack: "2026 season" for an active player's season numbers, "Career" for career totals */
+  statsKicker?: string;
   /** Adds the hover sheen; use when the banner sits inside a button or link */
   interactive?: boolean;
   className?: string;
@@ -96,6 +98,7 @@ const ProPlayerBanner = ({
   topRight,
   figure: figureProp,
   stats,
+  statsKicker,
   interactive = false,
   className,
 }: ProPlayerBannerProps) => {
@@ -236,6 +239,7 @@ const ProPlayerBanner = ({
   const statBlock =
     stats && stats.length > 0 && !sealed ? (
       <span className="ppb__stats" aria-hidden="true">
+        {statsKicker && <span className="ppb__stats-k">{statsKicker}</span>}
         {stats.map((st) => (
           <span key={st.label} className="ppb__stat">
             <b>{typeof st.value === 'number' ? Math.round(st.value).toLocaleString('en-US') : st.value}</b>

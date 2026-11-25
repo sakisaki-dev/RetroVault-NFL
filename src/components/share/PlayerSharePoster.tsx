@@ -5,7 +5,7 @@ import { AWARD_META, POSITION_NAMES } from '@/utils/playerMeta';
 import { isDefensivePosition } from '@/config/stats';
 import ProPlayerBanner from '@/components/brand/ProPlayerBanner';
 import GameSprite from '@/components/GameSprite';
-import { bannerStats } from '@/components/hof/hofUtils';
+import { bannerFor, seasonHeadline, useSeasonView } from '@/components/player/seasonView';
 import { headlineStats } from '@/components/player/statLines';
 import { teamThemeVars } from '@/components/player/teamTheme';
 import SharePosterFrame from './SharePosterFrame';
@@ -35,12 +35,14 @@ const PlayerSharePoster = ({
 }) => {
   const theme = teamThemeVars(team);
   const awards = AWARD_META[isDefensivePosition(player.position) ? 'defense' : 'offense'].filter((a) => a.key !== 'rings' && (player[a.key] ?? 0) > 0);
+  const seasonView = useSeasonView(player);
+  const bannerNums = bannerFor(player, seasonView);
   const tiles = [
     { key: 'ovr', label: ovrLabelOf(player), value: num(ovr), gold: true },
     { key: 'rings', label: player.rings === 1 ? 'Ring' : 'Rings', value: num(player.rings ?? 0), gold: true },
     { key: 'legacy', label: 'Career Legacy', value: player.trueTalent > 0 ? num(player.careerLegacy) : '–' },
     { key: 'games', label: 'Games', value: num(player.games) },
-    ...headlineStats(player).map((s) => ({ key: s.key, label: s.label, value: num(s.value, s.decimals ?? 0), gold: false })),
+    ...(seasonView ? seasonHeadline(player, seasonView) : headlineStats(player)).map((s) => ({ key: s.key, label: s.label, value: num(s.value, s.decimals ?? 0), gold: false })),
   ];
   return (
     <SharePosterFrame
@@ -61,7 +63,8 @@ const PlayerSharePoster = ({
         retiredBy={retiredBy}
         eyebrow={`${POSITION_NAMES[player.position] ?? player.position}${team ? ` · ${team.fullName}` : ''}`}
         figure={player.isRealLegend ? null : <GameSprite player={player} team={team?.name ?? player.team} kind="figure" size="l" />}
-        stats={player.isRealLegend ? undefined : bannerStats(player)}
+        stats={player.isRealLegend ? undefined : bannerNums.stats}
+        statsKicker={bannerNums.kicker}
         className="rounded-xl"
       />
       {player.nickname && <p className="shr-nick">&ldquo;{player.nickname}&rdquo;</p>}

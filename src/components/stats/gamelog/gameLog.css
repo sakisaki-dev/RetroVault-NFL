@@ -128,6 +128,7 @@
 .ts__tr { font-size: 11px; color: hsl(var(--muted-foreground)); }
 .ts__tr b { color: hsl(var(--gold)); font-family: 'Barlow Condensed', sans-serif; font-size: 1.05em; }
 .ts__cards { display: grid; gap: 0.5rem; margin-top: 0.5rem; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .ts__tiles--n { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); } }
 @media (min-width: 900px) { .ts__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .ts__pace { display: flex; flex-wrap: wrap; gap: 0.15rem 0.9rem; font-size: 12px; color: hsl(var(--muted-foreground)); }
 .ts__pace b { font-family: 'Barlow Condensed', sans-serif; font-size: 1.55rem; font-weight: 700; color: hsl(var(--foreground)); font-variant-numeric: tabular-nums; margin-right: 2px; }
