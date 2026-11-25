@@ -23,13 +23,13 @@ const shared = () =>
     (entries) =>
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
-        // a tall block (a long list) never shows 6% of itself in a phone's window: a slice of 60px is enough
-        if (!e.isIntersecting || (e.intersectionRatio < 0.06 && e.intersectionRect.height < 60)) return;
+        // the root reaches 25% of a screen below the fold, so a block starts rising just before it scrolls in and the
+        // page never shows a blank band where a section waits (owner: "remove that whitespace in the deep dive")
         const t = e.target as HTMLElement;
         t.dataset.mo = 'go';
         io?.unobserve(t);
       }),
-    { threshold: [0, 0.002, 0.02, 0.06], rootMargin: '0px 0px -24px 0px' },
+    { threshold: 0, rootMargin: '0px 0px 25% 0px' },
   ));
 
 /** A callback ref: the element waits, then goes once when it is on screen. */
