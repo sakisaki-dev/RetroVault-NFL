@@ -8,9 +8,9 @@
   border: 1px solid color-mix(in srgb, var(--tc) 45%, #2b3760); border-radius: 12px; color: #f1f4ff; cursor: pointer;
   background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 55%, #0b1020) 0%, #0b1020 62%);
   box-shadow: 0 8px 22px rgb(0 0 0 / 0.35);
-  transition: transform 140ms ease-out, border-color 140ms ease-out;
+  transition: transform var(--hv-dur) var(--ease-out), border-color var(--hv-dur) var(--ease-out);
 }
-.nsp:hover { transform: translateY(-2px); border-color: #ffc83d; }
+.nsp:hover { transform: translateY(-2px); border-color: rgb(255 255 255 / 0.3); }
 .nsp:focus-visible { outline: 3px solid #ffc83d; outline-offset: 2px; }
 /* the light cone from the top, scanlines like the LED boards */
 .nsp__rays { position: absolute; inset: 0; pointer-events: none;

@@ -1,5 +1,5 @@
-.cg-ticket { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 6px 8px 7px; text-align: left; background: hsl(var(--card)); border: 1px solid hsl(var(--line) / .7); border-radius: 12px; box-shadow: inset 4px 0 0 var(--ax-c1); padding-left: 12px; transition: transform .12s, border-color .12s; }
-.cg-ticket:hover { border-color: hsl(var(--gold) / .7); }
+.cg-ticket { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 6px 8px 7px; text-align: left; background: hsl(var(--card)); border: 1px solid hsl(var(--line) / .7); border-radius: 12px; box-shadow: inset 4px 0 0 var(--ax-c1); padding-left: 12px; transition: transform .12s, border-color var(--hv-dur) var(--ease-out); }
+.cg-ticket:hover { border-color: rgb(255 255 255 / 0.3); }
 .cg-ticket:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
 .cg-ticket.is-post { border-color: hsl(var(--gold) / .6); }
 .cg-ticket__wk { font: 700 12px/1 var(--font-display, inherit); letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }

@@ -11,10 +11,10 @@
   border: 1px solid hsl(var(--line) / 0.7);
   border-radius: 12px;
   box-shadow: inset 4px 0 0 var(--ax-c1);
-  transition: border-color 0.15s;
+  transition: border-color var(--hv-dur) var(--ease-out);
 }
 button.pb-row:hover {
-  border-color: hsl(var(--gold) / 0.7);
+  border-color: rgb(255 255 255 / 0.3);
 }
 .pb-bar { position: absolute; left: 0; bottom: 0; height: 3px; border-radius: 0 3px 3px 0; background: var(--ax-c1); }
 .pb-lazy {

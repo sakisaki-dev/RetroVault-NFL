@@ -1,5 +1,5 @@
 .fl-picker { display: flex; flex-wrap: wrap; gap: 4px; }
-.fl-pick { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: hsl(var(--secondary) / .5); border: 1px solid hsl(var(--border)); transition: background-color .15s ease, transform .15s ease; }
+.fl-pick { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: hsl(var(--secondary) / .5); border: 1px solid hsl(var(--border)); transition: background-color var(--hv-dur) var(--ease-out), transform var(--hv-dur) var(--ease-out); }
 .fl-pick:hover { background: hsl(var(--secondary)); }
 .fl-pick.is-on { background: hsl(var(--gold) / .22); border-color: hsl(var(--gold)); }
 .fl-pick:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }

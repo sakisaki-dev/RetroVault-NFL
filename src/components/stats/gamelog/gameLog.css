@@ -27,7 +27,7 @@
 .gl-seg { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid hsl(var(--line)); border-radius: 9px; background: hsl(var(--night) / 0.7); min-width: 0; }
 .gl-seg--view { display: flex; width: 100%; flex: 1 1 100%; }
 @media (min-width: 900px) { .gl-seg--view { display: inline-flex; width: auto; flex: 0 0 auto; } .gl-bar__row { flex: 1 1 0; justify-content: flex-end; } }
-.gl-seg__b { flex: 1 1 auto; font: 700 13px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; min-height: 34px; border: 0; border-radius: 7px; background: transparent; color: hsl(var(--secondary-foreground)); white-space: nowrap; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.gl-seg__b { flex: 1 1 auto; font: 700 13px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; min-height: 34px; border: 0; border-radius: 7px; background: transparent; color: hsl(var(--secondary-foreground)); white-space: nowrap; cursor: pointer; transition: background var(--hv-dur) var(--ease-out), color var(--hv-dur) var(--ease-out); }
 .gl-seg__b:hover:not(:disabled):not(.is-on) { background: hsl(var(--panel-2)); }
 .gl-seg__b.is-on { background: hsl(var(--gold)); color: hsl(43 100% 8%); }
 .gl-seg__b:disabled { opacity: 0.4; cursor: default; }
@@ -56,7 +56,7 @@
 .gl-bar--l { background: linear-gradient(180deg, hsl(var(--gl-l)), hsl(354 60% 32%)); }
 .gl-bar--t { background: linear-gradient(180deg, hsl(var(--sky)), hsl(199 60% 30%)); }
 .gl-bar--post { box-shadow: 0 -4px 0 hsl(var(--gold)); }
-.gl-bar:hover, .gl-bar.is-sel { filter: brightness(1.3); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85), 0 0 14px hsl(var(--gold) / 0.45); z-index: 2; }
+.gl-bar:hover, .gl-bar.is-sel { filter: brightness(1.08); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85); z-index: 2; }
 .gl-bar--post.is-sel { box-shadow: 0 -4px 0 hsl(var(--gold)), 0 0 0 2px hsl(var(--chalk) / 0.85); }
 .gl-wk { position: absolute; bottom: -18px; left: 0; right: 0; text-align: center; font: 9px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
 @media (prefers-reduced-motion: no-preference) {

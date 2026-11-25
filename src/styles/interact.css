@@ -59,7 +59,7 @@
   /* the swaying banner plaques: lift along their own hang, the rim through a light edge */
   :is(.rv-stats, .rv-ix) .bn3-plaque:hover {
     translate: 0 2px;
-    filter: brightness(1.18) drop-shadow(0 6px 6px rgb(0 0 0 / 0.4));
+    filter: brightness(1.08) drop-shadow(0 6px 6px rgb(0 0 0 / 0.4));
   }
   /* his figure hops when the card he stands on is hovered (a pose swap isn't needed for the feel) */
   :is(.rv-stats, .rv-ix) :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
@@ -94,7 +94,7 @@
 @media (hover: hover) {
   :is(.rv-stats, .rv-ix) :is(button, a).club-strip:hover {
     scale: 1.03;
-    filter: brightness(1.2) saturate(1.05);
+    filter: brightness(1.08) saturate(1.05);
   }
 }
 :is(.rv-stats, .rv-ix) :is(button, a).club-strip:active {

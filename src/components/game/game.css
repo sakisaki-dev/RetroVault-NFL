@@ -118,7 +118,7 @@ a.gm-star:hover { border-color: rgb(255 255 255 / 0.3); }
   box-shadow: inset 0 -10px 18px hsl(0 0% 0% / 0.25);
 }
 .gm-unit__row { display: flex; flex-wrap: wrap; gap: 0.1rem 0.15rem; align-items: flex-end; justify-content: flex-start; }
-.gm-fig { position: relative; display: flex; flex-direction: column; align-items: center; width: 4.9rem; color: hsl(var(--chalk)); border-radius: 8px; padding: 0 0.1rem 0.25rem; transition: background-color 0.15s; }
+.gm-fig { position: relative; display: flex; flex-direction: column; align-items: center; width: 4.9rem; color: hsl(var(--chalk)); border-radius: 8px; padding: 0 0.1rem 0.25rem; transition: background-color var(--hv-dur) var(--ease-out); }
 a.gm-fig:hover { background: hsl(0 0% 100% / 0.1); }
 .gm-fig.is-hot::before { content: ''; position: absolute; inset: auto 20% 2.1rem; height: 12px; border-radius: 50%; background: hsl(var(--gold) / 0.55); filter: blur(5px); }
 .gm-fig__stage { display: block; width: 64px; height: 64px; margin-bottom: -2px; }
@@ -172,7 +172,7 @@ a.gm-fig:hover { background: hsl(0 0% 100% / 0.1); }
 .gm-missing b { color: hsl(var(--chalk)); }
 .gm-more { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.5rem; }
 .gm-more a { display: block; border-radius: 10px; border: 1px solid hsl(var(--line) / 0.7); overflow: hidden; color: hsl(var(--chalk)); background: linear-gradient(135deg, hsl(var(--ca) / 0.35), hsl(228 55% 6%) 55%, hsl(var(--ch) / 0.35)); }
-.gm-more a:hover { border-color: hsl(var(--gold)); }
+.gm-more a:hover { border-color: rgb(255 255 255 / 0.3); }
 .gm-more__row { display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.5rem; } .gm-more__row b { flex: 1; font-family: 'Barlow Condensed', inherit; text-transform: uppercase; } .gm-more__row i { font-style: normal; font-weight: 800; font-variant-numeric: tabular-nums; }
 .gm-more__row.is-lost { opacity: 0.55; }
 
@@ -192,8 +192,8 @@ a.gm-fig:hover { background: hsl(0 0% 100% / 0.1); }
 @media (max-width: 639px) { .ts__btn { display: none; } }
 .ts-sb { flex: none; scroll-snap-align: start; width: 78px; display: flex; flex-direction: column; align-items: stretch; gap: 3px; padding: 0; background: none; border: 0; color: hsl(var(--chalk)); text-align: center; }
 .ts-sb__yr { font-family: var(--font-pixel); font-size: 9px; color: hsl(var(--muted-foreground)); }
-.ts-sb__tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px; border: 1px solid hsl(0 0% 100% / 0.18); background: linear-gradient(160deg, hsl(var(--tc)), hsl(var(--tc) / 0.55)); transition: transform 0.15s, box-shadow 0.15s; }
-.ts-sb:hover .ts-sb__tile, .ts-sb:focus-visible .ts-sb__tile { transform: translateY(-3px); box-shadow: 0 6px 16px hsl(0 0% 0% / 0.45), 0 0 0 2px hsl(var(--gold)); }
+.ts-sb__tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px; border: 1px solid hsl(0 0% 100% / 0.18); background: linear-gradient(160deg, hsl(var(--tc)), hsl(var(--tc) / 0.55)); transition: transform var(--hv-dur) var(--ease-out), box-shadow var(--hv-dur) var(--ease-out); }
+.ts-sb:hover .ts-sb__tile, .ts-sb:focus-visible .ts-sb__tile { transform: translateY(-3px); box-shadow: 0 6px 16px hsl(0 0% 0% / 0.45), 0 0 0 2px rgb(255 255 255 / 0.3); }
 .ts-sb__roman { position: absolute; top: 2px; left: 4px; font-family: var(--font-pixel); font-size: 8px; color: hsl(0 0% 100% / 0.8); text-shadow: 0 1px 0 #000; }
 .ts-sb__score { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 0.85rem; text-shadow: 0 1px 2px #000; color: #fff; }
 .ts-sb__vs { font-size: 9px; color: hsl(var(--muted-foreground)); }
@@ -205,8 +205,8 @@ a.gm-fig:hover { background: hsl(0 0% 100% / 0.1); }
 
 .ts-col { flex: none; scroll-snap-align: start; width: 58px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0; background: none; border: 0; color: hsl(var(--chalk)); }
 .ts-col__plot { position: relative; width: 100%; height: 132px; display: flex; align-items: flex-end; justify-content: center; border-radius: 6px 6px 0 0; background: repeating-linear-gradient(0deg, transparent 0 32px, hsl(0 0% 100% / 0.05) 32px 33px); }
-.ts-col__bar { width: 70%; min-height: 3px; border-radius: 4px 4px 0 0; background: linear-gradient(0deg, hsl(var(--tc) / 0.55), var(--tcl, hsl(var(--tc)))); transition: height 0.45s, filter 0.15s; }
-.ts-col:hover .ts-col__bar, .ts-col:focus-visible .ts-col__bar, .ts-col.is-pick .ts-col__bar { filter: brightness(1.3); box-shadow: 0 0 12px hsl(var(--tc) / 0.7); }
+.ts-col__bar { width: 70%; min-height: 3px; border-radius: 4px 4px 0 0; background: linear-gradient(0deg, hsl(var(--tc) / 0.55), var(--tcl, hsl(var(--tc)))); transition: height 0.45s, filter var(--hv-dur) var(--ease-out); }
+.ts-col:hover .ts-col__bar, .ts-col:focus-visible .ts-col__bar, .ts-col.is-pick .ts-col__bar { filter: brightness(1.08); box-shadow: 0 0 12px hsl(var(--tc) / 0.7); }
 .ts-col__v { position: absolute; font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 0.8rem; line-height: 1; margin-bottom: 2px; }
 .ts-col__pips { display: flex; flex-wrap: wrap; justify-content: center; gap: 1px; min-height: 12px; max-width: 54px; color: hsl(var(--gold)); font-size: 9px; line-height: 1; }
 .ts-col__rank { font-family: var(--font-pixel); font-size: 8px; color: hsl(var(--muted-foreground)); }
@@ -218,7 +218,7 @@ a.gm-fig:hover { background: hsl(0 0% 100% / 0.1); }
 .ts-ss__bar { width: 66%; border-radius: 3px 3px 0 0; background: hsl(var(--tc) / 0.55); }
 .ts-ss.is-title .ts-ss__bar { background: linear-gradient(0deg, hsl(var(--gold) / 0.65), hsl(var(--gold))); }
 .ts-ss.is-final .ts-ss__bar { box-shadow: 0 0 0 1.5px hsl(var(--gold) / 0.9) inset; }
-.ts-ss:hover .ts-ss__bar, .ts-ss:focus-visible .ts-ss__bar { filter: brightness(1.4); }
+.ts-ss:hover .ts-ss__bar, .ts-ss:focus-visible .ts-ss__bar { filter: brightness(1.08); }
 .ts-ss__y { font-family: var(--font-pixel); font-size: 8px; color: hsl(var(--muted-foreground)); }
 .ts-ss__m { font-size: 10px; line-height: 1; min-height: 10px; color: hsl(var(--gold)); }
 

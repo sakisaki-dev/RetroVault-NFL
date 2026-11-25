@@ -73,7 +73,7 @@
 .tw-pick { min-width: 0; }
 .tw-card { position: relative; display: grid; gap: 8px; width: 100%; height: 100%; text-align: left; border-radius: 12px; padding: 10px 12px; background: hsl(var(--card)); border: 1px solid hsl(var(--line)); color: inherit; font: inherit; }
 button.tw-card { cursor: pointer; }
-button.tw-card:hover, button.tw-card:focus-visible { border-color: hsl(var(--gold) / .7); }
+button.tw-card:hover, button.tw-card:focus-visible { border-color: rgb(255 255 255 / 0.3); }
 .tw-pick.is-gotw .tw-card { border-color: hsl(var(--gold)); box-shadow: 0 0 0 1px hsl(var(--gold) / .5); }
 .tw-flag { justify-self: start; border-radius: 999px; padding: 2px 8px; background: hsl(var(--gold)); color: #111627; font: 800 10px/1.4 var(--font-display, inherit); letter-spacing: .1em; text-transform: uppercase; }
 .tw-vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 6px; }

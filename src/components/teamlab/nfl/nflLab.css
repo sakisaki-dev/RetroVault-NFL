@@ -21,7 +21,7 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: hsl(var(--muted-foreground));
-  transition: background 120ms, color 120ms;
+  transition: background var(--hv-dur) var(--ease-out), color var(--hv-dur) var(--ease-out);
 }
 .nfl-seg-btn { white-space: nowrap; }
 .nfl-seg-btn:hover:not(:disabled) { color: hsl(var(--chalk)); }
@@ -286,7 +286,7 @@
   font-size: 15px;
   text-transform: uppercase;
   color: hsl(var(--gold));
-  transition: transform 120ms, background 120ms;
+  transition: transform 120ms, background var(--hv-dur) var(--ease-out);
 }
 .nfl-opt-btn:hover { background: hsl(var(--gold) / 0.14); }
 .nfl-opt-btn:active { transform: scale(0.96); }
@@ -307,10 +307,10 @@
 .nfl-field--team .lab-ghost { border-radius: 14px; border-style: solid; border-width: 1px; background: rgb(255 255 255 / 0.14); backdrop-filter: blur(1px); }
 .nfl-field--team .lab-tag--empty { border-radius: 6px; }
 .nfl-field--team .lab-field-logo { opacity: 0.16; }
-.nfl-field--team .lab-fig { transition: transform 140ms var(--ease-out, ease-out); transform-origin: 50% 100%; }
+.nfl-field--team .lab-fig { transition: transform var(--hv-dur) var(--ease-out); transform-origin: 50% 100%; }
 .nfl-field--team .lab-spot:hover .lab-fig { transform: scale(1.08); }
 .nfl-field--team .lab-spot:active .lab-fig { transform: scale(0.95); }
-.nfl-field--team .lab-spot:hover .lab-tag { filter: brightness(1.12); }
+.nfl-field--team .lab-spot:hover .lab-tag { filter: brightness(1.08); }
 @media (prefers-reduced-motion: no-preference) {
   .nfl-field--team .lab-spot { animation: nfl-walk-on 420ms var(--ease-out, ease-out) both; animation-delay: calc(var(--i, 0) * 26ms); }
 }
@@ -330,7 +330,7 @@
 .nfl-bar-end { display: flex; gap: 6px; margin-left: auto; flex: 0 0 auto; }
 .nfl-opt-line { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .nfl-opt-k { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
-.nfl-act { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 10px; text-align: left; border: 1px solid hsl(var(--line)); background: rgb(255 255 255 / 0.04); transition: transform 120ms, background 120ms; }
+.nfl-act { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 10px; text-align: left; border: 1px solid hsl(var(--line)); background: rgb(255 255 255 / 0.04); transition: transform 120ms, background var(--hv-dur) var(--ease-out); }
 .nfl-act:hover:not(:disabled) { background: hsl(var(--gold) / 0.12); border-color: hsl(var(--gold) / 0.6); }
 .nfl-act:active:not(:disabled) { transform: scale(0.98); }
 .nfl-act:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -342,7 +342,7 @@
 .nfl-kit { display: grid; place-items: center; height: 32px; border-radius: 8px; border: 1px solid transparent; background: rgb(255 255 255 / 0.05); }
 .nfl-kit.is-on { border-color: hsl(var(--gold)); background: hsl(var(--gold) / 0.2); }
 .nfl-corner { position: absolute; z-index: 5; left: 8px; top: 8px; }
-.nfl-form-chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.35); background: rgb(6 9 20 / 0.82); color: hsl(var(--chalk)); backdrop-filter: blur(3px); transition: transform 120ms, border-color 120ms; }
+.nfl-form-chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.35); background: rgb(6 9 20 / 0.82); color: hsl(var(--chalk)); backdrop-filter: blur(3px); transition: transform 120ms, border-color var(--hv-dur) var(--ease-out); }
 .nfl-form-chip:hover { border-color: hsl(var(--gold)); }
 .nfl-form-chip:active { transform: scale(0.96); }
 .nfl-form-chip[data-state='open'] { border-color: hsl(var(--gold)); }
@@ -352,7 +352,7 @@
 .nfl-form-chip i { font-style: normal; color: hsl(var(--muted-foreground)); }
 .nfl-form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .nfl-form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.nfl-form-card { display: grid; gap: 1px; justify-items: center; padding: 6px 4px 7px; border-radius: 10px; border: 1px solid hsl(var(--line)); background: rgb(255 255 255 / 0.04); text-align: center; transition: transform 120ms, background 120ms; }
+.nfl-form-card { display: grid; gap: 1px; justify-items: center; padding: 6px 4px 7px; border-radius: 10px; border: 1px solid hsl(var(--line)); background: rgb(255 255 255 / 0.04); text-align: center; transition: transform 120ms, background var(--hv-dur) var(--ease-out); }
 .nfl-form-card:hover { background: hsl(var(--gold) / 0.12); }
 .nfl-form-card:active { transform: scale(0.97); }
 .nfl-form-card.is-on { border-color: hsl(var(--gold)); background: hsl(var(--gold) / 0.18); }
@@ -363,14 +363,14 @@
 
 /* A filled spot on the real-football field: tap the figure for his card, hold for the quick look, the small swap button changes the slot */
 .lab-spot--card { cursor: default; }
-.lab-hit { display: flex; flex-direction: column; align-items: center; border-radius: 8px; cursor: pointer; transition: transform 140ms var(--ease-out, ease-out); }
+.lab-hit { display: flex; flex-direction: column; align-items: center; border-radius: 8px; cursor: pointer; transition: transform var(--hv-dur) var(--ease-out); }
 .lab-hit:hover { transform: translateY(-4px); }
 .lab-hit:active { transform: translateY(1px) scale(0.96); }
 .lab-hit:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
 .lab-spot--card:hover { transform: translate(-50%, -100%); }
 .lab-spot--card .lab-fig { transition: none; transform: none; }
 .nfl-field--team .lab-spot--card:hover .lab-fig, .nfl-field--team .lab-spot--card:active .lab-fig { transform: none; }
-.nfl-swap { position: absolute; z-index: 5; top: 2px; right: -6px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgb(255 255 255 / 0.5); background: rgb(6 9 20 / 0.85); color: #fff; opacity: 0.9; transition: transform 120ms, background 120ms; }
+.nfl-swap { position: absolute; z-index: 5; top: 2px; right: -6px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgb(255 255 255 / 0.5); background: rgb(6 9 20 / 0.85); color: #fff; opacity: 0.9; transition: transform 120ms, background var(--hv-dur) var(--ease-out); }
 .nfl-swap svg { width: 12px; height: 12px; }
 .nfl-swap:hover { background: hsl(var(--gold)); color: #0b1020; transform: scale(1.12); }
 .nfl-swap:active { transform: scale(0.92); }

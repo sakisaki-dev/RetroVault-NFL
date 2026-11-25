@@ -49,7 +49,7 @@
 /* the article body inside the reading sheet */
 .en-body { display: flex; flex-direction: column; min-width: 0; }
 .en-body a { color: var(--ss-gold, #ffc83d); font-weight: 600; }
-.en-body a:hover { filter: brightness(1.2); text-decoration: none; }
+.en-body a:hover { filter: brightness(1.08); text-decoration: none; }
 .en-body h2, .en-body h3 { margin: 1.1em 0 0.5em; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; text-transform: uppercase; }
 .en-body h3 { font-size: 20px; }
 .en-quote { margin: 0.4em 0 1.3em; padding: 4px 0 4px 16px; border-left: 3px solid var(--tc); font-style: italic; font-size: 18px; line-height: 1.6; color: #fff; }
@@ -67,7 +67,7 @@ ol.en-list { list-style: decimal; }
 .en-fig__credit::before { content: '\00b7\00a0'; }
 .en-fig__tag { margin-right: 4px; padding: 1px 6px; border-radius: 4px; background: var(--ss-gold); color: #111; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
 .en-play { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(transparent 40%, rgb(0 0 0 / 0.5)); cursor: pointer; }
-.en-play__disc { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--ss-gold); color: #111; box-shadow: 0 0 0 5px rgb(0 0 0 / 0.35); transition: transform 0.15s; }
+.en-play__disc { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--ss-gold); color: #111; box-shadow: 0 0 0 5px rgb(0 0 0 / 0.35); transition: transform var(--hv-dur) var(--ease-out); }
 .en-play:hover .en-play__disc { transform: scale(1.08); }
 .en-play__dur { position: absolute; right: 10px; bottom: 8px; padding: 1px 7px; border-radius: 4px; background: rgb(0 0 0 / 0.65); font-size: 11px; color: #fff; }
 @media (prefers-reduced-motion: reduce) { .en-play__disc { transition: none; } }

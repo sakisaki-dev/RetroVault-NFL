@@ -7,7 +7,7 @@
 .fx-strip { border: 1px solid color-mix(in srgb, var(--tc) 55%, hsl(var(--line))); border-top: 3px solid var(--tc); border-radius: 10px; padding: 0.6rem 0.7rem 0.65rem; background: color-mix(in srgb, var(--tc) 20%, hsl(var(--night))); min-width: 0; }
 .fx-strip__h { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.45rem; }
 .fx-more { margin-left: auto; font: 700 11px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: hsl(var(--gold)); padding: 0.25rem 0.1rem; min-height: 28px; }
-.fx-more:hover { text-decoration: none; filter: brightness(1.2); }
+.fx-more:hover { text-decoration: none; filter: brightness(1.08); }
 .fx-strip__g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; margin: 0; }
 .fx-cell--wide { grid-column: 1 / -1; }
 @media (min-width: 640px) { .fx-strip__g { grid-template-columns: repeat(5, minmax(0, 1fr)); } .fx-cell--wide { grid-column: auto; } }
@@ -60,7 +60,7 @@
 .fx-bar::after { content: ''; position: absolute; inset: -4px -2px -2px; } /* a taller touch target than the bar */
 .fx-bar--boom { background: hsl(var(--gold)); } .fx-bar--start { background: hsl(var(--fx-good)); }
 .fx-bar--flat { background: hsl(215 18% 52%); } .fx-bar--bust { background: hsl(var(--fx-bad)); }
-.fx-bar:hover, .fx-bar.is-sel { filter: brightness(1.25); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85); }
+.fx-bar:hover, .fx-bar.is-sel { filter: brightness(1.08); box-shadow: 0 0 0 2px hsl(var(--chalk) / 0.85); }
 .fx-bar:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
 .fx-miss { display: block; height: 3px; font: 9px 'JetBrains Mono', monospace; text-align: center; color: hsl(var(--muted-foreground)); background: hsl(var(--line)); border-radius: 2px; }
 .fx-wk { position: absolute; bottom: -17px; left: 0; right: 0; text-align: center; font: 10px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
@@ -97,13 +97,13 @@
 .fx-mu__r--easy .fx-mu__t b { color: hsl(var(--fx-good)); } .fx-mu__r--hard .fx-mu__t b { color: hsl(var(--fx-bad)); }
 
 /* interact: the same card hover and press as the Skill ratings tiles (rbk-chip) */
-.fx-tile, .fx-cell, .fx-panel__btn { transition: border-color 0.12s ease, background-color 0.12s ease, transform 0.12s ease; }
-.fx-tile:hover, .fx-cell:hover { border-color: hsl(var(--gold) / 0.55); background-color: color-mix(in srgb, var(--tc) 24%, hsl(var(--night))); }
+.fx-tile, .fx-cell, .fx-panel__btn { transition: border-color var(--hv-dur) var(--ease-out), background-color var(--hv-dur) var(--ease-out), transform 0.12s ease; }
+.fx-tile:hover, .fx-cell:hover { border-color: rgb(255 255 255 / 0.3); background-color: color-mix(in srgb, var(--tc) 24%, hsl(var(--night))); }
 .fx-tile:active, .fx-cell:active { transform: scale(0.98); }
 .fx-tile:focus-visible, .fx-cell:focus-visible, .fx-panel__btn:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
 .fx-tile.is-open { border-color: hsl(var(--gold)); }
 .fx-tile__k { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; }
-.fx-tile__c, .fx-panel__btn .fx-tile__c { width: 14px; height: 14px; flex: none; color: hsl(var(--muted-foreground)); transition: transform 0.2s ease; }
+.fx-tile__c, .fx-panel__btn .fx-tile__c { width: 14px; height: 14px; flex: none; color: hsl(var(--muted-foreground)); transition: transform var(--hv-dur) var(--ease-out); }
 .fx-tile.is-open .fx-tile__c, [aria-expanded='true'] > .fx-tile__c { transform: rotate(180deg); color: hsl(var(--gold)); }
 .fx-cell:disabled { cursor: default; }
 @media (prefers-reduced-motion: reduce), (hover: none) { .fx-tile:active, .fx-cell:active { transform: none; } }
