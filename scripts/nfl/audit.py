@@ -53,6 +53,19 @@ if fan and ts_:
             errors.append(f"fantasy.json {k}: rank or games out of range")
     if not all(c in fan["d"] for c in fan["n"]):
         errors.append("fantasy.json: a club has no matchup table")
+    # trade simulator inputs (src/utils/tradeSim.ts): receptions line up with the weeks, league rates per position, every remaining game
+    for k, v in fan["p"].items():
+        if len(v.get("wr", [])) != len(v["w"]) or v.get("tp") is None or v.get("ot") is None or v["tp"] < 0:
+            errors.append(f"fantasy.json {k}: receptions / TD points / opportunities (trade simulator) missing or misaligned")
+            break
+    if set(fan.get("lg", {})) != {"QB", "RB", "WR", "TE"} or not all(0 < x["po"] < 5 and 0 <= x["tpo"] < 1 for x in fan["lg"].values()):
+        errors.append("fantasy.json: league rates per opportunity (lg) missing or implausible")
+    for c, nn in fan["n"].items():
+        rm = nn.get("rm")
+        if rm is None or any(r[0] < 1 or r[0] > 18 for r in rm) or [r[0] for r in rm] != sorted({r[0] for r in rm}):
+            errors.append(f"fantasy.json {c}: remaining schedule (rm) missing, out of order or outside weeks 1-18")
+        elif nn["bye"] and nn["bye"] > fan["week"] and nn["bye"] not in [r[0] for r in rm if r[1] is None]:
+            errors.append(f"fantasy.json {c}: bye week {nn['bye']} is not a null slot in rm")
 rows = [r for r in csv.reader((PUB / "initial-data.csv").open()) if len(r) > 5 and r[0] not in ("Name",)]
 names = {r[0] for r in rows if r[1] in ("Active", "Retired")}
 if len(names) < len({p["n"] for p in players}):

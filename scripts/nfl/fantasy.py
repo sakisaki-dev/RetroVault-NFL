@@ -16,6 +16,11 @@ Record (short keys):
   sw / bm / bu games start-worthy / boom / bust (finish thresholds below)
   op {ts target share, ay air yards share, cs carry share, og opportunities per game, sn offence snap %, po PPR per opportunity}: [value, rank, of]
 
+Trade simulator inputs (src/utils/tradeSim.ts): wr receptions per game (aligned with w; re-scores half / standard / TE premium), tp touchdown points
+  (4 per passing TD, 6 per rushing or receiving TD) and ot opportunities over his games; n[club].rm every remaining game as [week, opponent, home 1/0] or [week, null]
+  (a bye; through week 18); lg[pos] league rates over every player line: po PPR per opportunity, tpo TD points per opportunity,
+  rpo receptions per opportunity.
+
 Thresholds (weekly finish at the position among every player with a line that week; N = 12 for QB and TE, 24 for RB and WR):
   start-worthy: finish <= N | boom: finish <= N / 2 | bust: finish > 1.5 N.
 Shares are over the weeks he played (team totals in those weeks). Opportunities = carries + targets (QB: attempts + carries).
@@ -83,6 +88,7 @@ def main():
     team_wk = defaultdict(lambda: defaultdict(float))  # (team, week) -> field sums
     pool = defaultdict(list)  # (week, pos) -> [ppr]
     allowed = defaultdict(float)  # (defence, pos) -> ppr
+    lgsum = defaultdict(lambda: defaultdict(float))  # pos -> {pts, td, rec, opp} over every player line (league rates per opportunity)
     for r in csv.DictReader(gzip.open(CACHE / f"stats_player_week_{season}.csv.gz", "rt")):
         if r["season_type"] != "REG":
             continue
@@ -95,6 +101,11 @@ def main():
             ppr = f(r["fantasy_points_ppr"])
             pool[(wk, pos)].append(ppr)
             allowed[(r["opponent_team"], pos)] += ppr
+            lg = lgsum[pos]
+            lg["pts"] += ppr
+            lg["td"] += 4 * f(r["passing_tds"]) + 6 * (f(r["rushing_tds"]) + f(r["receiving_tds"]))
+            lg["rec"] += f(r["receptions"])
+            lg["opp"] += f(r["carries"]) + (f(r["attempts"]) if pos == "QB" else f(r["targets"]))
         if r["player_id"] in key_by_gsis:
             rows.append((r["player_id"], wk, r["team"], r["opponent_team"], pos, r))
     played_weeks = {t: len(w) for t, w in team_weeks.items()}
@@ -111,11 +122,12 @@ def main():
     lines = defaultdict(dict)  # gsis -> week -> dict
     for g, wk, team, opp, pos, r in rows:
         lines[g][wk] = {"team": team, "opp": opp, "ppr": f(r["fantasy_points_ppr"]), "car": f(r["carries"]), "tgt": f(r["targets"]),
-                        "ay": f(r["receiving_air_yards"]), "att": f(r["attempts"])}
+                        "ay": f(r["receiving_air_yards"]), "att": f(r["attempts"]), "rec": f(r["receptions"]),
+                        "td": 4 * f(r["passing_tds"]) + 6 * (f(r["rushing_tds"]) + f(r["receiving_tds"]))}
     for g, sw in snaps.items():
         for wk, (_, team, opp) in sw.items():
             if wk not in lines[g]:
-                lines[g][wk] = {"team": team, "opp": opp, "ppr": 0.0, "car": 0.0, "tgt": 0.0, "ay": 0.0, "att": 0.0}
+                lines[g][wk] = {"team": team, "opp": opp, "ppr": 0.0, "car": 0.0, "tgt": 0.0, "ay": 0.0, "att": 0.0, "rec": 0.0, "td": 0.0}
 
     # weekly finish
     def finish(wk, pos, ppr):
@@ -145,6 +157,8 @@ def main():
             r["sd"] = r1(sd)
             r["cv"] = round(sd / mean, 2) if mean > 0 else None
             r["fl"], r["md"], r["ce"] = r1(pct(pp, 0.25)), r1(pct(pp, 0.5)), r1(pct(pp, 0.75))
+        r["wr"] = [int(wl[w]["rec"]) for w in ws]
+        r["tp"] = r1(sum(wl[w]["td"] for w in ws))
         r["_ws"] = ws
         r["_pos"] = pos
         # opportunity metrics over his games
@@ -155,6 +169,7 @@ def main():
         t_ay = sum(team_wk[(wl[w]["team"], w)]["receiving_air_yards"] for w in ws)
         t_car = sum(team_wk[(wl[w]["team"], w)]["carries"] for w in ws)
         opps = car + (att if pos == "QB" else tg)
+        r["ot"] = int(opps)
         raw = {"og": opps / n, "po": tot / opps if opps else None}
         if pos != "QB":
             if t_tgt and tg:
@@ -227,8 +242,18 @@ def main():
                 games_left += 1
             if games_left >= 3:
                 break
-        n[t] = {"bye": bye, "nx": nx}
-    OUT.write_text(json.dumps({"season": season, "week": last_week, "n": n, "d": dict(sorted(d.items())), "p": out},
+        rm = []
+        for w in range(done + 1, 19):
+            gm = next((x for x in mine if int(x["week"]) == w), None)
+            if gm:
+                home = gm["home_team"] == t
+                rm.append([w, gm["away_team"] if home else gm["home_team"], int(home)])
+            elif w == bye:
+                rm.append([w, None])
+        n[t] = {"bye": bye, "nx": nx, "rm": rm}
+    lg = {pos: {"po": round(v["pts"] / v["opp"], 4), "tpo": round(v["td"] / v["opp"], 4), "rpo": round(v["rec"] / v["opp"], 4)}
+          for pos, v in sorted(lgsum.items()) if v["opp"]}
+    OUT.write_text(json.dumps({"season": season, "week": last_week, "lg": lg, "n": n, "d": dict(sorted(d.items())), "p": out},
                               separators=(",", ":"), ensure_ascii=False, sort_keys=True))
     print(f"fantasy: {len(out)} players, {len(n)} clubs, week {last_week} -> {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB)")
 

@@ -51,7 +51,7 @@ import NflHeader from './NflHeader';
 import { SlotRow } from './NflDepthChart';
 import NflSaved from './NflSaved';
 import FantasyDesk from './FantasyDesk';
-import { ClubSelect, ModeSwitch, Stands, TurfSelect, openPicker, useStage } from './NflShared';
+import { ClubSelect, ModeSwitch, Stands, TurfSelect, openPicker, useStage, type LabMode } from './NflShared';
 import { useSavedLabs, type NflLabReady, type Prefs } from './useNflLab';
 import { displayName } from '@/utils/displayName';
 
@@ -74,7 +74,7 @@ const useLogs = (keys: string[]) => {
   return logs;
 };
 
-const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Prefs; setPrefs: (p: Partial<Prefs>) => void; onMode: (m: 'team' | 'fantasy') => void }) => {
+const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Prefs; setPrefs: (p: Partial<Prefs>) => void; onMode: (m: LabMode) => void }) => {
   const { ctx, data, injured, sched } = nl;
   const lab = data?.lab ?? null;
   const saved = useSavedLabs();

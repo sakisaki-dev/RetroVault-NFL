@@ -3,6 +3,7 @@ import type { Player } from '@/types/player';
 import GameSprite from '@/components/GameSprite';
 import { ChevronDown } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
+import TradeEntry from '@/components/trade/TradeEntry';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
@@ -204,6 +205,7 @@ const FantasySection = ({ playerKey, active, player }: { playerKey: string; acti
         )}
         <StatBoard tiles={hero} playerKey={playerKey} pos={pos} open={open} onOpen={setOpen} className="fx-hero" />
       </div>
+      <div className="fx-trade-row"><TradeEntry playerKey={playerKey} /></div>
 
       <div className="fx-block mo-rise" style={stag(4)}>
         <div className="fx-block__h">
