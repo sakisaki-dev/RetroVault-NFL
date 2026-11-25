@@ -4,6 +4,7 @@ import { displayName } from '@/utils/displayName';
 import { findNFLTeam } from '@/utils/nflTeams';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { ArcadeToggle, ClubStrip, PixelIcon, clubVars } from '@/components/arcade';
+import FootballLoader from '@/components/motion/FootballLoader';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { INK_LABEL, INK_STATS, inkFor, streaksForClubSeason, useInk, useSeasonBoard, useStreaks, type AwardWin, type LeaderRow } from '@/utils/seasonBoards';
 import { PlayerHit, PodiumStage, StarSprite, sitePos, splitKey } from './NflSeasonExtras';
@@ -119,6 +120,7 @@ export const SeasonLeaders = ({ season, inProgress }: { season: number; inProgre
   const wins = useMemo(() => AWARDS.flatMap((a) => (board?.awards[a.id] ?? []).map((w) => ({ ...a, w }))), [board]);
   const through = streakFile ? Math.min(season, streakFile.last) : season;
   const streaks = useMemo(() => (streakFile ? streaksForClubSeason(null, through).slice(0, 8) : []), [streakFile, through]);
+  if (board === undefined) return <FootballLoader ready={false} minHeight={520} what="the season leaders" label="Leaders" />;
   if (!board) return null;
   const stats = INK_STATS.filter((s) => s.group === group && board.leaders[s.id]?.length);
   const lead = wins[0]?.w.team ?? board.leaders.pyds?.[0]?.[3];

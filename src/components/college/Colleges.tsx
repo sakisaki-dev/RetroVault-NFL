@@ -1,4 +1,5 @@
 import { useDeferredValue, useMemo, useState } from 'react';
+import PixelLoader from '@/components/ui/PixelLoader';
 import { ArrowLeft, Search } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { ArcadeToggle, SectionHeader } from '@/components/arcade';
@@ -136,7 +137,7 @@ const XI: { pos: string; label: string }[] = [
 export const SchoolPage = ({ slug, onBack, onYear }: { slug: string; onBack: () => void; onYear: (y: number, round: number) => void }) => {
   const s = useSchool(slug);
   const players = usePlayerMap();
-  if (s === undefined) return <p className="cl-loading" role="status">Loading the school…</p>;
+  if (s === undefined) return <PixelLoader label="School" what="the school" minHeight={320} className="justify-start pt-12" />;
   if (s === null) return (
     <section className="cl-sec">
       <button type="button" className="cl-back" onClick={onBack}><ArrowLeft aria-hidden="true" /> Every school</button>

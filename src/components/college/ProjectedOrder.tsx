@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import PixelLoader from '@/components/ui/PixelLoader';
 import { SectionHeader } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -39,7 +40,7 @@ const useFocusClub = (club: string | undefined, ready: boolean, prefix: string) 
 export const ProjectedOrder = ({ focus, onMock }: { focus?: string; onMock: (club?: string) => void }) => {
   const odds = usePlayoffOdds();
   useFocusClub(focus, !!odds?.draft, 'cl-ord');
-  if (!odds) return <p className="cl-loading" role="status">Loading the projections…</p>;
+  if (!odds) return <PixelLoader label="Order" what="the projections" size="sm" minHeight={200} className="justify-start pt-8" />;
   if (!odds.draft) return <p className="cl-note">The playoff model has no draft projection yet.</p>;
   const { year, order, rule } = odds.draft;
   return (
@@ -137,7 +138,7 @@ export const NeedsMock = ({ focus, onOrder }: { focus?: string; onOrder: () => v
   const players = usePlayerMap();
   useFocusClub(focus, !!odds?.draft && !!needs, 'cl-mock');
   const groups = useMemo(() => (needs ? needs.groups.map((g) => g[0]).join(', ') : ''), [needs]);
-  if (!odds || needs === undefined) return <p className="cl-loading" role="status">Loading the needs…</p>;
+  if (!odds || needs === undefined) return <PixelLoader label="Needs" what="team needs" size="sm" minHeight={200} className="justify-start pt-8" />;
   if (!odds.draft || !needs) return <p className="cl-note">No needs file yet.</p>;
   return (
     <section aria-labelledby="cl-mock-title" className="cl-sec">

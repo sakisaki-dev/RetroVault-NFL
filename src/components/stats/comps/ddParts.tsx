@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { useReveal } from '@/components/motion/Reveal';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { GradeStep } from '@/config/skillGrades';
@@ -22,8 +23,11 @@ export const DdSection = ({
   index: number;
   children: ReactNode;
   className?: string;
-}) => (
-  <section id={id} aria-labelledby={`${id}-title`} className={cn('dd-enter scroll-mt-28 space-y-3', className)} style={{ '--i': index } as CSSProperties}>
+}) => {
+  const reveal = useReveal<HTMLElement>(true);
+  return (
+  // scroll-in motion (Reveal.tsx): a section below the fold rises as it arrives; one on screen at mount stays put
+  <section ref={reveal} id={id} aria-labelledby={`${id}-title`} className={cn('mo-auto scroll-mt-28 space-y-3', className)} data-index={index}>
     <div className="flex flex-wrap items-end justify-between gap-2">
       <div className="min-w-0">
         <h2 id={`${id}-title`} className="section-title text-xl sm:text-2xl">
@@ -36,7 +40,8 @@ export const DdSection = ({
     </div>
     {children}
   </section>
-);
+  );
+};
 
 /** Letter-grade chip (S glows gold). */
 export const GradeChip = ({ grade, size = 'md', className }: { grade: GradeStep | null; size?: 'sm' | 'md' | 'lg' | 'xl'; className?: string }) => {

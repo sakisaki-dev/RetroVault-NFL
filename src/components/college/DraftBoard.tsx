@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import PixelLoader from '@/components/ui/PixelLoader';
 import { ArcadeToggle, PixelSelect, PixelStepper, SectionHeader } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -70,7 +71,7 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
         )}
       </div>
 
-      {d === undefined && <p className="cl-loading" role="status">Loading the {year} draft…</p>}
+      {d === undefined && <PixelLoader label="Draft" what={`the ${year} draft`} minHeight={360} className="justify-start pt-12" />}
       {d === null && <p className="cl-note">No draft file for {year}.</p>}
 
       {d && (d.judged ? (

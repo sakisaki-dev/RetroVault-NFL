@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { SectionHeader } from '@/components/arcade';
+import FootballLoader from '@/components/motion/FootballLoader';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { PlayerHit, StarSprite } from '@/components/season/NflSeasonExtras';
 import { useGameSprites } from '@/utils/gameSprites';
@@ -108,6 +109,7 @@ const FranchiseLeaders = ({ teams, league }: { teams: TeamSummary[]; league: Pla
   const [picked, setPicked] = useState<string | null>(null);
   const board = useMemo(() => (data && allTime ? buildBoards(data, league, extras.stints, allTime.to) : null), [data, league, extras.stints, allTime]);
   const club = clubs.find((c) => c.team!.name === picked)?.team ?? clubs[0]?.team;
+  if (club && !board) return <FootballLoader ready={false} minHeight={360} what="franchise leaders" label="Leaders" />;
   if (!club || !board) return null;
   const mine = board.get(club.name);
   const cards = STATS.map((s) => ({ s, rows: mine?.get(s.key) ?? [] })).filter((c) => c.rows.length > 0);

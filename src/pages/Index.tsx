@@ -1,3 +1,4 @@
+import { useAutoReveal } from '@/components/motion/Reveal';
 import '@/styles/interact.css';
 import '@/components/phoneTargets.css';
 import { Suspense, useEffect, useMemo } from 'react';
@@ -44,7 +45,11 @@ const ArcadeKitDemo = import.meta.env.DEV ? lazyRetry(() => import('@/components
 const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
 const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 
+/** Pages whose sections rise in as they scroll into view (the Players page does it itself; the Arcade, Collection and Team Lab are tools, never animated this way). */
+const SCROLL_IN_TABS = new Set(['season', 'timeline', 'news', 'college', 'office', 'hof']);
+
 const IndexContent = () => {
+  const scrollIn = useAutoReveal<HTMLDivElement>();
   // The visible page lives in the URL hash (#stats/teams, #stats/deepdive?p=…) so it is linkable and Back works.
   const { route, target, navigate } = useHashRoute(IS_NFL ? 'season' : 'games');
   const activeTab = route.tab;
@@ -131,7 +136,7 @@ const IndexContent = () => {
             {/* Tab changes are transitions (hashRoute), so the old tab stays until the new one is ready; it then
                 cross-fades in (.rv-view-in). The fallback only shows on a cold first load, after ~150 ms. */}
             <TabBoundary key={activeTab}><Suspense fallback={<TabFallback />}>
-              <div key={activeTab} className="rv-view-in">
+              <div key={activeTab} ref={SCROLL_IN_TABS.has(activeTab) ? scrollIn : undefined} className="rv-view-in">
                 {activeTab === 'career' && <CareerTab />}
                 {activeTab === 'lab' && <TeamLabTab />}
                 {!IS_NFL && activeTab === 'hof' && <HallOfFameTab />}
