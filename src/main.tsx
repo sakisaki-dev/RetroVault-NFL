@@ -31,7 +31,13 @@ prewarmData([
   "data/nfl/career_rating.json",
   "data/league/content.json",
   ...(/^#\/?collection/.test(hash) ? ["data/market-latest.json"] : []),
+  // the Fantasy page and the Team Lab read these on mount (what they hold is fetched once, shared by the readers)
+  ...(/^#\/?(fantasy|lab)/.test(hash)
+    ? ["data/nfl/lab.json", "data/nfl/depth_charts.json", "data/league/upcoming.json", "data/nfl/injuries.json", ...(/^#\/?fantasy/.test(hash) ? ["data/nfl/fantasy.json"] : []), ...(/^#\/?fantasy\/trade/.test(hash) ? ["data/market-latest.json"] : [])]
+    : []),
 ]);
+// ...and the Fantasy hub's code starts loading beside them, so it is parsed by the time the data is in
+if (IS_NFL && /^#\/?fantasy/.test(hash)) void import("./components/fantasy/hub/FantasyHub");
 
 // Tap feedback for every button, chip, row and card (src/utils/motion.ts)
 installPressFeedback();

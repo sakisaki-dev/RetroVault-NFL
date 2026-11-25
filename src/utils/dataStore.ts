@@ -51,7 +51,7 @@ const prune = async (cache: Cache, files: Record<string, string>) => {
 const SLOTS = 4;
 const URGENT = /^(data\/initial-data\.csv|data\/core\/extras\.json|private-sprites\/nfl\/core\.json|data\/sprites\.json|private-sprites\/index\.json)/;
 const BACKGROUND =
-  /^(data\/nfl\/(draft\.json|advanced\/|advanced\.json|game\/|streaks\.json|injuries\.json|ink\.json|games\/)|data\/history\/|data\/league\/(stars|schedule)\/|data\/player-extras\.json)/;
+  /^(data\/nfl\/(draft\.json|advanced\/|advanced\.json|game\/|streaks\.json|ink\.json|games\/)|data\/history\/|data\/league\/(stars|schedule)\/|data\/player-extras\.json)/;
 const rank = (path: string) => (URGENT.test(path) ? 0 : BACKGROUND.test(path) ? 2 : 1);
 let running = 0;
 const waiting: { rank: number; start: () => void }[] = [];
