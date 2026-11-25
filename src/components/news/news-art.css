@@ -48,7 +48,7 @@
   border-radius: 999px;
   background: #0b1122;
   color: var(--ss-gold, #ffc83d);
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 8px;
 }
 
@@ -96,7 +96,7 @@
   border-radius: 999px;
   background: rgb(5 9 22 / 0.85);
   color: var(--ss-gold, #ffc83d);
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 11px;
   z-index: 1;
 }
@@ -167,7 +167,7 @@
   padding: 6px 12px;
   border-bottom: 2px solid var(--ss-gold, #ffc83d);
   background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 55%, #0b1122), #0b1122);
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.04em;

@@ -139,7 +139,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-family: var(--font-pixel);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -246,7 +246,7 @@
 .pg-mast { position: absolute; left: 22px; right: 22px; top: 16px; z-index: 3; }
 .pg-vol {
   display: inline-block;
-  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-family: var(--font-pixel);
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -312,7 +312,7 @@
 }
 .is-champ .pg-badge { background: hsl(var(--gold)); color: #241a00; }
 .pg-badge b { font-family: var(--font-display); font-weight: 900; font-size: 46px; line-height: 0.9; letter-spacing: -0.01em; }
-.pg-badge span { margin-top: 4px; max-width: 104px; font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 7.5px; line-height: 1.3; text-transform: uppercase; }
+.pg-badge span { margin-top: 4px; max-width: 104px; font-family: var(--font-pixel); font-size: 7.5px; line-height: 1.3; text-transform: uppercase; }
 .pg-lines {
   position: absolute;
   left: 18px;
@@ -342,7 +342,7 @@
   padding: 9px 12px;
   background: #111;
   color: #fff;
-  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-family: var(--font-pixel);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -354,7 +354,7 @@
 .pg-inside { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .pg-glance { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 0; }
 .pg-glance > div { min-width: 0; padding: 8px 10px; border-radius: 12px; background: var(--pg-panel); box-shadow: inset 0 3px 0 var(--cs-lift); }
-.pg-glance dt { font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pg-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pg-glance dt { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pg-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pg-glance dd { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1.05; white-space: nowrap; }
 .pg-glance .is-up { color: #5df0a0; }
 .pg-glance .is-dn { color: var(--pg-loss); }
@@ -527,14 +527,14 @@
 button.pg-fx:hover { background: rgb(255 255 255 / 0.05); }
 button.pg-fx:focus-visible { outline: 2px solid var(--cs-lift); }
 .pg-fx .pg-logo { background: #fff; border-radius: 50%; padding: 1px; box-sizing: content-box; }
-.pg-fx__wk { font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 9px; color: var(--pg-mute); }
+.pg-fx__wk { font-family: var(--font-pixel); font-size: 9px; color: var(--pg-mute); }
 .pg-fx.is-po { background: hsl(var(--gold) / 0.09); }
 .pg-fx.is-po .pg-fx__wk { color: hsl(var(--gold)); }
 .pg-fx__opp { display: flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; }
 .pg-fx__opp i { font-style: normal; color: var(--pg-mute); }
 .pg-fx__opp b { font-weight: 700; }
 .pg-fx__opp small { font-size: 10px; color: var(--pg-mute); }
-.pg-up { margin-left: 4px; padding: 1px 5px; border-radius: 4px; font-style: normal; font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 7.5px; letter-spacing: 0.04em; text-transform: uppercase; background: hsl(var(--gold)); color: #241a00; }
+.pg-up { margin-left: 4px; padding: 1px 5px; border-radius: 4px; font-style: normal; font-family: var(--font-pixel); font-size: 7.5px; letter-spacing: 0.04em; text-transform: uppercase; background: hsl(var(--gold)); color: #241a00; }
 .pg-up.is-dn { background: var(--pg-loss); color: #2a0008; }
 .pg-fx__r { font-family: var(--font-display); font-weight: 800; font-size: 16px; white-space: nowrap; }
 .pg-fx.is-W .pg-fx__r { color: #fff; }

@@ -14,7 +14,7 @@
   --t-gold: hsl(41 84% 65%);
   --t-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
   --t-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
-  --t-pixel: 'Silkscreen', 'Courier New', monospace;
+  --t-pixel: var(--font-pixel);
   background: var(--t-bg);
   color: var(--t-chalk);
 }

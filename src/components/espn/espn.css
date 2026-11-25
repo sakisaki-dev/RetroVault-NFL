@@ -6,14 +6,14 @@
   --tc: var(--ss-gold); --tc2: var(--ss-line);
   display: grid; gap: 18px; min-width: 0; color: var(--ss-chalk);
 }
-.en-espn { display: inline-block; padding: 1px 6px; border-radius: 4px; background: #d00; color: #fff; font-family: 'Silkscreen', monospace; font-size: 8px; line-height: 1.5; }
+.en-espn { display: inline-block; padding: 1px 6px; border-radius: 4px; background: #d00; color: #fff; font-family: var(--font-pixel); font-size: 8px; line-height: 1.5; }
 .en-refresh { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border: 1px solid hsl(var(--line)); border-radius: 999px; background: hsl(var(--panel)); font-size: 12px; color: hsl(var(--muted-foreground)); }
 .en-refresh:hover:not(:disabled) { color: hsl(var(--foreground)); border-color: hsl(var(--gold)); }
 .en-refresh--inline { min-height: 24px; padding: 2px 9px; margin-left: 10px; font-size: 11px; vertical-align: middle; }
 
 /* The Wire: the newest headlines in one scrolling row */
 .en-wire { display: flex; align-items: stretch; gap: 10px; min-width: 0; border: 1px solid var(--ss-line); border-radius: 8px; background: var(--ss-panel); overflow: hidden; }
-.en-wire__h { flex: none; display: flex; align-items: center; padding: 0 12px; background: var(--ss-flag); color: #fff; font-family: 'Silkscreen', monospace; font-size: 10px; text-transform: uppercase; }
+.en-wire__h { flex: none; display: flex; align-items: center; padding: 0 12px; background: var(--ss-flag); color: #fff; font-family: var(--font-pixel); font-size: 10px; text-transform: uppercase; }
 .en-wire__list { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; min-width: 0; }
 .en-wire__list li { flex: none; max-width: 340px; border-right: 1px solid var(--ss-line); }
 .en-wire__list button { display: flex; align-items: center; gap: 7px; width: 100%; min-height: 40px; padding: 6px 14px; text-align: left; font-size: 12.5px; color: var(--ss-chalk); }
@@ -65,7 +65,7 @@ ol.en-list { list-style: decimal; }
 .en-fig__cap { margin-top: 7px; padding-left: 10px; border-left: 2px solid var(--tc); font-size: 12.5px; line-height: 1.45; color: var(--ss-muted); }
 .en-fig__credit { color: #7f8cb3; font-size: 11px; }
 .en-fig__credit::before { content: '\00b7\00a0'; }
-.en-fig__tag { margin-right: 4px; padding: 1px 6px; border-radius: 4px; background: var(--ss-gold); color: #111; font-family: 'Silkscreen', monospace; font-size: 8px; text-transform: uppercase; }
+.en-fig__tag { margin-right: 4px; padding: 1px 6px; border-radius: 4px; background: var(--ss-gold); color: #111; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
 .en-play { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(transparent 40%, rgb(0 0 0 / 0.5)); cursor: pointer; }
 .en-play__disc { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--ss-gold); color: #111; box-shadow: 0 0 0 5px rgb(0 0 0 / 0.35); transition: transform 0.15s; }
 .en-play:hover .en-play__disc { transform: scale(1.08); }
@@ -88,7 +88,7 @@ ol.en-list { list-style: decimal; }
 .en-fade--on { opacity: 1; animation: none; transition: opacity var(--mo-dur-quick, 320ms) var(--ease-out, ease-out); }
 @keyframes en-failsafe { to { opacity: 1; } }
 
-.en-breaking { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 999px; background: var(--ss-flag); color: #fff; font-family: 'Silkscreen', monospace; font-size: 8px; line-height: 1.6; text-transform: uppercase; }
+.en-breaking { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 999px; background: var(--ss-flag); color: #fff; font-family: var(--font-pixel); font-size: 8px; line-height: 1.6; text-transform: uppercase; }
 .en-breaking::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #fff; animation: en-blink 1.4s ease-in-out infinite; }
 @keyframes en-blink { 50% { opacity: 0.25; } }
 
@@ -133,7 +133,7 @@ ol.en-list { list-style: decimal; }
 
 /* trending players */
 .en-trend { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.en-trend__h { flex: none; margin: 0; font-family: 'Silkscreen', monospace; font-size: 10px; text-transform: uppercase; color: var(--ss-gold); writing-mode: horizontal-tb; }
+.en-trend__h { flex: none; margin: 0; font-family: var(--font-pixel); font-size: 10px; text-transform: uppercase; color: var(--ss-gold); writing-mode: horizontal-tb; }
 .en-trend__list { display: flex; gap: 8px; margin: 0; padding: 2px 2px 6px; list-style: none; overflow-x: auto; scrollbar-width: none; min-width: 0; }
 .en-trend__list > li { flex: none; }
 .en-trend__btn {
@@ -220,7 +220,7 @@ ol.en-list { list-style: decimal; }
 /* section header: kicker, Barlow title, count and a rule in the section's colour; the big ones carry a faint turf motif */
 .en-rub { position: relative; display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-bottom: 10px; }
 .en-rub::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--k, var(--tc, var(--ss-gold))) 0 64px, var(--ss-line) 64px); }
-.en-rub__kicker { display: flex; align-items: center; gap: 6px; margin: 0; font-family: 'Silkscreen', monospace; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--k, var(--ss-muted)); }
+.en-rub__kicker { display: flex; align-items: center; gap: 6px; margin: 0; font-family: var(--font-pixel); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--k, var(--ss-muted)); }
 .en-rub__title { display: flex; align-items: center; gap: 8px; margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 21px; line-height: 1.05; text-transform: uppercase; color: var(--ss-chalk); }
 .en-rub__n { display: inline-grid; place-items: center; min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0; color: var(--ss-chalk); background: color-mix(in srgb, var(--k, var(--ss-gold)) 26%, var(--ss-panel)); }
 .en-rub--big .en-rub__title { font-size: clamp(26px, 3.4vw, 34px); }

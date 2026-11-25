@@ -171,7 +171,7 @@
   border-radius: 3px;
   border: 1px solid color-mix(in srgb, var(--vb) 55%, transparent);
   color: color-mix(in srgb, var(--vb) 60%, transparent);
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 7px;
 }
 .vbadge.is-owned {
@@ -224,7 +224,7 @@
 /* Card back: which art is on the front */
 .cb__art {
   margin: -2px 0 6px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -382,7 +382,7 @@
   margin-bottom: 12px;
 }
 .lab-chips__label {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -417,7 +417,7 @@
   border-radius: 4px;
   background: color-mix(in srgb, var(--vb) 22%, transparent);
   color: var(--vb);
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
 }
 

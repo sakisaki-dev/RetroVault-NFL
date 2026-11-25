@@ -114,7 +114,7 @@
 /* ---------- Type ---------- */
 .sv-kick {
   margin: 0;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 13px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -140,7 +140,7 @@
 }
 .sv-sub--dim {
   margin-top: 4px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -469,7 +469,7 @@
   color: #0b1020;
 }
 .sv-line__cl {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   color: rgb(245 242 232 / 0.7);
   text-shadow: 0 1px 4px #000;
@@ -664,7 +664,7 @@
   color: #f5f2e8;
 }
 .sv-corner__date {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -724,7 +724,7 @@
   margin: 0;
   padding: 8px 18px;
   border-radius: 999px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1038,7 +1038,7 @@
 }
 .sv-duel__club {
   margin: 4px 0 12px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1052,7 +1052,7 @@
   padding: 3px 9px 3px 4px;
   border-radius: 999px;
   vertical-align: middle;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1079,7 +1079,7 @@
   line-height: 1;
 }
 .sv-duel__nums dt {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   text-transform: uppercase;
   color: rgb(245 242 232 / 0.6);
@@ -1252,7 +1252,7 @@
   gap: 16px;
   padding-bottom: 10px;
   border-bottom: 4px double #1b1712;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   text-transform: uppercase;
 }
@@ -1305,7 +1305,7 @@
 .sv-paper__more span {
   display: block;
   margin-bottom: 3px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   font-weight: 400;
   text-transform: uppercase;
@@ -1320,7 +1320,7 @@
 }
 .sv-paper__takes > p {
   margin: 0 0 10px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   text-transform: uppercase;
   color: #8a2a1a;
@@ -1374,7 +1374,7 @@
 }
 .sv-rec__mark {
   margin: 10px 0 0;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: clamp(54px, 6vw, 110px);
   line-height: 1;
   color: #ffc63e;
@@ -1552,7 +1552,7 @@
   gap: 16px;
   padding: 14px 0;
   border-bottom: 1px dashed rgb(255 255 255 / 0.12);
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
 }
 .sv-slide--in .sv-market__board li {
   animation: sv-rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -1595,7 +1595,7 @@
   left: 0;
   bottom: 14px;
   white-space: nowrap;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 14px;
   color: #ffc63e;
   animation: sv-ticker 18s linear infinite;
@@ -1650,7 +1650,7 @@
   margin: 0;
   padding: 6px 14px;
   border-radius: 4px 4px 0 0;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 12px;
   text-transform: uppercase;
   color: #0b1020;
@@ -2172,7 +2172,7 @@
   display: block;
 }
 .sv-tro__year {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   letter-spacing: 0.1em;
   color: #e9d6a6;
@@ -2274,7 +2274,7 @@
 }
 .sv-tower__head b {
   margin-left: auto;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-style: normal;
   font-weight: 400;
   font-size: 8px;
@@ -2309,7 +2309,7 @@
   min-width: 0;
 }
 .sv-tower__label {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 7px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -2334,7 +2334,7 @@
 }
 .sv-tower__clock {
   margin-top: 2px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 15px;
   letter-spacing: 0.08em;
   color: #c9524a;
@@ -2444,7 +2444,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 14px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2475,7 +2475,7 @@
 }
 .sv-pa__run > span {
   padding-right: 120px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: clamp(30px, 3vw, 54px);
   color: #ffc63e;
   text-shadow: 0 0 16px rgb(255 198 62 / 0.6);
@@ -2519,7 +2519,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 12px;
   color: rgb(245 242 232 / 0.6);
 }
@@ -2859,7 +2859,7 @@
   gap: 10px;
   padding: 7px 0;
   border-bottom: 1px dashed rgb(255 255 255 / 0.12);
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   color: #f5f2e8;
   position: relative;
 }
@@ -2909,7 +2909,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   color: #f5f2e8;
 }
 .sv-nfl__conf {

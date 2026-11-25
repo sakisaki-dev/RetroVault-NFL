@@ -96,7 +96,8 @@ export default {
       fontFamily: {
         sans: ["Barlow", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         display: ["Barlow Condensed", "Arial Narrow", "Arial", "sans-serif"],
-        pixel: ["Silkscreen", "Courier New", "monospace"],
+        pixel: ["var(--font-pixel)"],
+        "pixel-art": ["var(--font-pixel-art)"],
         mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       keyframes: {

@@ -39,7 +39,7 @@
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--ss-gold);
@@ -147,7 +147,7 @@
   margin: 0;
   padding-bottom: 6px;
   border-bottom: 2px solid var(--ss-chalk);
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.04em;
@@ -327,7 +327,7 @@
   text-shadow: 3px 3px 0 rgb(5 9 22 / 0.55);
 }
 .ss-lead__big span {
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 10px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -475,7 +475,7 @@
 .ss-reader__tags { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--ss-line); }
 .ss-reader__h {
   margin: 0;
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 11px;
   font-weight: 400;
   text-transform: uppercase;

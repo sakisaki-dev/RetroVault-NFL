@@ -29,7 +29,7 @@
 }
 .ca__meta {
   margin: 6px 0 10px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 12px;
   letter-spacing: 0.12em;
   color: rgb(245 242 232 / 0.75);
@@ -49,7 +49,7 @@
   color: #ffc63e;
 }
 .ca__nums dt {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   text-transform: uppercase;
   color: rgb(245 242 232 / 0.6);
@@ -105,7 +105,7 @@
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5), 0 0 22px rgb(255 198 62 / 0.45);
 }
 .ca__bar b {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: clamp(10px, 0.95vw, 17px);
   font-weight: 400;
   color: #fff;
@@ -125,7 +125,7 @@
   filter: none;
 }
 .ca__yr {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: clamp(9px, 0.8vw, 13px);
   color: rgb(245 242 232 / 0.7);
 }
@@ -165,7 +165,7 @@
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -279,7 +279,7 @@
   align-items: baseline;
   justify-content: center;
   gap: 12px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
 }
 .rn__score span {
   font-size: clamp(14px, 1.3vw, 22px);
@@ -299,7 +299,7 @@
 }
 .rn__sub {
   margin: 8px 0 0;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -330,7 +330,7 @@
 }
 .rn__facts small {
   display: block;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -410,7 +410,7 @@
   margin-top: 5px;
   padding: 2px 8px;
   border-radius: 6px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -444,7 +444,7 @@
   top: 50%;
   right: 12px;
   translate: 0 -50%;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: 11px;
   font-style: normal;
   color: rgb(245 242 232 / 0.8);
@@ -485,7 +485,7 @@
   margin-bottom: -26px;
 }
 .rc__mark {
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: clamp(18px, 1.7vw, 30px);
   color: #ffc63e;
   text-shadow: 0 0 12px rgb(255 198 62 / 0.6);

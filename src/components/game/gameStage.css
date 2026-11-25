@@ -1,5 +1,5 @@
 /* Stats › Game, the immersive page (GamePage.tsx): a stadium stage with the scoreboard and both squads, a podium, the tape, strips. */
-.gm-kicker { font-family: 'Silkscreen', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: hsl(var(--gold)); }
+.gm-kicker { font-family: var(--font-pixel); font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: hsl(var(--gold)); }
 .gm-back--main { border-radius: 10px; }
 
 /* the stage: crowd and stands on top, the scoreboard over them, turf with the squads below */
@@ -26,10 +26,10 @@
 .gm-sb__club { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; min-width: 0; background: none; border: 0; color: hsl(var(--chalk)); cursor: pointer; }
 .gm-sb__logo { width: 3rem; height: 3rem; filter: drop-shadow(0 0 10px rgb(255 255 255 / 0.25)); }
 .gm-sb__name { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-style: italic; font-size: 1.8rem; line-height: 0.95; text-transform: uppercase; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.gm-sb__role { font-family: 'Silkscreen', monospace; font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.gm-sb__role { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
 .gm-sb__club:hover .gm-sb__name { color: hsl(var(--gold)); }
 .gm-sb__mid { text-align: center; }
-.gm-sb__fin { display: block; font-family: 'Silkscreen', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #ff5a4d; }
+.gm-sb__fin { display: block; font-family: var(--font-pixel); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #ff5a4d; }
 .gm-sb__score { display: flex; align-items: baseline; justify-content: center; gap: 0.3rem; }
 .gm-num { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 4rem; line-height: 0.95; font-variant-numeric: tabular-nums; color: hsl(var(--chalk) / 0.9); }
 .gm-num.is-win { color: hsl(var(--gold)); text-shadow: 0 0 22px hsl(var(--gold) / 0.55); }
@@ -48,7 +48,7 @@
 /* the home side faces left through SpriteOf flip (GameSprite), never a CSS mirror: it would reverse his number */
 .gm-ball { display: flex; flex-direction: column; align-items: center; }
 .gm-ball__spr { zoom: 1.9; }
-.gm-ball__k { font-family: 'Silkscreen', monospace; font-size: 7px; letter-spacing: 0.1em; color: hsl(var(--gold)); margin-right: 0.25rem; }
+.gm-ball__k { font-family: var(--font-pixel); font-size: 7px; letter-spacing: 0.1em; color: hsl(var(--gold)); margin-right: 0.25rem; }
 .gm-mu__name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; padding: 0 0.3rem; line-height: 1.25; }
 .gm-chips { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; padding: 0.55rem 0 0.8rem; font-size: 11.5px; }
 .gm-chips li { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.22rem 0.7rem; border-radius: 999px; border: 1px solid hsl(var(--line) / 0.8); background: hsl(228 55% 5% / 0.88); color: hsl(var(--chalk) / 0.92); font-variant-numeric: tabular-nums; }
@@ -170,7 +170,7 @@ a.gm-perf__row:hover { filter: brightness(1.2); }
 .gm-lb > :not(.gm-lb__spr) { grid-column: 2; }
 .gm-lb:not(:has(.gm-lb__spr)) { grid-template-columns: minmax(0, 1fr); } .gm-lb:not(:has(.gm-lb__spr)) > * { grid-column: 1; }
 .gm-lb__n { justify-self: start; font-family: 'Barlow Condensed', inherit; font-weight: 800; text-transform: uppercase; font-size: 0.95rem; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.gm-lb__n small { font-family: 'Silkscreen', monospace; font-size: 7px; opacity: 0.8; }
+.gm-lb__n small { font-family: var(--font-pixel); font-size: 7px; opacity: 0.8; }
 .gm-lb__d { font-size: 10.5px; line-height: 1.3; color: hsl(var(--muted-foreground)); }
 .gm-bar { position: relative; display: block; height: 11px; border-radius: 3px; background: hsl(0 0% 100% / 0.08); overflow: hidden; }
 .gm-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, hsl(var(--tc) / 0.7), hsl(var(--tc))); }
@@ -220,7 +220,7 @@ a.gm-perf__row:hover { filter: brightness(1.2); }
 .gm-qb__who.is-home { flex-direction: row-reverse; text-align: right; background: linear-gradient(270deg, hsl(var(--tc) / 0.55), transparent); }
 .gm-qb__spr { display: block; flex: none; width: 128px; height: 128px; margin-bottom: -4px; zoom: 0.85; }
 .gm-qb__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-bottom: 0.5rem; } .gm-qb__who.is-home .gm-qb__id { align-items: flex-end; }
-.gm-qb__id small { font-family: 'Silkscreen', monospace; font-size: 8px; letter-spacing: 0.14em; color: hsl(var(--muted-foreground)); text-transform: uppercase; }
+.gm-qb__id small { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.14em; color: hsl(var(--muted-foreground)); text-transform: uppercase; }
 .gm-qb__name { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; line-height: 1.15; }
 .gm-qb__line { font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; color: hsl(var(--chalk) / 0.9); }
 .gm-qb__vs { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-style: italic; font-size: 2rem; padding-bottom: 1rem; }

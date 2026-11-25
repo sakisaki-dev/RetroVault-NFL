@@ -170,7 +170,7 @@
   display: grid;
   justify-items: center;
   gap: 2px;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: calc(var(--tn-p) * 3);
   line-height: 1;
   letter-spacing: 0.06em;
@@ -336,7 +336,7 @@
   box-shadow:
     0 0 0 var(--tn-p) #2a2e3f,
     inset 0 0 0 var(--tn-p) #191c28;
-  font-family: var(--font-pixel);
+  font-family: var(--font-pixel-art);
   font-size: calc(var(--tn-p) * 2.7);
   line-height: 1.2;
   letter-spacing: 0.14em;
