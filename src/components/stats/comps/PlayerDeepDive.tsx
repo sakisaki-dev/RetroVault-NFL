@@ -35,6 +35,7 @@ import DdHero from './DdHero';
 import DdRecords from './DdRecords';
 import SeasonTable from './SeasonTable';
 import DdGameLog from '../gamelog/DdGameLog';
+import SeasonHeader from '../gamelog/SeasonHeader';
 import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
@@ -71,11 +72,11 @@ export interface PlayerDeepDiveProps {
 
 const ALL_SECTIONS = [
   { id: 'dd-ratings', label: 'Skill ratings', short: 'Ratings', icon: Gauge },
+  ...(IS_NFL ? [{ id: 'dd-gamelog', label: 'Season & games', short: 'Games', icon: ClipboardList }] : []),
   { id: 'dd-who', label: 'Who plays like him', short: 'Comps', icon: Users },
   { id: 'dd-map', label: 'Neighbourhood', short: 'Map', icon: ChartScatter },
   { id: 'dd-advanced', label: 'Advanced profile', short: 'Advanced', icon: Activity },
   { id: 'dd-graphs', label: 'Career graphs', short: 'Graphs', icon: LineChart },
-  ...(IS_NFL ? [{ id: 'dd-gamelog', label: 'Game log', short: 'Games', icon: ClipboardList }] : []),
   { id: 'dd-career', label: 'Career & legacy', short: 'Career', icon: Milestone },
   { id: 'dd-clock', label: 'Age & clock', short: 'Age', icon: CalendarClock },
   { id: 'dd-records', label: 'Records & awards', short: 'Records', icon: Medal },
@@ -572,6 +573,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 
+          {IS_NFL && (
+            <DdSection id="dd-gamelog" index={0.5} title={player.status === 'Active' ? 'This season & game log' : 'Game log'} icon={ClipboardList} kicker={player.status === 'Active' ? 'His live season with league ranks, then every game on file: last 5, splits, the full log, best games, streaks and how steady he is.' : 'Every game on file: last 5, splits, the full log, best games, streaks and how steady he is.'}>
+              <DdGameLog player={player} header={<SeasonHeader player={player} />} />
+            </DdSection>
+          )}
+
           <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
             <DdWhoPlays
               player={player}
@@ -640,12 +647,6 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
               </div>
             )}
           </DdSection>
-
-          {IS_NFL && (
-            <DdSection id="dd-gamelog" index={4.5} title="Game log" icon={ClipboardList} kicker="Every game on file: the line, the result, splits, best games, streaks and how steady he is.">
-              <DdGameLog player={player} />
-            </DdSection>
-          )}
 
           <DdSection id="dd-career" index={5} title="Career & legacy" icon={Milestone}>
             <DdCareer player={player} posStats={posStats} />

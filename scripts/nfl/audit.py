@@ -24,6 +24,20 @@ def load(rel):
 
 players = json.loads((ROOT / "data/y80/players.json").read_text())
 keys = {f"{p['pos']}:{p['n']}" for p in players}
+
+# bio.json and thisseason.json (Deep Dive bio pills and This season header)
+for rel in ("nfl/bio.json", "nfl/thisseason.json"):
+    d = load(rel)
+    if d:
+        ks = set(d["p"])
+        if not ks <= keys:
+            errors.append(f"{rel}: {len(ks - keys)} keys not in players.json")
+        if not ks:
+            errors.append(f"{rel}: empty")
+        if rel == "nfl/bio.json":
+            bad = [k for k, v in d["p"].items() if (v[0] and not 48 <= v[0] <= 94) or (v[1] and not 120 <= v[1] <= 450)]
+            if bad:
+                warns.append(f"bio.json: {len(bad)} implausible height/weight rows, e.g. {bad[:3]}")
 rows = [r for r in csv.reader((PUB / "initial-data.csv").open()) if len(r) > 5 and r[0] not in ("Name",)]
 names = {r[0] for r in rows if r[1] in ("Active", "Retired")}
 if len(names) < len({p["n"] for p in players}):

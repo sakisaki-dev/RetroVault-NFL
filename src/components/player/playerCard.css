@@ -815,3 +815,17 @@
 .pc-college__puck { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; flex: none; border-radius: 999px;
   background: radial-gradient(circle, hsl(0 0% 100% / 0.95) 60%, hsl(0 0% 88% / 0.95)); box-shadow: 0 2px 6px hsl(0 0% 0% / 0.35); }
 .pc-college__puck .pc-college__logo { width: 100%; height: 100%; object-fit: contain; filter: none; }
+
+/* Bio tile (BioTiles.tsx): height, weight, age and status on one wide tile */
+.pc-ids .pc-tile--bio { grid-column: 1 / -1; display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch; justify-content: space-around; gap: 6px 14px; padding: 8px 10px; min-height: 0; }
+.pc-bio__fig { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-width: 0; }
+.pc-bio__fig .pc-tile__k { margin-top: 0; font-size: 9px; }
+.pc-bio__v { font-family: var(--font-display); font-weight: 700; font-size: 26px; line-height: 1; color: #f5f2e8; font-variant-numeric: tabular-nums; }
+.pc-bio__sub { font-size: 10px; color: hsl(var(--muted-foreground)); text-align: center; }
+.pc-bio__status { font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.2; color: hsl(var(--turf)); }
+.pc-bio__status--hurt { color: hsl(var(--flag)); }
+.pc-bio__status--off { color: hsl(var(--muted-foreground)); }
+@media (max-width: 480px) {
+  .pc-bio__v { font-size: 22px; }
+  .pc-ids .pc-tile--bio { gap: 6px 10px; padding: 7px 6px; }
+}

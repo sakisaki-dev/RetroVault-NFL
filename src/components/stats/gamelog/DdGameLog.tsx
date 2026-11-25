@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Player } from '@/types/player';
 import { keyOf } from '../records';
 import { useGameLog } from '@/utils/gameLogs';
@@ -59,7 +59,7 @@ const Tile = ({ label, value, sub, tone }: { label: string; value: string; sub?:
   </div>
 );
 
-const DdGameLog = ({ player }: { player: Player }) => {
+const DdGameLog = ({ player, header }: { player: Player; /** the live-season header (active players), drawn above the tabs */ header?: ReactNode }) => {
   const key = keyOf(player);
   const log = useGameLog(key);
   const rule = RULES[player.position];
@@ -72,6 +72,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
   const [split, setSplit] = useState<'ha' | 'wl' | 'opp' | 'month'>('ha');
   const [sort, setSort] = useState<{ k: string; dir: 1 | -1 }>({ k: 'g', dir: -1 });
   const [sel, setSel] = useState<number | null>(null);
+  const [tab, setTab] = useState<'overview' | 'last5' | 'splits' | 'log'>('overview');
   useEffect(() => {
     setSeason('all');
     setType('ALL');
@@ -95,8 +96,8 @@ const DdGameLog = ({ player }: { player: Player }) => {
     return { w, l, t: games.length - w - l };
   }, [games]);
 
-  if (log === undefined) return <div className="gl-panel gl-empty" role="status">Loading game log…</div>;
-  if (!log || !all.length) return <div className="gl-panel gl-empty">No game-by-game log is on file for {displayName(player.name)}.</div>;
+  if (log === undefined) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty" role="status">Loading game log…</div></div>;
+  if (!log || !all.length) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty">No game-by-game log is on file for {displayName(player.name)}.</div></div>;
 
   const maxKey = Math.max(1, ...chartGames.map((g) => g.key));
   const selGame = sel != null ? chartGames.find((g) => g.i === sel) ?? null : null;
@@ -169,20 +170,64 @@ const DdGameLog = ({ player }: { player: Player }) => {
   const base = cd ? Math.min(0, cd.min) : 0;
   const pct = (v: number) => `${((v - base) / span) * 100}%`;
 
+  const logTable = (rows: Game[]) => (
+    <>
+    {rule.hasLine ? (
+      <div className="gl-tablewrap">
+        <table className="rv-pin gl-table gl-log">
+          <thead>
+            <tr>
+              <th scope="col" className="text-left">Game</th>
+              <th scope="col">Result</th>
+              {rule.line.map((c) => <th scope="col" key={c.id}>{c.label}</th>)}
+              <th scope="col">{rule.keyShort}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((g) => (
+              <tr key={g.i} className={cn(g.post && 'gl-post', typeof g.r.game === 'string' && 'cursor-pointer hover:bg-white/5')} onClick={typeof g.r.game === 'string' ? (e) => { if (!(e.target as HTMLElement).closest('a')) openGame(g.r.game as string); } : undefined}>
+                <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
+                <td><Result g={g} /></td>
+                {rule.line.map((c) => <td key={c.id} className={c.get(g.r) === 0 ? 'opacity-40' : ''}>{c.fmt ? c.fmt(g.r) : fmtN(c.get(g.r))}</td>)}
+                <td className="font-bold text-gold">{fmtN(g.key)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div className="gl-tablewrap">
+        <table className="rv-pin gl-table gl-log">
+          <thead><tr><th scope="col" className="text-left">Game</th><th scope="col">Result</th><th scope="col">Date</th></tr></thead>
+          <tbody>
+            {rows.map((g) => (
+              <tr key={g.i} className={cn(g.post && 'gl-post', typeof g.r.game === 'string' && 'cursor-pointer hover:bg-white/5')} onClick={typeof g.r.game === 'string' ? (e) => { if (!(e.target as HTMLElement).closest('a')) openGame(g.r.game as string); } : undefined}>
+                <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? g.round : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
+                <td><Result g={g} /></td>
+                <td>{fmtDate(g.date)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+    </>
+  );
+
   return (
     <div className="gl space-y-3">
-      {/* scoreboard strip */}
-      <div className="gl-board">
-        <div className="gl-board__bulbs" aria-hidden="true" />
-        <div className="gl-tiles">
-          <Tile label="Games" value={String(games.length)} sub={season === 'all' ? `${seasons[seasons.length - 1]}–${seasons[0]}` : String(season)} />
-          <Tile label="Record" value={`${record.w}-${record.l}${record.t ? `-${record.t}` : ''}`} sub={games.length ? `${Math.round((record.w / games.length) * 100)}% wins` : ''} tone="turf" />
-          <Tile label={`${rule.keyLabel} / game`} value={fmtN(regAvg)} sub={player.position === 'OL' ? 'team scoring' : 'average'} tone="gold" />
-          <Tile label="Best game" value={bestGame ? fmtN(bestGame.score) : '-'} sub={bestGame ? `${bestGame.season} wk ${bestGame.week} vs ${abbrOf(bestGame.opp)}` : ''} />
-          <Tile label="Playoff games" value={String(games.filter((g) => g.post).length)} sub={hasPost ? 'in the file' : 'none'} />
-        </div>
+      {header}
+      <div className="gl-tabs">
+        <Seg<typeof tab> label="Game log view" value={tab} onChange={setTab} options={[{ v: 'overview', l: 'Overview' }, { v: 'last5', l: 'Last 5' }, { v: 'splits', l: 'Splits' }, { v: 'log', l: 'Game log' }]} />
       </div>
-
+      {tab === 'last5' && (
+        <div className="gl-panel">
+          <div className="gl-head"><h3 className="gl-h">Last 5 games</h3><span className="gl-sub">newest first, any season</span></div>
+          {logTable([...all].reverse().slice(0, 5))}
+        </div>
+      )}
+      {tab !== 'last5' && (
+        <>
       {/* filters */}
       <div className="gl-filters">
         <div className="gl-chips" role="group" aria-label="Season">
@@ -196,6 +241,22 @@ const DdGameLog = ({ player }: { player: Player }) => {
         {hasPost && (
           <Seg label="Game type" value={type} onChange={(v) => { setType(v); setPage(0); setSel(null); }} options={[{ v: 'ALL', l: 'All' }, { v: 'REG', l: 'Regular' }, { v: 'POST', l: 'Playoffs' }]} />
         )}
+      </div>
+
+        </>
+      )}
+      {tab === 'overview' && (
+        <>
+      {/* scoreboard strip */}
+      <div className="gl-board">
+        <div className="gl-board__bulbs" aria-hidden="true" />
+        <div className="gl-tiles">
+          <Tile label="Games" value={String(games.length)} sub={season === 'all' ? `${seasons[seasons.length - 1]}–${seasons[0]}` : String(season)} />
+          <Tile label="Record" value={`${record.w}-${record.l}${record.t ? `-${record.t}` : ''}`} sub={games.length ? `${Math.round((record.w / games.length) * 100)}% wins` : ''} tone="turf" />
+          <Tile label={`${rule.keyLabel} / game`} value={fmtN(regAvg)} sub={player.position === 'OL' ? 'team scoring' : 'average'} tone="gold" />
+          <Tile label="Best game" value={bestGame ? fmtN(bestGame.score) : '-'} sub={bestGame ? `${bestGame.season} wk ${bestGame.week} vs ${abbrOf(bestGame.opp)}` : ''} />
+          <Tile label="Playoff games" value={String(games.filter((g) => g.post).length)} sub={hasPost ? 'in the file' : 'none'} />
+        </div>
       </div>
 
       {/* per-game chart */}
@@ -313,6 +374,27 @@ const DdGameLog = ({ player }: { player: Player }) => {
                   </div>
       </div>
 
+      {/* streaks */}
+      <div className="gl-panel">
+        <div className="gl-head"><h3 className="gl-h">Streaks</h3><span className="gl-sub">longest run on file, and the run he is on now</span></div>
+        <div className="gl-streaks">
+          {streaks.map((s) => (
+            <div key={s.id} className={cn('gl-streak', s.current > 0 && s.current === s.best && s.best > 1 && 'is-live')}>
+              <span className="gl-streak__n">{s.best}</span>
+              <span className="gl-streak__l">{s.label}</span>
+              <span className="gl-streak__s">
+                {s.bestFrom && s.bestTo ? `${s.bestFrom.season}${s.bestFrom.season !== s.bestTo.season ? `–${s.bestTo.season}` : ''}` : 'never'}
+                {s.current > 0 ? ` · now ${s.current}` : ''}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+        </>
+      )}
+      {tab === 'splits' && (
+        <>
       {/* splits */}
       <div className="gl-panel">
         <div className="gl-head">
@@ -346,65 +428,14 @@ const DdGameLog = ({ player }: { player: Player }) => {
         {split === 'opp' && <p className="gl-sub mt-1.5">Click a column heading to sort. The file has no stadium roof data, so there is no indoor/outdoor split.</p>}
       </div>
 
-      {/* streaks */}
-      <div className="gl-panel">
-        <div className="gl-head"><h3 className="gl-h">Streaks</h3><span className="gl-sub">longest run on file, and the run he is on now</span></div>
-        <div className="gl-streaks">
-          {streaks.map((s) => (
-            <div key={s.id} className={cn('gl-streak', s.current > 0 && s.current === s.best && s.best > 1 && 'is-live')}>
-              <span className="gl-streak__n">{s.best}</span>
-              <span className="gl-streak__l">{s.label}</span>
-              <span className="gl-streak__s">
-                {s.bestFrom && s.bestTo ? `${s.bestFrom.season}${s.bestFrom.season !== s.bestTo.season ? `–${s.bestTo.season}` : ''}` : 'never'}
-                {s.current > 0 ? ` · now ${s.current}` : ''}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
+        </>
+      )}
+      {tab === 'log' && (
+        <>
       {/* the log */}
       <div className="gl-panel">
         <div className="gl-head"><h3 className="gl-h">Every game</h3><span className="gl-sub">{games.length} games, newest first</span></div>
-        {rule.hasLine ? (
-          <div className="gl-tablewrap">
-            <table className="rv-pin gl-table gl-log">
-              <thead>
-                <tr>
-                  <th scope="col" className="text-left">Game</th>
-                  <th scope="col">Result</th>
-                  {rule.line.map((c) => <th scope="col" key={c.id}>{c.label}</th>)}
-                  <th scope="col">{rule.keyShort}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {slice.map((g) => (
-                  <tr key={g.i} className={cn(g.post && 'gl-post', typeof g.r.game === 'string' && 'cursor-pointer hover:bg-white/5')} onClick={typeof g.r.game === 'string' ? (e) => { if (!(e.target as HTMLElement).closest('a')) openGame(g.r.game as string); } : undefined}>
-                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? `${g.season} ${roundShort(g.round)}` : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
-                    <td><Result g={g} /></td>
-                    {rule.line.map((c) => <td key={c.id} className={c.get(g.r) === 0 ? 'opacity-40' : ''}>{c.fmt ? c.fmt(g.r) : fmtN(c.get(g.r))}</td>)}
-                    <td className="font-bold text-gold">{fmtN(g.key)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="gl-tablewrap">
-            <table className="rv-pin gl-table gl-log">
-              <thead><tr><th scope="col" className="text-left">Game</th><th scope="col">Result</th><th scope="col">Date</th></tr></thead>
-              <tbody>
-                {slice.map((g) => (
-                  <tr key={g.i} className={cn(g.post && 'gl-post', typeof g.r.game === 'string' && 'cursor-pointer hover:bg-white/5')} onClick={typeof g.r.game === 'string' ? (e) => { if (!(e.target as HTMLElement).closest('a')) openGame(g.r.game as string); } : undefined}>
-                    <th scope="row" className="gl-rowh"><Logo abbr={g.opp} size={20} /><span>{g.post ? g.round : `${g.season} W${g.week}`}<small>{g.home ? 'vs' : '@'} {abbrOf(g.opp)}</small></span>{typeof g.r.game === 'string' && <a href={gameHash(g.r.game)} className="ml-2 font-pixel text-[8px] uppercase text-gold hover:underline">Box score</a>}</th>
-                    <td><Result g={g} /></td>
-                    <td>{fmtDate(g.date)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {logTable(slice)}
         {pages > 1 && (
           <div className="gl-pager">
             <button type="button" disabled={pg === 0} onClick={() => setPage(pg - 1)} className="gl-seg__b">Newer</button>
@@ -414,6 +445,8 @@ const DdGameLog = ({ player }: { player: Player }) => {
         )}
         {!rule.hasLine && <p className="gl-sub mt-2">Offensive linemen have no box-score line in the data, so their log carries results and team scoring only.</p>}
       </div>
+        </>
+      )}
     </div>
   );
 };

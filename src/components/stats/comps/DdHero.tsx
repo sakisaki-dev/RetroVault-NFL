@@ -17,6 +17,7 @@ import TributeButton from '../../tribute/TributeButton';
 import { RetiredHangers } from '../../teams/RetiredBadge';
 import { keyOf } from '../records';
 import { DraftPills } from '@/components/player/DraftTiles';
+import { BioPills } from '@/components/player/BioTiles';
 import '@/components/player/playerCard.css';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
@@ -152,6 +153,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             Family <b style={{ color: family.color }}>{displayName(family.name)}</b>
           </button>
         )}
+        {IS_NFL && <BioPills player={player} />}
         <DraftPills playerKey={keyOf(player)} />
         {franchises.length > 0 && (
           <ul className="flex flex-wrap items-center gap-1.5" aria-label="Franchise history">
