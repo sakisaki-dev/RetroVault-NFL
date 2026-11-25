@@ -17,6 +17,7 @@ import { f1 } from '@/utils/fantasy';
 import { useGameSprites } from '@/utils/gameSprites';
 import { flagsFor, SCORING_LABEL, type TradeModel, type TradePlayer } from '@/utils/tradeSim';
 import { StatPanel } from './TradeParts';
+import { usePhone } from '@/hooks/usePhone';
 
 /** His game sprite standing on a club-colour pedestal (a glow, a ring and a floor shadow); the club logo where this build has no sprites. */
 export const Stand = ({ player, club, size = 'm', hop }: { player?: Player; club: string; size?: 's' | 'm' | 'l'; hop?: boolean }) => {
@@ -72,6 +73,7 @@ export const DeskCard = memo(({
   index?: number;
 }) => {
   const [open, setOpen] = useState(false);
+  const phone = usePhone();
   const openCard = useOpenCard();
   const bio = useBioInfo(p.key);
   const unit = SCORING_LABEL[model.settings.scoring];
@@ -85,7 +87,7 @@ export const DeskCard = memo(({
         <span className="dk-ban__logo" aria-hidden="true"><TeamLogo team={teamOf(p.club)} size={300} decorative /></span>
         {num != null && <span className="dk-ban__num" aria-hidden="true">{num}</span>}
         <em className="dk-pos dk-ban__pos">{p.pos}{p.posRank}</em>
-        <Stand player={player} club={p.club} size="l" />
+        <Stand player={player} club={p.club} size={phone ? 'm' : 'l'} />
         <span className="dk-ban__name" style={{ background: `color-mix(in srgb, ${clubPlate(p.club).fill} 82%, #000)` }}>
           {nm.first && <small>{nm.first}</small>}<b>{nm.last}</b>
         </span>

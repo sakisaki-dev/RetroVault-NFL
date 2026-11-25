@@ -96,9 +96,10 @@ const Figure = ({ k, model, player, side, phone, out, i }: { k: string; model: T
 const Half = ({ side, label, keys, model, cards, phone }: { side: 'l' | 'r'; label: string; keys: string[]; model: TradeModel; cards: Map<string, Player>; phone: boolean }) => {
   const walkers = useWalkers(keys);
   const live = walkers.filter((w) => !w.out);
-  const more = live.length - MAX;
+  const max = phone ? 3 : MAX;
+  const more = live.length - max;
   let seen = 0;
-  const shown = walkers.filter((w) => (w.out ? true : seen++ < MAX));
+  const shown = walkers.filter((w) => (w.out ? true : seen++ < max));
   return (
     <div className={cn('tb-side', `tb-side--${side}`)} role="group" aria-label={`${label}: ${live.length} player${live.length === 1 ? '' : 's'}`}>
       <span className="tb-kick">{label}</span>

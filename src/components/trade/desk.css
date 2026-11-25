@@ -294,3 +294,30 @@
 .dk-best:active:not(:disabled) { scale: var(--hv-press); }
 .dk-best:disabled { background: hsl(var(--gold) / 0.18); color: hsl(var(--gold)); cursor: default; }
 .dk-lock__mode { display: grid; gap: 0.4rem; justify-items: center; }
+/* phone pass: a player is a compact row (sprite beside the name strip), the verdict sits under both sides, tap targets are 44px */
+@media (max-width: 640px) {
+  .dk-stage--2 .dk-jb--sub { order: 4; }
+  .dk-ban { height: 7.6rem; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; gap: 0.5rem; padding: 0 0.6rem 0 0.2rem; }
+  .dk-ban .dk-stand { width: 104px; height: 100%; flex: none; margin: 0; background: radial-gradient(closest-side at 50% 72%, rgb(0 0 0 / 0.18), transparent 85%); }
+  .dk-ban .dk-stand__ped { left: 12%; right: 12%; bottom: 8px; height: 15%; }
+  .dk-ban .dk-stand > :not(.dk-stand__ped) { margin-bottom: 0.7rem; }
+  .dk-ban__num { font-size: 7.5rem; left: 36%; }
+  .dk-ban__logo { right: -2.5rem; top: -1.2rem; }
+  .dk-ban__pos { left: 0.4rem; top: 0.4rem; }
+  .dk-ban__name { flex: 1; width: auto; min-width: 0; flex-direction: column; align-items: flex-start; gap: 2px; padding: 0.4rem 0.7rem; margin-right: 2.6rem; border-radius: 10px; }
+  .dk-ban__name b { max-width: 100%; font-size: 1.5rem; }
+  .dk-pc > .dk-nums dd { font-size: 1.35rem; }
+  .dk-pc > .dk-nums { padding-top: 0.45rem; }
+  .dk-x--ban { top: 0.55rem; right: 0.45rem; }
+  .dk-x--ban::after { content: ''; position: absolute; inset: -8px; }
+  .dk-more { min-height: 44px; }
+  .dk-jb__act .dk-link { min-height: 44px; }
+  .dk-add { min-height: 48px; }
+  .dk-search__done { height: 40px; }
+  .dk-search .ss-chips .ss-chip { min-height: 40px; }
+}
+@media (max-width: 640px) {
+  .dk-bar { gap: 0.4rem; }
+  .dk-bar .tr-setup .fh-chip__k { display: none; }
+  .dk-clear { min-width: 44px; justify-content: center; padding: 0; font-size: 0; gap: 0; margin-left: auto; }
+}

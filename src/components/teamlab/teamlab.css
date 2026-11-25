@@ -1130,3 +1130,10 @@
     display: none !important;
   }
 }
+
+/* phone pass: pixel captions never below 9px, tags 10px */
+@media (max-width: 639px) {
+  .lab-led-k { font-size: 9px; }
+  .lab-kicker { font-size: 10px; }
+  .lab-tag-name { font-size: 10px; }
+}

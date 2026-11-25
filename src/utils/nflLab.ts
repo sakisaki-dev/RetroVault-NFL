@@ -154,7 +154,7 @@ export const fantasySpot = (id: string, tall: boolean): { x: number; y: number }
   const [x, y] = FANTASY_SPOTS[id];
   if (!tall) return { x, y };
   // phone: name tags are wider than a sprite, so the lineup stands in rows of at most two, kept clear of the sideline crew
-  const TALL: Record<string, [number, number]> = { dst: [52, 27], wr1: [29, 44], wr2: [75, 44], te1: [29, 58], flex: [75, 58], qb: [52, 71], rb1: [29, 85], rb2: [75, 85] };
+  const TALL: Record<string, [number, number]> = { dst: [52, 20], wr1: [29, 38], wr2: [75, 38], te1: [29, 55], flex: [75, 55], qb: [52, 71], rb1: [29, 88], rb2: [75, 88] };
   const t = TALL[id];
   return t ? { x: t[0], y: t[1] } : { x: 13 + ((y - 16) / 82) * 74, y: id === 'dst' ? 30 : 60 + (46 - x) * 1.45 };
 };

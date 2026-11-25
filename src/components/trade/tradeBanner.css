@@ -87,3 +87,11 @@
   .tb-wm { width: 200px; }
 }
 @media (min-width: 900px) and (max-width: 1199px) { .tb-ped { width: 96px; } .tb-plate { min-width: 80px; max-width: 108px; } }
+
+/* phone: plates sit side by side without overlapping (three a side, then +N) */
+@media (max-width: 640px) {
+  .tb-fig { margin-inline: -3px; }
+  .tb-plate { max-width: 58px; padding: 3px 4px 4px; }
+  .tb-plate b { font-size: 11.5px; letter-spacing: 0.02em; }
+  .tb-side { min-height: 160px; }
+}

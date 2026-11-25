@@ -135,11 +135,11 @@ export const DeskVerdict = ({
       </div>
       <div className="dk-meter__k" aria-hidden="true"><span>Fair</span><span>{FAIR_PCT}%</span><span>Leans</span><span>{LEAN_PCT}%</span><span>Lopsided</span></div>
       <div className="dk-jb__act">
-        {((phone && !(banner && n === 2)) || n > 2) && <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>Why this verdict <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>}
+        {(phone || n > 2) && <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>{banner && n === 2 ? 'Side by side' : 'Why this verdict'} <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>}
         <button type="button" className="dk-link" onClick={onDrawer} disabled={!any}><BarChart3 className="h-4 w-4" aria-hidden="true" /> Before / after</button>
         <MethodTip model={model} />
       </div>
-      {n > 2 ? (whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />) : (banner || (any && (!phone || whyOpen))) && <DeskDuel r={r} model={model} labels={labels} />}
+      {n > 2 ? (whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />) : (phone ? any && whyOpen : banner || any) && <DeskDuel r={r} model={model} labels={labels} />}
     </section>
   );
 };

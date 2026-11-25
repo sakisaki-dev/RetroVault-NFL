@@ -9,6 +9,7 @@ import type { Turf } from '@/components/teamlab/fieldArt';
 import { useTradeEnv } from '@/components/trade/useTrade';
 import { SCORING_LABELS } from '@/utils/nflFantasy';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { usePhone } from '@/hooks/usePhone';
 import { useFantasyHub, type FantasyHub } from './useFantasyHub';
 import LeagueSheet, { LeagueChip, leagueSummary } from './LeagueSheet';
 import LineupPage from './LineupPage';
@@ -35,6 +36,7 @@ const SUB_TITLE: Record<Sub, string> = { lineup: 'Lineup', startsit: 'Start / si
 /** The hero: the stadium painted to a club, the lineup's stars (else the week's top projected scorers) on the turf, a jumbotron total. */
 const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub; turf: Turf; onLeague: () => void; summary: string }) => {
   const { ctx, fctx, cands, fl, week, total, filled, clubName } = hub;
+  const phone = usePhone();
   const stars = useMemo(() => {
     const keys = filled
       ? Object.values(fl).filter((k) => k && !k.startsWith('DST:'))
@@ -51,7 +53,7 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
     <StadiumHeader
       club={clubName}
       time={turf === 'day' ? 'day' : 'night'}
-      size="m"
+      size={phone ? 's' : 'm'}
       players={stars}
       maxMobile={3}
       kicker={`${week ? `Week ${week} · ` : ''}${SUB_TITLE[sub]}`}
