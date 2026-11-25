@@ -11,7 +11,6 @@
 .atp-row { position: relative; display: grid; grid-template-columns: 26px 34px minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 8px 12px 8px 8px; border-radius: 12px; text-align: left; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-left: 5px solid var(--p); min-height: 52px; transition: background-color .15s ease, transform .15s ease; }
 .atp-row:hover { background: hsl(var(--secondary) / .6); }
 .atp-row:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
-@media (prefers-reduced-motion: no-preference) { .atp-row:hover { transform: translateY(-1px); } }
 .atp-n { font: italic 800 18px/1 var(--font-display, inherit); text-align: center; color: hsl(var(--muted-foreground)); }
 .atp-row.is-top .atp-n { color: hsl(var(--gold)); }
 .atp-main { display: flex; flex-direction: column; gap: 5px; min-width: 0; }

@@ -27,8 +27,6 @@
 .cw-tile { position: relative; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; text-align: left; overflow: hidden; border-radius: 12px; min-height: 128px; padding: 10px 12px; width: 100%; border: 1px solid rgb(255 255 255 / .1); box-shadow: inset 0 -3px 0 var(--s), 0 6px 16px rgb(0 0 0 / .25); }
 .cw-tile--champ { box-shadow: inset 0 -3px 0 var(--s), inset 0 0 0 1px rgb(255 216 74 / .5), 0 6px 16px rgb(0 0 0 / .25); }
 .cw-tile--lead { min-height: 310px; }
-@media (prefers-reduced-motion: no-preference) { .cw-tile { transition: filter .15s ease, transform .15s ease; } .cw-tile:hover { transform: translateY(-2px); } }
-.cw-tile:hover { filter: brightness(1.1); }
 .cw-tile:focus-visible, .cw-strip:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
 .cw-abbr { position: absolute; right: -4px; bottom: -14px; font: italic 800 64px/1 var(--font-display, inherit); opacity: .1; pointer-events: none; }
 .cw-bglogo { position: absolute; right: -60px; top: -50px; opacity: .3; pointer-events: none; }

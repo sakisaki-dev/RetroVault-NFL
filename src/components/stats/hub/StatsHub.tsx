@@ -11,6 +11,7 @@ import { EDGE_PX, scrollsSideways } from '@/hooks/useSwipeToDismiss';
 import { dur, ease, reducedMotion } from '@/utils/motion';
 
 import { IS_NFL } from '@/config/edition';
+import '@/styles/interact.css';
 
 const ALL_SUB_TABS: { id: StatsSub; label: string; short: string; Icon: typeof Users; blurb: string }[] = [
   { id: 'players', label: 'Players', short: 'Players', Icon: Users, blurb: 'Records, full stat tables, advanced analytics and leaders' },
