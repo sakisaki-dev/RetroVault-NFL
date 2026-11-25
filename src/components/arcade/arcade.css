@@ -398,3 +398,16 @@
 .axd__icons { display: flex; flex-wrap: wrap; gap: 14px; color: var(--ax-gold); }
 .axd__icons figure { margin: 0; display: grid; justify-items: center; gap: 4px; }
 .axd__icons figcaption { font-family: var(--font-pixel); font-size: 8px; color: hsl(var(--muted-foreground)); }
+
+/* sliding pill: the chosen option's fill is one element that moves to it (PixelChip ArcadeToggle) */
+.ax-toggle--slide { position: relative; isolation: isolate; }
+.ax-toggle__thumb {
+  position: absolute; left: 0; top: 0; z-index: -1; border-radius: 999px; opacity: 0; pointer-events: none;
+  background: var(--ax-c1, var(--ax-gold));
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.3);
+  transition: transform 300ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)), width 300ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.ax-toggle--slide .ax-seg.is-on { background: transparent; }
+.ax-toggle--slide .ax-seg { transition: color 220ms var(--ease-out, ease); }
+@media (prefers-reduced-motion: reduce) { .ax-toggle__thumb { transition: none; } }
+html[data-perf='lite'] .ax-toggle__thumb { transition: none; }

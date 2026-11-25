@@ -1,4 +1,4 @@
-import { useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { useRef, type KeyboardEvent, type ReactNode, useLayoutEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { clubVars } from './clubInk';
 import { PixelSelect } from './PixelSelect';
@@ -96,6 +96,35 @@ export const ArcadeToggle = <T extends string | number>({
     move(i, to);
   };
   const cur = Math.max(0, options.findIndex((o) => o.value === value));
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  const thumbRef = useRef<HTMLSpanElement | null>(null);
+  const placed = useRef(false);
+  useLayoutEffect(() => {
+    if (wrap) return;
+    const place = () => {
+      const btn = refs.current[cur];
+      const th = thumbRef.current;
+      if (!btn || !th) return;
+      // the first placement doesn't animate (no slide in from the left edge on mount)
+      if (!placed.current) th.style.transition = 'none';
+      th.style.width = `${btn.offsetWidth}px`;
+      th.style.height = `${btn.offsetHeight}px`;
+      th.style.transform = `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)`;
+      th.style.opacity = '1';
+      if (!placed.current) {
+        void th.offsetWidth;
+        th.style.transition = '';
+        placed.current = true;
+      }
+    };
+    place();
+    const box = boxRef.current;
+    if (!box || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(place);
+    ro.observe(box);
+    refs.current.forEach((b) => b && ro.observe(b));
+    return () => ro.disconnect();
+  }, [cur, wrap, options.length]);
   const chars = options.reduce((n, o) => n + (typeof o.label === 'string' || typeof o.label === 'number' ? String(o.label).length : 4), 0);
   if (!wrap && compact !== 'never' && (compact === 'always' || options.length > 6 || chars > 32)) {
     return (
@@ -110,7 +139,10 @@ export const ArcadeToggle = <T extends string | number>({
     );
   }
   return (
-    <div role="radiogroup" aria-label={label} className={cn('ax-toggle', `ax-toggle--${size}`, wrap && 'ax-toggle--wrap', className)} style={club ? clubVars(club) : undefined}>
+    <div ref={boxRef} role="radiogroup" aria-label={label} className={cn('ax-toggle', `ax-toggle--${size}`, wrap && 'ax-toggle--wrap', !wrap && 'ax-toggle--slide', className)} style={club ? clubVars(club) : undefined}>
+      {/* the highlight is one pill that slides to the chosen option (owner: "the pill switcher should animate the switch
+          instead of snapping") */}
+      {!wrap && <span ref={thumbRef} className="ax-toggle__thumb" aria-hidden="true" />}
       {options.map((o, i) => {
         const on = o.value === value;
         return (
