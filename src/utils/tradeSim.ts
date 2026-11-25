@@ -67,11 +67,15 @@ export const TRADE_RULES = {
 export const TRADE_METHOD_NOTES = {
   projection: 'Per-game rate: last 3 games, the season (a small sample shrinks toward the bench tier, the regulars just below the starters) and usage (opportunities x the league rate), TD points regressed to the league rate. A QB leans on the season (last 3 and usage count less, TDs regress more slowly).',
   role: 'Scaled by his role: the share of his club\'s recent games he plays (3 of 4 is full-time; a player on the injury report counts only the games up to his last appearance). Backups and benched players project near zero.',
+  rates: 'Start-worthy, boom and bust: weekly finishes at his position with every player\'s week rescored under the chosen scoring (top 12 QB/TE or 24 RB/WR start; top half of that booms; worse than 1.5x busts).',
   ros: 'Rest of season: the rate x each week\'s matchup (capped 15%) x availability (bye 0, IR out 4 games, Out 1, Doubtful 25%, Questionable 90%), playoff weeks weighted.',
   vor: 'VOR: weighted ROS minus the replacement level, the last starter at his position once the league\'s slots, FLEX and superflex are filled by that same measure.',
   value: 'Value: a convex stud premium of VOR, never below 0 (a player below replacement can be dropped), plus a roster-spot credit for each extra player given.',
   verdict: 'Verdict: the gap between the sides\' net as a share of the larger side (at least one average starter): under 5% Fair, 5-15% Leans, over 15% Lopsided.',
 } as const;
+
+/** Weekly-finish thresholds (as fantasy.py): start-worthy = top N at the position, boom = top N/2, bust = worse than 1.5 N. */
+export const START_N: Record<FPos, number> = { QB: 12, TE: 12, RB: 24, WR: 24 };
 
 export const STARTERS: Record<FPos, number> = { QB: 1, RB: 2, WR: 2, TE: 1 };
 
@@ -113,6 +117,13 @@ export interface TradePlayer {
   ppg: number;
   l3: number | null;
   p3: number | null;
+  /** weekly finish at his position under the settings (rescored with every player's week lines): games start-worthy / boom / bust and their rates */
+  sw: number;
+  bm: number;
+  bu: number;
+  startRate: number;
+  boomRate: number;
+  bustRate: number;
   /** floor / median / ceiling: 25th, 50th, 75th percentile of his scored weeks */
   fl: number | null;
   md: number | null;
@@ -250,6 +261,22 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     roles.set(key, role);
     if (pts.length >= R.smallSample && role >= 1) reg[pos].push({ key, ppg: pts.reduce((a, b) => a + b, 0) / pts.length, og: rec.ot != null ? rec.ot / pts.length : null });
   }
+  // weekly finishes under the chosen scoring: every player's line that week at the position, competition ranking (as fantasy.py)
+  const pool = new Map<string, number[]>();
+  for (const [key, pts] of scored) {
+    const pos = key.slice(0, key.indexOf(':'));
+    raw.p[key].w.forEach((w, i) => {
+      const k = `${w[0]}|${pos}`;
+      (pool.get(k) ?? pool.set(k, []).get(k)!).push(pts[i]);
+    });
+  }
+  pool.forEach((v) => v.sort((a, b) => b - a));
+  const finishOf = (week: number, pos: FPos, x: number) => {
+    const v = pool.get(`${week}|${pos}`) ?? [];
+    let lo = 0, hi = v.length; // first index with v <= x = the number of players who scored more
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (v[mid] > x) lo = mid + 1; else hi = mid; }
+    return lo + 1;
+  };
   // the prior: the bench tier, the regulars ranked just below the league's starters (points and opportunities a game)
   const prior = {} as Record<FPos, { ppg: number; og: number | null }>;
   (['QB', 'RB', 'WR', 'TE'] as FPos[]).forEach((pos) => {
@@ -313,7 +340,11 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     const po = weeks.filter((w) => w.playoff).reduce((a, w) => a + w.proj, 0);
     const rosW = weeks.reduce((a, w) => a + w.proj * (w.playoff ? s.playoffWeight : 1), 0);
     const opps = rec.ot ?? 0;
+    const N = START_N[pos];
+    const fin = rec.w.map((w, i) => finishOf(w[0], pos, pts[i]));
+    const sw = fin.filter((x) => x <= N).length, bm = fin.filter((x) => x <= N / 2).length, bu = fin.filter((x) => x > 1.5 * N).length;
     all.push({
+      sw, bm, bu, startRate: sw / g, boomRate: bm / g, bustRate: bu / g,
       key, name: keyName(key), pos, club: rec.c, rec, g, clubGames: clubGames(rec.c), ppg, l3: l3raw, p3: p3raw,
       fl: g >= 3 ? pct(pts, 0.25) : null, md: g >= 3 ? pct(pts, 0.5) : null, ce: g >= 3 ? pct(pts, 0.75) : null,
       seasonShrunk: season, role, usage, tdObs, tdExp, tdReg, base, weeks, ros, po, rosW, vor: 0, value: 0, posRank: 0,

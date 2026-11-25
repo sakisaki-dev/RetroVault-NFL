@@ -131,4 +131,15 @@ const irs = Object.keys(inj.p ?? {}).filter((k) => inj.p[k][0] === 'IR' && m.pla
 check('IR: role comes from the healthy weeks (never below the no-status role)', irs.length > 0 && irs.every((k) => withInj.players.get(k)!.role >= m.players.get(k)!.role - 1e-9), `${irs.length} IR players`);
 const hurts = withInj.players.get('QB:Jalen Hurts'), hurtsNo = m.players.get('QB:Jalen Hurts');
 check('IR starter: role is full from his healthy weeks and only the missed games cut ROS', !!hurts && hurts.role >= 0.99 && hurts.weeks.filter((w) => w.opp && w.avail === 0).length <= 4 && Math.abs(hurts.base / hurts.ppg - 1) < 0.25, `role ${hurts?.role.toFixed(2)} (no status ${hurtsNo?.role.toFixed(2)}), rate ${hurts?.base.toFixed(1)} vs ${hurts?.ppg.toFixed(1)} a game`);
+
+// 10. weekly finishes follow the chosen scoring
+const all = [...m.players.values()];
+const mism = all.filter((p) => p.sw !== p.rec.sw || p.bm !== p.rec.bm || p.bu !== p.rec.bu);
+check('PPR rates reproduce fantasy.json\'s weekly-finish counts', mism.length <= all.length * 0.03, `${mism.length} of ${all.length} differ`);
+const catcher = all.filter((p) => (p.pos === 'RB' || p.pos === 'WR') && p.g >= 8 && p.rec.wr).sort((a, b) => b.rec.wr!.reduce((x, y) => x + y, 0) - a.rec.wr!.reduce((x, y) => x + y, 0))[0];
+const sc = std.players.get(catcher.key)!;
+check('standard scoring changes a high-catch player\'s start / boom / bust rates', sc.startRate !== catcher.startRate || sc.boomRate !== catcher.boomRate || sc.bustRate !== catcher.bustRate,
+  `${catcher.key}: start ${(catcher.startRate * 100).toFixed(0)}% -> ${(sc.startRate * 100).toFixed(0)}%, boom ${(catcher.boomRate * 100).toFixed(0)}% -> ${(sc.boomRate * 100).toFixed(0)}%, bust ${(catcher.bustRate * 100).toFixed(0)}% -> ${(sc.bustRate * 100).toFixed(0)}%`);
+const shifted = all.filter((p) => p.g >= 8 && (p.pos === 'RB' || p.pos === 'WR') && std.players.get(p.key)!.sw !== p.sw).length;
+check('standard scoring re-ranks many weekly finishes', shifted >= 10, `${shifted} RB/WR change start-worthy weeks`);
 process.exit(bad ? 1 : 0);
