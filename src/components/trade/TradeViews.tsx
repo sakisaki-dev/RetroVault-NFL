@@ -45,7 +45,7 @@ export const FairMeter = ({ r }: { r: TradeResult }) => {
 /** Concept A, the balance scale: two pans (what each side gets), the heavier one sinks. */
 export const BalanceScale = ({ r, cards }: { r: TradeResult; cards: Map<string, Player> }) => {
   const [a, b] = r.teams;
-  const tilt = r.winner == null ? 0 : Math.min(14, 3 + r.gap * 60) * (r.winner === 0 ? -1 : 1);
+  const tilt = r.winner == null || r.verdict === 'Empty' ? 0 : Math.min(7, 1.5 + r.gap * 14) * (r.winner === 0 ? -1 : 1);
   const pan = (i: number) => {
     const t = r.teams[i];
     return (

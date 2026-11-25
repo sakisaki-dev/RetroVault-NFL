@@ -246,3 +246,19 @@
 .tr-pk--board > li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; border-radius: 12px; border: 1px solid hsl(var(--line)); background: hsl(var(--night) / 0.6); }
 .tr-pk__rank { font: 800 1.2rem 'Barlow Condensed', sans-serif; color: hsl(var(--gold)); text-align: center; }
 @media (max-width: 520px) { .tr-pk--board > li { grid-template-columns: 22px minmax(0, 1fr) auto; } .tr-pk--board > li .tr-use { grid-column: 2 / -1; } }
+
+/* the verdict panel: one clean line above a full-width meter, then a level, clipped scale */
+.fh-trade .tr-verdict-panel { overflow: hidden; padding: 0.8rem; gap: 0.7rem; }
+.fh-trade .tr-meter { max-width: none; }
+.fh-trade .tr-meter__top { align-items: center; flex-wrap: nowrap; margin-bottom: 4px; }
+.fh-trade .tr-verdict { font-size: 1.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.fh-trade .tr-gap { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.fh-trade .tr-meter__track { margin: 2px 0; }
+.fh-trade .tr-scale { height: 232px; max-width: 760px; overflow: hidden; border-radius: 12px; }
+.fh-trade .tr-beam { top: 14px; height: 6px; }
+.fh-trade .tr-beam__end { width: 46%; top: 3px; }
+.fh-trade .tr-pan { margin-top: 24px; min-height: 148px; justify-content: flex-start; gap: 4px; padding: 0.55rem 0.4rem; }
+.fh-trade .tr-pan__v { font-size: 2.6rem; }
+.fh-trade .tr-pan__figs { flex-wrap: nowrap; min-height: 64px; }
+.fh-trade .tr-post { top: -2px; }
+@media (max-width: 520px) { .fh-trade .tr-scale { height: 218px; } .fh-trade .tr-pan__v { font-size: 2.1rem; } .fh-trade .tr-verdict { font-size: 1.1rem; } }

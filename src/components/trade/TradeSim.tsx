@@ -75,8 +75,8 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
               </div>
 
               <Reveal className="tr-verdict-panel tr-panel" aria-label="Verdict">
-                {n === 2 ? <BalanceScale r={result} cards={cards} /> : <NetBars r={result} />}
                 <FairMeter r={result} />
+                {n === 2 ? <BalanceScale r={result} cards={cards} /> : <NetBars r={result} />}
                 <div className="tr-verdict-panel__f">
                   <DrawerButton onClick={() => setDrawer(true)} disabled={!anyPlayers} />
                   {anyPlayers && <button type="button" className="tr-reset" onClick={reset}><X className="h-4 w-4" aria-hidden="true" /> Clear</button>}
