@@ -22,7 +22,9 @@ import SlotPicker from './SlotPicker';
 import { ClubMark } from '@/components/fantasy/ClubMark';
 import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
 import { useOpenCard } from './cardContext';
-import { f1, nameOf, type FantasyHub } from './useFantasyHub';
+import { f1, isBenchId, nameOf, type FantasyHub } from './useFantasyHub';
+import BenchRow from './BenchRow';
+import type { FPos } from '@/utils/fantasy';
 import { teamOf } from '../parts';
 
 const InjMini = ({ code }: { code: InjuryCode }) => <span className={`nfl-injchip nfl-injchip--${code.toLowerCase()}`}>{code === 'Questionable' ? 'Q' : code === 'Doubtful' ? 'Dbt' : code}</span>;
@@ -31,13 +33,13 @@ const POS_OPTS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'DST'] as const;
 
 /** Lineup: the field with your players, the slot plates, then the board, the draft and saved lineups. */
 const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Prefs; setPrefs: (p: Partial<Prefs>) => void; turf: Turf }) => {
-  const { ctx, lab, injured, fl, setFl, locks, excludes, setExcludes, fctx, cands, board, cap, capMode, week, filled, cost, draft, setDraft, clubName } = hub;
+  const { ctx, lab, injured, fl, locks, excludes, setExcludes, fctx, cands, board, cap, capMode, week, filled, cost, draft, setDraft, clubName } = hub;
   const raw = useFantasyRaw();
   const open = useOpenCard();
   const tall = useMedia('(max-width: 639px)');
   const art = useFieldArt(clubName, turf, tall);
   const [pick, setPick] = useState<string | null>(null);
-  const slot = F_SLOTS.find((s) => s.id === pick) ?? null;
+  const slot = F_SLOTS.find((s) => s.id === pick) ?? (pick && isBenchId(pick) ? { id: pick, label: 'a bench player', positions: ['QB', 'RB', 'WR', 'TE'] as FPos[] } : null);
   const proj = (k: string) => (fctx ? projectWeek(fctx, k, week) : 0);
 
   const spots: FSpot[] = F_SLOTS.map((s) => {
@@ -76,7 +78,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
           </>
         )}
         {(filled > 0 || excludes.size > 0) && (
-          <button type="button" className="fh-btn fh-btn--ghost" aria-label="Clear the lineup" title="Clear" onClick={() => { hub.setFl({}); hub.setLocks({}); setExcludes(new Set()); setDraft(null); }}>
+          <button type="button" className="fh-btn fh-btn--ghost" aria-label="Clear the lineup" title="Clear" onClick={() => { hub.clearStarters(); hub.setLocks({}); setExcludes(new Set()); setDraft(null); }}>
             <Eraser className="h-4 w-4" aria-hidden="true" />
           </button>
         )}
@@ -135,6 +137,8 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         </section>
       </div>
 
+      <BenchRow hub={hub} onPick={setPick} />
+
       {prefs.fmode === 'draft' && <DraftBoard hub={hub} />}
 
       <section className="fh-panel" aria-labelledby="fh-board-h">
@@ -157,7 +161,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         list={hub.saved.list}
         canSave={filled > 0}
         onSave={(name) => hub.saved.add({ name, kind: 'fantasy', lineup: fl })}
-        onLoad={(s) => s.kind === 'fantasy' && setFl(s.lineup)}
+        onLoad={(s) => s.kind === 'fantasy' && hub.loadLineup(s.lineup)}
         onRename={hub.saved.rename}
         onDelete={hub.saved.remove}
         summary={(s) => (s.kind === 'fantasy' && fctx ? `${f1(hub.total(s.lineup, week))} proj · ${fFilled(s.lineup)}/8` : '')}

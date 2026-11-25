@@ -169,8 +169,9 @@ export const projectGame = (f: Fantasy, slot?: Slot | null): Projection | null =
 
 // ---- start / sit (rules over the same numbers) ------------------------------------------------------------------------
 
-export type HintKind = 'start' | 'sit' | 'swap' | 'watch';
+export type HintKind = 'start' | 'sit' | 'swap' | 'watch' | 'risk';
 export interface Hint { kind: HintKind; text: string; swap?: string }
+/** A player on the user's own bench who could take a slot. */
 export interface Alt { key: string; name: string; mid: number }
 /** The rest-of-season ranking pool: his per-game rank must exist (at least half his club's games). */
 export const isRegular = (f: Fantasy) => f.rec.rk[4] != null;
@@ -181,22 +182,70 @@ export const outlookOf = (f: Fantasy): { proj: Projection | null; slot: Slot | n
   return { proj: projectGame(f, slot), slot };
 };
 
+/** Replacement level per position: the per-game average of the last start-worthy regular (rank startN) in the league. A rule over the data, no names. */
+export const replacementLevels = (raw: FanRaw | null | undefined): Record<FPos, number> => {
+  const out: Record<FPos, number> = { QB: 0, RB: 0, WR: 0, TE: 0 };
+  if (!raw) return out;
+  Object.entries(raw.p).forEach(([k, r]) => {
+    const pos = k.slice(0, k.indexOf(':'));
+    if (isFantasyPos(pos) && r.rk[4] === startN(pos)) out[pos] = Math.max(out[pos], r.pg);
+  });
+  return out;
+};
+
+/** Is the lineup player out for the week (bye, ruled out, IR)? */
+export const outReason = (f: Fantasy, injury: string | undefined): string | null => {
+  const slot = f.next[0];
+  if (slot && !slot.opp) return 'Bye week';
+  if (injury === 'Out' || injury === 'IR') return injury === 'IR' ? 'Injured reserve' : 'Ruled out';
+  return null;
+};
+/** Swap threshold: a bench player must project at least max(2 points, 15%) more. */
+export const swapGain = (alt: number, mid: number) => (alt - mid >= Math.max(2, 0.15 * mid) ? alt - mid : 0);
+
 /**
- * One short hint for a lineup player, first rule that fires:
- * bye or out -> sit; a pool player at an eligible slot projects at least max(2 points, 15%) more -> swap;
- * soft matchup and trending up -> start; tough matchup and trending down -> watch; soft or tough alone -> start / watch.
+ * Greedy swap plan over the user's own roster: every (starter slot, bench player) pair the bench player can fill and beat by the
+ * threshold, biggest gain first; each slot and each bench player is used at most once.
  */
-export const hintFor = (f: Fantasy, injury: string | undefined, alt: Alt | null): Hint | null => {
+export const assignSwaps = (slots: { id: string; mid: number; ok: (benchKey: string) => boolean }[], bench: Alt[]): Map<string, { alt: Alt; gain: number }> => {
+  const pairs: { id: string; alt: Alt; gain: number }[] = [];
+  slots.forEach((s) => bench.forEach((a) => { if (s.ok(a.key)) { const g = swapGain(a.mid, s.mid); if (g > 0) pairs.push({ id: s.id, alt: a, gain: g }); } }));
+  pairs.sort((a, b) => b.gain - a.gain);
+  const out = new Map<string, { alt: Alt; gain: number }>();
+  const used = new Set<string>();
+  pairs.forEach((p) => { if (!out.has(p.id) && !used.has(p.alt.key)) { out.set(p.id, { alt: p.alt, gain: p.gain }); used.add(p.alt.key); } });
+  return out;
+};
+
+export interface HintCtx {
+  /** the swap the plan gave this slot (a player on the user's own bench) */
+  swap?: { alt: Alt; gain: number } | null;
+  /** replacement level at his position (replacementLevels) */
+  repl?: number;
+  /** where a missing bench would have helped, e.g. "RB" or "FLEX"; set when the bench has nobody for the slot */
+  noBenchAt?: string | null;
+}
+
+/**
+ * One short call for a lineup player, first rule that fires: bye or out -> swap in a bench player if one is eligible, else sit
+ * ("No one on your bench at RB"); a planned bench swap -> swap; his projection under 85% of replacement level -> sit risk;
+ * tough matchup (or cooling) and not far above replacement -> watch; otherwise start with the matchup / trend as the reason.
+ */
+export const hintFor = (f: Fantasy, injury: string | undefined, ctx: HintCtx = {}): Hint | null => {
   const { proj, slot } = outlookOf(f);
-  if (slot && !slot.opp) return { kind: 'sit', text: 'Bye week' };
-  if (injury === 'Out' || injury === 'IR') return { kind: 'sit', text: injury === 'IR' ? 'Injured reserve' : 'Ruled out' };
   const mid = proj?.mid ?? 0;
-  if (alt && alt.mid - mid >= Math.max(2, 0.15 * mid)) return { kind: 'swap', text: `+${(alt.mid - mid).toFixed(1)} with ${alt.name}`, swap: alt.key };
+  const out = outReason(f, injury);
+  const sw = ctx.swap;
+  const swap = sw ? ({ kind: 'swap', text: `+${sw.gain.toFixed(1)} with ${sw.alt.name}`, swap: sw.alt.key } as Hint) : null;
+  if (out) return swap ? { ...swap, text: `${out}, +${sw!.gain.toFixed(1)} with ${sw!.alt.name}` } : { kind: 'sit', text: ctx.noBenchAt ? `${out}. No one on your bench at ${ctx.noBenchAt}` : out };
+  if (swap) return swap;
   const up = f.trend?.dir === 'up';
   const down = f.trend?.dir === 'down';
+  const repl = ctx.repl ?? 0;
+  if (repl > 0 && mid < 0.85 * repl) return { kind: 'risk', text: `Below replacement level (${mid.toFixed(1)} vs ${repl.toFixed(1)})` };
+  if (slot?.tone === 'hard' && (repl <= 0 || mid < 1.15 * repl)) return { kind: 'watch', text: down ? 'Tough matchup, cooling' : 'Tough matchup' };
+  if (down && slot?.tone !== 'easy') return { kind: 'watch', text: 'Cooling off' };
   if (slot?.tone === 'easy') return { kind: 'start', text: up ? 'Soft matchup, rising' : 'Soft matchup' };
-  if (slot?.tone === 'hard') return { kind: 'watch', text: down ? 'Tough matchup, cooling' : 'Tough matchup' };
   if (up) return { kind: 'start', text: 'Rising form' };
-  if (down) return { kind: 'watch', text: 'Cooling off' };
   return null;
 };
