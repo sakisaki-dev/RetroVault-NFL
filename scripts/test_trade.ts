@@ -142,4 +142,44 @@ check('standard scoring changes a high-catch player\'s start / boom / bust rates
   `${catcher.key}: start ${(catcher.startRate * 100).toFixed(0)}% -> ${(sc.startRate * 100).toFixed(0)}%, boom ${(catcher.boomRate * 100).toFixed(0)}% -> ${(sc.boomRate * 100).toFixed(0)}%, bust ${(catcher.bustRate * 100).toFixed(0)}% -> ${(sc.bustRate * 100).toFixed(0)}%`);
 const shifted = all.filter((p) => p.g >= 8 && (p.pos === 'RB' || p.pos === 'WR') && std.players.get(p.key)!.sw !== p.sw).length;
 check('standard scoring re-ranks many weekly finishes', shifted >= 10, `${shifted} RB/WR change start-worthy weeks`);
+
+// 11. no cap on a side: any number of players each way evaluates, and the books balance
+const big = regs.slice(5, 10).map((p) => p.key), back = regs.slice(12, 15).map((p) => p.key);
+const fiveThree = evaluateTrade(m, oneFor(big, back), false);
+check('a 5-for-3 evaluates (no cap on a side)', fiveThree.teams[0].sent.length === 5 && fiveThree.teams[0].received.length === 3 && fiveThree.verdict !== 'Empty' && Number.isFinite(fiveThree.gap), `${fiveThree.verdict} ${(fiveThree.gap * 100).toFixed(1)}%`);
+check('the 5-for-3 gives the five-player side two roster spots', fiveThree.teams[0].spots === 2 && fiveThree.teams[1].spots === 0);
+const eightFour = evaluateTrade(m, oneFor(regs.slice(0, 8).map((p) => p.key), regs.slice(8, 12).map((p) => p.key)), false);
+check('an 8-for-4 evaluates', eightFour.teams[0].sent.length === 8 && eightFour.teams[0].spots === 4 && Number.isFinite(eightFour.gap));
+
+// 12. suggestions: 3-for-1 and 3-for-2 style packages, uncapped, memoised, within the band
+const star = regs[0].key;
+const t0 = Date.now();
+const trio = suggestPartner(m, [star], { sizes: [3], limit: Infinity, maxGap: 0.15 });
+const ms = Date.now() - t0;
+check('3-player packages are suggested for a star, every one inside the Leans band', trio.length > 0 && trio.every((p) => p.keys.length === 3 && p.gap < 0.15), `${trio.length} found in ${ms}ms`);
+const exact = trio.slice(0, 20).every((p) => {
+  const r = evaluateTrade(m, oneFor([star], p.keys), false);
+  return Math.abs(r.gap - p.gap) < 1e-9;
+});
+check('a package\'s gap equals the evaluated trade\'s gap', exact);
+const two3 = suggestPartner(m, [regs[14].key, regs[15].key, regs[16].key], { sizes: [1, 2, 3], limit: Infinity, maxGap: 0.15 });
+check('3-for-1 and 3-for-2 packages for trio given players', two3.some((p) => p.keys.length === 1) && two3.some((p) => p.keys.length === 2) && two3.every((p) => p.gap < 0.15), `${two3.length} packages`);
+const t1b = Date.now();
+suggestPartner(m, [star], { sizes: [3], limit: Infinity, maxGap: 0.15 });
+check('a repeat search is memoised', Date.now() - t1b <= Math.max(5, ms / 5), `${Date.now() - t1b}ms`);
+const four = suggestPartner(m, [star], { sizes: [4], limit: Infinity, maxGap: 0.15 });
+check('4-player packages are found within the time budget', four.every((p) => p.keys.length === 4 && p.gap < 0.15), `${four.length} found`);
+const wrOnly = suggestPartner(m, [star], { pos: 'WR', sizes: [1, 2, 3], limit: Infinity, maxGap: 0.15 });
+check('a position filter keeps every player at it', wrOnly.length > 0 && wrOnly.every((p) => p.keys.every((k) => k.startsWith('WR:'))));
+const brute = (() => {
+  const g = m.players.get(star)!; const pl = m.ranked.filter((p) => p.key !== star && p.vor > 0 && p.status !== 'IR').slice(0, 60);
+  let n = 0;
+  for (let i = 0; i < pl.length; i++) for (let j = i + 1; j < pl.length; j++) for (let k = j + 1; k < pl.length; k++) {
+    const ps = [pl[i], pl[j], pl[k]]; const v = ps.reduce((a, p) => a + p.value, 0);
+    const a = v - g.value, b = g.value + 2 * m.freeAgent.credit - v;
+    if (Math.abs(a - b) / (2 * gapNorm(m.scale, g.value, v)) < 0.15) n++;
+  }
+  return n;
+})();
+check('the pruned search finds exactly the combinations a brute force does', brute === trio.length, `${brute} vs ${trio.length}`);
 process.exit(bad ? 1 : 0);

@@ -497,31 +497,86 @@ export const evaluateTrade = (m: TradeModel, teams: TradeTeam[], rosterMode: boo
 
 export interface Package { keys: string[]; value: number; credit: number; gap: number; lean: 'give' | 'get' | null }
 
+/** The pool each package size draws from (best rest-of-season first): bigger packages search fewer candidates so the count of combinations stays bounded. */
+export const OFFER_POOL: Record<number, number> = { 1: 90, 2: 70, 3: 60, 4: 50 };
+/** The largest package the finder builds (any number of players can still be traded by hand; this only bounds the search). */
+export const OFFER_MAX_SIZE = 4;
+
+const offerMemo = new WeakMap<TradeModel, Map<string, Package[]>>();
+
 /**
- * Fair packages for what one side gives: single players (1-for-1) and pairs (2-for-1) from the pool, nearest in value first.
- * The partner's package is worth value + the roster-spot credit for the side that sends more players.
+ * Fair packages for what one side gives, any size from 1 to OFFER_MAX_SIZE. For a package of k players the fair total
+ * is v* = gv + (getter credit - giver credit) / 2, and its gap is |v - v*| / max(one average starter, both sides), so the
+ * players within the band are found by a depth-first walk over the pool (sorted by value, with the running sum pruned
+ * against the band using prefix sums) instead of by listing every combination. Results are memoised per model, so
+ * flipping the toggles never searches twice. The partner's package is worth value + the roster-spot credit for the
+ * side that sends more players.
+ *
+ * opts: pos (every player at that position), sizes (default [1, 2]), maxGap (share, default 0.25), exclude, limit
+ * (default 12; Infinity for all), sort ('gap' fairest first, 'value' most value first), pool (players searched for 1-2).
  */
-export const suggestPartner = (m: TradeModel, giveKeys: string[], opts: { pos?: FPos | null; exclude?: string[]; limit?: number; pool?: number } = {}): Package[] => {
+export const suggestPartner = (
+  m: TradeModel,
+  giveKeys: string[],
+  opts: { pos?: FPos | null; exclude?: string[]; limit?: number; pool?: number; sizes?: number[]; maxGap?: number; sort?: 'gap' | 'value' } = {},
+): Package[] => {
   const give = giveKeys.map((k) => m.players.get(k)).filter((p): p is TradePlayer => !!p);
   if (!give.length) return [];
-  const gv = give.reduce((a, p) => a + p.value, 0);
-  const skip = new Set([...giveKeys, ...(opts.exclude ?? [])]);
-  const pool = m.ranked.filter((p) => !skip.has(p.key) && p.vor > 0 && p.status !== 'IR').slice(0, opts.pool ?? 90);
-  const credit = m.freeAgent.credit;
-  const score = (ps: TradePlayer[]): Package => {
-    const v = ps.reduce((a, p) => a + p.value, 0);
-    // the side giving more players gains the spots
-    const giverCredit = Math.max(0, give.length - ps.length) * credit;
-    const getterCredit = Math.max(0, ps.length - give.length) * credit;
-    const a = v + giverCredit - gv; // the giver's net
-    const b = gv + getterCredit - v; // the partner's net
-    const gap = Math.abs(a - b) / (2 * gapNorm(m.scale, gv, v));
-    return { keys: ps.map((p) => p.key), value: v, credit: getterCredit - giverCredit, gap, lean: gap < 0.005 ? null : a > b ? 'give' : 'get' };
-  };
+  const maxGap = opts.maxGap ?? 0.25;
+  const sizes = [...new Set(opts.sizes ?? [1, 2])].filter((k) => k >= 1 && k <= OFFER_MAX_SIZE).sort((a, b) => a - b);
+  const memo = offerMemo.get(m) ?? offerMemo.set(m, new Map()).get(m)!;
+  const base = `${[...giveKeys].sort().join(',')}|${[...(opts.exclude ?? [])].sort().join(',')}|${opts.pos ?? ''}|${maxGap}|${opts.pool ?? ''}`;
   const out: Package[] = [];
-  const ok = (ps: TradePlayer[]) => !opts.pos || ps.every((p) => p.pos === opts.pos);
-  pool.forEach((p) => ok([p]) && out.push(score([p])));
-  const near = pool.slice(0, 70);
-  for (let i = 0; i < near.length; i++) for (let j = i + 1; j < near.length; j++) if (ok([near[i], near[j]])) out.push(score([near[i], near[j]]));
-  return out.filter((p) => p.gap < 0.25).sort((a, b) => a.gap - b.gap || b.value - a.value).slice(0, opts.limit ?? 12);
+  for (const k of sizes) {
+    const id = `${base}|${k}`;
+    let found = memo.get(id);
+    if (!found) memo.set(id, (found = packagesOfSize(m, give, k, { ...opts, maxGap })));
+    out.push(...found);
+  }
+  const by = opts.sort === 'value' ? (a: Package, b: Package) => b.value - a.value || a.gap - b.gap : (a: Package, b: Package) => a.gap - b.gap || b.value - a.value;
+  out.sort(by);
+  return out.length > (opts.limit ?? 12) ? out.slice(0, opts.limit ?? 12) : out;
+};
+
+const packagesOfSize = (m: TradeModel, give: TradePlayer[], k: number, opts: { pos?: FPos | null; exclude?: string[]; pool?: number; maxGap: number }): Package[] => {
+  const gv = give.reduce((a, p) => a + p.value, 0);
+  const skip = new Set([...give.map((p) => p.key), ...(opts.exclude ?? [])]);
+  const size = k <= 2 && opts.pool ? opts.pool : OFFER_POOL[k] ?? 50;
+  const pool = m.ranked.filter((p) => !skip.has(p.key) && p.vor > 0 && p.status !== 'IR' && (!opts.pos || p.pos === opts.pos)).slice(0, size).sort((a, b) => b.value - a.value || a.key.localeCompare(b.key));
+  if (pool.length < k) return [];
+  const credit = m.freeAgent.credit;
+  const giverCredit = Math.max(0, give.length - k) * credit;
+  const getterCredit = Math.max(0, k - give.length) * credit;
+  const vStar = gv + (getterCredit - giverCredit) / 2;
+  const lo = vStar - opts.maxGap * Math.max(m.scale, gv, vStar);
+  const hi = Math.max(vStar + opts.maxGap * Math.max(m.scale, gv), vStar / (1 - opts.maxGap));
+  const vals = pool.map((p) => p.value);
+  const n = vals.length;
+  // prefix[i] = sum of vals[0..i-1]; the best r remaining from i are vals[i..i+r-1] (the pool is sorted down), the worst r are the last r
+  const prefix = [0];
+  vals.forEach((v) => prefix.push(prefix[prefix.length - 1] + v));
+  const out: Package[] = [];
+  const pick: number[] = [];
+  const walk = (from: number, left: number, sum: number) => {
+    if (left === 0) {
+      if (sum < lo || sum > hi) return;
+      const ps = pick.map((i) => pool[i]);
+      const a = sum + giverCredit - gv; // the giver's net
+      const b = gv + getterCredit - sum; // the partner's net
+      const gap = Math.abs(a - b) / (2 * gapNorm(m.scale, gv, sum));
+      if (gap < opts.maxGap) out.push({ keys: ps.map((p) => p.key), value: sum, credit: getterCredit - giverCredit, gap, lean: gap < 0.005 ? null : a > b ? 'give' : 'get' });
+      return;
+    }
+    const worst = prefix[n] - prefix[n - left];
+    if (sum + worst > hi) return; // even the cheapest finish overshoots, and so does every later start
+    for (let i = from; i <= n - left; i++) {
+      const best = prefix[i + left] - prefix[i];
+      if (sum + best < lo) return; // the dearest finish from here is too cheap, so is every later start
+      pick.push(i);
+      walk(i + 1, left - 1, sum + vals[i]);
+      pick.pop();
+    }
+  };
+  walk(0, k, 0);
+  return out;
 };
