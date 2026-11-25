@@ -46,11 +46,11 @@ const CollegeTab = () => {
   }, [heroYear, players]);
   const heroClub = heroYear?.picks[0]?.[2] ?? 'Bears';
 
-  if (idx === undefined) return <p className="cl-loading" role="status">Loading the draft room…</p>;
-  if (idx === null || year == null) return <p className="cl-note">The college data isn't built yet (npm run nfl:rebuild).</p>;
+  if (idx === undefined) return <p className="cl-loading container py-6" role="status">Loading the draft room…</p>;
+  if (idx === null || year == null) return <p className="cl-note container py-6">The college data isn't built yet (npm run nfl:rebuild).</p>;
 
   return (
-    <div className="cl">
+    <div className="cl container py-6 sm:py-8">
       <StadiumHeader
         club={heroClub}
         players={stage}

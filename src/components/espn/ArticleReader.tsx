@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { ExternalLink, Newspaper, Play, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
@@ -8,7 +8,7 @@ import { articleText, useArticle, type ArticleBlock, type ArticleVideo } from '@
 import { NEWS_KIND_LABEL, timeAgo, type NewsItem } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { focusOf, mentionsOf } from '@/utils/newsMentions';
-import { SCENE_KIND, kindOf, openDeepDive, useTaggedPlayers } from './newsData';
+import { KIND_ACCENT, SCENE_KIND, kindOf, openDeepDive, useTaggedPlayers } from './newsData';
 import './espn.css';
 
 /**
@@ -159,7 +159,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     id: item.id,
     kicker: (
       <>
-        <span className={cn('ss-kind', `ss-kind--${SCENE_KIND[kind] === 'trade' ? 'trade' : SCENE_KIND[kind] === 'fall' ? 'fall' : 'feature'}`)}>{NEWS_KIND_LABEL[kind]}</span>
+        <span className="ss-kind en-kind" style={{ '--ss-k': KIND_ACCENT[kind] } as CSSProperties}>{NEWS_KIND_LABEL[kind]}</span>
         <span className="en-espn">ESPN</span>
         {Date.now() - Date.parse(item.published) < 3 * 3600_000 && <span className="en-breaking">Breaking</span>}
       </>

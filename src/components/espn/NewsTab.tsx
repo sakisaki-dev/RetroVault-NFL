@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { BookOpen, ChevronRight, Clock, Newspaper, Play, RefreshCw, Video, WifiOff, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -17,7 +17,8 @@ import { useReveal } from '@/components/motion/Reveal';
 import { peekProps } from '@/components/peek/peekProps';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { ArticleReader } from './ArticleReader';
-import { SCENE_KIND, agoParts, kindOf, openDeepDive, useNewsPlayers } from './newsData';
+import { GROUPS, KIND_ACCENT, SCENE_KIND, agoParts, kindOf, openDeepDive, useNewsPlayers } from './newsData';
+import { FillGrid } from './FillGrid';
 import '@/components/news/news-art.css';
 import '@/components/news/story.css';
 import '@/components/news/takes.css';
@@ -52,7 +53,7 @@ const Breaking = ({ it }: { it: NewsItem }) => (isBreaking(it.published) ? <span
 const clubOf = (it: NewsItem, ps: Player[]) => it.teams[0] || (ps[0] ? bannerTeamOf(ps[0]) : '');
 const KindLabel = ({ it }: { it: NewsItem }) => {
   const k = kindOf(it);
-  return <span className={cn('ss-kind', `ss-kind--${SCENE_KIND[k] === 'trade' ? 'trade' : SCENE_KIND[k] === 'fall' ? 'fall' : 'feature'}`)}>{NEWS_KIND_LABEL[k]}</span>;
+  return <span className="ss-kind en-kind" style={{ '--ss-k': KIND_ACCENT[k] } as CSSProperties}>{NEWS_KIND_LABEL[k]}</span>;
 };
 
 export interface ItemProps {
@@ -61,13 +62,13 @@ export interface ItemProps {
   onRead: (it: NewsItem) => void;
 }
 
-export const StoryItem = ({ it, i, players, cast, onRead }: ItemProps & { it: NewsItem; i: number }) => {
+export const StoryItem = ({ it, i, players, cast, onRead, cell }: ItemProps & { it: NewsItem; i: number; cell?: { style: CSSProperties; wide: boolean } }) => {
   const ps = cast.get(it.id) ?? [];
   const names = ps.map(keyOfPlayer);
   const club = clubOf(it, ps);
   const reveal = useReveal<HTMLLIElement>();
   return (
-    <li ref={reveal} className="ss-item mo-auto en-card" style={{ ...teamVars(club), '--i': Math.min(i, 5) } as CSSProperties}>
+    <li ref={reveal} className={cn('ss-item mo-auto en-card', cell?.wide && 'en-card--wide')} data-kind={kindOf(it)} style={{ ...teamVars(club), '--k': KIND_ACCENT[kindOf(it)], '--i': Math.min(i, 5), ...cell?.style } as CSSProperties}>
       <button type="button" className="ss-cover" onClick={() => onRead(it)} aria-label={`Read: ${it.headline}`} />
       <div className="ss-item__head">
         <div className="ss-item__headtext">
@@ -96,8 +97,8 @@ const FadeImg = ({ src }: { src: string }) => {
   return <img src={src} alt="" loading="lazy" className={cn('en-fade', on && 'en-fade--on')} onLoad={() => setOn(true)} ref={(el) => { if (el?.complete && el.naturalWidth && !on) setOn(true); }} />;
 };
 
-const VideoCard = ({ it, onRead, i }: { it: NewsItem; onRead: (it: NewsItem) => void; i: number }) => (
-  <li ref={useReveal<HTMLLIElement>()} className="en-vid mo-auto" style={{ ...teamVars(it.teams[0]), '--i': Math.min(i, 5) } as CSSProperties}>
+const VideoCard = ({ it, onRead, i, style }: { it: NewsItem; onRead: (it: NewsItem) => void; i: number; style?: CSSProperties }) => (
+  <li ref={useReveal<HTMLLIElement>()} className="en-vid mo-auto" style={{ ...teamVars(it.teams[0]), '--k': KIND_ACCENT.video, '--i': Math.min(i, 5), ...style } as CSSProperties}>
     <button type="button" className="en-vid__btn" onClick={() => onRead(it)} aria-label={`Watch: ${it.headline}`}>
       <span className="en-vid__poster">
         {it.image && <FadeImg src={it.image.url} />}
@@ -111,6 +112,21 @@ const VideoCard = ({ it, onRead, i }: { it: NewsItem; onRead: (it: NewsItem) => 
       </span>
     </button>
   </li>
+);
+
+/** A section header in the site's style: kicker, Barlow title, count, and a rule in the section's colour with a turf motif */
+const Rubric = ({ id, kicker, count, icon, club, big, children }: { id: string; kicker: string; count?: number; icon?: ReactNode; club?: string; big?: boolean; children: ReactNode }) => (
+  <header className={cn('en-rub', big && 'en-rub--big')}>
+    <p className="en-rub__kicker">
+      {club && <TeamLogo team={club} size={16} decorative />}
+      {kicker}
+    </p>
+    <h3 id={id} className="en-rub__title">
+      {icon}
+      {children}
+      {count != null && <span className="en-rub__n">{count}</span>}
+    </h3>
+  </header>
 );
 
 const NewsTab = () => {
@@ -166,6 +182,11 @@ const NewsTab = () => {
   const more = rest.slice(3);
   const quick = lead && lead.type === 'HeadlineNews' ? hits.filter((i) => i !== lead) : hits;
   const wire = useMemo(() => items.slice(0, 8), [items]);
+  // the feed under the lead, in labelled sections by article type (a single type when a section is picked)
+  const groups = useMemo(
+    () => GROUPS.map((g) => ({ ...g, items: more.filter((i) => g.kinds.includes(kindOf(i))) })).filter((g) => g.items.length),
+    [more],
+  );
   const order = useMemo(() => (lead ? [lead, ...top, ...more, ...quick, ...videos] : []), [lead, top, more, quick, videos]);
   const open = order.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null;
   const read = (it: NewsItem) => setOpenId(it.id);
@@ -179,7 +200,7 @@ const NewsTab = () => {
   const ago = lead ? agoParts(lead.published) : null;
 
   return (
-    <div className="en container mx-auto px-4 py-4 sm:py-6">
+    <div className="en container py-6 sm:py-8">
       <header className="ss-mast">
         <div className="ss-mast__text">
           <p className="ss-mast__kicker">
@@ -310,38 +331,36 @@ const NewsTab = () => {
           <aside className="ss-side">
             <div className="ss-side__in">
             {top.length > 0 && (
-              <section className="ss-top" aria-labelledby="ss-top-title">
-                <h3 id="ss-top-title" className="ss-rubric">
-                  Top stories
-                </h3>
-                <ul className="ss-list ss-list--top">
-                  {top.map((it, i) => (
-                    <StoryItem key={it.id} it={it} i={i + 1} {...itemProps} />
-                  ))}
-                </ul>
+              <section className="ss-top en-mod" aria-labelledby="ss-top-title">
+                <Rubric id="ss-top-title" kicker="Front page" count={top.length}>Top stories</Rubric>
+                <FillGrid
+                  items={top}
+                  minW={230}
+                  max={3}
+                  gap={12}
+                  className="en-cards en-cards--top"
+                  render={(it, i, cell) => <StoryItem key={it.id} it={it} i={i + 1} cell={cell} {...itemProps} />}
+                />
               </section>
             )}
 
-            <div className="ss-dyk">
               {videos.length > 0 && (
-                <section aria-labelledby="en-vid-title">
-                  <h3 id="en-vid-title" className="ss-rubric ss-rubric--gold">
-                    <Video className="h-3.5 w-3.5" aria-hidden="true" /> Video
-                  </h3>
-                  <ul className="en-vids">
-                    {videos.slice(0, 8).map((it, i) => (
-                      <VideoCard key={it.id} it={it} i={i} onRead={read} />
-                    ))}
-                  </ul>
+                <section className="ss-dyk en-mod en-mod--video" aria-labelledby="en-vid-title">
+                  <Rubric id="en-vid-title" kicker="Watch" count={Math.min(videos.length, 8)} icon={<Video className="h-4 w-4" aria-hidden="true" />}>Video</Rubric>
+                  <FillGrid
+                    items={videos.slice(0, 8)}
+                    minW={240}
+                    max={2}
+                    gap={10}
+                    className="en-vids"
+                    render={(it, i, cell) => <VideoCard key={it.id} it={it} i={i} onRead={read} style={cell.style} />}
+                  />
                 </section>
               )}
-            </div>
 
               {trending.length > 0 && (
-              <section className="en-side__mod en-side__trend" aria-labelledby="en-trend-title">
-                <h3 id="en-trend-title" className="ss-rubric">
-                  Players in the news
-                </h3>
+              <section className="en-side__mod en-side__trend en-mod" aria-labelledby="en-trend-title">
+                <Rubric id="en-trend-title" kicker="Trending" count={trending.length}>Players in the news</Rubric>
                 <ol className="en-rank">
                   {trending.map(({ p, n }, i) => {
                     const club = bannerTeamOf(p);
@@ -361,47 +380,61 @@ const NewsTab = () => {
                 </ol>
               </section>
               )}
-              <section className="en-side__mod" aria-labelledby="en-around-title">
-                <h3 id="en-around-title" className="ss-rubric ss-rubric--gold">
-                  Around the league
-                </h3>
-                <ul className="en-around">
-                  {teams.map((t) => (
-                    <li key={t} style={teamVars(t)}>
+              <section className="en-side__mod en-mod" aria-labelledby="en-around-title">
+                <Rubric id="en-around-title" kicker="By club" count={teams.length}>Around the league</Rubric>
+                <FillGrid
+                  items={teams}
+                  minW={64}
+                  max={4}
+                  gap={6}
+                  className="en-around"
+                  render={(t, _i, cell) => (
+                    <li key={t} style={{ ...teamVars(t), ...cell.style }}>
                       <button type="button" className="en-around__btn" aria-pressed={team === t} onClick={() => setTeam(team === t ? 'all' : t)} aria-label={`${t}, ${teamCount.get(t)} stories`} title={t}>
                         <TeamLogo team={t} size={26} decorative />
                         <b>{teamCount.get(t)}</b>
                       </button>
                     </li>
-                  ))}
-                </ul>
+                  )}
+                />
               </section>
             </div>
           </aside>
 
-          {more.length > 0 && (
-            <section className="ss-more" aria-labelledby="ss-more-title">
-              <h3 id="ss-more-title" className="ss-rubric">
-                More stories
-              </h3>
-              <ul className="ss-list ss-list--more">
-                {more.map((it, i) => (
-                  <StoryItem key={it.id} it={it} i={i + 4} {...itemProps} />
-                ))}
-              </ul>
-            </section>
+          {groups.length > 0 && (
+            <div className="ss-more en-sections">
+              {groups.map((g, gi) => (
+                <section key={g.id} className="en-section" aria-labelledby={`en-sec-${g.id}`} style={{ ...(team !== 'all' ? teamVars(team) : {}), '--k': KIND_ACCENT[g.kinds[0]] } as CSSProperties}>
+                  <Rubric id={`en-sec-${g.id}`} kicker={team !== 'all' ? team : `Section ${String(gi + 1).padStart(2, '0')}`} count={g.items.length} club={team !== 'all' ? team : undefined} big>
+                    {g.label}
+                  </Rubric>
+                  <FillGrid
+                    items={g.items}
+                    minW={270}
+                    max={3}
+                    gap={14}
+                    className="en-cards"
+                    render={(it, i, cell) => <StoryItem key={it.id} it={it} i={i + 4} cell={cell} {...itemProps} />}
+                  />
+                </section>
+              ))}
+            </div>
           )}
 
           {quick.length > 0 && (
-            <section className="ss-hits" aria-labelledby="ss-hits-title">
-              <h3 id="ss-hits-title" className="ss-rubric ss-rubric--gold">
-                <Zap className="h-3.5 w-3.5" aria-hidden="true" /> Quick hits
-              </h3>
-              <ol className="ss-hits__list">
-                {quick.map((it, i) => {
+            <section className="ss-hits en-section" aria-labelledby="ss-hits-title" style={{ '--k': 'var(--ss-gold)' } as CSSProperties}>
+              <Rubric id="ss-hits-title" kicker="In brief" count={quick.length} icon={<Zap className="h-4 w-4" aria-hidden="true" />} big>Quick hits</Rubric>
+              <FillGrid
+                as="ol"
+                items={quick}
+                minW={300}
+                max={2}
+                gap={10}
+                className="en-hits"
+                render={(it, i, cell) => {
                   const club = it.teams[0] || firstClubIn(it.headline);
                   return (
-                    <li key={it.id} className="ss-hit en-hit" style={teamVars(club)}>
+                    <li key={it.id} className="ss-hit en-hit" style={{ ...teamVars(club), ...cell.style }}>
                       <span className="ss-hit__n" aria-hidden="true">
                         {String(i + 1).padStart(2, '0')}
                       </span>
@@ -411,8 +444,8 @@ const NewsTab = () => {
                       </button>
                     </li>
                   );
-                })}
-              </ol>
+                }}
+              />
             </section>
           )}
         </div>
