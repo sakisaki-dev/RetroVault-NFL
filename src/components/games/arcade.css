@@ -15,7 +15,7 @@
   --flag: #ff4f61;
   --sky: #5cc8ff;
   --orange: #ff8a3d;
-  --f-pixel: 'Silkscreen', 'Courier New', monospace;
+  --f-pixel: var(--font-pixel);
   --f-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
   --f-body: 'Barlow', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 

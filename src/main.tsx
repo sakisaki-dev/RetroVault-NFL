@@ -4,10 +4,16 @@ import CrashScreen from "./components/CrashScreen";
 import "./index.css";
 import { installPressFeedback } from "./utils/motion";
 import { initPinScroll } from "./utils/pinScroll";
-import { installNflStorage } from "./config/edition";
+import { installNflStorage, IS_NFL } from "./config/edition";
 
 // The NFL edition keeps its browser storage under its own prefix (before anything reads it)
 installNflStorage();
+
+// The NFL edition swaps the Silkscreen pixel font for the site's display type (src/nflFont.css)
+if (IS_NFL) {
+  document.documentElement.classList.add("nfl-ed");
+  import("./nflFont.css");
+}
 
 // Tap feedback for every button, chip, row and card (src/utils/motion.ts)
 installPressFeedback();

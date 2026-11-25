@@ -98,7 +98,7 @@ button.wc-item:focus-visible {
   color: var(--wc-gold);
 }
 .wc-strip__scope {
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 11px;
   color: var(--wc-muted);
 }

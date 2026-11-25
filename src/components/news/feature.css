@@ -74,7 +74,7 @@
 }
 .fs-head__fig span {
   max-width: 16ch;
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 9px;
   letter-spacing: 0.04em;
   line-height: 1.4;
@@ -189,7 +189,7 @@
 }
 .fs-pull span {
   max-width: 28ch;
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 11px;
   line-height: 1.5;
   text-transform: uppercase;
@@ -203,7 +203,7 @@
   margin: 0;
   padding-bottom: 6px;
   border-bottom: 2px solid var(--ss-chalk, #f3f5ff);
-  font-family: 'Silkscreen', 'Courier New', monospace;
+  font-family: var(--font-pixel);
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.04em;
@@ -252,7 +252,7 @@
 .fs-nav__btn--next { justify-content: flex-end; text-align: right; }
 .fs-nav__btn svg { color: var(--fs-accent); }
 .fs-nav__text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.fs-nav__label { font-family: 'Silkscreen', 'Courier New', monospace; font-size: 9px; text-transform: uppercase; color: var(--ss-muted, #9aa7cc); }
+.fs-nav__label { font-family: var(--font-pixel); font-size: 9px; text-transform: uppercase; color: var(--ss-muted, #9aa7cc); }
 .fs-nav__title {
   display: -webkit-box;
   -webkit-line-clamp: 2;
