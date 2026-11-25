@@ -151,6 +151,16 @@ export const careerRates = (p: Player): StatItem[] => {
 export const headlineStats = (p: Player): StatItem[] => {
   switch (p.position) {
     case 'QB': {
+      // NFL edition (owner: "for QBs I'd rather see yds, tds, rush yds, rush tds, ints, sacks")
+      if (IS_NFL)
+        return [
+          s('passYds', 'Pass yds', 'Career passing yards', p.passYds),
+          s('passTD', 'Pass TD', 'Career passing touchdowns', p.passTD),
+          s('rushYds', 'Rush yds', 'Career rushing yards', p.rushYds),
+          s('rushTD', 'Rush TD', 'Career rushing touchdowns', p.rushTD),
+          s('int', 'INT', 'Career interceptions thrown', p.interceptions),
+          s('sacked', 'Sacked', 'Career times sacked', p.sacks),
+        ];
       const r = passerRating(p);
       return [
         s('passYds', 'Pass yards', 'Career passing yards', p.passYds),

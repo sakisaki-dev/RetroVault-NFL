@@ -35,6 +35,8 @@ SPECS = {
         ("INT", lambda d: S(d, "passing_interceptions"), "none", "n"),
         ("Cmp %", lambda d: 100 * S(d, "completions") / S(d, "attempts") if S(d, "attempts") else None, "rate:attempts:14", "p"),
         ("Rush yds", lambda d: S(d, "rushing_yards"), "count", "n"),
+        ("Rush TD", lambda d: S(d, "rushing_tds"), "count", "n"),
+        ("Sacked", lambda d: S(d, "sacks_suffered"), "none", "n"),
     ],
     "RB": [
         ("Rush yds", lambda d: S(d, "rushing_yards"), "count", "n"),

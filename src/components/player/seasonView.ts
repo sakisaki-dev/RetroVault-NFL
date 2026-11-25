@@ -29,8 +29,16 @@ export const seasonHeadline = (player: Player, d: SeasonData): StatItem[] => {
     decimals: Number.isInteger(x.value) ? 0 : 1,
   }));
   if (player.position === 'QB') {
-    const td = by('Pass TD'), int = by('INT');
-    if (td && int) items[2] = { key: 'tdInt', label: 'TD : INT', title: `${d.season} touchdowns per interception`, value: rate(td.value, int.value), decimals: 2 };
+    // owner: "for QBs I'd rather see yds, tds, rush yds, rush tds, ints, sacks"
+    const six = (['Pass yds', 'Pass TD', 'Rush yds', 'Rush TD', 'INT', 'Sacked'] as const).map(by).filter((x): x is NonNullable<typeof x> => !!x);
+    if (six.length >= 4)
+      return six.map((x) => ({
+        key: x.label,
+        label: x.label,
+        title: `${d.season} ${x.label === 'Sacked' ? 'times sacked' : x.label}${x.rank ? `, ${ord(x.rank)} of ${x.of} QBs` : ''}`,
+        value: x.value,
+        decimals: 0,
+      }));
   }
   return items;
 };
