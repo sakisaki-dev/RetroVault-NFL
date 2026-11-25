@@ -4,8 +4,9 @@
  * as scripts/widget_harness.mjs: it stubs the Scriptable API, runs the script once per view and renders each widget
  * tree to HTML (DrawContext calls as SVG, the script's own output).
  *
- *   - widget data, sprites and art: served from public/data/nfl/ as the private repo's contents API would (the stub
- *     Keychain holds a token; `no-token` scenarios have none)
+ *   - widget data, sprites and art: served from public/data/nfl/ (or RV_NFL_WIDGET_DATA, e.g. a clone of the data repo
+ *     ~/Code/rv-nfl-widget, whose layout is the same) as raw.githubusercontent.com and GitHub Pages would serve the
+ *     public repo; `raw-down` scenarios lose raw GitHub, so the script must fall back to Pages
  *   - ESPN: recorded fixtures in scripts/nfl/widget_fixtures/ (scoreboard.json, summary.json, scoreboard_upcoming.json,
  *     fetched by fetch_fixtures.py). The finished game is turned into a live one for the live views (status, clock,
  *     situation, the win probability so far); every figure is still ESPN's own
@@ -28,7 +29,7 @@ const OUT = resolve(process.argv[2] || join(ROOT, 'node_modules', '.tmp', 'nfl-w
 const ONLY = process.argv[3] || '';
 mkdirSync(OUT, { recursive: true });
 const SCRIPT = readFileSync(join(ROOT, 'public/widgets/rv-nfl-widget.js'), 'utf8');
-const NFL = join(ROOT, 'public/data/nfl');
+const NFL = resolve(process.env.RV_NFL_WIDGET_DATA || join(ROOT, 'public/data/nfl'));
 const FIX = join(ROOT, 'scripts/nfl/widget_fixtures');
 const DATA = JSON.parse(readFileSync(join(NFL, 'widget.json'), 'utf8'));
 const LOGOS = join(ROOT, 'node_modules/.tmp/nfl-logos');
@@ -170,8 +171,8 @@ function makeEnv(family, opts) {
       requests.push(this.url);
       if (opts.offline) { this.response.statusCode = 0; throw new Error('offline ' + this.url); }
       let m;
-      if ((m = /api\.github\.com\/repos\/sakisaki-dev\/rv-nfl-widget\/contents\/([^?]+)\?ref=main/.exec(this.url))) {
-        if (!/^Bearer /.test(this.headers.Authorization || '') || this.headers.Accept !== 'application/vnd.github.raw') { this.response.statusCode = 401; throw new Error('401'); }
+      if ((m = /^https:\/\/(?:raw\.githubusercontent\.com\/sakisaki-dev\/rv-nfl-widget\/main|sakisaki-dev\.github\.io\/rv-nfl-widget)\/(.+)$/.exec(this.url))) {
+        if (opts.rawDown && this.url.includes('raw.githubusercontent.com')) { this.response.statusCode = 503; throw new Error('raw down'); }
         const p = join(NFL, m[1]);
         if (!existsSync(p)) { this.response.statusCode = 404; throw new Error('404 ' + m[1]); }
         return { path: p, data: m[1] === 'widget.json' && opts.data ? JSON.stringify(opts.data) : null };
@@ -420,7 +421,7 @@ add('final-auto', 'medium', { now: '2026-11-22T21:40', espn: finalBoard(), data:
 add('between-auto', 'medium', { now: '2026-11-24T09:00' });
 add('between-auto-large', 'large', { now: '2026-11-24T09:00' });
 add('offline-large', 'large', { now: T0, offline: true });
-add('no-token-large', 'large', { now: T0, noToken: true });
+add('raw-down-large', 'large', { now: T0, rawDown: true });
 for (const [id, lock, now, espn, mode, view] of [
   ['lock-inline-live', 'accessoryInline', T0, liveBoard(), 'live'], ['lock-inline-between', 'accessoryInline', '2026-11-24T09:00', null, 'between'],
   ['lock-inline-preview', 'accessoryInline', '2026-11-28T15:00', upcomingBoard(), 'preview'],
@@ -447,6 +448,11 @@ for (const [id, family, opts] of views) {
   try {
     const box = await run(family, { ...opts });
     const w = box.widget;
+    if (opts.rawDown) {
+      // raw GitHub refused every file: widget.json and the sprites must have come from GitHub Pages
+      const pages = box.requests.filter((u) => u.startsWith('https://sakisaki-dev.github.io/rv-nfl-widget/'));
+      if (!pages.some((u) => u.endsWith('/widget.json')) || !pages.some((u) => u.includes('/widget-sprites/'))) throw new Error('no GitHub Pages fallback');
+    }
     results[id] = w;
     writeFileSync(join(OUT, `${id}.tree.txt`), dump(w));
     const [W, H] = SIZES[family];

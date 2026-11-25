@@ -1098,14 +1098,29 @@ between games, lock screen). It never touches the Retro Bowl widget (`retro-vaul
   Data and ESPN responses are cached: offline still draws.
 - **Refresh** (`refreshAfterDate`): +5 min while the club plays, +10 min while other games are live, otherwise at the next
   kickoff or 7 am, +60 min in the final window. iOS may run it later (Low Power Mode); 5 minutes is the best a widget gets.
-- **Hosting**: the private repo `github.com/sakisaki-dev/rv-nfl-widget` (branch `main`: `widget.json`, `widget-sprites/`,
-  `widget-art/`, `rv-nfl-widget.js`), read through the contents API with `Authorization: Bearer <token>` and
-  `Accept: application/vnd.github.raw`; the token is in Scriptable's Keychain as `rv-nfl-token`. `LAN_BASE` (top of the
-  script) overrides it with the local preview (`http://<Mac IP>:4174/`, no token). Publish with
-  `bash scripts/nfl/widget_publish.sh [clone dir]` after a rebuild (copies, commits, pushes the data repo only).
-- **Install**: Scriptable > new script, paste `public/widgets/rv-nfl-install.js` (it loads the widget code from the private
-  repo, cached for offline), save the token once with `Keychain.set('rv-nfl-token', '<token>')`, add a Scriptable widget.
-- **Harness**: `node scripts/nfl/widget_harness.mjs [outDir] [filter]` stubs Scriptable and renders every mode x size
+- **Hosting and the daily refresh** (owner: "nothing to run on the mac, put it on github pages the same way we have the
+  widget working for retrovault"): the PUBLIC repo `github.com/sakisaki-dev/rv-nfl-widget` (clone `~/Code/rv-nfl-widget`,
+  branch `main`). A GitHub Actions workflow there (`.github/workflows/daily.yml`, cron `7 14 * * *`: 6:07 am Pacific in
+  winter, 7:07 in summer, plus `gh workflow run daily.yml -R sakisaki-dev/rv-nfl-widget`) downloads the season's nflverse
+  files (games, injuries, roster, depth charts, weekly player stats, snap counts), runs its own `scripts/` (copies of
+  `injuries.py`, `depth_charts.py`, `season_ovr.py`'s live SZN, `playoff_odds.py` and `widget_data.py`, standard library
+  only, checked to give the same results as this repo's on the same files) and commits `widget.json` when it
+  changed; nothing runs on the Mac (the old launchd job `~/Code/Tools/rv-nfl-daily.sh` is gone). It never draws sprites:
+  it names the files already in the repo's `widget-sprites/` (a player with none yet is drawn without one, logo or
+  number). Served raw (`https://raw.githubusercontent.com/sakisaki-dev/rv-nfl-widget/main/<file>`) and on GitHub Pages
+  (`https://sakisaki-dev.github.io/rv-nfl-widget/<file>`, branch main, root, `.nojekyll`); the script and the installer
+  read raw, then Pages, then the cache. No token anywhere. `LAN_BASE` (top of the script) overrides it with the local
+  preview (`http://<Mac IP>:4174/`). No site code goes to that repo.
+- **Manual refresh** (new players' sprites, a widget code change; occasional, never daily): after `npm run nfl:rebuild`,
+  `bash scripts/nfl/widget_publish.sh [clone dir]`. It reruns `widget_data.py` with `RV_NFL_SPARE=1` (also draws spare
+  sprites: every club's six best skill players and both depth-chart QBs, the MVP race's ten, every Vikings player with a
+  game, so the daily build finds a sprite when the week's picks move on), writes the repo's `inputs/`
+  (`scripts/nfl/widget_inputs.py`: players who can play this season with gsis / pfr ids and clubs, their ESPN ids, the
+  art paths), copies `widget-sprites/`, `widget-art/` and `rv-nfl-widget.js`, commits, pushes and starts the workflow.
+- **Install**: Scriptable > new script, paste `public/widgets/rv-nfl-install.js` (it loads the widget code from the public
+  repo, cached for offline), add a Scriptable widget. No key.
+- **Harness**: `node scripts/nfl/widget_harness.mjs [outDir] [filter]` (`RV_NFL_WIDGET_DATA=~/Code/rv-nfl-widget` to run it on
+  the repo's GitHub-built data; `raw-down-large` checks the Pages fallback) stubs Scriptable and renders every mode x size
   (HTML + tree dumps, `contact.html` has all) from `scripts/nfl/widget_fixtures/` (a recorded ESPN scoreboard and summary,
   `fetch_fixtures.py` re-records them; the finished game is turned live for the live views). Pinned to Pacific time.
 

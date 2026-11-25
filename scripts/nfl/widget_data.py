@@ -218,6 +218,27 @@ def main():
     if (depth.get(CLUB, {}).get("o", {}).get("QB") or [None])[0]:
         add(depth[CLUB]["o"]["QB"][0], "", "left", "cheer", "sil")
 
+    # spare sprites (RV_NFL_SPARE=1, set by `widget_publish.sh --refresh`): drawn but not named in widget.json, so the
+    # data repo's daily build (github.com/sakisaki-dev/rv-nfl-widget, which never draws sprites) still finds a file
+    # when the week's picks move on: every club's six best skill players and both depth-chart QBs, the MVP race's ten,
+    # every club player with a game (the five best and the QBs also celebrating and as silhouettes)
+    spare: dict[str, set] = {}
+    if os.environ.get("RV_NFL_SPARE"):
+        def extra(key, *variants):
+            if key:
+                spare.setdefault(key, set()).update(variants or {""})
+        for t in CLUBS:
+            ks = sorted((k for k in active if club_of(k) == t and k.split(":")[0] in SKILL), key=lambda k: (-szn["ovr"][k], k))
+            for k in ks[:6] + (depth.get(t, {}).get("o", {}).get("QB") or [])[:2]:
+                extra(k, "", "left")
+        for k in sorted(mvp_pool, key=lambda k: (-szn["ovr"][k], k))[:10]:
+            extra(k, "", "sil")
+        everyone = sorted((k for k in active if club_of(k) == CLUB), key=lambda k: (-szn["ovr"][k], k))
+        for k in everyone:
+            extra(k, "", "left")
+        for k in everyone[:5] + (depth.get(CLUB, {}).get("o", {}).get("QB") or [])[:2]:
+            extra(k, "", "left", "cheer", "sil")
+
     # sprites, written through the Retro Vault widget's pipeline pointed at the NFL folder
     WS.SCALE = SPRITE_SCALE
     WS.OUT = DATA / "widget-sprites"
@@ -238,6 +259,11 @@ def main():
             else:
                 u[v] = sset.want(key, club, "idle", v)
         urls[key] = u
+    for key in sorted(spare):
+        t = club_of(key)
+        if t:
+            for v in sorted(spare[key]):
+                sset.want(key, CLUBS[t][0], "celebrate" if v == "cheer" else "idle", "" if v in ("", "cheer") else v)
     written = sset.write()
     sprites = {k: {kind: written.get(u) and u for kind, u in us.items() if written.get(u)} for k, us in urls.items()}
 
