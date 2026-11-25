@@ -253,7 +253,7 @@ const SixDegrees = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<s
         accent="var(--sky)"
         steps={[
           <>Build a chain from the start player to the target, one linked player at a time.</>,
-          <>Players link through a shared club, era, family or lineage. Each chip tells you why.</>,
+          <>Links are a shared club, era, family or lineage.</>,
           <>Every link and every hint is a stroke. Finish at or under par to keep the streak.</>,
         ]}
       />

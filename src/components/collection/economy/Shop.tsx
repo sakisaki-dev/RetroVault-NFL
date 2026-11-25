@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { PACKS, type PackType, type Tier } from '@/utils/collection';
 import { fmtCoins } from '@/utils/cardMarket';
@@ -51,9 +52,9 @@ const Shop = ({ coins, meanValue, onOpenPack }: ShopProps) => {
           );
         })}
       </ul>
-      <p className="mt-3 text-xs text-muted-foreground">
-        Bought packs go on your shelf and open like any other. Perfect Season packs are earned by going 18–0, never sold. Earn coins by selling cards
-        to the market, set bonuses and bounties.
+      <p className="mt-3 flex items-center gap-1 text-xs text-muted-foreground">
+        Bought packs go on your shelf
+        <InfoTip>Perfect Season packs are earned by going 18–0, never sold. Earn coins by selling cards to the market, set bonuses and bounties.</InfoTip>
       </p>
     </div>
   );

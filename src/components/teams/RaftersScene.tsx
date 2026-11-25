@@ -332,8 +332,8 @@ const RaftersScene = ({ team, banners, ring, onOpen, onRing, title, headingId = 
           <p className="rafters__note-k">{banners.length ? 'How a number goes up' : 'No numbers in the rafters yet'}</p>
           <p>
             {banners.length
-              ? "Every Hall of Famer's number is retired by the club he is best known for, and hangs here on its own. Tap a banner for his card; hold it for a quick look. A new Hall of Fame class raises its banners at the next update."
-              : `When a Hall of Famer best known with the ${team?.name ?? 'club'} is voted in, his number is retired and his banner goes up here, with his years and the rings he won here.`}
+              ? 'Tap a banner for his card; hold for a quick look.'
+              : 'A Hall of Famer’s banner goes up here.'}
           </p>
         </div>
       )}

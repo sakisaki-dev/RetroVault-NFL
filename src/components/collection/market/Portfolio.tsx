@@ -142,7 +142,7 @@ const Portfolio = ({ history, owned, autos = [], byKey, period, sinceLabel, onOp
       <div className="mk-port mk-port--empty">
         <PackageOpen className="h-8 w-8 text-gold" aria-hidden="true" />
         <p className="font-display text-2xl font-extrabold uppercase italic leading-none">Start your portfolio</p>
-        <p className="text-sm text-muted-foreground">Every card you pull is tracked here: its value, and what it has gained since you pulled it.</p>
+        <p className="text-sm text-muted-foreground">Pulled cards are tracked here</p>
         <button
           type="button"
           className="mk-cta"

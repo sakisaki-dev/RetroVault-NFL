@@ -166,7 +166,7 @@ const Imposter = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<str
           <>
             Tap a card to put him under the light, then tap again (or press <b>Accuse</b>) to name the imposter.
           </>,
-          <>Scout any card for his full career first. Every 3 in a row earns a pack, and the cases get harder.</>,
+          <>Scout a card first. Every 3 in a row earns a pack.</>,
         ]}
         keys="Keys 1 to 6 pick a suspect, Enter accuses"
       />

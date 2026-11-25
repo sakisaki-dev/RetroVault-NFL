@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
@@ -237,9 +238,9 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
           ))}
         </Reveal>
       )}
-      {old && <p className="sx-note">Divisions are shown as aligned today; before 2002 the league had different divisions, so seeds start in 2002.</p>}
-      {tags.size > 0 && <p className="sx-note">Div, In and Out: already clinched or eliminated by the games left (ties count as unbroken).</p>}
-      {seeds.size > 0 && <p className="sx-note">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak). Gold star: made the playoffs.</p>}
+      {old && <p className="sx-note">Today&rsquo;s divisions; seeds from 2002</p>}
+      {tags.size > 0 && <p className="sx-note">Div, In, Out: clinched or eliminated by games left</p>}
+      {seeds.size > 0 && <p className="sx-note">Seeds by record, then point differential<InfoTip>Division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak). Gold star: made the playoffs.</InfoTip></p>}
     </div>
   );
 };

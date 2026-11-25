@@ -65,8 +65,8 @@ const DdGraphs = ({ player, players, wide }: { player: Player; players: Player[]
   const at = career ? (idx < 0 || idx >= career.points.length ? lastLine : idx) : 0;
 
   if (!ready) return <PixelLoader label="Charting" what="the career graphs" minHeight={wide ? 420 : 520} />;
-  if (!file) return <p className="glass-card p-4 text-sm text-muted-foreground">The season-by-season file isn&rsquo;t built yet (npm run rebuild writes it).</p>;
-  if (!career) return <p className="glass-card p-4 text-sm text-muted-foreground">{displayName(player.name)} has no season-end snapshots on record, so there is nothing to chart yet.</p>;
+  if (!file) return <p className="text-xs text-muted-foreground">Season file not built</p>;
+  if (!career) return <p className="text-xs text-muted-foreground">No seasons to chart</p>;
   const pts = career.points;
   const span = `${yLabel(pts[0].year)}–${yLabel(pts[pts.length - 1].year)}`;
   return (

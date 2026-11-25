@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
@@ -92,8 +93,8 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
           </div>
           <p className="text-[11px] text-muted-foreground">
             {useSeason
-              ? `Graded on ${label}${seasonOvr?.live ? ' so far' : ''} alone, against ${player.position}s with ${seasonPoolLabel(seasonPlayers, player.position) ?? 'a game'}.`
-              : 'Graded on his whole career, against every ' + player.position + '.'}
+              ? `${label}${seasonOvr?.live ? ' so far' : ''} · vs ${player.position}s with ${seasonPoolLabel(seasonPlayers, player.position) ?? 'a game'}`
+              : 'Whole career · vs every ' + player.position}
           </p>
         </div>
       )}
@@ -107,18 +108,14 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
       />
       {IS_NFL && useSeason && (grades as { smallSample?: boolean }).smallSample && seasonPoolLabel(seasonPlayers, player.position) && (
-        <p className="text-[11px] text-muted-foreground">
-          Below the {seasonPoolLabel(seasonPlayers, player.position)} bar: his rates are pulled toward the qualified average in proportion to the sample.
-        </p>
+        <p><NoteChip short="Small sample">Below the {seasonPoolLabel(seasonPlayers, player.position)} bar: his rates are pulled toward the qualified average in proportion to the sample.</NoteChip></p>
       )}
       {IS_NFL && !useSeason && (
         <>
           {(grades as { smallSample?: boolean }).smallSample && careerPoolLabel(player.position) && (
-            <p className="text-[11px] text-muted-foreground">
-              Small career sample (under {careerPoolLabel(player.position)}): his rates are pulled toward the qualified average in proportion to the sample.
-            </p>
+            <p><NoteChip short="Small career sample">Under {careerPoolLabel(player.position)}: his rates are pulled toward the qualified average in proportion to the sample.</NoteChip></p>
           )}
-          {careerRatingOf(key)?.[5] === 1 && <p className="text-[11px] text-muted-foreground">Efficiency from career totals (no weekly data for his whole career): his rates are compared with players whose careers centre within five years of his, then ranked with everyone else.</p>}
+          {careerRatingOf(key)?.[5] === 1 && <p><NoteChip short="From career totals">No weekly data for his whole career: his rates are compared with players whose careers centre within five years of his, then ranked with everyone else.</NoteChip></p>}
         </>
       )}
       {IS_NFL && <DdAdvancedFactors player={player} players={players} scope={useSeason ? String(seasonOvr?.season) : 'c'} onOpenPlayer={onOpenPlayer} />}

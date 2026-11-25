@@ -51,7 +51,7 @@ const ArtLab = ({ open, onClose, cards, total }: ArtLabProps) => {
             <DialogTitle className="font-display text-2xl uppercase italic">
               Art <span className="text-gold">lab</span>
             </DialogTitle>
-            <DialogDescription className="lab__desc">Packs, walkouts and card art, played on samples. Preview only; nothing is added.</DialogDescription>
+            <DialogDescription className="lab__desc">Preview only; nothing is added.</DialogDescription>
           </div>
           <PlayerPicker players={league} value={pick} onPick={onPick} />
         </div>

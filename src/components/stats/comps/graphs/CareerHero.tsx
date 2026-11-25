@@ -241,7 +241,7 @@ const CareerHero = ({
             )}
           </div>
           <p className="mt-1 text-[10px] text-muted-foreground">
-            Drag across the chart to scrub seasons{wide ? ' (or hover; arrow keys when focused)' : ''}. Hatched: no season line ({IS_NFL ? 'first season in the data or no games' : 'first record, idle or an import correction'}). Hollow dot: a short or live season.
+            Drag to scrub seasons · hatched: no season line · hollow: short or live
           </p>
           <SparkRows career={career} metrics={metrics} metricId={metric.id} onMetric={onMetric} idx={idx} wide={wide} />
         </div>

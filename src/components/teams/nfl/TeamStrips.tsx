@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/timeline/TeamLogo';
@@ -187,8 +188,8 @@ export const SuperBowlStrip = ({ superBowls, highlight, onHighlight }: SbStripPr
         })}
       </StripRail>
       <p className="ts-key">
-        <span><Trophy className="mr-1 inline h-3 w-3 text-gold" aria-hidden />Tile: the champion, the score and the runner-up</span>
-        <span>Bar under it: the champion's power score that season (100 × win % + 1.5 × point differential per game + 40 × schedule strength)</span>
+        <span><Trophy className="mr-1 inline h-3 w-3 text-gold" aria-hidden />Tile: champion, score, runner-up</span>
+        <span>Bar: champion's power score<InfoTip className="ml-1 align-middle">100 × win % + 1.5 × point differential per game + 40 × schedule strength</InfoTip></span>
       </p>
       {el}
     </Reveal>

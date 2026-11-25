@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -259,7 +260,8 @@ const FranchiseWall = ({ teams, records, onOpen }: Props) => {
         <Reveal className="cw-wall fw-wall">{clubs.sorted.map((c, i) => tile(c, i))}</Reveal>
       )}
       <p className="sx-note">
-        Regular-season record{allTime ? ` ${allTime.from}–${allTime.to}` : ''}, playoff trips (PO) from the postseason games, Hall of Famers (HOF) with a stint at the club. The player on each card is the greatest by Career Legacy who played there.
+        Record{allTime ? ` ${allTime.from}–${allTime.to}` : ''} · PO playoff trips · HOF Hall of Famers
+        <InfoTip>Regular-season record, playoff trips (PO) from the postseason games, Hall of Famers (HOF) with a stint at the club. The player on each card is the greatest by Career Legacy who played there.</InfoTip>
       </p>
     </section>
   );

@@ -29,7 +29,7 @@ const SeasonLink = () => {
       <span className="min-w-0">
         <span className="season-link__k block">{line}</span>
         <span className="season-link__t block">The season page</span>
-        <span className="season-link__d block">Standings and power rankings, game logs, league leaders, the award race, head-to-head and game records.</span>
+        <span className="season-link__d block">Standings, power, leaders, game logs</span>
       </span>
       <ChevronRight className="season-link__go h-6 w-6" aria-hidden />
     </button>

@@ -22,7 +22,7 @@ const LeagueShape = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
           League Shape
         </h2>
         <SectionIntro id="league-shape" takeaway={shapeTakeaway(players, isHallOfFamer)}>
-          Where the talent sits: every player on one axis, the Hall of Fame by position, and the franchises behind it.
+          Where the talent sits
         </SectionIntro>
       </div>
       <DistributionSwarm players={players} ovrMap={ovrMap} onSelect={onSelect} />

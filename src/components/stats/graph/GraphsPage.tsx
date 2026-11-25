@@ -69,7 +69,7 @@ const GraphsPage = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
           Graph Builder
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground max-sm:hidden">
-          Any stat against any stat. Tap a preset or pick two stats; medians, quadrants and the trend use league players only.
+          Any stat against any stat. League players only.
         </p>
       </header>
       <GraphBuilder

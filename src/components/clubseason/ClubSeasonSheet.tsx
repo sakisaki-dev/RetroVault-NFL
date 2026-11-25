@@ -175,7 +175,7 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     <div className="pg-col">
                       <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined}>
                         {tickets.length ? <Fixtures tickets={tickets} onOpen={openGameFromSheet} /> : <p className="pg-note">No games on file for {year}.</p>}
-                        {tickets.some((t) => t.upset) && <p className="pg-note">Upset: the club won as an underdog by 3 or more on the closing line (or lost as a favourite by 3 or more).</p>}
+                        {tickets.some((t) => t.upset) && <p className="pg-note">Upset: 3+ points against the closing line</p>}
                       </Section>
                     </div>
                     <div className="pg-col">

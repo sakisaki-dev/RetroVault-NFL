@@ -1,4 +1,5 @@
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
+import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import { useState } from 'react';
 import { Hexagon, Swords } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -253,7 +254,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             )}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Tap or hover an axis label to see the actual numbers behind it.</p>
+          <p className="text-xs text-muted-foreground">Tap an axis label for numbers</p>
         )}
       </div>
     </div>
@@ -320,9 +321,12 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-muted-foreground">
-        Both scores (0–100) use rates z-scored within the position: {labels.join(', ')}. Career length, totals and True Talent are left out. Plays like asks whether he is above or below the
-        position average in the same places (what the hexagon shows); closest overall needs the numbers to match too (~60 = about one standard deviation apart on average).
+      <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
+        Scores 0–100, rates within position
+        <InfoTip>
+          Both scores use rates z-scored within the position: {labels.join(', ')}. Career length, totals and True Talent are left out. Plays like asks whether he is above or below the
+          position average in the same places (what the hexagon shows); closest overall needs the numbers to match too (~60 = about one standard deviation apart on average).
+        </InfoTip>
       </p>
     </div>
   );
@@ -372,10 +376,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             </ol>
           </>
         )}
-        <p className="mt-auto text-[11px] text-muted-foreground">
-          Click a comp to overlay him on the hexagon; mini hexagons show the comp (colour) over {surnameOf(player.name)} (grey). Dive opens his report; the swords send the pair to
-          Head-to-Head.
-        </p>
+        <p className="mt-auto text-[11px] text-muted-foreground">Click a comp to overlay him on the hexagon.</p>
       </div>
     </div>
     </div>

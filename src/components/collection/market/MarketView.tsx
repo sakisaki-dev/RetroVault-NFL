@@ -147,7 +147,7 @@ const MarketView = ({ byKey, owned, autos, onOpen }: MarketViewProps) => {
         <div className="mk-board">
           <h3 className="mk-list__title">Heatmap</h3>
           <p className="mb-2 text-xs text-muted-foreground">
-            Top {Math.min(HEAT, heat.length)} cards by value. Size is value, colour is change {sinceLabel} (▲ green, ▼ red).
+            Top {Math.min(HEAT, heat.length)} by value · colour: change {sinceLabel}
           </p>
           {heat.length ? <Heatmap rows={heat} onOpen={(r) => open(r, heat)} /> : <p className="mk-list__empty">No cards match.</p>}
         </div>

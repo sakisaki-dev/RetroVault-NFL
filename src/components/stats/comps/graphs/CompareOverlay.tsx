@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player, Position } from '@/types/player';
 import { similarPlayers } from '@/config/advanced';
 import { cn } from '@/lib/utils';
@@ -103,7 +104,7 @@ const CompareOverlay = ({
   return (
     <div className="cg-card glass-card cg-span">
       <h3>Side by side</h3>
-      <p className="cg-sub">His curve by career year (1 = rookie season). {note}</p>
+      <p className="cg-sub">By career year (1 = rookie season)<InfoTip className="ml-1 align-middle">{note}</InfoTip></p>
       <div className="cg-pick" role="radiogroup" aria-label="Compare with">
         {(
           [

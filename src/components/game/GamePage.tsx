@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArrowLeft, CalendarDays, CloudSun, Gauge, MapPin, ScrollText, Shield, Sparkles, Swords, Trophy, Users, Wind } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -721,7 +722,7 @@ const GameView = ({ g }: { g: GameDetail }) => {
               {deep === 'rosters' && (
                 <>
                   <p className="text-sm text-muted-foreground">
-                    {snapOk ? 'Everyone who was on the field, by snap count.' : 'Everyone who recorded a stat in this game; snap counts begin in 2013, so linemen and players with no stat line are not listed.'} Tap a player for his Deep Dive.
+                    {snapOk ? 'Everyone on the field, by snaps' : <>Players with a stat line<InfoTip className="ml-1 align-middle">Snap counts begin in 2013, so linemen and players with no stat line are not listed.</InfoTip></>} · tap a player for his Deep Dive
                   </p>
                   {pair((s) => <Roster g={g} side={s} link={link} />)}
                 </>

@@ -1,4 +1,5 @@
 import { useMemo, type CSSProperties } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
@@ -81,6 +82,12 @@ const NOTE: Record<ClubLineup['m'], string> = {
   weeks: 'No snap counts before 2013, so each spot goes to the player the club\u2019s weekly depth chart listed first there in the most regular-season weeks (nflverse depth charts, 2001 to 2012).',
   busiest: 'No starter data before 2001, so each spot goes to the club\u2019s busiest player there that season: the most passing attempts, carries, catches or tackles.',
 };
+const SHORT: Record<ClubLineup['m'], string> = {
+  snaps: 'Starters by snaps',
+  depth: 'Current depth chart',
+  weeks: 'Starters by weekly depth charts',
+  busiest: 'Busiest player at each spot',
+};
 const ClubSeasonLineup = ({ rows, lineup, club, clubName, year, onPick }: { rows: RosterEntry[]; lineup?: ClubLineup | null; club: string; clubName: string; year: number; onPick: (key: string) => void }) => {
   const picked = useMemo(() => {
     if (!lineup) return null;
@@ -118,7 +125,7 @@ const ClubSeasonLineup = ({ rows, lineup, club, clubName, year, onPick }: { rows
           </ol>
         </div>
       )}
-      <p className="pg-spread__note">{NOTE[lineup?.m ?? 'busiest']}</p>
+      <p className="pg-spread__note">{SHORT[lineup?.m ?? 'busiest']}<InfoTip className="ml-1 align-middle">{NOTE[lineup?.m ?? 'busiest']}</InfoTip></p>
     </Reveal>
   );
 };

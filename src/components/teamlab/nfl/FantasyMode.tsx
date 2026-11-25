@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Ban, Calculator, SlidersHorizontal, Dices, Eraser, FastForward, ListOrdered, Lock, LockOpen, Plus, Swords, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -229,9 +230,9 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
   };
 
   const subs: Record<string, string> = {
-    free: 'Pick any lineup: QB, 2 RB, 2 WR, TE, FLEX and a team defence, projected week by week from recent form.',
-    cap: `Salary cap: the game's salaries against a ${cap} cap. Lock the players you want, then build the best lineup the cap allows.`,
-    draft: 'Snake draft against seven computer owners: take the best available at each turn, one player a round.',
+    free: 'QB, 2 RB, 2 WR, TE, FLEX and a defence, projected weekly',
+    cap: `Salary cap ${cap} · lock players, then build`,
+    draft: 'Snake draft vs seven computer owners',
   };
 
   return (
@@ -393,7 +394,7 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
               </label>
             ))}
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">Team defences score the standard way: sack 1, INT 2, fumble recovery 2, TD 6, safety 2, block 2, points allowed 10 down to −4.</p>
+          <p className="mt-2 text-xs text-muted-foreground">Defences: standard scoring</p>
         </Card>
       )}
 
@@ -471,7 +472,8 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
           </table>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Projection: his last 12 games, recent ones weighted heavier, times how the opponent defends his position, with injury reports and byes applied.
+          Projection from his last 12 games
+          <InfoTip className="ml-1 align-middle">Recent games weighted heavier, times how the opponent defends his position, with injury reports and byes applied.</InfoTip>
           {excludes.size > 0 && (
             <button type="button" className="ml-2 underline" onClick={() => setExcludes(new Set())}>
               Restore {excludes.size} removed
@@ -628,7 +630,7 @@ const FantasyH2H = ({
               </tbody>
             </table>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">Played weeks use each player's actual game that week (zero on a bye or when he did not play), defences their real stat line.</p>
+          <p className="mt-2 text-xs text-muted-foreground">Played weeks use actual games</p>
         </>
       )}
     </Card>

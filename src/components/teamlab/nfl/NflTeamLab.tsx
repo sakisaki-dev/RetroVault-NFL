@@ -124,7 +124,7 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
           }
           sub={
             filled === 0
-              ? 'Load a club’s real starters, or build any 22: 11 on offense and 11 on defense, graded against random lineups.'
+              ? 'Load a club’s starters, or build any 22'
               : isCompleteN(lineup)
                 ? `${loaded ? `${clubTeam?.fullName}${clubTeam?.fullName.endsWith('s') ? "'" : "'s"} depth chart as of ${depth?.at ?? 'now'}` : 'Your lineup'}${stepAside.length ? `; ${stepAside.length} injured starter${stepAside.length === 1 ? '' : 's'} stepped aside` : ''}.`
                 : `${filled} of 22 on the field. The full report appears when all 22 are in.`
@@ -245,7 +245,7 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
       {stepAside.length > 0 && (
         <p className="nfl-note" role="status">
           <b>Stepped aside:</b>{' '}
-          {stepAside.map((s) => `${s.key.slice(s.key.indexOf(':') + 1)} (${s.code})`).join(', ')}. The next man on the depth chart plays.
+          {stepAside.map((s) => `${s.key.slice(s.key.indexOf(':') + 1)} (${s.code})`).join(', ')}.
         </p>
       )}
 

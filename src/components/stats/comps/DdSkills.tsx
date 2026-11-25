@@ -76,7 +76,6 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
                   Skill rating <b>{overall.rating}</b>
                 </span>
               </div>
-              <p className="text-[11px] text-muted-foreground">Skill rating: per-game skills only, ignores career length and awards.</p>
               <p className="text-xs text-muted-foreground">
                 {ordinal(overall.pct)} percentile across his {graded.length} skill{graded.length === 1 ? '' : 's'} among {player.position}s. Best:{' '}
                 <b className="text-foreground">{best.trait.name}</b>.

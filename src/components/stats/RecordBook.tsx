@@ -239,9 +239,9 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
           scope === 'awards'
             ? 'Every AP award and Super Bowl MVP winner, season by season.'
             : scope === 'streaks'
-              ? 'The longest runs of straight seasons over a mark, and the most seasons over it. Runs still alive are marked.'
+              ? 'Longest runs over a mark; live runs marked'
               : scope === 'game'
-            ? 'Single games and long plays from the club board, with the week and opponent each was set against.'
+            ? 'Single games and long plays, with week and opponent'
             : scope === 'career' || !tracked
               ? recordsTakeaway(headline)
               : `${beaten} of ${tracked} club records have been beaten somewhere in the league.`

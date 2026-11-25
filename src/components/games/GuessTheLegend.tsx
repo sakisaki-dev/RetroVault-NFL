@@ -431,7 +431,7 @@ const GuessTheLegend = ({ players, ovrMap }: { players: Player[]; ovrMap: Map<st
         id="legend"
         steps={[
           <>A mystery player hides behind the card. Clue 1 is open.</>,
-          <>Search a name and press Guess. Every miss unlocks the next clue and the prize drops by a point.</>,
+          <>Search a name and Guess. Each miss opens a clue and costs a point.</>,
           <>Name him early: 5 points on clue 1, nothing if every clue was needed.</>,
         ]}
       />

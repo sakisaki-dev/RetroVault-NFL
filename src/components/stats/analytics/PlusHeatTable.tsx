@@ -1,4 +1,5 @@
 import { useProgressiveRows } from '@/hooks/useProgressiveRows';
+import { SectionNote } from '@/components/ui/InfoTip';
 import { useMemo, useState } from 'react';
 import { Grid3x3 } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
@@ -79,10 +80,9 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
             <Grid3x3 className="h-4 w-4 text-gold" aria-hidden="true" />
             {position} + index grid
           </h3>
-          <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
-            Every {POSITION_NAMES[position].toLowerCase()} rate stat as a + index: 100 is the position average, blue is better, red is worse.
-            Sorted by {headline?.short ?? 'headline stat'}. A dash means below that stat's minimum sample.
-          </p>
+          <SectionNote className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+            {`Every ${POSITION_NAMES[position].toLowerCase()} rate stat as a + index: 100 is the position average, blue is better, red is worse. Sorted by ${headline?.short ?? 'headline stat'}. A dash means below that stat's minimum sample.`}
+          </SectionNote>
         </div>
         <button
           type="button"

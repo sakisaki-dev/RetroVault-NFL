@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -164,7 +165,8 @@ const FranchiseLeaders = ({ teams, league }: { teams: TeamSummary[]; league: Pla
         </Reveal>
       )}
       <p className="sx-note">
-        Totals with this club, {allTime ? `${allTime.from}–${allTime.to}` : ''}: the seasons a player spent here, from his season-end career lines. A season split between two clubs is left out, and so is the first season (1999) for anyone who played before it.
+        Totals with this club{allTime ? `, ${allTime.from}–${allTime.to}` : ''}
+        <InfoTip>The seasons a player spent here, from his season-end career lines. A season split between two clubs is left out, and so is the first season (1999) for anyone who played before it.</InfoTip>
       </p>
     </section>
   );

@@ -80,7 +80,7 @@ export const ClubSplits = ({ player, career }: { player: Player; career: Career 
   return (
     <div className="cg-card glass-card">
       <h3>Splits by club</h3>
-      <p className="cg-sub">His recorded seasons at each stop (totals, per game, rings, average season score), then every season in order.</p>
+      <p className="cg-sub">Totals, per game and rings at each stop</p>
       <div className="cg-fill">
         {rows.map(([club, r]) => {
           const ink = clubInk(club);

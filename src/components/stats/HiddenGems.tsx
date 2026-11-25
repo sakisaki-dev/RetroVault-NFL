@@ -43,13 +43,13 @@ const MODES: { id: Mode; label: string; blurb: string; Icon: typeof Gem }[] = [
   {
     id: 'rising',
     label: 'On the rise',
-    blurb: `Under ${RISING_MAX_GAMES} games and still playing: per-game skill already plays far above the overall, which needs a long career to catch up.`,
+    blurb: `Under ${RISING_MAX_GAMES} games, still playing, per-game skill ahead of the overall`,
     Icon: TrendingUp,
   },
   {
     id: 'underrated',
     label: 'Underrated',
-    blurb: `${RISING_MAX_GAMES}+ games, yet the overall (career production and awards) undersells how good he was every time he took the field.`,
+    blurb: `${RISING_MAX_GAMES}+ games, overall undersells his per-game level`,
     Icon: Gem,
   },
 ];

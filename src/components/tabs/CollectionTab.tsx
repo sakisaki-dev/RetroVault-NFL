@@ -586,7 +586,7 @@ const CollectionTab = () => {
               })}
             </ul>
           ) : (
-            <p className="text-sm text-muted-foreground">No packs. Win them in the Arcade, take the daily draw or buy one in the Exchange.</p>
+            <p className="text-sm text-muted-foreground">No packs yet</p>
           )}
           <OpenAll
             state={state}

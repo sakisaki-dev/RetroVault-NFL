@@ -1,4 +1,5 @@
 import { stag } from '@/components/motion/Reveal';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { useMemo, useState } from 'react';
 import FitName from '../FitName';
 import { Scale } from 'lucide-react';
@@ -32,10 +33,12 @@ const ValueAcrossBoard = ({ players, onSelect }: { players: Player[]; onSelect: 
           <Scale className="h-4 w-4 text-gold" aria-hidden="true" />
           Value / Game, every position
         </h3>
-        <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
-          League Score per game, the rate beside OVR&apos;s career total. Positions score on different scales, so each player is ranked by how
-          far above his own position&apos;s average he sits (<b className="text-foreground">σ</b>, standard deviations), min{' '}
-          {VALUE_ACROSS_MIN_GAMES} games.
+        <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground sm:text-sm">
+          League Score per game · min {VALUE_ACROSS_MIN_GAMES} games
+          <InfoTip>
+            The rate beside OVR&apos;s career total. Positions score on different scales, so each player is ranked by how
+            far above his own position&apos;s average he sits (<b className="text-foreground">σ</b>, standard deviations).
+          </InfoTip>
         </p>
       </div>
 

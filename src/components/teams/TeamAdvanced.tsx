@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArrowDown, ArrowUp, ArrowUpDown, Dice5, Gauge, Home, Scale, Shield, TrendingUp, Waves } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -343,7 +344,7 @@ const buildInsights = (season: ScheduleSeason): Insight[] => {
     icon: Gauge,
     value: `±${r.marginSd!.toFixed(1)} pts`,
     tone: '',
-    detail: `Game margins vary ±${r.marginSd!.toFixed(1)} points from game to game (standard deviation), the league's steadiest`,
+    detail: `Margins vary ±${r.marginSd!.toFixed(1)} points a game, the league's steadiest`,
   }));
   add(pick(rows, (r) => r.marginSd, 'max'), (r) => ({
     id: 'volatile',
@@ -351,7 +352,7 @@ const buildInsights = (season: ScheduleSeason): Insight[] => {
     icon: Waves,
     value: `±${r.marginSd!.toFixed(1)} pts`,
     tone: '',
-    detail: `Game margins vary ±${r.marginSd!.toFixed(1)} points from game to game (standard deviation), the league's widest swings`,
+    detail: `Margins vary ±${r.marginSd!.toFixed(1)} points a game, the league's widest swings`,
   }));
   add(pick(rows, (r) => r.homeEdge, 'max'), (r) => ({
     id: 'home',
@@ -670,7 +671,7 @@ const LeagueChart = ({ progression, clubs, team, onTeam }: { progression: Record
       <p className="text-xs text-muted-foreground">
         {seasons.length === 1
           ? `One season of weekly scores so far (${seasons[0]}), so every club is a single point. Lines appear as more seasons are uploaded; skipped seasons show as dashed stretches.`
-          : 'Tap or hover a line to bring a club forward; tap to track it below. Dashed stretches skip seasons without weekly scores.'}
+          : 'Tap a line to track a club · dashed: no weekly scores'}
       </p>
     </PixelPanel>
   );
@@ -774,7 +775,7 @@ const Movers = ({ progression, season, seasonsWithData, onTrack }: { progression
   if (seasonsWithData < 2) {
     return (
       <p className="ax-panel p-4 text-sm text-muted-foreground">
-        Risers and fallers appear once a second season of weekly scores is uploaded: each club's power rank against its previous season with scores.
+        No risers or fallers yet
       </p>
     );
   }
@@ -838,9 +839,9 @@ export const PowerAdvanced = ({ season: view }: { season: { season: string; tabl
   return (
     <section aria-labelledby="advanced-heading" className="space-y-4">
       <SectionHeader kicker="Weekly league scores" title={<span id="advanced-heading">Power &amp; advanced</span>} />
-      <p className="text-xs text-muted-foreground">
-        Pythagorean expected wins (points scored and allowed), luck (wins above or below them), margin adjusted for the schedule, consistency of game
-        margins and the home edge, for {season.season}.
+      <p className="flex items-center gap-1 text-xs text-muted-foreground">
+        Expected wins, luck, schedule-adjusted margin · {season.season}
+        <InfoTip>Pythagorean expected wins (points scored and allowed), luck (wins above or below them), margin adjusted for the schedule, consistency of game margins and the home edge.</InfoTip>
       </p>
       <InsightCards season={season} />
       <div className="flex flex-wrap items-center justify-between gap-2.5">

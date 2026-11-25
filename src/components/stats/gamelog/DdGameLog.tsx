@@ -97,7 +97,7 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
   }, [games]);
 
   if (log === undefined) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty" role="status">Loading game log…</div></div>;
-  if (!log || !all.length) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty">No game-by-game log is on file for {displayName(player.name)}.</div></div>;
+  if (!log || !all.length) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty">No games on file</div></div>;
 
   const maxKey = Math.max(1, ...chartGames.map((g) => g.key));
   const selGame = sel != null ? chartGames.find((g) => g.i === sel) ?? null : null;
@@ -337,7 +337,7 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
                 <span className="gl-range__end" style={{ left: 0 }}>{fmtN(cd.min)}</span>
                 <span className="gl-range__end" style={{ right: 0 }}>{fmtN(cd.max)}</span>
               </div>
-              <p className="gl-sub mb-2 mt-1">The band is the middle 60% of his games (p20 to p80); the tick is his mean.</p>
+              <p className="gl-sub mb-2 mt-1">Band: middle 60% of games · tick: mean</p>
               <ul className="space-y-1.5">
                 {form.map((f) => {
                   const d = f.v - (career?.mean ?? 0);
@@ -425,7 +425,7 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
             </tbody>
           </table>
         </div>
-        {split === 'opp' && <p className="gl-sub mt-1.5">Click a column heading to sort. The file has no stadium roof data, so there is no indoor/outdoor split.</p>}
+        {split === 'opp' && <p className="gl-sub mt-1.5">Click a heading to sort</p>}
       </div>
 
         </>
@@ -443,7 +443,7 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
             <button type="button" disabled={pg >= pages - 1} onClick={() => setPage(pg + 1)} className="gl-seg__b">Older</button>
           </div>
         )}
-        {!rule.hasLine && <p className="gl-sub mt-2">Offensive linemen have no box-score line in the data, so their log carries results and team scoring only.</p>}
+        {!rule.hasLine && <p className="gl-sub mt-2">No box-score line for linemen</p>}
       </div>
         </>
       )}
