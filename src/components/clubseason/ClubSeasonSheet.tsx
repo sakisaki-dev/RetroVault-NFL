@@ -3,6 +3,7 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type
 import type { Player } from '@/types/player';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import PlayerDetailCard from '@/components/PlayerDetailCard';
+import { COMP_FINDER_EVENT, HEAD_TO_HEAD_EVENT } from '@/components/stats/comps/compFinderLink';
 import { clubPlate } from '@/components/arcade/clubInk';
 import { Reveal } from '@/components/motion/Reveal';
 import { useLeague } from '@/context/LeagueContext';
@@ -79,15 +80,14 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
     return m;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAllPlayers, dataVersion]);
-  // The sheet closes first, then the player card opens on its own (its Deep Dive and links then never sit under the sheet)
+  // The player card opens over the sheet; closing it lands back on the sheet (owner: "they should dismiss to go back to
+  // the season popup"). Leaving for his Deep Dive closes both (the card changes the route; see onCardLeave).
   const pick = useCallback(
     (key: string) => {
       const p = byKey.get(key);
-      if (!p) return;
-      onClose();
-      window.setTimeout(() => setCard(p), AFTER_CLOSE_MS);
+      if (p) setCard(p);
     },
-    [byKey, onClose],
+    [byKey],
   );
   const rows = useMemo<RosterEntry[]>(
     () => (data?.roster ?? []).map((r) => {
@@ -150,13 +150,29 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
     }, mirrored.current ? 0 : 160);
     return () => window.clearTimeout(t);
   }, [open, team, tab, year]);
-  const openPlayer = useCallback(
-    (p: Player) => {
+  const openPlayer = useCallback((p: Player) => setCard(p), []);
+  // Leaving the sheet's route (the player card's Deep Dive, a link inside it) closes the sheet and the card with it
+  useEffect(() => {
+    if (!open) return;
+    const away = () => {
+      if (!/club\?/.test(window.location.hash)) {
+        setCard(null);
+        onClose();
+      }
+    };
+    const leave = () => {
+      setCard(null);
       onClose();
-      window.setTimeout(() => setCard(p), AFTER_CLOSE_MS);
-    },
-    [onClose],
-  );
+    };
+    window.addEventListener('hashchange', away);
+    window.addEventListener(COMP_FINDER_EVENT, leave);
+    window.addEventListener(HEAD_TO_HEAD_EVENT, leave);
+    return () => {
+      window.removeEventListener('hashchange', away);
+      window.removeEventListener(COMP_FINDER_EVENT, leave);
+      window.removeEventListener(HEAD_TO_HEAD_EVENT, leave);
+    };
+  }, [open, onClose]);
   useEffect(() => {
     // a new tab starts at its top
     scroller.current?.scrollTo({ top: 0 });
