@@ -14,6 +14,23 @@ const ESPN_PROXY =
     ? { "/espn-content": { target: "https://content.core.api.espn.com", changeOrigin: true, rewrite: (p: string) => p.replace(/^\/espn-content/, "") } }
     : undefined;
 
+// NFL edition icons (scripts/nfl/build_nfl_icons.py → public/nfl-icons/, "Kickoff, night game"): the NFL build links them in
+// place of the Retro Bowl edition's Kickoff icons in public/, which it leaves alone; the Retro Bowl build drops the folder.
+const NFL_ICONS_VERSION = "nightgame";
+const nflIcons = (): Plugin => ({
+  name: "nfl-icons",
+  transformIndexHtml: {
+    order: "pre",
+    handler(html) {
+      return html
+        .replace(/%BASE_URL%(favicon\.ico|favicon-32\.png|apple-touch-icon\.png)\?v=kickoff/g, `%BASE_URL%nfl-icons/$1?v=${NFL_ICONS_VERSION}`)
+        .replace("%BASE_URL%manifest.webmanifest", `%BASE_URL%nfl-icons/manifest.webmanifest?v=${NFL_ICONS_VERSION}`)
+        .replace(/%BASE_URL%splash\//g, "%BASE_URL%nfl-icons/splash/")
+        .replace(/(apple-mobile-web-app-title|application-name)" content="Retro Vault"/g, '$1" content="RV NFL"');
+    },
+  },
+});
+
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   // GitHub Pages serves the site from /RetroVault/; the deploy workflow sets BASE_PATH. Local dev stays at /.
@@ -31,6 +48,21 @@ export default defineConfig(() => ({
   preview: { proxy: ESPN_PROXY },
   plugins: [
     react(),
+    process.env.VITE_EDITION === "nfl" && nflIcons(),
+    process.env.VITE_EDITION !== "nfl" &&
+      ((): Plugin => {
+        let outDir = "dist";
+        return {
+          name: "drop-nfl-icons",
+          apply: "build",
+          configResolved(config) {
+            outDir = path.resolve(config.root, config.build.outDir);
+          },
+          closeBundle() {
+            fs.rmSync(path.join(outDir, "nfl-icons"), { recursive: true, force: true });
+          },
+        };
+      })(),
     // Belt and braces: a build that isn't showing the private sprites never ships a copy of them either
     !PRIVATE_SPRITES &&
       ((): Plugin => {
