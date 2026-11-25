@@ -9,6 +9,7 @@ import { FamilyPanel as FamilyPanelBox } from '../visual/FamilyZones';
 import { openInCompFinder } from '../comps/compFinderLink';
 import { cn } from '@/lib/utils';
 import Collapse from '@/components/ui/collapse';
+import { Adaptive } from '@/components/controls/Adaptive';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { NFL_TEAMS, findNFLTeam } from '@/utils/nflTeams';
 import Chips from '../analytics/Chips';
@@ -350,8 +351,8 @@ const GraphBuilder = ({
           <StatPicker compact id={`${uid}-y`} label="Y up" value={config.y} onChange={(y) => setAxis({ y })} pairWith={xPositions} />
         </div>
 
-        {/* Positions + the options sheet, one finger-scrollable strip */}
-        <div className="gb-strip" role="group" aria-label="Positions and options">
+        {/* Options + the presets menu on one row, positions on the next (equal chips, nothing scrolls) */}
+        <div className="gb-row" role="group" aria-label="Options and presets">
           <button type="button" onClick={() => setSheet(true)} className="gb-chip gb-chip--ghost" aria-haspopup="dialog">
             <SlidersHorizontal className="h-4 w-4 text-gold" aria-hidden="true" />
             Options
@@ -359,44 +360,63 @@ const GraphBuilder = ({
               <span className="rounded-full bg-gold px-1.5 text-[11px] font-bold text-night">{advancedOn + (config.zones ? 1 : 0)}</span>
             )}
           </button>
-          {posChips.map((p) => {
-            const on = p === 'All' ? config.pos.length === 0 : config.pos.includes(p as Position);
-            return (
-              <button
-                key={p}
-                type="button"
-                aria-pressed={on}
-                title={p === 'All' ? 'All positions' : POSITION_NAMES[p as Position]}
-                onClick={() => (p === 'All' ? set({ pos: [] }) : togglePos(p as Position))}
-                className="gb-chip font-display uppercase tracking-wide"
-              >
-                {p}
+          <Adaptive
+            title="Presets"
+            align="end"
+            trigger={(open) => (
+              <button type="button" className="gb-chip gb-chip--ghost" aria-haspopup="dialog" aria-expanded={open}>
+                <Sparkles className="h-4 w-4 text-gold" aria-hidden="true" />
+                Presets
+                <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
-            );
-          })}
+            )}
+          >
+            {(close) => (
+              <div className="gb-menu">
+                {saved.length > 0 && <p className="gb-menu__k">Saved</p>}
+                {saved.map((pr) => (
+                  <button key={pr.id} type="button" aria-pressed={paramsKey(pr.config) === current} onClick={() => (onChange(pr.config), close())} className="gb-menu__row">
+                    <Star className="h-4 w-4 text-gold" aria-hidden="true" />
+                    {displayName(pr.name)}
+                  </button>
+                ))}
+                <p className="gb-menu__k">Try these</p>
+                {TRY_THESE.map((t) => (
+                  <button key={t.id} type="button" aria-pressed={paramsKey(t.config) === current} onClick={() => (onChange(t.config), close())} className="gb-menu__row">
+                    <Sparkles className="h-4 w-4 text-gold" aria-hidden="true" />
+                    {t.name}
+                  </button>
+                ))}
+                {recentShown.length > 0 && <p className="gb-menu__k">Recent</p>}
+                {recentShown.map((c) => (
+                  <button key={paramsKey(c)} type="button" onClick={() => (onChange(c), close())} className="gb-menu__row">
+                    <Clock className="h-4 w-4" aria-hidden="true" />
+                    {quickTitle(c)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </Adaptive>
         </div>
-
-        {/* Presets, saved (pinned) and recent charts */}
-        <div className="gb-strip" role="group" aria-label="Presets, saved and recent charts">
-          {saved.map((pr) => (
-            <button key={pr.id} type="button" aria-pressed={paramsKey(pr.config) === current} onClick={() => onChange(pr.config)} className="gb-chip gb-chip--ghost border-gold/50">
-              <Star className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-              {displayName(pr.name)}
-            </button>
-          ))}
-          {TRY_THESE.map((t) => (
-            <button key={t.id} type="button" aria-pressed={paramsKey(t.config) === current} onClick={() => onChange(t.config)} className="gb-chip gb-chip--ghost">
-              <Sparkles className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-              {t.name}
-            </button>
-          ))}
-          {recentShown.map((c) => (
-            <button key={paramsKey(c)} type="button" onClick={() => onChange(c)} className="gb-chip gb-chip--ghost">
-              <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-              {quickTitle(c)}
-            </button>
-          ))}
-        </div>
+        {posChips.length > 0 && (
+          <div className="gb-pos" role="group" aria-label="Positions" style={{ gridTemplateColumns: `repeat(${posChips.length}, minmax(0, 1fr))` }}>
+            {posChips.map((p) => {
+              const on = p === 'All' ? config.pos.length === 0 : config.pos.includes(p as Position);
+              return (
+                <button
+                  key={p}
+                  type="button"
+                  aria-pressed={on}
+                  title={p === 'All' ? 'All positions' : POSITION_NAMES[p as Position]}
+                  onClick={() => (p === 'All' ? set({ pos: [] }) : togglePos(p as Position))}
+                  className="gb-chip font-display uppercase tracking-wide"
+                >
+                  {p}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Chart, edge to edge */}
         <section aria-labelledby={`${uid}-title`} className="-mx-4 space-y-2 border-y border-line/70 bg-panel/40 px-2 py-3">

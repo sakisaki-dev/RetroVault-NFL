@@ -322,3 +322,14 @@
 .tr-deals .tr-pk__p { display: flex; align-items: center; gap: 0.4rem; text-align: left; } .tr-deals .tr-pk__p > span:last-child { display: grid; } .tr-deals .tr-pk__p i { font-style: normal; font-size: 11px; color: hsl(var(--muted-foreground)); }
 .tr-quick { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
 .tr-qchip { min-height: 40px; padding: 0 0.8rem; border-radius: 999px; border: 1px solid hsl(var(--gold) / 0.5); background: hsl(var(--panel)); color: hsl(var(--chalk)); font: 700 13px 'Barlow Condensed', sans-serif; letter-spacing: 0.03em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* phone: the lineup stands two to a row, so a name tag may be wider (Smith-Njigba, St. Brown) */
+@media (max-width: 639px) { .fh-tag { max-width: 10rem; } }
+
+/* League sheet on a phone: room under the close button and above the home indicator, rows wide enough for their options */
+@media (max-width: 639px) {
+  .fh-sheet { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  .fh-sheet__g { margin-top: 2.3rem; }
+  .fh-sheet__g > .fh-set:nth-child(2), .fh-sheet__g > .fh-set:nth-child(7) { grid-column: 1 / -1; }
+  .fh-set__row > .ax-select, .fh-set__row > .ax-toggle { flex: 1 1 100%; }
+}

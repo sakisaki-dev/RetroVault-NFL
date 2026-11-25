@@ -488,3 +488,10 @@
   text-transform: uppercase;
   color: hsl(var(--gold));
 }
+
+/* dock: a centred panel from 768px (the Fantasy slot picker) instead of a full-screen sheet */
+@media (min-width: 768px) {
+  .ss-root[data-dock] .ss-panel { inset: 6vh auto 6vh 50%; width: min(560px, 92vw); translate: -50% 0; border-radius: 16px; border: 1px solid hsl(var(--line)); }
+}
+.ss-extra { display: grid; justify-items: end; line-height: 1.1; font: 700 12px 'Barlow Condensed', sans-serif; color: hsl(var(--chalk, 0 0% 100%)); }
+.ss-extra i { font-style: normal; font-weight: 600; color: hsl(var(--muted-foreground)); }

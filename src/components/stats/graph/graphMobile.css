@@ -96,3 +96,13 @@
   background: hsl(var(--gold) / 0.12);
   color: hsl(var(--foreground));
 }
+
+/* Options + Presets on one row, the position chips share the next row equally: nothing scrolls sideways */
+.gb-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.gb-row .ctl-anchor, .gb-row .gb-chip { width: 100%; justify-content: center; }
+.gb-pos { display: grid; gap: 4px; }
+.gb-pos .gb-chip { min-width: 0; padding: 0; justify-content: center; font-size: 13px; }
+.gb-menu { display: flex; flex-direction: column; gap: 2px; }
+.gb-menu__k { margin: 8px 0 2px; font: 400 9px/1 var(--font-pixel, monospace); text-transform: uppercase; letter-spacing: 0.08em; color: hsl(var(--muted-foreground)); }
+.gb-menu__row { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 10px; border-radius: 10px; text-align: left; font-size: 14px; font-weight: 600; color: hsl(var(--foreground)); }
+.gb-menu__row[aria-pressed='true'] { background: hsl(var(--gold) / 0.14); }
