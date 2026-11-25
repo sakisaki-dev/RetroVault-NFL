@@ -177,17 +177,25 @@
   top: calc(100% + 4px);
   min-width: 100%;
   max-width: min(320px, calc(100vw - 24px));
-  max-height: 260px;
-  overflow-y: auto;
-  margin: 0;
-  padding: 4px;
-  list-style: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: hsl(var(--popover, var(--card)));
   border: 1px solid var(--ax-edge);
   border-radius: 14px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
 }
 .ax-select.is-up .ax-select__menu { top: auto; bottom: calc(100% + 4px); }
+.ax-select__list { max-height: 260px; overflow-y: auto; margin: 0; padding: 4px; list-style: none; }
+.ax-select__search {
+  flex: none; margin: 6px 6px 2px; min-height: 34px; padding: 5px 12px;
+  background: hsl(var(--card)); border: 1px solid var(--ax-edge); border-radius: 999px;
+  color: var(--ax-ink); font-family: var(--font-display); font-weight: 700; font-size: 16px; /* 16px: iOS doesn't zoom */
+  outline: none;
+}
+.ax-select__search:focus { border-color: var(--ax-gold); }
+.ax-select__search::placeholder { color: hsl(var(--muted-foreground)); text-transform: none; font-weight: 600; }
+.ax-select__none { padding: 8px 12px; font-size: 13px; color: hsl(var(--muted-foreground)); }
 .ax-select__opt {
   display: flex; justify-content: space-between; gap: 12px;
   padding: 7px 12px;

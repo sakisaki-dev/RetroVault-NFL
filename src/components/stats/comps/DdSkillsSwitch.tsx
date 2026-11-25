@@ -9,6 +9,7 @@ import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 import { useSkillRatings } from '@/utils/useSkillRatings';
 import { cn } from '@/lib/utils';
 import DdSkills from './DdSkills';
+import DdSzn, { hasSznPanel } from './DdSzn';
 import DdAdvancedFactors from './DdAdvancedFactors';
 import { IS_NFL } from '@/config/edition';
 import { CAREER_LABEL } from '@/config/ovr';
@@ -33,7 +34,8 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   const line = seasonOvr?.lines?.[key];
   const hasSeason = !!line && player.status === 'Active';
   const [mode, setMode] = useState<'season' | 'career' | null>(null);
-  const shown = mode ?? (hasSeason ? 'season' : 'career');
+  // The Season panel carries SZN, so the Skill panel opens on the career skill rating it is compared with (owner, 2026-11-25).
+  const shown = mode ?? (hasSeason && !hasSznPanel(player, seasonOvr) ? 'season' : 'career');
 
   const seasonPlayers = useMemo(() => {
     const lines = seasonOvr?.lines;
@@ -106,6 +108,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         overall={grades.overall}
         players={useSeason ? seasonPlayers : players}
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
+        below={<DdSzn player={player} players={players} seasonOvr={seasonOvr} onOpenPlayer={onOpenPlayer} />}
       />
       {IS_NFL && useSeason && (grades as { smallSample?: boolean }).smallSample && seasonPoolLabel(seasonPlayers, player.position) && (
         <p><NoteChip short="Small sample">Below the {seasonPoolLabel(seasonPlayers, player.position)} bar: his rates are pulled toward the qualified average in proportion to the sample.</NoteChip></p>

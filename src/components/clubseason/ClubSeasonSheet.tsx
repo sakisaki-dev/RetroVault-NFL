@@ -1,15 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import PlayerDetailCard from '@/components/PlayerDetailCard';
-import TeamLogo from '@/components/brand/TeamLogo';
 import { clubPlate } from '@/components/arcade/clubInk';
 import { Reveal } from '@/components/motion/Reveal';
 import { useLeague } from '@/context/LeagueContext';
 import { displayName } from '@/utils/displayName';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openGame, useGameIds } from '@/utils/nflGames';
-import { openTeamPage } from '@/utils/teamSearch';
+import { Choice } from '@/components/controls';
+import type { ClubTab } from '@/utils/openClub';
+import { mirrorClubHash } from './clubRoute';
 import { realNumberOf } from '@/utils/gameSprites';
 import { resultOf, ticketsOf, useClubSeason } from '@/utils/clubSeason';
 import ClubSeasonHero from './ClubSeasonHero';
@@ -22,9 +23,22 @@ import { Section, accentOn, inkOn, liftOnNight } from './ClubSeasonSection';
 import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './ClubSeasonParts';
 import './clubSeason.css';
 
+const FranchiseTab = lazy(() => import('./FranchiseTab'));
+
+const TAB_OPTIONS: { value: ClubTab; label: string }[] = [
+  { value: 'season', label: 'This season' },
+  { value: 'franchise', label: 'Franchise' },
+];
+
 interface Props {
   club: string;
   season?: number;
+  /** The tab to show when the sheet opens */
+  tab?: ClubTab;
+  /** Scroll to a part of the Franchise tab */
+  section?: 'rafters';
+  /** Changes with every open request, so asking for the same club again resets the tab */
+  nonce?: number;
   open: boolean;
   onClose: () => void;
 }
@@ -39,13 +53,15 @@ const AFTER_CLOSE_MS = 60;
  * fixture list; stat leaders, black ink and the cap) and the roster as a yearbook. Every season 1999 on.
  * Anything that leaves the sheet (a player card, a game, the club's all-time page) closes it first.
  */
-const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
+const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce, open, onClose }: Props) => {
   const team = findNFLTeam(club);
   const abbr = team?.abbreviation;
   const ids = useGameIds(true);
   const years = useMemo(() => (ids ? Object.keys(ids).map(Number).sort((a, b) => b - a) : []), [ids]);
   const [picked, setPicked] = useState<number | null>(null);
-  useEffect(() => setPicked(null), [club, season]);
+  useEffect(() => setPicked(null), [club, season, nonce]);
+  const [tab, setTab] = useState<ClubTab>(tabProp);
+  useEffect(() => setTab(tabProp), [tabProp, club, nonce]);
   const year = picked ?? season ?? years[0] ?? 2026;
   const data = useClubSeason(abbr, year);
   const { getAllPlayers, dataVersion } = useLeague();
@@ -119,6 +135,32 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     scroller.current?.scrollTo({ top: 0 });
   }, [year, club]);
 
+  // the URL follows the tab and the season (utils/openClub: #season/club?c=…&tab=…&y=…)
+  const mirrored = useRef(false);
+  useEffect(() => {
+    if (!open || !team) {
+      mirrored.current = false;
+      return;
+    }
+    // a phone's sheet pushes its history entry as it mounts: the first rewrite of the URL waits for that
+    const t = window.setTimeout(() => {
+      mirrored.current = true;
+      mirrorClubHash(team.name, tab, tab === 'season' ? year : undefined);
+    }, mirrored.current ? 0 : 160);
+    return () => window.clearTimeout(t);
+  }, [open, team, tab, year]);
+  const openPlayer = useCallback(
+    (p: Player) => {
+      onClose();
+      window.setTimeout(() => setCard(p), AFTER_CLOSE_MS);
+    },
+    [onClose],
+  );
+  useEffect(() => {
+    // a new tab starts at its top
+    scroller.current?.scrollTo({ top: 0 });
+  }, [tab]);
+
   const openGameFromSheet = (id: string) => {
     onClose();
     window.setTimeout(() => openGame(id), AFTER_CLOSE_MS);
@@ -128,11 +170,6 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     onClose();
     window.setTimeout(() => openCollege(section, { club: abbr ?? '' }), AFTER_CLOSE_MS);
   };
-  const allTime = () => {
-    onClose();
-    window.setTimeout(() => openTeamPage(club), AFTER_CLOSE_MS);
-  };
-
   return (
     <>
       <Dialog open={open && !!team} onOpenChange={(o) => !o && onClose()}>
@@ -152,15 +189,19 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
           {team && abbr && (
             <div className="cs">
               <div className="cs-bar-top">
+                <Choice<ClubTab> label="Club page" size="md" club={team.name} className="cs-tabs" value={tab} onChange={setTab} options={TAB_OPTIONS} />
+              </div>
+              {tab === 'franchise' ? (
+                <Suspense fallback={<p className="cs-loading" role="status">Loading the {team.name} franchise…</p>}>
+                  <FranchiseTab club={team.name} onPlayer={openPlayer} section={section} />
+                </Suspense>
+              ) : (
+                <>
                 <div className="cs-years" ref={strip} role="tablist" aria-label="Season">
                   {years.map((y) => (
                     <button key={y} type="button" role="tab" aria-selected={y === year} aria-current={y === year ? 'true' : undefined} className={y === year ? 'is-on' : ''} onClick={() => setPicked(y)}>{y}</button>
                   ))}
                 </div>
-                <button type="button" className="cs-all" onClick={allTime}>
-                  <TeamLogo team={club} size={16} decorative className="cs-logo-plate" />All-time <span aria-hidden="true">→</span>
-                </button>
-              </div>
               {data === undefined ? (
                 <p className="cs-loading" role="status">Loading the {year} {team.name}…</p>
               ) : (
@@ -192,6 +233,8 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     {rows.length ? <Yearbook rows={rows} club={club} year={year} onPick={pick} /> : <p className="pg-note">No roster lines on file for {year}.</p>}
                   </Section>
                 </div>
+              )}
+                </>
               )}
             </div>
           )}

@@ -13,6 +13,7 @@ import { IS_NFL } from '@/config/edition';
  *   #stats/game?id=<game id>     One game in depth (NFL edition: box score, rosters, advanced stats)
  *   #stats/graphs?gx=ya&gy=intPct&pos=QB    Graph Builder on a shared chart (stats/graph/graphConfig);
  *                                            the old #stats/players?gx=… links land there too
+ *   #season/club?c=Vikings&tab=franchise&y=2025   NFL edition: a club's page (overlay; tab = season | franchise)
  *   #lab?t=<lineup>              Team Lab with a lineup (utils/teamLab encodeLineup)
  *   #fantasy/<lineup|startsit|h2h|trade>   NFL edition: the Fantasy page (#fantasy/trade?p=WR:Name preloads a player on side one)
  *   #lab/trade and #lab?mode=fantasy      old links: they open the Fantasy page
@@ -73,6 +74,9 @@ export const parseHash = (hash: string): Route | null => {
   const params = new URLSearchParams(query);
   const p = params.get('p') || undefined;
   const head = segs[0].toLowerCase();
+
+  // #season/club?c=<Club>&tab=… is the club page overlay (ClubSeasonHost), never a page of its own: the page under it stays
+  if (segs[1] === 'club' && params.get('c')) return null;
 
   if (head === 'teams') return { tab: 'career', sub: 'teams' };
   if (LEGACY_SECTIONS[head]) return { tab: 'career', ...LEGACY_SECTIONS[head] };
