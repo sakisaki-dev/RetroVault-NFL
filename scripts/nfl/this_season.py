@@ -9,8 +9,8 @@ games.csv.gz and playoff_odds.json (picks). Everything is a sum or a ratio of re
 
 Ranks: competition ranking (ties share a place) among players at his position with a game this season. Counting stats rank
 on the season total; a rate ranks only among qualifiers (QB 14 attempts, RB 6.25 carries, WR/TE 1.875 catches per club
-game played). Interceptions thrown carry no rank. Pace = per-game rate over his games played x 17 (a projection, counting
-stats only, from his fourth game on). A count of zero is not ranked, and only players above zero are in the pool. Fantasy points are nflverse's fantasy_points_ppr (standard PPR scoring: 1 per catch, 0.1 per rush/rec yard,
+game played). Pace = per-game rate over his games played x 17 (a projection, counting
+stats only, from his fourth game on). Interceptions and times sacked rank fewest first, among the QBs who qualify for Cmp %. A count of zero is not ranked, and only players above zero are in the pool. Fantasy points are nflverse's fantasy_points_ppr (standard PPR scoring: 1 per catch, 0.1 per rush/rec yard,
 0.04 per passing yard, 6 per TD, 4 per passing TD, -2 per INT or lost fumble, 2 per two-point conversion), QB/RB/WR/TE only.
 Next game: the club's first unplayed game in games.csv, with its win chance from the odds model where it picked that game.
 """
@@ -25,18 +25,18 @@ CACHE = ROOT / "data" / "nfl-cache"
 OUT = ROOT / "public" / "data" / "nfl" / "thisseason.json"
 G17 = 17
 
-# (label, fn(totals) -> value, kind, fmt)  kind: "count" ranks on value, "rate" ranks among qualifiers, "none" no rank
+# (label, fn(totals) -> value, kind, fmt)  kind: "count" ranks on value, "rate" ranks among qualifiers, "low" ranks among qualifiers fewest first, "none" no rank
 # qual(totals, teamgames) for rates
 S = lambda d, *ks: sum(d.get(k, 0) for k in ks)
 SPECS = {
     "QB": [
         ("Pass yds", lambda d: S(d, "passing_yards"), "count", "n"),
         ("Pass TD", lambda d: S(d, "passing_tds"), "count", "n"),
-        ("INT", lambda d: S(d, "passing_interceptions"), "none", "n"),
+        ("INT", lambda d: S(d, "passing_interceptions"), "low:attempts:14", "n"),
         ("Cmp %", lambda d: 100 * S(d, "completions") / S(d, "attempts") if S(d, "attempts") else None, "rate:attempts:14", "p"),
         ("Rush yds", lambda d: S(d, "rushing_yards"), "count", "n"),
         ("Rush TD", lambda d: S(d, "rushing_tds"), "count", "n"),
-        ("Sacked", lambda d: S(d, "sacks_suffered"), "none", "n"),
+        ("Sacked", lambda d: S(d, "sacks_suffered"), "low:attempts:14", "n"),
     ],
     "RB": [
         ("Rush yds", lambda d: S(d, "rushing_yards"), "count", "n"),
@@ -150,7 +150,7 @@ def main():
                 v = fn(tot[g])
                 if v is None:
                     continue
-                if kind.startswith("rate"):
+                if kind.startswith(("rate", "low")):
                     _, fld, per = kind.split(":")
                     if tot[g][fld] < float(per) * teamg.get(club[g][1], 0):
                         continue
@@ -169,7 +169,7 @@ def main():
                 pool = list(table[i].values())
                 rk = None
                 if kind != "none" and g in table[i]:
-                    rk = [rank_of(pool, v), len(pool)]
+                    rk = [rank_of(pool, v, reverse=not kind.startswith("low")), len(pool)]
                 shown = round(v) if fmt == "n" else round(v, 1) if fmt in ("1", "p") else v
                 rows.append([label, shown, *(rk or [None, None])])
             if not any(r[1] for r in rows):
@@ -178,7 +178,7 @@ def main():
             pace = []
             for (label, fn, kind, fmt) in specs[: PACE.get(pos, 0)]:
                 v = fn(tot[g])
-                if kind == "count" or (kind == "none" and fmt == "n"):
+                if kind == "count" or (kind in ("none",) or kind.startswith("low")) and fmt == "n":
                     pace.append([label, round(v / games_n * G17)])
             if pace and games_n >= 4:  # a projection needs a few games behind it
                 rec["pace"] = pace

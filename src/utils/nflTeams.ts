@@ -13,51 +13,60 @@ export interface NFLTeam {
   logoUrl: string;
 }
 
+/**
+ * Club colours (owner: "make sure teams don't share the same color across the board"). Each club leads with one colour
+ * from its own official palette: its primary, or its secondary where the primary is near-black (lightness 12% or less;
+ * Bengals, Patriots, Bears, Panthers, Steelers, Falcons' black stays the edge). Where official colours coincide (the
+ * Bengals' and Broncos' orange, the Texans' and Falcons' red, the Steelers' and Packers' gold, Raiders' and Eagles'
+ * silver, the three powder/honolulu/Carolina blues) one club leads with another official colour or a lifted shade of
+ * its dark primary (Browns brown, Texans steel blue, Eagles midnight green, Packers green, Colts blue), checked so every
+ * pair of leading colours is at least 9 apart in CIEDE2000.
+ */
 export const NFL_TEAMS: NFLTeam[] = [
   // AFC East
-  { id: 'bills', name: 'Bills', city: 'Buffalo', fullName: 'Buffalo Bills', abbreviation: 'BUF', conference: 'AFC', division: 'East', primaryColor: '218 100% 28%', secondaryColor: '348 89% 41%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png' },
+  { id: 'bills', name: 'Bills', city: 'Buffalo', fullName: 'Buffalo Bills', abbreviation: 'BUF', conference: 'AFC', division: 'East', primaryColor: '216 100% 32%', secondaryColor: '348 89% 41%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png' },
   { id: 'dolphins', name: 'Dolphins', city: 'Miami', fullName: 'Miami Dolphins', abbreviation: 'MIA', conference: 'AFC', division: 'East', primaryColor: '184 100% 30%', secondaryColor: '18 98% 50%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png' },
-  { id: 'patriots', name: 'Patriots', city: 'New England', fullName: 'New England Patriots', abbreviation: 'NE', conference: 'AFC', division: 'East', primaryColor: '210 100% 13%', secondaryColor: '348 89% 41%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png' },
+  { id: 'patriots', name: 'Patriots', city: 'New England', fullName: 'New England Patriots', abbreviation: 'NE', conference: 'AFC', division: 'East', primaryColor: '210 100% 12%', secondaryColor: '348 89% 37%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png' },
   { id: 'jets', name: 'Jets', city: 'New York', fullName: 'New York Jets', abbreviation: 'NYJ', conference: 'AFC', division: 'East', primaryColor: '160 66% 21%', secondaryColor: '0 0% 100%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png' },
   
   // AFC North
   { id: 'ravens', name: 'Ravens', city: 'Baltimore', fullName: 'Baltimore Ravens', abbreviation: 'BAL', conference: 'AFC', division: 'North', primaryColor: '248 67% 27%', secondaryColor: '46 86% 33%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png' },
-  { id: 'bengals', name: 'Bengals', city: 'Cincinnati', fullName: 'Cincinnati Bengals', abbreviation: 'CIN', conference: 'AFC', division: 'North', primaryColor: '0 0% 0%', secondaryColor: '15 97% 53%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png' },
-  { id: 'browns', name: 'Browns', city: 'Cleveland', fullName: 'Cleveland Browns', abbreviation: 'CLE', conference: 'AFC', division: 'North', primaryColor: '36 100% 10%', secondaryColor: '14 100% 50%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png' },
+  { id: 'bengals', name: 'Bengals', city: 'Cincinnati', fullName: 'Cincinnati Bengals', abbreviation: 'CIN', conference: 'AFC', division: 'North', primaryColor: '0 0% 0%', secondaryColor: '12 95% 50%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png' },
+  { id: 'browns', name: 'Browns', city: 'Cleveland', fullName: 'Cleveland Browns', abbreviation: 'CLE', conference: 'AFC', division: 'North', primaryColor: '28 62% 26%', secondaryColor: '14 100% 50%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png' },
   { id: 'steelers', name: 'Steelers', city: 'Pittsburgh', fullName: 'Pittsburgh Steelers', abbreviation: 'PIT', conference: 'AFC', division: 'North', primaryColor: '42 100% 54%', secondaryColor: '210 33% 9%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png' },
   
   // AFC South
-  { id: 'texans', name: 'Texans', city: 'Houston', fullName: 'Houston Texans', abbreviation: 'HOU', conference: 'AFC', division: 'South', primaryColor: '200 88% 10%', secondaryColor: '350 74% 38%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png' },
-  { id: 'colts', name: 'Colts', city: 'Indianapolis', fullName: 'Indianapolis Colts', abbreviation: 'IND', conference: 'AFC', division: 'South', primaryColor: '212 100% 19%', secondaryColor: '196 6% 66%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png' },
+  { id: 'texans', name: 'Texans', city: 'Houston', fullName: 'Houston Texans', abbreviation: 'HOU', conference: 'AFC', division: 'South', primaryColor: '208 85% 22%', secondaryColor: '350 74% 38%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png' },
+  { id: 'colts', name: 'Colts', city: 'Indianapolis', fullName: 'Indianapolis Colts', abbreviation: 'IND', conference: 'AFC', division: 'South', primaryColor: '214 100% 38%', secondaryColor: '196 6% 66%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png' },
   { id: 'jaguars', name: 'Jaguars', city: 'Jacksonville', fullName: 'Jacksonville Jaguars', abbreviation: 'JAX', conference: 'AFC', division: 'South', primaryColor: '188 100% 24%', secondaryColor: '42 68% 50%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png' },
   { id: 'titans', name: 'Titans', city: 'Tennessee', fullName: 'Tennessee Titans', abbreviation: 'TEN', conference: 'AFC', division: 'South', primaryColor: '210 67% 58%', secondaryColor: '213 68% 15%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png' },
   
   // AFC West
-  { id: 'broncos', name: 'Broncos', city: 'Denver', fullName: 'Denver Broncos', abbreviation: 'DEN', conference: 'AFC', division: 'West', primaryColor: '15 97% 53%', secondaryColor: '210 100% 13%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png' },
-  { id: 'chiefs', name: 'Chiefs', city: 'Kansas City', fullName: 'Kansas City Chiefs', abbreviation: 'KC', conference: 'AFC', division: 'West', primaryColor: '351 81% 49%', secondaryColor: '41 100% 55%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png' },
+  { id: 'broncos', name: 'Broncos', city: 'Denver', fullName: 'Denver Broncos', abbreviation: 'DEN', conference: 'AFC', division: 'West', primaryColor: '22 100% 55%', secondaryColor: '210 100% 13%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png' },
+  { id: 'chiefs', name: 'Chiefs', city: 'Kansas City', fullName: 'Kansas City Chiefs', abbreviation: 'KC', conference: 'AFC', division: 'West', primaryColor: '354 85% 52%', secondaryColor: '41 100% 55%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png' },
   { id: 'raiders', name: 'Raiders', city: 'Las Vegas', fullName: 'Las Vegas Raiders', abbreviation: 'LV', conference: 'AFC', division: 'West', primaryColor: '198 6% 67%', secondaryColor: '0 0% 0%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png' },
-  { id: 'chargers', name: 'Chargers', city: 'Los Angeles', fullName: 'Los Angeles Chargers', abbreviation: 'LAC', conference: 'AFC', division: 'West', primaryColor: '201 100% 39%', secondaryColor: '45 100% 53%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png' },
+  { id: 'chargers', name: 'Chargers', city: 'Los Angeles', fullName: 'Los Angeles Chargers', abbreviation: 'LAC', conference: 'AFC', division: 'West', primaryColor: '196 100% 45%', secondaryColor: '45 100% 53%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png' },
   
   // NFC East
   { id: 'cowboys', name: 'Cowboys', city: 'Dallas', fullName: 'Dallas Cowboys', abbreviation: 'DAL', conference: 'NFC', division: 'East', primaryColor: '194 8% 56%', secondaryColor: '219 100% 29%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png' },
-  { id: 'giants', name: 'Giants', city: 'New York', fullName: 'New York Giants', abbreviation: 'NYG', conference: 'NFC', division: 'East', primaryColor: '225 80% 22%', secondaryColor: '350 74% 38%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png' },
-  { id: 'eagles', name: 'Eagles', city: 'Philadelphia', fullName: 'Philadelphia Eagles', abbreviation: 'PHI', conference: 'NFC', division: 'East', primaryColor: '186 100% 16%', secondaryColor: '198 6% 67%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png' },
+  { id: 'giants', name: 'Giants', city: 'New York', fullName: 'New York Giants', abbreviation: 'NYG', conference: 'NFC', division: 'East', primaryColor: '230 75% 21%', secondaryColor: '350 74% 38%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png' },
+  { id: 'eagles', name: 'Eagles', city: 'Philadelphia', fullName: 'Philadelphia Eagles', abbreviation: 'PHI', conference: 'NFC', division: 'East', primaryColor: '172 50% 30%', secondaryColor: '198 6% 67%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png' },
   { id: 'commanders', name: 'Commanders', city: 'Washington', fullName: 'Washington Commanders', abbreviation: 'WAS', conference: 'NFC', division: 'East', primaryColor: '0 64% 22%', secondaryColor: '42 100% 54%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png' },
   
   // NFC North
-  { id: 'bears', name: 'Bears', city: 'Chicago', fullName: 'Chicago Bears', abbreviation: 'CHI', conference: 'NFC', division: 'North', primaryColor: '219 58% 10%', secondaryColor: '16 97% 40%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png' },
-  { id: 'lions', name: 'Lions', city: 'Detroit', fullName: 'Detroit Lions', abbreviation: 'DET', conference: 'NFC', division: 'North', primaryColor: '201 100% 36%', secondaryColor: '205 8% 71%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png' },
-  { id: 'packers', name: 'Packers', city: 'Green Bay', fullName: 'Green Bay Packers', abbreviation: 'GB', conference: 'NFC', division: 'North', primaryColor: '164 26% 17%', secondaryColor: '42 100% 54%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png' },
+  { id: 'bears', name: 'Bears', city: 'Chicago', fullName: 'Chicago Bears', abbreviation: 'CHI', conference: 'NFC', division: 'North', primaryColor: '219 58% 10%', secondaryColor: '20 97% 42%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png' },
+  { id: 'lions', name: 'Lions', city: 'Detroit', fullName: 'Detroit Lions', abbreviation: 'DET', conference: 'NFC', division: 'North', primaryColor: '204 100% 33%', secondaryColor: '205 8% 71%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png' },
+  { id: 'packers', name: 'Packers', city: 'Green Bay', fullName: 'Green Bay Packers', abbreviation: 'GB', conference: 'NFC', division: 'North', primaryColor: '135 25% 30%', secondaryColor: '42 100% 54%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png' },
   { id: 'vikings', name: 'Vikings', city: 'Minnesota', fullName: 'Minnesota Vikings', abbreviation: 'MIN', conference: 'NFC', division: 'North', primaryColor: '266 55% 33%', secondaryColor: '44 100% 59%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png' },
   
   // NFC South
-  { id: 'falcons', name: 'Falcons', city: 'Atlanta', fullName: 'Atlanta Falcons', abbreviation: 'ATL', conference: 'NFC', division: 'South', primaryColor: '350 74% 38%', secondaryColor: '0 0% 0%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png' },
-  { id: 'panthers', name: 'Panthers', city: 'Carolina', fullName: 'Carolina Panthers', abbreviation: 'CAR', conference: 'NFC', division: 'South', primaryColor: '210 33% 9%', secondaryColor: '200 100% 40%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png' },
+  { id: 'falcons', name: 'Falcons', city: 'Atlanta', fullName: 'Atlanta Falcons', abbreviation: 'ATL', conference: 'NFC', division: 'South', primaryColor: '354 75% 30%', secondaryColor: '0 0% 0%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png' },
+  { id: 'panthers', name: 'Panthers', city: 'Carolina', fullName: 'Carolina Panthers', abbreviation: 'CAR', conference: 'NFC', division: 'South', primaryColor: '210 33% 9%', secondaryColor: '200 30% 62%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png' },
   { id: 'saints', name: 'Saints', city: 'New Orleans', fullName: 'New Orleans Saints', abbreviation: 'NO', conference: 'NFC', division: 'South', primaryColor: '40 44% 69%', secondaryColor: '210 33% 9%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png' },
   { id: 'buccaneers', name: 'Buccaneers', city: 'Tampa Bay', fullName: 'Tampa Bay Buccaneers', abbreviation: 'TB', conference: 'NFC', division: 'South', primaryColor: '0 91% 44%', secondaryColor: '33 9% 19%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png' },
   
   // NFC West
-  { id: 'cardinals', name: 'Cardinals', city: 'Arizona', fullName: 'Arizona Cardinals', abbreviation: 'ARI', conference: 'NFC', division: 'West', primaryColor: '346 62% 36%', secondaryColor: '0 0% 0%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png' },
+  { id: 'cardinals', name: 'Cardinals', city: 'Arizona', fullName: 'Arizona Cardinals', abbreviation: 'ARI', conference: 'NFC', division: 'West', primaryColor: '338 62% 38%', secondaryColor: '0 0% 0%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png' },
   { id: '49ers', name: '49ers', city: 'San Francisco', fullName: 'San Francisco 49ers', abbreviation: 'SF', conference: 'NFC', division: 'West', primaryColor: '0 100% 33%', secondaryColor: '42 36% 53%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png' },
   { id: 'seahawks', name: 'Seahawks', city: 'Seattle', fullName: 'Seattle Seahawks', abbreviation: 'SEA', conference: 'NFC', division: 'West', primaryColor: '100 53% 36%', secondaryColor: '210 100% 13%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png' },
   { id: 'rams', name: 'Rams', city: 'Los Angeles', fullName: 'Los Angeles Rams', abbreviation: 'LAR', conference: 'NFC', division: 'West', primaryColor: '49 100% 50%', secondaryColor: '219 100% 29%', logoUrl: 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png' },
