@@ -3,3 +3,11 @@
 .sw-tag--out { background: rgb(0 0 0 / .45); color: #fff; }
 .sw-out { filter: saturate(.55) brightness(.85); }
 .cw-tile--thin .cw-row { gap: 4px; }
+
+/* the DIV LEADER tag sits in the record row, never over a sprite's head */
+.cw-rank--inline { position: static; align-self: center; padding: 2px 5px; }
+/* phone: the leader card is as tall as its text and sprites, no empty band under the record */
+@media (max-width: 639px) {
+  .cw-tile.cw-tile--lead { min-height: 104px; }
+  .cw-tile.cw-tile--lead .cw-sprites--lead { bottom: 3px; }
+}

@@ -87,12 +87,11 @@ const Tile = ({ club, leader, big, at, seed, tag, champion, made, done, hasSprit
       <span aria-hidden="true" className="cw-bglogo">
         <TeamLogo team={t} size={leader ? 340 : 170} decorative />
       </span>
-      {leader && <span aria-hidden="true" className="cw-rank">DIV LEADER</span>}
       {big && power && <span aria-hidden="true" className="cw-rank cw-rank--big">#{power}</span>}
       <span className="cw-text">
         {leader ? (
           <span className="cw-city">
-            <TeamLogo team={t} size={20} decorative />
+            <TeamLogo team={t} size={20} decorative backed />
             {t.city}
           </span>
         ) : (
@@ -106,6 +105,7 @@ const Tile = ({ club, leader, big, at, seed, tag, champion, made, done, hasSprit
         </span>
         <span className="cw-row">
           <span className="cw-rec">{row.record}</span>
+          {leader && <span aria-hidden="true" className="cw-rank cw-rank--inline">DIV LEADER</span>}
           {seed ? <span className="sw-tag" title="Playoff seed">#{seed}</span> : null}
           {tag ? <span className={cn('sw-tag', tag === 'out' && 'sw-tag--out')} title="Clinched or eliminated by the games left">{tag === 'div' ? 'Div' : tag === 'in' ? 'In' : 'Out'}</span> : null}
           {champion ? <PixelIcon name="trophy" size={14} color="#ffd84a" label="Champion" /> : done && made ? <PixelIcon name="star" size={12} color="#ffd84a" label="Made the playoffs" /> : null}

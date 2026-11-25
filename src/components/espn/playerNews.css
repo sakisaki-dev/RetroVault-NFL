@@ -72,7 +72,8 @@
 .pn-tl__h { font-size: 13px; line-height: 1.35; color: var(--ss-chalk); }
 .pn-tl button:hover .pn-tl__h { color: var(--ss-gold); }
 .pn-tl__m { font-size: 11px; color: var(--ss-muted); }
-.pn-mates { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.pn-mates > li { min-width: 0; }
+.pn-mates { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin: 0; padding: 0; list-style: none; }
 .pn-mates button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 4px 10px 4px 4px; text-align: left; border: 1px solid var(--ss-line); border-left: 3px solid var(--tc); border-radius: 10px; background: var(--ss-panel-2); }
 .pn-mates button:hover { border-color: var(--ss-gold); }
 .pn-mates__spr { flex: none; display: grid; place-items: center; width: 34px; height: 38px; overflow: hidden; }
