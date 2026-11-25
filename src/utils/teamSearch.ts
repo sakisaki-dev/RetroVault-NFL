@@ -1,4 +1,6 @@
 import { NFL_TEAMS, type NFLTeam } from '@/utils/nflTeams';
+import { IS_NFL } from '@/config/edition';
+import { openClub, type OpenClubOpts } from '@/utils/openClub';
 
 /**
  * Clubs in the header's quick search (owner, 2026-11-17: "allow me to search teams in the quick search"): a club
@@ -24,12 +26,18 @@ export const searchTeams = (query: string, limit = 4): NFLTeam[] => {
     .map((x) => x.t);
 };
 
-/** Fired with the club's name so an open Teams page shows its sheet even when the hash didn't change */
+/** Fired with the club's name so an open Teams page shows its sheet even when the hash didn't change (Retro Bowl edition) */
 export const OPEN_TEAM_EVENT = 'retrovault:open-team';
 
-/** Opens a club's team sheet (Stats › Teams), from anywhere: the hash route plus an event for a page already there. */
-export const openTeamPage = (name: string) => {
-  const hash = `#stats/teams?p=${encodeURIComponent(name)}`;
-  if (window.location.hash !== hash) window.location.hash = hash;
-  window.dispatchEvent(new CustomEvent(OPEN_TEAM_EVENT, { detail: name }));
-};
+/**
+ * Opens a club's page from anywhere. The NFL edition has one: the club season sheet, This season by default or the
+ * Franchise tab (`openClub`, utils/openClub.ts). The Retro Bowl edition keeps its sidebar team sheet (Stats › Teams).
+ */
+export { openClub } from '@/utils/openClub';
+export const openTeamPage: (name: string, opts?: OpenClubOpts) => void = IS_NFL
+  ? openClub
+  : (name) => {
+      const hash = `#stats/teams?p=${encodeURIComponent(name)}`;
+      if (window.location.hash !== hash) window.location.hash = hash;
+      window.dispatchEvent(new CustomEvent(OPEN_TEAM_EVENT, { detail: name }));
+    };
