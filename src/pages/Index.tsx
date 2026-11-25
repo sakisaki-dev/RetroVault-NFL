@@ -1,4 +1,5 @@
 import '@/styles/interact.css';
+import '@/components/phoneTargets.css';
 import { Suspense, useEffect, useMemo } from 'react';
 import { lazyRetry } from '@/utils/lazyRetry';
 import TabBoundary from '@/components/TabBoundary';
@@ -167,7 +168,7 @@ const IndexContent = () => {
               Retro <span className="text-gold">Vault</span>
             </p>
             <p className="text-xs text-center sm:text-right max-w-md">
-              Fan-made league hub for Retro Bowl. Team names and logos belong to their respective owners; this site is not affiliated with
+              Fan-made league hub for {IS_NFL ? 'the NFL' : 'Retro Bowl'}. Team names and logos belong to their respective owners; this site is not affiliated with
               or endorsed by any league or team.
             </p>
           </div>

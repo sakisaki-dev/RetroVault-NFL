@@ -26,6 +26,7 @@ import {
   Star,
   Swords,
   TrendingUp,
+  Trophy,
   Users,
   type LucideIcon,
   Newspaper,
@@ -33,7 +34,8 @@ import {
 import { cn } from '@/lib/utils';
 import { setPerfSetting, suggestLite, usePerfMode, type PerfSetting } from '@/hooks/usePerfMode';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
-import type { Route, StatsSub } from '@/components/stats/hub/hashRoute';
+import { isKnownTab, type Route, type StatsSub } from '@/components/stats/hub/hashRoute';
+import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 import { reducedMotion } from '@/utils/motion';
 
 /*
@@ -57,8 +59,17 @@ const ALL_MAIN = [
   { value: 'collection', label: 'Collection', Icon: Layers },
   { value: 'hof', label: 'Hall of Fame', short: 'HOF', Icon: Crown },
 ] as const;
-/** The NFL edition has no Hall of Fame tab (its Hall is a plain fact on the player card) */
-const MAIN = IS_NFL ? ALL_MAIN.filter((m) => m.value !== 'hof') : ALL_MAIN;
+/**
+ * The NFL edition's dock: Arcade, Stats, Season, Collection and More (Team Lab, News, College). Its Hall of Fame is a
+ * plain fact on the player card, so there is no HOF tab; the Season is a main tab because the NFL is read by season.
+ */
+const NFL_MAIN = [
+  { value: 'games', label: 'Arcade', Icon: Gamepad2 },
+  { value: 'career', label: 'Stats', Icon: BarChart3 },
+  { value: 'season', label: 'Season', Icon: Radio },
+  { value: 'collection', label: 'Collection', Icon: Layers },
+] as const;
+const MAIN: readonly { value: string; label: string; short?: string; Icon: LucideIcon }[] = IS_NFL ? NFL_MAIN : ALL_MAIN;
 /**
  * Each tab's own colour (owner: "everything is green and yellow which is kinda odd so maybe diff colors for each"): the
  * pill under the current tab, the lifted puck and finger bubble while sliding, and that tab's hold menu wear it. The
@@ -78,7 +89,6 @@ const TAB_COLOR: Record<string, string> = {
   office: '#f1c35c',
 };
 const colorOf = (id: string | null | undefined) => (id && TAB_COLOR[id]) || '#f1c35c';
-import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 const ALL_MORE = [
   { value: 'season', label: 'Season', blurb: 'Live standings, leaders and the award race', Icon: Radio },
   { value: 'college', label: 'College', blurb: 'Draft boards, schools and the projected order', Icon: GraduationCap },
@@ -87,7 +97,9 @@ const ALL_MORE = [
   { value: 'news', label: 'News', blurb: "Live NFL headlines and video from ESPN", Icon: Newspaper },
   { value: 'office', label: 'Front Office', blurb: "The coach's record, seasons and rivals", Icon: Briefcase },
 ] as const;
-const MORE = ALL_MORE.filter((m) => (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)));
+const MORE = ALL_MORE.filter(
+  (m) => !(IS_NFL && m.value === 'season') && (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)) && (m.value !== 'college' || (IS_NFL && isKnownTab('college'))),
+);
 
 interface Section {
   id: string;
@@ -121,6 +133,16 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
       { id: 'binder', label: 'Binder', Icon: BookOpen, anchor: 'col-binder' },
     ],
   },
+  season: {
+    title: 'Season',
+    items: [
+      { id: 'standings', label: 'Standings', Icon: Trophy, anchor: 'season-standings' },
+      { id: 'leaders', label: 'Leaders', Icon: Star, anchor: 'season-leaders' },
+      { id: 'power', label: 'Power ladder', Icon: TrendingUp, anchor: 'season-power' },
+      { id: 'table', label: 'Full table', Icon: Layers, anchor: 'season-table' },
+      { id: 'scores', label: 'Scores', Icon: Flag, anchor: 'scores' },
+    ],
+  },
   hof: {
     title: 'Hall of Fame',
     items: [
@@ -136,6 +158,7 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
 };
 
 if (IS_NFL) delete (SECTIONS as Record<string, unknown>).hof;
+else delete (SECTIONS as Record<string, unknown>).season;
 
 const HOLD_MS = 450;
 /** Space between a menu and the bar (px); index.css .bnav-pop uses the same */
@@ -556,7 +579,7 @@ const BottomNav = ({ activeTab, onTabChange, onRoute }: { activeTab: string; onT
           className="rounded-t-2xl border-line bg-popover px-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-6"
         >
           <SheetTitle className="flex min-h-[44px] items-center pr-14 font-display text-xl font-extrabold uppercase italic">More</SheetTitle>
-          <SheetDescription className="sr-only">Season, Team Lab, Timeline, Front Office and settings</SheetDescription>
+          <SheetDescription className="sr-only">{IS_NFL ? 'Team Lab, News, College and settings' : 'Season, Team Lab, Timeline, Front Office and settings'}</SheetDescription>
           <ul className="mt-2 space-y-2">
             {MORE.map(({ value, label, blurb, Icon }) => (
               <li key={value}>

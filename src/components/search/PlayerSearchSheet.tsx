@@ -13,6 +13,7 @@ import { clubsOfQuery, type Meeting } from '@/utils/gameFinder';
 import { MeetingButton, useMeetings } from './GameMeetings';
 import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
 import { useSwipeToDismiss } from '@/hooks/useSwipeToDismiss';
+import { pushOverlay } from '@/utils/overlayHistory';
 import { warmPlayerCard } from '@/components/player/warmPlayerCard';
 import { PEEK_ACTION_EVENT, peekProps } from '@/components/peek/peekProps';
 import GameSprite from '@/components/GameSprite';
@@ -341,6 +342,12 @@ const Sheet = ({
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
   const swipeRef = useSwipeToDismiss<HTMLDivElement>({ onDismiss: () => closeRef.current(), enabled: open, backdrop: () => backdropRef.current });
+
+  // Phones: the system Back (the edge swipe) closes the sheet like Cancel, as every other sheet does
+  useEffect(() => {
+    if (!open) return;
+    return pushOverlay(() => closeRef.current());
+  }, [open]);
 
   const pickRef = useRef(onPick);
   pickRef.current = onPick;

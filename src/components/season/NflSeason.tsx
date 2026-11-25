@@ -140,7 +140,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
   if (!rounds.length) return null;
   const sb = season.superBowl;
   return (
-    <div className="sx-block">
+    <div className="sx-block" id="season-bracket" style={{ scrollMarginTop: 80 }}>
       <SectionTitle kicker="Postseason" club={sb?.winner}>Road to the Super Bowl</SectionTitle>
       <Reveal className="sx-field">
         <div className="relative flex min-w-[640px] items-stretch gap-3">
@@ -193,7 +193,7 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
   const shown = all === 'all' ? rows : rows.slice(0, 10);
   const prev = season.prevPower;
   return (
-    <div className="sx-block">
+    <div className="sx-block" id="season-power" style={{ scrollMarginTop: 80 }}>
       <SectionTitle
         kicker="Rankings"
         club={rows[0].team}
@@ -228,7 +228,7 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
 export const FullTable = ({ season }: { season: SeasonView }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="sx-block">
+    <div className="sx-block" id="season-table" style={{ scrollMarginTop: 80 }}>
       <div>
         <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="ax-chip">
           {open ? 'Hide the full league table' : 'Full league table'}

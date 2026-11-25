@@ -9,6 +9,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { openTeamPage } from '@/utils/teamSearch';
 import { useGameDetail, type GameDetail, type GamePlayer, type Stat } from '@/utils/nflGames';
 import { buildHash, canGoBackInApp, useHubRoute } from '../stats/hub/hashRoute';
+import { usePageSwipeBack } from '@/hooks/usePageSwipeBack';
 import { PodiumStage } from '../season/NflSeasonExtras';
 import { useGameSprites } from '@/utils/gameSprites';
 import { hslOf } from '../season/seasonGamesUi';
@@ -616,6 +617,8 @@ const GameView = ({ g }: { g: GameDetail }) => {
     if (canGoBackInApp()) window.history.back();
     else navigate({ tab: 'career', sub: 'teams' });
   };
+  // Phones: swipe right goes back, like the Deep Dive (to the page that opened the game, else Teams)
+  const { ref: swipeRef, hint: swipeHint } = usePageSwipeBack<HTMLDivElement>({ tab: 'career', sub: 'teams' }, canGoBackInApp() ? 'Back' : 'Teams');
   const tabs = [
     { id: 'box' as const, label: 'Full box score', sub: 'every player', icon: ScrollText, on: g.players.length > 0 },
     { id: 'rosters' as const, label: 'Rosters', sub: snapOk ? 'everyone who took a snap' : 'everyone with a stat', icon: Users, on: g.players.length > 0 },
@@ -631,7 +634,8 @@ const GameView = ({ g }: { g: GameDetail }) => {
   );
 
   return (
-    <div className="container gm space-y-7 py-5 sm:py-7">
+    <div ref={swipeRef} className="container gm space-y-7 py-5 sm:py-7">
+      {swipeHint}
       <nav aria-label="Game navigation" className="flex flex-wrap items-center gap-2 text-sm">
         <button type="button" data-gm-back className="gm-back gm-back--main" onClick={back}><ArrowLeft className="h-4 w-4" aria-hidden /> {canGoBackInApp() ? 'Back' : 'Teams'}</button>
         <a href={`#season?y=${g.season}`} className="gm-back">{g.season} season</a>
