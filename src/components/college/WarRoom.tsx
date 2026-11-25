@@ -1,5 +1,6 @@
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useEffect } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { ArcadeToggle } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
@@ -75,16 +76,19 @@ const WarRoom = ({ focus, view, onView }: { focus?: string; view: WarRoomView; o
       </header>
       <aside className="wr-memo" aria-label="Honesty note">
         <span className="ax-kicker">Honesty note</span>
-        <p>
-          A needs-based projection, not real prospects: there is no {year} prospect data, so no player is named as a pick.
-          {needs ? (
-            <>
-              {' '}
-              Each slot's need is its weakest unit by the starters' SZN against the league ({groups}), plus a little for each year the oldest starter is past{' '}
-              {needs.ageFrom}.{needs.unrated.length ? ` ${needs.unrated.join(', ')} has no season rating, so it is left out.` : ''}
-            </>
-          ) : null}{' '}
-          {rule}
+        <p className="flex items-center gap-1">
+          A needs-based projection, not real prospects.
+          <InfoTip>
+            There is no {year} prospect data, so no player is named as a pick.
+            {needs ? (
+              <>
+                {' '}
+                Each slot's need is its weakest unit by the starters' SZN against the league ({groups}), plus a little for each year the oldest starter is past{' '}
+                {needs.ageFrom}.{needs.unrated.length ? ` ${needs.unrated.join(', ')} has no season rating, so it is left out.` : ''}
+              </>
+            ) : null}{' '}
+            {rule}
+          </InfoTip>
         </p>
       </aside>
       <Reveal as="ol" className={`wr-board${view === 'order' ? ' is-order' : ''}`} aria-label={`${year} first round, projected`}>
@@ -92,10 +96,13 @@ const WarRoom = ({ focus, view, onView }: { focus?: string; view: WarRoomView; o
           <Slot key={abbr} abbr={abbr} i={i} c={odds.clubs[abbr]} rows={needs?.clubs[abbr] ?? []} needs={needs} players={players} live={live} focus={focus === abbr} view={view} />
         ))}
       </Reveal>
-      <p className="cl-foot">
-        Sprite: a starter from the unit the club needs most, in its kit. Bars: each pick's share of the {odds.sims.toLocaleString()} simulated seasons, the middle 90%
-        lit, the most likely gold. The order lists clubs by their average simulated slot, so two clubs can share a most likely pick. Contracts aren't used (the
-        contract file stops in 2022).
+      <p className="cl-foot flex items-center gap-1">
+        Bars: each pick's share of the simulated seasons.
+        <InfoTip>
+          Sprite: a starter from the unit the club needs most, in its kit. Bars: each pick's share of the {odds.sims.toLocaleString()} simulated seasons, the middle 90%
+          lit, the most likely gold. The order lists clubs by their average simulated slot, so two clubs can share a most likely pick. Contracts aren't used (the
+          contract file stops in 2022).
+        </InfoTip>
       </p>
     </section>
   );

@@ -8,6 +8,7 @@
 .cw-rank--inline { position: static; align-self: center; padding: 2px 5px; }
 /* phone: the leader card is as tall as its text and sprites, no empty band under the record */
 @media (max-width: 639px) {
-  .cw-tile.cw-tile--lead { min-height: 104px; }
+  /* three 1.25x figures stand under the city line, so a head never reaches the card's top edge or the label */
+  .cw-tile.cw-tile--lead { --k: 1.25; min-height: 126px; }
   .cw-tile.cw-tile--lead .cw-sprites--lead { bottom: 3px; }
 }

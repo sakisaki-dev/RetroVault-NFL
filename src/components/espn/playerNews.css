@@ -99,3 +99,5 @@
   background: color-mix(in srgb, var(--tc-p, #2a3352) 22%, rgb(255 255 255 / 0.04)); border: 1px solid color-mix(in srgb, var(--tc-p, #2a3352) 45%, transparent);
   font: 700 13px/1.2 var(--font-display, 'Barlow Condensed', sans-serif); letter-spacing: 0.04em; text-transform: uppercase; color: #fff; }
 @media (min-width: 768px) { .pn-pair > :only-child { grid-column: 1 / -1; } }
+
+@media (max-width: 640px) { .pn-note__s { -webkit-line-clamp: 4; } }

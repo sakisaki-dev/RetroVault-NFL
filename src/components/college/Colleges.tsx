@@ -1,5 +1,6 @@
 import { useDeferredValue, useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArcadeToggle } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { CollegeMark } from '@/components/player/DraftTiles';
@@ -197,10 +198,13 @@ export const CollegeIndexView = ({ idx, onSchool }: { idx: CollegeIndex; onSchoo
           {CARDS + 1}–{CARDS + rows.length} of {board.length} · Show more
         </button>
       )}
-      <p className="cl-foot">
-        Drafted and first-rounders count every pick since 1980 by draft year; active counts today's players on the site whatever the era; total OVR adds up the
-        career OVR of the school's players with a card on the site (by draft year, else first season), so it leans recent. Hall of Famers: real inductees from the
-        draft file and the site. The best alumnus stands in the kit of the club he is best known for.
+      <p className="cl-foot flex items-center gap-1">
+        Every pick since 1980, counted by draft year.
+        <InfoTip>
+          Drafted and first-rounders count every pick since 1980 by draft year; active counts today's players on the site whatever the era; total OVR adds up the
+          career OVR of the school's players with a card on the site (by draft year, else first season), so it leans recent. Hall of Famers: real inductees from the
+          draft file and the site. The best alumnus stands in the kit of the club he is best known for.
+        </InfoTip>
       </p>
     </section>
   );

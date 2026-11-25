@@ -236,7 +236,7 @@ const TeamRankingsTab = () => {
       {IS_NFL && (
         <p className="-mt-3 text-sm text-muted-foreground">
           Every franchise since {firstSeason ? seasonLabel(firstSeason) : '1999'}{' · '}
-          <a href="#season" className="font-semibold text-gold hover:underline">This season → Season page</a>
+          <a href="#season" className="whitespace-nowrap font-semibold text-gold hover:underline">This season →</a>
         </p>
       )}
 

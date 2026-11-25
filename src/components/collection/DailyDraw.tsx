@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CalendarClock, Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { DAILY_ODDS, PACKS, claimDaily, dailyReady, msUntilDaily, type CollectionState } from '@/utils/collection';
 
 const PCT = (n: number) => (n >= 1 ? `${Math.round(n)}%` : `${n}%`);
@@ -29,11 +30,16 @@ const DailyDraw = ({ state, disabled }: { state: CollectionState; disabled?: boo
           {ready ? <Gift className="h-5 w-5" /> : <CalendarClock className="h-5 w-5" />}
         </span>
         <div className="min-w-0">
-          <p className="font-display text-sm font-bold uppercase tracking-wide">Daily draw</p>
+          <p className="flex items-center gap-1 font-display text-sm font-bold uppercase tracking-wide">
+            Daily draw
+            <InfoTip className="sm:hidden" label="Pack odds">
+              Chance of each pack type: {ODDS_LINE}.
+            </InfoTip>
+          </p>
           <p className="text-xs text-muted-foreground">
             {ready ? 'One free pack a day. Today’s is waiting.' : `Drawn today. Next draw in ${countdown(msUntilDaily(now))}.`}
           </p>
-          <p className="mt-0.5 text-[11px] text-muted-foreground/80" title="Chance of each pack type">
+          <p className="mt-0.5 hidden text-[11px] text-muted-foreground/80 sm:block" title="Chance of each pack type">
             {ODDS_LINE}
           </p>
         </div>

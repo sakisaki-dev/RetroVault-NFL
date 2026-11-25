@@ -97,8 +97,8 @@ export const StarStrip = ({ stars, week, away, home, lookup: _l }: { stars: Seas
               <StarSprite name={name} pos={pos} team={team} size="s" kind="bust" />
             </span>
             <span className="min-w-0 leading-tight">
-              <span className="block truncate font-semibold">{name}</span>
-              <span className="block truncate opacity-85">{s[2]}</span>
+              <span className="block line-clamp-2 font-semibold">{name}</span>
+              <span className="block line-clamp-2 opacity-85">{s[2]}</span>
             </span>
           </PlayerHit>
         );

@@ -73,10 +73,10 @@ const InsightTile = ({ insight, index, onSelect }: { insight: Insight; index: nu
       type="button"
       {...peekProps(insight.player)}
       onClick={() => onSelect(insight.player)}
-      className="flex min-w-0 items-center gap-1.5 rounded text-left text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      className="flex min-w-0 items-center gap-1.5 rounded text-left text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white max-sm:items-start"
     >
       {insight.player.team && <TeamLogo team={insight.player.team} size={18} decorative backed />}
-      <span className="truncate"><FitName name={displayName(insight.player.name)} /></span>
+      <span className="truncate max-sm:whitespace-normal max-sm:leading-tight max-sm:[overflow-wrap:anywhere]"><FitName name={displayName(insight.player.name)} /></span>
       <span className="shrink-0 font-pixel text-[9px] cs-flat__sub">{insight.player.position}</span>
     </button>
     <span className="mt-auto pt-1 text-[11px] cs-flat__sub">{insight.caption}</span>

@@ -36,7 +36,7 @@
 .nsp__led { display: flex; gap: 6px; padding: 6px 8px; border-radius: 6px; background: #05080f; box-shadow: inset 0 0 0 1px rgb(255 200 61 / 0.25); }
 .nsp__cell { overflow: hidden; display: flex; flex: 1; flex-direction: column; align-items: center; min-width: 0; }
 .nsp__cell i { font-family: var(--font-pixel); font-style: normal; font-size: 13px; color: #ffc83d; white-space: nowrap; text-shadow: 0 0 6px rgb(255 200 61 / 0.7); font-variant-numeric: tabular-nums; }
-.nsp__cell em { font-family: var(--font-pixel); font-style: normal; font-size: 6px; letter-spacing: 0.1em; color: #8a94b8; margin-top: 2px; }
+.nsp__cell em { font-family: var(--font-pixel); font-style: normal; font-size: 8px; letter-spacing: 0.06em; color: #8a94b8; margin-top: 2px; }
 .nsp__last { font-size: 11px; color: #c7d0ee; line-height: 1.35; }
 .nsp__last b { font-family: var(--font-pixel); font-size: 8px; font-weight: 400; color: #8a94b8; }
 .nsp__last u { text-decoration: none; font-family: var(--font-pixel); font-size: 9px; padding: 1px 4px; border-radius: 3px; background: #1d2742; }

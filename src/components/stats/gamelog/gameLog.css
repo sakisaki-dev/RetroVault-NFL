@@ -81,6 +81,7 @@
 .gl-best__n { font: 700 14px var(--font-pixel); color: hsl(var(--gold)); width: 1rem; text-align: center; }
 .gl-best__t { font-weight: 700; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 0 0.5rem; align-items: center; }
 .gl-best__l { font-size: 11px; color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 639px) { .gl-best__l { white-space: normal; line-height: 1.25; } }
 .gl-best__s { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.7rem; color: hsl(var(--gold)); }
 
 /* tables */

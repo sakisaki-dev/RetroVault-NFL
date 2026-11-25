@@ -283,3 +283,9 @@ ol.en-list { list-style: decimal; }
 /* breathing room between a module or section header and the cards under it (owner: Top stories' header sat on its first story) */
 .en-rub { margin-bottom: 14px; }
 .en-mod > .en-rub { margin-bottom: 14px; padding-bottom: 2px; }
+
+/* phone: headlines are long, so give them room before the clamp cuts them, and keep the dek short */
+@media (max-width: 640px) {
+  .en-cards .ss-item__title { font-size: 19px; -webkit-line-clamp: 5; }
+  .en-cards .ss-item__dek { -webkit-line-clamp: 2; }
+}

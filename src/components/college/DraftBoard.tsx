@@ -1,6 +1,7 @@
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { ArcadeToggle, PixelSelect } from '@/components/arcade';
 import { Reveal, stag, useReveal } from '@/components/motion/Reveal';
@@ -68,7 +69,7 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
           </div>
         ) : (
           <p className="cl-callout">
-            Too early to call steals and busts: a draft is judged after {idx.judgeAfter} seasons, so {year}'s waits until {year + idx.judgeAfter}.
+            Steals and busts are called after {idx.judgeAfter} seasons: {year + idx.judgeAfter}.
           </p>
         ))}
 
@@ -82,9 +83,12 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
             <Round key={`${year}-${r}`} d={d} r={r} rounds={rounds} players={players} school={school} onSchool={onSchool} />
           ),
         )}
-      <p className="cl-foot">
-        Picks, Pro Bowls, first-team All-Pro and games from nflverse's draft file; OVR is the site's career rating; HOF is a real inductee. Clubs carry today's names;
-        the codes that changed franchises (Houston, Baltimore, St. Louis) are read by year.
+      <p className="cl-foot flex items-center gap-1">
+        Source: nflverse draft file. OVR is the site's career rating.
+        <InfoTip>
+          Picks, Pro Bowls, first-team All-Pro and games from nflverse's draft file; OVR is the site's career rating; HOF is a real inductee. Clubs carry today's names;
+          the codes that changed franchises (Houston, Baltimore, St. Louis) are read by year.
+        </InfoTip>
       </p>
     </section>
   );

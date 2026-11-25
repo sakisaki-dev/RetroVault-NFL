@@ -5,7 +5,7 @@ const LONG = 15;
 /** "Sherman Brandson" → "S. Brandson"; one-word names stay as they are. */
 export const surnameFirst = (name: string) => {
   const { first, last } = firstAndLast(name);
-  return first ? `${first[0]}. ${last}` : name;
+  return first ? `${first[0]}.\u00a0${last}` : name;
 };
 
 /**

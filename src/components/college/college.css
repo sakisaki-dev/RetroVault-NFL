@@ -258,10 +258,10 @@ button.cl-chip:hover { background: rgb(0 0 0 / 0.62); }
 .ci-card__rk { font: italic 900 30px/1 var(--font-display); }
 .ci-card__lg { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; background: rgb(0 0 0 / 0.18); }
 .ci-card__n { min-width: 0; font: 800 22px/1 var(--font-display); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ci-card__st { position: absolute; left: 12px; top: 54px; display: grid; grid-template-columns: repeat(2, 58px); gap: 6px 4px; font-size: 10px; color: var(--sub); }
+.ci-card__st { position: absolute; left: 12px; top: 54px; display: grid; grid-template-columns: repeat(2, 58px); gap: 6px 4px; font-size: 11px; color: color-mix(in srgb, var(--ink) 90%, transparent); text-shadow: 0 1px 2px rgb(0 0 0 / 0.4); }
 .ci-card__st b { display: block; font: 900 22px/1 var(--font-display); color: var(--ink); }
 .ci-card__best { position: absolute; left: 0; right: 0; bottom: 0; padding: 7px 12px 8px; background: rgb(0 0 0 / 0.26); color: #fff; }
-.ci-card__best .ax-kicker { display: block; color: rgb(255 255 255 / 0.7); font-size: 7.5px; }
+.ci-card__best .ax-kicker { display: block; color: rgb(255 255 255 / 0.85); font-size: 8px; }
 .ci-card__best b { display: inline-block; margin-top: 3px; font: 800 16px/1 var(--font-display); text-transform: uppercase; }
 .ci-card__best em { margin-left: 6px; font-style: normal; font-size: 11px; color: rgb(255 255 255 / 0.78); }
 .ci-card__fig { position: absolute; right: -18px; bottom: 26px; line-height: 0; transform-origin: 100% 100%; }
