@@ -20,6 +20,7 @@ import { openTeamPage } from '@/utils/teamSearch';
 import { DraftPills } from '@/components/player/DraftTiles';
 import { BioPills } from '@/components/player/BioTiles';
 import '@/components/player/playerCard.css';
+import './ddHero.css';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
@@ -132,7 +133,9 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
       <RetiredHangers player={player} className="dd-hangers" />
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
+      {/* owner: "the little pills on deep dive stack oddly": two tidy rows of one pill style, his facts then his path
+          (college → draft → clubs), the card hint at the end of the first on desktop only */}
+      <div className="dd-facts">
         {/* His Player Tribute, when one has been written */}
         <TributeButton playerKey={keyOf(player)} label="Read his tribute" className="h-8 border border-gold/60 bg-gold/10 px-2.5 text-sm text-gold hover:bg-gold/20" />
         <InLeague player={player} />
@@ -158,9 +161,15 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
           </button>
         )}
         {IS_NFL && <BioPills player={player} />}
+        <span className="dd-facts__hint">
+          <IdCard className="h-3.5 w-3.5" aria-hidden="true" />
+          Tap the banner for the full player card
+        </span>
+      </div>
+      <div className="dd-path" aria-label="College, draft and clubs">
         <DraftPills playerKey={keyOf(player)} />
         {franchises.length > 0 && (
-          <ul className="flex flex-wrap items-center gap-1.5" aria-label="Franchise history">
+          <ul className="contents" aria-label="Franchise history">
             {franchises.map((f, i) => (
               <li key={`${f}-${i}`}>
                 <button
@@ -177,10 +186,6 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             ))}
           </ul>
         )}
-        <span className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground">
-          <IdCard className="h-3.5 w-3.5" aria-hidden="true" />
-          Tap the banner for the full player card
-        </span>
       </div>
     </div>
   );
