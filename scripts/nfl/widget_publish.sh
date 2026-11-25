@@ -12,7 +12,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SRC="$ROOT/public/data/nfl"
 DEST="${1:-$HOME/Code/rv-nfl-widget}"
-REMOTE="git@github.com:sakisaki-dev/rv-nfl-widget.git"
+REMOTE="https://github.com/sakisaki-dev/rv-nfl-widget.git"
 
 [ -f "$SRC/widget.json" ] || { echo "no $SRC/widget.json: run python3 scripts/nfl/widget_data.py" >&2; exit 1; }
 if [ ! -d "$DEST/.git" ]; then
