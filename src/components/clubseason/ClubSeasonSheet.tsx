@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/compone
 import PlayerDetailCard from '@/components/PlayerDetailCard';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { clubPlate } from '@/components/arcade/clubInk';
+import { Reveal } from '@/components/motion/Reveal';
 import { useLeague } from '@/context/LeagueContext';
 import { displayName } from '@/utils/displayName';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -11,10 +12,12 @@ import { openGame, useGameIds } from '@/utils/nflGames';
 import { openTeamPage } from '@/utils/teamSearch';
 import { realNumberOf } from '@/utils/gameSprites';
 import { resultOf, ticketsOf, useClubSeason } from '@/utils/clubSeason';
-import ClubSeasonHero, { type HeroPlayer } from './ClubSeasonHero';
+import ClubSeasonHero from './ClubSeasonHero';
+import ClubSeasonFacing from './ClubSeasonFacing';
+import ClubSeasonLineup from './ClubSeasonLineup';
 import ClubSeasonInk from './ClubSeasonInk';
-import { Section } from './ClubSeasonSection';
-import { CapBreakdown, Leaders, Roster, SeasonStrip, Tickets, type RosterEntry } from './ClubSeasonParts';
+import { Section, accentOn, inkOn, liftOnNight } from './ClubSeasonSection';
+import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './ClubSeasonParts';
 import './clubSeason.css';
 
 interface Props {
@@ -24,10 +27,15 @@ interface Props {
   onClose: () => void;
 }
 
+/** The sheet's own close: the dialog animates out before whatever it opens takes the screen */
+const AFTER_CLOSE_MS = 60;
+
 /**
- * The club season sheet (concept 6): full screen on a phone (swipe down to close, a history entry like the other
- * sheets), a centred card from 640px. A locker-room hero, the game log as tickets, the roster with season lines, team
- * leaders, a slot for black ink and streaks, and the season's contracts (cap) breakdown. Every season 1999 on.
+ * The club season sheet as a game-day programme (concept C): full screen on a phone (swipe down to close, a history
+ * entry like the other sheets), a centred card from 640px. The cover and the facing page (at a glance, the division
+ * table, splits, postseason), the starting lineup as the centre spread, then a two-column magazine (the schedule as a
+ * fixture list; stat leaders, black ink and the cap) and the roster as a yearbook. Every season 1999 on.
+ * Anything that leaves the sheet (a player card, a game, the club's all-time page) closes it first.
  */
 const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
   const team = findNFLTeam(club);
@@ -52,13 +60,16 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     return m;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAllPlayers, dataVersion]);
-  const pick = useCallback((key: string) => {
-    const p = byKey.get(key);
-    if (!p) return;
-    // the sheet closes first (like the game tickets), then the player card opens on its own
-    onClose();
-    window.setTimeout(() => setCard(p), 60);
-  }, [byKey, onClose]);
+  // The sheet closes first, then the player card opens on its own (its Deep Dive and links then never sit under the sheet)
+  const pick = useCallback(
+    (key: string) => {
+      const p = byKey.get(key);
+      if (!p) return;
+      onClose();
+      window.setTimeout(() => setCard(p), AFTER_CLOSE_MS);
+    },
+    [byKey, onClose],
+  );
   const rows = useMemo<RosterEntry[]>(
     () => (data?.roster ?? []).map((r) => {
       const [pos, ...rest] = r.k.split(':');
@@ -66,18 +77,9 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     }),
     [data?.roster],
   );
-  const hero = useMemo<HeroPlayer[]>(
-    () => {
-      // the starting QB (most passing attempts, then games) stands in the middle stall; the other four are the best by SZN
-      const rated = rows.filter((r) => r.szn != null);
-      const qb = rows.filter((r) => r.pos === 'QB' && r.g > 0).sort((a, b) => (b.att ?? 0) - (a.att ?? 0) || b.g - a.g)[0];
-      const pick = qb ? [qb, ...rated.filter((r) => r.k !== qb.k).slice(0, 4)] : rated.slice(0, 5);
-      return pick.map((r) => ({ key: r.k, name: r.name, number: r.number, szn: r.szn }));
-    },
-    [rows],
-  );
   const tickets = useMemo(() => (data?.games && abbr ? ticketsOf(data.games, abbr) : []), [data?.games, abbr]);
   const result = useMemo(() => (abbr ? resultOf(data?.games ?? null, abbr, data?.schedule ?? null) : { text: '', champion: false, playoffs: false, live: false }), [data, abbr]);
+  const lastPost = useMemo(() => [...tickets].reverse().find((t) => t.type !== 'REG' && t.r) ?? null, [tickets]);
   const record = useMemo(() => {
     if (data?.cell) return data.cell.record;
     const reg = tickets.filter((t) => t.type === 'REG' && t.r);
@@ -87,21 +89,41 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     return reg.length ? `${w}-${l}${t ? `-${t}` : ''}` : '';
   }, [data?.cell, tickets]);
   const plate = clubPlate(club);
-  const vars = { ['--cs-fill' as string]: plate.fill, ['--cs-edge' as string]: plate.edge } as CSSProperties;
+  const lift = liftOnNight(plate.fill);
+  const liftEdge = liftOnNight(plate.edge);
+  const vars = {
+    '--cs-fill': plate.fill,
+    '--cs-edge': plate.edge,
+    '--cs-ink': plate.ink,
+    // the masthead and the cover's accents: the secondary where it reads on the fill, else the fill's own ink
+    '--cs-acc': accentOn(plate.fill, plate.edge, plate.ink),
+    '--cs-acc-ink': plate.fill,
+    // the club colour lifted to read on the night page (win bars, rules), and its secondary the same way
+    '--cs-lift': lift,
+    '--cs-lift2': liftEdge,
+    '--cs-lift-ink': inkOn(plate.fill),
+    '--ax-c1': plate.fill,
+    '--ax-c2': plate.edge,
+    '--ax-ink': plate.ink,
+  } as CSSProperties;
 
   useEffect(() => {
     // keep the picked season's tab in view
     const el = strip.current?.querySelector<HTMLElement>('[aria-current="true"]');
     if (el && strip.current) strip.current.scrollLeft = el.offsetLeft - (strip.current.clientWidth - el.offsetWidth) / 2;
   }, [year, years.length, open]);
+  useEffect(() => {
+    // a new season starts at the cover
+    scroller.current?.scrollTo({ top: 0 });
+  }, [year, club]);
 
   const openGameFromSheet = (id: string) => {
     onClose();
-    window.setTimeout(() => openGame(id), 60);
+    window.setTimeout(() => openGame(id), AFTER_CLOSE_MS);
   };
   const allTime = () => {
     onClose();
-    window.setTimeout(() => openTeamPage(club), 60);
+    window.setTimeout(() => openTeamPage(club), AFTER_CLOSE_MS);
   };
 
   return (
@@ -116,10 +138,10 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
             scroller.current?.focus({ preventScroll: true });
           }}
           style={vars}
-          className="cs-sheet grid-cols-[minmax(0,1fr)] w-screen max-w-none h-[var(--safe-h,100dvh)] max-h-none overflow-y-auto overflow-x-hidden rounded-none border-0 gap-0 p-0 sm:h-auto sm:max-h-[calc(var(--safe-h,100dvh)-2rem)] sm:w-[min(1040px,calc(100vw-2rem))] sm:rounded-2xl sm:border [&_.dlg-x]:border-white/20 [&_.dlg-x]:bg-black/55 [&_.dlg-x]:text-white"
+          className="cs-sheet grid-cols-[minmax(0,1fr)] w-screen max-w-none h-[var(--safe-h,100dvh)] max-h-none overflow-y-auto overflow-x-hidden rounded-none border-0 gap-0 p-0 sm:h-auto sm:max-h-[calc(var(--safe-h,100dvh)-2rem)] sm:w-[min(1080px,calc(100vw-2rem))] sm:rounded-2xl sm:border [&_.dlg-x]:border-white/20 [&_.dlg-x]:bg-black/55 [&_.dlg-x]:text-white"
         >
           <DialogTitle className="sr-only">{year} {team?.fullName}</DialogTitle>
-          <DialogDescription className="sr-only">The {year} {team?.name} season: locker room, game log, roster with season lines, team leaders and contracts.</DialogDescription>
+          <DialogDescription className="sr-only">The {year} {team?.name} season programme: the cover, the season at a glance, the starting lineup, the schedule, stat leaders, the cap and the roster.</DialogDescription>
           {team && abbr && (
             <div className="cs">
               <div className="cs-bar-top">
@@ -135,42 +157,33 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
               {data === undefined ? (
                 <p className="cs-loading" role="status">Loading the {year} {team.name}…</p>
               ) : (
-                <>
-                  <ClubSeasonHero
-                    club={club}
-                    year={year}
-                    players={hero}
-                    record={record || '–'}
-                    pf={data.cell?.pf}
-                    pa={data.cell?.pa}
-                    power={data.cell?.power}
-                    division={data.cell?.division}
-                    divisionRank={data.cell?.divisionRank}
-                    result={result}
-                    onPick={pick}
-                  />
-                  <div className="cs-body">
-                    <Section kicker="Season at a glance" title="Every game" club={team.name}>
-                      {tickets.length ? (
-                        <>
-                          <SeasonStrip tickets={tickets} onOpen={openGameFromSheet} />
-                          <h4 className="cs-sub">Game log</h4>
-                          <Tickets tickets={tickets} onOpen={openGameFromSheet} />
-                        </>
-                      ) : <p className="cs-note">No games on file for {year}.</p>}
-                    </Section>
-                    <Section kicker="Best on the team" title="Team leaders" club={team.name}>
-                      <Leaders rows={rows} club={club} year={year} onPick={pick} />
-                    </Section>
-                    <ClubSeasonInk club={abbr} season={year} onPick={pick} />
-                    <Section kicker="Season lines" title="Roster" club={team.name}>
-                      {rows.length ? <Roster rows={rows} club={club} year={year} onPick={pick} /> : <p className="cs-note">No roster lines on file for {year}.</p>}
-                    </Section>
-                    <Section kicker="Contracts" title="Season cap breakdown" club={team.name}>
-                      <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
-                    </Section>
+                <div className="pg" key={`${abbr}-${year}`}>
+                  <Reveal className="pg-front">
+                    <ClubSeasonHero club={club} year={year} record={record || '–'} cell={data.cell} result={result} lastPost={lastPost} rows={rows} onPick={pick} />
+                    <ClubSeasonFacing abbr={abbr} year={year} cell={data.cell} table={data.schedule?.table ?? null} tickets={tickets} result={result} onOpenGame={openGameFromSheet} />
+                  </Reveal>
+                  <ClubSeasonLineup rows={rows} club={club} clubName={team.name} year={year} onPick={pick} />
+                  <div className="pg-mag">
+                    <div className="pg-col">
+                      <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined}>
+                        {tickets.length ? <Fixtures tickets={tickets} onOpen={openGameFromSheet} /> : <p className="pg-note">No games on file for {year}.</p>}
+                        {tickets.some((t) => t.upset) && <p className="pg-note">Upset: the club won as an underdog by 3 or more on the closing line (or lost as a favourite by 3 or more).</p>}
+                      </Section>
+                    </div>
+                    <div className="pg-col">
+                      <Section title="Stat leaders">
+                        <Leaders rows={rows} club={club} year={year} onPick={pick} />
+                      </Section>
+                      <ClubSeasonInk club={abbr} season={year} onPick={pick} />
+                      <Section title="The cap" note="contracts in force">
+                        <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
+                      </Section>
+                    </div>
                   </div>
-                </>
+                  <Section title="The roster · yearbook" note={rows.length ? `${rows.length} players` : undefined} className="pg-roster">
+                    {rows.length ? <Yearbook rows={rows} club={club} year={year} onPick={pick} /> : <p className="pg-note">No roster lines on file for {year}.</p>}
+                  </Section>
+                </div>
               )}
             </div>
           )}

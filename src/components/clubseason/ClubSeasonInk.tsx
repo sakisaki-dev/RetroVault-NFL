@@ -1,14 +1,12 @@
+import { Fragment, type ReactNode } from 'react';
 import { PixelIcon } from '@/components/arcade';
-import { StarSprite } from '@/components/season/NflSeasonExtras';
-import { Reveal, stag } from '@/components/motion/Reveal';
-import { findNFLTeam } from '@/utils/nflTeams';
-import { Section } from './ClubSeasonSection';
+import { Reveal } from '@/components/motion/Reveal';
 import { INK_LABEL, leadersForClubSeason, streaksForClubSeason, useSeasonBoard, useStreaks } from '@/utils/seasonBoards';
 
 /**
  * The club season's black ink (players on the club who led the whole league in a headline stat that season) and the
- * streaks (3+ straight seasons over a mark) running through it, from the season boards (season_boards.py). Renders
- * nothing when the season has neither; the live season never counts toward ink or streaks.
+ * streaks (3+ straight seasons over a mark) running through it, from the season boards (season_boards.py), set as the
+ * programme's pull quote. Renders nothing when the season has neither; the live season never counts.
  */
 export interface ClubSeasonInkProps {
   /** Club abbreviation ("NE") */
@@ -17,50 +15,40 @@ export interface ClubSeasonInkProps {
   onPick?: (key: string) => void;
 }
 
+const nf = (n: number) => n.toLocaleString('en-US');
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+
 const ClubSeasonInk = ({ club, season, onPick }: ClubSeasonInkProps) => {
   const board = useSeasonBoard(season);
   const streakFile = useStreaks();
   const led = board ? leadersForClubSeason(club, season) : [];
   const runs = streakFile ? streaksForClubSeason(club, season) : [];
   if (!led.length && !runs.length) return null;
-  const clubName = findNFLTeam(club)?.name ?? club;
-  const sprite = (k: string | null, n: string, size: 's' | 'm' = 's') => {
-    const pos = k ? k.split(':')[0] : '';
-    return <span className="cs-ink__sp" aria-hidden="true"><StarSprite name={n} pos={pos} team={clubName} size={size} kind="bust" season={season} /></span>;
-  };
   const name = (k: string | null, n: string) =>
     k && onPick ? (
-      <button type="button" className="cs-ink__n" onClick={() => onPick(k)}>{n}</button>
+      <button type="button" className="pg-name" data-peek-ok data-player-key={k} onClick={() => onPick(k)}>{n}</button>
     ) : (
-      <span className="cs-ink__n">{n}</span>
+      <span className="pg-name">{n}</span>
     );
+  const lines: ReactNode[] = [
+    ...led.slice(0, 3).map(({ stat, row }) => (
+      <Fragment key={`l-${stat}`}>
+        {name(row[0], row[1])} led the league in {(INK_LABEL[stat] ?? stat).replace(/^\w/, (c) => c.toLowerCase())}: <b className="num">{nf(row[4])}</b>.
+      </Fragment>
+    )),
+    ...runs.slice(0, 3).map((r) => (
+      <Fragment key={`s-${r.id}-${r.key}`}>
+        {name(r.key, r.name)}{r.alive ? <>&rsquo;s streak is alive:</> : ':'} <b>{WORDS[r.len] ?? r.len} straight</b> {r.label.replace(/^\w/, (c) => c.toLowerCase())} seasons, {r.from} to {season}.
+      </Fragment>
+    )),
+  ];
   return (
-    <Section kicker="Black ink and streaks" title="Led the league" club={clubName}>
-      <Reveal as="ul" className="cs-ink">
-        {led.map(({ stat, row }, i) => (
-          <li key={`l-${stat}`} className="cs-ink__i is-ink mo-pop" style={stag(i, 50)}>
-            {sprite(row[0], row[1])}
-            <span className="cs-ink__body">
-              <span className="cs-ink__tag"><PixelIcon name="star" size={10} />Black ink</span>
-              {name(row[0], row[1])}
-              <span className="cs-ink__d">Led the league in {(INK_LABEL[stat] ?? stat).replace(/^\w/, (c) => c.toLowerCase())}</span>
-            </span>
-            <b className="cs-ink__v num">{row[4].toLocaleString()}</b>
-          </li>
-        ))}
-        {runs.map((r, i) => (
-          <li key={`s-${r.id}-${r.key}`} className={`cs-ink__i is-run mo-pop${r.alive ? ' is-alive' : ''}`} style={stag(led.length + i, 50)}>
-            {sprite(r.key, r.name)}
-            <span className="cs-ink__body">
-              <span className="cs-ink__tag"><PixelIcon name="fire" size={10} />{r.alive ? 'Streak alive' : 'Streak'}</span>
-              {name(r.key, r.name)}
-              <span className="cs-ink__d">{r.label} seasons, {r.from} to {season}</span>
-            </span>
-            <b className="cs-ink__v num">{r.len}<small>straight</small></b>
-          </li>
-        ))}
-      </Reveal>
-    </Section>
+    <Reveal as="section" className="pg-sec" aria-label="Black ink and streaks">
+      <blockquote className="pg-pull mo-rise">
+        <span className="pg-kick"><PixelIcon name="star" size={10} />{led.length ? 'Black ink' : 'Streaks'}{led.length && runs.length ? ' and streaks' : ''}</span>
+        {lines.map((l, i) => <p key={i}>{l}</p>)}
+      </blockquote>
+    </Reveal>
   );
 };
 

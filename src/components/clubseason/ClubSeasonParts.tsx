@@ -1,245 +1,80 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/brand/TeamLogo';
-import { clubPlate } from '@/components/arcade/clubInk';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { PixelIcon } from '@/components/arcade';
 import { StarSprite } from '@/components/season/NflSeasonExtras';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { ROUND_LABEL } from '@/utils/gameFinder';
 import type { CapFile, RosterRow, Ticket } from '@/utils/clubSeason';
+import { surname } from './ClubSeasonHero';
 
 const nf = (n: number) => n.toLocaleString('en-US');
-
-/* ---------------- Season at a glance (margin bars) ---------------- */
-
-const resWord = (r?: string) => (r === 'W' ? 'Win' : r === 'L' ? 'Loss' : r === 'T' ? 'Tie' : 'Not played');
-const weekLabel = (t: Ticket) => (t.type === 'REG' ? `Week ${t.week}` : ROUND_LABEL[t.type] ?? t.type);
-
-export const SeasonStrip = ({ tickets, onOpen }: { tickets: Ticket[]; onOpen: (id: string) => void }) => {
-  const [sel, setSel] = useState<number | null>(null);
-  const maxM = Math.max(14, ...tickets.map((t) => (t.pf != null && t.pa != null ? Math.abs(t.pf - t.pa) : 0)));
-  // running regular-season record after each game
-  const running = useMemo(() => {
-    let w = 0, l = 0, t = 0;
-    return tickets.map((x) => {
-      if (x.type === 'REG' && x.r) {
-        if (x.r === 'W') w += 1; else if (x.r === 'L') l += 1; else t += 1;
-      }
-      return `${w}-${l}${t ? `-${t}` : ''}`;
-    });
-  }, [tickets]);
-  const reg = tickets.filter((t) => t.type === 'REG' && !t.bye && t.r);
-  const best = reg.reduce<Ticket | null>((a, t) => (t.r === 'W' && (a == null || (t.pf ?? 0) - (t.pa ?? 0) > (a.pf ?? 0) - (a.pa ?? 0)) ? t : a), null);
-  const worst = reg.reduce<Ticket | null>((a, t) => (t.r === 'L' && (a == null || (t.pa ?? 0) - (t.pf ?? 0) > (a.pa ?? 0) - (a.pf ?? 0)) ? t : a), null);
-  const t = sel != null ? tickets[sel] : null;
-  const one = reg.filter((x) => Math.abs((x.pf ?? 0) - (x.pa ?? 0)) <= 8);
-  const rec = (f: (x: Ticket) => boolean) => {
-    const rs = reg.filter(f);
-    return `${rs.filter((x) => x.r === 'W').length}-${rs.filter((x) => x.r === 'L').length}`;
-  };
-  const oneRec = `${one.filter((x) => x.r === 'W').length}-${one.filter((x) => x.r === 'L').length}`;
-  return (
-    <div className="cs-sg">
-      <div className="cs-split num">
-        <span><i>Home</i><b>{rec((x) => !!x.home)}</b></span>
-        <span><i>Away</i><b>{rec((x) => !x.home)}</b></span>
-        <span><i>One-score</i><b>{oneRec}</b></span>
-        {best && <span><i>Biggest win</i><b>+{(best.pf ?? 0) - (best.pa ?? 0)}</b></span>}
-        {worst && <span><i>Worst loss</i><b>-{(worst.pa ?? 0) - (worst.pf ?? 0)}</b></span>}
-      </div>
-      <Reveal className="cs-sg__chart" role="list" aria-label="Every game as its winning or losing margin">
-        <span className="cs-sg__axis" aria-hidden="true" />
-        {tickets.map((x, i) => {
-          if (x.bye) {
-            return (
-              <span key={`b${x.week}`} role="listitem" className="cs-sg__col is-bye mo-rise" style={stag(i, 18)} aria-label={`Week ${x.week}, bye`}>
-                <span className="cs-sg__up" /><span className="cs-sg__dn" />
-                <span className="cs-sg__lg" aria-hidden="true">BYE</span>
-              </span>
-            );
-          }
-          const m = x.pf != null && x.pa != null ? x.pf - x.pa : 0;
-          const h = x.r ? Math.max(8, (Math.abs(m) / maxM) * 100) : 6;
-          const label = `${weekLabel(x)}, ${x.home ? 'vs' : 'at'} ${x.opp}${x.r ? `, ${resWord(x.r).toLowerCase()} ${x.pf} to ${x.pa}` : ', not played yet'}${x.upset ? `, upset ${x.upset}` : ''}`;
-          return (
-            <span key={x.game?.id ?? i} role="listitem" className={cn('cs-sg__col mo-rise', x.r && `is-${x.r}`, x.type !== 'REG' && 'is-post', sel === i && 'is-sel')} style={stag(i, 18)}>
-              <button type="button" className="cs-sg__btn" aria-label={label} aria-pressed={sel === i} onClick={() => setSel(sel === i ? null : i)}>
-                <span className="cs-sg__up">{x.r === 'W' || x.r === 'T' ? <i style={{ height: `${h}%` }}>{x.upset === 'win' && <b aria-hidden="true">★</b>}</i> : null}</span>
-                <span className="cs-sg__dn">{x.r === 'L' ? <i style={{ height: `${h}%` }}>{x.upset === 'loss' && <b aria-hidden="true">!</b>}</i> : null}</span>
-                <span className="cs-sg__lg" aria-hidden="true"><TeamLogo team={x.opp ?? ''} size={20} decorative /></span>
-                <span className="cs-sg__ha" aria-hidden="true">{x.home ? 'H' : 'A'}</span>
-              </button>
-            </span>
-          );
-        })}
-      </Reveal>
-      <div className="cs-sg__read" aria-live="polite">
-        {t && !t.bye ? (
-          <>
-            <span className={cn('cs-sg__res', t.r && `is-${t.r}`)}>{t.r ?? '–'}</span>
-            <span className="cs-sg__txt">
-              <b>{weekLabel(t)}{t.ot ? ' · OT' : ''}</b>
-              <span><TeamLogo team={t.opp ?? ''} size={16} decorative /> {t.home ? 'vs' : 'at'} {t.opp}{t.r ? <> · <b className="num">{t.pf}-{t.pa}</b></> : ' · not played yet'}</span>
-              {sel != null && t.type === 'REG' && t.r && <small className="num">Record after: {running[sel]}</small>}
-              {t.upset && <small>{t.upset === 'win' ? `Upset win: underdog by ${Math.abs(t.fav ?? 0)}` : `Upset loss: favoured by ${t.fav}`}</small>}
-            </span>
-            {t.game && <button type="button" className="cs-sg__open" onClick={() => onOpen(t.game!.id)}>Open game</button>}
-          </>
-        ) : (
-          <span className="cs-note">Tap a bar for the game. Bars above the line are wins, below are losses, taller for a bigger margin; gold marks playoff games, a star an upset win by the closing line (underdog by 3 or more) and a ! an upset loss.</span>
-        )}
-      </div>
-    </div>
-  );
-};
-
-/* ---------------- Game log as tickets ---------------- */
-
-export const Tickets = ({ tickets, onOpen }: { tickets: Ticket[]; onOpen: (id: string) => void }) => (
-  <Reveal as="ul" className="cs-tix">
-    {tickets.map((t, i) => {
-      const wk = t.type === 'REG' ? `WK ${t.week}` : (ROUND_LABEL[t.type] ?? t.type).toUpperCase();
-      if (t.bye) {
-        return (
-          <li key={`b${t.week}`} className="mo-rise" style={stag(i, 22)}>
-            <span className="cs-tix__t is-bye"><span className="cs-tix__wk">{wk}</span><b>BYE</b></span>
-          </li>
-        );
-      }
-      const opp = findNFLTeam(t.opp);
-      const label = `${wk}, ${t.home ? 'vs' : 'at'} ${t.opp}${t.r ? `, ${t.r === 'W' ? 'win' : t.r === 'L' ? 'loss' : 'tie'} ${t.pf} to ${t.pa}` : ', not played yet'}${t.upset ? `, upset ${t.upset}` : ''}. Open the game`;
-      return (
-        <li key={t.game?.id} className="mo-rise" style={stag(i, 22)}>
-          <button
-            type="button"
-            onClick={() => t.game && onOpen(t.game.id)}
-            aria-label={label}
-            title={t.upset ? (t.upset === 'win' ? `Upset win: underdog by ${Math.abs(t.fav ?? 0)}` : `Upset loss: favoured by ${t.fav}`) : undefined}
-            className={cn('cs-tix__t', t.r && `is-${t.r}`, t.type !== 'REG' && 'is-post', t.upset && 'is-upset')}
-            style={opp ? ({ ['--tx-opp' as string]: clubPlate(opp.name).fill } as CSSProperties) : undefined}
-          >
-            <span className="cs-tix__mark" aria-hidden="true"><TeamLogo team={t.opp ?? ''} size={44} decorative /></span>
-            <span className="cs-tix__top">
-              <span className="cs-tix__wk">{wk}{t.ot ? ' · OT' : ''}</span>
-              <span className="cs-tix__ha" aria-hidden="true">{t.home ? 'HOME' : 'AWAY'}</span>
-            </span>
-            <span className="cs-tix__opp" aria-hidden="true">{t.home ? 'vs' : '@'} {opp?.abbreviation ?? t.opp}</span>
-            <span className="cs-tix__bot" aria-hidden="true">
-              <b className="cs-tix__r">{t.r ?? '–'}</b>
-              {t.r && <span className="cs-tix__s num">{t.pf}-{t.pa}</span>}
-              {t.upset && <em className="cs-tix__up">{t.upset === 'win' ? 'UPSET' : 'UPSET L'}</em>}
-            </span>
-          </button>
-        </li>
-      );
-    })}
-  </Reveal>
-);
-
-/* ---------------- Roster ---------------- */
-
-const lineOf = (pos: string, r: RosterRow): string => {
-  const parts: string[] = [];
-  if (pos === 'QB') {
-    if (r.pyds != null) parts.push(`${nf(r.pyds)} yds`);
-    if (r.ptd != null) parts.push(`${r.ptd} TD`);
-    if (r.pint != null) parts.push(`${r.pint} INT`);
-    if (r.ryds) parts.push(`${nf(r.ryds)} rush`);
-  } else if (pos === 'RB') {
-    if (r.ryds != null) parts.push(`${nf(r.ryds)} rush yds`);
-    if (r.rtd) parts.push(`${r.rtd} TD`);
-    if (r.rec) parts.push(`${r.rec} rec · ${nf(r.recyds ?? 0)} yds`);
-  } else if (pos === 'WR' || pos === 'TE') {
-    if (r.rec != null) parts.push(`${r.rec} rec`);
-    if (r.recyds != null) parts.push(`${nf(r.recyds)} yds`);
-    if (r.rectd) parts.push(`${r.rectd} TD`);
-    if (r.ryds) parts.push(`${r.ryds} rush`);
-  } else if (pos !== 'OL') {
-    if (r.tkl != null) parts.push(`${r.tkl} tkl`);
-    if (r.sck) parts.push(`${r.sck} sck`);
-    if (r.dint) parts.push(`${r.dint} INT`);
-    if (r.ff) parts.push(`${r.ff} FF`);
-  }
-  return parts.join(' · ');
-};
+const ROUND_SHORT: Record<string, string> = { WC: 'WC', DIV: 'DIV', CON: 'CONF', SB: 'SB' };
+const ROUND_NAME: Record<string, string> = { WC: 'Wild Card', DIV: 'Divisional round', CON: 'Conference championship', SB: 'Super Bowl' };
 
 export interface RosterEntry extends RosterRow {
   pos: string;
   name: string;
   number?: number;
 }
-const UNITS: { id: string; label: string; pos: string[] }[] = [
-  { id: 'off', label: 'Offense', pos: ['QB', 'RB', 'WR', 'TE', 'OL'] },
-  { id: 'def', label: 'Defense', pos: ['DL', 'LB', 'DB'] },
-];
-const GROUPS = ['All', 'QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB'];
-const PER_UNIT = 10;
-const sznClass = (v?: number) => (v == null ? '' : v >= 90 ? 'is-hi' : v >= 80 ? 'is-mid' : '');
 
-const RosterRowView = ({ r, club, year, i, onPick }: { r: RosterEntry; club: string; year: number; i: number; onPick: (key: string) => void }) => (
-  <li className="mo-rise" style={stag(i, 24)}>
-    <button type="button" className="cs-r" {...peekKeyProps(r.k)} onClick={() => onPick(r.k)} aria-label={`Open ${r.name}'s card`}>
-      <span className="cs-r__sp" aria-hidden="true"><StarSprite name={r.name} pos={r.pos} team={club} size="s" kind="bust" season={year} /></span>
-      <span className="cs-r__who">
-        <span className="cs-name"><i>{r.pos}</i><span>{r.name}</span>{r.number != null && <small>#{r.number}</small>}</span>
-      </span>
-      <span className="cs-r__g num"><i>G</i>{r.g}</span>
-      <span className="cs-r__line num">{lineOf(r.pos, r) || <span className="cs-dim">No line on file</span>}</span>
-      <span className="cs-r__aw">{r.aw?.map((a) => <span key={a} className={cn('cs-aw', (a === 'MVP' || a === 'SB MVP') && 'is-gold')}>{a}</span>)}</span>
-      <span className="cs-r__szn">{r.szn != null ? <span className={cn('cs-szn num', sznClass(r.szn))}><i>SZN</i>{r.szn}</span> : <span className="cs-dim">-</span>}</span>
-    </button>
-  </li>
-);
+/* ---------------- The schedule: a programme fixture list ---------------- */
 
-export const Roster = ({ rows, club, year, onPick }: { rows: RosterEntry[]; club: string; year: number; onPick: (key: string) => void }) => {
-  const [group, setGroup] = useState('All');
-  const [open, setOpen] = useState<Record<string, boolean>>({});
-  const plate = clubPlate(club);
-  const vars = { '--ax-c1': plate.fill, '--ax-c2': plate.edge, '--ax-ink': plate.ink } as CSSProperties;
-  const shown = rows.filter((r) => group === 'All' || r.pos === group);
-  const sections = group === 'All'
-    ? [...UNITS.map((u) => ({ ...u, list: shown.filter((r) => u.pos.includes(r.pos)) })), { id: 'oth', label: 'Special teams and others', pos: [], list: shown.filter((r) => !UNITS.some((u) => u.pos.includes(r.pos))) }].filter((u) => u.list.length)
-    : [{ id: 'pos', label: group, pos: [group], list: shown }];
+/**
+ * Every game as a fixture row: the week, the opponent's logo, home or away, an upset tag by the closing line, the
+ * result and a margin bar (wins in the club's colour, losses red, scaled to the season's widest margin); playoff
+ * rows carry their round on gold. A row opens the game.
+ */
+export const Fixtures = ({ tickets, onOpen }: { tickets: Ticket[]; onOpen: (id: string) => void }) => {
+  const maxM = Math.max(14, ...tickets.map((t) => (t.pf != null && t.pa != null ? Math.abs(t.pf - t.pa) : 0)));
   return (
-    <div style={vars}>
-      <div className="cs-chips" role="group" aria-label="Position">
-        {GROUPS.map((g) => (
-          <button key={g} type="button" className={cn('cs-chip', group === g && 'is-on')} aria-pressed={group === g} onClick={() => setGroup(g)}>{g}</button>
-        ))}
-      </div>
-      {sections.map((u) => {
-        const all = group !== 'All' || open[u.id];
-        const list = all ? u.list : u.list.slice(0, PER_UNIT);
+    <Reveal as="ol" className="pg-fix">
+      {tickets.map((t, i) => {
+        const wk = t.type === 'REG' ? String(t.week) : ROUND_SHORT[t.type] ?? t.type;
+        if (t.bye) {
+          return (
+            <li key={`b${t.week}`} className="pg-fx is-bye mo-rise" style={stag(i, 22)}>
+              <span className="pg-fx__wk num">{wk}</span>
+              <span className="pg-fx__bye">Bye week</span>
+            </li>
+          );
+        }
+        const opp = findNFLTeam(t.opp);
+        const m = t.pf != null && t.pa != null ? t.pf - t.pa : 0;
+        const where = t.type === 'REG' ? `Week ${t.week}` : ROUND_NAME[t.type] ?? t.type;
+        const label = `${where}, ${t.home ? 'vs' : 'at'} ${opp?.name ?? t.opp}${t.r ? `, ${t.r === 'W' ? 'win' : t.r === 'L' ? 'loss' : 'tie'} ${t.pf} to ${t.pa}` : ', not played yet'}${t.upset ? `, upset ${t.upset === 'win' ? `win as a ${Math.abs(t.fav ?? 0)}-point underdog` : `loss as a ${t.fav}-point favourite`}` : ''}. Open the game`;
         return (
-          <div key={`${group}-${u.id}`} className="cs-unit">
-            <h4 className="cs-unit__h"><span>{u.label}</span><small className="num">{u.list.length} players</small></h4>
-            <Reveal as="ul" className="cs-rl">
-              {list.map((r, i) => <RosterRowView key={r.k} r={r} club={club} year={year} i={i} onPick={onPick} />)}
-            </Reveal>
-            {group === 'All' && u.list.length > PER_UNIT && (
-              <button type="button" className="cs-more" onClick={() => setOpen((o) => ({ ...o, [u.id]: !o[u.id] }))}>{open[u.id] ? 'Show fewer' : `Show all ${u.list.length}`}</button>
-            )}
-          </div>
+          <li key={t.game?.id ?? i} className="mo-rise" style={stag(i, 22)}>
+            <button type="button" className={cn('pg-fx', t.r && `is-${t.r}`, t.type !== 'REG' && 'is-po')} onClick={() => t.game && onOpen(t.game.id)} aria-label={label}>
+              <span className="pg-fx__wk num">{wk}</span>
+              <TeamLogo team={t.opp ?? ''} size={24} decorative className="pg-logo" />
+              <span className="pg-fx__opp">
+                <i>{t.home ? 'vs' : '@'}</i> <b>{opp?.abbreviation ?? t.opp}</b>
+                {t.upset && <em className={cn('pg-up', t.upset === 'loss' && 'is-dn')} title={t.upset === 'win' ? `Underdog by ${Math.abs(t.fav ?? 0)} on the closing line` : `Favoured by ${t.fav} on the closing line`}>{t.upset === 'win' ? 'Upset' : 'Upset L'}</em>}
+                {t.ot && <small>OT</small>}
+              </span>
+              <span className="pg-fx__r num">{t.r ? `${t.r} ${t.pf}-${t.pa}` : '–'}</span>
+              <span className="pg-fx__m" aria-hidden="true">{t.r && t.r !== 'T' && <i style={{ width: `${Math.max(6, (Math.abs(m) / maxM) * 100)}%` }} />}</span>
+            </button>
+          </li>
         );
       })}
-      <p className="cs-note">Every player with a regular-season game for the club that year, sorted by SZN (the season rating). Lines are regular-season totals with this club; a blank means the data has no such stat for the position.</p>
-    </div>
+    </Reveal>
   );
 };
 
-/* ---------------- Team leaders ---------------- */
+/* ---------------- Stat leaders as bust tiles ---------------- */
 
-const LEADERS: { label: string; pick: (r: RosterEntry) => number | undefined; unit: string; pos?: string[]; dec?: number }[] = [
-  { label: 'Passing yards', pick: (r) => r.pyds, unit: 'yds', pos: ['QB'] },
-  { label: 'Rushing yards', pick: (r) => r.ryds, unit: 'yds', pos: ['QB', 'RB', 'WR', 'TE'] },
-  { label: 'Receiving yards', pick: (r) => r.recyds, unit: 'yds', pos: ['RB', 'WR', 'TE'] },
-  { label: 'Receptions', pick: (r) => r.rec, unit: 'rec', pos: ['RB', 'WR', 'TE'] },
-  { label: 'Touchdowns', pick: (r) => (r.ptd || r.rtd || r.rectd ? (r.rtd ?? 0) + (r.rectd ?? 0) : undefined), unit: 'rush + rec TD', pos: ['QB', 'RB', 'WR', 'TE'] },
-  { label: 'Tackles', pick: (r) => r.tkl, unit: 'tkl', pos: ['LB', 'DB', 'DL'] },
-  { label: 'Sacks', pick: (r) => r.sck, unit: 'sacks', pos: ['LB', 'DB', 'DL'], dec: 1 },
-  { label: 'Interceptions', pick: (r) => r.dint, unit: 'INT', pos: ['LB', 'DB', 'DL'] },
+const LEADERS: { label: string; pick: (r: RosterEntry) => number | undefined; pos?: string[]; dec?: number }[] = [
+  { label: 'Passing yards', pick: (r) => r.pyds, pos: ['QB'] },
+  { label: 'Rushing yards', pick: (r) => r.ryds, pos: ['QB', 'RB', 'WR', 'TE'] },
+  { label: 'Receiving yards', pick: (r) => r.recyds, pos: ['RB', 'WR', 'TE'] },
+  { label: 'Receptions', pick: (r) => r.rec, pos: ['RB', 'WR', 'TE'] },
+  { label: 'Scrimmage TDs', pick: (r) => (r.rtd || r.rectd ? (r.rtd ?? 0) + (r.rectd ?? 0) : undefined), pos: ['QB', 'RB', 'WR', 'TE'] },
+  { label: 'Tackles', pick: (r) => r.tkl, pos: ['LB', 'DB', 'DL'] },
+  { label: 'Sacks', pick: (r) => r.sck, pos: ['LB', 'DB', 'DL'], dec: 1 },
+  { label: 'Interceptions', pick: (r) => r.dint, pos: ['LB', 'DB', 'DL'] },
 ];
 
 export const Leaders = ({ rows, club, year, onPick }: { rows: RosterEntry[]; club: string; year: number; onPick: (key: string) => void }) => {
@@ -253,22 +88,68 @@ export const Leaders = ({ rows, club, year, onPick }: { rows: RosterEntry[]; clu
       }).filter((x): x is { l: (typeof LEADERS)[number]; best: RosterEntry; v: number } => !!x),
     [rows],
   );
-  const plate = clubPlate(club);
-  if (!cards.length) return <p className="cs-note">No leaders on file for this season.</p>;
+  if (!cards.length) return <p className="pg-note">No leaders on file for this season.</p>;
   return (
-    <Reveal as="ul" className="cs-leaders" style={{ ['--ax-c1' as string]: plate.fill, ['--ax-c2' as string]: plate.edge, ['--ax-ink' as string]: plate.ink }}>
+    <Reveal as="ul" className="pg-lds">
       {cards.map(({ l, best, v }, i) => (
-        <li key={l.label} className="mo-pop" style={stag(i, 50)}>
-          <button type="button" className="cs-lead" {...peekKeyProps(best.k)} onClick={() => onPick(best.k)} aria-label={`${l.label}: ${best.name}, ${v}. Open card`}>
-            <span className="cs-lead__k">{i === 0 && <PixelIcon name="crown" size={10} />}{l.label}</span>
-            <b className="cs-lead__v num">{l.dec ? v.toFixed(l.dec) : nf(v)}</b>
-            <span className="cs-lead__u">{l.unit}</span>
-            <span className="cs-lead__sp" aria-hidden="true"><StarSprite name={best.name} pos={best.pos} team={club} size="m" kind="bust" season={year} celebrate={i === 0} /></span>
-            <span className="cs-lead__n"><span>{best.name}</span><small>{best.pos}{best.number != null ? ` #${best.number}` : ''}</small></span>
+        <li key={l.label} className="mo-pop" style={stag(i, 45)}>
+          <button type="button" className="pg-ld" data-peek-ok {...peekKeyProps(best.k)} onClick={() => onPick(best.k)} aria-label={`${l.label}: ${best.name}, ${l.dec ? v.toFixed(l.dec) : nf(v)}. Open player card`}>
+            <span className="pg-ld__sp" aria-hidden="true"><StarSprite name={best.name} pos={best.pos} team={club} size="m" kind="bust" season={year} /></span>
+            <span className="pg-ld__t">
+              <span className="pg-kick">{l.label}</span>
+              <b className="num">{l.dec ? v.toFixed(l.dec) : nf(v)}</b>
+              <em>{best.name}<small> · {best.pos}{best.number != null ? ` #${best.number}` : ''}</small></em>
+            </span>
           </button>
         </li>
       ))}
     </Reveal>
+  );
+};
+
+/* ---------------- The roster as a yearbook ---------------- */
+
+const GROUPS = ['All', 'QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB'];
+const FIRST = 16;
+
+export const Yearbook = ({ rows, club, year, onPick }: { rows: RosterEntry[]; club: string; year: number; onPick: (key: string) => void }) => {
+  const [group, setGroup] = useState('All');
+  const [all, setAll] = useState(false);
+  const sorted = useMemo(() => [...rows].sort((a, b) => (b.szn ?? -1) - (a.szn ?? -1) || b.g - a.g || a.k.localeCompare(b.k)), [rows]);
+  // yearbook names: the surname, with the initial where two share it ("A. Jones", "P. Jones")
+  const short = useMemo(() => {
+    const n = new Map<string, number>();
+    rows.forEach((r) => n.set(surname(r.name), (n.get(surname(r.name)) ?? 0) + 1));
+    return (name: string) => ((n.get(surname(name)) ?? 0) > 1 ? `${name[0]}. ${surname(name)}` : surname(name));
+  }, [rows]);
+  const shown = sorted.filter((r) => group === 'All' || r.pos === group || (group === 'Other' && !GROUPS.includes(r.pos)));
+  const list = group === 'All' && !all ? shown.slice(0, FIRST) : shown;
+  const groups = useMemo(() => [...GROUPS.filter((g) => g === 'All' || rows.some((r) => r.pos === g)), ...(rows.some((r) => !GROUPS.includes(r.pos)) ? ['Other'] : [])], [rows]);
+  return (
+    <div className="pg-yb-wrap">
+      <div className="pg-chips" role="group" aria-label="Position">
+        {groups.map((g) => (
+          <button key={g} type="button" className={cn('pg-chip', group === g && 'is-on')} aria-pressed={group === g} onClick={() => setGroup(g)}>{g}</button>
+        ))}
+      </div>
+      <Reveal as="ul" className="pg-yb" key={`${group}-${all ? 1 : 0}`}>
+        {list.map((r, i) => (
+          <li key={r.k} className="mo-pop" style={stag(i, 22)}>
+            <button type="button" className="pg-ybt" data-peek-ok {...peekKeyProps(r.k)} onClick={() => onPick(r.k)} aria-label={`${r.pos} ${r.name}${r.number != null ? `, number ${r.number}` : ''}, ${r.g} games${r.szn != null ? `, season rating ${r.szn}` : ''}${r.aw?.length ? `, ${r.aw.join(', ')}` : ''}. Open player card`}>
+              <span className="pg-ybt__sp" aria-hidden="true"><StarSprite name={r.name} pos={r.pos} team={club} size="m" kind="bust" season={year} /></span>
+              {r.szn != null && <span className={cn('pg-szn num', r.szn >= 90 ? 'is-hi' : r.szn >= 80 && 'is-mid')}>{r.szn}</span>}
+              {r.aw?.length ? <span className="pg-ybt__aw" title={r.aw.join(', ')}><PixelIcon name="trophy" size={9} />{r.aw[0]}{r.aw.length > 1 ? ` +${r.aw.length - 1}` : ''}</span> : null}
+              <b className="pg-ybt__n" title={r.name}>{short(r.name)}</b>
+              <span className="pg-ybt__m num">{r.pos}{r.number != null ? ` · #${r.number}` : ''} · {r.g} g</span>
+            </button>
+          </li>
+        ))}
+      </Reveal>
+      {group === 'All' && shown.length > FIRST && (
+        <button type="button" className="pg-more" onClick={() => setAll((v) => !v)}>{all ? 'Show the top 16' : `Show all ${shown.length}`}</button>
+      )}
+      <p className="pg-note">Every player with a regular-season game for the club that year, by SZN (the season rating). Tap a player for his card.</p>
+    </div>
   );
 };
 
