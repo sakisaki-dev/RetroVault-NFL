@@ -84,3 +84,8 @@
 @keyframes pn-sheen { to { transform: translateX(100%); } }
 @media (prefers-reduced-motion: reduce) { .pn-skel__bar::after, .pn-skel__box::after { animation: none; } }
 :root[data-perf='lite'] .pn-skel__bar::after, :root[data-perf='lite'] .pn-skel__box::after { animation: none; }
+
+/* the section's See more / See less toggle: a full-width club-tinted bar */
+.pn-more--all { display: block; width: 100%; margin: 10px 0 4px; padding: 10px 14px; border-radius: 12px; text-align: center;
+  background: color-mix(in srgb, var(--tc-p, #2a3352) 22%, rgb(255 255 255 / 0.04)); border: 1px solid color-mix(in srgb, var(--tc-p, #2a3352) 45%, transparent);
+  font: 700 13px/1.2 var(--font-display, 'Barlow Condensed', sans-serif); letter-spacing: 0.04em; text-transform: uppercase; color: #fff; }

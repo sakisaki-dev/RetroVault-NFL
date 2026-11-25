@@ -134,6 +134,8 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
   const inj = useInjury(key);
   const log = useGameLog(key);
   const [more, setMore] = useState(false);
+  // the section is long: collapsed it shows his top bar, next game, note and three stories; See more opens the rest
+  const [open, setOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
 
   const pool = useMemo(() => {
@@ -300,7 +302,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
               : `ESPN hasn’t tagged ${displayName(player.name)} lately. Around the ${club}:`}
           </p>
           <ul className="ss-list">
-            {shown.flatMap((it, i) => {
+            {(open ? shown : shown.slice(0, 3)).flatMap((it, i) => {
               const c = gameCards.get(it.id);
               const rows = [<StoryItem key={it.id} it={it} i={i} players={players} cast={cast} onRead={(x) => setOpenId(x.id)} />];
               if (c)
@@ -312,7 +314,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
               return rows;
             })}
           </ul>
-          {feed.length > SHOWN && (
+          {open && feed.length > SHOWN && (
             <button type="button" className="pn-more" onClick={() => setMore((v) => !v)} aria-expanded={more}>
               {more ? 'Show fewer' : `Show all ${feed.length}`}
             </button>
@@ -324,7 +326,13 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </p>
       )}
 
-      {cards.length > 0 && (
+      {!open && (feed.length > 3 || cards.length > 0 || timeline || mates) && (
+        <button type="button" className="pn-more pn-more--all" onClick={() => setOpen(true)} aria-expanded={false}>
+          See more: {feed.length > 3 ? `${feed.length - 3} more ${feed.length - 3 === 1 ? 'story' : 'stories'}, ` : ''}deeper analysis{timeline ? ', timeline' : ''}
+        </button>
+      )}
+
+      {open && cards.length > 0 && (
         <section className="pn-deep" aria-label={active ? 'Deeper analysis' : 'From the archive'}>
           <h3 className="pn-h">{active ? 'Deeper analysis' : 'From the archive'}</h3>
           <div className="pn-grid">
@@ -335,7 +343,13 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </section>
       )}
 
-      {(timeline || mates) && <div className="pn-pair">{timeline}{mates}</div>}
+      {open && (timeline || mates) && <div className="pn-pair">{timeline}{mates}</div>}
+
+      {open && (
+        <button type="button" className="pn-more pn-more--all" onClick={() => setOpen(false)} aria-expanded>
+          See less
+        </button>
+      )}
 
       <p className="pn-foot">
         {RULES[player.position].hasLine ? `Key stat: ${keyLabelOf(player.position)}. ` : ''}Articles and the player note are ESPN&apos;s, live; every analysis card is generated from our game logs, schedule and card market, with its source on the card.
