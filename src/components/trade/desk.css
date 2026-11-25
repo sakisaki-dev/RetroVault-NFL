@@ -184,3 +184,68 @@
 .dk .fh-chip { background: rgb(6 9 20 / 0.86); }
 @media (max-width: 640px) { .dk-offers__t { margin-left: 0; width: 100%; } .dk-lock__tot { font-size: 1.4rem; } .dk-pc__b { padding-top: 0.45rem; } .dk-stand { width: 100px; height: 100px; } .dk-nums dd { font-size: 1.35rem; } }
 @media (max-width: 640px) { .dk-wk-tag { display: none; } }
+
+/* The trade duel: the Game page's QB duel for the two sides (gameStage.css .gm-qb__*) */
+.dk-du { margin-top: 0.6rem; padding: 0.55rem 0.5rem 0.5rem; border-radius: 14px; background: rgb(7 11 22 / 0.55); border: 1px solid hsl(var(--line) / 0.8); text-align: left; }
+.dk-du__t { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0 0.2rem 0.35rem; }
+.dk-du__t b { font: 800 1.1rem/1 'Barlow Condensed', sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+.dk-du__t i { margin-left: 0.5rem; font: 600 11px 'Barlow', sans-serif; font-style: normal; color: hsl(var(--muted-foreground)); }
+.dk-du__top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.4rem; }
+.dk-du__who { display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.5rem; border-radius: 10px; min-width: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 55%, transparent), transparent); }
+.dk-du__who.is-r { flex-direction: row-reverse; text-align: right; background: linear-gradient(270deg, color-mix(in srgb, var(--tc) 55%, transparent), transparent); }
+.dk-du__logos { display: flex; flex: none; }
+.dk-du__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dk-du__who.is-r .dk-du__id { align-items: flex-end; }
+.dk-du__id small { font: 700 10px 'Barlow Condensed', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.dk-du__id b { font: 800 1.15rem/1.1 'Barlow Condensed', sans-serif; text-transform: uppercase; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dk-du__flags { display: flex; flex-wrap: wrap; gap: 0.2rem; list-style: none; margin: 2px 0 0; padding: 0; }
+.dk-du__who.is-r .dk-du__flags { justify-content: flex-end; }
+.dk-du__flags .dk-flag { height: 20px; font-size: 10.5px; }
+.dk-du__body { position: relative; margin-top: 0.4rem; border-radius: 8px; padding: 0 0.2rem 0.2rem;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ca) 14%, transparent) 0 3.4rem, transparent 3.4rem calc(100% - 3.4rem), color-mix(in srgb, var(--ch) 14%, transparent) calc(100% - 3.4rem) 100%); }
+.dk-du__gh { margin: 0; padding: 0.4rem 0 0.1rem; text-align: center; font: 700 11px 'Barlow Condensed', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: hsl(var(--gold)); }
+.dk-du__row { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr) 3.4rem; align-items: center; padding: 0.15rem 0 0.1rem; font-variant-numeric: tabular-nums; }
+.dk-du__lab { text-align: center; font: 600 10px 'Barlow', sans-serif; text-transform: uppercase; letter-spacing: 0.06em; color: hsl(var(--muted-foreground)); line-height: 1.15; }
+.dk-du__row b { font: 600 1.15rem/1.1 'Barlow Condensed', sans-serif; color: hsl(var(--chalk) / 0.85); padding: 0 0.35rem; }
+.dk-du__row b:nth-child(3) { text-align: right; }
+.dk-du__row b.is-better { font-weight: 800; color: hsl(var(--gold)); }
+.dk-du__row b.is-worse { color: hsl(var(--chalk) / 0.5); }
+.dk-du__split { grid-column: 1 / -1; display: flex; height: 5px; margin: 0.15rem 0.35rem 0; border-radius: 3px; overflow: hidden; background: hsl(0 0% 100% / 0.06); gap: 2px; }
+.dk-du__split i { display: block; height: 100%; transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+.dk-du__split .a { background: var(--ca); } .dk-du__split .h { background: var(--ch); }
+.dk-du__line { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.2rem 0.9rem; margin: 0.4rem 0 0; font: 700 12px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.dk-du__line .is-neg { color: hsl(var(--dk-bad)); }
+@media (max-width: 899px) { .dk-stage--2 .dk-du { max-height: 52dvh; overflow-y: auto; overscroll-behavior: contain; } }
+@media (prefers-reduced-motion: reduce) { .dk-du__split i { transition: none; } }
+
+/* Team-immersive player banner: club fill, a big cropped logo, the number behind him, the sprite large on a club pedestal, a club-colour name strip */
+.dk-pc.fx-flat { position: relative; overflow: hidden; }
+.dk-ban { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 15.5rem; overflow: hidden; cursor: pointer; isolation: isolate; border-radius: 14px 14px 0 0;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 92%, #fff 8%) 0%, color-mix(in srgb, var(--tc) 60%, #000) 100%); }
+.dk-ban__bands { position: absolute; inset: 0; z-index: -3; background: linear-gradient(112deg, transparent 0 40%, color-mix(in srgb, var(--tc2) 40%, transparent) 40% 46%, transparent 46% 49%, rgb(255 255 255 / 0.14) 49% 50%, transparent 50%), repeating-linear-gradient(112deg, transparent 0 14px, rgb(255 255 255 / 0.04) 14px 15px); }
+.dk-ban__logo { position: absolute; right: -3.2rem; top: -2rem; z-index: -2; opacity: 0.3; line-height: 0; pointer-events: none; }
+.dk-ban__logo img, .dk-ban__logo svg { filter: drop-shadow(0 4px 0 rgb(0 0 0 / 0.18)); }
+.dk-ban__num { position: absolute; left: 50%; top: -0.2rem; z-index: -1; translate: -50% 0; font: 800 11rem/1 'Barlow Condensed', sans-serif; color: transparent; -webkit-text-stroke: 2px rgb(255 255 255 / 0.42); letter-spacing: -0.02em; pointer-events: none; }
+.dk-ban__pos { position: absolute; left: 0.6rem; top: 0.55rem; font-size: 13px; padding: 1px 8px; }
+.dk-ban .dk-stand--l { width: 100%; height: 11.9rem; background: radial-gradient(closest-side at 50% 70%, rgb(0 0 0 / 0.18), transparent 85%); margin-bottom: -0.2rem; }
+.dk-ban .dk-stand--l .dk-stand__ped { left: 26%; right: 26%; bottom: 8px; height: 14%; }
+.dk-ban .dk-stand--l > :not(.dk-stand__ped) { margin-bottom: 0.9rem; }
+.dk-ban__name { position: relative; z-index: 2; display: flex; align-items: baseline; gap: 0.45rem; width: 100%; padding: 0.4rem 0.8rem; color: #fff; box-shadow: inset 0 3px 0 var(--tc2); }
+.dk-ban__name small { font: 700 0.95rem/1 'Barlow Condensed', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; white-space: nowrap; }
+.dk-ban__name b { font: 800 1.9rem/1 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.01em; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dk-ban:focus-visible { outline: 2px solid hsl(var(--chalk) / 0.8); outline-offset: -3px; }
+.dk-x--ban { position: absolute; right: 0.5rem; top: 0.5rem; z-index: 5; }
+.dk-pc:hover .dk-ban .dk-stand { translate: 0 -4px; }
+.dk-pc > .dk-nums { padding: 0.5rem 0.6rem 0.1rem; }
+.dk-pc > .dk-nums dd { font-size: 1.7rem; }
+.dk-lock__list { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 480px) { .dk-ban { height: 14rem; } .dk-ban__num { font-size: 9.5rem; } .dk-ban__name b { font-size: 1.6rem; } }
+.dk-pc > .dk-x--ban { position: absolute; }
+/* the picker is the site's own search sheet; the fantasy line sits where the slot picker's projection does */
+.ss-extra.dk-ex { grid-auto-flow: column; align-items: end; gap: 0.55rem; justify-items: center; }
+.ss-extra.dk-ex span { display: grid; justify-items: end; line-height: 1.05; font: 800 14px 'Barlow Condensed', sans-serif; font-variant-numeric: tabular-nums; }
+.ss-extra.dk-ex span i { font: 700 9px 'Barlow Condensed', sans-serif; letter-spacing: 0.07em; text-transform: uppercase; color: hsl(var(--muted-foreground)); font-style: normal; }
+.ss-extra.dk-ex .is-gold { color: #ffd75e; }
+.ss-extra.dk-ex em { font: 800 11px 'Barlow Condensed', sans-serif; font-style: normal; padding: 0 6px; border-radius: 6px; background: rgb(0 0 0 / 0.38); align-self: center; }
+.dk-du__id, .dk-du__flags { max-width: 100%; }
+.dk-du__flags li { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }

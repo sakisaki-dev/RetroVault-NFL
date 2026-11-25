@@ -7,6 +7,8 @@ import { f1 } from '@/utils/fantasy';
 import { flagsFor, FAIR_PCT, LEAN_PCT, TRADE_METHOD_NOTES, type TradeModel, type TradeResult } from '@/utils/tradeSim';
 import { NetBars, SideTotals } from './TradeViews';
 import { MethodTip, signed } from './TradeParts';
+import { DeskDuel } from './DeskDuel';
+import { usePhone } from '@/hooks/usePhone';
 
 const METER_MAX = 30;
 
@@ -97,6 +99,7 @@ export const DeskVerdict = ({
   labels?: [string, string];
 }) => {
   const n = r.teams.length;
+  const phone = usePhone();
   const t = r.teams[0];
   const gap = r.gap * 100;
   const v = r.verdict.toLowerCase();
@@ -128,11 +131,11 @@ export const DeskVerdict = ({
       </div>
       <div className="dk-meter__k" aria-hidden="true"><span>Fair</span><span>{FAIR_PCT}%</span><span>Leans</span><span>{LEAN_PCT}%</span><span>Lopsided</span></div>
       <div className="dk-jb__act">
-        <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>Why this verdict <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>
+        {(phone || n > 2) && <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>Why this verdict <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>}
         <button type="button" className="dk-link" onClick={onDrawer} disabled={!any}><BarChart3 className="h-4 w-4" aria-hidden="true" /> Before / after</button>
         <MethodTip model={model} />
       </div>
-      {whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />}
+      {n > 2 ? (whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />) : any && (!phone || whyOpen) && <DeskDuel r={r} model={model} labels={labels} />}
     </section>
   );
 };
