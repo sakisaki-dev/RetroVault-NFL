@@ -19,57 +19,6 @@ const verdictText = (r: TradeResult, n: number) => {
   return n > 2 || r.verdict === 'Lopsided' ? `${r.verdict} · ${who} wins` : `Leans ${who}`;
 };
 
-/** 0..30% track with the Fair, Leans and Lopsided zones and a marker at the gap. */
-export const FairMeter = ({ r }: { r: TradeResult }) => {
-  const gap = r.gap * 100;
-  const at = Math.min(100, (gap / 30) * 100);
-  return (
-    <div className={cn('tr-meter', `tr-meter--${r.verdict.toLowerCase()}`)}>
-      <div className="tr-meter__top">
-        <b className="tr-verdict">{verdictText(r, r.teams.length)}</b>
-        <span className="tr-gap">{r.verdict === 'Empty' ? '—' : <LedDigits value={`${gap.toFixed(1)}%`} dot={2.6} />}<i>gap</i></span>
-      </div>
-      <div className="tr-meter__track" role="img" aria-label={`Gap ${gap.toFixed(1)} percent: Fair under ${FAIR_PCT}, Leans to ${LEAN_PCT}, Lopsided above`}>
-        <span className="z z--fair" style={{ width: `${(FAIR_PCT / 30) * 100}%` }} />
-        <span className="z z--lean" style={{ width: `${((LEAN_PCT - FAIR_PCT) / 30) * 100}%` }} />
-        <span className="z z--lop" />
-        {r.verdict !== 'Empty' && <i className="tr-meter__mark" style={{ left: `${at}%` }} />}
-      </div>
-      <div className="tr-meter__ticks" aria-hidden="true"><span>0</span><span>{FAIR_PCT}%</span><span>{LEAN_PCT}%</span><span>30%+</span></div>
-    </div>
-  );
-};
-
-/** Concept A, the balance scale: two pans (what each side gets), the heavier one sinks. */
-export const BalanceScale = ({ r, cards }: { r: TradeResult; cards: Map<string, Player> }) => {
-  const [a, b] = r.teams;
-  const tilt = r.winner == null || r.verdict === 'Empty' ? 0 : Math.min(7, 1.5 + r.gap * 14) * (r.winner === 0 ? -1 : 1);
-  const pan = (i: number) => {
-    const t = r.teams[i];
-    return (
-      <div className={cn('tr-pan', r.winner === i && 'is-heavy')} style={teamVars(i)}>
-        <span className="tr-pan__k">{TEAM_LABELS[i]} gets</span>
-        <b className="tr-pan__v">{pts(t.receivedValue + t.credit, 0)}</b>
-        <span className="tr-pan__figs">
-          {t.received.slice(0, 4).map((p) => <Fig key={p.key} player={cards.get(p.key)} club={p.club} />)}
-          {!t.received.length && <i className="tr-muted">nothing yet</i>}
-        </span>
-      </div>
-    );
-  };
-  return (
-    <div className="tr-scale" aria-label="Balance scale">
-      <div className="tr-beam" style={{ '--tilt': `${tilt}deg` } as CSSProperties}>
-        <span className="tr-beam__bar" />
-        <div className="tr-beam__end tr-beam__end--l" style={{ transform: `rotate(${-tilt}deg)` }}>{pan(0)}</div>
-        <div className="tr-beam__end tr-beam__end--r" style={{ transform: `rotate(${-tilt}deg)` }}>{pan(1)}</div>
-      </div>
-      <span className="tr-post" aria-hidden="true"><Scale className="h-5 w-5" /></span>
-      <span className="sr-only">{a.received.length} players to {TEAM_LABELS[0]}, {b.received.length} to {TEAM_LABELS[1]}</span>
-    </div>
-  );
-};
-
 /** 3-4 teams: each team's own net change, one bar per team around zero. */
 export const NetBars = ({ r }: { r: TradeResult }) => {
   const max = Math.max(1e-9, ...r.teams.map((t) => Math.abs(t.net)));
@@ -134,70 +83,6 @@ export const SideTotals = ({ r, model, cardValue }: { r: TradeResult; model: Tra
   </div>
 );
 
-/** "Find a fair deal" on a player card: the nearest 1-for-1 and 2-for-1 packages for him; one tap drops a package in the other column. */
-export const FindDeal = ({ model, playerKey, cards, onUse, partnerLabel }: { model: TradeModel; playerKey: string; cards: Map<string, Player>; onUse: (keys: string[]) => void; partnerLabel: string }) => {
-  const [open, setOpen] = useState(false);
-  const list = useMemo(() => (open ? suggestPartner(model, [playerKey], { limit: 5 }) : []), [open, model, playerKey]);
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button type="button" className="tr-find"><Users className="h-4 w-4" aria-hidden="true" /> Find a fair deal</button>
-      </PopoverTrigger>
-      <PopoverContent align="start" className="tr-pop tr-deals z-[70] w-[min(94vw,24rem)] p-2">
-        <p className="tr-set__k">For {partnerLabel} to send, nearest first</p>
-        {!list.length ? <p className="tr-muted">No package within 25% of his value.</p> : (
-          <ol className="tr-pk tr-pk--board">
-            {list.map((pk, i) => (
-              <li key={pk.keys.join('+')}>
-                <button type="button" className="tr-deal fx-flat fx-row" style={fxTone(model.players.get(pk.keys[0])?.club)} onClick={() => { onUse(pk.keys); setOpen(false); }}>
-                  <ClubMark club={model.players.get(pk.keys[0])?.club} size={72} />
-                  <span className="tr-pk__rank" aria-hidden="true">{i + 1}</span>
-                  <span className="tr-pk__who">
-                    {pk.keys.map((k) => {
-                      const p = model.players.get(k)!;
-                      return <span key={k} className="tr-pk__p" style={fxTone(p.club)}><Fig player={cards.get(k)} club={p.club} /><span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span></span>;
-                    })}
-                  </span>
-                  <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>gap</i></span>
-                </button>
-              </li>
-            ))}
-          </ol>
-        )}
-      </PopoverContent>
-    </Popover>
-  );
-};
-
-/** The verdict, always in view: a compact sticky bar on a phone, the centre column on a desktop. */
-export const VerdictBar = ({ r, cards, onDrawer, onClear, any }: { r: TradeResult; cards: Map<string, Player>; onDrawer: () => void; onClear: () => void; any: boolean }) => {
-  const n = r.teams.length;
-  return (
-    <section className="tr-vbar" aria-label="Verdict">
-      <FairMeter r={r} />
-      {n === 2 ? (
-        <>
-          <div className="tr-vbar__vals" aria-label="Value each side gets">
-            {r.teams.map((t, i) => (
-              <span key={i} style={teamVars(i)} className={cn(r.winner === i && 'is-heavy')}><i>{TEAM_LABELS[i].slice(-1)} gets</i><b>{pts(t.receivedValue + t.credit, 0)}</b></span>
-            ))}
-          </div>
-          <div className="tr-vbar__scale"><BalanceScale r={r} cards={cards} /></div>
-        </>
-      ) : <NetBars r={r} />}
-      <div className="tr-vbar__f">
-        <DrawerButton onClick={onDrawer} disabled={!any} />
-        <Popover>
-          <PopoverTrigger asChild><button type="button" className="tr-menu" aria-label="More"><MoreHorizontal className="h-5 w-5" aria-hidden="true" /></button></PopoverTrigger>
-          <PopoverContent align="end" className="tr-pop z-[70] w-44 p-1">
-            <button type="button" className="tr-menu__i" onClick={onClear} disabled={!any}><X className="h-4 w-4" aria-hidden="true" /> Clear the trade</button>
-          </PopoverContent>
-        </Popover>
-      </div>
-    </section>
-  );
-};
-
 /** Quick starts for an empty page, from today's top players (nothing typed in): a 1-for-1, a 2-for-1 and a sell-high. */
 export const quickStarts = (model: TradeModel): { id: string; label: string; a: string[]; b: string[] }[] => {
   const out: { id: string; label: string; a: string[]; b: string[] }[] = [];
@@ -258,7 +143,7 @@ const WeekPairs = ({ weeks, a, b, aLabel, bLabel, tint }: { weeks: number[]; a: 
   );
 };
 
-export const BeforeAfter = ({ r, model, open, onOpenChange }: { r: TradeResult; model: TradeModel; open: boolean; onOpenChange: (o: boolean) => void }) => {
+export const BeforeAfter = ({ r, model, open, onOpenChange, labels }: { r: TradeResult; model: TradeModel; open: boolean; onOpenChange: (o: boolean) => void; labels?: string[] }) => {
   const [t, setT] = useState(0);
   const idx = Math.min(t, r.teams.length - 1);
   const team = r.teams[idx];
@@ -274,7 +159,7 @@ export const BeforeAfter = ({ r, model, open, onOpenChange }: { r: TradeResult; 
         <SheetDescription className="tr-muted">{roster ? 'Best starting lineup each week, projected points.' : 'Projected points a week for the players each side gives and gets.'}</SheetDescription>
         <div className="tr-tabs" role="tablist" aria-label="Team">
           {r.teams.map((_, i) => (
-            <button key={i} type="button" role="tab" aria-selected={idx === i} className={cn('tr-tab', idx === i && 'is-on')} style={teamVars(i)} onClick={() => setT(i)}>{TEAM_LABELS[i]}</button>
+            <button key={i} type="button" role="tab" aria-selected={idx === i} className={cn('tr-tab', idx === i && 'is-on')} style={teamVars(i)} onClick={() => setT(i)}>{labels?.[i] ?? TEAM_LABELS[i]}</button>
           ))}
         </div>
         <WeekPairs weeks={model.weeks} a={a} b={b} aLabel={roster ? 'Before' : 'Gives'} bLabel={roster ? 'After' : 'Gets'} tint="var(--tm)" />
@@ -287,10 +172,4 @@ export const BeforeAfter = ({ r, model, open, onOpenChange }: { r: TradeResult; 
     </Sheet>
   );
 };
-
-export const DrawerButton = ({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) => (
-  <button type="button" className="tr-drawer-btn" onClick={onClick} disabled={disabled}>
-    <BarChart3 className="h-4 w-4" aria-hidden="true" /> Before / after
-  </button>
-);
 

@@ -99,7 +99,7 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
           {sub === 'h2h' && <HeadToHeadPage hub={hub} onGo={go} />}
           {sub === 'trade' && (
             <Suspense fallback={<FootballLoader ready={false} minHeight={420} what="the trade desk" />}>
-              <TradePage env={env} />
+              <TradePage env={env} onLeague={() => setOpen(true)} leagueSummary={summary} />
             </Suspense>
           )}
         </div>
