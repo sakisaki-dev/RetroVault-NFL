@@ -292,9 +292,12 @@ ol.en-list { list-style: decimal; }
 
 /* a player's name in an ESPN story: opens the quick look (ArticleReader), drawn as a quiet chip, never an underlined link */
 .en-body a.en-plink {
-  text-decoration: none; color: inherit; font-weight: 600; cursor: pointer;
+  text-decoration: none; color: inherit; font-weight: 600; cursor: pointer; white-space: nowrap;
   padding: 0 0.3em; border-radius: 6px; background: hsl(var(--gold) / 0.12); box-shadow: inset 0 -2px 0 hsl(var(--gold) / 0.55);
   transition: background-color var(--hv-dur, 160ms) var(--ease-out);
 }
 .en-body a.en-plink:hover { background: hsl(var(--gold) / 0.24); }
 .en-body a.en-plink:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+
+/* a lede that opens on a player's name keeps the name whole: no drop cap splitting "P|atrick" out of the chip */
+.fs-body .fs-lede.fs-lede--nocap::first-letter { float: none; margin: 0; font: inherit; color: inherit; line-height: inherit; }

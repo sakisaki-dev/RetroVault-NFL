@@ -260,6 +260,7 @@
 }
 .pk-act {
   display: flex;
+  justify-self: stretch;
   min-width: 0;
   min-height: 48px;
   align-items: center;
@@ -314,3 +315,19 @@
   .pk-act[data-hot],
   .pk-act:focus-visible { transform: none; }
 }
+
+/* The Collection's pack opening also has a `.pk-actions` row (flex, right-aligned); once its stylesheet is loaded it used to
+   turn this 2 x 2 pad into a ragged row. Scoped to the peek so the pad always fills its width evenly. */
+.pk-root .pk-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-content: stretch;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  position: static;
+  margin: 0;
+  padding: 6px;
+  gap: 6px;
+  background: hsl(var(--panel) / 0.96);
+}
+.pk-root .pk-actions > .pk-act { width: auto; flex: none; justify-self: stretch; }

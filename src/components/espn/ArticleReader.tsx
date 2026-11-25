@@ -115,6 +115,10 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
         a.classList.add('en-plink');
       }
     });
+    el.querySelectorAll<HTMLElement>('.fs-lede').forEach((p) => {
+      const first = [...p.childNodes].find((n) => n.nodeType !== 3 || (n.textContent ?? '').trim());
+      p.classList.toggle('fs-lede--nocap', first instanceof HTMLElement && first.matches('a.en-plink'));
+    });
   });
   const onBodyClick = (e: ReactMouseEvent<HTMLDivElement>) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-player-key]');
