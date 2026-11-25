@@ -24,10 +24,11 @@ const TradePage = lazy(() => import('./TradePage'));
 
 export type Sub = 'lineup' | 'startsit' | 'h2h' | 'trade';
 const SUBS: { value: Sub; label: string; short: string }[] = [
+  // owner: "move trade to be the first tab" (and the page opens on it)
+  { value: 'trade', label: 'Trade', short: 'Trade' },
   { value: 'lineup', label: 'Lineup', short: 'Lineup' },
   { value: 'startsit', label: 'Start / sit', short: 'Start/sit' },
   { value: 'h2h', label: 'Head-to-head', short: 'H2H' },
-  { value: 'trade', label: 'Trade', short: 'Trade' },
 ];
 const SUB_TITLE: Record<Sub, string> = { lineup: 'Lineup', startsit: 'Start / sit', h2h: 'Head-to-head', trade: 'Trade' };
 
@@ -69,7 +70,7 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
 
 const Ready = ({ nl }: { nl: NflLabReady }) => {
   const { route, navigate } = useHubRoute();
-  const sub: Sub = (FANTASY_SUBS.includes(route.section ?? '') ? route.section : 'lineup') as Sub;
+  const sub: Sub = (FANTASY_SUBS.includes(route.section ?? '') ? route.section : 'trade') as Sub;
   const [prefs, setPrefs] = usePrefs();
   const env = useTradeEnv(sub === 'trade');
   const hub = useFantasyHub(nl, prefs, sub === 'h2h');

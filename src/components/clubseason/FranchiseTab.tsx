@@ -97,7 +97,9 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
   return (
     <div className="ft" data-club-tab="franchise">
       {stats.length > 0 && (
-        <div className="ft-top">
+        <div className="ft-top ft-top--banner">
+          {/* the club's banner behind the header: its colour, stripes and the big cropped logo (owner: "put the team banner behind this") */}
+          <span className="ft-top__wm" aria-hidden="true"><TeamLogo team={name} size={260} decorative /></span>
           <p className="ft-name">
             <TeamLogo team={name} size={44} decorative className="cs-logo-plate" />
             <span><small>{t ? `${t.city} · ${t.conference} ${t.division}` : 'Franchise'}</small><b>{name}</b></span>

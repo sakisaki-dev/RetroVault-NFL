@@ -31,3 +31,13 @@
 .ft-name span { display: grid; min-width: 0; }
 .ft-name small { font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; }
 .ft-name b { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 34px; line-height: 0.95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* the team banner behind the Franchise header: the club fill with diagonal bands and a big cropped logo, the stats over it */
+.ft-top--banner { position: relative; isolation: isolate; overflow: hidden; }
+.ft-top--banner::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(115deg, transparent 0 46px, rgb(255 255 255 / 0.05) 46px 58px, transparent 58px 120px);
+}
+.ft-top__wm { position: absolute; right: -40px; top: 50%; translate: 0 -50%; z-index: -1; opacity: 0.28; line-height: 0; pointer-events: none; filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.5)); }
+@media (max-width: 639px) { .ft-top__wm { right: -70px; opacity: 0.2; } .ft-top__wm img { width: 200px; height: 200px; } }
+.ft-top--banner .ft-name, .ft-top--banner .ft-stats, .ft-top--banner .ft-sbs, .ft-top--banner .ft-coached { position: relative; text-shadow: 0 1px 2px rgb(0 0 0 / 0.45); }
