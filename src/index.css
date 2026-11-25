@@ -1626,3 +1626,13 @@ body::before {
     height: 14px;
   }
 }
+
+/* Fill the container (owner's standing rule): in a 1 / 2 (sm) / 3 (xl) column grid, the last item stretches over the
+   cells its row leaves empty, so nothing sits alone with blank space to its right. Add `grid-fill-last` to the grid. */
+@media (min-width: 640px) and (max-width: 1279px) {
+  .grid-fill-last > :last-child:nth-child(2n + 1) { grid-column: 1 / -1; }
+}
+@media (min-width: 1280px) {
+  .grid-fill-last > :last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+  .grid-fill-last > :last-child:nth-child(3n + 2) { grid-column: span 2; }
+}

@@ -85,14 +85,13 @@ export interface Missing {
 }
 /** What this game's year can't show, stated plainly. */
 export const missingFor = (g: GameDetail): Missing[] => {
-  const out: Missing[] = [
-    { id: 'quarters', label: 'Score by quarter and play-by-play', note: 'Our data has final scores only, so there is no quarter-by-quarter line, drive chart or scoring summary for any game.' },
-  ];
-  if (!g.team) out.push({ id: 'team', label: 'Team totals', note: 'No team box score is recorded for this game.' });
-  if (!hasSnaps(g)) out.push({ id: 'snaps', label: 'Snap counts', note: g.season < 2013 ? 'Snap counts begin with the 2013 season, so who played how much (and the offensive linemen, who rarely record a stat) is not available for a game this old. Each roster below is built from the players who recorded a stat.' : 'No snap counts are recorded for this game yet.' });
+  // (no play-by-play note: no game has it, so it said nothing about this one; owner: "remove this warning")
+  const out: Missing[] = [];
+  if (!g.team) out.push({ id: 'team', label: 'Team totals', note: 'Not recorded.' });
+  if (!hasSnaps(g)) out.push({ id: 'snaps', label: 'Snap counts', note: g.season < 2013 ? 'From 2013 on.' : 'Not recorded yet.' });
   const advanced = hasPfr(g) || hasNgs(g);
-  if (!advanced) out.push({ id: 'pfr', label: 'Advanced box score (pressures, drops, broken tackles, coverage)', note: g.season < 2018 ? 'The weekly advanced stats from Pro Football Reference begin with the 2018 season: pressures, drops, broken tackles, yards before and after contact, coverage targets and missed tackles.' : 'No advanced box score is recorded for this game yet.' });
-  if (!advanced) out.push({ id: 'ngs', label: 'Next Gen Stats (time to throw, separation, rush yards over expected)', note: g.season < 2016 ? 'Next Gen Stats begin with the 2016 season.' : 'No Next Gen Stats are recorded for this game.' });
+  if (!advanced) out.push({ id: 'pfr', label: 'Advanced box score (pressures, drops, broken tackles, coverage)', note: g.season < 2018 ? 'From 2018 on.' : 'Not recorded yet.' });
+  if (!advanced) out.push({ id: 'ngs', label: 'Next Gen Stats (time to throw, separation, rush yards over expected)', note: g.season < 2016 ? 'From 2016 on.' : 'Not recorded yet.' });
   return out;
 };
 

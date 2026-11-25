@@ -160,3 +160,10 @@
 .ts__odds b { color: hsl(var(--foreground)); font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; }
 .ts__bar { height: 6px; border-radius: 99px; background: hsl(var(--line) / 0.6); overflow: hidden; }
 .ts__bar i { display: block; height: 100%; background: var(--tc); border-radius: 99px; }
+
+/* Deep Dive Career numbers: full rows on every width, numbers sized to their tile (never clipped or crammed) */
+.ts__tiles--career { grid-template-columns: repeat(var(--mcols, 2), minmax(0, 1fr)); }
+@media (min-width: 640px) { .ts__tiles--career { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); } }
+.ts__tiles--career .ts__tv { font-size: clamp(1.15rem, 5vw, 1.7rem); white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.ts__tiles--career .ts__tile { padding: 0.45rem 0.6rem; }
+@media (min-width: 640px) { .ts__tiles--career .ts__tv { font-size: clamp(1.35rem, 2vw, 1.8rem); } }

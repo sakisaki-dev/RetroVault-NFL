@@ -523,9 +523,10 @@ const SideTabs = ({ g, side, onSide }: { g: GameDetail; side: Side; onSide: (s: 
 
 const Missing = ({ g }: { g: GameDetail }) => {
   const items = missingFor(g);
+  if (!items.length) return null;
   return (
     <aside className="gm-missing" aria-label="What this game's data does not have">
-      <p className="font-pixel text-[9px] uppercase tracking-widest text-[hsl(var(--gold))]">Not in the data for this game</p>
+      <p className="font-pixel text-[9px] uppercase tracking-widest text-[hsl(var(--gold))]">Not in this game&rsquo;s data</p>
       <ul>
         {items.map((m) => <li key={m.id}><b>{m.label}.</b> {m.note}</li>)}
       </ul>

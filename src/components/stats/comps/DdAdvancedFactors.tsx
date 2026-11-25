@@ -78,7 +78,7 @@ const DdAdvancedFactors = ({
           </div>
         )}
       </div>
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} advanced factors`}>
+      <ul className="grid-fill-last grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} advanced factors`}>
         {entries.map(([id, v], i) => {
           const m = adv.metrics[id];
           const grade = m.dir === 'style' ? null : gradeFor(v[1]);
