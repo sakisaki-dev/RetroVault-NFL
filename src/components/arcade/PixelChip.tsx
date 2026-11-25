@@ -1,6 +1,7 @@
 import { useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { clubVars } from './clubInk';
+import { PixelSelect } from './PixelSelect';
 import './arcade.css';
 
 /**
@@ -10,7 +11,9 @@ import './arcade.css';
  * ArcadeToggle: a segmented control of pixel buttons, an ARIA radio group with a roving tabindex (arrows, Home and End
  * move and select). Props: options [{value, label, icon?, disabled?}], value, onChange, label (accessible name),
  * size? 'sm' | 'md', club?, wrap? (let the segments wrap to rows instead of scrolling), className?.
- * It never makes the page scroll sideways: a long row scrolls inside itself.
+ * It never makes the page scroll sideways. A long list (more than 6 options, or more than 32 characters of labels) is
+ * shown as a select (PixelSelect) with the current value instead of a row that scrolls; `compact` = 'never' keeps the
+ * row. The select's kicker is the label when it is short.
  */
 export const PixelChip = ({
   pressed,
@@ -59,6 +62,7 @@ export const ArcadeToggle = <T extends string | number>({
   size = 'md',
   club,
   wrap,
+  compact = 'auto',
   className,
 }: {
   options: ToggleOption<T>[];
@@ -68,6 +72,7 @@ export const ArcadeToggle = <T extends string | number>({
   size?: 'sm' | 'md';
   club?: string | null;
   wrap?: boolean;
+  compact?: 'auto' | 'never';
   className?: string;
 }) => {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -91,6 +96,19 @@ export const ArcadeToggle = <T extends string | number>({
     move(i, to);
   };
   const cur = Math.max(0, options.findIndex((o) => o.value === value));
+  const chars = options.reduce((n, o) => n + (typeof o.label === 'string' || typeof o.label === 'number' ? String(o.label).length : 4), 0);
+  if (!wrap && compact === 'auto' && (options.length > 6 || chars > 32)) {
+    return (
+      <PixelSelect
+        label={label}
+        prefix={label.length <= 10 ? label : undefined}
+        className={className}
+        value={value}
+        onChange={onChange}
+        options={options.map((o) => ({ value: o.value, label: o.label, text: typeof o.label === 'string' ? o.label : undefined }))}
+      />
+    );
+  }
   return (
     <div role="radiogroup" aria-label={label} className={cn('ax-toggle', `ax-toggle--${size}`, wrap && 'ax-toggle--wrap', className)} style={club ? clubVars(club) : undefined}>
       {options.map((o, i) => {
