@@ -22,10 +22,15 @@ import MetricLabel from './analytics/MetricLabel';
 import { VIZ, fmtNum } from './analytics/viz';
 import { keyOf } from './records';
 import { onHeadToHeadRequest, takeHeadToHeadRequest } from './comps/compFinderLink';
-import { LEAGUE_DEFS, buildMatchup, type Cell, type Matchup, type Row, type Side } from './matchup';
+import { LEAGUE_DEFS, buildMatchup, buildSeasonMatchup, type SeasonSide, type Cell, type Matchup, type Row, type Side } from './matchup';
 import { peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
-import { IS_NFL } from '@/config/edition';
+import { IS_NFL, seasonLabel } from '@/config/edition';
+import { playerKey, seasonPlayerOf } from '@/config/ovr';
+import { playerSkillGrades } from '@/config/skillGrades';
+import { useThisSeason } from '@/utils/thisSeason';
+import { Choice } from '@/components/controls';
+import { useHubRoute } from './hub/hashRoute';
 
 type Select = (p: Player) => void;
 
@@ -53,6 +58,7 @@ const HeroCard = ({
   onChange,
   onSelect,
   wide,
+  season,
 }: {
   side: Side;
   player: Player | null;
@@ -60,6 +66,8 @@ const HeroCard = ({
   onChange: (key: string) => void;
   onSelect: Select;
   wide: boolean;
+  /** Season scope: the label ("2026") and this side's season block */
+  season?: { label: string; side: SeasonSide } | null;
 }) => {
   const ovrMap = useOfficialOvr();
   const { numberFor, retiredInfo } = useJerseyNumbers();
@@ -103,7 +111,30 @@ const HeroCard = ({
           Pick a player to load their card.
         </div>
       )}
-      {player && (
+      {player && season && (
+        <div className="flex flex-wrap gap-1.5" aria-label={`${displayName(player.name)} ${season.label} season summary`}>
+          {season.side.line ? (
+            <>
+              {season.side.szn != null && (
+                <span className="lamp">
+                  SZN <b>{season.side.szn}</b>
+                </span>
+              )}
+              <span className="lamp">
+                GP <b>{season.side.line.games}</b>
+              </span>
+              {season.side.ppr && (
+                <span className="lamp">
+                  PPR/G <b>{fmtNum(season.side.ppr.perGame, 1)}</b>
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="lamp" data-testid="no-season-chip">No {season.label} season</span>
+          )}
+        </div>
+      )}
+      {player && !season && (
         <div className="flex flex-wrap gap-1.5" aria-label={`${displayName(player.name)} career summary`}>
           <span className="lamp">
             Legacy <b>{fmtNum(player.careerLegacy, 0)}</b>
@@ -126,12 +157,19 @@ const HeroCard = ({
 // ---------- Rows ----------
 
 /** Two bars growing out from the middle, sized against the larger magnitude. Leader in gold. */
-const SplitBar = ({ row }: { row: Row }) => {
+const SplitBar = ({ row, grow }: { row: Row; grow?: boolean }) => {
+  // a remount after a scope switch starts at 0 and grows to the value
+  const [on, setOn] = useState(!grow);
+  useEffect(() => {
+    if (!grow) return;
+    const id = requestAnimationFrame(() => requestAnimationFrame(() => setOn(true)));
+    return () => cancelAnimationFrame(id);
+  }, [grow]);
   const pick = (c: Cell) => (c.belowMin ? null : row.cmpHigherIsBetter ? c.cmp ?? null : c.value);
   const a = pick(row.a);
   const b = pick(row.b);
   const max = Math.max(Math.abs(a ?? 0), Math.abs(b ?? 0));
-  const w = (v: number | null) => (max > 0 && v != null && Number.isFinite(v) ? `${Math.max((Math.abs(v) / max) * 100, v === 0 ? 0 : 3)}%` : '0%');
+  const w = (v: number | null) => (on && max > 0 && v != null && Number.isFinite(v) ? `${Math.max((Math.abs(v) / max) * 100, v === 0 ? 0 : 3)}%` : '0%');
   const fill = (v: number | null, lead: boolean) => (v != null && v < 0 ? `rgb(${VIZ.below})` : lead ? 'hsl(var(--gold))' : 'hsl(var(--line))');
   return (
     <div aria-hidden="true" className="mx-auto mt-1.5 grid max-w-[14rem] grid-cols-2 gap-[2px]">
@@ -145,7 +183,7 @@ const SplitBar = ({ row }: { row: Row }) => {
   );
 };
 
-const ValueCell = ({ row, cell, side, lead }: { row: Row; cell: Cell; side: Side; lead: boolean }) => {
+const ValueCell = ({ row, cell, side, lead, count }: { row: Row; cell: Cell; side: Side; lead: boolean; count?: boolean }) => {
   const align = side === 1 ? 'text-right' : 'text-left';
   if (cell.belowMin) {
     return (
@@ -158,7 +196,15 @@ const ValueCell = ({ row, cell, side, lead }: { row: Row; cell: Cell; side: Side
   const text = valueText(cell, row);
   const tier = cell.tierKey && cell.value != null ? getMetricTier(cell.value, cell.tierKey) : null;
   const number = (
-    <span className={cn('font-mono text-base font-bold tabular-nums sm:text-lg', lead ? 'text-gold' : 'text-chalk')}>{text}</span>
+    <span className={cn('font-mono text-base font-bold tabular-nums sm:text-lg', lead ? 'text-gold' : 'text-chalk')}>{count && cell.value != null && Number.isFinite(cell.value) ? (
+        <>
+          <CountUp value={cell.value} decimals={row.decimals} />
+          {row.suffix ?? ''}
+        </>
+      ) : (
+        text
+      )}
+    </span>
   );
   return (
     <td className={cn('px-2 py-2 align-middle sm:px-4', align)}>
@@ -362,7 +408,67 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
   const options1 = useMemo(() => sorted.filter((p) => keyOf(p) !== k2), [sorted, k2]);
   const options2 = useMemo(() => sorted.filter((p) => keyOf(p) !== k1), [sorted, k1]);
 
-  const m = useMemo(() => (p1 && p2 ? buildMatchup(players, ctx, p1, p2, ovrMap) : null), [players, ctx, p1, p2, ovrMap]);
+  // ---- Season / Career scope (hash `scope=season`, remembered on the device) ----
+  const { route, navigate } = useHubRoute();
+  const hashScope = route.q?.scope;
+  const [pref, setPref] = useState<'career' | 'season'>(() => {
+    if (hashScope === 'season' || hashScope === 'career') return hashScope;
+    try {
+      return localStorage.getItem('retroVault:h2h:scope') === 'season' ? 'season' : 'career';
+    } catch {
+      return 'career';
+    }
+  });
+  useEffect(() => {
+    if (hashScope === 'season' || hashScope === 'career') setPref(hashScope);
+  }, [hashScope]);
+  const [touched, setTouched] = useState(false);
+  const setScope = (v: 'career' | 'season') => {
+    setPref(v);
+    setTouched(true);
+    try {
+      localStorage.setItem('retroVault:h2h:scope', v);
+    } catch {
+      /* storage unavailable */
+    }
+    if (route.tab === 'career' && route.sub === 'h2h') navigate({ ...route, q: { ...route.q, scope: v } }, { replace: true });
+  };
+  const { seasonOvr } = useGamePool();
+  const t1 = useThisSeason(k1 || null);
+  const t2 = useThisSeason(k2 || null);
+  const seasonPlayers = useMemo(() => {
+    const lines = seasonOvr?.lines;
+    if (!lines || pref !== 'season') return [] as Player[];
+    return players.flatMap((p) => (lines[playerKey(p)] ? [seasonPlayerOf(p, lines[playerKey(p)])] : []));
+  }, [players, seasonOvr, pref]);
+  const sideOf = (p: Player | null, t: typeof t1): SeasonSide => {
+    const none: SeasonSide = { line: null, szn: null, skill: null, ppr: null };
+    const line = p && seasonOvr?.lines?.[playerKey(p)];
+    if (!p || !line || !(line.games > 0)) return none;
+    const me = seasonPlayers.find((x) => playerKey(x) === playerKey(p)) ?? seasonPlayerOf(p, line);
+    return {
+      line: me,
+      szn: seasonOvr?.ovr[playerKey(p)] ?? null,
+      skill: pref === 'season' ? playerSkillGrades(seasonPlayers, me).overall?.rating ?? null : null,
+      ppr: t?.line.ppr ?? null,
+    };
+  };
+  const side1 = useMemo(() => sideOf(p1, t1), [p1, t1, seasonOvr, seasonPlayers]); // eslint-disable-line react-hooks/exhaustive-deps
+  const side2 = useMemo(() => sideOf(p2, t2), [p2, t2, seasonOvr, seasonPlayers]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sLabel = seasonOvr ? String(seasonLabel(seasonOvr.season)) : '';
+  const bothMissing = !!(seasonOvr && p1 && p2 && !side1.line && !side2.line);
+  const scope: 'career' | 'season' = pref === 'season' && !!seasonOvr && !bothMissing ? 'season' : 'career';
+  const animate = touched;
+
+  const m = useMemo(
+    () =>
+      p1 && p2
+        ? scope === 'season'
+          ? buildSeasonMatchup(p1, p2, side1, side2, sLabel)
+          : buildMatchup(players, ctx, p1, p2, ovrMap)
+        : null,
+    [players, ctx, p1, p2, ovrMap, scope, side1, side2, sLabel],
+  );
 
   if (players.length < 2) return null;
 
@@ -374,8 +480,9 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
 
   return (
     <section id="head-to-head" aria-labelledby="h2h-title" className="scroll-mt-20 space-y-4">
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
       <div className="space-y-1">
-        {m && <p className="font-pixel text-[10px] uppercase text-gold">Featured matchup</p>}
+        {m && <p className="font-pixel text-[10px] uppercase text-gold">{scope === 'season' ? `${sLabel} season` : 'Featured matchup'}</p>}
         <h2 id="h2h-title" className="flex items-center gap-2 font-display text-4xl font-extrabold italic uppercase leading-none sm:text-5xl">
           <Swords className="h-7 w-7 text-gold sm:h-8 sm:w-8" aria-hidden="true" />
           Head-to-<span className="text-gold">Head</span>
@@ -395,10 +502,24 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
           <span className="font-normal text-muted-foreground">(scored on the league&rsquo;s scale)</span>
         </label>}
       </div>
+      {IS_NFL && seasonOvr && (
+        <span title={bothMissing ? `No ${sLabel} season for either player` : undefined} className="sm:mt-1">
+          <Choice
+            label="Compare on"
+            value={scope}
+            onChange={setScope}
+            options={[
+              { value: 'career', label: 'Career' },
+              { value: 'season', label: 'Season', disabled: bothMissing },
+            ]}
+          />
+        </span>
+      )}
+      </div>
 
       <div className="glass-card relative overflow-hidden p-3 sm:p-5" style={{ boxShadow: 'inset 0 4px 0 hsl(var(--gold)), var(--shadow-card)' }}>
         <div className="grid items-start gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-5">
-          <HeroCard side={1} player={p1} options={options1} onChange={setK1} onSelect={onSelect} wide={wide} />
+          <HeroCard side={1} player={p1} options={options1} onChange={setK1} onSelect={onSelect} wide={wide} season={scope === 'season' ? { label: sLabel, side: side1 } : null} />
           <div className="flex items-center justify-center gap-3 md:mt-28 md:flex-col">
             <span
               aria-hidden="true"
@@ -411,7 +532,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
               Swap
             </Button>
           </div>
-          <HeroCard side={2} player={p2} options={options2} onChange={setK2} onSelect={onSelect} wide={wide} />
+          <HeroCard side={2} player={p2} options={options2} onChange={setK2} onSelect={onSelect} wide={wide} season={scope === 'season' ? { label: sLabel, side: side2 } : null} />
         </div>
       </div>
 
@@ -470,7 +591,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
 
           <SimilarityBlock p1={p1} p2={p2} m={m} />
 
-          {!m.sameFamily || !m.samePosition ? (
+          {scope === 'season' ? null : !m.sameFamily || !m.samePosition ? (
             <p className="border-b border-line bg-panel-2/50 px-4 py-2 text-center text-xs text-muted-foreground">
               {!m.sameFamily
                 ? `Cross-position matchup (${p1.position} vs ${p2.position}): only universal rows are compared — career, awards, league metrics, the advanced metrics that apply to both positions (judged by percentile within each position) and legacy composition. Position stats and similarity need the same position.`
@@ -495,7 +616,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
               </tr>
             </thead>
             {m.sections.map((sec) => (
-              <tbody key={sec.id}>
+              <tbody key={`${scope}:${sec.id}`}>
                 <tr>
                   <th colSpan={3} scope="colgroup" className="bg-panel-2 px-4 py-1.5 text-center font-pixel text-[10px] font-normal uppercase text-gold">
                     {sec.title}
@@ -517,7 +638,7 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
                 )}
                 {sec.rows.map((row) => (
                   <tr key={`${sec.id}:${row.id}`} className="border-b border-border/40 last:border-b-0">
-                    <ValueCell row={row} cell={row.a} side={1} lead={row.leader === 1} />
+                    <ValueCell row={row} cell={row.a} side={1} lead={row.leader === 1} count={animate} />
                     <th scope="row" className="px-1 py-2 text-center align-middle font-normal">
                       {row.def ? (
                         <MetricLabel
@@ -529,9 +650,9 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
                       )}
                       {row.lowerIsBetter && <span className="block text-[9px] text-muted-foreground">lower is better</span>}
                       {row.note && <span className="block text-[9px] text-muted-foreground">{row.note}</span>}
-                      <SplitBar row={row} />
+                      <SplitBar row={row} grow={animate} />
                     </th>
-                    <ValueCell row={row} cell={row.b} side={2} lead={row.leader === 2} />
+                    <ValueCell row={row} cell={row.b} side={2} lead={row.leader === 2} count={animate} />
                   </tr>
                 ))}
               </tbody>
