@@ -44,7 +44,7 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
     const order: string[] = [];
     five.forEach((k, i) => (i % 2 ? order.unshift(k) : order.push(k)));
     return order.map((k) => ctx.profiles.get(k)?.player).filter((p): p is NonNullable<typeof p> => !!p).map((player) => ({ player, club: bannerTeamOf(player) }));
-  }, [ctx, fctx, cands, fl, week, filled, hub]);
+  }, [ctx, fctx, cands, fl, week, filled, hub.projectWeek]);
   const proj = filled ? total(fl, week) : 0;
   return (
     <StadiumHeader
@@ -69,12 +69,12 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
 
 const Ready = ({ nl }: { nl: NflLabReady }) => {
   const { route, navigate } = useHubRoute();
+  const sub: Sub = (FANTASY_SUBS.includes(route.section ?? '') ? route.section : 'lineup') as Sub;
   const [prefs, setPrefs] = usePrefs();
-  const env = useTradeEnv();
-  const hub = useFantasyHub(nl, prefs);
+  const env = useTradeEnv(sub === 'trade');
+  const hub = useFantasyHub(nl, prefs, sub === 'h2h');
   const [open, setOpen] = useState(false);
   const [turf, setTurf] = useState<Turf>('day');
-  const sub: Sub = (FANTASY_SUBS.includes(route.section ?? '') ? route.section : 'lineup') as Sub;
   // old links (#lab/trade, #lab?mode=fantasy) land here: give the address its new form
   useEffect(() => {
     if (!window.location.hash.startsWith('#fantasy')) navigate({ tab: 'fantasy', section: sub, p: route.p }, { replace: true });
@@ -114,7 +114,8 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
 /** The Fantasy page (#fantasy): lineup, start / sit, head-to-head and trade, with one shared lineup and league format. */
 const FantasyHub = () => {
   const nl = useNflLab();
-  if (!nl.ctx) return <div className="container"><FootballLoader ready={false} minHeight="60vh" what="the league" label="Fantasy" /></div>;
+  // (the lab files too: the page rendered once on the bare league and again when they landed)
+  if (!nl.ctx || !nl.data) return <div className="container"><FootballLoader ready={false} minHeight="60vh" what="the league" label="Fantasy" /></div>;
   return <Ready nl={nl as NflLabReady} />;
 };
 

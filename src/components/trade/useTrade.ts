@@ -5,7 +5,8 @@ import { displayName } from '@/utils/displayName';
 import { useFantasyRaw } from '@/utils/fantasy';
 import { useInjuryList } from '@/utils/injuries';
 import { useMarketLatest } from '@/utils/useMarket';
-import { buildTradeModel, DEFAULT_SETTINGS, type Status, type TradeSettings } from '@/utils/tradeSim';
+import { buildTradeModel, DEFAULT_SETTINGS, type Status, type TradeModel, type TradeSettings } from '@/utils/tradeSim';
+import type { FanRaw } from '@/utils/fantasy';
 
 const KEY = 'retroVault:nflTrade:settings';
 const readSettings = (): TradeSettings => {
@@ -37,15 +38,30 @@ export const useTradeSettings = () => {
   return [s, useCallback((patch: Partial<TradeSettings>) => setS((x) => ({ ...x, ...patch })), [])] as const;
 };
 
-/** Everything the simulator reads: the model for the chosen format, the card players, card values. null until fantasy.json is in. */
-export const useTradeEnv = () => {
+/** The last few models built, by file, injury list and format: flipping a format back and forth (or a remount) rebuilds nothing. */
+const modelCache = new WeakMap<FanRaw, { status: Map<string, Status>; byFormat: Map<string, TradeModel> }>();
+const modelFor = (raw: FanRaw, s: TradeSettings, status: Map<string, Status>): TradeModel => {
+  let c = modelCache.get(raw);
+  if (!c || c.status !== status) modelCache.set(raw, (c = { status, byFormat: new Map() }));
+  const k = `${s.scoring}|${s.teams}|${s.superflex ? 1 : 0}|${s.tePremium ? 1 : 0}|${s.playoffWeight}`;
+  let m = c.byFormat.get(k);
+  if (!m) {
+    m = buildTradeModel(raw, s, (key) => status.get(key));
+    if (c.byFormat.size >= 4) c.byFormat.delete(c.byFormat.keys().next().value as string);
+    c.byFormat.set(k, m);
+  }
+  return m;
+};
+
+/** Everything the simulator reads (`active` false: only the card lookup and the format, no model or prices yet): the model for the chosen format, the card players, card values. null until fantasy.json is in. */
+export const useTradeEnv = (active = true) => {
   const raw = useFantasyRaw();
   const inj = useInjuryList();
   const { getAllPlayers } = useLeague();
-  const market = useMarketLatest();
+  const market = useMarketLatest(active);
   const [settings, setSettings] = useTradeSettings();
   const status = useMemo(() => new Map<string, Status>((inj?.entries ?? []).map((e) => [e.key, e.code])), [inj]);
-  const model = useMemo(() => (raw ? buildTradeModel(raw, settings, (k) => status.get(k)) : null), [raw, settings, status]);
+  const model = useMemo(() => (raw && active ? modelFor(raw, settings, status) : null), [raw, active, settings, status]);
   const cards = useMemo(() => {
     const m = new Map<string, Player>();
     getAllPlayers().forEach((p) => m.set(`${p.position}:${displayName(p.name)}`, p));

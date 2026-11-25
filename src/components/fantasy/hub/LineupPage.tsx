@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import { Ban, Dices, Eraser, FastForward, Lock, LockOpen, Plus, Wallet } from 'lucide-react';
 import { ArcadeToggle } from '@/components/arcade';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -55,12 +55,14 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
       slots: prof ? fantasyFrom(raw, k)?.next : undefined,
     };
   });
+  // the board filters on the deferred text: a keystroke paints the box first, the 40 rows follow
+  const dq = useDeferredValue(hub.query);
   const shown = useMemo(() => {
-    const q = hub.query.trim().toLowerCase();
+    const q = dq.trim().toLowerCase();
     return board
       .filter((c) => (hub.posFilter === 'ALL' || c.pos === hub.posFilter) && !excludes.has(c.key) && (!draft || prefs.fmode !== 'draft' || !hub.draftTaken.has(c.key)) && (!q || nameOf(c.key).toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [board, hub.posFilter, hub.query, excludes, draft, hub.draftTaken, prefs.fmode]);
+  }, [board, hub.posFilter, dq, excludes, draft, hub.draftTaken, prefs.fmode]);
   const max = Math.max(1, ...shown.map((c) => c.value));
 
   return (

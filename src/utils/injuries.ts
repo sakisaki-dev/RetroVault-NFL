@@ -24,6 +24,7 @@ const load = () =>
     .catch(() => null)
     .then((d) => {
       loaded = d;
+      listOf = null;
       listeners.forEach((l) => l());
       return d;
     }));
@@ -48,5 +49,8 @@ export const useInjury = (key: string | undefined): { code: InjuryCode; part: st
 export const useInjuryList = (): { season: number; week: number; entries: Array<{ key: string; code: InjuryCode; part: string }> } | null => {
   useInjury(undefined);
   if (!IS_NFL || !loaded) return null;
-  return { season: loaded.season, week: loaded.week, entries: Object.entries(loaded.p).map(([key, [code, part]]) => ({ key, code, part })) };
+  // one list per loaded file: a new object every render made every memo keyed on it (the lab's injured map, the fantasy candidates,
+  // the trade model) rebuild on each render of the page
+  return (listOf ??= { season: loaded.season, week: loaded.week, entries: Object.entries(loaded.p).map(([key, [code, part]]) => ({ key, code, part })) });
 };
+let listOf: { season: number; week: number; entries: Array<{ key: string; code: InjuryCode; part: string }> } | null = null;

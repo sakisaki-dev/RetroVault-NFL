@@ -26,6 +26,11 @@ export const PAGES = [
   { id: 'news', hash: '#news', marker: 'THE NFL THIS WEEK' },
   { id: 'college', hash: '#college', marker: '257 PICKS' },
   { id: 'arcade', hash: '#games', marker: 'PRESS START' },
+  { id: 'fantasy-lineup', hash: '#fantasy/lineup', marker: 'Players board|Draft board' },
+  { id: 'fantasy-trade', hash: '#fantasy/trade', marker: ' sends' },
+  { id: 'fantasy-startsit', hash: '#fantasy/startsit', marker: 'No lineup to read yet|Start \\/ sit[\\s\\S]*floor' },
+  { id: 'fantasy-h2h', hash: '#fantasy/h2h', marker: 'No lineup to face yet|Season replay' },
+  { id: 'lab', hash: '#lab', marker: 'depth chart as of' },
 ];
 
 const INIT = `
@@ -33,7 +38,7 @@ const INIT = `
   try { new PerformanceObserver((l) => { for (const e of l.getEntries()) { window.__lt += Math.max(0, e.duration - 50); window.__ltn++; window.__ltmax = Math.max(window.__ltmax, e.duration); } }).observe({ entryTypes: ['longtask'] }); } catch {}
   window.__wait = async (marker, timeout) => {
     const t0 = performance.now(); let calm = 0, last = performance.now(), markerAt = 0;
-    const re = new RegExp(marker);
+    const re = new RegExp(marker, 'i'); // innerText follows CSS text-transform, so match without case
     while (performance.now() - t0 < timeout) {
       await new Promise((r) => setTimeout(r, 0));
       const now = performance.now(), gap = now - last; last = now;
@@ -70,7 +75,7 @@ try {
     if (process.env.PROFILE) { await page.send('Profiler.enable'); await page.send('Profiler.setSamplingInterval', { interval: 500 }); await page.send('Profiler.start'); }
     await page.send('Page.navigate', { url: BASE + pg.hash });
     await sleep(100);
-    const r = await page.evaluate(`window.__wait(${JSON.stringify(pg.marker)}, 45000)`).catch((e) => ({ ok: false, err: String(e) }));
+    const r = await page.evaluate(`window.__wait(${JSON.stringify(pg.marker)}, 25000)`).catch((e) => ({ ok: false, err: String(e) }));
     await sleep(3000);
     if (process.env.PROFILE) {
       const { profile } = await page.send('Profiler.stop');
@@ -97,5 +102,9 @@ try {
     process.stderr.write(`${pg.id}: fcp ${out[pg.id].fcp} content ${out[pg.id].contentMs} full ${out[pg.id].fullMs} ${r.ok ? '' : 'NOT-READY '}reqs ${own.length}(+${sprites.length} spr) ${out[pg.id].kb}KB last ${out[pg.id].lastReqMs} block ${out[pg.id].blockMs}/${lt.n} max ${lt.max} ${out[pg.id].errors.join('|')}\n`);
     await page.dispose();
   }
-} finally { await close(); srv.close(); }
-const f = arg('out'); if (f) fs.writeFileSync(f, JSON.stringify(out, null, 1));
+} finally {
+  // results first: a browser that is slow to close must not cost the run its numbers
+  const f = arg('out'); if (f) fs.writeFileSync(f, JSON.stringify(out, null, 1));
+  await Promise.race([close().catch(() => {}), sleep(5000)]); srv.close();
+}
+process.exit(0);
