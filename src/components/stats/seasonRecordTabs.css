@@ -1,0 +1,36 @@
+/* Record Book, Awards and Streaks tabs (SeasonRecordTabs.tsx): professional tables and lists, flat club-colour strips. */
+.ra { display: grid; gap: 10px; min-width: 0; }
+.ra-scroll { overflow-x: auto; border: 1px solid hsl(var(--line)); border-radius: 14px; background: hsl(var(--panel)); overscroll-behavior-x: contain; max-height: 70vh; overflow-y: auto; }
+.ra-scroll:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.ra-table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
+.ra-table th, .ra-table td { padding: 6px 8px; text-align: left; vertical-align: top; border-bottom: 1px solid hsl(var(--line) / 0.5); background: hsl(var(--panel)); white-space: nowrap; }
+.ra-table thead th { position: sticky; top: 0; z-index: 3; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); background: hsl(var(--panel-2)); }
+.ra-table .ra-pin { position: sticky; left: 0; z-index: 2; width: 64px; min-width: 64px; box-shadow: 6px 0 8px -6px rgb(0 0 0 / 0.55); }
+.ra-table thead .ra-pin { z-index: 4; }
+.ra-table td.ra-pin b { font-family: var(--font-display); font-size: 16px; font-weight: 800; }
+.ra-win { display: flex; align-items: center; gap: 6px; margin: 1px 0; }
+.ra-win small { font-size: 10px; color: hsl(var(--muted-foreground)); }
+.ra-foot { font-size: 11px; color: hsl(var(--muted-foreground)); }
+.rs-alive { display: grid; gap: 8px; border: 1px solid hsl(var(--line)); border-radius: 14px; background: hsl(var(--panel)); padding: 10px 12px 12px; }
+.rs-alive__head { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; }
+.rs-alive__head small { font-family: inherit; font-size: 11px; font-weight: 400; letter-spacing: 0; text-transform: none; color: hsl(var(--muted-foreground)); }
+.rs-alive__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px 14px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 768px) { .rs-alive__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .rs-alive__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.rs-alive__list li { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+.rs-alive__txt { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.rs-alive__txt b { color: hsl(var(--gold)); font-family: var(--font-display); font-size: 14px; }
+.rs-lists { display: grid; gap: 8px; }
+.rs-det { border: 1px solid hsl(var(--line)); border-radius: 12px; background: hsl(var(--panel)); }
+.rs-det > summary { cursor: pointer; padding: 9px 12px; font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: 0.05em; text-transform: uppercase; list-style: none; display: flex; gap: 8px; align-items: baseline; }
+.rs-det > summary::-webkit-details-marker { display: none; }
+.rs-det > summary small { font-family: inherit; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; color: hsl(var(--muted-foreground)); }
+.rs-det__cols { display: grid; gap: 10px 20px; padding: 0 12px 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .rs-det__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.rs-det ol { list-style: none; margin: 0; padding: 0; display: grid; font-size: 13px; font-variant-numeric: tabular-nums; }
+.rs-det li { display: grid; grid-template-columns: minmax(0, 1fr) auto 32px; gap: 8px; padding: 4px 0; border-bottom: 1px solid hsl(var(--line) / 0.4); align-items: baseline; }
+.rs-det li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rs-det li small { color: hsl(var(--muted-foreground)); font-size: 11px; }
+.rs-det li b { text-align: right; font-family: var(--font-display); font-size: 15px; }
+.rs-det li.is-alive b, .rs-det li.is-alive > span { color: hsl(var(--gold)); }
+.rs-det li.rs-det__h { grid-template-columns: 1fr; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }

@@ -13,6 +13,7 @@ PAGES = {
     "dpoy": "AP_NFL_Defensive_Player_of_the_Year_Award",
     "oroy": "AP_NFL_Offensive_Rookie_of_the_Year_Award",
     "droy": "AP_NFL_Defensive_Rookie_of_the_Year_Award",
+    "cpoy": "AP_NFL_Comeback_Player_of_the_Year_Award",
     "sbmvp": "Super_Bowl_Most_Valuable_Player_Award",
     "champions": "List_of_Super_Bowl_champions",
 }
@@ -20,7 +21,7 @@ PAGES = {
 CAPTION = {
     "mvp": "Most Valuable Player winners", "opoy": "Offensive Player of the Year winners",
     "dpoy": "Defensive Player of the Year winners", "oroy": "Offensive Rookie of the Year winners",
-    "droy": "Defensive Rookie of the Year winners", "sbmvp": "Super Bowl Most Valuable Players",
+    "droy": "Defensive Rookie of the Year winners", "cpoy": "Comeback Player of the Year winners", "sbmvp": "Super Bowl Most Valuable Players",
     "champions": "Super Bowl championships",
 }
 POS = {
@@ -195,7 +196,7 @@ def main():
     awards = {}
     for key, page in PAGES.items():
         if page not in pages: pages[page] = fetch(page)
-    for key in ("mvp", "opoy", "dpoy", "oroy", "droy"):
+    for key in ("mvp", "opoy", "dpoy", "oroy", "droy", "cpoy"):
         awards[key] = awards_rows(pages[PAGES[key]], key, bad)
     awards["sbmvp"] = sbmvp_rows(pages[PAGES["sbmvp"]], bad)
     champs = champion_rows(pages[PAGES["champions"]], bad)

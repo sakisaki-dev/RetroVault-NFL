@@ -1,0 +1,35 @@
+/* Deep Dive, Season by season (SeasonTable.tsx): a professional table, flat and readable; the club logos and the gold stars carry the colour. */
+.st { display: grid; gap: 8px; min-width: 0; }
+.st-scroll { overflow-x: auto; border: 1px solid hsl(var(--line)); border-radius: 14px; background: hsl(var(--panel)); overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+.st-scroll:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+.st-table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-size: 13px; }
+.st-table th, .st-table td { padding: 7px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid hsl(var(--line) / 0.5); background: hsl(var(--panel)); }
+.st-table thead th { position: sticky; top: 0; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); background: hsl(var(--panel-2)); }
+.st-table tbody tr:last-child td { border-bottom: 0; }
+.st-table .st-pin { position: sticky; z-index: 2; text-align: left; }
+.st-table .st-pin--a { left: 0; width: 78px; min-width: 78px; }
+.st-table .st-pin--b { left: 78px; width: 70px; min-width: 70px; box-shadow: 6px 0 8px -6px rgb(0 0 0 / 0.55); }
+.st-table thead .st-pin { z-index: 3; }
+.st-table td.st-pin--a b { font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 0.02em; }
+.st-hl td { background: hsl(var(--gold) / 0.06); }
+.st-hl td.st-pin { background: hsl(var(--panel)); }
+.st-pre td { color: hsl(var(--muted-foreground)); font-style: italic; }
+.st-table tfoot td { font-weight: 700; border-top: 2px solid hsl(var(--line)); border-bottom: 0; background: hsl(var(--panel-2)); }
+.st-clubs { display: inline-flex; align-items: center; gap: 3px; }
+.st-clubs__n { font-size: 10px; color: hsl(var(--muted-foreground)); }
+.st-honours { text-align: left !important; white-space: normal !important; min-width: 130px; }
+.st-honours .st-chip { margin: 1px 4px 1px 0; }
+.st-chip { display: inline-block; padding: 1px 7px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: hsl(var(--night, 226 50% 8%)); border: 1px solid hsl(var(--line)); color: hsl(var(--foreground)); font-style: normal; }
+.st-chip--mvp { background: hsl(var(--gold)); border-color: hsl(var(--gold)); color: hsl(226 50% 8%); }
+.st-note { font-size: 11px; font-style: italic; color: hsl(var(--muted-foreground)); font-weight: 400; }
+.st-led { color: hsl(var(--gold)); font-weight: 800; }
+.st-star { display: inline-block; width: 11px; height: 11px; margin: -2px 0 0 3px; fill: hsl(var(--gold)); color: hsl(var(--gold)); vertical-align: middle; }
+.st-star--inline { margin: -2px 2px 0 0; }
+.st-szn { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 8px; text-align: center; font-weight: 800; background: hsl(var(--panel-2)); border: 1px solid hsl(var(--line)); }
+.st-szn--gold { background: hsl(var(--gold)); border-color: hsl(var(--gold)); color: hsl(226 50% 8%); }
+.st-foot { font-size: 11px; color: hsl(var(--muted-foreground)); }
+@media (max-width: 640px) {
+  .st-table th, .st-table td { padding: 7px 8px; }
+  .st-table .st-pin--a { width: 64px; min-width: 64px; }
+  .st-table .st-pin--b { left: 64px; width: 62px; min-width: 62px; }
+}

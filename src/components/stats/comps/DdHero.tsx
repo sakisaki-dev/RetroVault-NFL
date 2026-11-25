@@ -19,6 +19,7 @@ import { keyOf } from '../records';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
+import { useBlackInk } from '@/utils/seasonBoards';
 
 const ctl =
   'inline-flex h-12 items-center justify-center gap-1.5 rounded-md border border-line bg-night/60 px-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-panel-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-40';
@@ -45,6 +46,7 @@ interface Props {
 /** Search + navigation bar and the full-width team-themed banner. */
 const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
   const { numberFor } = useJerseyNumbers();
+  const ink = useBlackInk(IS_NFL ? keyOf(player) : undefined);
   const extras = usePlayerExtras();
   // The banner wears his signature team (where he was best known); the franchise chips list them all
   const club = signatureTeamOf(extras, player);
@@ -116,7 +118,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
           nameAs="h1"
           interactive
           figure={<GameSprite player={player} team={club} kind="figure" size={wide ? 'l' : 'm'} showKit />}
-          stats={bannerStats(player)}
+          stats={[...bannerStats(player), ...(ink > 0 ? [{ label: 'Black ink', value: ink }] : [])]}
         />
       </button>
       {/* his retired number hangs from the hero's top edge, one banner per club (tap: their rafters) */}

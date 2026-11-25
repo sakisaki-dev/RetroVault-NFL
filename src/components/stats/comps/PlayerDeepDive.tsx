@@ -33,6 +33,7 @@ import DdEmpty from './DdEmpty';
 import DdClock from '../../clock/DdClock';
 import DdHero from './DdHero';
 import DdRecords from './DdRecords';
+import SeasonTable from './SeasonTable';
 import DdGameLog from '../gamelog/DdGameLog';
 import DdSkills from './DdSkills';
 import DdWhoPlays from './DdWhoPlays';
@@ -615,6 +616,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             kicker="Season by season: drag through his career on the timeline, every season's box score, rates and percentiles, the trophy shelf, the race to the record and how he stacks up."
           >
             <DdGraphsLazy player={player} players={players} wide={wide} />
+            {IS_NFL && (
+              <div className="mt-4 space-y-2" id="dd-seasontable">
+                <h3 className="font-display text-lg font-extrabold uppercase tracking-wide">Season by season</h3>
+                <SeasonTable player={player} />
+              </div>
+            )}
           </DdSection>
 
           {IS_NFL && (

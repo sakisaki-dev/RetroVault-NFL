@@ -72,10 +72,10 @@ export const splitKey = (key: string): [string, string] => {
  * roster's first season, say) is drawn from the stand-in looks the sprite resolver assigns by name, so the logo is only
  * the fallback where the sprite art is not in the build at all (the public site).
  */
-export const StarSprite = ({ name, pos, team, size = 'm', kind = 'figure', celebrate }: { name: string; pos: string; team: string; size?: SpriteSize; kind?: 'figure' | 'bust'; celebrate?: boolean }) => {
+export const StarSprite = ({ name, pos, team, size = 'm', kind = 'figure', celebrate, season }: { name: string; pos: string; team: string; size?: SpriteSize; kind?: 'figure' | 'bust'; celebrate?: boolean; season?: number }) => {
   const sprites = useGameSprites();
   if (!sprites) return <TeamLogo team={team} decorative className={size === 's' ? 'h-8 w-8' : 'h-14 w-14'} />;
-  return <GameSprite player={{ name, position: sitePos(pos) as never, team, bannerTeam: team }} team={team} kind={kind} size={size} action={celebrate ? 'celebrate' : undefined} />;
+  return <GameSprite player={{ name, position: sitePos(pos) as never, team, bannerTeam: team }} team={team} kind={kind} size={size} season={season} action={celebrate ? 'celebrate' : undefined} />;
 };
 
 const abbrOf = (season: SeasonView, name: string) => season.table.find((r) => r.team === name)?.abbr ?? findNFLTeam(name)?.abbreviation ?? name;

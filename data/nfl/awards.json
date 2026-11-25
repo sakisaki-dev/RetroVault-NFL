@@ -5,10 +5,11 @@
   "dpoy": "https://en.wikipedia.org/wiki/AP_NFL_Defensive_Player_of_the_Year_Award",
   "oroy": "https://en.wikipedia.org/wiki/AP_NFL_Offensive_Rookie_of_the_Year_Award",
   "droy": "https://en.wikipedia.org/wiki/AP_NFL_Defensive_Rookie_of_the_Year_Award",
+  "cpoy": "https://en.wikipedia.org/wiki/AP_NFL_Comeback_Player_of_the_Year_Award",
   "sbmvp": "https://en.wikipedia.org/wiki/Super_Bowl_Most_Valuable_Player_Award",
   "champions": "https://en.wikipedia.org/wiki/List_of_Super_Bowl_champions"
  },
- "fetched": "2026-11-23",
+ "fetched": "2026-11-25",
  "awards": {
   "mvp": [
    {
@@ -1872,6 +1873,182 @@
     "player": "Carson Schwesinger",
     "team": "Browns",
     "position": "LB"
+   }
+  ],
+  "cpoy": [
+   {
+    "season": 1998,
+    "player": "Doug Flutie",
+    "team": "Bills",
+    "position": "QB"
+   },
+   {
+    "season": 1999,
+    "player": "Bryant Young",
+    "team": "49ers",
+    "position": "DT"
+   },
+   {
+    "season": 2000,
+    "player": "Joe Johnson",
+    "team": "Saints",
+    "position": "DE"
+   },
+   {
+    "season": 2001,
+    "player": "Garrison Hearst",
+    "team": "49ers",
+    "position": "RB"
+   },
+   {
+    "season": 2002,
+    "player": "Tommy Maddox",
+    "team": "Steelers",
+    "position": "QB"
+   },
+   {
+    "season": 2003,
+    "player": "Jon Kitna",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 2004,
+    "player": "Drew Brees",
+    "team": "Chargers",
+    "position": "QB"
+   },
+   {
+    "season": 2005,
+    "player": "Tedy Bruschi",
+    "team": "Patriots",
+    "position": "LB"
+   },
+   {
+    "season": 2005,
+    "player": "Steve Smith Sr.",
+    "team": "Panthers",
+    "position": "WR"
+   },
+   {
+    "season": 2006,
+    "player": "Chad Pennington",
+    "team": "Jets",
+    "position": "QB"
+   },
+   {
+    "season": 2007,
+    "player": "Greg Ellis",
+    "team": "Cowboys",
+    "position": "DE"
+   },
+   {
+    "season": 2008,
+    "player": "Chad Pennington",
+    "team": "Dolphins",
+    "position": "QB"
+   },
+   {
+    "season": 2009,
+    "player": "Tom Brady",
+    "team": "Patriots",
+    "position": "QB"
+   },
+   {
+    "season": 2010,
+    "player": "Michael Vick",
+    "team": "Eagles",
+    "position": "QB"
+   },
+   {
+    "season": 2011,
+    "player": "Matthew Stafford",
+    "team": "Lions",
+    "position": "QB"
+   },
+   {
+    "season": 2012,
+    "player": "Peyton Manning",
+    "team": "Broncos",
+    "position": "QB"
+   },
+   {
+    "season": 2013,
+    "player": "Philip Rivers",
+    "team": "Chargers",
+    "position": "QB"
+   },
+   {
+    "season": 2014,
+    "player": "Rob Gronkowski",
+    "team": "Patriots",
+    "position": "TE"
+   },
+   {
+    "season": 2015,
+    "player": "Eric Berry",
+    "team": "Chiefs",
+    "position": "S"
+   },
+   {
+    "season": 2016,
+    "player": "Jordy Nelson",
+    "team": "Packers",
+    "position": "WR"
+   },
+   {
+    "season": 2017,
+    "player": "Keenan Allen",
+    "team": "Chargers",
+    "position": "WR"
+   },
+   {
+    "season": 2018,
+    "player": "Andrew Luck",
+    "team": "Colts",
+    "position": "QB"
+   },
+   {
+    "season": 2019,
+    "player": "Ryan Tannehill",
+    "team": "Titans",
+    "position": "QB"
+   },
+   {
+    "season": 2020,
+    "player": "Alex Smith",
+    "team": "Commanders",
+    "position": "QB"
+   },
+   {
+    "season": 2021,
+    "player": "Joe Burrow",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 2022,
+    "player": "Geno Smith",
+    "team": "Seahawks",
+    "position": "QB"
+   },
+   {
+    "season": 2023,
+    "player": "Joe Flacco",
+    "team": "Browns",
+    "position": "QB"
+   },
+   {
+    "season": 2024,
+    "player": "Joe Burrow",
+    "team": "Bengals",
+    "position": "QB"
+   },
+   {
+    "season": 2025,
+    "player": "Christian McCaffrey",
+    "team": "49ers",
+    "position": "RB"
    }
   ],
   "sbmvp": [

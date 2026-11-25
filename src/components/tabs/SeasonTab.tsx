@@ -16,6 +16,7 @@ import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflS
 import PlayoffRace from '@/components/season/PlayoffRace';
 import ThisWeek from '@/components/season/ThisWeek';
 import { usePlayoffOdds } from '@/utils/playoffOdds';
+import SeasonLeaders from '@/components/season/SeasonLeaders';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import ScoresBrowser from '@/components/season/ScoresBrowser';
@@ -177,7 +178,8 @@ const SeasonTab = () => {
             {IS_NFL && <SeasonClubWall season={season} live={isLive} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
             {IS_NFL && odds && String(odds.season) === season.season && !season.superBowl && !season.playoffs?.length && <PlayoffRace odds={odds} />}
             {IS_NFL && odds && String(odds.season) === season.season && odds.status === 'live' && <ThisWeek odds={odds} />}
-            {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
+            {IS_NFL && !season.superBowl && <Podiums season={season} stars={stars} lookup={lookup} inProgress />}
+            {IS_NFL && <SeasonLeaders season={Number(season.season)} inProgress={!season.superBowl} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}
             {IS_NFL && <PowerAdvanced season={season} />}
