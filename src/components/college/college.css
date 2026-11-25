@@ -189,7 +189,6 @@ button.cl-chip:hover { background: rgb(0 0 0 / 0.62); }
   background: var(--c); color: var(--ink); border-top: 4px solid var(--a);
   transition: translate var(--hv-dur) var(--ease-out), box-shadow var(--hv-dur) var(--ease-out);
 }
-.dn-card:hover { translate: 0 var(--hv-lift); }
 .dn-card.is-hof { box-shadow: inset 0 0 0 2px hsl(var(--gold)); }
 .dn-card.is-steal { box-shadow: inset 0 0 0 2px #3ddc84; }
 .dn-card.is-bust { box-shadow: inset 0 0 0 2px #ff5a5f; }
@@ -548,4 +547,25 @@ button.sp-tl__dots:hover { background: rgb(255 255 255 / 0.08); }
 :root[data-perf='lite'] :is(.dn-card, .dn-pq, .ci-card__btn, .sp-pq, .wr-slot) { transition: none; }
 @media (max-width: 560px) {
   .sp-al > li:nth-child(n + 5) { display: none; }
+}
+
+/* ---- every player card on the College pages is one tap target (owner: "hover and be clickable similar to the rest of the site")
+   a tap anywhere on the card presses its name button (cardTap in shared.tsx); the school chip keeps its own tap */
+:is(.dn-card, .dn-ft, .dn-pq, .sp-xi__m, .sp-pq, .sp-ac__p):has(button.cl-cname) { cursor: pointer; }
+:is(.dn-card, .dn-ft, .dn-pq, .sp-pq):has(button.cl-cname) {
+  transition: translate var(--ix-dur, 180ms) var(--ix-ease, ease-out), filter var(--ix-dur, 180ms) var(--ix-ease, ease-out), outline-color var(--ix-dur, 180ms) var(--ix-ease, ease-out);
+  outline: 2px solid transparent; outline-offset: -2px;
+}
+@media (hover: hover) {
+  :is(.dn-card, .dn-ft, .dn-pq, .sp-pq):has(button.cl-cname):hover {
+    translate: 0 var(--ix-lift, -3px);
+    filter: brightness(1.06) drop-shadow(0 12px 14px rgb(0 0 0 / 0.42));
+    outline-color: color-mix(in srgb, var(--a, hsl(var(--gold))) 58%, white 42%);
+  }
+  :is(.dn-card, .dn-ft, .dn-pq, .sp-pq, .sp-xi__m, .sp-ac__p):has(button.cl-cname):hover :is(.dn-card__fig, .dn-pq__fig, .sp-pq__fig, .sp-xi__fig) { translate: 0 -4px; transition: translate var(--ix-dur, 180ms) var(--ix-ease, ease-out); }
+}
+:is(.dn-card, .dn-ft, .dn-pq, .sp-xi__m, .sp-pq, .sp-ac__p):has(button.cl-cname:focus-visible) { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
+:is(.dn-card, .dn-ft, .dn-pq, .sp-pq):has(button.cl-cname):active { scale: 0.985; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.dn-card, .dn-ft, .dn-pq, .sp-pq):has(button.cl-cname):hover { translate: none; }
 }

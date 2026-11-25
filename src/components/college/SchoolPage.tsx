@@ -7,7 +7,7 @@ import { CollegeMark } from '@/components/player/DraftTiles';
 import { useFieldArtPalette } from '@/components/teamlab/fieldArt';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { markInfo, useSchool, type CollegeIndex, type SchoolFile } from '@/utils/collegeData';
-import { CardName, cardVars, Figure, nameOfKey, Outcome, PickName, posOfKey, Scene, schoolColors, schoolPalette, surname, useBestKnownClub, usePlayerMap } from './shared';
+import { CardName, cardTap, cardVars, Figure, nameOfKey, Outcome, PickName, posOfKey, Scene, schoolColors, schoolPalette, surname, useBestKnownClub, usePlayerMap } from './shared';
 
 type Row = SchoolFile['players'][number];
 type Pick = SchoolFile['picks'][number];
@@ -151,7 +151,7 @@ const AllTimeXI = ({ s, players, club, turf }: { s: SchoolFile; players: Map<str
       </span>
       {rows.map((r, i) =>
         r ? (
-          <li key={r[0]} className={`sp-xi__m ${i < rows.length / 2 ? 'mo-run-l' : 'mo-run-r'}${r[5] ? ' is-hof' : ''}`} style={stag(i + off, 60)}>
+          <li onClick={cardTap} key={r[0]} className={`sp-xi__m ${i < rows.length / 2 ? 'mo-run-l' : 'mo-run-r'}${r[5] ? ' is-hof' : ''}`} style={stag(i + off, 60)}>
             <span className="sp-xi__pos">{posOfKey(r[0])}</span>
             <span className="sp-xi__fig" aria-hidden="true">
               <Figure player={players.get(r[0])} club={club(r)} size="m" action={r[1] === top || r[5] ? 'celebrate' : 'idle'} logo={48} />
@@ -285,7 +285,7 @@ const Alumni = ({ s, players, club, pickOf }: { s: SchoolFile; players: Map<stri
           const c = club(p);
           const pk = pickOf.get(p[0]);
           return (
-            <li key={p[0]} className="sp-pq mo-rise" style={{ ...cardVars(c), ...stag(i, 50) }}>
+            <li onClick={cardTap} key={p[0]} className="sp-pq mo-rise" style={{ ...cardVars(c), ...stag(i, 50) }}>
               <span className="cl-wm sp-pq__wm" aria-hidden="true">
                 <TeamLogo team={c} size={120} decorative />
               </span>
@@ -359,7 +359,7 @@ const ActiveByClub = ({ active, players }: { active: Row[]; players: Map<string,
             </span>
             <span className="sp-ac__ps">
               {ps.slice(0, 3).map((p) => (
-                <span key={p[0]} className="sp-ac__p">
+                <span onClick={cardTap} key={p[0]} className="sp-ac__p">
                   <span className="sp-ac__b" aria-hidden="true">
                     <Figure player={players.get(p[0])} club={c} kind="bust" logo={30} />
                   </span>

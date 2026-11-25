@@ -9,7 +9,7 @@ import { CollegeMark } from '@/components/player/DraftTiles';
 import { useFieldArt } from '@/components/teamlab/fieldArt';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { markInfo, useDraftYear, type CollegeIndex, type DraftYear, type PickRow, type SchoolInfo } from '@/utils/collegeData';
-import { CardName, cardVars, Figure, Outcome, Scene, SchoolLink, surname, usePlayerMap } from './shared';
+import { CardName, cardTap, cardVars, Figure, Outcome, Scene, SchoolLink, surname, usePlayerMap } from './shared';
 
 interface Props {
   idx: CollegeIndex;
@@ -180,7 +180,7 @@ const Feature = ({ p, label, players, school, gold, i }: { p: PickRow; label: st
   const sc = school(p);
   const pl = p[6] ? players.get(p[6]) : null;
   return (
-    <div className={`dn-ft mo-pop${gold ? ' is-gold' : ''}`} style={{ ...cardVars(p[2]), ...stag(i + 1, 120) }}>
+    <div onClick={cardTap} className={`dn-ft mo-pop${gold ? ' is-gold' : ''}`} style={{ ...cardVars(p[2]), ...stag(i + 1, 120) }}>
       <span className="cl-wm dn-ft__wm" aria-hidden="true">
         <TeamLogo team={p[2]} size={190} decorative />
       </span>
@@ -214,7 +214,7 @@ const Verdict = ({ title, kicker, tone, picks, players, empty, school }: { title
         {picks.map((p, i) => {
           const sc = school(p);
           return (
-            <li key={p[1]} className={`dn-pq dn-pq--${tone} mo-pop`} style={{ ...cardVars(p[2]), ...stag(i + 1, 70) }}>
+            <li onClick={cardTap} key={p[1]} className={`dn-pq dn-pq--${tone} mo-pop`} style={{ ...cardVars(p[2]), ...stag(i + 1, 70) }}>
               <span className="cl-wm dn-pq__wm" aria-hidden="true">
                 <TeamLogo team={p[2]} size={110} decorative />
               </span>
@@ -331,7 +331,7 @@ const PickCard = ({ p, i, players, school, onSchool, tag }: { p: PickRow; i: num
   const pl = p[6] ? players.get(p[6]) : null;
   const t = findNFLTeam(p[2]);
   return (
-    <li className={`dn-card mo-rise${tag ? ` is-${tag}` : ''}${p[10] > 0 ? ' is-hof' : ''}`} style={{ ...cardVars(p[2]), ...stag(Math.min(i, 12), 22) }}>
+    <li onClick={cardTap} className={`dn-card mo-rise${tag ? ` is-${tag}` : ''}${p[10] > 0 ? ' is-hof' : ''}`} style={{ ...cardVars(p[2]), ...stag(Math.min(i, 12), 22) }}>
       <span className="cl-wm dn-card__wm" aria-hidden="true">
         <TeamLogo team={p[2]} size={124} decorative />
       </span>

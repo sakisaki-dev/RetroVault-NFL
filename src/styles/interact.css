@@ -251,7 +251,7 @@
  * the screensaver keep their own motion. A card that is not itself a button (.ix-card) lifts too; its cursor says so when
  * it holds a button or link.
  */
-.rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-']) {
+.rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-'], .cl-cname, .club-strip, [class*='__name']) {
   transition: translate var(--ix-dur) var(--ix-ease), scale 90ms var(--ix-ease), filter var(--ix-dur) var(--ix-ease), outline-color var(--ix-dur) var(--ix-ease);
   outline: 2px solid transparent;
   outline-offset: -2px;
@@ -260,7 +260,7 @@
   cursor: pointer;
 }
 @media (hover: hover) {
-  .rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-']):hover {
+  .rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-'], .cl-cname, .club-strip, [class*='__name']):hover {
     translate: 0 var(--ix-lift);
     filter: brightness(1.06) drop-shadow(0 12px 14px rgb(0 0 0 / 0.42));
     outline-color: color-mix(in srgb, var(--cs-1, hsl(var(--gold))) 58%, white 42%);

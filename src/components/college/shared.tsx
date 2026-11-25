@@ -119,6 +119,12 @@ export const PickName = ({ name, siteKey, club, size = 'sm' }: { name: string; s
  * A name set in the card's own ink (on a club-colour card a club strip would vanish): a button to his Deep Dive when he
  * has a card, plain text when not. Never underlined.
  */
+/** A tap anywhere on a player card opens him, through the card's name button; buttons and links inside keep their own tap */
+export const cardTap = (e: { target: EventTarget; currentTarget: HTMLElement }) => {
+  if ((e.target as HTMLElement).closest('button, a')) return;
+  e.currentTarget.querySelector<HTMLButtonElement>('button.cl-cname')?.click();
+};
+
 export const CardName = ({ name, siteKey, className }: { name: string; siteKey: string | null; className?: string }) =>
   siteKey ? (
     <button
