@@ -26,7 +26,7 @@
 .pn-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--tc); border: 1px solid var(--tc); color: #fff; font-size: 12.5px; font-weight: 700; text-decoration: none; }
 .pn-btn:hover { filter: brightness(1.08); text-decoration: none; }
 .pn-btn--ghost { background: transparent; border-color: var(--ss-line); color: var(--ss-chalk); }
-.pn-btn--ghost:hover { border-color: var(--ss-gold); color: var(--ss-gold); }
+.pn-btn--ghost:hover { border-color: rgb(255 255 255 / 0.3); color: var(--ss-chalk, #fff); }
 .pn-note__h { margin: 0 0 6px; font-size: 14px; font-weight: 700; line-height: 1.35; color: var(--ss-chalk); }
 .pn-note__s { margin: 0; font-size: 13px; line-height: 1.55; color: #c9d1ee; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
 
@@ -39,7 +39,7 @@
 .pn-attach .pn-card { padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--tc) 14%, #0b1122); border-color: color-mix(in srgb, var(--tc) 40%, var(--ss-line)); }
 .pn-attach .pn-card__big b { font-size: 34px; }
 .pn-more { justify-self: center; min-height: 40px; padding: 0 18px; border: 1px solid var(--ss-line); border-radius: 999px; background: var(--ss-panel); font-size: 13px; font-weight: 700; color: var(--ss-chalk); }
-.pn-more:hover { border-color: var(--ss-gold); color: var(--ss-gold); }
+.pn-more:hover { border-color: rgb(255 255 255 / 0.3); color: var(--ss-chalk, #fff); }
 
 
 .pn-card { --pn-k: var(--ss-sky); display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 16px 14px 14px; border: 1px solid color-mix(in srgb, var(--tc) 32%, var(--ss-line)); border-top: 3px solid var(--pn-k); border-radius: 14px; background: color-mix(in srgb, var(--tc) 9%, var(--ss-panel)); transition: translate var(--hv-dur) var(--ease-out); }
@@ -75,7 +75,7 @@
 .pn-mates > li { min-width: 0; }
 .pn-mates { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin: 0; padding: 0; list-style: none; }
 .pn-mates button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 4px 10px 4px 4px; text-align: left; border: 1px solid var(--ss-line); border-left: 3px solid var(--tc); border-radius: 10px; background: var(--ss-panel-2); }
-.pn-mates button:hover { border-color: var(--ss-gold); }
+.pn-mates button:hover { border-color: rgb(255 255 255 / 0.3); }
 .pn-mates__spr { flex: none; display: grid; place-items: center; width: 34px; height: 38px; overflow: hidden; }
 .pn-mates__t { display: flex; flex-direction: column; min-width: 0; }
 .pn-mates__t b { font-size: 13px; color: var(--ss-chalk); }

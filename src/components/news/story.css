@@ -377,7 +377,7 @@
 /* a short club-colour rule on top of each story */
 .ss-item::before { content: ''; position: absolute; top: -1px; left: 0; width: 28px; height: 3px; background: var(--tc); z-index: 1; }
 .ss-list > .ss-item:last-child { border-bottom: 0; }
-.ss-item:hover .ss-item__title { color: var(--ss-gold); }
+@media (hover: hover) { .ss-item:hover .ss-item__title { color: white; } }
 .ss-item__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0; }
 .ss-item__time { font-size: 11px; color: var(--ss-muted); }
 .ss-item__title {
