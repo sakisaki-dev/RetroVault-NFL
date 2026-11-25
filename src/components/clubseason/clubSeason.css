@@ -683,3 +683,29 @@ button.pg-name:hover { filter: brightness(1.12); }
   .pg-ybt__aw { top: 3px; left: 3px; font-size: 7.5px; }
   .pg-band h3 { font-size: 16px; }
 }
+
+/* ---------------- Draft outlook (ClubSeasonDraft) ---------------- */
+.pg-dr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@container pg (min-width: 680px) {
+  .pg-dr { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+}
+.pg-dr__slot, .pg-dr__needs { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 14px 16px; border-radius: 14px; background: var(--pg-panel); }
+.pg-dr__slot { box-shadow: inset 4px 0 0 var(--cs-lift); }
+.pg-dr__n { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 64px; line-height: 0.9; color: #fff; }
+.pg-dr__range { font-size: 13px; color: var(--pg-mute); }
+.pg-dr__bars { display: flex; align-items: flex-end; gap: 2px; height: 46px; margin-top: 4px; }
+.pg-dr__bars i { flex: 1; min-width: 2px; border-radius: 2px 2px 0 0; background: var(--pg-line); }
+.pg-dr__bars i.is-in { background: var(--cs-lift); opacity: 0.75; }
+.pg-dr__bars i.is-mode { background: hsl(var(--gold)); opacity: 1; }
+.pg-dr__axis { display: flex; justify-content: space-between; font-family: var(--font-pixel); font-size: 7px; color: var(--pg-mute); }
+.pg-dr__needs ol { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.pg-dr__needs li { display: grid; grid-template-columns: 58px minmax(0, 1fr); align-items: center; gap: 10px; }
+.pg-dr__pos { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 26px; line-height: 1; text-align: center; padding: 4px 0; border-radius: 8px; color: var(--cs-lift-ink); background: var(--cs-lift); }
+.pg-dr__needs li:first-child .pg-dr__pos { color: #1b1300; background: hsl(var(--gold)); }
+.pg-dr__needs li > span { display: flex; flex-direction: column; min-width: 0; }
+.pg-dr__need { font-weight: 700; font-size: 14px; color: #fff; }
+.pg-dr__need::first-letter { text-transform: uppercase; }
+.pg-dr__needs small { font-size: 12px; color: var(--pg-mute); }
+.pg-dr__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.pg-dr__links button { font-family: var(--font-display); font-weight: 700; font-size: 14px; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; color: hsl(var(--gold)); background: hsl(var(--gold) / 0.1); }
+.pg-dr__links button:hover { background: hsl(var(--gold) / 0.2); }

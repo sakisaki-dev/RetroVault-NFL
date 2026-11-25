@@ -26,7 +26,11 @@ export interface OddsClub {
   tag: Clinch;
   /** final status only: the seed the club earned (1 to 7), null when out */
   seed?: number | null;
+  /** the next draft's first-round slot over the simulations (playoff_odds.py draft_slot) */
+  draft?: DraftSlot;
 }
+/** mode = most likely pick, lo..hi = the middle 90% of the simulated slots, dist = chance of each pick (1 first) */
+export interface DraftSlot { mode: number; mean: number; lo: number; hi: number; dist: number[] }
 export interface OddsScenario { club: string; kind: 'z' | 'y' | 'x' | 'e'; text: string }
 export interface PickGame {
   id: string;
@@ -60,6 +64,8 @@ export interface PlayoffOdds {
   clubs: Record<string, OddsClub>;
   scenarios: OddsScenario[];
   picks: { week: number; games: PickGame[]; gameOfTheWeek: string | null; scorecard: Scorecard };
+  /** the projected first round of the next draft: clubs (abbreviations) by average slot, and the rule in words */
+  draft?: { year: number; rule: string; order: string[] };
 }
 
 let job: Promise<PlayoffOdds | null> | null = null;
