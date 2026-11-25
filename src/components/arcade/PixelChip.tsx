@@ -72,7 +72,7 @@ export const ArcadeToggle = <T extends string | number>({
   size?: 'sm' | 'md';
   club?: string | null;
   wrap?: boolean;
-  compact?: 'auto' | 'never';
+  compact?: 'auto' | 'never' | 'always';
   className?: string;
 }) => {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -97,7 +97,7 @@ export const ArcadeToggle = <T extends string | number>({
   };
   const cur = Math.max(0, options.findIndex((o) => o.value === value));
   const chars = options.reduce((n, o) => n + (typeof o.label === 'string' || typeof o.label === 'number' ? String(o.label).length : 4), 0);
-  if (!wrap && compact === 'auto' && (options.length > 6 || chars > 32)) {
+  if (!wrap && compact !== 'never' && (compact === 'always' || options.length > 6 || chars > 32)) {
     return (
       <PixelSelect
         label={label}
