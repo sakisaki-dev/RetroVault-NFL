@@ -66,6 +66,7 @@ const ALL_MAIN = [
  */
 const NFL_MAIN = [
   { value: 'season', label: 'Season', Icon: Radio },
+  { value: 'fantasy', label: 'Fantasy', Icon: ClipboardList },
   { value: 'career', label: 'Stats', Icon: BarChart3 },
   { value: 'games', label: 'Arcade', Icon: Gamepad2 },
   { value: 'news', label: 'News', Icon: Newspaper },
@@ -102,7 +103,7 @@ const ALL_MORE = [
   { value: 'collection', label: 'Collection', blurb: 'Packs, your binder and the card market', Icon: Layers },
 ] as const;
 const MORE = ALL_MORE.filter(
-  (m) => !(IS_NFL && (m.value === 'season' || m.value === 'news')) && (IS_NFL || m.value !== 'collection') && (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)) && (m.value !== 'college' || (IS_NFL && isKnownTab('college'))),
+  (m) => !(IS_NFL && (m.value === 'season' || m.value === 'news' || m.value === 'fantasy')) && (IS_NFL || m.value !== 'collection') && (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)) && (m.value !== 'college' || (IS_NFL && isKnownTab('college'))),
 );
 
 interface Section {

@@ -25,10 +25,10 @@ import { isKnownTab } from '@/components/stats/hub/hashRoute';
 import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 
 const ALL_TABS = [
-  ...(IS_NFL ? ([{ value: 'season', label: 'Season' }, { value: 'career', label: 'Stats' }, { value: 'games', label: 'Arcade' }] as const) : ([{ value: 'games', label: 'Arcade' }, { value: 'career', label: 'Stats' }, { value: 'season', label: 'Season' }] as const)),
+  ...(IS_NFL ? ([{ value: 'season', label: 'Season' }, { value: 'fantasy', label: 'Fantasy' }, { value: 'career', label: 'Stats' }, { value: 'games', label: 'Arcade' }] as const) : ([{ value: 'games', label: 'Arcade' }, { value: 'career', label: 'Stats' }, { value: 'season', label: 'Season' }] as const)),
   { value: 'college', label: 'College' },
   { value: 'lab', label: 'Team Lab' },
-  { value: 'fantasy', label: 'Fantasy' },
+  ...(IS_NFL ? [] : ([{ value: 'fantasy', label: 'Fantasy' }] as const)),
   { value: 'hof', label: 'Hall of Fame' },
   { value: 'collection', label: 'Collection' },
   { value: 'timeline', label: 'Timeline' },
