@@ -8,14 +8,16 @@
   border-top: 3px solid var(--tc, #1a2147);
   color: #fff;
   box-shadow: 0 6px 14px rgb(0 0 0 / 0.28);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
 }
 .fx-flat.fx-row.fx-row { border-top-width: 2px; box-shadow: none; }
 .fx-wm {
-  position: absolute; right: -20px; top: -18px; z-index: -1; opacity: 0.2; pointer-events: none;
-  filter: saturate(1.1); line-height: 0;
+  position: absolute; right: -20px; top: -18px; z-index: -1; opacity: 0.36; pointer-events: none;
+  /* a light keyline so a logo in its own club colour (Detroit's blue on Detroit's blue) still reads (owner: "stand out more") */
+  filter: saturate(1.15) drop-shadow(0 0 1px rgb(255 255 255 / 0.6)) drop-shadow(0 0 8px rgb(255 255 255 / 0.12)); line-height: 0;
 }
-.fx-row > .fx-wm { right: -12px; top: -14px; opacity: 0.17; }
-.fx-chips { position: absolute; right: 6px; top: 50%; translate: 0 -50%; z-index: -1; display: flex; opacity: 0.28; pointer-events: none; line-height: 0; }
+.fx-row > .fx-wm { right: -12px; top: -14px; opacity: 0.3; }
+.fx-chips { position: absolute; right: 6px; top: 50%; translate: 0 -50%; z-index: -1; display: flex; opacity: 0.45; pointer-events: none; line-height: 0; filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.5)); }
 .fx-chips > * { margin-left: -10px; }
 
 /* the sprite's stand: a club glow behind and a small floor shadow under his feet */
@@ -45,7 +47,7 @@
 /* head to head halves: the cropped logo, the 3px stripe, the glow behind the four stars */
 .fh-vs__side { border-top: 3px solid var(--vsA); }
 .fh-vs__side.is-right { border-top-color: var(--vsB); }
-.fh-vs__side .fh-vs__logo { top: -14px; left: auto; right: -22px; translate: none; opacity: 0.22; line-height: 0; }
+.fh-vs__side .fh-vs__logo { top: -14px; left: auto; right: -22px; translate: none; opacity: 0.38; line-height: 0; filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.55)); }
 .fh-vs__side.is-right .fh-vs__logo { right: auto; left: -22px; }
 
 @media (prefers-reduced-motion: reduce) { .fx-flat, .fx-flat * { transition: none !important; } }
