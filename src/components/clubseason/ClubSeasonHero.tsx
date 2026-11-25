@@ -28,9 +28,16 @@ interface Props {
   pf?: number;
   pa?: number;
   power?: number;
+  division?: string | null;
+  divisionRank?: number | null;
   result: SeasonResult;
   onPick: (key: string) => void;
 }
+
+const ordinal = (n: number) => {
+  const v = n % 100;
+  return `${n}${['th', 'st', 'nd', 'rd'][(v - 20) % 10] ?? ['th', 'st', 'nd', 'rd'][v] ?? 'th'}`;
+};
 
 /** The kit the club wore that season: its era kit while that was in use, else home */
 export const seasonKit = (club: string, year: number): Uniform => {
@@ -108,7 +115,7 @@ const Stall = ({ club, uniform, name, number, best }: { club: string; uniform: U
   );
 };
 
-const ClubSeasonHero = ({ club, year, players, record, pf, pa, power, result, onPick }: Props) => {
+const ClubSeasonHero = ({ club, year, players, record, pf, pa, power, division, divisionRank, result, onPick }: Props) => {
   const team = findNFLTeam(club);
   const plate = clubPlate(club);
   const uniform = useMemo(() => seasonKit(club, year), [club, year]);
@@ -131,29 +138,41 @@ const ClubSeasonHero = ({ club, year, players, record, pf, pa, power, result, on
     <section className="cs-hero" style={vars} aria-label={`${year} ${team?.fullName ?? club} locker room`}>
       <span aria-hidden="true" className="cs-hero__logo cs-hero__logo--l"><TeamLogo team={club} size={420} decorative /></span>
       <span aria-hidden="true" className="cs-hero__logo cs-hero__logo--r"><TeamLogo team={club} size={420} decorative /></span>
-      <div className={`cs-banner${result.champion ? ' is-champ' : ''}`}>
+      <div className={`cs-board${result.champion ? ' is-champ' : ''}`}>
         {result.champion && (
           <span className="cs-confetti" aria-hidden="true">
-            {Array.from({ length: 14 }, (_, i) => (
+            {Array.from({ length: 22 }, (_, i) => (
               <i key={i} style={{ ['--i' as string]: i }} />
             ))}
           </span>
         )}
-        <TeamLogo team={club} size={44} decorative className="cs-banner__logo" />
-        <div className="cs-banner__txt">
-          <span className="cs-kick">{year} · {team?.fullName ?? club}</span>
-          <b className="cs-rec">{record}</b>
-          <span className="cs-facts">
-            {pf != null && pa != null && <span>{pf} for · {pa} against{diff != null ? ` · ${diff > 0 ? '+' : ''}${diff}` : ''}</span>}
-            {power ? <span> · Power No. {power}</span> : null}
-          </span>
+        <span className="cs-board__rail" aria-hidden="true" />
+        <div className="cs-pennant" aria-hidden="true">
+          <i className="cs-pennant__strap cs-pennant__strap--l" />
+          <i className="cs-pennant__strap cs-pennant__strap--r" />
+          <div className="cs-pennant__cloth">
+            <TeamLogo team={club} size={64} decorative className="cs-pennant__logo" />
+            <b className="num">{year}</b>
+            <small>{team?.name ?? club}</small>
+          </div>
+        </div>
+        <div className="cs-board__main">
+          <span className="cs-kick">{team?.fullName ?? club}</span>
+          <b className="cs-rec num" aria-label={`Record ${record}`}>{record}</b>
           {result.text && (
-            <span className="cs-result">
-              {result.champion && <PixelIcon name="trophy" size={13} color="hsl(var(--gold))" />}
+            <span className="cs-ribbon">
+              {result.champion && <PixelIcon name="trophy" size={14} color="hsl(var(--gold))" />}
               {result.text}
             </span>
           )}
         </div>
+        <dl className="cs-tiles num">
+          {pf != null && <div><dt>Points for</dt><dd>{pf}</dd></div>}
+          {pa != null && <div><dt>Against</dt><dd>{pa}</dd></div>}
+          {diff != null && <div><dt>Diff</dt><dd className={diff > 0 ? 'is-up' : diff < 0 ? 'is-dn' : ''}>{diff > 0 ? '+' : ''}{diff}</dd></div>}
+          {power ? <div><dt>Power</dt><dd>No. {power}</dd></div> : null}
+          {division && divisionRank ? <div className="cs-tiles__div"><dt>{division}</dt><dd>{ordinal(divisionRank)}</dd></div> : null}
+        </dl>
       </div>
       <div className="cs-stalls" ref={scroller} role="list">
         {order.map((p) => {
