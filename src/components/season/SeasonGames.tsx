@@ -11,6 +11,9 @@ import ClubStrip from '@/components/brand/ClubStrip';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { BOARD_BG, FormPips, LampGrid, Rating, RESULT_TEXT, ResultChip, ScoreSide, color, isResult, lampText, rate, roundLabel, signed } from './seasonGamesUi';
 import { displayName } from '@/utils/displayName';
+import { IS_NFL } from '@/config/edition';
+import { ClinchTag } from './ClinchTag';
+import { pctText, usePlayoffOdds, type OddsClub, type PlayoffOdds } from '@/utils/playoffOdds';
 import { SectionHeader, PixelIcon, clubVars } from '@/components/arcade';
 import type { CSSProperties } from 'react';
 
@@ -215,7 +218,21 @@ const FormCells = ({ r, cols }: { r: TableRow; cols: ColumnSet }) => {
   );
 };
 
-const PowerTable = ({ season, cols }: { season: ScheduleSeason; cols: ColumnSet }) => {
+/** Playoff chance for the table's odds column (the mark when the standings already settle it). */
+const OddsCell = ({ club }: { club?: OddsClub }) => (
+  <td className={cn(num, 'font-semibold')}>
+    {club ? (
+      <span className="inline-flex items-center justify-end gap-1.5">
+        <ClinchTag tag={club.tag} />
+        {club.tag === 'e' ? '0%' : pctText(club.playoffs)}
+      </span>
+    ) : (
+      <span className="text-muted-foreground">–</span>
+    )}
+  </td>
+);
+
+const PowerTable = ({ season, cols, odds }: { season: ScheduleSeason; cols: ColumnSet; odds?: PlayoffOdds | null }) => {
   const rows = useMemo(() => [...season.table].sort((a, b) => a.power - b.power), [season]);
   const st = only('stats', cols);
   return (
@@ -227,6 +244,7 @@ const PowerTable = ({ season, cols }: { season: ScheduleSeason; cols: ColumnSet 
           <th scope="col" className={cn(th, 'left-0 z-[3]')}>Club</th>
           <th scope="col" className={cn(th, 'text-right', st)}>Score</th>
           <th scope="col" className={cn(th, 'text-right')}>W-L-T</th>
+          {odds && <th scope="col" className={cn(th, 'text-right')}>Playoffs</th>}
           <th scope="col" className={cn(th, 'text-right', st)}>Diff</th>
           <th scope="col" className={cn(th, 'text-right', st)}>
             <abbr title="Strength of schedule" className="no-underline">SOS</abbr>
@@ -243,6 +261,7 @@ const PowerTable = ({ season, cols }: { season: ScheduleSeason; cols: ColumnSet 
               <TeamCell row={r} coach={coach} />
               <td className={cn(num, 'font-semibold', st)}>{r.powerScore.toFixed(1)}</td>
               <td className={num}>{`${r.w}-${r.l}-${r.t}`}</td>
+              {odds && <OddsCell club={odds.clubs[r.abbr]} />}
               <td className={cn(num, diffInk(r.diff), st)}>{signed(r.diff)}</td>
               <td className={cn(num, 'text-muted-foreground', st)}>{rate(r.sos)}</td>
               <FormCells r={r} cols={cols} />
@@ -267,7 +286,7 @@ const RatingBar = ({ value, label }: { value?: number; label: string }) =>
     </span>
   );
 
-const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: ColumnSet }) => {
+const StandingsTable = ({ season, cols, odds }: { season: ScheduleSeason; cols: ColumnSet; odds?: PlayoffOdds | null }) => {
   const divisions = useMemo(() => {
     const map = new Map<string, TableRow[]>();
     for (const r of season.table) {
@@ -293,6 +312,7 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
           <th scope="col" className={cn(th, 'w-8 text-right')}>#</th>
           <th scope="col" className={cn(th, 'left-0 z-[3]')}>Club</th>
           <th scope="col" className={cn(th, 'text-right')}>W-L-T</th>
+          {odds && <th scope="col" className={cn(th, 'text-right')}>Playoffs</th>}
           {points ? (
             <>
               <th scope="col" className={cn(th, 'text-right', st)}>PF</th>
@@ -318,7 +338,7 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
       {divisions.map((d) => (
         <tbody key={displayName(d.name)}>
           <tr className="border-t border-border/50 bg-secondary/30">
-            <th scope="colgroup" colSpan={11} className="px-2 py-1.5 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            <th scope="colgroup" colSpan={odds ? 12 : 11} className="px-2 py-1.5 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
               {displayName(d.name)}
             </th>
           </tr>
@@ -329,6 +349,7 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
                 <td className={cn(num, 'text-muted-foreground')}>{r.divisionRank ?? '—'}</td>
                 <TeamCell row={r} coach={coach} />
                 <td className={cn(num, 'font-semibold')}>{`${r.w}-${r.l}-${r.t}`}</td>
+                {odds && <OddsCell club={odds.clubs[r.abbr]} />}
                 {points ? (
                   <>
                     <td className={cn(num, st)}>{r.pf}</td>
@@ -363,6 +384,8 @@ export const LeagueTable = ({ season }: { season: ScheduleSeason }) => {
   const [pick, setView] = useState<TableView>('power');
   const view: TableView = live ? 'standings' : pick;
   const [cols, setCols] = useState<ColumnSet>('stats');
+  const raw = usePlayoffOdds(IS_NFL);
+  const odds = raw && raw.status === 'live' && String(raw.season) === season.season ? raw : null;
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -407,7 +430,7 @@ export const LeagueTable = ({ season }: { season: ScheduleSeason }) => {
         </p>
       )}
       <div className="max-h-[560px] overflow-auto rounded-lg border border-border/40" tabIndex={0} aria-label={`League table, ${view}`}>
-        {view === 'power' ? <PowerTable season={season} cols={cols} /> : <StandingsTable season={season} cols={cols} />}
+        {view === 'power' ? <PowerTable season={season} cols={cols} odds={odds} /> : <StandingsTable season={season} cols={cols} odds={odds} />}
       </div>
     </div>
   );

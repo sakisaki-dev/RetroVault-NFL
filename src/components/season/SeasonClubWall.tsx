@@ -13,6 +13,7 @@ import type { SeasonView } from '@/utils/seasonLive';
 import { ArcadeToggle, PixelIcon } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { openTeamPage } from '@/utils/teamSearch';
+import { usePlayoffOdds } from '@/utils/playoffOdds';
 import { SectionTitle } from './SeasonGames';
 import { signed } from './seasonGamesUi';
 import '@/components/teams/nfl/clubWall.css';
@@ -136,7 +137,17 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
   const year = Number(season.season);
 
   const seeds = useMemo(() => playoffSeeds(season), [season]);
-  const tags = useMemo<Map<string, Clinch>>(() => (!season.playoffs?.length && upcoming ? clinchTags(season, upcoming) : new Map()), [season, upcoming]);
+  const odds = usePlayoffOdds(live);
+  // the odds file's marks (proved by a bound check on the standings) lead; the older rule is the fallback
+  const tags = useMemo<Map<string, Clinch>>(() => {
+    if (season.playoffs?.length) return new Map();
+    if (odds && String(odds.season) === season.season && odds.status === 'live') {
+      const m = new Map<string, Clinch>();
+      Object.entries(odds.clubs).forEach(([abbr, c]) => c.tag && m.set(abbr, c.tag === 'e' ? 'out' : c.tag === 'x' ? 'in' : 'div'));
+      return m;
+    }
+    return upcoming ? clinchTags(season, upcoming) : new Map();
+  }, [season, upcoming, odds]);
   const made = useMemo(() => {
     const s = new Set<string>();
     for (const r of season.playoffs ?? []) for (const g of r.games) (s.add(g.away), s.add(g.home));

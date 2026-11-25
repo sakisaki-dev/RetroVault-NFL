@@ -13,6 +13,9 @@ import { HeadToHeadGrid } from '@/components/season/scheduleParts';
 import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo } from '@/components/season/NflSeason';
 import SeasonClubWall from '@/components/season/SeasonClubWall';
 import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
+import PlayoffRace from '@/components/season/PlayoffRace';
+import ThisWeek from '@/components/season/ThisWeek';
+import { usePlayoffOdds } from '@/utils/playoffOdds';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import ScoresBrowser from '@/components/season/ScoresBrowser';
@@ -114,6 +117,7 @@ const SeasonTab = () => {
   }, [ready]);
 
   const upcoming = useUpcoming(); // a hook: before the early return below
+  const odds = usePlayoffOdds(IS_NFL);
   const stars = useSeasonStars(IS_NFL ? wanted : null);
   if (live === undefined || liveSched === undefined || !schedule) {
     return <PixelLoader label="Season" what="the season" minHeight="60vh" className="container justify-start pt-[14vh]" />;
@@ -171,6 +175,8 @@ const SeasonTab = () => {
             {IS_NFL && <PlayoffBracket season={season} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <SeasonClubWall season={season} live={isLive} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
+            {IS_NFL && odds && String(odds.season) === season.season && !season.superBowl && !season.playoffs?.length && <PlayoffRace odds={odds} />}
+            {IS_NFL && odds && String(odds.season) === season.season && odds.status === 'live' && <ThisWeek odds={odds} />}
             {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}

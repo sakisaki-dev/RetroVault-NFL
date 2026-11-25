@@ -67,6 +67,29 @@ if sp.exists():
         warns.append(f"{len([k for k in past if k not in have])} past players have no sprite entry yet (silhouettes: nfl-sprites)")
 else:
     warns.append("no sprites (run npm run nfl:sprites)")
+po = load("nfl/playoff_odds.json")
+if po:
+    cl = po.get("clubs", {})
+    if len(cl) != 32:
+        errors.append(f"playoff_odds.json has {len(cl)} clubs")
+    else:
+        if po["status"] == "live":
+            for conf in ("AFC", "NFC"):
+                tot = sum(c["playoffs"] for c in cl.values() if c["conf"] == conf)
+                if abs(tot - 7) > 0.01:
+                    errors.append(f"playoff_odds.json {conf} playoff chances sum to {tot:.3f}, not 7")
+            if abs(sum(c["superBowl"] for c in cl.values()) - 1) > 0.01:
+                errors.append("playoff_odds.json Super Bowl chances do not sum to 1")
+            for k, c in cl.items():
+                if c["tag"] in ("x", "y", "z") and c["playoffs"] < 1:
+                    errors.append(f"playoff_odds.json {k} is marked clinched but is {c['playoffs']} in the simulation")
+                if c["tag"] == "e" and c["playoffs"] > 0:
+                    errors.append(f"playoff_odds.json {k} is marked eliminated but is {c['playoffs']} in the simulation")
+        else:
+            if sum(1 for c in cl.values() if c.get("seed")) != 14:
+                errors.append("playoff_odds.json final field is not 14 clubs")
+        if not any(str(x.get("season")) == str(po["season"]) for x in (sched or {}).get("seasonIndex", [])) and po["status"] == "live":
+            warns.append("playoff_odds.json season has no schedule.json entry")
 print(f"nfl audit: {len(players)} players, {len(errors)} errors, {len(warns)} warnings")
 for w in warns[:10]:
     print("warn:", w)
