@@ -10,6 +10,11 @@ import { ClubChips } from '@/components/news/ClubChips';
 import { HeroLogos, PlayerBanners, StoryThumb, firstClubIn, teamVars } from '@/components/news/clubArt';
 import { NEWS_KIND_LABEL, timeAgo, useEspnNews, type NewsItem, type NewsKind } from '@/utils/espnNews';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { getTeamTextColor } from '@/utils/teamColors';
+import { displayName } from '@/utils/displayName';
+import GameSprite from '@/components/GameSprite';
+import { useReveal } from '@/components/motion/Reveal';
+import { peekProps } from '@/components/peek/peekProps';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { ArticleReader } from './ArticleReader';
 import { SCENE_KIND, agoParts, kindOf, openDeepDive, useNewsPlayers } from './newsData';
@@ -37,6 +42,13 @@ const SECTIONS: { id: Section; label: string }[] = [
 /** Betting lines and fantasy columns read as filler on a front page: they come after the news */
 const FILLER: NewsKind[] = ['betting', 'fantasy'];
 
+/** A story under three hours old gets the BREAKING tag */
+const isBreaking = (iso: string) => {
+  const t = Date.parse(iso);
+  return Number.isFinite(t) && Date.now() - t < 3 * 3600_000 && Date.now() - t >= 0;
+};
+const Breaking = ({ it }: { it: NewsItem }) => (isBreaking(it.published) ? <span className="en-breaking">Breaking</span> : null);
+
 const clubOf = (it: NewsItem, ps: Player[]) => it.teams[0] || (ps[0] ? bannerTeamOf(ps[0]) : '');
 const KindLabel = ({ it }: { it: NewsItem }) => {
   const k = kindOf(it);
@@ -53,13 +65,15 @@ export const StoryItem = ({ it, i, players, cast, onRead }: ItemProps & { it: Ne
   const ps = cast.get(it.id) ?? [];
   const names = ps.map(keyOfPlayer);
   const club = clubOf(it, ps);
+  const reveal = useReveal<HTMLLIElement>();
   return (
-    <li className="ss-item stagger-in" style={{ ...teamVars(club), '--i': i } as CSSProperties}>
+    <li ref={reveal} className="ss-item mo-auto en-card" style={{ ...teamVars(club), '--i': Math.min(i, 5) } as CSSProperties}>
       <button type="button" className="ss-cover" onClick={() => onRead(it)} aria-label={`Read: ${it.headline}`} />
       <div className="ss-item__head">
         <div className="ss-item__headtext">
           <p className="ss-item__meta">
             <KindLabel it={it} />
+            <Breaking it={it} />
             <span className="ss-item__time">{timeAgo(it.published)}</span>
           </p>
           <h4 className="ss-item__title">{it.headline}</h4>
@@ -76,11 +90,17 @@ export const StoryItem = ({ it, i, players, cast, onRead }: ItemProps & { it: Ne
   );
 };
 
+/** An image that fades in when it has loaded (its frame holds the space, so nothing shifts) */
+const FadeImg = ({ src }: { src: string }) => {
+  const [on, setOn] = useState(false);
+  return <img src={src} alt="" loading="lazy" className={cn('en-fade', on && 'en-fade--on')} onLoad={() => setOn(true)} ref={(el) => { if (el?.complete && el.naturalWidth && !on) setOn(true); }} />;
+};
+
 const VideoCard = ({ it, onRead, i }: { it: NewsItem; onRead: (it: NewsItem) => void; i: number }) => (
-  <li className="en-vid stagger-in" style={{ ...teamVars(it.teams[0]), '--i': i } as CSSProperties}>
+  <li ref={useReveal<HTMLLIElement>()} className="en-vid mo-auto" style={{ ...teamVars(it.teams[0]), '--i': Math.min(i, 5) } as CSSProperties}>
     <button type="button" className="en-vid__btn" onClick={() => onRead(it)} aria-label={`Watch: ${it.headline}`}>
       <span className="en-vid__poster">
-        {it.image && <img src={it.image.url} alt="" loading="lazy" />}
+        {it.image && <FadeImg src={it.image.url} />}
         <span className="en-vid__disc">
           <Play className="h-4 w-4 fill-current" aria-hidden />
         </span>
@@ -101,6 +121,23 @@ const NewsTab = () => {
   const [section, setSection] = useState<Section>('all');
   const [team, setTeam] = useState<string>('all');
   const [openId, setOpenId] = useState<string | null>(null);
+
+  // the most-mentioned card players in the feed (stories and clips alike): the trending strip
+  const trending = useMemo(() => {
+    const c = new Map<string, { p: Player; n: number }>();
+    items.forEach((it) => (cast.get(it.id) ?? []).slice(0, 3).forEach((p) => {
+      const k = keyOfPlayer(p);
+      const e = c.get(k);
+      if (e) e.n += 1;
+      else c.set(k, { p, n: 1 });
+    }));
+    return [...c.values()].filter((e) => e.n >= 2).sort((a, b) => b.n - a.n || b.p.careerLegacy - a.p.careerLegacy).slice(0, 8);
+  }, [items, cast]);
+  const teamCount = useMemo(() => {
+    const c = new Map<string, number>();
+    items.forEach((i) => i.teams.forEach((t) => c.set(t, (c.get(t) ?? 0) + 1)));
+    return c;
+  }, [items]);
 
   const teams = useMemo(() => {
     const c = new Map<string, number>();
@@ -134,6 +171,7 @@ const NewsTab = () => {
   const read = (it: NewsItem) => setOpenId(it.id);
   const itemProps = { players, cast, onRead: read };
 
+  const leadReveal = useReveal<HTMLElement>();
   const leadCast = lead ? cast.get(lead.id) ?? [] : [];
   const leadNames = leadCast.map(keyOfPlayer);
   const leadClub = lead ? clubOf(lead, leadCast) : '';
@@ -188,11 +226,34 @@ const NewsTab = () => {
           All teams
         </button>
         {teams.map((t) => (
-          <button key={t} type="button" aria-pressed={team === t} aria-label={t} title={t} onClick={() => setTeam(t)} className="en-team">
+          <button key={t} type="button" aria-pressed={team === t} aria-label={`${t}, ${teamCount.get(t)} stories`} title={`${t} · ${teamCount.get(t)}`} style={teamVars(t)} onClick={() => setTeam(t)} className="en-team">
             <TeamLogo team={t} size={22} decorative />
+            <i className="en-team__n" aria-hidden>{teamCount.get(t)}</i>
           </button>
         ))}
       </div>
+
+      {trending.length > 0 && (
+        <section className="en-trend" aria-label="Trending players">
+          <h3 className="en-trend__h">Trending</h3>
+          <ul className="en-trend__list">
+            {trending.map(({ p, n }, i) => {
+              const club = bannerTeamOf(p);
+              return (
+                <li key={keyOfPlayer(p)} className="mo-pop" style={{ ...teamVars(club), '--i': i, '--ink': getTeamTextColor(club) ?? 'var(--tc)' } as CSSProperties}>
+                  <button type="button" className="en-trend__btn" {...peekProps(p)} onClick={() => openDeepDive(p)} aria-label={`${displayName(p.name)}, in ${n} stories. Open his card`}>
+                    <span className="en-trend__sprite" aria-hidden>
+                      <GameSprite player={p} team={club} kind="bust" size="m" />
+                    </span>
+                    <span className="en-trend__name">{displayName(p.name)}</span>
+                    <span className="en-trend__n">{n} {n === 1 ? 'story' : 'stories'}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {loading && !items.length && <PixelLoader label="Press" what="the headlines" minHeight={360} />}
       {error && !items.length && (
@@ -207,9 +268,9 @@ const NewsTab = () => {
       {!!items.length && !shown.length && <p className="en-state">Nothing in the news for that filter.</p>}
 
       {shown.length > 0 && (
-        <div className="ss-front">
+        <div className="ss-front" key={`${section}-${team}`}>
           {lead && (
-            <article className="ss-lead stagger-in" style={{ ...teamVars(leadClub), '--i': 0 } as CSSProperties}>
+            <article ref={leadReveal} className="ss-lead mo-auto en-lead" style={{ ...teamVars(leadClub), '--i': 0 } as CSSProperties}>
               <button type="button" className="ss-cover" onClick={() => read(lead)} aria-label={`Read: ${lead.headline}`} />
               <div className={cn('ss-lead__art', leadMode !== 'one' && 'ss-lead__art--pair')}>
                 <ArticleArt
@@ -230,6 +291,7 @@ const NewsTab = () => {
               </div>
               <div className="ss-lead__text">
                 <span className="ss-kind ss-kind--lead">Top story</span>
+                <Breaking it={lead} />
                 <h3 className="ss-lead__title">{lead.headline}</h3>
                 {lead.description && lead.description !== lead.headline && <p className="ss-lead__dek">{lead.description}</p>}
                 <PlayerBanners names={leadNames} players={players} onPlayer={openDeepDive} max={3} className="nz-banners--lead" />
@@ -245,33 +307,77 @@ const NewsTab = () => {
             </article>
           )}
 
-          {top.length > 0 && (
-            <section className="ss-top" aria-labelledby="ss-top-title">
-              <h3 id="ss-top-title" className="ss-rubric">
-                Top stories
-              </h3>
-              <ul className="ss-list ss-list--top">
-                {top.map((it, i) => (
-                  <StoryItem key={it.id} it={it} i={i + 1} {...itemProps} />
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <div className="ss-dyk">
-            {videos.length > 0 && (
-              <section aria-labelledby="en-vid-title">
-                <h3 id="en-vid-title" className="ss-rubric ss-rubric--gold">
-                  <Video className="h-3.5 w-3.5" aria-hidden="true" /> Video
+          <aside className="ss-side">
+            <div className="ss-side__in">
+            {top.length > 0 && (
+              <section className="ss-top" aria-labelledby="ss-top-title">
+                <h3 id="ss-top-title" className="ss-rubric">
+                  Top stories
                 </h3>
-                <ul className="en-vids">
-                  {videos.slice(0, 8).map((it, i) => (
-                    <VideoCard key={it.id} it={it} i={i} onRead={read} />
+                <ul className="ss-list ss-list--top">
+                  {top.map((it, i) => (
+                    <StoryItem key={it.id} it={it} i={i + 1} {...itemProps} />
                   ))}
                 </ul>
               </section>
             )}
-          </div>
+
+            <div className="ss-dyk">
+              {videos.length > 0 && (
+                <section aria-labelledby="en-vid-title">
+                  <h3 id="en-vid-title" className="ss-rubric ss-rubric--gold">
+                    <Video className="h-3.5 w-3.5" aria-hidden="true" /> Video
+                  </h3>
+                  <ul className="en-vids">
+                    {videos.slice(0, 8).map((it, i) => (
+                      <VideoCard key={it.id} it={it} i={i} onRead={read} />
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+
+              {trending.length > 0 && (
+              <section className="en-side__mod en-side__trend" aria-labelledby="en-trend-title">
+                <h3 id="en-trend-title" className="ss-rubric">
+                  Players in the news
+                </h3>
+                <ol className="en-rank">
+                  {trending.map(({ p, n }, i) => {
+                    const club = bannerTeamOf(p);
+                    return (
+                      <li key={keyOfPlayer(p)} style={{ ...teamVars(club), '--ink': getTeamTextColor(club) ?? 'var(--tc)' } as CSSProperties}>
+                        <button type="button" className="en-rank__btn" {...peekProps(p)} onClick={() => openDeepDive(p)} aria-label={`${displayName(p.name)}, in ${n} stories. Open his card`}>
+                          <span className="en-rank__n">{i + 1}</span>
+                          <span className="en-trend__sprite" aria-hidden>
+                            <GameSprite player={p} team={club} kind="bust" size="s" />
+                          </span>
+                          <span className="en-rank__name">{displayName(p.name)}</span>
+                          <span className="en-trend__n">{n} stories</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+              )}
+              <section className="en-side__mod" aria-labelledby="en-around-title">
+                <h3 id="en-around-title" className="ss-rubric ss-rubric--gold">
+                  Around the league
+                </h3>
+                <ul className="en-around">
+                  {teams.map((t) => (
+                    <li key={t} style={teamVars(t)}>
+                      <button type="button" className="en-around__btn" aria-pressed={team === t} onClick={() => setTeam(team === t ? 'all' : t)} aria-label={`${t}, ${teamCount.get(t)} stories`} title={t}>
+                        <TeamLogo team={t} size={26} decorative />
+                        <b>{teamCount.get(t)}</b>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+          </aside>
 
           {more.length > 0 && (
             <section className="ss-more" aria-labelledby="ss-more-title">

@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { ExternalLink, Newspaper, Play, RefreshCw, WifiOff } from 'lucide-react';
+import { ExternalLink, Newspaper, Play, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import { FeatureSheet, type SheetPiece } from '@/components/news/FeatureSheet';
@@ -28,7 +28,7 @@ const Clip = ({ v, fallbackPoster }: { v: ArticleVideo; fallbackPoster?: string 
           <video className="en-fig__media" src={v.mp4} poster={poster} controls autoPlay playsInline preload="auto" />
         ) : (
           <>
-            {poster && <img className="en-fig__media" src={poster} alt="" loading="lazy" />}
+            {poster && <img className="en-fig__media en-fade" src={poster} alt="" loading="lazy" onLoad={(e) => e.currentTarget.classList.add('en-fade--on')} />}
             <button
               type="button"
               className="en-play"
@@ -56,7 +56,7 @@ const Block = ({ b, first, poster }: { b: ArticleBlock; first: boolean; poster?:
     return (
       <figure className="en-fig">
         <div className="en-fig__frame">
-          <img className="en-fig__media" src={b.photo.url} alt={b.photo.caption || ''} loading="lazy" />
+          <img className="en-fig__media en-fade" src={b.photo.url} alt={b.photo.caption || ''} loading="lazy" onLoad={(e) => e.currentTarget.classList.add('en-fade--on')} />
         </div>
         {(b.photo.caption || b.photo.credit) && (
           <figcaption className="en-fig__cap">
@@ -120,17 +120,25 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     );
   } else if (error) {
     bodyNode = (
-      <div className="en-state en-state--error" role="alert">
-        <WifiOff className="h-5 w-5" aria-hidden />
-        <p>Can&apos;t load the full article from ESPN right now. Check the connection and try again, or read it on ESPN.</p>
-        <div className="en-state__row">
-          <button type="button" className="en-refresh" onClick={retry}>
-            <RefreshCw className="h-4 w-4" aria-hidden /> Try again
-          </button>
-          <a className="en-refresh" href={item.href} target="_blank" rel="noopener noreferrer">
-            Read on ESPN <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-          </a>
-        </div>
+      <div className="en-body">
+        {item.description && <p className="fs-lede">{item.description}</p>}
+        <aside className="en-fallback" role="status">
+          <span className="en-fallback__mark" aria-hidden>
+            <Newspaper className="h-5 w-5" />
+          </span>
+          <div className="en-fallback__text">
+            <b>The full story lives on ESPN</b>
+            <span>Only the summary comes through here. Open the article for the whole piece, with its photos and video.</span>
+          </div>
+          <div className="en-fallback__row">
+            <a className="en-read en-read--solid" href={item.href} target="_blank" rel="noopener noreferrer">
+              Read on ESPN <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+            </a>
+            <button type="button" className="en-refresh" onClick={retry}>
+              <RefreshCw className="h-4 w-4" aria-hidden /> Try again
+            </button>
+          </div>
+        </aside>
       </div>
     );
   } else if (loading || !article) {
@@ -153,6 +161,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
       <>
         <span className={cn('ss-kind', `ss-kind--${SCENE_KIND[kind] === 'trade' ? 'trade' : SCENE_KIND[kind] === 'fall' ? 'fall' : 'feature'}`)}>{NEWS_KIND_LABEL[kind]}</span>
         <span className="en-espn">ESPN</span>
+        {Date.now() - Date.parse(item.published) < 3 * 3600_000 && <span className="en-breaking">Breaking</span>}
       </>
     ),
     headline: item.headline,
