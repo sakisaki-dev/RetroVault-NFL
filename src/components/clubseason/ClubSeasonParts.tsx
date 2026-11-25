@@ -49,7 +49,6 @@ export const Fixtures = ({ tickets, onOpen }: { tickets: Ticket[]; onOpen: (id: 
           <li key={t.game?.id ?? i} className="mo-rise" style={stag(i, 22)}>
             <button type="button" className={cn('pg-fx', t.r && `is-${t.r}`, t.type !== 'REG' && 'is-po')} onClick={() => t.game && onOpen(t.game.id)} aria-label={label}>
               <span className="pg-fx__wk num">{wk}</span>
-              <i className={cn('pg-lamp', t.r && `is-${t.r}`)} aria-hidden="true" />
               <TeamLogo team={t.opp ?? ''} size={24} decorative className="pg-logo" />
               <span className="pg-fx__opp">
                 <i>{t.home ? 'vs' : '@'}</i> <b>{opp?.abbreviation ?? t.opp}</b>
