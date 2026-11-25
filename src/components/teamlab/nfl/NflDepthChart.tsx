@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
-import { X } from 'lucide-react';
+import { IdCard, X } from 'lucide-react';
 import PlayerSearchSelect from '@/components/PlayerSearchSelect';
 import { peekProps } from '@/components/peek/peekProps';
 import type { Player } from '@/types/player';
@@ -26,6 +26,7 @@ export const SlotRow = ({
   injury,
   end,
   onChange,
+  onOpen,
   placeholder,
 }: {
   id: string;
@@ -37,6 +38,8 @@ export const SlotRow = ({
   injury?: InjuryCode;
   end?: ReactNode;
   onChange: (key: string) => void;
+  /** opens his player card (the real-football lab) */
+  onOpen?: (key: string) => void;
   placeholder?: string;
 }) => (
   <li id={`lab-slot-${id}`} className="lab-row" data-side={side} {...peekProps(profile?.player)}>
@@ -49,6 +52,11 @@ export const SlotRow = ({
     <span className="lab-row-end">
       {injury && <InjuryChip code={injury} />}
       {end ?? (profile && <GradeChip grade={profile.grade} size="sm" label={`Skill grade ${profile.grade?.grade ?? 'none'}`} />)}
+      {value && onOpen && (
+        <button type="button" onClick={() => onOpen(value)} className="nfl-rowcard" aria-label={`Open ${label} player card`} title="Player card">
+          <IdCard className="h-4 w-4" aria-hidden="true" />
+        </button>
+      )}
       {value && (
         <button type="button" onClick={() => onChange('')} className="rounded p-0.5 text-muted-foreground hover:text-chalk focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label={`Clear ${label}`}>
           <X className="h-3.5 w-3.5" aria-hidden="true" />
@@ -59,7 +67,7 @@ export const SlotRow = ({
 );
 
 /** The 22 pickers, offense then defense. `club`: restrict to that club's roster ('' = any player, the dream team). */
-export const NflDepthChart = ({ ctx, lineup, onSlot, club, injured }: { ctx: NflCtx; lineup: NLineup; onSlot: (id: string, key: string) => void; club: string; injured: Map<string, InjuryCode> }) => {
+export const NflDepthChart = ({ ctx, lineup, onSlot, onOpen, club, injured }: { onOpen?: (key: string) => void; ctx: NflCtx; lineup: NLineup; onSlot: (id: string, key: string) => void; club: string; injured: Map<string, InjuryCode> }) => {
   const slots = activeSlots(lineup);
   const used = useMemo(() => new Set(Object.values(lineup.s).filter(Boolean)), [lineup]);
   const poolFor = (positions: string[], value: string) =>
@@ -74,7 +82,7 @@ export const NflDepthChart = ({ ctx, lineup, onSlot, club, injured }: { ctx: Nfl
         .map((s) => {
           const v = lineup.s[s.id] ?? '';
           const p = v ? ctx.profiles.get(v) : undefined;
-          return <SlotRow key={s.id} id={s.id} label={s.label} side={side} players={poolFor(s.positions, v)} value={v} profile={p} injury={v ? injured.get(v) : undefined} onChange={(k) => onSlot(s.id, k)} />;
+          return <SlotRow key={s.id} id={s.id} label={s.label} side={side} players={poolFor(s.positions, v)} value={v} profile={p} injury={v ? injured.get(v) : undefined} onChange={(k) => onSlot(s.id, k)} onOpen={onOpen} />;
         })}
     </ul>
   );

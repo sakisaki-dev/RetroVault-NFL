@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Plus } from 'lucide-react';
+import { ArrowLeftRight, Plus } from 'lucide-react';
 import GameSprite from '@/components/GameSprite';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -45,13 +45,17 @@ interface Props {
   tall: boolean;
   size: 's' | 'm' | 'l';
   onPick: (id: string) => void;
+  /** when set, a tap on a filled spot's figure opens his card (a hold is the quick look) and a small swap button opens the picker */
+  onOpen?: (id: string) => void;
   overlay?: ReactNode;
+  /** a control pinned to the field's top-left corner (the formation chip) */
+  corner?: ReactNode;
   /** show the Offense / Defense captions (team lab) */
   sides?: boolean;
   className?: string;
 }
 
-const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, sides = true, className = '' }: Props) => {
+const NflField = ({ items, kitClub, turf, art, tall, size, onPick, onOpen, overlay, corner, sides = true, className = '' }: Props) => {
   const { numberFor } = useJerseyNumbers();
   const team = findNFLTeam(kitClub);
   const vars = {
@@ -89,8 +93,8 @@ const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, side
           <span className="lab-side lab-side--d" aria-hidden="true">Defense</span>
         </>
       )}
-      {items.map((it) => {
-        const style = { left: `${it.x}%`, top: `${it.y}%` } as CSSProperties;
+      {items.map((it, idx) => {
+        const style = { left: `${it.x}%`, top: `${it.y}%`, '--i': idx } as CSSProperties;
         if (it.dst) {
           const t = findNFLTeam(it.dst);
           return (
@@ -117,8 +121,8 @@ const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, side
         const c = findNFLTeam(bannerTeamOf(p.player));
         const tagVars = { '--tg-c': c ? `hsl(${c.primaryColor})` : 'hsl(var(--line))', '--tg-fg': c ? getReadableTextOn(c.primaryColor) : '#fff' } as CSSProperties;
         const kit = it.kit ?? kitClub;
-        return (
-          <button key={it.id} type="button" className="lab-spot" style={style} {...peekProps(p.player)} onClick={() => onPick(it.id)} aria-label={`${it.label} ${displayName(p.name)}. Change`}>
+        const body = (
+          <>
             <span className="lab-fig">
               {FIELD_ART ? <GameSprite player={p.player} team={kit} kind="figure" size={size} /> : <PixelPlayer club={kit} number={numberFor(p.player)} unit={pixelUnit} />}
               {it.injury && (
@@ -136,9 +140,26 @@ const NflField = ({ items, kitClub, turf, art, tall, size, onPick, overlay, side
                 p.grade && <i className="lab-tag-grade" style={{ background: p.grade.color }}>{p.grade.grade}</i>
               )}
             </span>
+          </>
+        );
+        if (onOpen)
+          return (
+            <div key={it.id} className="lab-spot lab-spot--card" style={style}>
+              <button type="button" className="lab-hit" {...peekProps(p.player)} onClick={() => onOpen(it.id)} aria-label={`${it.label} ${displayName(p.name)}. Open player card`}>
+                {body}
+              </button>
+              <button type="button" className="nfl-swap" onClick={() => onPick(it.id)} aria-label={`Change ${it.label}`} title="Change player">
+                <ArrowLeftRight aria-hidden="true" />
+              </button>
+            </div>
+          );
+        return (
+          <button key={it.id} type="button" className="lab-spot" style={style} {...peekProps(p.player)} onClick={() => onPick(it.id)} aria-label={`${it.label} ${displayName(p.name)}. Change`}>
+            {body}
           </button>
         );
       })}
+      {corner && <div className="nfl-corner">{corner}</div>}
       {overlay && <div className="lab-field-overlay">{overlay}</div>}
     </div>
   );

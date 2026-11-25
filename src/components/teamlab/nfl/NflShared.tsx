@@ -1,5 +1,6 @@
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Sun } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { cn } from '@/lib/utils';
@@ -44,10 +45,22 @@ export const ModeSwitch = ({ mode, onMode }: { mode: LabMode; onMode: (m: LabMod
   </div>
 );
 
-export const ClubSelect = ({ value, onChange, label = 'Club' }: { value: string; onChange: (abbr: string) => void; label?: string }) => (
+export const ClubSelect = ({ value, onChange, label = 'Club', compact = false }: { value: string; onChange: (abbr: string) => void; label?: string; compact?: boolean }) => {
+  const t = findNFLTeam(value);
+  return (
   <Select value={value} onValueChange={onChange}>
-    <SelectTrigger className="lab-btn h-9 w-auto min-w-[10rem]" aria-label={label}>
-      <SelectValue />
+    <SelectTrigger className={cn('lab-btn h-9 w-auto', compact ? 'min-w-0 gap-1.5 px-2.5 sm:min-w-[10rem]' : 'min-w-[10rem]')} aria-label={label}>
+      {compact ? (
+        <SelectValue>
+          <span className="inline-flex items-center gap-1.5">
+            {t && <TeamLogo team={t} size={18} decorative />}
+            <span className="hidden sm:inline">{t?.fullName ?? value}</span>
+            <span className="sm:hidden">{t?.abbreviation ?? value}</span>
+          </span>
+        </SelectValue>
+      ) : (
+        <SelectValue />
+      )}
     </SelectTrigger>
     <SelectContent className="z-[70] max-h-80">
       {[...NFL_TEAMS]
@@ -61,7 +74,63 @@ export const ClubSelect = ({ value, onChange, label = 'Club' }: { value: string;
         ))}
     </SelectContent>
   </Select>
+  );
+};
+
+/** A toolbar button that opens a small popover (a desktop popover, a near-full-width one on a phone). */
+export const MenuPop = ({ icon, label, aria, children, className }: { icon: ReactNode; label: string; aria: string; children: ReactNode; className?: string }) => (
+  <Popover>
+    <PopoverTrigger asChild>
+      <button type="button" className={cn('nfl-opt-btn', className)} aria-label={aria}>
+        {icon}
+        <span className="hidden lg:inline">{label}</span>
+      </button>
+    </PopoverTrigger>
+    <PopoverContent align="end" sideOffset={8} collisionPadding={12} className="nfl-opt-pop z-[60]">
+      {children}
+    </PopoverContent>
+  </Popover>
 );
+
+/** A labelled segmented control (one choice of a few), the display settings' building block. */
+export const Seg = <T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { id: T; label: string; title?: string; disabled?: boolean }[]; onChange: (v: T) => void }) => (
+  <div className="nfl-opt-line">
+    <span className="nfl-opt-k">{label}</span>
+    <div className="nfl-seg nfl-seg--sm" role="group" aria-label={label}>
+      {options.map((o) => (
+        <button key={o.id} type="button" disabled={o.disabled} title={o.title} className={cn('nfl-seg-btn', value === o.id && 'is-on')} onClick={() => onChange(o.id)} aria-pressed={value === o.id}>
+          {o.label}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
+/** A number that counts up to its value when it changes (instant under reduced motion). */
+export const CountUp = ({ value, ms = 700 }: { value: number; ms?: number }) => {
+  const [shown, setShown] = useState(value);
+  const from = useRef(value);
+  useEffect(() => {
+    const calm = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (calm || from.current === value) {
+      from.current = value;
+      setShown(value);
+      return;
+    }
+    const a = from.current;
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / ms);
+      setShown(Math.round(a + (value - a) * (1 - (1 - k) ** 3)));
+      if (k < 1) raf = requestAnimationFrame(tick);
+      else from.current = value;
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [value, ms]);
+  return <>{shown}</>;
+};
 
 export const TurfSelect = ({ turf, onTurf }: { turf: Turf; onTurf: (t: Turf) => void }) => (
   <Select value={turf} onValueChange={(v) => onTurf(v as Turf)}>

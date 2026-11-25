@@ -3,6 +3,7 @@ import TeamLogo from '@/components/brand/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { GradeStep } from '@/config/skillGrades';
 import { GradeChip } from '../parts';
+import { CountUp } from './NflShared';
 
 export interface Led {
   label: string;
@@ -40,7 +41,7 @@ const NflHeader = ({ kitClub, kicker, title, sub, leds, children }: { kitClub: s
               {l.grade || l.value != null ? (
                 <span className="lab-led-v">
                   {l.grade && <GradeChip grade={l.grade} size="md" label={`${l.label} grade ${l.grade.grade}`} />}
-                  {l.value != null && <b className={l.grade ? '' : 'lab-led-pix'}>{l.value}</b>}
+                  {l.value != null && <b className={l.grade ? '' : 'lab-led-pix'}>{typeof l.value === 'number' ? <CountUp value={l.value} /> : l.value}</b>}
                 </span>
               ) : (
                 <span className="lab-led-v lab-led-off">--</span>
