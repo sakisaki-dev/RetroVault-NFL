@@ -74,6 +74,45 @@ def fetch_espn():
     return out
 
 
+
+LOGO_CACHE = CACHE / "college_logos"
+NAVY = (0x11, 0x16, 0x27)
+
+
+def _lum(r, g, b):
+    f = lambda c: c / 255 / 12.92 if c / 255 <= 0.04045 else ((c / 255 + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+
+
+def mark_backings(colleges):
+    """Derived, per school: "w": 1 when ESPN's dark-background logo doesn't read on the site's navy (under half of the
+    mark reaches 3:1 contrast against it), so the site puts that one logo on a white puck. Logos are cached in
+    data/nfl-cache/college_logos/ (curl, once). Without Pillow or the image, the school gets no backing."""
+    try:
+        from PIL import Image
+    except ImportError:
+        return
+    import subprocess
+    LOGO_CACHE.mkdir(parents=True, exist_ok=True)
+    nl = _lum(*NAVY)
+    for c in colleges.values():
+        if "id" not in c:
+            continue
+        f = LOGO_CACHE / f'{c["id"]}.png'
+        if not f.exists():
+            subprocess.run(["curl", "-s", "-f", "-o", str(f), f'https://a.espncdn.com/i/teamlogos/ncaa/500-dark/{c["id"]}.png'], check=False)
+        try:
+            im = Image.open(f).convert("RGBA")
+        except Exception:
+            continue
+        im.thumbnail((64, 64))
+        px = [q for q in im.getdata() if q[3] > 160]
+        if not px:
+            continue
+        cr = sorted((_lum(*q[:3]) + 0.05) / (nl + 0.05) for q in px)
+        if cr[int(len(cr) * 0.75)] < 2.5:  # even the mark's lighter quarter stays under 2.5:1 on navy
+            c["w"] = 1
+
 def main():
     espn = fetch_espn()
     index = {}
@@ -123,6 +162,7 @@ def main():
             t = school(college)
             colleges[college] = ({"id": int(t["id"]), "s": t.get("shortDisplayName") or t["location"], "c": t.get("color"), "a": t.get("alternateColor")}
                                  if t else {"s": college})
+    mark_backings(colleges)
     OUT.write_text(json.dumps({"colleges": dict(sorted(colleges.items())), "p": dict(sorted(out.items())), "x": dict(sorted(also.items()))}, separators=(",", ":"), ensure_ascii=False))
     drafted = sum(1 for v in out.values() if len(v) > 1)
     known = sum(1 for c in colleges.values() if "id" in c)

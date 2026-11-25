@@ -3,7 +3,7 @@ import { dataJson } from '@/utils/dataStore';
 import { IS_NFL } from '@/config/edition';
 
 /** public/data/nfl/draft.json (scripts/nfl/draft.py): college and draft per player, "POS:Name" keyed. NFL edition only. */
-export interface CollegeInfo { id?: number; s: string; c?: string | null; a?: string | null }
+export interface CollegeInfo { id?: number; s: string; c?: string | null; a?: string | null; /** the logo needs a white backing (derived from its contrast) */ w?: 1 }
 export interface DraftFile {
   colleges: Record<string, CollegeInfo>;
   /** [college, year, round, pick, club] when drafted, [college] when undrafted */

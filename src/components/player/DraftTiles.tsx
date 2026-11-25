@@ -8,29 +8,38 @@ import { cn } from '@/lib/utils';
 const initials = (s: string) => s.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 3).map((w) => w[0]).join('').toUpperCase();
 
 /**
- * A school's mark on a white puck, like the club logo beside it: ESPN's standard (light-background) college logo, which
- * reads on white for every school (on our navy the dark reds and navies faded and black text vanished, Ohio State's),
- * then the dark-background logo, then a plate in the school's colours with its short name.
+ * A school's mark: ESPN's dark-background college logo (the standard ones black out text like Ohio State's on our navy)
+ * at full size; a school whose mark still doesn't read on navy (draft.json "w", derived from the logo's own contrast in
+ * scripts/nfl/draft.py) sits on a white puck with ESPN's standard logo. Else a plate in the school's colours.
  */
 export const CollegeMark = ({ info, size = 40 }: { info: DraftInfo; size?: number }) => {
   const [step, setStep] = useState(0);
   const s = info.school;
   if (!s) return null;
   if (s.id && step < 2) {
-    const pad = Math.max(2, Math.round(size * 0.1));
-    return (
-      <span className="pc-college__puck" style={{ width: size, height: size, padding: pad }} aria-hidden="true">
-        <img
-          key={step}
-          src={`https://a.espncdn.com/i/teamlogos/ncaa/${step === 0 ? '500' : '500-dark'}/${s.id}.png`}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onError={() => setStep((n) => n + 1)}
-          className="pc-college__logo"
-        />
+    const white = !!s.w;
+    const variant = white ? (step === 0 ? '500' : '500-dark') : step === 0 ? '500-dark' : '500';
+    const img = (
+      <img
+        key={step}
+        src={`https://a.espncdn.com/i/teamlogos/ncaa/${variant}/${s.id}.png`}
+        alt=""
+        width={size}
+        height={size}
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        onError={() => setStep((n) => n + 1)}
+        className="pc-college__logo"
+        style={white ? undefined : { width: size, height: size }}
+      />
+    );
+    return white ? (
+      <span className="pc-college__puck" style={{ width: size, height: size, padding: Math.max(2, Math.round(size * 0.1)) }} aria-hidden="true">
+        {img}
       </span>
+    ) : (
+      img
     );
   }
   const bg = `#${s.c || '1f2742'}`;
