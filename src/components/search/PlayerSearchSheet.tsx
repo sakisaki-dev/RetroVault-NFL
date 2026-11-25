@@ -110,7 +110,7 @@ interface RowProps {
   extra?: ReactNode;
 }
 
-const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, selected, onPick, extra }: RowProps) => {
+export const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, selected, onPick, extra }: RowProps) => {
   const { first: firstName, last } = splitName(p.name);
   const club = bannerTeamOf(p);
   const team = findNFLTeam(club);
