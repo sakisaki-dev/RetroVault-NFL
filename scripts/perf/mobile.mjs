@@ -102,5 +102,9 @@ try {
     process.stderr.write(`${pg.id}: fcp ${out[pg.id].fcp} content ${out[pg.id].contentMs} full ${out[pg.id].fullMs} ${r.ok ? '' : 'NOT-READY '}reqs ${own.length}(+${sprites.length} spr) ${out[pg.id].kb}KB last ${out[pg.id].lastReqMs} block ${out[pg.id].blockMs}/${lt.n} max ${lt.max} ${out[pg.id].errors.join('|')}\n`);
     await page.dispose();
   }
-} finally { await close(); srv.close(); }
-const f = arg('out'); if (f) fs.writeFileSync(f, JSON.stringify(out, null, 1));
+} finally {
+  // results first: a browser that is slow to close must not cost the run its numbers
+  const f = arg('out'); if (f) fs.writeFileSync(f, JSON.stringify(out, null, 1));
+  await Promise.race([close().catch(() => {}), sleep(5000)]); srv.close();
+}
+process.exit(0);
