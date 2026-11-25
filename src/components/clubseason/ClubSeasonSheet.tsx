@@ -162,7 +162,7 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     <ClubSeasonHero club={club} year={year} record={record || '–'} cell={data.cell} result={result} lastPost={lastPost} rows={rows} onPick={pick} />
                     <ClubSeasonFacing abbr={abbr} year={year} cell={data.cell} table={data.schedule?.table ?? null} tickets={tickets} result={result} onOpenGame={openGameFromSheet} />
                   </Reveal>
-                  <ClubSeasonLineup rows={rows} club={club} clubName={team.name} year={year} onPick={pick} />
+                  <ClubSeasonLineup rows={rows} lineup={data.lineup} club={club} clubName={team.name} year={year} onPick={pick} />
                   <div className="pg-mag">
                     <div className="pg-col">
                       <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined}>

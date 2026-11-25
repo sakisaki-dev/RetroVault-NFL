@@ -37,7 +37,9 @@ export interface RosterRow {
   rec?: number; recyds?: number; rectd?: number;
   tkl?: number; sck?: number; dint?: number; ff?: number; pd?: number;
 }
-export interface ClubRosterFile { season: number; clubs: Record<string, RosterRow[]> }
+/** A club-season's starters, picked when the data is built: the player keys in spot order (QB RB WR WR TE, DL DL LB LB DB DB) and how */
+export interface ClubLineup { m: 'snaps' | 'weeks' | 'depth' | 'busiest'; k: string[] }
+export interface ClubRosterFile { season: number; clubs: Record<string, RosterRow[]>; lineups?: Record<string, ClubLineup> }
 
 export interface CapFile {
   season: number;
@@ -64,6 +66,7 @@ export const loadCap = memo<CapFile>('data/nfl/cap');
 export interface ClubSeasonData {
   year: number;
   roster: RosterRow[] | null;
+  lineup: ClubLineup | null;
   cap: CapFile | null;
   cell: TableRow | null;
   schedule: ScheduleSeason | null;
@@ -83,6 +86,7 @@ export const useClubSeason = (abbr: string | undefined, year: number): ClubSeaso
       setV({
         year,
         roster: r?.clubs[abbr] ?? null,
+        lineup: r?.lineups?.[abbr] ?? null,
         cap,
         schedule,
         cell: schedule?.table.find((t) => t.abbr === abbr) ?? null,
