@@ -85,7 +85,7 @@ interface Props {
 }
 
 export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) => {
-  const { article, loading, error, retry } = useArticle(item);
+  const { article, loading, error, unavailable, retry } = useArticle(item);
   const lookup = useMemo(() => (item ? [item] : []), [item]);
   const tagged = useTaggedPlayers(lookup, players);
   const mentions = useMemo(
@@ -105,7 +105,20 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
 
   const firstText = article?.blocks.findIndex((b) => b.t === 'html' && b.tag === 'p') ?? -1;
   let bodyNode: ReactNode;
-  if (error) {
+  if (unavailable) {
+    // The public site has no article proxy: the summary (the dek above) and a link to the full story on ESPN
+    bodyNode = (
+      <div className="en-state">
+        <Newspaper className="h-5 w-5" aria-hidden />
+        <p>The full story, with its photos and video, is on ESPN.</p>
+        <div className="en-state__row">
+          <a className="en-refresh" href={item.href} target="_blank" rel="noopener noreferrer">
+            Read on ESPN <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+          </a>
+        </div>
+      </div>
+    );
+  } else if (error) {
     bodyNode = (
       <div className="en-state en-state--error" role="alert">
         <WifiOff className="h-5 w-5" aria-hidden />

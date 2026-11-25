@@ -18,6 +18,9 @@ concurrency:
 
 jobs:
   build:
+    # Retro Bowl edition only: the NFL edition's repo (sakisaki-dev/RetroVault-NFL) shares this history and has its own
+    # workflow (deploy-nfl-pages.yml); deploy runs only after build, so it is skipped there too
+    if: github.repository == 'sakisaki-dev/RetroVault'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

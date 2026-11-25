@@ -5,4 +5,6 @@ declare const __PRIVATE_SPRITES__: boolean;
 
 interface ImportMetaEnv {
   readonly VITE_EDITION?: string;
+  /** '1' on a static host with no /espn-content proxy (the public NFL Pages build) */
+  readonly VITE_STATIC_HOST?: string;
 }

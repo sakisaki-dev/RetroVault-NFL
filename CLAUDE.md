@@ -1074,6 +1074,27 @@ source names that file).
   run `SERIAL_ONE_BONUS` ×1.15 more (the portfolio uses the best parallel owned at that finish). Never
   hand-edit either file; rebuild and commit both.
 
+## NFL edition deployment (public site)
+
+The NFL edition (branch `nfl-demo`) is public at https://sakisaki-dev.github.io/RetroVault-NFL/, from its own repo
+github.com/sakisaki-dev/RetroVault-NFL (owner approved, 2026-11-24: "deployed like Retro Vault"). Its `main` is
+`nfl-demo`; every push there runs `.github/workflows/deploy-nfl-pages.yml` (npm ci, `npm run build` with
+`VITE_EDITION=nfl BASE_PATH=/RetroVault-NFL/ VITE_STATIC_HOST=1`, Pages source "GitHub Actions").
+
+- **Update the public site only by an explicit push:** from /Users/saketh/RetroVault (or the RetroVault-nfl worktree),
+  `git push nfl nfl-demo:main` (remote `nfl` = github.com/sakisaki-dev/RetroVault-NFL; `http.postBuffer` is raised
+  for the large public/ tree). Nothing pushes it automatically.
+- **Never push `nfl-demo` to the Retro Bowl repo** (`origin`, github.com/sakisaki-dev/RetroVault), and never merge
+  it into `retrovault-v2`/`main` there.
+- Each workflow is guarded to its own repo (`if: github.repository == ...`): `deploy-pages.yml` runs only in
+  sakisaki-dev/RetroVault, `deploy-nfl-pages.yml` only in sakisaki-dev/RetroVault-NFL (concurrency group `nfl-pages`).
+- **ESPN full articles:** Pages has no `/espn-content` proxy and ESPN's content API refuses cross-origin reads, so the
+  static build (`VITE_STATIC_HOST=1`, `FULL_ARTICLES` in `src/utils/espnArticle.ts`) shows the feed's summary and a
+  "Read on ESPN" link without fetching; dev and `vite preview` keep the full reader (fetches time out after 8 s).
+- Before a push, scan new commits for anything private (tokens, emails, phone numbers, addresses); raw saves
+  (`data/saves/`) and upload images stay git-ignored. The widget's tap (`SITE` in `public/widgets/rv-nfl-widget.js`)
+  opens the public site.
+
 ## NFL widget (the iPhone widget for the NFL edition)
 
 A Scriptable widget that follows one club (the Vikings; `RV_NFL_CLUB=MIN`, an nflverse abbreviation) through the season.

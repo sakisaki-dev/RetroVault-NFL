@@ -27,6 +27,14 @@ export interface Article {
 
 const CACHE = 'espn:article:v1:';
 const PROXY = '/espn-content/';
+/**
+ * A static host (the public GitHub Pages site, built with VITE_STATIC_HOST=1) has no /espn-content proxy, and ESPN's
+ * content API refuses cross-origin reads, so the reader shows the feed's summary and a "Read on ESPN" link there without
+ * trying either.
+ */
+export const FULL_ARTICLES = import.meta.env.VITE_STATIC_HOST !== '1';
+/** No request hangs the reader: each gives up after this long */
+const TIMEOUT_MS = 8000;
 const DIRECT = 'https://content.core.api.espn.com/';
 
 const ALLOWED = new Set(['P', 'A', 'EM', 'I', 'STRONG', 'B', 'UL', 'OL', 'LI', 'H2', 'H3', 'H4', 'BLOCKQUOTE', 'BR']);
@@ -139,9 +147,15 @@ const readCache = (id: string): Article | null => {
 };
 
 const getJson = async (url: string): Promise<unknown> => {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(String(r.status));
-  return r.json();
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = ctl ? setTimeout(() => ctl.abort(), TIMEOUT_MS) : 0;
+  try {
+    const r = await fetch(url, ctl ? { signal: ctl.signal } : undefined);
+    if (!r.ok) throw new Error(String(r.status));
+    return await r.json();
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 };
 
 /** The article from its ESPN content URL (items' `api`): the proxy first, else ESPN directly. Throws when both fail. */
@@ -194,7 +208,7 @@ export const useArticle = (item: { id: string; api?: string; type: string; headl
   const [tries, setTries] = useState(0);
   const id = item?.id ?? null;
   useEffect(() => {
-    if (!item) return;
+    if (!item || !FULL_ARTICLES) return;
     let alive = true;
     const job = item.clipApi
       ? fetchClipArticle(item.clipApi, item.id, { headline: item.headline, published: item.published, web: item.href })
@@ -208,10 +222,12 @@ export const useArticle = (item: { id: string; api?: string; type: string; headl
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, tries]);
   const current = state.id === id;
+  if (!FULL_ARTICLES) return { article: null, loading: false, error: false, unavailable: !!item, retry: () => {} };
   return {
     article: current ? state.article : null,
     loading: !!item && (!current || (!state.article && !state.error)),
     error: current && state.error,
+    unavailable: false,
     retry: () => {
       setState({ id: null, article: null, error: false });
       setTries((n) => n + 1);
