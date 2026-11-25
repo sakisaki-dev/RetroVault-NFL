@@ -84,3 +84,18 @@ export const agoParts = (iso: string, now = Date.now()): { value: string; label:
   const d = Math.round(h / 24);
   return { value: String(d), label: d === 1 ? 'day ago' : 'days ago' };
 };
+
+/** One accent per article type, shared by the card stripe, the tag, the sidebar and the reader */
+export const KIND_ACCENT: Record<NewsKind, string> = {
+  analysis: '#5cc8ff', recap: '#ffc83d', trade: '#b69cff', injury: '#ff5a61', fantasy: '#3ddc84',
+  betting: '#ff9f43', feature: '#2dd4bf', headline: '#c9d3f5', video: '#ff7a85',
+};
+/** The feed's sections, in reading order: which kinds each holds */
+export const GROUPS: { id: string; label: string; kinds: NewsKind[] }[] = [
+  { id: 'analysis', label: 'Analysis', kinds: ['analysis', 'feature', 'headline', 'video'] },
+  { id: 'recap', label: 'Recaps', kinds: ['recap'] },
+  { id: 'trade', label: 'Transactions', kinds: ['trade'] },
+  { id: 'injury', label: 'Injuries', kinds: ['injury'] },
+  { id: 'fantasy', label: 'Fantasy', kinds: ['fantasy'] },
+  { id: 'betting', label: 'Betting', kinds: ['betting'] },
+];
