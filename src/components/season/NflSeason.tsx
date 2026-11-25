@@ -27,28 +27,6 @@ import './sx.css';
 const nick = (team: string) => findNFLTeam(team)?.name ?? team;
 const cv = (club?: string | null) => clubVars(club) as CSSProperties;
 
-const AWARD_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'Offensive POY', dpoy: 'Defensive POY', oroy: 'Offensive ROY', droy: 'Defensive ROY', sbmvp: 'Super Bowl MVP' };
-
-const AwardPlate = ({ kind, a, i = 0 }: { kind: string; a: { player: string; team: string; position: string }; i?: number }) => (
-  <li className="min-w-0 mo-pop" style={stag(i, 70)}>
-    <PlayerHit name={a.player} pos={a.position} className={cn('sx-award', kind === 'mvp' && 'sx-award--mvp')} style={cv(a.team)}>
-      <span className="sx-award__sprite">
-        <StarSprite name={a.player} pos={a.position} team={a.team} size="m" celebrate={kind === 'mvp' || kind === 'sbmvp'} />
-      </span>
-      <span className="sx-award__txt">
-        <span className="sx-award__kick">
-          {kind === 'mvp' || kind === 'sbmvp' ? <PixelIcon name={kind === 'mvp' ? 'crown' : 'trophy'} size={12} /> : <PixelIcon name="star" size={12} />}
-          {AWARD_LABEL[kind] ?? kind}
-        </span>
-        <span className="sx-award__name block">{displayName(a.player)}</span>
-        <span className="sx-award__sub block">
-          {a.position} · {nick(a.team)}
-        </span>
-      </span>
-    </PlayerHit>
-  </li>
-);
-
 const CONFETTI = Array.from({ length: 18 }, (_, i) => ({ left: `${(i * 37) % 100}%`, delay: `${-((i * 0.7) % 5).toFixed(1)}s`, d: `${4 + (i % 4)}s` }));
 
 /**
@@ -57,8 +35,6 @@ const CONFETTI = Array.from({ length: 18 }, (_, i) => ({ left: `${(i * 37) % 100
  */
 export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolean }) => {
   const sb = season.superBowl;
-  const aw = season.awards ?? {};
-  const kinds = ['mvp', 'opoy', 'dpoy', 'oroy', 'droy', 'sbmvp'].filter((k) => aw[k]);
   const [w, l] = (sb?.score ?? '').split('-');
   const top = [...season.table].sort((a, b) => b.pct - a.pct || b.diff - a.diff)[0];
   const lead = sb?.winner ?? top?.team;
@@ -130,15 +106,6 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
             </span>
           )}
         </Reveal>
-      )}
-      {kinds.length > 0 ? (
-        <Reveal as="ul" className="sx-awards" aria-label="AP award winners">
-          {kinds.map((k, i) => (
-            <AwardPlate key={k} kind={k} a={aw[k]} i={i} />
-          ))}
-        </Reveal>
-      ) : (
-        <p className="sx-note">Awards are announced after the Super Bowl.</p>
       )}
     </section>
   );
