@@ -333,3 +333,5 @@
   .fh-sheet__g > .fh-set:nth-child(2), .fh-sheet__g > .fh-set:nth-child(7) { grid-column: 1 / -1; }
   .fh-set__row > .ax-select, .fh-set__row > .ax-toggle { flex: 1 1 100%; }
 }
+/* phone: a long opponent name wraps to two lines instead of cutting off */
+@media (max-width: 639px) { .fh-vs__team > span.fh-vs__nm:first-child { white-space: normal; line-height: 1.1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } }

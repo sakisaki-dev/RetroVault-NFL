@@ -390,3 +390,11 @@
   .nfl-bar-end { gap: 5px; }
   .nfl-swap { width: 20px; height: 20px; right: -4px; }
 }
+
+/* phone depth chart: the card button is redundant (tap him on the field), so the names get its room; the clear button keeps a 40px touch area */
+.nfl-rowclear { position: relative; }
+.nfl-rowclear::before { content: ''; position: absolute; inset: -11px -8px; }
+@media (max-width: 480px) {
+  .nfl-depth .nfl-rowcard { display: none; }
+  .nfl-depth .lab-row-pos { width: 1.8rem; }
+}
