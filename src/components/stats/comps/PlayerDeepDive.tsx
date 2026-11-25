@@ -396,7 +396,11 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   // ---------- Section index (scroll-spy) ----------
   // Fantasy leads the index for an active QB / RB / WR / TE with a game this season
   const hasFantasy = !!useFantasy(IS_NFL && player?.status === 'Active' ? keyOf(player) : null);
-  const sections = useMemo(() => (hasFantasy ? [FANTASY_SECTION, ...SECTIONS] : SECTIONS), [hasFantasy]);
+  // owner: "put the fantasy above the news, right under the season"
+  const sections = useMemo(
+    () => (hasFantasy ? SECTIONS.flatMap((s) => (s.id === 'dd-gamelog' ? [s, FANTASY_SECTION] : [s])) : SECTIONS),
+    [hasFantasy],
+  );
   const [active, setActive] = useState<string>(SECTIONS[0].id);
   useEffect(() => {
     // Scroll-spy on the scroll position itself: the section whose top has passed a line 30% down the screen is the
@@ -580,12 +584,6 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}
           {lowerReady && <>
-          {hasFantasy && player && (
-            <DdSection id="dd-fantasy" index={-1} title="Fantasy" icon={Trophy} kicker="PPR rank, form, matchups and consistency this season">
-              <FantasySection playerKey={keyOf(player)} active />
-            </DdSection>
-          )}
-
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker="Letter grades by position percentile"
               info={IS_NFL && careerPoolLabel(player.position) ? `Percentile among qualified ${player.position}s (career: ${careerPoolLabel(player.position)}; a season: its weekly bar), on rates shrunk by sample size. S = top 10%. A stat with no between-player signal gets no tile.` : `Percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games. S = top 8%.`}>
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
@@ -594,6 +592,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           {IS_NFL && (
             <DdSection id="dd-gamelog" index={0.5} title={player.status === 'Active' ? 'This season & game log' : 'Game log'} icon={ClipboardList} kicker={player.status === 'Active' ? 'Live season, then every game' : 'Every game on file'}>
               <DdGameLog player={player} header={<SeasonHeader player={player} />} />
+            </DdSection>
+          )}
+
+          {hasFantasy && player && (
+            <DdSection id="dd-fantasy" index={0.6} title="Fantasy" icon={Trophy} kicker="PPR rank, form, matchups and consistency this season">
+              <FantasySection playerKey={keyOf(player)} active />
             </DdSection>
           )}
 
