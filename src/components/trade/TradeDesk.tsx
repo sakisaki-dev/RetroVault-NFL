@@ -14,6 +14,7 @@ import { DeskCard } from './DeskCard';
 import { DeskOffers, DEFAULT_FILTERS, PAGE, type OfferFilters } from './DeskOffers';
 import { DeskPicker } from './DeskPicker';
 import { DeskVerdict } from './DeskVerdict';
+import { TradeBanner } from './TradeBanner';
 import { BeforeAfter, quickStarts } from './TradeViews';
 import { MethodTip, TEAM_LABELS, teamVars } from './TradeParts';
 import type { useTradeEnv } from './useTrade';
@@ -194,6 +195,7 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
       <FootballLoader ready={!!model && !!result} minHeight={420} what="the fantasy data">
         {model && result && (
           <>
+            {n === 2 && <TradeBanner model={model} result={result} cards={cards} send={eff[0].give.map((g) => g.key)} get={eff[1].give.map((g) => g.key)} fallback={dflt} any={anyPlayers} />}
             <div className="dk-bar">
               <Popover>
                 <PopoverTrigger asChild>
@@ -233,7 +235,7 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
               {n === 2 ? (
                 <>
                   {locker(0, 'You send')}
-                  <DeskVerdict r={result} model={model} cardValue={cardValue} any={anyPlayers} whyOpen={whyOpen} onWhy={() => setWhyOpen((v) => !v)} onDrawer={() => setDrawer(true)} clubs={allClubs} />
+                  <DeskVerdict r={result} model={model} cardValue={cardValue} any={anyPlayers} whyOpen={whyOpen} onWhy={() => setWhyOpen((v) => !v)} onDrawer={() => setDrawer(true)} clubs={allClubs} banner />
                   {locker(1, 'You get')}
                 </>
               ) : (

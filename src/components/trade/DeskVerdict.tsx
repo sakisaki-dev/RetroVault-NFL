@@ -86,7 +86,7 @@ const Why = ({ r, model, cardValue }: { r: TradeResult; model: TradeModel; cardV
  * read, what each side gets, the Fair / Leans / Lopsided meter with its marker, "Why this verdict" and Before / after.
  */
 export const DeskVerdict = ({
-  r, model, cardValue, any, whyOpen, onWhy, onDrawer, clubs, labels = ['You send', 'You get'],
+  r, model, cardValue, any, whyOpen, onWhy, onDrawer, clubs, labels = ['You send', 'You get'], banner = false,
 }: {
   r: TradeResult;
   model: TradeModel;
@@ -97,6 +97,8 @@ export const DeskVerdict = ({
   onDrawer: () => void;
   clubs: string[];
   labels?: [string, string];
+  /** the Trade banner above already carries the stamp, the gap and both totals: this panel is the detail (meter, duel) */
+  banner?: boolean;
 }) => {
   const n = r.teams.length;
   const phone = usePhone();
@@ -107,8 +109,9 @@ export const DeskVerdict = ({
   const burst = useBurst(r.verdict === 'Fair' && r.teams.every((x) => x.sent.length > 0 || x.received.length > 0) && r.teams[0].sent.length > 0 && r.teams[0].received.length > 0);
   const colors = useMemo(() => [...clubs.map((c) => clubPlate(c).fill), '#ffc93c', '#ffffff'], [clubs]);
   return (
-    <section className={cn('dk-jb', `dk-jb--${v}`)} aria-label="Verdict">
+    <section className={cn('dk-jb', `dk-jb--${v}`, banner && n === 2 && 'dk-jb--sub')} aria-label="Verdict">
       {burst > 0 && <Confetti key={burst} colors={colors} />}
+      {!(banner && n === 2) && (
       <div className="dk-jb__row">
         {n === 2 ? (
           <div className="dk-jb__side"><small>{labels[0] === 'You send' ? 'You give' : labels[0]}</small><b className="dk-led"><ViewCount value={t.sentValue} /></b></div>
@@ -121,6 +124,7 @@ export const DeskVerdict = ({
           <div className="dk-jb__side"><small>{labels[1]}</small><b className="dk-led"><ViewCount value={t.receivedValue + t.credit} /></b></div>
         ) : null}
       </div>
+      )}
       <p className="dk-jb__read">{readOf(r, n)}</p>
       {n > 2 && !empty && <NetBars r={r} />}
       <div className="dk-meter" role="img" aria-label={`Gap ${gap.toFixed(1)} percent: Fair under ${FAIR_PCT}, Leans to ${LEAN_PCT}, Lopsided above`}>
@@ -131,11 +135,11 @@ export const DeskVerdict = ({
       </div>
       <div className="dk-meter__k" aria-hidden="true"><span>Fair</span><span>{FAIR_PCT}%</span><span>Leans</span><span>{LEAN_PCT}%</span><span>Lopsided</span></div>
       <div className="dk-jb__act">
-        {(phone || n > 2) && <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>Why this verdict <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>}
+        {((phone && !(banner && n === 2)) || n > 2) && <button type="button" className="dk-link" aria-expanded={whyOpen} onClick={onWhy} disabled={!any}>Why this verdict <ChevronDown className={cn('h-4 w-4', whyOpen && 'rotate-180')} aria-hidden="true" /></button>}
         <button type="button" className="dk-link" onClick={onDrawer} disabled={!any}><BarChart3 className="h-4 w-4" aria-hidden="true" /> Before / after</button>
         <MethodTip model={model} />
       </div>
-      {n > 2 ? (whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />) : any && (!phone || whyOpen) && <DeskDuel r={r} model={model} labels={labels} />}
+      {n > 2 ? (whyOpen && any && <Why r={r} model={model} cardValue={cardValue} />) : (banner || (any && (!phone || whyOpen))) && <DeskDuel r={r} model={model} labels={labels} />}
     </section>
   );
 };
