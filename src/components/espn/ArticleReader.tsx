@@ -1,10 +1,12 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 import { ExternalLink, Newspaper, Play, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import { FeatureSheet, type SheetPiece } from '@/components/news/FeatureSheet';
 import PixelLoader from '@/components/ui/PixelLoader';
-import { articleText, useArticle, type ArticleBlock, type ArticleVideo } from '@/utils/espnArticle';
+import { articleText, useArticle, useEspnIds, type ArticleBlock, type ArticleVideo } from '@/utils/espnArticle';
+import { openPlayerPeek } from '@/components/peek/PlayerPeek';
+import { nameKey } from '@/utils/newsMentions';
 import { NEWS_KIND_LABEL, timeAgo, type NewsItem } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
 import { focusOf, mentionsOf } from '@/utils/newsMentions';
@@ -96,6 +98,32 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
   const focus = focusOf(mentions, 3);
   const close = () => onClose();
 
+  // owner: a player's name in the story opens the site's quick look (card, Head-to-Head, Deep Dive), not ESPN's page.
+  // ESPN links players as espn.com/nfl/player/_/id/<id>/...; the id maps to our key (espn_ids.json), else the link text
+  // matches someone the piece mentions. Marked links get data-player-key (a hold opens the card too) and a chip look.
+  const espnIds = useEspnIds();
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const byName = useMemo(() => new Map(mentions.map((m) => [nameKey(m.player.name), keyOfPlayer(m.player)])), [mentions]);
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    el.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+      const id = /\/nfl\/player\/(?:_\/id\/)?(\d+)/.exec(a.getAttribute('href') ?? '')?.[1];
+      const k = (id && espnIds?.[id]) || byName.get(nameKey(a.textContent ?? '')) || null;
+      if (k) {
+        a.dataset.playerKey = k;
+        a.classList.add('en-plink');
+      }
+    });
+  });
+  const onBodyClick = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-player-key]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openPlayerPeek(a.dataset.playerKey!, e.clientX, e.clientY);
+  };
+
   if (!item) return <FeatureSheet piece={null} onClose={close} players={players} onPlayer={openDeepDive} />;
   const kind = kindOf(item);
   const at = order.findIndex((x) => x.id === item.id);
@@ -146,7 +174,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
   } else {
     const onlyVideo = article.blocks.every((b) => b.t === 'video');
     bodyNode = (
-      <div className="en-body">
+      <div className="en-body" ref={bodyRef} onClickCapture={onBodyClick}>
         {onlyVideo && item.description && item.description !== item.headline && <p className="fs-lede">{item.description}</p>}
         {article.blocks.map((b, i) => (
           <Block key={i} b={b} first={i === firstText} poster={item.image?.url} />

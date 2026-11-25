@@ -289,3 +289,12 @@ ol.en-list { list-style: decimal; }
   .en-cards .ss-item__title { font-size: 19px; -webkit-line-clamp: 5; }
   .en-cards .ss-item__dek { -webkit-line-clamp: 2; }
 }
+
+/* a player's name in an ESPN story: opens the quick look (ArticleReader), drawn as a quiet chip, never an underlined link */
+.en-body a.en-plink {
+  text-decoration: none; color: inherit; font-weight: 600; cursor: pointer;
+  padding: 0 0.3em; border-radius: 6px; background: hsl(var(--gold) / 0.12); box-shadow: inset 0 -2px 0 hsl(var(--gold) / 0.55);
+  transition: background-color var(--hv-dur, 160ms) var(--ease-out);
+}
+.en-body a.en-plink:hover { background: hsl(var(--gold) / 0.24); }
+.en-body a.en-plink:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
