@@ -7,8 +7,24 @@ import type { CollegeInfo, DraftInfo } from '@/utils/draftInfo';
  * and the needs behind the needs-based mock. Each file loads once and is kept (memoised per path).
  */
 
-/** [slug, name, short, espn id, colour, alt colour, white puck, drafted, first-rounders, No. 1 picks, site players, active, eras] */
-export type SchoolRow = [string, string, string, number | null, string | null, string | null, 0 | 1, number, number, number, number, number, Record<string, [number, number, number, number]>];
+/** [slug, name, short, espn id, colour, alt colour, white puck, drafted, first-rounders, No. 1 picks, site players, active, eras, Hall of Famers, best alumnus [key, OVR]] */
+export type SchoolRow = [
+  string,
+  string,
+  string,
+  number | null,
+  string | null,
+  string | null,
+  0 | 1,
+  number,
+  number,
+  number,
+  number,
+  number,
+  Record<string, [number, number, number, number]>,
+  number?,
+  ([string, number] | null)?,
+];
 export interface CollegeIndex {
   latest: number;
   judgeAfter: number;
@@ -106,8 +122,11 @@ export const eraTotals = (r: SchoolRow, era: EraId): [number, number, number, nu
   return Object.values(e).reduce<[number, number, number, number]>((a, v) => [a[0] + v[0], a[1] + v[1], a[2] + v[2], a[3] + v[3]], [0, 0, 0, 0]);
 };
 
-/** The College tab's sections (the route's section) */
-export type CollegeSection = 'draft' | 'schools' | 'order' | 'mock';
+/**
+ * The College tab's sections (the route's section). The war room merged the old projected order and needs mock: their
+ * routes (#college/order, #college/mock) still open it (CollegeTab redirects them).
+ */
+export type CollegeSection = 'draft' | 'schools' | 'warroom';
 
 /** Opens the College tab at a section from anywhere (the club season sheet's Draft outlook) */
 export const collegeHash = (section: CollegeSection, q?: Record<string, string>) => {
