@@ -13,6 +13,7 @@ import { HeadToHeadGrid } from '@/components/season/scheduleParts';
 import { FullTable, PlayoffBracket, PowerLadder, SeasonJumbo } from '@/components/season/NflSeason';
 import SeasonClubWall from '@/components/season/SeasonClubWall';
 import { HighlightReel, Podiums, useSeasonStars } from '@/components/season/NflSeasonExtras';
+import SeasonLeaders from '@/components/season/SeasonLeaders';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
 import AroundTheLeague from '@/components/season/AroundTheLeague';
 import ScoresBrowser from '@/components/season/ScoresBrowser';
@@ -171,7 +172,8 @@ const SeasonTab = () => {
             {IS_NFL && <PlayoffBracket season={season} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <SeasonClubWall season={season} live={isLive} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
-            {IS_NFL && <Podiums season={season} stars={stars} lookup={lookup} inProgress={!season.superBowl} />}
+            {IS_NFL && !season.superBowl && <Podiums season={season} stars={stars} lookup={lookup} inProgress />}
+            {IS_NFL && <SeasonLeaders season={Number(season.season)} inProgress={!season.superBowl} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <PowerLadder season={season} />}
             {IS_NFL && <PowerAdvanced season={season} />}

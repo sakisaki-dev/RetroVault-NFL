@@ -23,6 +23,7 @@ import { matchPlayerByName } from '@/utils/leagueContent';
 import { CLUB_RECORD_FOR, SEASON_GROUP, entryName, holderName, setInText, useClubRecords, type ClubRecordRow } from './clubRecords';
 import { displayName } from '@/utils/displayName';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { AwardsHistory, StreaksShelf } from './SeasonRecordTabs';
 
 const fmt = (v: number, decimals: number) => formatDecimal(v, decimals);
 
@@ -56,7 +57,7 @@ const boardName = (s: string) => s.replace(/^[A-Z]{1,2} /, '');
 // ---------- Record plaques on trophy shelves (owner, 2026-11-17: "the record book … look a little boring") ----------
 
 /** One record as the shelves draw it, whatever its scope */
-interface PlaqueItem {
+export interface PlaqueItem {
   key: string;
   group: keyof typeof GROUP_META;
   title: string;
@@ -125,7 +126,7 @@ const SHELF_ORDER: (keyof typeof GROUP_META)[] = ['qb', 'rb', 'wr', 'te', 'ol', 
 const SHELF_LABEL: Partial<Record<keyof typeof GROUP_META, string>> = { qb: 'Passing', rb: 'Rushing', wr: 'Receiving', te: 'Tight ends', ol: 'Line', def: 'Defense', awards: 'Accolades' };
 
 /** The plaques on trophy shelves, one shelf per unit (Passing, Rushing, Receiving, Defense, Accolades) */
-const Shelves = ({ items, onSelect }: { items: PlaqueItem[]; onSelect: Select }) => {
+export const Shelves = ({ items, onSelect }: { items: PlaqueItem[]; onSelect: Select }) => {
   let n = 0;
   return (
     <div className="rb-wall">
@@ -152,7 +153,7 @@ const Shelves = ({ items, onSelect }: { items: PlaqueItem[]; onSelect: Select })
 
 /** The headline records: career (the league's best career card, with the club's own mark under it) or season. */
 export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordBoardData[]; players: Player[]; onSelect: Select }) => {
-  const [scope, setScope] = useState<'career' | 'season' | 'game'>('career');
+  const [scope, setScope] = useState<'career' | 'season' | 'game' | 'awards' | 'streaks'>('career');
   const clubFile = useClubRecords();
   const rows = clubFile?.records ?? [];
   const byRecord = new Map(rows.map((r) => [r.record, r]));
@@ -235,7 +236,11 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
       <SectionIntro
         id="record-book"
         takeaway={
-          scope === 'game'
+          scope === 'awards'
+            ? 'Every AP award and Super Bowl MVP winner, season by season.'
+            : scope === 'streaks'
+              ? 'The longest runs of straight seasons over a mark, and the most seasons over it. Runs still alive are marked.'
+              : scope === 'game'
             ? 'Single games and long plays from the club board, with the week and opponent each was set against.'
             : scope === 'career' || !tracked
               ? recordsTakeaway(headline)
@@ -260,8 +265,18 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
             Game
           </button>
         )}
+        {IS_NFL && (
+          <>
+            <button type="button" className={chip(scope === 'awards')} aria-pressed={scope === 'awards'} onClick={() => setScope('awards')}>
+              Awards
+            </button>
+            <button type="button" className={chip(scope === 'streaks')} aria-pressed={scope === 'streaks'} onClick={() => setScope('streaks')}>
+              Streaks
+            </button>
+          </>
+        )}
       </div>
-      <Shelves items={items} onSelect={onSelect} />
+      {scope === 'awards' ? <AwardsHistory players={players} onSelect={onSelect} /> : scope === 'streaks' ? <StreaksShelf players={players} onSelect={onSelect} /> : <Shelves items={items} onSelect={onSelect} />}
     </section>
   );
 };
