@@ -769,9 +769,9 @@
   .pc-ids .pc-tile--college .pc-tile__v, .pc-ids .pc-tile--draft .pc-tile__v { font-size: 13px; }
   .pc-ids .pc-tile--college,
   .pc-ids .pc-tile--draft { grid-template-columns: 36px minmax(0, 1fr); column-gap: 6px; padding: 6px 7px; }
-  .pc-ids .pc-tile--college .pc-college__logo, .pc-ids .pc-tile--college .pc-college__plate,
+  .pc-ids .pc-tile--college .pc-college__puck, .pc-ids .pc-tile--college .pc-college__plate,
   .pc-ids .pc-tile--draft .pc-tile__icon, .pc-ids .pc-tile--draft .pc-tile__puck { width: 34px !important; height: 34px !important; }
-  .pc-ids .pc-tile--college .pc-college__logo { height: 34px !important; }
+
 }
 @media (min-width: 900px) {
   .pc-ids--draft { grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(0, 1.3fr) minmax(0, 1.1fr) minmax(0, 1.1fr); }
@@ -797,7 +797,7 @@
 .pc-ids .pc-tile--draft { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 3px; padding: 10px 8px 9px; }
 .pc-ids .pc-tile--college > :first-child,
 .pc-ids .pc-tile--draft > :first-child { grid-row: auto; grid-column: auto; margin-bottom: 3px; }
-.pc-ids .pc-tile--college .pc-college__logo, .pc-ids .pc-tile--college .pc-college__plate,
+.pc-ids .pc-tile--college .pc-college__puck, .pc-ids .pc-tile--college .pc-college__plate,
 .pc-ids .pc-tile--draft .pc-draft__mark, .pc-ids .pc-tile--draft .pc-tile__icon { width: 56px !important; height: 56px !important; }
 .pc-draft__mark { display: grid; place-items: center; filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.45)); }
 .pc-draft__mark img, .pc-draft__mark > * { width: 100%; height: 100%; object-fit: contain; }
@@ -806,7 +806,12 @@
 .pc-ids .pc-tile--college .pc-tile__v, .pc-ids .pc-tile--draft .pc-tile__v { font-size: 12px; line-height: 1.2; }
 .pc-ids .pc-college__plate { font-size: 17px; }
 @media (max-width: 480px) {
-  .pc-ids .pc-tile--college .pc-college__logo, .pc-ids .pc-tile--college .pc-college__plate,
+  .pc-ids .pc-tile--college .pc-college__puck, .pc-ids .pc-tile--college .pc-college__plate,
   .pc-ids .pc-tile--draft .pc-draft__mark, .pc-ids .pc-tile--draft .pc-tile__icon { width: 48px !important; height: 48px !important; }
   .pc-ids .pc-tile--college .pc-tile__v, .pc-ids .pc-tile--draft .pc-tile__v { font-size: 11.5px; }
 }
+
+/* College mark on a white puck, the same treatment as the club logo (.pc-logo-puck) */
+.pc-college__puck { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; flex: none; border-radius: 999px;
+  background: radial-gradient(circle, hsl(0 0% 100% / 0.95) 60%, hsl(0 0% 88% / 0.95)); box-shadow: 0 0 0 1.5px hsl(0 0% 100% / 0.25), 0 2px 6px hsl(0 0% 0% / 0.35); }
+.pc-college__puck .pc-college__logo { width: 100%; height: 100%; object-fit: contain; filter: none; }
