@@ -52,12 +52,16 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
       .filter((p) => !p.isRealLegend && (!live || isInLeague(p)) && findNFLTeam(p.team)?.name === id)
       .sort((a, b) => score(b) - score(a) || (b.careerLegacy ?? 0) - (a.careerLegacy ?? 0));
     const qb = club.find((p) => p.position === 'QB');
-    return qb ? [qb, ...club.filter((p) => p !== qb).slice(0, 4)] : club.slice(0, 5);
+    return qb ? [qb, ...club.filter((p) => p !== qb)] : club;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAllPlayers, dataVersion, id, live, seasonOvr]);
+  // the ticker: the club's players in order (QB first), with this season's SZN while live (owner: "a rotating ticker,
+  // like the stock ticker, that rotates through the team's players")
+  const tape = useMemo(() => best.slice(0, 22), [best]);
+  const sznOf = (p: Player) => (live ? seasonOvr?.ovr[`${p.position}:${p.name}`] : undefined);
   // the stage: QB in the middle (celebrating), the next best alternating outwards: 4 2 [QB] 1 3
   const stage = useMemo<StagePlayer[]>(() => {
-    const [qb, ...rest] = best;
+    const [qb, ...rest] = best.slice(0, 5);
     if (!qb) return [];
     const left = rest.filter((_, i) => i % 2 === 1).reverse();
     const right = rest.filter((_, i) => i % 2 === 0);
@@ -78,14 +82,24 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
           right={row ? <LedBoard label={live ? 'Best record' : 'Final record'} value={row.record} sub={`${signed(row.diff)} pts · power #${Number.isFinite(row.power) ? row.power : '–'}`} dot={3} /> : undefined}
         />
       )}
-      {best.length > 0 && (
-        <Reveal className="sx-stars" aria-label={`${nick(lead ?? '')} stars`}>
-          {best.map((p, i) => (
-            <PlayerHit key={p.name} name={p.name} pos={p.position} className="max-w-full mo-rise" style={stag(i + 3, 80)}>
-              <ClubStrip club={lead} size="sm">{displayName(p.name)}</ClubStrip>
-            </PlayerHit>
+      {tape.length > 0 && (
+        <div className="sx-tape" aria-label={`${nick(lead ?? '')} players`}>
+          {[0, 1].map((copy) => (
+            <div key={copy} className={cn('sx-tape__track', copy === 1 && 'sx-tape__track--dup')} aria-hidden={copy === 1 || undefined}>
+              {tape.map((p) => {
+                const szn = sznOf(p);
+                return (
+                  <PlayerHit key={p.name} name={p.name} pos={p.position} className="sx-tape__item">
+                    <ClubStrip club={lead} size="sm">
+                      <span className="sx-tape__pos">{p.position}</span> {displayName(p.name)}
+                      {szn != null && <b className="sx-tape__szn">{szn}</b>}
+                    </ClubStrip>
+                  </PlayerHit>
+                );
+              })}
+            </div>
           ))}
-        </Reveal>
+        </div>
       )}
       {lead && sb && (
         <Reveal className="sx-champ" style={cv(lead)}>

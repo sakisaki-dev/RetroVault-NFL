@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Trophy } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
@@ -83,7 +84,7 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
     if (p) onPlayer(p);
   };
 
-  if (!summary) return <p className="cs-loading" role="status">Loading the {club} franchise…</p>;
+  if (!summary) return <PixelLoader what={`the ${club} franchise`} minHeight={420} />;
   const name = t?.name ?? summary.label;
   const stats: [string, string | number][] = record
     ? [['Titles', record.titles], ['SB apps', record.appearances], ['HOF', record.hof.length], ['Power', `#${record.powerRank}`], ['Best OVR', record.bestOvr ?? '—']]

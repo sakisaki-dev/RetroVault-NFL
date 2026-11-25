@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { Player } from '@/types/player';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -192,7 +193,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
                 <Choice<ClubTab> label="Club page" size="md" club={team.name} className="cs-tabs" value={tab} onChange={setTab} options={TAB_OPTIONS} />
               </div>
               {tab === 'franchise' ? (
-                <Suspense fallback={<p className="cs-loading" role="status">Loading the {team.name} franchise…</p>}>
+                <Suspense fallback={<PixelLoader what={`the ${team.name} franchise`} minHeight={420} />}>
                   <FranchiseTab club={team.name} onPlayer={openPlayer} section={section} />
                 </Suspense>
               ) : (
@@ -203,7 +204,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
                   ))}
                 </div>
               {data === undefined ? (
-                <p className="cs-loading" role="status">Loading the {year} {team.name}…</p>
+                <PixelLoader what={`the ${year} ${team.name}`} minHeight={420} />
               ) : (
                 <div className="pg" key={`${abbr}-${year}`}>
                   <Reveal className="pg-front">

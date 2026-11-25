@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useMemo } from 'react';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { useBannerData } from './useBannerData';
@@ -14,7 +15,7 @@ const BannerLab = () => {
   const items = useMemo(() => (data ? [[1, 'Tunnel of franchises', <BannerTunnel key="1" data={data} />] as const, [2, "Champions' night", <BannerChampions key="2" data={data} />] as const, [3, 'Ring of honor', <BannerRing key="3" data={data} />] as const, [4, 'Media wall', <BannerMedia key="4" data={data} />] as const] : []), [data]);
   return (
     <div className="container space-y-8 py-8">
-      {!data && <p className="text-muted-foreground">Loading the league…</p>}
+      {!data && <PixelLoader what="the league" minHeight={240} />}
       {items
         .filter(([n]) => !only || only === n)
         .map(([n, name, el]) => (

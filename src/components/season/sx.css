@@ -164,3 +164,37 @@
 .sx-club-link { cursor: pointer; }
 .sx-club-link:hover { background: hsl(var(--gold) / 0.12); }
 .sx-club-link:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: -2px; }
+
+/* the banner's name row: one equal strip per figure, filling the width in the banner's order (owner: "center these and
+   fill the space"); on a phone three across and the last two share the second row */
+.sx-stars { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 6px; }
+.sx-stars > * { min-width: 0; width: 100%; }
+.sx-stars .ax-strip { width: 100%; justify-content: center; }
+@media (max-width: 639px) {
+  .sx-stars { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .sx-stars > * { grid-column: span 2; }
+  .sx-stars > :nth-last-child(2):nth-child(3n + 1), .sx-stars > :last-child:nth-child(3n + 2) { grid-column: span 3; }
+  .sx-stars > :last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+}
+
+/* the banner's player ticker (stock-ticker style, the Market tape's motion): the club's players scroll by, QB first,
+   SZN beside each; pauses on hover / focus; still under reduced motion and lite mode (then it scrolls by hand) */
+.sx-tape {
+  display: flex; overflow: hidden; margin-top: 6px; border-radius: 10px;
+  background: hsl(var(--panel) / 0.7); border: 1px solid hsl(var(--line) / 0.7);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.sx-tape__track { display: flex; flex-shrink: 0; gap: 6px; padding: 5px 3px; animation: sx-tape 55s linear infinite; }
+.sx-tape:hover .sx-tape__track, .sx-tape:focus-within .sx-tape__track { animation-play-state: paused; }
+.sx-tape__item { flex: none; }
+.sx-tape__pos { opacity: 0.75; font-size: 0.85em; margin-right: 2px; }
+.sx-tape__szn { margin-left: 6px; padding: 0 5px; border-radius: 5px; background: rgb(0 0 0 / 0.28); font-variant-numeric: tabular-nums; }
+@keyframes sx-tape { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .sx-tape { overflow-x: auto; mask-image: none; }
+  .sx-tape__track { animation: none; }
+  .sx-tape__track--dup { display: none; }
+}
+html[data-perf='lite'] .sx-tape__track { animation: none; }
+html[data-perf='lite'] .sx-tape { overflow-x: auto; mask-image: none; }
+html[data-perf='lite'] .sx-tape__track--dup { display: none; }

@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { Trophy } from 'lucide-react';
@@ -82,7 +83,7 @@ const GamePreview = ({ id, kicker, fallback }: { id: string; kicker: string; fal
           {!done && g.spread !== undefined && <p className="ts-pop__row"><span>Line</span><span>{g.spread}</span></p>}
         </>
       ) : (
-        fallback ?? <p className="ts-pop__row"><span>{g === null ? 'Game not in the data' : 'Loading the game…'}</span><span /></p>
+        fallback ?? <p className="ts-pop__row"><span>{g === null ? 'Game not in the data' : <PixelLoader what="the game" size="sm" variant="inline" />}</span><span /></p>
       )}
       <p className="ts-pop__go">Click to open the game page</p>
     </>

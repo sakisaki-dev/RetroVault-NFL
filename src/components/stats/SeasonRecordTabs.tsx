@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useMemo, useState } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
@@ -45,7 +46,7 @@ export const AwardsHistory = ({ players, onSelect }: { players: Player[]; onSele
   const hon = useHonours();
   const byKey = useByKey(players);
   const [all, setAll] = useState(false);
-  if (hon === undefined) return <p className="text-sm text-muted-foreground">Loading the winners…</p>;
+  if (hon === undefined) return <PixelLoader what="the winners" minHeight={200} />;
   if (!hon) return <p className="text-sm text-muted-foreground">The awards file isn&rsquo;t built yet (npm run nfl:rebuild writes it).</p>;
   const years = Object.keys(hon.awards)
     .map(Number)
@@ -140,7 +141,7 @@ export const StreaksShelf = ({ players, onSelect }: { players: Player[]; onSelec
     () => (f ? f.runs.filter((r) => r[3] === f.last && r[3] - r[2] + 1 >= 3).map(([id, k, from, to, clubs]) => ({ id, k, from, len: to - from + 1, club: clubs[clubs.length - 1] })).sort((a, b) => b.len - a.len || a.k.localeCompare(b.k)) : []),
     [f],
   );
-  if (f === undefined) return <p className="text-sm text-muted-foreground">Loading the streaks…</p>;
+  if (f === undefined) return <PixelLoader what="the streaks" minHeight={200} />;
   if (!f) return <p className="text-sm text-muted-foreground">The streaks file isn&rsquo;t built yet (npm run nfl:rebuild writes it).</p>;
   const label = new Map(f.thresholds.map((t) => [t.id, t.label]));
   return (

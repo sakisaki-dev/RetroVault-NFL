@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useMemo, type CSSProperties } from 'react';
 import { Star } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -187,7 +188,7 @@ const SeasonTable = ({ player }: { player: Player }) => {
   };
   const led = (stat: string | undefined, year: number) => !!stat && !!inkFor(key)[stat]?.includes(year) && !!inkFile;
 
-  if (log === undefined) return <p className="text-sm text-muted-foreground">Loading his seasons…</p>;
+  if (log === undefined) return <PixelLoader what="his seasons" minHeight={200} />;
 
   const card = player as unknown as Record<string, number>;
   const cardOf = (c: Col) => (c.card && typeof card[c.card] === 'number' ? card[c.card] : null);

@@ -1,3 +1,4 @@
+import PixelLoader from '@/components/ui/PixelLoader';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Player } from '@/types/player';
 import { keyOf } from '../records';
@@ -105,7 +106,7 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
     return { w, l, t: games.length - w - l };
   }, [games]);
 
-  if (log === undefined) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty" role="status">Loading game log…</div></div>;
+  if (log === undefined) return <div className="gl space-y-3">{header}<PixelLoader what="the game log" minHeight={260} /></div>;
   if (!log || !all.length) return <div className="gl space-y-3">{header}<div className="gl-panel gl-empty">No games on file</div></div>;
 
   const maxKey = Math.max(1, ...chartGames.map((g) => g.key));
