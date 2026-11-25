@@ -7,6 +7,8 @@
   --ax-r: 12px;
   --ax-fill: hsl(var(--card));
   --ax-deep: #04060f;
+  --ax-plate-ink: #f5f2e8;
+  --ax-plate-sub: #b8bfd6;
 }
 
 .ax-kicker {
@@ -363,11 +365,15 @@
   box-shadow: inset 3px 0 0 var(--ax-gold);
   padding-left: 18px;
 }
+.ax-stadium__text .ax-kicker { color: var(--ax-plate-sub); }
 .ax-stadium__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ax-stadium__title {
   margin: 0;
   font-family: var(--font-display); font-style: italic; font-weight: 800;
-  font-size: 28px; line-height: 1; text-transform: uppercase; color: var(--ax-ink);
+  font-size: 28px; line-height: 1; text-transform: uppercase;
+  /* the plate is always the near-black --ax-deep, so its ink is light whatever the club's primary is (--ax-ink is derived
+     against the club fill, dark on a pale club: unreadable here) */
+  color: var(--ax-plate-ink);
 }
 .ax-stadium__right { flex: none; }
 
