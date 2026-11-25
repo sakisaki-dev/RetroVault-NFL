@@ -12,6 +12,8 @@ import type { SeasonView } from '@/utils/seasonLive';
 import { signed } from './seasonGamesUi';
 import { LeagueTable, SectionTitle } from './SeasonGames';
 import { useLeague } from '@/context/LeagueContext';
+import { useGamePool } from '@/utils/useOfficialOvr';
+import type { Player } from '@/types/player';
 import { isInLeague } from '@/components/InLeague';
 import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, StadiumHeader, clubVars, type StagePlayer } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
@@ -40,17 +42,27 @@ export const SeasonJumbo = ({ season, live }: { season: SeasonView; live: boolea
   const top = [...season.table].sort((a, b) => b.pct - a.pct || b.diff - a.diff)[0];
   const lead = sb?.winner ?? top?.team;
   const { getAllPlayers, dataVersion } = useLeague();
+  const { seasonOvr } = useGamePool();
   const id = findNFLTeam(lead ?? '')?.name;
-  const best = useMemo(
-    () =>
-      getAllPlayers()
-        .filter((p) => !p.isRealLegend && (!live || isInLeague(p)) && findNFLTeam(p.team)?.name === id)
-        .sort((a, b) => (b.careerLegacy ?? 0) - (a.careerLegacy ?? 0))
-        .slice(0, 3),
+  // owner: "show the top players on that team with the QB at the front": the club's QB front and centre, its next best
+  // players either side (this season's SZN while it is live, else career legacy)
+  const best = useMemo(() => {
+    const score = (p: Player) => (live ? seasonOvr?.ovr[`${p.position}:${p.name}`] ?? -1 : p.careerLegacy ?? 0);
+    const club = getAllPlayers()
+      .filter((p) => !p.isRealLegend && (!live || isInLeague(p)) && findNFLTeam(p.team)?.name === id)
+      .sort((a, b) => score(b) - score(a) || (b.careerLegacy ?? 0) - (a.careerLegacy ?? 0));
+    const qb = club.find((p) => p.position === 'QB');
+    return qb ? [qb, ...club.filter((p) => p !== qb).slice(0, 4)] : club.slice(0, 5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getAllPlayers, dataVersion, id, live],
-  );
-  const stage = useMemo<StagePlayer[]>(() => (best.length === 3 ? [best[1], best[0], best[2]] : best).map((p) => ({ player: p, action: p === best[0] ? 'celebrate' : undefined })), [best]);
+  }, [getAllPlayers, dataVersion, id, live, seasonOvr]);
+  // the stage: QB in the middle (celebrating), the next best alternating outwards: 4 2 [QB] 1 3
+  const stage = useMemo<StagePlayer[]>(() => {
+    const [qb, ...rest] = best;
+    if (!qb) return [];
+    const left = rest.filter((_, i) => i % 2 === 1).reverse();
+    const right = rest.filter((_, i) => i % 2 === 0);
+    return [...left, qb, ...right].map((p) => ({ player: p, action: p === qb ? 'celebrate' : undefined }));
+  }, [best]);
   const row = season.table.find((r) => r.team === lead);
   const wk = season.weeks?.filter((x) => x.games.some((g) => g.awayScore !== undefined)).length;
   return (
