@@ -56,7 +56,7 @@
 .nfl-field.lab-field--tall { height: 940px; }
 .nfl-field--fantasy.lab-field--wide { min-height: 640px; }
 @media (min-width: 1024px) { .nfl-field--fantasy.lab-field--wide { min-height: 700px; } }
-.nfl-field--fantasy.lab-field--tall { height: 760px; }
+.nfl-field--fantasy.lab-field--tall { height: 600px; }
 .nfl-field .lab-tag { max-width: 5.2rem; font-size: 11px; }
 @media (min-width: 1024px) { .nfl-field .lab-tag { max-width: 6.2rem; font-size: 12px; } }
 .nfl-field--fantasy .lab-tag { max-width: 8rem; font-size: 13px; }
@@ -397,4 +397,15 @@
 @media (max-width: 480px) {
   .nfl-depth .nfl-rowcard { display: none; }
   .nfl-depth .lab-row-pos { width: 1.8rem; }
+}
+
+/* phone pass: 44px touch areas for the bar, the option buttons and the formation chip; the field's swap dot gets a wider hit area */
+@media (max-width: 639px) {
+  .nfl-bar > button, .nfl-bar .nfl-seg-btn { min-height: 44px; }
+  .nfl-opt-btn { height: 44px; width: 44px; }
+  .nfl-form-chip { height: 44px; }
+  .nfl-swap::after { content: ''; position: absolute; inset: -7px; }
+  .nfl-rowclear::before { inset: -14px -10px; }
+  .lab-row button[role='combobox'] { min-height: 44px; }
+  .lab-hit { min-width: 44px; }
 }

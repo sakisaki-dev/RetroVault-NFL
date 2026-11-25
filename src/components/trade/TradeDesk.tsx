@@ -218,7 +218,7 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
                   <span className="fh-chip__k">League</span><b>{leagueSummary}</b>
                 </button>
               )}
-              {anyPlayers && <button type="button" className="dk-link dk-clear" onClick={reset}><X className="h-3.5 w-3.5" aria-hidden="true" /> Clear</button>}
+              {anyPlayers && <button type="button" className="dk-link dk-clear" onClick={reset} aria-label="Clear the trade"><X className="h-3.5 w-3.5" aria-hidden="true" /> Clear</button>}
               <span className="dk-bar__sp" />
               <span className="dk-wk-tag">Week {model.week} · {model.season}</span>
             </div>
