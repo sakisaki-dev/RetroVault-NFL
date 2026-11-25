@@ -32,7 +32,7 @@ export const DEFAULT_SETTINGS: TradeSettings = { scoring: 'ppr', teams: 12, supe
 
 export const TRADE_RULES = {
   /** games of prior weight when shrinking a small sample toward the bench tier (the regulars just below the starters) at his position */
-  priorGames: 3,
+  priorGames: 2,
   /** role: the club's last games he is counted against, and the share of them that makes a full-time role */
   roleGames: 4,
   roleFull: 0.75,
@@ -45,6 +45,11 @@ export const TRADE_RULES = {
   wRecent: 0.35,
   wSeason: 0.4,
   wUsage: 0.25,
+  /** QB: a game's points swing widely (sd about 9) and points per opportunity vary by player (rushers), so the blend leans on the season: last 3 / season / usage, and TD points regress more slowly */
+  wRecentQB: 0.1,
+  wSeasonQB: 0.8,
+  wUsageQB: 0.1,
+  tdPriorGamesQB: 3,
   /** cap on the matchup factor either way */
   matchupCap: 0.15,
   playoffWeeks: [15, 16, 17],
@@ -60,8 +65,8 @@ export const TRADE_RULES = {
 
 /** Method notes for the page's (i), kept next to the formulas they describe. */
 export const TRADE_METHOD_NOTES = {
-  projection: 'Per-game rate: last 3 games, the season (a small sample shrinks toward the bench tier, the regulars just below the starters) and usage (opportunities x the league rate), TD points regressed to the league rate.',
-  role: 'Scaled by his role: the share of his club\'s recent games he plays (3 of 4 is full-time; a player on the injury report keeps his season share). Backups and benched players project near zero.',
+  projection: 'Per-game rate: last 3 games, the season (a small sample shrinks toward the bench tier, the regulars just below the starters) and usage (opportunities x the league rate), TD points regressed to the league rate. A QB leans on the season (last 3 and usage count less, TDs regress more slowly).',
+  role: 'Scaled by his role: the share of his club\'s recent games he plays (3 of 4 is full-time; a player on the injury report counts only the games up to his last appearance). Backups and benched players project near zero.',
   ros: 'Rest of season: the rate x each week\'s matchup (capped 15%) x availability (bye 0, IR out 4 games, Out 1, Doubtful 25%, Questionable 90%), playoff weeks weighted.',
   vor: 'VOR: weighted ROS minus the replacement level, the last starter at his position once the league\'s slots, FLEX and superflex are filled by that same measure.',
   value: 'Value: a convex stud premium of VOR, never below 0 (a player below replacement can be dropped), plus a roster-spot credit for each extra player given.',
@@ -210,8 +215,8 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     lgPo[pos] = l.po + (REC_POINTS[s.scoring] - 1) * l.rpo + (s.tePremium && pos === 'TE' ? TE_PREMIUM_POINTS * l.rpo : 0);
     lgTd[pos] = l.tpo;
   });
-  // role: the share of his club's last games he appears in (a player on an injury report keeps his season share instead,
-  // his availability is counted week by week below), 3 of 4 or more is a full-time role
+  // role: the share of his club's last games he appears in (a player on the injury report: the share of the games he played up to his last appearance, his
+  // availability is counted week by week below), 3 of 4 or more is a full-time role
   const played = (club: string) => {
     const bye = raw.n[club]?.bye ?? null;
     const ws: number[] = [];
@@ -225,7 +230,12 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     const last = cw.slice(-R.roleGames);
     const recent = last.filter((w) => mine.has(w)).length / last.length;
     const season = cw.filter((w) => mine.has(w)).length / cw.length;
-    const share = st ? Math.max(recent, season) : R.roleRecent * recent + (1 - R.roleRecent) * season;
+    // on the injury report: the role is the share of games he played up to his last appearance (the healthy weeks); the
+    // weeks he is out are the availability's job, so they are not counted twice
+    const lastSeen = Math.max(0, ...mine);
+    const healthy = cw.filter((w) => w <= lastSeen);
+    const healthyShare = healthy.length ? healthy.filter((w) => mine.has(w)).length / healthy.length : 0;
+    const share = st ? healthyShare : R.roleRecent * recent + (1 - R.roleRecent) * season;
     return clamp(share / R.roleFull, 0, 1);
   };
   const scored = new Map<string, number[]>();
@@ -269,18 +279,20 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     // TD regression
     const tdObs = (rec.tp ?? 0) / g;
     const tdExp = (og ?? 0) * lgTd[pos];
-    const lam = g / (g + R.tdPriorGames);
+    const lam = g / (g + (pos === 'QB' ? R.tdPriorGamesQB : R.tdPriorGames));
     const tdReg = lam * tdObs + (1 - lam) * tdExp;
     const adj = tdObs - tdReg;
     const l3raw = g >= 3 ? pts.slice(-3).reduce((a, b) => a + b, 0) / 3 : null;
     const p3raw = g >= 6 ? pts.slice(-6, -3).reduce((a, b) => a + b, 0) / 3 : null;
     const season = Math.max(0, shrunk - adj);
     const recent = l3raw != null ? Math.max(0, l3raw - adj) : null;
-    const wR = recent != null ? R.wRecent : 0;
-    const wU = usage != null ? R.wUsage : 0;
+    const qb = pos === 'QB';
+    const wR = recent != null ? (qb ? R.wRecentQB : R.wRecent) : 0;
+    const wS = qb ? R.wSeasonQB : R.wSeason;
+    const wU = usage != null ? (qb ? R.wUsageQB : R.wUsage) : 0;
     const role = roles.get(key) ?? 1;
     // a rate while he plays, times his role: a backup or a player not playing recently projects near zero
-    const base = role * (wR * (recent ?? 0) + R.wSeason * season + wU * (usage ?? 0)) / (wR + R.wSeason + wU);
+    const base = role * (wR * (recent ?? 0) + wS * season + wU * (usage ?? 0)) / (wR + wS + wU);
     // remaining schedule
     const slots = raw.n[rec.c]?.rm ?? [];
     const st = statusOf(key) ?? null;

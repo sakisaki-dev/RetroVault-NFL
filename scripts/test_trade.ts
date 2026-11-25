@@ -4,6 +4,7 @@ import type { FanRaw } from '../src/utils/fantasy';
 import { buildTradeModel, gapNorm, DEFAULT_SETTINGS, evaluateTrade, suggestPartner, type TradeModel, type TradeSettings, type TradeTeam } from '../src/utils/tradeSim';
 
 const raw = JSON.parse(readFileSync('public/data/nfl/fantasy.json', 'utf8')) as FanRaw;
+const keyName = (k: string) => k.slice(k.indexOf(':') + 1);
 const inj = JSON.parse(readFileSync('public/data/nfl/injuries.json', 'utf8')) as { p: Record<string, [string, string]> };
 const build = (s: Partial<TradeSettings> = {}, statusOf: (k: string) => never | undefined = () => undefined): TradeModel => buildTradeModel(raw, { ...DEFAULT_SETTINGS, ...s }, statusOf);
 const m = build();
@@ -113,4 +114,21 @@ const withInj = build({}, st);
 const irKey = Object.keys(inj.p ?? {}).find((k) => inj.p[k][0] === 'IR' && m.players.has(k) && m.players.get(k)!.ros > 20);
 if (irKey) check('an IR player\'s ROS drops', withInj.players.get(irKey)!.ros < m.players.get(irKey)!.ros, `${irKey} ${m.players.get(irKey)!.ros.toFixed(0)} -> ${withInj.players.get(irKey)!.ros.toFixed(0)}`);
 else check('an IR player exists to test', false);
+
+// 9. Allen, full-time starters, IR without double counting
+const qbRos = [...m.players.values()].filter((p) => p.pos === 'QB').sort((a, b) => b.ros - a.ros).map((p) => p.key);
+check('Josh Allen is a top-5 QB by ROS', qbRos.indexOf('QB:Josh Allen') >= 0 && qbRos.indexOf('QB:Josh Allen') < 5, `QB${qbRos.indexOf('QB:Josh Allen') + 1}; top 5 ${qbRos.slice(0, 5).map(keyName).join(', ')}`);
+const full = [...m.players.values()].filter((p) => p.g >= 8 && p.role >= 1 && !p.status);
+const qbFull = full.filter((p) => p.pos === 'QB' && (p.l3 ?? p.ppg) >= 0.8 * p.ppg);
+const off = qbFull.map((p) => Math.abs(p.base - p.ppg) / p.ppg);
+check('a full-time QB projects within 20% of his PPR a game unless his last 3 say otherwise', qbFull.length >= 6 && Math.max(...off) <= 0.2, `${qbFull.length} QBs, worst ${(Math.max(...off) * 100).toFixed(0)}%`);
+const lowL3 = [...m.players.values()].filter((p) => p.pos === 'QB' && p.g >= 8 && p.role >= 1 && (p.l3 ?? p.ppg) < 0.8 * p.ppg);
+check('a QB with a weak last 3 stays within 25% of his season rate', lowL3.every((p) => p.base >= 0.75 * p.ppg), lowL3.map((p) => `${p.name} ${(p.base / p.ppg * 100).toFixed(0)}%`).join(', '));
+const med = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+const valued = full.filter((p) => p.value > 0);
+check('full-time starters with value: median deviation from season PPR a game under 12%', med(valued.map((p) => Math.abs(p.base - p.ppg) / p.ppg)) < 0.12, `${valued.length} players, median ${(med(valued.map((p) => Math.abs(p.base - p.ppg) / p.ppg)) * 100).toFixed(1)}%`);
+const irs = Object.keys(inj.p ?? {}).filter((k) => inj.p[k][0] === 'IR' && m.players.has(k) && m.players.get(k)!.g >= 4);
+check('IR: role comes from the healthy weeks (never below the no-status role)', irs.length > 0 && irs.every((k) => withInj.players.get(k)!.role >= m.players.get(k)!.role - 1e-9), `${irs.length} IR players`);
+const hurts = withInj.players.get('QB:Jalen Hurts'), hurtsNo = m.players.get('QB:Jalen Hurts');
+check('IR starter: role is full from his healthy weeks and only the missed games cut ROS', !!hurts && hurts.role >= 0.99 && hurts.weeks.filter((w) => w.opp && w.avail === 0).length <= 4 && Math.abs(hurts.base / hurts.ppg - 1) < 0.25, `role ${hurts?.role.toFixed(2)} (no status ${hurtsNo?.role.toFixed(2)}), rate ${hurts?.base.toFixed(1)} vs ${hurts?.ppg.toFixed(1)} a game`);
 process.exit(bad ? 1 : 0);
