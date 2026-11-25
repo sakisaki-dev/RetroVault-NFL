@@ -157,38 +157,30 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
       })}
       self={() => ({ player, display: String(me.szn), grade: me.grade })}
     >
+      {/* the Skill card's exact layout and wording (owner: "mirror that card to the skill grade") */}
       <button
         type="button"
-        aria-label={`Season OVR ${me.szn}, grade ${me.grade?.grade ?? 'none'}, ${ordinal(me.rank)} of ${list.length} ${pos}s. Show the ${pos} season leaderboard`}
+        aria-label={`Season grade ${me.grade?.grade ?? 'none'}, season OVR ${me.szn}. Show the ${pos} leaderboard`}
         className={cn(
-          'rbk-chip glass-card flex w-full flex-col gap-2.5 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+          'rbk-chip glass-card flex w-full flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
           me.grade?.grade === 'S' && 'dd-card--s',
         )}
       >
-        <div className="flex items-center gap-4">
-          <GradeChip grade={me.grade} size="xl" />
-          <div className="min-w-0 space-y-1">
-            <p className="flex items-center gap-1.5 font-pixel text-[9px] uppercase text-gold">
-              Season · {seasonLabel(seasonOvr.season)}
-              <InfoTip>SZN is his season OVR: this season&rsquo;s line ranked within {pos}s who played it. The letter is his SZN percentile among them on the skill grades&rsquo; scale (S = top 10%). Skill is per-game rates only, so the two can differ.</InfoTip>
-            </p>
-            <p className="font-display text-5xl font-bold leading-none tabular-nums text-chalk">
-              <CountUp value={me.szn} />
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          <span className="lamp">
-            {ordinal(me.rank)} of <b>{list.length}</b> {pos}s
-          </span>
-          {me.skill && (
-            <span className="lamp" title={lead === 'up' ? 'Outplaying his skill rating' : lead === 'down' ? 'Below his skill rating' : 'In line with his skill rating'}>
-              SZN <b>{me.szn}</b> vs Skill <b>{me.skill.grade.grade}</b>
-              {lead === 'up' ? ' ▲' : lead === 'down' ? ' ▼' : ''}
+        <GradeChip grade={me.grade} size="xl" />
+        <div className="min-w-0 space-y-1.5">
+          <p className="font-pixel text-[9px] uppercase text-gold">Season grade</p>
+          <div className="flex flex-wrap gap-1.5">
+            <span className="lamp" title="Season OVR: this season ranked within the position">
+              SZN <b>{me.szn}</b>
             </span>
-          )}
+            <span className="lamp" title="His rank among this season's rated players at the position">
+              Rank <b>{me.rank}</b>/{list.length}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {ordinal(Math.round(me.pct))} percentile among {pos}s this season.{lead === 'up' ? ' Above his skill grade.' : lead === 'down' ? ' Below his skill grade.' : ''}
+          </p>
         </div>
-        <span className="font-pixel text-[8px] uppercase text-muted-foreground">Tap for the {pos} list</span>
       </button>
     </LeaderboardPeek>
   );

@@ -21,6 +21,8 @@ interface Props {
   onOpenPlayer: (p: Player) => void;
   /** The Season panel: stacked under the Skill tile (left column on a desktop) */
   below?: ReactNode;
+  /** The overall leaderboard computed exactly like `overall` (its scope and fold), so the tile and its list agree */
+  overallList?: () => PeekBoard;
 }
 
 const toPeek = (title: string, metric: string, pos: string, b: SkillBoard): PeekBoard => ({
@@ -34,7 +36,7 @@ const toPeek = (title: string, metric: string, pos: string, b: SkillBoard): Peek
 });
 
 /** Broadcast-style rating cards: one letter grade per play-style skill, graded by percentile within the position. */
-const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, players, onOpenPlayer, below }: Props) => {
+const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, players, onOpenPlayer, below, overallList }: Props) => {
   const graded = traits.filter((t) => t.grade);
   if (!graded.length) {
     return (
@@ -54,7 +56,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
         <LeaderboardPeek
           player={player}
           onOpenPlayer={onOpenPlayer}
-          getBoard={() => toPeek('Skill rating', 'Overall skill grade', player.position, overallBoard(players, player.position))}
+          getBoard={() => overallList?.() ?? toPeek('Skill rating', 'Overall skill grade', player.position, overallBoard(players, player.position))}
           self={() => ({
             player,
             display: String(overall.rating),
@@ -92,7 +94,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
       )}
       {below}
       </div>
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
+      <ul className="grid-fill-last grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (

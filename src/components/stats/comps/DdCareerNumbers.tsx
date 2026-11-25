@@ -25,14 +25,16 @@ const DdCareerNumbers = ({ player }: { player: Player }) => {
     // games once (the headline tiles may already carry it)
     ...(head.some((t) => t.key === 'games') ? [] : [{ key: 'games', label: 'Games', value: player.games, d: 0 }]),
   ];
-  // rows that fill: a column count that divides the tiles (5, 4 or 3 across on a desktop, 3 or 2 on a phone); when
-  // none divides, the last tile spans the leftover cells (owner: "numbers overflow and look too condensed")
+  // owner: "we can make a couple big and resize the boxes so everything sits nicer". Two tiers: his headline numbers
+  // (the first three tiles: e.g. pass yds, pass TD, INT) big across the top; the rest (rates, rings, games) smaller in a
+  // second row, every row filled evenly.
   const n = tiles.length;
-  // owner: two rows on a desktop ("condense into 2 rows"), three across on a phone
-  const cols = n <= 6 ? n : Math.ceil(n / 2);
-  const mcols = 3;
-  const spanD = cols - ((n - 1) % cols);
-  const spanM = mcols - ((n - 1) % mcols);
+  const big = tiles.slice(0, Math.min(3, n));
+  const small = tiles.slice(big.length);
+  const k = small.length;
+  // phone: the small tiles 3 or 2 across, whichever divides them (else 3, the last spanning what's left)
+  const mcols = k % 3 === 0 ? 3 : k % 2 === 0 ? 2 : 3;
+  const lastSpanM = mcols - ((k - 1) % mcols);
   return (
     <Reveal className="ts" style={{ '--tc': club ? `hsl(${club.primaryColor})` : 'hsl(var(--gold))' } as CSSProperties} aria-label="Career numbers">
       <div className="ts__head mo-rise" style={stag(0)}>
@@ -42,17 +44,29 @@ const DdCareerNumbers = ({ player }: { player: Player }) => {
           <div className="ts__s">Totals through last season and this one</div>
         </div>
       </div>
-      <div className="ts__tiles ts__tiles--career" style={{ '--cols': cols, '--mcols': mcols } as CSSProperties}>
-        {tiles.map((t, i) => (
-          <div
-            key={t.key}
-            className={cn('ts__tile mo-rise', i === n - 1 && 'ts__tile--last')}
-            style={{ ...stag(i + 1), ...(i === n - 1 ? { '--sp-d': spanD, '--sp-m': spanM } : {}) } as CSSProperties}
-          >
-            <span className="ts__tk">{t.label}</span>
-            <span className="ts__tv">{t.value == null ? '—' : fmt(t.value, t.d)}</span>
+      <div className="ts__career">
+        <div className="ts__career-big" style={{ '--n': big.length } as CSSProperties}>
+          {big.map((t, i) => (
+            <div key={t.key} className="ts__tile ts__tile--big mo-rise" style={stag(i + 1)}>
+              <span className="ts__tk">{t.label}</span>
+              <span className="ts__tv">{t.value == null ? '—' : fmt(t.value, t.d)}</span>
+            </div>
+          ))}
+        </div>
+        {k > 0 && (
+          <div className="ts__career-small" style={{ '--k': k, '--mcols': mcols } as CSSProperties}>
+            {small.map((t, i) => (
+              <div
+                key={t.key}
+                className="ts__tile ts__tile--small mo-rise"
+                style={{ ...stag(big.length + i + 1), ...(i === k - 1 ? { '--sp-m': lastSpanM } : {}) } as CSSProperties}
+              >
+                <span className="ts__tk">{t.label}</span>
+                <span className="ts__tv">{t.value == null ? '—' : fmt(t.value, t.d)}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </Reveal>
   );

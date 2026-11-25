@@ -3,11 +3,12 @@ import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, seasonPlayerOf, type SeasonOvrFile } from '@/config/ovr';
-import { careerPool, careerPoolLabel, seasonPoolLabel, foldAdvanced, gradeFor, ovrFromPercentile, percentileOf, playerSkillGrades, tierFor } from '@/config/skillGrades';
+import { careerPool, careerPoolLabel, seasonPoolLabel, foldAdvanced, gradeFor, ovrFromPercentile, percentileOf, playerSkillGrades, tierFor, type Overall } from '@/config/skillGrades';
 import { careerRatingOf } from '@/config/ovr';
 import { advancedPcts, useAdvanced } from '@/utils/nflAdvanced';
 import { useSkillRatings } from '@/utils/useSkillRatings';
 import { cn } from '@/lib/utils';
+import type { PeekBoard } from './LeaderboardPeek';
 import DdSkills from './DdSkills';
 import DdSzn, { hasSznPanel } from './DdSzn';
 import DdAdvancedFactors from './DdAdvancedFactors';
@@ -76,6 +77,35 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
   }, [base, adv, key, scope, foldedPool, useSeason, careerRatings]);
   const label = seasonOvr ? seasonLabel(seasonOvr.season) : 'This season';
 
+  // The tile's list, ranked by the same numbers the tile shows (owner: "Van Ginkel says A+ but it shows S": the tile
+  // read the folded career rating while its list ranked the classic one)
+  const overallList = (): PeekBoard | undefined => {
+    const pos = player.position;
+    type Row = { player: Player; o: Overall };
+    let rows: Row[] = [];
+    if (!useSeason && IS_NFL) {
+      rows = players.filter((p) => p.position === pos).flatMap((p) => {
+        const o = careerRatings.get(playerKey(p));
+        return o ? [{ player: p, o }] : [];
+      });
+    } else if (useSeason && IS_NFL && adv && foldedPool) {
+      const pool = careerPool(seasonPlayers, pos) ?? [];
+      rows = pool.flatMap((p) => {
+        const f = foldAdvanced(playerSkillGrades(seasonPlayers, p).overall, advancedPcts(adv, playerKey(p), scope));
+        if (!f) return [];
+        const pct = percentileOf(foldedPool, f.pct);
+        const grade = gradeFor(pct) ?? f.grade;
+        return [{ player: p, o: { ...f, pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) } }];
+      });
+    } else return undefined;
+    rows.sort((a, b) => b.o.rating - a.o.rating || b.o.pct - a.o.pct || a.player.name.localeCompare(b.player.name));
+    return {
+      title: 'Skill rating',
+      sub: [useSeason ? `${label} · ${pos}s with ${seasonPoolLabel(seasonPlayers, pos) ?? 'a game'}` : `Career · every ${pos}`, `${rows.length} rated`].join(' · '),
+      rows: rows.map((r) => ({ player: r.player, display: String(r.o.rating), grade: r.o.grade })),
+    };
+  };
+
   return (
     <div className="space-y-3">
       {hasSeason && (
@@ -109,6 +139,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         players={useSeason ? seasonPlayers : players}
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
         below={<DdSzn player={player} players={players} seasonOvr={seasonOvr} onOpenPlayer={onOpenPlayer} />}
+        overallList={IS_NFL ? overallList : undefined}
       />
       {IS_NFL && useSeason && (grades as { smallSample?: boolean }).smallSample && seasonPoolLabel(seasonPlayers, player.position) && (
         <p><NoteChip short="Small sample">Below the {seasonPoolLabel(seasonPlayers, player.position)} bar: his rates are pulled toward the qualified average in proportion to the sample.</NoteChip></p>

@@ -161,9 +161,19 @@
 .ts__bar { height: 6px; border-radius: 99px; background: hsl(var(--line) / 0.6); overflow: hidden; }
 .ts__bar i { display: block; height: 100%; background: var(--tc); border-radius: 99px; }
 
-/* Deep Dive Career numbers: full rows on every width, numbers sized to their tile (never clipped or crammed) */
-.ts__tiles--career { grid-template-columns: repeat(var(--mcols, 2), minmax(0, 1fr)); }
-@media (min-width: 640px) { .ts__tiles--career { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); } }
-.ts__tiles--career .ts__tv { font-size: clamp(1.15rem, 5vw, 1.7rem); white-space: nowrap; overflow: hidden; text-overflow: clip; }
-.ts__tiles--career .ts__tile { padding: 0.45rem 0.6rem; }
-@media (min-width: 640px) { .ts__tiles--career .ts__tv { font-size: clamp(1.35rem, 2vw, 1.8rem); } }
+/* Deep Dive Career numbers: the headline numbers big across the top, the rest smaller in an even row below; both rows
+   always full (owner: "a couple big and resize the boxes so everything sits nicer") */
+.ts__career { display: grid; gap: 0.5rem; }
+.ts__career-big { display: grid; gap: 0.5rem; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); }
+.ts__career-small { display: grid; gap: 0.5rem; grid-template-columns: repeat(var(--mcols, 3), minmax(0, 1fr)); }
+.ts__career-small > :last-child { grid-column: span var(--sp-m, 1); }
+@media (min-width: 640px) {
+  .ts__career-small { grid-template-columns: repeat(var(--k, 6), minmax(0, 1fr)); }
+  .ts__career-small > :last-child { grid-column: auto; }
+}
+.ts__tile--big { padding: 0.6rem 0.8rem; }
+.ts__tile--big .ts__tv { font-size: clamp(1.5rem, 6.4vw, 2rem); white-space: nowrap; }
+@media (min-width: 640px) { .ts__tile--big .ts__tv { font-size: clamp(2.2rem, 3.4vw, 2.9rem); } }
+.ts__tile--small { padding: 0.4rem 0.6rem; }
+.ts__tile--small .ts__tv { font-size: clamp(1.1rem, 4.6vw, 1.35rem); white-space: nowrap; }
+@media (min-width: 640px) { .ts__tile--small .ts__tv { font-size: 1.4rem; } }
