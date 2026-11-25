@@ -3,6 +3,8 @@
 
     python3 scripts/nfl/fetch.py            # everything missing, plus the current season's files again
     python3 scripts/nfl/fetch.py --all      # everything again
+    python3 scripts/nfl/fetch.py --live     # only what the daily live-season job reads (nfl-live-data.yml): the club
+                                            # list, the schedule and the season in progress's weekly files
 
 Source: https://github.com/nflverse/nflverse-data (releases; CC-BY 4.0). Files kept as downloaded (.csv.gz where offered).
 The current season's files change every week in season, so they are always fetched again.
@@ -50,6 +52,9 @@ for y in range(FIRST, NOW + 1):
     if y >= 2013:
         FILES.append(("snap_counts", f"snap_counts_{y}.csv.gz", cur))
 
+if "--live" in sys.argv:  # players, games and the files named for the season in progress: no history, no advanced stats
+    FILES = [f for f in FILES if f[0] in ("players", "schedules") or (str(NOW) in f[1] and f[0] != "stats_team" and f[0] != "pfr_advstats")]
+
 
 def main() -> None:
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -86,6 +91,8 @@ def main() -> None:
     print(f"nflverse: {got} downloaded, {skipped} cached, {len(missing)} missing ({size:.0f} MB in {CACHE.relative_to(ROOT)})")
     if missing:
         print("  missing: " + ", ".join(missing))
+    if "--live" in sys.argv and any(m in ("games.csv.gz", "players.csv.gz") or m.startswith("stats_player_week") for m in missing):
+        sys.exit("live fetch: a required file is missing")
 
 
 if __name__ == "__main__":
