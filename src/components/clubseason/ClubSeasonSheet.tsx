@@ -14,7 +14,9 @@ import type { ClubTab } from '@/utils/openClub';
 import { mirrorClubHash } from './clubRoute';
 import { realNumberOf } from '@/utils/gameSprites';
 import { resultOf, ticketsOf, useClubSeason } from '@/utils/clubSeason';
-import ClubSeasonHero from './ClubSeasonHero';
+import ClubStageHero, { type HeroPlayer, type HeroTile } from './ClubStageHero';
+import { coverLines, ordinal } from './ClubSeasonHero';
+import { sitePos } from '@/components/season/NflSeasonExtras';
 import ClubSeasonFacing from './ClubSeasonFacing';
 import ClubSeasonLineup from './ClubSeasonLineup';
 import ClubSeasonInk from './ClubSeasonInk';
@@ -99,6 +101,15 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
   const tickets = useMemo(() => (data?.games && abbr ? ticketsOf(data.games, abbr) : []), [data?.games, abbr]);
   const result = useMemo(() => (abbr ? resultOf(data?.games ?? null, abbr, data?.schedule ?? null) : { text: '', champion: false, playoffs: false, live: false }), [data, abbr]);
   const lastPost = useMemo(() => [...tickets].reverse().find((t) => t.type !== 'REG' && t.r) ?? null, [tickets]);
+  const heroPlayers = useMemo<HeroPlayer[]>(() => {
+    const ranked = rows.filter((r) => r.szn != null && r.pos !== 'OL' && r.g > 0).sort((a, b) => (b.szn ?? 0) - (a.szn ?? 0) || b.g - a.g || a.k.localeCompare(b.k));
+    const qb = ranked.find((r) => r.pos === 'QB');
+    const order = qb ? [qb, ...ranked.filter((r) => r !== qb)] : ranked;
+    return order.slice(0, 22).map((r) => ({
+      player: byKey.get(r.k) ?? ({ name: r.name, position: sitePos(r.pos), team: club, bannerTeam: club } as unknown as Player),
+      badge: r.szn,
+    }));
+  }, [rows, byKey, club]);
   const record = useMemo(() => {
     if (data?.cell) return data.cell.record;
     const reg = tickets.filter((t) => t.type === 'REG' && t.r);
@@ -162,6 +173,9 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
     scroller.current?.scrollTo({ top: 0 });
   }, [tab]);
 
+  const onStage = useCallback((p: Player) => {
+    if (byKey.get(`${p.position}:${p.name}`) === p) openPlayer(p);
+  }, [byKey, openPlayer]);
   const openGameFromSheet = (id: string) => {
     onClose();
     window.setTimeout(() => openGame(id), AFTER_CLOSE_MS);
@@ -208,22 +222,35 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
               ) : (
                 <div className="pg" key={`${abbr}-${year}`}>
                   <Reveal className="pg-front">
-                    <ClubSeasonHero club={club} year={year} record={record || '–'} cell={data.cell} result={result} lastPost={lastPost} rows={rows} onPick={pick} />
+                    <ClubStageHero
+                      club={club}
+                      kicker={`${year} season${result.live ? ' · in progress' : ''}`}
+                      title={team.name}
+                      players={heroPlayers}
+                      champion={result.champion}
+                      led={{ label: result.live ? 'Record so far' : 'Final record', value: record || '–', sub: [data.cell?.division && data.cell.divisionRank ? `${ordinal(data.cell.divisionRank)} ${data.cell.division}` : '', data.cell ? `${data.cell.diff > 0 ? '+' : data.cell.diff < 0 ? '−' : ''}${Math.abs(data.cell.diff)} pts` : ''].filter(Boolean).join(' · ') || undefined }}
+                      tiles={coverLines(rows, data.cell).map<HeroTile>((l) => {
+                        const m = l.big.match(/^([+−]?)(\d[\d,]*)$/);
+                        return { value: m ? Number(m[2].replace(/,/g, '')) : l.big, prefix: m?.[1], label: l.text };
+                      })}
+                      ribbon={[result.text || (record ? `Record ${record}` : ''), lastPost?.r ? `${lastPost.home ? 'vs' : '@'} ${lastPost.opp} ${lastPost.pf}-${lastPost.pa}` : ''].filter(Boolean).join(' · ') || undefined}
+                      onPlayer={onStage}
+                    />
                     <ClubSeasonFacing abbr={abbr} year={year} cell={data.cell} table={data.schedule?.table ?? null} tickets={tickets} result={result} onOpenGame={openGameFromSheet} />
                   </Reveal>
                   <ClubSeasonLineup rows={rows} lineup={data.lineup} club={club} clubName={team.name} year={year} onPick={pick} />
                   <ClubSeasonDraft abbr={abbr} clubName={team.name} year={year} onOpen={toCollege} />
+                  <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined} className="pg-sched">
+                    {tickets.length ? <Fixtures tickets={tickets} onOpen={openGameFromSheet} /> : <p className="pg-note">No games on file for {year}.</p>}
+                    {tickets.some((t) => t.upset) && <p className="pg-note">Upset: 3+ points against the closing line</p>}
+                  </Section>
                   <div className="pg-mag">
-                    <div className="pg-col">
-                      <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined}>
-                        {tickets.length ? <Fixtures tickets={tickets} onOpen={openGameFromSheet} /> : <p className="pg-note">No games on file for {year}.</p>}
-                        {tickets.some((t) => t.upset) && <p className="pg-note">Upset: 3+ points against the closing line</p>}
-                      </Section>
-                    </div>
                     <div className="pg-col">
                       <Section title="Stat leaders">
                         <Leaders rows={rows} club={club} year={year} onPick={pick} />
                       </Section>
+                    </div>
+                    <div className="pg-col">
                       <ClubSeasonInk club={abbr} season={year} onPick={pick} />
                       <Section title="The cap" note="contracts in force">
                         <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
