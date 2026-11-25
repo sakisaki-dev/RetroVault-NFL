@@ -13,7 +13,7 @@ import { displayName } from '@/utils/displayName';
 
 const ABOVE = `rgb(${VIZ.above})`;
 const BELOW = `rgb(${VIZ.below})`;
-const GRID = 'grid grid-cols-[1.1rem_minmax(0,7.6rem)_minmax(0,1fr)_3.2rem] items-center gap-x-2 sm:grid-cols-[1.25rem_minmax(0,9rem)_minmax(0,1fr)_4rem]';
+const GRID = 'grid grid-cols-[1.1rem_minmax(0,8.4rem)_minmax(0,1fr)_3.2rem] items-center gap-x-2 sm:grid-cols-[1.25rem_minmax(0,9rem)_minmax(0,1fr)_4rem]';
 
 interface Scale {
   /** Value plotted for a row (+ index when the metric has one, else the raw value). */

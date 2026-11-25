@@ -182,7 +182,7 @@
    which is which); a name is cut with an ellipsis, never over its neighbour */
 @media (max-width: 480px) {
   .nfl-field .lab-tag {
-    max-width: 3.7rem;
+    max-width: 4.4rem;
     gap: 2px;
     padding: 1px 2px;
     font-size: 9px;

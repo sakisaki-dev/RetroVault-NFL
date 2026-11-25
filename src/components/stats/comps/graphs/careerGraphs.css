@@ -620,7 +620,7 @@
 .ss-line { display: block; font-size: 11px; color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ss-line em { font-style: normal; color: hsl(32 90% 66%); }
 .ss-szn { flex: none; display: inline-flex; flex-direction: column; align-items: center; min-width: 40px; padding: 2px 6px; border-radius: 8px; background: hsl(226 40% 18%); border: 1px solid hsl(var(--line) / 0.8); line-height: 1; }
-.ss-szn small { font-family: var(--font-pixel, inherit); font-size: 6px; letter-spacing: 0.06em; color: hsl(var(--muted-foreground)); }
+.ss-szn small { font-family: var(--font-pixel, inherit); font-size: 8px; letter-spacing: 0.06em; color: hsl(var(--muted-foreground)); }
 .ss-szn b { font-family: var(--font-display, inherit); font-size: 20px; font-weight: 800; color: hsl(228 100% 97%); font-variant-numeric: tabular-nums; }
 .ss-szn--gold { background: linear-gradient(160deg, hsl(43 100% 58%), hsl(32 95% 46%)); border-color: hsl(43 100% 70%); }
 .ss-szn--gold small, .ss-szn--gold b { color: hsl(226 50% 10%); }

@@ -17,3 +17,10 @@
 .cg-sb { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 3px 6px; color: hsl(var(--gold)); background: hsl(var(--card)); border: 1px solid hsl(var(--gold) / .7); border-radius: 999px; }
 .cg-sb:hover { background: hsl(var(--gold) / .14); }
 @media (max-width: 639px) { .cg-ticket { min-height: 44px; } }
+/* narrow phones: the "@ SEA" label keeps all its letters */
+@media (max-width: 400px) {
+  .cg-ticket { padding-left: 10px; padding-right: 6px; }
+  .cg-ticket__main { gap: 4px; }
+  .cg-ticket__opp { font-size: 13px; }
+  .cg-ticket__score { font-size: 15px; gap: 2px; }
+}
