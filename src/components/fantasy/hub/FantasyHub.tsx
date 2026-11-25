@@ -105,7 +105,7 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
           )}
         </div>
       </div>
-      <LeagueSheet open={open} onOpenChange={setOpen} prefs={prefs} setPrefs={setPrefs} settings={env.settings} setSettings={env.setSettings} scoring={hub.scoring} turf={turf} setTurf={setTurf} />
+      <LeagueSheet open={open} onOpenChange={setOpen} prefs={prefs} setPrefs={setPrefs} settings={env.settings} setSettings={env.setSettings} scoring={hub.scoring} turf={turf} setTurf={setTurf} lab={hub.lab} summary={summary} />
       <span className="sr-only">{SCORING_LABELS[prefs.scoring]}</span>
     </div>
     </CardHost>
