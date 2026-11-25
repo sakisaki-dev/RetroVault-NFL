@@ -133,7 +133,9 @@ export const spotOf = (l: Pick<NLineup, 'off' | 'def'>, id: string, tall: boolea
   // The painted turf runs from about 13% to 85% of the field's height (the far sideline crews fill the rest): feet rows
   // 18-98 are squeezed into 23-82 so a sprite and its name tag stay on the grass, and the two sides spread a little
   // wider from the line so the front rows don't touch.
-  const x = Math.min(92, Math.max(8, 50 + (x0 - 50) * 1.2));
+  // the five linemen zig-zag a little so a name tag never sits on the next lineman's head
+  const jig = ({ lt: -2.2, lg: 2.2, c: -2.2, rg: 2.2, rt: -2.2, de1: -1.5, dt1: 1.5, dt2: -1.5, de2: 1.5 } as Record<string, number>)[id] ?? 0;
+  const x = Math.min(92, Math.max(8, 50 + (x0 - 50) * 1.2 + jig));
   const y = 23 + (y0 - 18) * (59 / 80);
   if (!tall) return { x, y };
   // tall: the line of scrimmage runs across at 56% from the top; offense below it, defense above
