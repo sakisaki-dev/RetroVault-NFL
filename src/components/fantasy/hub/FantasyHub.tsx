@@ -63,7 +63,11 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
         </div>
       ) : undefined}
     >
-      <div className="fh-hero-chip"><LeagueChip summary={summary} onClick={onLeague} /></div>
+      <div className="fh-hero-chip"><LeagueChip summary={summary} onClick={onLeague} />
+        <InfoTip label="About the fantasy page" className="fh-info">
+          Projections blend each player's recent games and season with how the opponent defends his position, from nflverse weekly lines. Start / sit and head-to-head read the lineup you build; trades are weighed on rest-of-season value.
+        </InfoTip>
+      </div>
     </StadiumHeader>
   );
 };
@@ -87,13 +91,11 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
     <CardHost find={find}>
     <div className="fh rv-ix min-w-0" data-sub={sub}>
       <div className="container min-w-0 py-3 sm:py-4">
-        {sub !== 'trade' && <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />}
+        {/* the page switcher sits first on every page, so it never moves; each page's banner follows at one height */}
         <div className="fh-bar" role="navigation" aria-label="Fantasy pages">
           <ArcadeToggle<Sub> label="Fantasy page" value={sub} onChange={go} options={SUBS.map((s) => ({ value: s.value, label: <><span className="fh-lg">{s.label}</span><span className="fh-sm">{s.short}</span></> }))} />
-          <InfoTip label="About the fantasy page" className="fh-info">
-            Projections blend each player's recent games and season with how the opponent defends his position, from nflverse weekly lines. Start / sit and head-to-head read the lineup you build; trades are weighed on rest-of-season value.
-          </InfoTip>
         </div>
+        {sub !== 'trade' && <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />}
         <div key={sub} className="fh-view">
           {sub === 'lineup' && <LineupPage hub={hub} prefs={prefs} setPrefs={setPrefs} turf={turf} />}
           {sub === 'startsit' && <StartSitPage hub={hub} onGo={go} />}

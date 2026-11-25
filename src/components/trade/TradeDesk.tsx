@@ -1,5 +1,5 @@
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown, RotateCcw, SlidersHorizontal, Users, X } from 'lucide-react';
+import { ArrowRight, ChevronDown, SlidersHorizontal, Sparkles, Users, X } from 'lucide-react';
 import { ArcadeToggle } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { useReveal, ViewCount } from '@/components/motion/Reveal';
@@ -59,7 +59,10 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [model, n, sendId, filters.pos, filters.size, filters.sort],
   );
-  const auto = !custom && n === 2 && sendKeys.length ? offers.find((o) => o.keys.join('+') === pickKey) ?? offers[0] ?? null : null;
+  // nothing is filled in for You get until the user picks an offer or taps Best trade (owner: "don't auto put in the suggested trade")
+  /** Best trade: of every fair offer, the one that brings back the most value */
+  const best = useMemo(() => offers.reduce<Package | null>((b, o) => (!b || o.value > b.value ? o : b), null), [offers]);
+  const auto = !custom && n === 2 && sendKeys.length && pickKey ? offers.find((o) => o.keys.join('+') === pickKey) ?? null : null;
   /** the sides as the trade reads them: in two-team mode You get follows the chosen offer until it is edited by hand */
   const eff = useMemo<Side[]>(() => (auto ? sides.map((s, i) => (i === 1 ? { ...s, give: auto.keys.map((key) => ({ key, to: 0 })) } : s)) : sides), [sides, auto]);
   const active = eff.slice(0, n);
@@ -98,7 +101,6 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
     setN(c);
   };
   const reset = () => { setSides(emptySides()); setCustom(false); setPickKey(null); setWhyOpen(false); };
-  const back = () => { setCustom(false); setPickKey(null); setSides((ss) => ss.map((s, i) => (i === 1 ? { ...s, give: [] } : s))); setLandKey((k) => k + 1); };
   const takeOffer = (o: Package) => { setCustom(false); setPickKey(o.keys.join('+')); setLandKey((k) => k + 1); };
   const quick = (key: string) => { setN(2); setCustom(false); setPickKey(null); setSides(emptySides().map((s, i) => (i === 0 ? { ...s, give: [{ key, to: 1 }] } : s))); };
 
@@ -137,7 +139,7 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
         {side.give.length === 0 && (
           <div className="dk-slot">
             <span className="dk-slot__ped" aria-hidden="true" />
-            <b>{i === 0 ? 'Who are you trading away?' : n === 2 ? 'Pick an offer or add players' : 'Drop a player here'}</b>
+            <b>{i === 0 ? 'Who are you trading away?' : n === 2 ? (sendKeys.length ? 'Add players, pick an offer below or tap Best trade' : 'Add players') : 'Drop a player here'}</b>
           </div>
         )}
         <ul className="dk-lock__list">
@@ -165,7 +167,12 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
         <DeskPicker model={model} cards={cards} taken={taken} onPick={(k) => addGive(i, k)} label={side.give.length ? 'Add player' : 'Add a player'} big={!side.give.length} />
         {n === 2 && i === 1 && (
           <div className="dk-lock__mode">
-            {custom ? <><span className="dk-flag dk-flag--warn">Custom</span><button type="button" className="dk-link" onClick={back} disabled={!sendKeys.length}><RotateCcw className="h-3.5 w-3.5" aria-hidden="true" /> Back to suggestions</button></>
+            {sendKeys.length > 0 && offers.length > 0 && (
+              <button type="button" className="dk-best" onClick={() => best && takeOffer(best)} disabled={!!auto && auto === best}>
+                <Sparkles className="h-4 w-4" aria-hidden="true" /> {auto && auto === best ? 'Best trade on the table' : 'Best trade'}
+              </button>
+            )}
+            {custom ? <span className="dk-flag dk-flag--warn">Custom</span>
               : auto ? <span className="dk-flag dk-flag--good">Offer #{offers.indexOf(auto) + 1} of {offers.length}</span> : null}
           </div>
         )}
