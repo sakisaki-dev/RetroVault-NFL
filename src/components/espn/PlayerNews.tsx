@@ -264,7 +264,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
       </ol>
     </section>
   );
-  const mates = teammates.length > 0 && (
+  const mates = active && teammates.length > 0 && (
     <section className="pn-panel en-mod" style={{ '--k': 'var(--tc)' } as CSSProperties}>
       <Rubric id="pn-mates-t" kicker="Teammates" club={club} icon={<Users className="h-4 w-4" aria-hidden />}>{club} in the news</Rubric>
       <ul className="pn-mates">

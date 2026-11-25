@@ -49,6 +49,38 @@ export const nameIndexOf = (players: Player[]): NameIndex => {
   return ix;
 };
 
+
+/**
+ * ESPN's own writers. Some share a name with a player (Matt Bowen, the ESPN fantasy writer, and Matt Bowen the
+ * retired safety), and their names fill the feed ("Fantasy football rankings from Matt Bowen, ..."). Every byline the
+ * feeds carry is noted here, and a writer's name never counts as a mention of an untagged player.
+ */
+const writers = new Set<string>();
+const WRITERS_KEY = 'rv:espn:writers';
+try {
+  (JSON.parse(sessionStorage.getItem(WRITERS_KEY) ?? '[]') as string[]).forEach((w) => writers.add(w));
+} catch {
+  /* storage unavailable */
+}
+export const noteWriters = (bylines: (string | undefined | null)[]) => {
+  const before = writers.size;
+  bylines.forEach((b) =>
+    (b ?? '')
+      .split(/,|&|\band\b/i)
+      .map((x) => nameKey(x.replace(/^by\s+/i, '').trim()))
+      .filter((x) => x.split(' ').length >= 2 && x.split(' ').length <= 4)
+      .forEach((x) => writers.add(x)),
+  );
+  if (writers.size !== before) {
+    try {
+      sessionStorage.setItem(WRITERS_KEY, JSON.stringify([...writers]));
+    } catch {
+      /* storage unavailable */
+    }
+  }
+};
+export const isWriter = (name: string) => writers.has(nameKey(name));
+
 export interface Mention {
   player: Player;
   headline: number;
@@ -85,6 +117,12 @@ const scan = (text: string, ix: NameIndex, tagged: Player[], teams: string[], al
       if (!/^[A-ZÀ-Þ]/.test(ws[i]) || !/^[A-ZÀ-Þ]/.test(ws[i + len - 1])) continue;
       const p = pick(cand);
       if (!p) continue;
+      // an ESPN writer's name ("rankings from Matt Bowen") is not a mention of a player who shares it, unless ESPN tagged him
+      if (isWriter(p.name) && !tagged.includes(p)) {
+        for (let j = i; j < i + len; j++) covered.add(j);
+        i += len - 1;
+        break;
+      }
       out.set(p, (out.get(p) ?? 0) + 1);
       for (let j = i; j < i + len; j++) covered.add(j);
       i += len - 1;
@@ -142,6 +180,7 @@ export const focusOf = (m: Mention[], max = 3): Player[] => {
 
 /** Does this text name him in full (the Deep Dive's "mentions him")? */
 export const namesPlayer = (text: string, p: Player): boolean => {
+  if (isWriter(p.name)) return false;
   const k = nameKey(p.name);
   return k.split(' ').length >= 2 && ` ${nameKey(text)} `.includes(` ${k} `);
 };

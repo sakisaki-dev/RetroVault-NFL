@@ -1,3 +1,4 @@
+import { noteWriters } from '@/utils/newsMentions';
 import { useCallback, useEffect, useState } from 'react';
 import { findNFLTeam } from '@/utils/nflTeams';
 
@@ -46,8 +47,9 @@ interface RawItem {
   links?: { web?: { href?: string }; api?: { self?: { href?: string } } };
 }
 
-export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] =>
-  (raw.articles ?? [])
+export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] => {
+  noteWriters((raw.articles ?? []).map((a) => a.byline));
+  return (raw.articles ?? [])
     .filter((a) => a.headline)
     .map((a) => {
       const img = [...(a.images ?? [])].sort((x, y) => (y.width ?? 0) - (x.width ?? 0))[0];
@@ -77,6 +79,7 @@ export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] =>
         byline: a.byline || undefined,
       };
     });
+};
 
 const readCache = (): { at: number; items: NewsItem[] } | null => {
   try {
