@@ -63,6 +63,17 @@ export const careerTotals = (p: Player): StatItem[] => {
       ];
     case 'WR':
     case 'TE':
+      if (IS_NFL)
+        return [
+          s('receptions', 'Rec', 'Career receptions', p.receptions),
+          s('recYds', 'Rec yds', 'Career receiving yards', p.recYds),
+          s('recTD', 'Rec TD', 'Career receiving touchdowns', p.recTD),
+          s('ypr', 'Yds / catch', 'Yards per reception', rate(p.recYds, p.receptions), 1),
+          s('ypg', 'Yds / game', 'Receiving yards per game', rate(p.recYds, p.games), 1),
+          s('long', 'Long', 'Longest reception', p.longest || null),
+          s('fumbles', 'Fumbles', 'Career fumbles', p.fumbles),
+          s('games', 'Games', 'Games played', p.games),
+        ];
       return [
         g,
         s('receptions', 'REC', 'Receptions', p.receptions),
@@ -156,10 +167,12 @@ export const headlineStats = (p: Player): StatItem[] => {
         return [
           s('passYds', 'Pass yds', 'Career passing yards', p.passYds),
           s('passTD', 'Pass TD', 'Career passing touchdowns', p.passTD),
+          s('int', 'INT', 'Career interceptions thrown', p.interceptions),
+          s('cmpPct', 'Cmp %', 'Career completion percentage', p.attempts ? (100 * p.completions) / p.attempts : null, 1),
           s('rushYds', 'Rush yds', 'Career rushing yards', p.rushYds),
           s('rushTD', 'Rush TD', 'Career rushing touchdowns', p.rushTD),
-          s('int', 'INT', 'Career interceptions thrown', p.interceptions),
           s('sacked', 'Sacked', 'Career times sacked', p.sacks),
+          s('games', 'Games', 'Games played', p.games),
         ];
       const r = passerRating(p);
       return [
@@ -170,6 +183,17 @@ export const headlineStats = (p: Player): StatItem[] => {
       ];
     }
     case 'RB':
+      if (IS_NFL)
+        return [
+          s('rushAtt', 'Carries', 'Career carries', p.rushAtt),
+          s('rushYds', 'Rush yds', 'Career rushing yards', p.rushYds),
+          s('rushTD', 'Rush TD', 'Career rushing touchdowns', p.rushTD),
+          s('ypc', 'Yds / carry', 'Yards per carry', rate(p.rushYds, p.rushAtt), 1),
+          s('receptions', 'Rec', 'Career receptions', p.receptions),
+          s('recYds', 'Rec yds', 'Career receiving yards', p.recYds),
+          s('recTD', 'Rec TD', 'Career receiving touchdowns', p.recTD),
+          s('games', 'Games', 'Games played', p.games),
+        ];
       return [
         s('rushYds', 'Rush yards', 'Career rushing yards', p.rushYds),
         s('totTD', 'Total TD', 'Rushing + receiving touchdowns', p.rushTD + p.recTD),
@@ -191,6 +215,15 @@ export const headlineStats = (p: Player): StatItem[] => {
         s('games', 'Games', 'Games played', p.games),
       ];
     default:
+      if (IS_NFL)
+        return [
+          s('tackles', 'Tackles', 'Career tackles', num(p, 'tackles')),
+          s('sacks', 'Sacks', 'Career sacks', num(p, 'sacks'), Number.isInteger(num(p, 'sacks')) ? 0 : 1),
+          s('interceptions', 'INT', 'Career interceptions', num(p, 'interceptions')),
+          s('forcedFumbles', 'FF', 'Career forced fumbles', num(p, 'forcedFumbles')),
+          s('takeaways', 'Takeaways', 'Interceptions + forced fumbles', num(p, 'interceptions') + num(p, 'forcedFumbles')),
+          s('games', 'Games', 'Games played', p.games),
+        ];
       return [
         s('tackles', 'Tackles', 'Career tackles', num(p, 'tackles')),
         s('sacks', 'Sacks', 'Career sacks', num(p, 'sacks')),

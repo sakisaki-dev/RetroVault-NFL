@@ -44,6 +44,8 @@ SPECS = {
         ("Yds / carry", lambda d: S(d, "rushing_yards") / S(d, "carries") if S(d, "carries") else None, "rate:carries:6.25", "1"),
         ("Rec", lambda d: S(d, "receptions"), "count", "n"),
         ("Rec yds", lambda d: S(d, "receiving_yards"), "count", "n"),
+        ("Carries", lambda d: S(d, "carries"), "count", "n"),
+        ("Rec TD", lambda d: S(d, "receiving_tds"), "count", "n"),
     ],
     "WR": [
         ("Rec", lambda d: S(d, "receptions"), "count", "n"),
@@ -51,6 +53,8 @@ SPECS = {
         ("Rec TD", lambda d: S(d, "receiving_tds"), "count", "n"),
         ("Yds / catch", lambda d: S(d, "receiving_yards") / S(d, "receptions") if S(d, "receptions") else None, "rate:receptions:1.875", "1"),
         ("Targets", lambda d: S(d, "targets"), "count", "n"),
+        ("Catch %", lambda d: 100 * S(d, "receptions") / S(d, "targets") if S(d, "targets") else None, "rate:targets:3", "p"),
+        ("1st downs", lambda d: S(d, "receiving_first_downs"), "count", "n"),
     ],
     "DL": [
         ("Tackles", lambda d: S(d, "def_tackles_solo", "def_tackle_assists"), "count", "n"),
@@ -58,6 +62,8 @@ SPECS = {
         ("TFL", lambda d: S(d, "def_tackles_for_loss"), "count", "n"),
         ("QB hits", lambda d: S(d, "def_qb_hits"), "count", "n"),
         ("FF", lambda d: S(d, "def_fumbles_forced"), "count", "n"),
+        ("Pass def", lambda d: S(d, "def_pass_defended"), "count", "n"),
+        ("INT", lambda d: S(d, "def_interceptions"), "count", "n"),
     ],
     "LB": [
         ("Tackles", lambda d: S(d, "def_tackles_solo", "def_tackle_assists"), "count", "n"),
@@ -65,6 +71,8 @@ SPECS = {
         ("TFL", lambda d: S(d, "def_tackles_for_loss"), "count", "n"),
         ("Pass def", lambda d: S(d, "def_pass_defended"), "count", "n"),
         ("INT", lambda d: S(d, "def_interceptions"), "count", "n"),
+        ("QB hits", lambda d: S(d, "def_qb_hits"), "count", "n"),
+        ("FF", lambda d: S(d, "def_fumbles_forced"), "count", "n"),
     ],
     "DB": [
         ("Tackles", lambda d: S(d, "def_tackles_solo", "def_tackle_assists"), "count", "n"),
@@ -72,6 +80,8 @@ SPECS = {
         ("Pass def", lambda d: S(d, "def_pass_defended"), "count", "n"),
         ("Sacks", lambda d: S(d, "def_sacks"), "count", "1"),
         ("FF", lambda d: S(d, "def_fumbles_forced"), "count", "n"),
+        ("TFL", lambda d: S(d, "def_tackles_for_loss"), "count", "n"),
+        ("Def TD", lambda d: S(d, "def_tds"), "count", "n"),
     ],
 }
 SPECS["TE"] = SPECS["WR"]
