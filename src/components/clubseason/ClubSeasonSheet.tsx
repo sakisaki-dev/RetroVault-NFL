@@ -54,8 +54,11 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
   }, [getAllPlayers, dataVersion]);
   const pick = useCallback((key: string) => {
     const p = byKey.get(key);
-    if (p) setCard(p);
-  }, [byKey]);
+    if (!p) return;
+    // the sheet closes first (like the game tickets), then the player card opens on its own
+    onClose();
+    window.setTimeout(() => setCard(p), 60);
+  }, [byKey, onClose]);
   const rows = useMemo<RosterEntry[]>(
     () => (data?.roster ?? []).map((r) => {
       const [pos, ...rest] = r.k.split(':');
