@@ -92,3 +92,4 @@ button.tw-card:hover, button.tw-card:focus-visible { border-color: hsl(var(--gol
 @media (min-width: 640px) { .tw-more { display: none; } }
 @media (max-width: 639px) { .tw-picks:not(.is-all) .tw-extra { display: none; } }
 .po-row.is-out .po-seed { background: hsl(var(--secondary)); color: hsl(var(--muted-foreground)); }
+.po-grid--solo { grid-template-columns: minmax(0, 1fr) !important; }

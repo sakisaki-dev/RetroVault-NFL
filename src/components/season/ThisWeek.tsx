@@ -121,7 +121,7 @@ const ThisWeek = ({ odds }: { odds: PlayoffOdds }) => {
           {all ? 'Show fewer games' : `All ${ordered.length} games`}
         </button>
       )}
-      <p className="sx-note">Win chances come from the posted line where one exists (Φ(spread ÷ {odds.method.sigma})), else from club ratings and home field. The Game of the Week is the closest game between two clubs above .500. The scorecard counts favourites on the line they had.</p>
+      <p className="sx-note">Win chances from the betting lines.</p>
     </div>
   );
 };

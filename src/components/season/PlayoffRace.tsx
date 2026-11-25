@@ -81,7 +81,7 @@ const PlayoffRace = ({ odds }: { odds: PlayoffOdds }) => {
         {final ? 'Playoff field' : 'Playoff race'}
       </SectionTitle>
 
-      <div className="po-grid">
+      <div className={cn('po-grid', !final && scen.length === 0 && 'po-grid--solo')}>
         <Reveal className="po-panel">
           {lead && (
             <div className="po-lead mo-rise" style={cv(nickOf(lead[0]))}>
@@ -162,21 +162,17 @@ const PlayoffRace = ({ odds }: { odds: PlayoffOdds }) => {
             </table>
           </div>
           <p className="sx-note">
-            <b>x</b> clinched a spot · <b>y</b> division · <b>z</b> top seed and bye · <b>e</b> eliminated. Marks come from the standings (a club that cannot lose its place), never from the simulation alone; the Title column is the Super Bowl.
-            {!final && ' Tap a row on a phone for the rest.'}
+            <b>x</b> clinched · <b>y</b> division · <b>z</b> top seed · <b>e</b> out · Title = Super Bowl
           </p>
         </Reveal>
 
+        {(final || scen.length > 0) && (
         <Reveal className="po-panel po-scen">
           <h4 className="po-h">
             <PixelIcon name="flag" size={12} /> {final ? 'How the seeds fell' : `What it takes in week ${odds.week}`}
           </h4>
           {final ? (
-            <p className="po-empty">The regular season is over. Seeds follow the NFL's order: division winners 1 to 4 by record, then the three best other records, each tie broken by head-to-head, division and conference record, common games, strength of victory and schedule.</p>
-          ) : scen.length === 0 ? (
-            <p className="po-empty">
-              No {conf} club can clinch or be eliminated in week {odds.week}: the standings leave every spot open, whatever the results. Lines appear here as soon as a result can settle one.
-            </p>
+            <p className="po-empty">Division winners seed 1–4, then the three best records.</p>
           ) : (
             <ul className="po-list">
               {shownScen.map((s, i) => {
@@ -198,12 +194,12 @@ const PlayoffRace = ({ odds }: { odds: PlayoffOdds }) => {
               {allScen ? 'Show fewer' : `All ${scen.length}`}
             </button>
           )}
-          {!final && scen.length > 0 && <p className="sx-note">Each line holds whatever else happens this week; a combination not listed may also work.</p>}
         </Reveal>
+        )}
       </div>
       {!final && (
         <p className="sx-note po-method">
-          How: the {odds.left} games left are played {odds.sims.toLocaleString()} times. A game's win chance is the posted line, Φ(spread ÷ {odds.method.sigma}), or, with no line yet, club ratings from point differential plus {odds.method.hfa} points of home field. Ties are broken the NFL's way up to strength of schedule, then by a seeded draw.
+          The {odds.left} games left, played {odds.sims.toLocaleString()} times from the betting lines.
         </p>
       )}
     </div>
