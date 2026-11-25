@@ -1,0 +1,731 @@
+/* Club season sheet (ClubSeasonSheet.tsx). Club colours come in as --cs-fill / --cs-edge / --cs-ink (clubPlate: a near-black
+   primary hands the lead to the secondary), --cs-wall the deepened fill. */
+.cs-sheet {
+  background: #0c1121;
+}
+.cs {
+  min-width: 0;
+  width: 100%;
+  color: #ece8dc;
+  padding-bottom: 24px;
+}
+.cs .num,
+.cs .n {
+  font-variant-numeric: tabular-nums;
+}
+.cs-plate {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+/* Season switcher + All-time */
+.cs-bar-top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 52px 10px 12px;
+  background: rgb(10 15 30 / 0.94);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(6px);
+}
+.cs-years {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: auto;
+}
+.cs-years::-webkit-scrollbar {
+  display: none;
+}
+.cs-years button {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  color: #aab4cf;
+  background: rgb(255 255 255 / 0.06);
+  font-variant-numeric: tabular-nums;
+}
+.cs-years button.is-on {
+  background: hsl(var(--gold));
+  color: #1a1400;
+}
+.cs-all {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  background: var(--cs-fill);
+  color: var(--ax-ink, #fff);
+  border: 1px solid var(--cs-edge);
+}
+.cs-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: #aab4cf;
+}
+
+/* Hero: the locker room */
+.cs-hero {
+  position: relative;
+  background: radial-gradient(90% 60% at 50% 0%, #2a1c11 0%, #140e09 70%);
+  padding: 16px 10px 0;
+  overflow: hidden;
+}
+.cs-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 600px;
+  margin: 0 auto 14px;
+  padding: 12px 18px;
+  background: var(--cs-fill);
+  color: var(--cs-ink);
+  border-radius: 12px;
+  border-bottom: 5px solid var(--cs-edge);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.14), 0 12px 24px rgb(0 0 0 / 0.5);
+  overflow: hidden;
+}
+.cs-banner.is-champ {
+  border-bottom-color: hsl(var(--gold));
+  box-shadow: 0 0 0 2px hsl(var(--gold) / 0.9), 0 12px 24px rgb(0 0 0 / 0.5);
+}
+.cs-banner__logo {
+  flex: none;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.4));
+}
+.cs-banner__txt {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.cs-kick {
+  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.cs-rec {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 46px;
+  line-height: 1;
+}
+.cs-facts {
+  font-size: 12.5px;
+  opacity: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+.cs-result {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  font-weight: 700;
+  font-size: 13px;
+  width: fit-content;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.28);
+}
+.is-champ .cs-result {
+  background: hsl(var(--gold));
+  color: #1a1400;
+}
+.cs-confetti i {
+  position: absolute;
+  top: -4px;
+  left: calc(var(--i) * 7.4%);
+  width: 6px;
+  height: 10px;
+  border-radius: 1px;
+  opacity: 0.85;
+  transform: rotate(calc(var(--i) * 37deg)) translateY(calc((var(--i) % 4) * 14px));
+  background: var(--cs-edge);
+  pointer-events: none;
+}
+.cs-confetti i:nth-child(3n) {
+  background: hsl(var(--gold));
+}
+.cs-confetti i:nth-child(3n + 1) {
+  background: #fff;
+  opacity: 0.6;
+}
+
+.cs-stalls {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.cs-stall {
+  flex: 0 1 17.5%;
+  max-width: 190px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+  box-shadow: 0 -2px 0 rgb(0 0 0 / 0.4) inset;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.cs-stall.is-best {
+  flex-basis: 22.5%;
+  max-width: 236px;
+  outline: 2px solid hsl(var(--gold) / 0.85);
+  outline-offset: -2px;
+}
+.cs-stall:hover {
+  filter: brightness(1.08);
+}
+.cs-stall:focus-visible {
+  outline: 2px solid hsl(var(--gold));
+  outline-offset: 2px;
+}
+.cs-stall__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 100 / 140;
+}
+.cs-empty {
+  color: #aab4cf;
+  padding: 30px 0;
+}
+.cs-floor {
+  position: relative;
+  z-index: 0;
+  height: 34px;
+  margin: 0 -10px;
+  background:
+    linear-gradient(var(--cs-edge) 0 0) 0 0 / 100% 3px no-repeat,
+    linear-gradient(color-mix(in srgb, var(--cs-fill) 34%, #1b120c), color-mix(in srgb, var(--cs-fill) 20%, #120c08));
+  border-top: 3px solid #1b120c;
+}
+.cs-bench {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: -9px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(#8a6038, #4e331d);
+  box-shadow: 0 6px 6px rgb(0 0 0 / 0.45);
+}
+@media (max-width: 639px) {
+  .cs-rec {
+    font-size: 38px;
+  }
+  .cs-stalls {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 0 2px;
+  }
+  .cs-stalls::-webkit-scrollbar {
+    display: none;
+  }
+  .cs-stall,
+  .cs-stall.is-best {
+    flex: none;
+    width: 46%;
+    max-width: none;
+    scroll-snap-align: center;
+  }
+  .cs-stall.is-best {
+    width: 52%;
+  }
+  .cs-stalls::before,
+  .cs-stalls::after {
+    content: '';
+    flex: none;
+    width: 8%;
+  }
+}
+
+/* Body */
+.cs-body {
+  display: grid;
+  gap: 22px;
+  padding: 18px 14px 0;
+}
+@media (min-width: 640px) {
+  .cs-body {
+    padding: 22px 22px 0;
+  }
+}
+.cs-block {
+  min-width: 0;
+}
+.cs-block__h span {
+  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--gold));
+}
+.cs-block__h h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 2px 0 10px;
+}
+.cs-note {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #9aa4c0;
+  max-width: 80ch;
+}
+.cs-dim {
+  color: #5f6a88;
+}
+
+/* Tickets */
+.cs-split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  color: #c4cce2;
+}
+.cs-tix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 7px;
+}
+.cs-tix__t {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  padding: 7px 8px 7px 11px;
+  text-align: left;
+  border-radius: 10px;
+  background: #141c33;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  overflow: hidden;
+  color: #e6e9f5;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+button.cs-tix__t {
+  cursor: pointer;
+}
+button.cs-tix__t:hover {
+  filter: brightness(1.15);
+}
+button.cs-tix__t:focus-visible {
+  outline: 2px solid hsl(var(--gold));
+}
+.cs-tix__t::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: #66708f;
+}
+.cs-tix__t.is-W::before {
+  background: hsl(145 63% 48%);
+}
+.cs-tix__t.is-L::before {
+  background: hsl(357 80% 60%);
+}
+.cs-tix__t.is-post {
+  background: linear-gradient(#2a2410, #1d1a10);
+  border-color: hsl(var(--gold) / 0.7);
+}
+.cs-tix__t.is-upset {
+  outline: 2px solid hsl(357 85% 62%);
+  outline-offset: 1px;
+}
+.cs-tix__t.is-upset.is-W {
+  outline-color: hsl(145 70% 55%);
+}
+.cs-tix__t.is-bye {
+  background: transparent;
+  border-style: dashed;
+  color: #6f7a99;
+  align-content: center;
+  text-align: center;
+  padding-left: 8px;
+}
+.cs-tix__t.is-bye b {
+  font-family: var(--font-display);
+  font-size: 17px;
+}
+.cs-tix__wk {
+  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  color: #9aa4c0;
+}
+.cs-tix__r {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+}
+.is-W .cs-tix__r {
+  color: hsl(145 63% 56%);
+}
+.is-L .cs-tix__r {
+  color: hsl(357 85% 68%);
+}
+.cs-tix__opp {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.cs-tix__s {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* Roster */
+.cs-chips {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  scrollbar-width: none;
+}
+.cs-chips::-webkit-scrollbar {
+  display: none;
+}
+.cs-chip {
+  flex: none;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #aab4cf;
+  background: rgb(255 255 255 / 0.06);
+}
+.cs-chip.is-on {
+  background: var(--ax-c1);
+  color: var(--ax-ink);
+  box-shadow: 0 0 0 1px var(--ax-c2);
+}
+.cs-tablewrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background: #0f1628;
+}
+.cs-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.cs-table th,
+.cs-table td {
+  padding: 7px 10px;
+  text-align: left;
+  white-space: nowrap;
+  border-top: 1px solid rgb(255 255 255 / 0.05);
+}
+.cs-table thead th {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8f9ab8;
+  border-top: 0;
+  background: #0f1628;
+}
+.cs-table .n {
+  text-align: right;
+}
+.cs-pin {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #0f1628;
+  font-weight: 600;
+  box-shadow: 1px 0 0 rgb(255 255 255 / 0.06);
+}
+.cs-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 190px;
+  padding: 3px 9px 3px 4px;
+  border-radius: 7px;
+  background: var(--ax-c1);
+  color: var(--ax-ink);
+  font-weight: 700;
+  text-align: left;
+}
+.cs-name i {
+  font-style: normal;
+  font-size: 9.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 0.28);
+  color: #fff;
+}
+.cs-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cs-name small {
+  opacity: 0.7;
+  font-size: 10.5px;
+}
+.cs-name:hover {
+  filter: brightness(1.1);
+}
+.cs-aw {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 800;
+  background: rgb(255 255 255 / 0.1);
+}
+.cs-aw.is-gold {
+  background: hsl(var(--gold));
+  color: #1a1400;
+}
+.cs-szn {
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-weight: 800;
+  background: rgb(255 255 255 / 0.08);
+}
+.cs-szn.is-mid {
+  background: hsl(145 50% 28%);
+}
+.cs-szn.is-hi {
+  background: hsl(var(--gold));
+  color: #1a1400;
+}
+.cs-more {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: rgb(255 255 255 / 0.08);
+}
+
+/* Leaders */
+.cs-leaders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+@media (min-width: 720px) {
+  .cs-leaders {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.cs-lead {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  height: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  border-radius: 12px;
+  background: var(--ax-c1);
+  color: var(--ax-ink);
+  box-shadow: inset 0 -3px 0 var(--ax-c2);
+}
+.cs-lead:hover {
+  filter: brightness(1.08);
+}
+.cs-lead__k {
+  font-family: var(--font-pixel, 'Silkscreen', monospace);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.cs-lead__v {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.05;
+}
+.cs-lead__n {
+  font-weight: 700;
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cs-lead__u {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* Cap */
+.cs-cap__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cs-cap__stats div {
+  display: grid;
+  gap: 1px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: #121a2e;
+  border: 1px solid rgb(255 255 255 / 0.07);
+}
+.cs-cap__stats span {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8f9ab8;
+}
+.cs-cap__stats b {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.1;
+}
+.cs-cap__stats small {
+  font-size: 11px;
+  color: #9aa4c0;
+}
+.cs-cap__stats b::before {
+  content: '';
+}
+.cs-bar {
+  display: flex;
+  height: 32px;
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
+}
+.cs-bar span {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  border-right: 1px solid rgb(0 0 0 / 0.35);
+}
+.cs-bar span:last-child {
+  border-right: 0;
+}
+.cs-bar i {
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.7);
+}
+.cs-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 9px 0 14px;
+  font-size: 12px;
+  color: #c4cce2;
+}
+.cs-legend span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+.cs-sub {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.cs-top {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+.cs-top li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) 34px auto;
+  gap: 4px 10px;
+  align-items: baseline;
+  padding: 6px 10px;
+  border-radius: 9px;
+  background: #121a2e;
+}
+.cs-top li i {
+  font-style: normal;
+  font-size: 10.5px;
+  color: #8f9ab8;
+}
+.cs-top li small {
+  color: #8f9ab8;
+}
+.cs-top li em {
+  grid-column: 1 / -1;
+  font-style: normal;
+  font-size: 11px;
+  color: #8f9ab8;
+}
+@media (min-width: 720px) {
+  .cs-top li {
+    grid-template-columns: minmax(0, 1.4fr) 40px auto auto;
+  }
+  .cs-top li em {
+    grid-column: auto;
+  }
+}
+@media (max-width: 420px) {
+  .cs-cap__stats b {
+    font-size: 21px;
+  }
+}
+
+/* A club's logo on its own colour can vanish (Jets green on green): sit it on a white disc */
+.cs-banner__logo,
+.cs-logo-plate {
+  background: #fff;
+  border-radius: 50%;
+  box-sizing: content-box;
+}
+.cs-banner__logo {
+  padding: 5px;
+}
+.cs-logo-plate {
+  padding: 2px;
+}

@@ -16,6 +16,7 @@ import { ClinchTag } from './ClinchTag';
 import { pctText, usePlayoffOdds, type OddsClub, type PlayoffOdds } from '@/utils/playoffOdds';
 import { SectionHeader, PixelIcon, clubVars } from '@/components/arcade';
 import type { CSSProperties } from 'react';
+import { openClubSeason } from '@/utils/clubSeason';
 
 /**
  * The Season page's backbone, the design that lived on the Timeline as "Season games": the coached club's
@@ -161,12 +162,12 @@ export const Toggle = <T extends string>({
 const stickyCell = 'sticky left-0 z-[1] bg-card';
 const coachCellBg = { background: 'linear-gradient(hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.15)), hsl(var(--card))' };
 
-const TeamCell = ({ row, coach }: { row: TableRow; coach: boolean }) => {
+const TeamCell = ({ row, coach, year }: { row: TableRow; coach: boolean; year?: string }) => {
   const openTeam = useOpenTeam();
   return (
   <th scope="row" className={cn(stickyCell, 'px-2 py-1.5 text-left font-medium')} style={coach ? coachCellBg : undefined}>
     <span className="flex items-center gap-2">
-      <ClubStrip team={row.team} size="sm" className="max-w-[8.5rem] sm:max-w-none" onClick={() => openTeam(row.team)} ariaLabel={`${row.team}: open the team`} />
+      <ClubStrip team={row.team} size="sm" className="max-w-[8.5rem] sm:max-w-none" onClick={() => (IS_NFL && year ? openClubSeason(row.team, Number(year)) : openTeam(row.team))} ariaLabel={`${row.team}: open the ${IS_NFL && year ? `${year} season` : 'team'}`} />
       {coach && (
         <span className="rounded bg-primary/25 px-1 text-[9px] font-bold uppercase tracking-wider text-foreground">
           Coached<span className="sr-only"> club</span>
@@ -258,7 +259,7 @@ const PowerTable = ({ season, cols, odds }: { season: ScheduleSeason; cols: Colu
           return (
             <tr key={r.abbr} className={rowClass(coach)} aria-current={coach ? 'true' : undefined}>
               <td className={cn(num, 'font-display font-bold')}>{r.power}</td>
-              <TeamCell row={r} coach={coach} />
+              <TeamCell row={r} coach={coach} year={season.season} />
               <td className={cn(num, 'font-semibold', st)}>{r.powerScore.toFixed(1)}</td>
               <td className={num}>{`${r.w}-${r.l}-${r.t}`}</td>
               {odds && <OddsCell club={odds.clubs[r.abbr]} />}
@@ -347,7 +348,7 @@ const StandingsTable = ({ season, cols, odds }: { season: ScheduleSeason; cols: 
             return (
               <tr key={r.abbr} className={rowClass(coach)} aria-current={coach ? 'true' : undefined}>
                 <td className={cn(num, 'text-muted-foreground')}>{r.divisionRank ?? '—'}</td>
-                <TeamCell row={r} coach={coach} />
+                <TeamCell row={r} coach={coach} year={season.season} />
                 <td className={cn(num, 'font-semibold')}>{`${r.w}-${r.l}-${r.t}`}</td>
                 {odds && <OddsCell club={odds.clubs[r.abbr]} />}
                 {points ? (

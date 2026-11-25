@@ -13,6 +13,7 @@ import LegendExchange from '@/components/collection/LegendExchange';
 import CeremonyHost from '@/components/ceremony/CeremonyHost';
 import TributeHost from '@/components/tribute/TributeHost';
 import RivalryHost from '@/components/rivalry/RivalryHost';
+import ClubSeasonHost from '@/components/clubseason/ClubSeasonHost';
 import { onRaftersRequest } from '@/utils/raftersLink';
 import QuickPlayerSearch from '@/components/QuickPlayerSearch';
 import ScreensaverHost from '@/components/screensaver/ScreensaverHost';
@@ -139,6 +140,7 @@ const IndexContent = () => {
         <AddToHomeScreen />
         {!IS_NFL && <CeremonyHost />}
         {!IS_NFL && <TributeHost />}
+        {IS_NFL && <ClubSeasonHost />}
         {!IS_NFL && <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />}
         <QuickPlayerSearch />
         <PlayerPeekLayer />

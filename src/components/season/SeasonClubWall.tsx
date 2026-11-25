@@ -12,8 +12,8 @@ import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import type { SeasonView } from '@/utils/seasonLive';
 import { ArcadeToggle, PixelIcon } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
-import { openTeamPage } from '@/utils/teamSearch';
 import { usePlayoffOdds } from '@/utils/playoffOdds';
+import { openClubSeason, prefetchClubSeason } from '@/utils/clubSeason';
 import { SectionTitle } from './SeasonGames';
 import { signed } from './seasonGamesUi';
 import '@/components/teams/nfl/clubWall.css';
@@ -79,7 +79,8 @@ const Tile = ({ club, leader, big, at, seed, tag, champion, made, done, hasSprit
       <button
         type="button"
         className="cw-hit"
-        onClick={() => openTeamPage(row.team)}
+        onClick={() => openClubSeason(row.team, Number(year))}
+        onPointerEnter={prefetchClubSeason}
         aria-label={`${t.fullName}, ${divLabel(row)}. ${year} record ${row.record}${power ? `, power rank ${power}` : ''}${seed ? `, playoff seed ${seed}` : ''}. Open club page`}
       />
       <span aria-hidden="true" className="cw-bglogo">

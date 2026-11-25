@@ -14,7 +14,7 @@ import { useLeague } from '@/context/LeagueContext';
 import { isInLeague } from '@/components/InLeague';
 import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, StadiumHeader, clubVars, type StagePlayer } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
-import { openTeamPage } from '@/utils/teamSearch';
+import { openClubSeason, prefetchClubSeason } from '@/utils/clubSeason';
 import './sx.css';
 
 /**
@@ -202,14 +202,15 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
 };
 
 /** A standings or ladder row opens that club's sheet (Teams); keyboard and screen-reader reachable. */
-const clubLink = (team: string) => ({
+const clubLink = (team: string, year?: string | number) => ({
   role: 'link' as const,
   tabIndex: 0,
-  onClick: () => openTeamPage(team),
+  onClick: () => openClubSeason(team, year ? Number(year) : undefined),
+  onPointerEnter: prefetchClubSeason,
   onKeyDown: (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      openTeamPage(team);
+      openClubSeason(team, year ? Number(year) : undefined);
     }
   },
 });
@@ -238,7 +239,7 @@ export const PowerLadder = ({ season }: { season: SeasonView }) => {
           const before = prev?.[r.abbr];
           const move = before ? before - r.power : null;
           return (
-            <li key={r.abbr} className={cn('sx-rung sx-club-link mo-rise', r.power <= 3 && 'is-top')} style={{ ...cv(r.team), ...stag(ri, 40) }} {...clubLink(r.team)}>
+            <li key={r.abbr} className={cn('sx-rung sx-club-link mo-rise', r.power <= 3 && 'is-top')} style={{ ...cv(r.team), ...stag(ri, 40) }} {...clubLink(r.team, season.season)}>
               <span className="sx-rung__n">{r.power}</span>
               <TeamLogo team={r.team} decorative className="h-8 w-8 flex-shrink-0" />
               <span className="sx-rung__name">{r.team}</span>
