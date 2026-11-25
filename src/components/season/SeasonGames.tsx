@@ -18,6 +18,7 @@ import { pctText, usePlayoffOdds, type OddsClub, type PlayoffOdds } from '@/util
 import { SectionHeader, PixelIcon, clubVars } from '@/components/arcade';
 import type { CSSProperties } from 'react';
 import { openClubSeason } from '@/utils/clubSeason';
+import { openClub } from '@/utils/openClub';
 
 /**
  * The Season page's backbone, the design that lived on the Timeline as "Season games": the coached club's
@@ -40,7 +41,7 @@ type StreakRecord = GameRecord & {
 /** Opens a club's team sheet (Stats › Teams), the club strips' action. */
 export const useOpenTeam = () => {
   const { navigate } = useHubRoute();
-  return (team: string) => navigate({ tab: 'career', sub: 'teams', p: team });
+  return (team: string) => (IS_NFL ? openClub(team, { tab: 'franchise' }) : navigate({ tab: 'career', sub: 'teams', p: team }));
 };
 
 /* ---------------- Game log ---------------- */

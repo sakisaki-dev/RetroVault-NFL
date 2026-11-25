@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { dataResponse } from '@/utils/dataStore';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { loadScheduleSeason, type ScheduleSeason, type TableRow } from '@/utils/schedule';
+import { openClub } from '@/utils/openClub';
 import { loadGameSeason, type GameDetail } from '@/utils/nflGames';
 
 /**
@@ -9,20 +10,9 @@ import { loadGameSeason, type GameDetail } from '@/utils/nflGames';
  * Everything loads per season and on demand; nothing is in a startup file.
  */
 
-export const OPEN_CLUB_SEASON_EVENT = 'rv:open-club-season';
-let pending: { club: string; season?: number } | null = null;
-
-/** Opens a club's season sheet from anywhere (the Season page's standings and club wall). `season` defaults to the latest. */
-export const openClubSeason = (club: string, season?: number) => {
-  pending = { club, season };
-  window.dispatchEvent(new CustomEvent(OPEN_CLUB_SEASON_EVENT, { detail: pending }));
-};
-/** A request made before the host mounted (read once) */
-export const takePendingClubSeason = () => {
-  const p = pending;
-  pending = null;
-  return p;
-};
+export { OPEN_CLUB_SEASON_EVENT } from '@/utils/openClub';
+/** Opens a club's season (the This season tab). `season` defaults to the latest. */
+export const openClubSeason = (club: string, season?: number) => openClub(club, { tab: 'season', season });
 export const prefetchClubSeason = () => void import('@/components/clubseason/ClubSeasonSheet');
 
 /** One player's season with one club */

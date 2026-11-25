@@ -175,7 +175,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
                 <button
                   type="button"
                   disabled={!findNFLTeam(f)}
-                  onClick={() => openTeamPage(findNFLTeam(f)!.name)}
+                  onClick={() => openTeamPage(findNFLTeam(f)!.name, { tab: 'franchise' })}
                   title={`Open the ${findNFLTeam(f)?.fullName ?? f} team page`}
                   className="ix-card inline-flex cursor-pointer items-center gap-1 rounded-full border border-line bg-panel px-2 py-0.5 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-default"
                 >

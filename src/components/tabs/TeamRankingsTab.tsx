@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Building2, UserX } from 'lucide-react';
-import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
 import PositionBadge from '../PositionBadge';
@@ -12,21 +11,17 @@ import { OPEN_TEAM_EVENT } from '@/utils/teamSearch';
 import PowerRanking from '../teams/PowerRanking';
 import DynastyGrid from '../teams/DynastyGrid';
 import TeamAdvanced from '../teams/TeamAdvanced';
-import { overallRating } from '../brand/ProPlayerBanner.utils';
+import { useTeamSummaries } from '../teams/useTeamSummaries';
+import { openClub as openClubSheet } from '@/utils/openClub';
 import { latestSeasonYear, useLeagueContent } from '@/utils/leagueContent';
-import { coachedByTeam } from '@/utils/frontOffice';
-import { useOfficialOvr } from '@/utils/useOfficialOvr';
 import { isHallOfFamer } from '@/config/stats';
 import {
   DIVISIONS,
   TEAM_SORTS,
-  buildFranchiseRecords,
-  buildTeamSummaries,
   sortTeams,
   type TeamSortKey,
   type TeamSummary,
 } from '../teams/teamStats';
-import { usePlayerExtras } from '@/utils/playerExtras';
 import { buildHash, useHubRoute } from '../stats/hub/hashRoute';
 import { peekProps } from '@/components/peek/peekProps';
 import { IS_NFL, seasonLabel } from '@/config/edition';
@@ -89,7 +84,6 @@ const DIV_OPTIONS: { key: DivisionFilter; label: string }[] = [{ key: 'all', lab
 const divisionLabel = (t: TeamSummary) => (t.team ? `${t.team.conference} ${t.team.division}` : 'Other');
 
 const TeamRankingsTab = () => {
-  const { careerData, getAllPlayers, dataVersion } = useLeague();
   const [sortKey, setSortKey] = useState<TeamSortKey>('power');
   const [conference, setConference] = useState<ConferenceFilter>('all');
   const [division, setDivision] = useState<DivisionFilter>('all');
@@ -97,22 +91,10 @@ const TeamRankingsTab = () => {
   const [highlight, setHighlight] = useState<string | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const { content } = useLeagueContent();
-  const extras = usePlayerExtras();
-  const officialOvr = useOfficialOvr();
-  const coached = useMemo(() => coachedByTeam(content), [content]);
-  const superBowls = useMemo(() => content?.superBowls ?? [], [content]);
+  const { careerData, league, teams, unassigned, records, coached, superBowls, ovrFor } = useTeamSummaries();
   const lastSeason = latestSeasonYear(content);
   const firstSeason = superBowls.length ? Math.min(...superBowls.map((sb) => sb.year)) : 0;
   const [allFa, setAllFa] = useState(false);
-
-  const league = useMemo(
-    () => getAllPlayers().filter((p) => !p.isRealLegend),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [careerData, getAllPlayers, dataVersion],
-  );
-  const { teams, unassigned } = useMemo(() => buildTeamSummaries(league, extras.stints, superBowls), [league, extras.stints, superBowls]);
-  const ovrFor = useCallback((p: Player) => overallRating(p, officialOvr), [officialOvr]);
-  const records = useMemo(() => buildFranchiseRecords(teams, superBowls, ovrFor), [teams, superBowls, ovrFor]);
   const openable = useMemo(() => new Set(teams.map((t) => t.key)), [teams]);
 
   const visible = useMemo(
@@ -145,7 +127,7 @@ const TeamRankingsTab = () => {
    * (the Season page, a game page) links here the same way, and the header's quick search too (utils/teamSearch.ts).
    */
   const { route, navigate } = useHubRoute();
-  const wanted = route.sub === 'teams' ? route.p : undefined;
+  const wanted = !IS_NFL && route.sub === 'teams' ? route.p : undefined;
   const pushed = useRef(false);
   useEffect(() => {
     if (!wanted) {
@@ -159,6 +141,11 @@ const TeamRankingsTab = () => {
   const openClub = useCallback(
     (key: string) => {
       const hit = teams.find((t) => t.key === key);
+      // NFL edition: one club page (the club season sheet), opened on its Franchise tab from this history page
+      if (IS_NFL) {
+        if (hit) openClubSheet(hit.team?.name ?? hit.label, { tab: 'franchise' });
+        return;
+      }
       setOpenKey(key);
       if (!hit) return;
       const to = { tab: 'career', sub: 'teams' as const, p: hit.team?.name ?? hit.label };
@@ -353,14 +340,16 @@ const TeamRankingsTab = () => {
         </PixelPanel>
       )}
 
-      <TeamSheet
-        summary={openSummary}
-        record={openSummary ? records.get(openSummary.key) : undefined}
-        coached={openSummary ? coached.get(openSummary.team?.id ?? openSummary.label) : undefined}
-        league={league}
-        ovrFor={ovrFor}
-        onClose={closeClub}
-      />
+      {!IS_NFL && (
+        <TeamSheet
+          summary={openSummary}
+          record={openSummary ? records.get(openSummary.key) : undefined}
+          coached={openSummary ? coached.get(openSummary.team?.id ?? openSummary.label) : undefined}
+          league={league}
+          ovrFor={ovrFor}
+          onClose={closeClub}
+        />
+      )}
       <PlayerDetailCard player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />
     </div>
   );

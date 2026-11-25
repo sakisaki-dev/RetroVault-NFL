@@ -77,7 +77,7 @@ const Dynasties = () => {
             <Reveal as="ol" className="dyn-list">
               {runs.map((r, i) => (
                 <li key={r.club} className="mo-rise" style={stag(i, 40)}>
-                  <button type="button" className="dyn-row" style={rowStyle(r.club)} onClick={() => openTeamPage(r.club)} aria-label={`${r.club}, ${seasonLabel(r.from)} to ${seasonLabel(r.to)}: ${recordLine(r)}. Open club page`}>
+                  <button type="button" className="dyn-row" style={rowStyle(r.club)} onClick={() => openTeamPage(r.club, { tab: 'franchise' })} aria-label={`${r.club}, ${seasonLabel(r.from)} to ${seasonLabel(r.to)}: ${recordLine(r)}. Open club page`}>
                     <span className="dyn-n">{i + 1}</span>
                     <TeamLogo team={r.club} decorative size={30} />
                     <span className="dyn-main">
@@ -101,7 +101,7 @@ const Dynasties = () => {
             <Reveal as="ol" className="dyn-list">
               {streaks.map((s, i) => (
                 <li key={`${s.club}-${s.from}`} className="mo-rise" style={stag(i, 40)}>
-                  <button type="button" className="dyn-row" style={rowStyle(s.club)} onClick={() => openTeamPage(s.club)} aria-label={`${s.club}, ${s.n} straight titles, ${seasonLabel(s.from)} to ${seasonLabel(s.to)}. Open club page`}>
+                  <button type="button" className="dyn-row" style={rowStyle(s.club)} onClick={() => openTeamPage(s.club, { tab: 'franchise' })} aria-label={`${s.club}, ${s.n} straight titles, ${seasonLabel(s.from)} to ${seasonLabel(s.to)}. Open club page`}>
                     <span className="dyn-n">{i + 1}</span>
                     <TeamLogo team={s.club} decorative size={30} />
                     <span className="dyn-main">
