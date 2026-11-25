@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+import market_history  # noqa: E402
 PUB = ROOT / "public" / "data"
 errors, warns = [], []
 
@@ -48,6 +50,9 @@ if any(r[1] == "Retired" and r[0] not in past_retired for r in rows):
 market = load("market.json")
 if market and not any(str(x.get("season")) == "2026" for x in market.get("snapshots", [])):
     errors.append("market.json has no 2026 snapshot")
+latest = load("market-latest.json")
+if market and latest != market_history.expand(market)[-2:]:
+    errors.append("market-latest.json is not the last two snapshots of market.json (npm run market)")
 content = load("league/content.json")
 sched = load("league/schedule.json")
 if sched and not sched.get("seasons"):
