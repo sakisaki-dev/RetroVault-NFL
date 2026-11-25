@@ -1,0 +1,28 @@
+/* The club page's Franchise tab (FranchiseTab.tsx): the club's colours come from the sheet's --cs-* variables. */
+.ft { min-width: 0; width: 100%; }
+.ft-top {
+  display: grid;
+  gap: 10px;
+  padding: 14px 12px 14px;
+  background: linear-gradient(120deg, var(--cs-fill), color-mix(in srgb, var(--cs-fill) 60%, #000));
+  border-bottom: 3px solid var(--cs-edge);
+  color: var(--cs-ink, #fff);
+}
+.ft-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 8px 4px; border-radius: 10px; background: rgb(0 0 0 / 0.42); text-align: center; color: #fff; margin: 0; }
+.ft-stats div { display: flex; flex-direction: column-reverse; min-width: 0; }
+.ft-stats dt { margin-top: 4px; font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 8px; text-transform: uppercase; opacity: 0.75; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ft-stats dd { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 24px; line-height: 1; font-variant-numeric: tabular-nums; }
+.ft-stats dd.is-gold { color: hsl(var(--gold)); }
+.ft-sbs { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.ft-sbs li { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 3px; background: rgb(0 0 0 / 0.35); color: rgb(255 255 255 / 0.85); font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 8px; text-transform: uppercase; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3); }
+.ft-sbs li.is-won { background: rgb(0 0 0 / 0.8); color: hsl(var(--gold)); box-shadow: inset 0 0 0 1px hsl(var(--gold) / 0.7); }
+.ft-coached { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; margin: 0; padding: 4px 8px; border-radius: 6px; background: rgb(0 0 0 / 0.65); border: 1px solid hsl(var(--gold) / 0.6); color: #fff; font-size: 12px; }
+.ft-coached b { flex: none; font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 8px; text-transform: uppercase; color: hsl(var(--gold)); font-weight: 400; }
+.ft-coached span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ft-body { display: grid; gap: 24px; padding: 16px 12px 8px; min-width: 0; }
+.ft-body > * { min-width: 0; }
+@media (min-width: 640px) {
+  .ft-top { padding: 16px 20px; }
+  .ft-stats dd { font-size: 30px; }
+  .ft-body { padding: 20px; }
+}

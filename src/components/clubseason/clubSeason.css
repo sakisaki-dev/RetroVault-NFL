@@ -18,27 +18,27 @@
   font-weight: 800;
 }
 
-/* Season switcher + All-time */
+/* The tabs (This season | Franchise) stick under the sheet's top edge; the season strip sits above the programme */
 .cs-bar-top {
   position: sticky;
   top: 0;
   z-index: 30;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 52px 10px 12px;
+  padding: 8px 52px 8px 12px;
   background: rgb(10 15 30 / 0.94);
   border-bottom: 1px solid rgb(255 255 255 / 0.08);
   backdrop-filter: blur(6px);
 }
+.cs-bar-top .cs-tabs { width: 100%; }
+.cs-bar-top .cs-tabs > div, .cs-bar-top .cs-tabs [role="group"] { width: 100%; }
+.cs-bar-top .cs-tabs button { flex: 1 1 0; justify-content: center; }
 .cs-years {
   display: flex;
   gap: 6px;
   min-width: 0;
-  flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: auto;
+  padding: 10px 12px 2px;
 }
 .cs-years::-webkit-scrollbar {
   display: none;
@@ -57,20 +57,6 @@
 .cs-years button.is-on {
   background: hsl(var(--gold));
   color: #1a1400;
-}
-.cs-all {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 11px;
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 14px;
-  background: var(--cs-fill);
-  color: var(--ax-ink, #fff);
-  border: 1px solid var(--cs-edge);
 }
 .cs-loading {
   padding: 60px 20px;

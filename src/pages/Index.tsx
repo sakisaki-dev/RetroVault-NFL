@@ -123,7 +123,7 @@ const IndexContent = () => {
       const club = getNFLTeamById(id);
       if (!club) return navigate({ tab: 'career', sub: 'teams' });
       takeRaftersRequest();
-      openTeamPage(club.name);
+      openTeamPage(club.name, { tab: 'franchise', section: 'rafters' });
       scrollToTeamRafters();
     });
     return () => {
