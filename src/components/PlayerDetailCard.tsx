@@ -45,6 +45,7 @@ import { useLegendPhoto } from './player/useLegendPhoto';
 import { useDeferredStage } from '@/hooks/useDeferredStage';
 import './player/playerCard.css';
 import DraftTiles from './player/DraftTiles';
+import ClubTile from './player/ClubTile';
 import BioTile from './player/BioTiles';
 import { useDraftInfo } from '@/utils/draftInfo';
 import PixelLoader from '@/components/ui/PixelLoader';
@@ -434,7 +435,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               <span className="pc-tile__k">Number</span>
               <span className="pc-tile__v pc-tile__v--num">#{jerseyNumber}</span>
             </div>
-            <div className="pc-tile pc-tile--club">
+            <ClubTile team={team} onLeave={onClose} className="pc-tile pc-tile--club">
               {team ? (
                 <>
                   <span className="pc-logo-puck pc-tile__puck">
@@ -456,8 +457,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               ) : (
                 <span className="pc-tile__v">No team</span>
               )}
-            </div>
-            <DraftTiles playerKey={`${player.position}:${player.name}`} bannerClub={team?.name ?? null} />
+            </ClubTile>
+            <DraftTiles playerKey={`${player.position}:${player.name}`} bannerClub={team?.name ?? null} onLeave={onClose} />
             <BioTile player={player} />
             <RetiredStrip player={player} onLeave={onClose} className="pc-ids__retired" />
             {formerName && <p className="pc-ids__former">Formerly known as {formerName}</p>}
