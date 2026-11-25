@@ -104,7 +104,7 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
       ) : !asTable ? (
         <PlusLollipop board={board} rows={rows} allRows={merged} onSelect={onSelect} />
       ) : (
-        <table className="w-full table-fixed text-sm">
+        <table className="rv-pin w-full table-fixed text-sm">
           <caption className="sr-only">
             {POSITION_NAMES[position]}s ranked by {metric.label} ({metric.minLabel})
           </caption>

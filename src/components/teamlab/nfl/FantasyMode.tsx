@@ -418,7 +418,7 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
           ))}
         </div>
         <div className="overflow-x-auto">
-          <table className="stats-table nfl-board">
+          <table className="rv-pin stats-table nfl-board">
             <caption className="sr-only">Projected points board</caption>
             <thead>
               <tr>
@@ -609,7 +609,7 @@ const FantasyH2H = ({
             Replaying weeks 1-{played} with the real games: <b className="text-gold">{wins}-{losses}</b> against {opp.name}, {sumA.toFixed(1)} to {sumB.toFixed(1)} points. Projected weeks follow.
           </p>
           <div className="overflow-x-auto">
-            <table className="stats-table nfl-h2h">
+            <table className="rv-pin stats-table nfl-h2h">
               <thead>
                 <tr><th scope="col">Week</th><th scope="col" className="num">You</th><th scope="col" /><th scope="col" className="num">Them</th></tr>
               </thead>

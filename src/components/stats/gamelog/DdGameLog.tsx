@@ -320,7 +320,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
           <Seg label="Split by" value={split} onChange={(v) => { setSplit(v); setSort({ k: 'g', dir: -1 }); }} options={[{ v: 'ha', l: 'Home / Away' }, { v: 'wl', l: 'Wins / Losses' }, { v: 'opp', l: 'Opponent' }, { v: 'month', l: 'Month' }]} />
         </div>
         <div className="gl-tablewrap">
-          <table className="gl-table">
+          <table className="rv-pin gl-table">
             <thead>
               <tr>
                 <Th k="name" className="text-left">{split === 'opp' ? 'Opponent' : split === 'month' ? 'Month' : 'Split'}</Th>
@@ -368,7 +368,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
         <div className="gl-head"><h3 className="gl-h">Every game</h3><span className="gl-sub">{games.length} games, newest first</span></div>
         {rule.hasLine ? (
           <div className="gl-tablewrap">
-            <table className="gl-table gl-log">
+            <table className="rv-pin gl-table gl-log">
               <thead>
                 <tr>
                   <th scope="col" className="text-left">Game</th>
@@ -391,7 +391,7 @@ const DdGameLog = ({ player }: { player: Player }) => {
           </div>
         ) : (
           <div className="gl-tablewrap">
-            <table className="gl-table gl-log">
+            <table className="rv-pin gl-table gl-log">
               <thead><tr><th scope="col" className="text-left">Game</th><th scope="col">Result</th><th scope="col">Date</th></tr></thead>
               <tbody>
                 {slice.map((g) => (

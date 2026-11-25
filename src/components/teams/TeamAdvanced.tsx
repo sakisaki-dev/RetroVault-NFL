@@ -198,7 +198,7 @@ const AdvancedTable = ({ season, compact, onTrack }: { season: ScheduleSeason; c
   return (
     <div className="space-y-2">
     <PixelPanel pad="none" className="max-h-[34rem] overflow-auto">
-      <table className={cn('ax-table w-full text-sm', compact ? 'min-w-0' : 'min-w-[760px]')}>
+      <table className={cn('rv-pin ax-table w-full text-sm', compact ? 'min-w-0' : 'min-w-[760px]')}>
         <caption className="sr-only">
           Advanced team stats, {season.season}. Sorted by {COLUMNS.find((c) => c.key === sort.key)?.title ?? sort.key}, {sort.asc ? 'ascending' : 'descending'}.
         </caption>
@@ -723,7 +723,7 @@ const Progression = ({ progression, clubs, team, onTeam }: { progression: Record
       )}
 
       <div className="overflow-x-auto border-2 border-[hsl(var(--line)/0.7)]">
-        <table className="ax-table w-full min-w-[340px] text-sm">
+        <table className="rv-pin ax-table w-full min-w-[340px] text-sm">
           <caption className="sr-only">{team} season by season, newest first, with the change against the previous season that has weekly scores</caption>
           <thead>
             <tr className="text-[11px] uppercase tracking-wider text-muted-foreground">

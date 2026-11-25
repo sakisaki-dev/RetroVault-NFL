@@ -16,6 +16,8 @@ import GameSprite from '../../GameSprite';
 import TributeButton from '../../tribute/TributeButton';
 import { RetiredHangers } from '../../teams/RetiredBadge';
 import { keyOf } from '../records';
+import DraftTiles from '@/components/player/DraftTiles';
+import '@/components/player/playerCard.css';
 import { SmallSampleChip } from './ddParts';
 import { displayName } from '@/utils/displayName';
 import { IS_NFL } from '@/config/edition';
@@ -123,6 +125,10 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
       </button>
       {/* his retired number hangs from the hero's top edge, one banner per club (tap: their rafters) */}
       <RetiredHangers player={player} className="dd-hangers" />
+      </div>
+
+      <div className="pc-ids pc-ids--draft pc-ids--hero">
+        <DraftTiles playerKey={keyOf(player)} bannerClub={team?.name ?? null} />
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">

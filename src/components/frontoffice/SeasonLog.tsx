@@ -30,7 +30,7 @@ const SeasonLog = ({ rows, games }: { rows: SeasonRow[]; games: YourGame[] }) =>
         </span>
       </summary>
       <div className="max-h-[28rem] overflow-auto border-t border-border/60">
-        <table className="stats-table">
+        <table className="rv-pin stats-table">
           <caption className="sr-only">Season-by-season regular-season record and finish</caption>
           <thead>
             <tr>

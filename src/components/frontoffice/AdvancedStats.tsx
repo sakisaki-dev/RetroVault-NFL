@@ -129,7 +129,7 @@ const WinPctChart = ({ a }: { a: CoachAnalytics }) => {
         <span>Shaded bands: each coaching stint, with its logo</span>
       </p>
       <DataTable summary="Show data table">
-        <table className="stats-table">
+        <table className="rv-pin stats-table">
           <caption className="sr-only">Season record and rolling win percentage</caption>
           <thead>
             <tr>
@@ -168,7 +168,7 @@ const StintReport = ({ a }: { a: CoachAnalytics }) => {
   const minPct = Math.min(...ranked.map((r) => r.pct));
   return (
     <div className="overflow-x-auto rounded-md border border-border/60">
-      <table className="stats-table fo-report">
+      <table className="rv-pin stats-table fo-report">
         <caption className="sr-only">Coaching stints ranked by regular-season win percentage, graded by percentile among stints</caption>
         <thead>
           <tr>

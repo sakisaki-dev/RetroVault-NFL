@@ -1528,3 +1528,64 @@ body::before {
     min-height: 40px;
   }
 }
+
+/* ---------- Phone tables: pinned identity column + tappable sort headers (the shared .rv-pin utility) ----------
+   Put `rv-pin` on any <table> that scrolls sideways. Its first column (name, season, game...) sticks to the left with an
+   opaque background; once the scroller has moved, a soft edge shadow (src/utils/pinScroll.ts toggles .rv-scrolled on the
+   scroller). Sort buttons in the header get a 36px tap target on a phone and a visible arrow.
+   Override the cell colour with --rv-pin-bg (an "H S% L%" triplet) when the table sits on another surface. */
+.rv-pin {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.rv-pin :is(th, td):first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: hsl(var(--rv-pin-bg, var(--card)));
+}
+.rv-pin tbody tr:nth-child(even) > :is(th, td):first-child {
+  background-image: linear-gradient(hsl(var(--secondary) / 0.25), hsl(var(--secondary) / 0.25));
+}
+.rv-pin tbody tr:hover > :is(th, td):first-child {
+  background-image: linear-gradient(hsl(var(--gold) / 0.08), hsl(var(--gold) / 0.08));
+}
+.rv-pin thead :is(th, td):first-child {
+  z-index: 4;
+  background-color: hsl(var(--rv-pin-head-bg, var(--rv-pin-bg, var(--card))));
+}
+.rv-scrolled .rv-pin :is(th, td):first-child {
+  box-shadow: 1px 0 0 hsl(var(--line) / 0.8), 7px 0 9px -6px rgb(0 0 0 / 0.65);
+}
+.rv-pin th button,
+.rv-pin th [role='button'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+}
+.rv-pin th button svg,
+.rv-pin th button [aria-hidden='true'] {
+  flex: none;
+}
+@media (max-width: 767px) {
+  .rv-pin th button,
+  .rv-pin th [role='button'] {
+    min-height: 36px;
+    min-width: 36px;
+    padding-inline: 4px;
+    justify-content: center;
+  }
+  .rv-pin th[aria-sort='ascending'] button,
+  .rv-pin th[aria-sort='descending'] button {
+    color: hsl(var(--gold));
+  }
+  /* the sort arrow stays visible on every sortable header (TeamAdvanced hid the idle ones on phones) */
+  .rv-pin th button svg.max-sm\:hidden {
+    display: inline-block;
+  }
+  .rv-pin th button svg {
+    width: 14px;
+    height: 14px;
+  }
+}

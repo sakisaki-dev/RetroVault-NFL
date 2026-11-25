@@ -148,7 +148,7 @@ const TradeCard = ({ c, subject }: { c: TributeChapter; subject: string }) => {
         {t && (
           <div className="trib-after">
             <p className="trib-mini">Since the trade{t.laterLabel ? ` · to ${t.laterLabel.split(' · ')[0]}` : ''}</p>
-            <table className="trib-after__table">
+            <table className="rv-pin trib-after__table">
               <thead>
                 <tr>
                   <th scope="col">Player</th>

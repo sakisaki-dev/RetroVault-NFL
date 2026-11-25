@@ -125,7 +125,7 @@ const ChaseChart = ({ pace, onSelect, title = 'Chasing history', intro }: { pace
       }
       table={
         <div className="overflow-x-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">Players on pace to pass a career record</caption>
             <thead className="bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>

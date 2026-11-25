@@ -130,7 +130,7 @@ const LeaderRadar = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Playe
       }
       table={
         <div className="overflow-x-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">Style traits of the top {TOP} {position}s: value and percentile</caption>
             <thead className="bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>

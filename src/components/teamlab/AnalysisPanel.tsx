@@ -76,7 +76,7 @@ const AnalysisPanel = ({ analysis: a, upgrades, ranking, onUpgrade, clubName, co
         <details className="mt-3 text-sm">
           <summary className="cursor-pointer text-xs text-muted-foreground hover:text-chalk">View as table</summary>
           <div className="mt-2 overflow-x-auto">
-            <table className="stats-table">
+            <table className="rv-pin stats-table">
               <caption className="sr-only">Unit ratings</caption>
               <thead>
                 <tr>

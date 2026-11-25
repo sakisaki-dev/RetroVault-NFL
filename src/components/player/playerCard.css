@@ -737,3 +737,52 @@
     font-size: 19px;
   }
 }
+
+/* ---------- College and Draft tiles in the identity row (DraftTiles.tsx) ---------- */
+/* a six-column grid: Position / Number / Club take two each, College and Draft share the second row (3 + 3) */
+.pc-ids--draft {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.pc-ids--draft > .pc-tile { grid-column: span 2; }
+.pc-ids--draft > .pc-tile--college,
+.pc-ids--draft > .pc-tile--draft { grid-column: span 3; min-height: 0; }
+.pc-ids--draft > .pc-tile--wide { grid-column: 1 / -1; }
+.pc-ids .pc-tile--college,
+.pc-ids .pc-tile--draft { display: grid; grid-template-columns: 44px minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 8px; align-items: center; justify-items: start; text-align: left; min-height: 0; padding: 8px 10px; }
+.pc-ids .pc-tile--college > :first-child,
+.pc-ids .pc-tile--draft > :first-child { grid-row: 1 / span 3; grid-column: 1; justify-self: center; }
+.pc-ids .pc-tile--college .pc-tile__k, .pc-ids .pc-tile--draft .pc-tile__k { margin-top: 0; grid-column: 2; }
+.pc-ids .pc-tile--college .pc-tile__v, .pc-ids .pc-tile--draft .pc-tile__v { grid-column: 2; font-size: 14px; }
+.pc-ids .pc-tile--draft .pc-tile__sub { grid-column: 2; }
+.pc-ids .pc-tile--college .pc-tile__sub, .pc-ids .pc-tile--draft .pc-tile__sub { display: block; }
+.pc-college__logo { object-fit: contain; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5)); }
+.pc-college__plate { display: grid; place-items: center; border-radius: 999px; font-family: var(--font-display); font-weight: 800; font-size: 14px; letter-spacing: 0.02em; }
+.pc-ids .pc-tile--draft .pc-tile__icon { width: 40px; height: 40px; }
+.pc-ids .pc-tile--draft .pc-tile__icon svg { width: 22px; height: 22px; }
+.pc-ids .pc-tile--draft .pc-tile__puck { width: 40px !important; height: 40px !important; }
+@media (max-width: 480px) {
+  .pc-ids .pc-tile--college .pc-tile__v, .pc-ids .pc-tile--draft .pc-tile__v { font-size: 13px; }
+  .pc-ids .pc-tile--college,
+  .pc-ids .pc-tile--draft { grid-template-columns: 36px minmax(0, 1fr); column-gap: 6px; padding: 6px 7px; }
+  .pc-ids .pc-tile--college .pc-college__logo, .pc-ids .pc-tile--college .pc-college__plate,
+  .pc-ids .pc-tile--draft .pc-tile__icon, .pc-ids .pc-tile--draft .pc-tile__puck { width: 34px !important; height: 34px !important; }
+  .pc-ids .pc-tile--college .pc-college__logo { height: 34px !important; }
+}
+@media (min-width: 900px) {
+  .pc-ids--draft { grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(0, 1.3fr) minmax(0, 1.1fr) minmax(0, 1.1fr); }
+  .pc-ids--draft.pc-ids--retired { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pc-ids--draft > .pc-tile,
+  .pc-ids--draft > .pc-tile--college,
+  .pc-ids--draft > .pc-tile--draft { grid-column: auto; }
+  .pc-ids--draft > .pc-tile--wide { grid-column: auto; }
+  .pc-ids--draft .pc-ids__retired { grid-column: 1 / -1; }
+  .pc-ids .pc-tile--college, .pc-ids .pc-tile--draft { padding: 6px 8px; }
+}
+.pc-ids--hero { padding: 0; background: none; }
+.pc-ids--hero .pc-tile { margin-top: 0; }
+.pc-tile__v--fit { text-transform: none; letter-spacing: 0; }
+.pc-ids--hero.pc-ids--draft, .pc-ids--hero.pc-ids--draft { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 560px; gap: 8px; }
+.pc-ids--hero.pc-ids--draft > .pc-tile { grid-column: auto; }
+.pc-ids--hero.pc-ids--draft > .pc-tile--wide { grid-column: 1 / -1; }
+.pc-ids--hero:empty { display: none; }
+@media (min-width: 900px) { .pc-ids--hero.pc-ids--draft { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pc-ids--hero .pc-tile { margin-top: 0; } }

@@ -64,7 +64,7 @@ const ValueAcrossBoard = ({ players, onSelect }: { players: Player[]; onSelect: 
         ))}
       </ol>
 
-      <table className="w-full table-fixed text-sm">
+      <table className="rv-pin w-full table-fixed text-sm">
         <caption className="sr-only">Players of every position ranked by Value / Game relative to their position (min {VALUE_ACROSS_MIN_GAMES} games)</caption>
         <thead>
           <tr className="text-left font-pixel text-[9px] uppercase text-muted-foreground">

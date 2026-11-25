@@ -195,7 +195,7 @@ const HeadToHeadPanel = ({ ctx, lineup, saved, presets, kitClub }: HeadToHeadPan
           <details className="text-sm">
             <summary className="cursor-pointer text-xs text-muted-foreground hover:text-chalk">View as table · their lineup</summary>
             <div className="mt-2 overflow-x-auto">
-              <table className="stats-table">
+              <table className="rv-pin stats-table">
                 <caption className="sr-only">Unit matchups</caption>
                 <thead>
                   <tr>

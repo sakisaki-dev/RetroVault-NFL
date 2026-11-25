@@ -426,7 +426,7 @@ const DistributionSwarm = ({ players, ovrMap, onSelect }: { players: Player[]; o
       }
       table={
         <div className="relative max-h-[420px] overflow-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">{m.label} of each position's Hall of Famers and top players</caption>
             <thead className="sticky top-0 bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>
