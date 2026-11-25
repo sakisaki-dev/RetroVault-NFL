@@ -24,8 +24,9 @@ import {
   type RuleCard,
 } from '@/utils/playerNewsRules';
 import { ArticleReader } from './ArticleReader';
-import { StoryItem } from './NewsTab';
-import { kindOf, openDeepDive, useNewsPlayers } from './newsData';
+import { Rubric, StoryItem } from './NewsTab';
+import { FillGrid } from './FillGrid';
+import { GROUPS, KIND_ACCENT, kindOf, openDeepDive, useNewsPlayers } from './newsData';
 import '@/components/news/news-art.css';
 import '@/components/news/story.css';
 import '@/components/news/takes.css';
@@ -43,6 +44,8 @@ import './playerNews.css';
  */
 
 const SHOWN = 6;
+/** Enough stories to split into labelled sections by type */
+const GROUP_MIN = 6;
 
 const useSeen = () => {
   const [seen, setSeen] = useState(false);
@@ -72,8 +75,8 @@ const Skeleton = () => (
 
 const ink = (club: string): CSSProperties => ({ '--pn-ink': getTeamTextColor(club) ?? '#ffc83d' } as CSSProperties);
 
-const RuleCardView = ({ c, club, i }: { c: RuleCard; club: string; i: number }) => (
-  <article className={cn('pn-card', c.tone && `pn-card--${c.tone}`)} style={{ ...teamVars(club), ...ink(club), '--i': i } as CSSProperties} data-kind={c.kind}>
+const RuleCardView = ({ c, club, i, style }: { c: RuleCard; club: string; i: number; style?: CSSProperties }) => (
+  <article className={cn('pn-card', c.tone && `pn-card--${c.tone}`)} style={{ ...teamVars(club), ...ink(club), '--i': i, ...style } as CSSProperties} data-kind={c.kind}>
     <p className="pn-card__k">{c.kicker}</p>
     {c.big && (
       <p className="pn-card__big">
@@ -133,7 +136,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
   const market = useMarket();
   const inj = useInjury(key);
   const log = useGameLog(key);
-  const [more, setMore] = useState(false);
+  const [openSec, setOpenSec] = useState<Set<string>>(() => new Set());
   // the section is long: collapsed it shows his top bar, next game, note and three stories; See more opens the rest
   const [open, setOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -150,7 +153,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
   }, [overview, pool, espnId, player]);
   const around = useMemo(() => (articles.length ? [] : (teamItems?.items ?? []).filter((i) => i.type !== 'Media').slice(0, SHOWN)), [articles, teamItems]);
   const feed = articles.length ? articles : around;
-  const shown = more ? feed : feed.slice(0, SHOWN);
+  const shown = feed;
   const cast = useNewsPlayers(shown, players);
   const poolCast = useNewsPlayers(pool, players);
 
@@ -203,11 +206,17 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
     return [...m.entries()].sort((a, b) => b[1].n - a[1].n || b[0].careerLegacy - a[0].careerLegacy).slice(0, 5);
   }, [pool, poolCast, player, club]);
 
+  // the stories in labelled sections by type once there are enough, else one "Latest" group; collapsed, just the top three
+  const groups = useMemo(() => {
+    const g = GROUPS.map((x) => ({ ...x, items: feed.filter((i) => x.kinds.includes(kindOf(i))) })).filter((x) => x.items.length);
+    return feed.length >= GROUP_MIN && g.length > 1 ? g : [{ id: 'latest', label: 'Latest', kinds: [kindOf(feed[0] ?? ({} as NewsItem))], items: feed }];
+  }, [feed]);
+
   if (!ready) return <Skeleton />;
 
   const nextView = next && (
-    <section className="pn-panel pn-next" style={{ ...teamVars(club), ...ink(club) } as CSSProperties}>
-      <p className="pn-panel__k"><Clock className="h-3 w-3" aria-hidden /> Next game</p>
+    <section className="pn-panel pn-next en-mod" style={{ ...teamVars(club), ...ink(club), '--k': club ? 'var(--tc)' : KIND_ACCENT.recap } as CSSProperties}>
+      <Rubric id="pn-next-t" kicker="Up next" icon={<Clock className="h-4 w-4" aria-hidden />}>Next game</Rubric>
       <div className="pn-next__row">
         <TeamLogo team={next.opp} size={44} decorative />
         <div className="pn-next__t">
@@ -234,15 +243,15 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
   );
   const noteAt = overview?.note ? noteTime(overview.note.published) : '';
   const noteView = overview?.note && (
-    <section className="pn-panel">
-      <p className="pn-panel__k"><Radio className="h-3 w-3" aria-hidden /> Player note {noteAt && <time>{timeAgo(noteAt)}</time>}</p>
+    <section className="pn-panel en-mod" style={{ '--k': KIND_ACCENT.analysis } as CSSProperties}>
+      <Rubric id="pn-note-t" kicker={noteAt ? `Rotowire · ${timeAgo(noteAt)}` : 'Rotowire'} icon={<Radio className="h-4 w-4" aria-hidden />}>Player note</Rubric>
       <p className="pn-note__h">{overview.note.headline}</p>
       <p className="pn-note__s">{overview.note.story}</p>
     </section>
   );
   const timeline = feed.length > 0 && (
-    <section className="pn-panel">
-      <p className="pn-panel__k">Player news timeline</p>
+    <section className="pn-panel en-mod" style={{ '--k': KIND_ACCENT.feature } as CSSProperties}>
+      <Rubric id="pn-tl-t" kicker="Newest first" count={Math.min(feed.length, 8)}>Timeline</Rubric>
       <ol className="pn-tl">
         {feed.slice(0, 8).map((it) => (
           <li key={it.id}>
@@ -256,8 +265,8 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
     </section>
   );
   const mates = teammates.length > 0 && (
-    <section className="pn-panel">
-      <p className="pn-panel__k"><Users className="h-3 w-3" aria-hidden /> {club} in the news</p>
+    <section className="pn-panel en-mod" style={{ '--k': 'var(--tc)' } as CSSProperties}>
+      <Rubric id="pn-mates-t" kicker="Teammates" club={club} icon={<Users className="h-4 w-4" aria-hidden />}>{club} in the news</Rubric>
       <ul className="pn-mates">
         {teammates.map(([p, e]) => (
           <li key={keyOfPlayer(p)}>
@@ -295,30 +304,55 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
       {(nextView || noteView) && <div className="pn-pair">{nextView}{noteView}</div>}
 
       {feed.length > 0 ? (
-        <div className="pn-feed">
+        <div className="pn-feed en-sections">
           <p className="en-dd__sub">
             {articles.length
               ? `${articles.length} ESPN ${articles.length === 1 ? 'piece' : 'pieces'} on ${displayName(player.name)}, newest first. A game recap carries his line against his average.`
               : `ESPN hasn’t tagged ${displayName(player.name)} lately. Around the ${club}:`}
           </p>
-          <ul className="ss-list">
-            {(open ? shown : shown.slice(0, 3)).flatMap((it, i) => {
-              const c = gameCards.get(it.id);
-              const rows = [<StoryItem key={it.id} it={it} i={i} players={players} cast={cast} onRead={(x) => setOpenId(x.id)} />];
-              if (c)
-                rows.push(
-                  <li key={`${it.id}-g`} className="pn-attach">
-                    <RuleCardView c={c} club={club} i={i} />
-                  </li>,
-                );
-              return rows;
-            })}
-          </ul>
-          {open && feed.length > SHOWN && (
-            <button type="button" className="pn-more" onClick={() => setMore((v) => !v)} aria-expanded={more}>
-              {more ? 'Show fewer' : `Show all ${feed.length}`}
-            </button>
-          )}
+          {(open ? groups : [{ ...groups[0], id: 'latest', label: 'Latest', items: feed.slice(0, 3) }]).map((g, gi) => {
+            const fold = open && g.id !== 'latest' && g.items.length > 3;
+            const list = fold && !openSec.has(g.id) ? g.items.slice(0, 3) : g.items;
+            return (
+              <section key={g.id} className="en-section" aria-labelledby={`pn-sec-${g.id}`} style={{ '--k': g.id === 'latest' ? 'var(--tc)' : KIND_ACCENT[g.kinds[0]] } as CSSProperties}>
+                <Rubric id={`pn-sec-${g.id}`} kicker={g.id === 'latest' ? (articles.length ? 'ESPN' : `Around the ${club}`) : `Section ${String(gi + 1).padStart(2, '0')}`} count={open ? g.items.length : feed.length} club={g.id === 'latest' ? club || undefined : undefined} big>
+                  {g.label}
+                </Rubric>
+                <FillGrid
+                  items={list}
+                  minW={270}
+                  max={3}
+                  gap={14}
+                  className="en-cards"
+                  render={(it, i, cell) => {
+                    const c = gameCards.get(it.id);
+                    return (
+                      <StoryItem
+                        key={it.id}
+                        it={it}
+                        i={i + gi * 3}
+                        cell={cell}
+                        players={players}
+                        cast={cast}
+                        onRead={(x) => setOpenId(x.id)}
+                        extra={c && <div className="pn-attach"><RuleCardView c={c} club={club} i={i} /></div>}
+                      />
+                    );
+                  }}
+                />
+                {fold && (
+                  <button
+                    type="button"
+                    className="en-sec-more"
+                    aria-expanded={openSec.has(g.id)}
+                    onClick={() => setOpenSec((s) => { const n = new Set(s); if (n.has(g.id)) n.delete(g.id); else n.add(g.id); return n; })}
+                  >
+                    {openSec.has(g.id) ? `Show fewer ${g.label.toLowerCase()}` : `+ ${g.items.length - 3} more ${g.label.toLowerCase()}`}
+                  </button>
+                )}
+              </section>
+            );
+          })}
         </div>
       ) : (
         <p className="en-dd__sub">
@@ -333,13 +367,17 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
       )}
 
       {open && cards.length > 0 && (
-        <section className="pn-deep" aria-label={active ? 'Deeper analysis' : 'From the archive'}>
-          <h3 className="pn-h">{active ? 'Deeper analysis' : 'From the archive'}</h3>
-          <div className="pn-grid">
-            {cards.map((c, i) => (
-              <RuleCardView key={c.id} c={c} club={club} i={i} />
-            ))}
-          </div>
+        <section className="pn-deep en-section" aria-labelledby="pn-deep-t" style={{ '--k': KIND_ACCENT.fantasy } as CSSProperties}>
+          <Rubric id="pn-deep-t" kicker="From our data" count={cards.length} big>{active ? 'Deeper analysis' : 'From the archive'}</Rubric>
+          <FillGrid
+            as="div"
+            items={cards}
+            minW={270}
+            max={3}
+            gap={14}
+            className="pn-grid"
+            render={(c, i, cell) => <RuleCardView key={c.id} c={c} club={club} i={i} style={cell.style} />}
+          />
         </section>
       )}
 

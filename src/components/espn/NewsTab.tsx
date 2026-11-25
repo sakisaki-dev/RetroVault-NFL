@@ -62,7 +62,7 @@ export interface ItemProps {
   onRead: (it: NewsItem) => void;
 }
 
-export const StoryItem = ({ it, i, players, cast, onRead, cell }: ItemProps & { it: NewsItem; i: number; cell?: { style: CSSProperties; wide: boolean } }) => {
+export const StoryItem = ({ it, i, players, cast, onRead, cell, extra }: ItemProps & { it: NewsItem; i: number; cell?: { style: CSSProperties; wide: boolean }; extra?: ReactNode }) => {
   const ps = cast.get(it.id) ?? [];
   const names = ps.map(keyOfPlayer);
   const club = clubOf(it, ps);
@@ -82,6 +82,7 @@ export const StoryItem = ({ it, i, players, cast, onRead, cell }: ItemProps & { 
         <ArticleArt variant="thumb" kind={SCENE_KIND[kindOf(it)]} players={names} teams={it.teams.slice(0, 2)} league={players} fallback={<StoryThumb kind={SCENE_KIND[kindOf(it)]} teams={it.teams} club={club} />} />
       </div>
       {it.description && it.description !== it.headline && <p className="ss-item__dek">{it.description}</p>}
+      {extra}
       {names.length > 0 && (
         <div className="ss-item__foot">
           <ClubChips names={names} players={players} onPlayer={openDeepDive} max={2} label="Players in this story" />
@@ -115,7 +116,7 @@ const VideoCard = ({ it, onRead, i, style }: { it: NewsItem; onRead: (it: NewsIt
 );
 
 /** A section header in the site's style: kicker, Barlow title, count, and a rule in the section's colour with a turf motif */
-const Rubric = ({ id, kicker, count, icon, club, big, children }: { id: string; kicker: string; count?: number; icon?: ReactNode; club?: string; big?: boolean; children: ReactNode }) => (
+export const Rubric = ({ id, kicker, count, icon, club, big, children }: { id: string; kicker: string; count?: number; icon?: ReactNode; club?: string; big?: boolean; children: ReactNode }) => (
   <header className={cn('en-rub', big && 'en-rub--big')}>
     <p className="en-rub__kicker">
       {club && <TeamLogo team={club} size={16} decorative />}
