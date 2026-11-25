@@ -1,0 +1,427 @@
+/*
+ * The College tab (CollegeTab.tsx and its parts): the stadium hero, a war-room draft board, school pages in school
+ * colours, the projected order and the needs mock. Flat club and school colours, rounded panels like the Deep Dive,
+ * Barlow Condensed numbers. Motion comes from Reveal's mo-* classes (off under reduced motion and lite mode).
+ */
+.cl {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  padding-bottom: 32px;
+}
+.cl-sec { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.cl-loading, .cl-note { color: hsl(var(--muted-foreground)); font-size: 13px; }
+.cl-foot { color: hsl(var(--muted-foreground)); font-size: 12px; line-height: 1.45; max-width: 80ch; }
+.cl-callout {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: hsl(var(--secondary-foreground));
+  background: hsl(var(--panel));
+  box-shadow: inset 3px 0 0 hsl(var(--sky)), inset 0 0 0 1px hsl(var(--line) / 0.6);
+}
+.cl-callout--warn { box-shadow: inset 3px 0 0 hsl(var(--gold)), inset 0 0 0 1px hsl(var(--gold) / 0.35); }
+.cl-plainname { font-weight: 600; font-size: 0.875rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-pos {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: hsl(var(--chalk));
+  background: hsl(var(--muted));
+}
+.cl-linkbtn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: hsl(var(--gold));
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: hsl(var(--gold) / 0.08);
+}
+.cl-linkbtn:hover { background: hsl(var(--gold) / 0.16); }
+
+/* ---- hero and nav ---- */
+.cl-hero__next { display: flex; flex-direction: column; align-items: flex-end; }
+.cl-hero__next b { font-family: var(--font-display); font-style: italic; font-size: 22px; text-transform: uppercase; color: hsl(var(--gold)); }
+.cl-nav { min-width: 0; }
+.cl-yearpick { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
+.cl-rounds { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-width: 0; }
+.cl-rounds > :first-child { min-width: 0; max-width: 100%; }
+
+/* ---- school mark + name ---- */
+.cl-school {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1px 6px 1px 2px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: hsl(var(--secondary-foreground));
+  vertical-align: middle;
+}
+button.cl-school { background: hsl(var(--muted) / 0.7); transition: background-color var(--dur-1, 120ms) var(--ease-out); }
+button.cl-school:hover { background: hsl(var(--line)); color: hsl(var(--chalk)); }
+.cl-school__n { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-school .pc-college__logo, .cl-school .pc-college__puck, .cl-school .pc-college__plate { flex-shrink: 0; }
+
+/* ---- outcome badges ---- */
+.cl-out { display: flex; flex-wrap: wrap; gap: 4px; }
+.cl-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: hsl(var(--secondary-foreground));
+  background: hsl(var(--muted));
+}
+.cl-badge--hof { color: #1b1300; background: linear-gradient(180deg, #ffe08a, #f1b52c); }
+.cl-badge--ap { color: #fff; background: hsl(354 80% 48%); }
+.cl-badge--pb { color: #fff; background: hsl(214 70% 45%); }
+.cl-badge--ovr { color: hsl(var(--gold)); background: hsl(var(--gold) / 0.12); }
+.cl-badge--act { color: hsl(150 80% 8%); background: hsl(var(--turf)); }
+.cl-badge--none { color: hsl(var(--muted-foreground)); background: transparent; padding: 0; font-family: var(--font-sans); font-weight: 500; }
+
+/* ---- the draft board ---- */
+.cl-board-wrap { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cl-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cl-pick {
+  --cl-c: hsl(var(--muted));
+  --cl-e: hsl(var(--line));
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 10px 8px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: hsl(var(--panel));
+  box-shadow: inset 0 0 0 1px hsl(var(--line) / 0.55), var(--shadow-card);
+}
+/* the club's colour as the card's leading band, the logo on it */
+.cl-pick__club {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  margin: -8px 0;
+  background: var(--cl-c);
+  box-shadow: inset -3px 0 0 var(--cl-e);
+}
+.cl-pick__no { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.cl-pick__no b { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 28px; color: hsl(var(--chalk)); }
+.cl-pick__no small { font-family: var(--font-pixel); font-size: 7px; letter-spacing: 0.08em; color: hsl(var(--muted-foreground)); margin-top: 3px; }
+.cl-pick__body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.cl-pick__name { display: flex; min-width: 0; }
+.cl-pick__meta { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.cl-pick.is-star { box-shadow: inset 0 0 0 1px hsl(var(--gold) / 0.55), 0 0 22px hsl(var(--gold) / 0.1), var(--shadow-card); }
+.cl-pick.is-steal::after, .cl-pick.is-bust::after {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.cl-pick.is-steal::after { content: 'STEAL'; color: hsl(150 80% 8%); background: hsl(var(--turf)); }
+.cl-pick.is-bust::after { content: 'BUST'; color: #fff; background: hsl(var(--flag)); }
+
+/* ---- steals and busts ---- */
+.cl-verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.cl-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: hsl(var(--panel));
+  box-shadow: inset 0 3px 0 var(--cl-tone), inset 0 0 0 1px hsl(var(--line) / 0.55), var(--shadow-card);
+}
+.cl-verdict--steal { --cl-tone: hsl(var(--turf)); }
+.cl-verdict--bust { --cl-tone: hsl(var(--flag)); }
+.cl-verdict__head h3 { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 26px; text-transform: uppercase; line-height: 1; color: var(--cl-tone); }
+.cl-verdict__list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.cl-vcard {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--cl-c, #1f2742) 13%, hsl(var(--night)));
+  box-shadow: inset 3px 0 0 var(--cl-c, #1f2742);
+}
+.cl-vcard__fig {
+  display: grid;
+  place-items: end center;
+  width: 64px;
+  height: 72px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--cl-c, #1f2742);
+}
+.cl-vcard__fig img, .cl-vcard__fig canvas { display: block; }
+.cl-vcard__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cl-vcard__line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-vcard__ovr { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.cl-vcard__ovr b { font-family: var(--font-display); font-weight: 800; font-size: 30px; color: hsl(var(--chalk)); }
+.cl-vcard__ovr small { font-family: var(--font-pixel); font-size: 7px; color: hsl(var(--muted-foreground)); }
+
+/* ---- colleges: search, leaderboard ---- */
+.cl-search { position: relative; max-width: 520px; }
+.cl-search__icon { position: absolute; left: 12px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; color: hsl(var(--muted-foreground)); }
+.cl-search input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 40px;
+  border-radius: 12px;
+  font-size: 15px;
+  color: hsl(var(--chalk));
+  background: hsl(var(--panel));
+  border: 1px solid hsl(var(--line));
+}
+.cl-search input:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 1px; }
+.cl-hits { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cl-hit {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px 8px 8px;
+  border-radius: 12px;
+  text-align: left;
+  background: hsl(var(--panel));
+  box-shadow: inset 4px 0 0 var(--cl-sl, var(--cl-sc)), inset 0 0 0 1px hsl(var(--line) / 0.55);
+  transition: transform var(--dur-1, 120ms) var(--ease-out);
+}
+.cl-hit:hover { transform: translateY(-1px); }
+.cl-hit > :first-child { grid-row: span 2; }
+.cl-hit__n { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; line-height: 1.05; }
+.cl-hit__k { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-lb { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.cl-lb__controls { display: flex; flex-wrap: wrap; gap: 8px 14px; min-width: 0; }
+.cl-lb__controls > * { min-width: 0; max-width: 100%; }
+.cl-table-wrap { min-width: 0; overflow-x: auto; border-radius: 14px; background: hsl(var(--panel)); box-shadow: inset 0 0 0 1px hsl(var(--line) / 0.55); }
+.cl-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cl-table th {
+  padding: 10px 10px 8px;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 1px solid hsl(var(--line) / 0.7);
+}
+.cl-table th.is-on { color: hsl(var(--gold)); }
+.cl-table td { padding: 6px 10px; border-bottom: 1px solid hsl(var(--line) / 0.3); vertical-align: middle; }
+.cl-table tr:last-child td { border-bottom: 0; }
+.cl-num { font-family: var(--font-display); font-weight: 700; font-size: 17px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cl-table th:nth-child(n + 3) { text-align: right; }
+.cl-table--picks th:nth-child(n + 3) { text-align: left; }
+.cl-rank { font-family: var(--font-display); font-style: italic; font-weight: 800; font-size: 18px; color: hsl(var(--muted-foreground)); width: 32px; }
+.cl-lbschool {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px 4px 4px;
+  border-radius: 8px;
+  text-align: left;
+  font-weight: 600;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cl-lbschool span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-lbschool:hover { background: hsl(var(--muted)); }
+/* the ranked figure as a faint bar in the school's colour behind the name */
+.cl-lbbar { position: absolute; left: 0; top: 0; bottom: 0; z-index: -1; background: color-mix(in srgb, var(--cl-sl, var(--cl-sc)) 28%, transparent); border-radius: 8px; box-shadow: inset -2px 0 0 var(--cl-sl, var(--cl-sc)); }
+
+/* ---- a school page ---- */
+.cl-back { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-weight: 600; font-size: 14px; color: hsl(var(--muted-foreground)); padding: 4px 8px 4px 4px; border-radius: 8px; }
+.cl-back:hover { color: hsl(var(--chalk)); background: hsl(var(--muted)); }
+.cl-back svg { width: 16px; height: 16px; }
+.cl-shero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  color: var(--cl-sink);
+  background: var(--cl-sc);
+  box-shadow: inset 0 -6px 0 var(--cl-sa), var(--shadow-card);
+}
+.cl-shero__mark { flex-shrink: 0; display: grid; place-items: center; width: 132px; height: 132px; border-radius: 26px; background: hsl(228 55% 6% / 0.55); }
+.cl-shero__text { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.cl-shero__text .ax-kicker { color: inherit; opacity: 0.8; }
+.cl-shero h2 { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: clamp(32px, 6vw, 60px); line-height: 0.95; overflow-wrap: anywhere; }
+.cl-shero__stats { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 4px 0 0; }
+.cl-shero__stats div { display: flex; flex-direction: column-reverse; }
+.cl-shero__stats dt { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+.cl-shero__stats dd { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; }
+
+.cl-xi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 12px 14px;
+  border-radius: 20px;
+  overflow: hidden;
+  /* a turf in the school's colours: the stripes of a field, the school's colour washing over the top */
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--cl-sc) 55%, hsl(var(--night))) 0 22%, transparent 48%),
+    repeating-linear-gradient(90deg, hsl(147 52% 22%) 0 60px, hsl(147 50% 25%) 60px 120px);
+  box-shadow: inset 0 0 0 1px hsl(var(--line) / 0.55), var(--shadow-card);
+}
+.cl-xi__head { color: #fff; padding: 0 4px 4px; }
+.cl-xi__head h3 { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 26px; line-height: 1; }
+.cl-xi__line { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 10px; margin: 0; padding: 0; list-style: none; }
+.cl-xi__man { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 112px; min-width: 0; }
+.cl-xi__man--empty { justify-content: flex-end; opacity: 0.6; }
+.cl-xi__fig { display: grid; place-items: end center; height: 66px; filter: drop-shadow(0 4px 2px rgb(0 0 0 / 0.35)); }
+.cl-xi__pos { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.08em; color: #fff; padding: 1px 5px; border-radius: 3px; background: rgb(0 0 0 / 0.45); }
+.cl-xi__ovr { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #fff; text-shadow: 0 1px 0 #000; }
+.cl-xi__man .club-strip { max-width: 112px; }
+
+.cl-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 12px; }
+.cl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 16px;
+  background: hsl(var(--panel));
+  box-shadow: inset 0 3px 0 var(--cl-sl, hsl(var(--gold))), inset 0 0 0 1px hsl(var(--line) / 0.55), var(--shadow-card);
+}
+.cl-panel__t { display: flex; align-items: baseline; gap: 8px; font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 22px; text-transform: uppercase; line-height: 1; }
+.cl-panel__t small { font-family: var(--font-sans); font-style: normal; font-weight: 500; font-size: 12px; text-transform: none; color: hsl(var(--muted-foreground)); }
+.cl-plist { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.cl-plist li { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.cl-plist__ovr { font-family: var(--font-display); font-weight: 800; font-size: 24px; text-align: center; color: hsl(var(--gold)); }
+.cl-plist__n { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.cl-plist__k { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-active { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cl-active li { display: flex; flex-direction: column; gap: 2px; min-width: 0; max-width: 100%; }
+.cl-active__k { font-size: 11px; color: hsl(var(--muted-foreground)); padding-left: 4px; }
+.cl-rbars { display: flex; align-items: flex-end; gap: 6px; height: 140px; margin: 0; padding: 0; list-style: none; }
+.cl-rbars li { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; height: 100%; min-width: 0; }
+.cl-rbars__bar { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: var(--cl-sl, hsl(var(--gold))); }
+.cl-rbars__n { font-family: var(--font-display); font-weight: 700; font-size: 14px; }
+.cl-rbars__r { font-family: var(--font-pixel); font-size: 8px; color: hsl(var(--muted-foreground)); }
+.cl-no1 ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+.cl-no1 li { display: flex; align-items: center; gap: 8px; padding: 6px 10px 6px 6px; border-radius: 12px; background: color-mix(in srgb, var(--cl-c, #1f2742) 25%, hsl(var(--night))); max-width: 100%; min-width: 0; }
+.cl-no1__y { font-family: var(--font-display); font-weight: 800; font-size: 20px; }
+.cl-firsts { display: flex; flex-direction: column; gap: 5px; margin: 0; padding: 0; list-style: none; max-height: 420px; overflow-y: auto; }
+.cl-firsts li { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cl-firsts__y { font-family: var(--font-display); font-weight: 800; font-size: 17px; padding: 1px 6px; border-radius: 6px; color: hsl(var(--gold)); background: hsl(var(--gold) / 0.1); }
+.cl-firsts__y:hover { background: hsl(var(--gold) / 0.2); }
+.cl-firsts__p { font-family: var(--font-display); font-weight: 700; color: hsl(var(--muted-foreground)); width: 34px; flex-shrink: 0; }
+
+/* ---- projected order ---- */
+.cl-order, .cl-mocks { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cl-order { grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); }
+.cl-orow {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto 128px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 8px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: hsl(var(--panel));
+  box-shadow: inset 0 0 0 1px hsl(var(--line) / 0.55);
+  scroll-margin: 120px;
+}
+.cl-orow.is-focus, .cl-mock.is-focus { box-shadow: inset 0 0 0 2px hsl(var(--gold)), 0 0 24px hsl(var(--gold) / 0.2); }
+.cl-orow__no { align-self: stretch; display: grid; place-items: center; margin: -8px 0; background: var(--cl-c); color: var(--cl-ink); box-shadow: inset -3px 0 0 var(--cl-e); }
+.cl-orow__no b { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 26px; }
+.cl-orow__club { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+.cl-orow__rec { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-orow__slot { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; white-space: nowrap; }
+.cl-orow__mode { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-orow__mode b { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: hsl(var(--chalk)); margin-left: 4px; }
+.cl-orow__range { font-size: 12px; color: hsl(var(--secondary-foreground)); }
+.cl-slots { display: flex; align-items: flex-end; gap: 1px; height: 34px; }
+.cl-slots i { flex: 1; min-width: 2px; border-radius: 1px 1px 0 0; background: hsl(var(--line)); }
+.cl-slots i.is-in { background: color-mix(in srgb, var(--cl-c, hsl(var(--sky))) 70%, #fff); }
+.cl-slots i.is-mode { background: hsl(var(--gold)); }
+
+/* ---- needs mock ---- */
+.cl-mocks { grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); }
+.cl-mock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: hsl(var(--panel));
+  box-shadow: inset 0 0 0 1px hsl(var(--line) / 0.55), var(--shadow-card);
+  scroll-margin: 120px;
+}
+.cl-mock__band { display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: var(--cl-ink); background: var(--cl-c); box-shadow: inset 0 -3px 0 var(--cl-e); }
+.cl-mock__no { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 34px; line-height: 1; min-width: 36px; }
+.cl-mock__club { display: flex; flex-direction: column; min-width: 0; line-height: 1.1; }
+.cl-mock__club b { font-family: var(--font-display); font-weight: 800; font-size: 20px; text-transform: uppercase; }
+.cl-mock__club small { font-size: 12px; opacity: 0.85; }
+.cl-mock__pick { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 0 12px; align-items: start; }
+.cl-mock__fig { display: grid; place-items: end center; width: 64px; height: 72px; border-radius: 12px; overflow: hidden; background: color-mix(in srgb, var(--cl-c) 45%, hsl(var(--night))); }
+.cl-mock__need { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cl-mock__pos { font-family: var(--font-display); font-weight: 800; font-style: italic; font-size: 34px; line-height: 0.95; color: hsl(var(--gold)); }
+.cl-mock__say { font-size: 13px; line-height: 1.4; color: hsl(var(--secondary-foreground)); }
+.cl-mock__old { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-mock__also { padding: 0 12px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.cl-mock > .cl-note { padding: 0 12px; }
+
+@media (max-width: 639px) {
+  .cl-hide-sm { display: none; }
+  .cl-shero { flex-direction: column; align-items: flex-start; gap: 12px; padding: 18px; }
+  .cl-shero__mark { width: 96px; height: 96px; }
+  .cl-shero__mark img, .cl-shero__mark > span { width: 76px !important; height: 76px !important; }
+  .cl-orow { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .cl-orow .cl-slots { grid-column: 2 / -1; }
+  .cl-xi__man { width: 96px; }
+  .cl-xi__man .club-strip { max-width: 96px; }
+  .cl-board { grid-template-columns: minmax(0, 1fr); }
+}
+
+.cl-clubcell { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.cl-table--picks .cl-num { text-align: left; }
+.cl-table--picks td:first-child { width: 72px; }
+/* StadiumHeader's plate is always night (--ax-deep) but its title takes the club's ink, which is dark for a light club
+   (the Raiders' silver): keep the title chalk here */
+.cl-hero .ax-stadium__title { color: hsl(var(--chalk)); }

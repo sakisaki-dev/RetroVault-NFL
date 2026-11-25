@@ -20,7 +20,7 @@ export const seasonSpan = (a: number, b: number): string =>
 /** Top-level tabs the NFL edition hides (everything built on the coach or the AI-written lanes). */
 export const NFL_HIDDEN_TABS = ['office', 'timeline', 'hof'];
 /** Tabs only the NFL edition has: News (ESPN's feed) sits where the Timeline was */
-export const NFL_ONLY_TABS = ['news'];
+export const NFL_ONLY_TABS = ['news', 'college'];
 
 /**
  * Keeps the NFL edition's browser storage apart from the Retro Vault league's: every localStorage / sessionStorage

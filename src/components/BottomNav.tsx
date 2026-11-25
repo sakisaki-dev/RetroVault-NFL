@@ -11,6 +11,7 @@ import {
   Crown,
   Gamepad2,
   Gauge,
+  GraduationCap,
   Gem,
   Hourglass,
   Landmark,
@@ -71,6 +72,7 @@ const TAB_COLOR: Record<string, string> = {
   more: '#3fd0b4',
   season: '#ff9a3c',
   lab: '#5fd28a',
+  college: '#e8794a',
   timeline: '#4fb3ff',
   news: '#4fb3ff',
   office: '#f1c35c',
@@ -79,6 +81,7 @@ const colorOf = (id: string | null | undefined) => (id && TAB_COLOR[id]) || '#f1
 import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 const ALL_MORE = [
   { value: 'season', label: 'Season', blurb: 'Live standings, leaders and the award race', Icon: Radio },
+  { value: 'college', label: 'College', blurb: 'Draft boards, schools and the projected order', Icon: GraduationCap },
   { value: 'lab', label: 'Team Lab', blurb: 'Build a lineup and get a scouting report', Icon: Users },
   { value: 'timeline', label: 'Timeline', blurb: 'Eras, storylines and what changed', Icon: CalendarRange },
   { value: 'news', label: 'News', blurb: "Live NFL headlines and video from ESPN", Icon: Newspaper },

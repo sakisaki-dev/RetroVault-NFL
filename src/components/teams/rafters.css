@@ -632,9 +632,22 @@ button.rafter__hit:focus-visible {
   flex: 1;
   min-width: 0;
   flex-direction: column;
+  align-items: flex-start;
   gap: 2px;
-  padding-top: 6px;
+  padding: 6px 6px 4px;
+  margin: 0 -6px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur-1, 120ms) var(--ease-out, ease-out);
 }
+.raf-cere__text:hover { background: rgb(255 198 62 / 0.08); }
+.raf-cere__text:hover .raf-cere__sub { color: #ffe08a; }
+.raf-cere__text:focus-visible { outline: 2px solid #ffc63e; outline-offset: 2px; }
 .raf-cere__kick {
   font-family: var(--font-pixel);
   font-size: 8px;

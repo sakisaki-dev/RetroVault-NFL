@@ -67,6 +67,25 @@ if sp.exists():
         warns.append(f"{len([k for k in past if k not in have])} past players have no sprite entry yet (silhouettes: nfl-sprites)")
 else:
     warns.append("no sprites (run npm run nfl:sprites)")
+col = load("nfl/college/index.json")
+if col:
+    for y, n, _rounds, _rated in col["years"]:
+        f = PUB / "nfl" / "college" / "draft" / f"{y}.json"
+        if not f.exists():
+            errors.append(f"college: no draft file for {y}")
+        elif len(json.loads(f.read_text())["picks"]) != n:
+            errors.append(f"college: {y} pick count differs from the index")
+    for row in col["schools"]:
+        if not (PUB / "nfl" / "college" / "schools" / f"{row[0]}.json").exists():
+            errors.append(f"college: no school file for {row[0]}")
+    for row in col["schools"]:
+        for k in json.loads((PUB / "nfl" / "college" / "schools" / f"{row[0]}.json").read_text())["players"]:
+            if k[0] not in keys:
+                errors.append(f"college: {row[0]} names {k[0]}, not a site player")
+                break
+needs = load("nfl/college/needs.json")
+if needs and len(needs.get("clubs", {})) != 32:
+    errors.append(f"college needs.json has {len(needs.get('clubs', {}))} clubs")
 po = load("nfl/playoff_odds.json")
 if po:
     cl = po.get("clubs", {})
@@ -88,6 +107,17 @@ if po:
         else:
             if sum(1 for c in cl.values() if c.get("seed")) != 14:
                 errors.append("playoff_odds.json final field is not 14 clubs")
+        # the projected draft order: every club a slot distribution summing to 1, every slot filled once per simulation
+        if not po.get("draft") or sorted(po["draft"].get("order", [])) != sorted(cl):
+            errors.append("playoff_odds.json has no projected draft order for all 32 clubs")
+        else:
+            for k, c in cl.items():
+                if abs(sum(c["draft"]["dist"]) - 1) > 0.01:
+                    errors.append(f"playoff_odds.json {k} draft slots sum to {sum(c['draft']['dist']):.3f}")
+            for i in range(32):
+                if abs(sum(c["draft"]["dist"][i] for c in cl.values()) - 1) > 0.01:
+                    errors.append(f"playoff_odds.json draft pick {i + 1} is not filled once per simulation")
+                    break
         if not any(str(x.get("season")) == str(po["season"]) for x in (sched or {}).get("seasonIndex", [])) and po["status"] == "live":
             warns.append("playoff_odds.json season has no schedule.json entry")
 wd = load("nfl/widget.json")

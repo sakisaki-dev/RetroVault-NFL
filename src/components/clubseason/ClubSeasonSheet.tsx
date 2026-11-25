@@ -16,6 +16,8 @@ import ClubSeasonHero from './ClubSeasonHero';
 import ClubSeasonFacing from './ClubSeasonFacing';
 import ClubSeasonLineup from './ClubSeasonLineup';
 import ClubSeasonInk from './ClubSeasonInk';
+import ClubSeasonDraft from './ClubSeasonDraft';
+import { openCollege } from '@/utils/collegeData';
 import { Section, accentOn, inkOn, liftOnNight } from './ClubSeasonSection';
 import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './ClubSeasonParts';
 import './clubSeason.css';
@@ -121,6 +123,11 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     onClose();
     window.setTimeout(() => openGame(id), AFTER_CLOSE_MS);
   };
+  // the Draft outlook's links: the College tab's projected order or needs mock, this club in focus
+  const toCollege = (section: 'order' | 'mock') => {
+    onClose();
+    window.setTimeout(() => openCollege(section, { club: abbr ?? '' }), AFTER_CLOSE_MS);
+  };
   const allTime = () => {
     onClose();
     window.setTimeout(() => openTeamPage(club), AFTER_CLOSE_MS);
@@ -163,6 +170,7 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     <ClubSeasonFacing abbr={abbr} year={year} cell={data.cell} table={data.schedule?.table ?? null} tickets={tickets} result={result} onOpenGame={openGameFromSheet} />
                   </Reveal>
                   <ClubSeasonLineup rows={rows} club={club} clubName={team.name} year={year} onPick={pick} />
+                  <ClubSeasonDraft abbr={abbr} clubName={team.name} year={year} onOpen={toCollege} />
                   <div className="pg-mag">
                     <div className="pg-col">
                       <Section title="The schedule" note={tickets.length ? `${tickets.filter((t) => !t.bye).length} games` : undefined}>

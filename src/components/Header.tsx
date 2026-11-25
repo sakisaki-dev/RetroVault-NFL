@@ -27,6 +27,7 @@ const ALL_TABS = [
   { value: 'games', label: 'Arcade' },
   { value: 'career', label: 'Stats' },
   { value: 'season', label: 'Season' },
+  { value: 'college', label: 'College' },
   { value: 'lab', label: 'Team Lab' },
   { value: 'hof', label: 'Hall of Fame' },
   { value: 'collection', label: 'Collection' },

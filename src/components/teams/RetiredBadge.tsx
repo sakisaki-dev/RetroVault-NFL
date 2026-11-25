@@ -89,11 +89,17 @@ export const RetiredStrip = ({ player, onLeave, className }: { player: Player | 
   return (
     <div className={cn('raf-cere', className)}>
       <span className="raf-cere__truss" aria-hidden="true" />
-      <div className="raf-cere__text">
+      {/* The text is a button too (owner: "this should be clickable"): the first club's rafters, like its banner */}
+      <button
+        type="button"
+        className="raf-cere__text"
+        onClick={() => go(clubs[0], onLeave)}
+        aria-label={`Number ${n} retired: open the rafters of the ${names[0]}`}
+      >
         <span className="raf-cere__kick">{clubs.length > 1 ? 'Retired by ' + clubs.length + ' clubs' : 'Number retired'}</span>
         <span className="raf-cere__num">#{same ? n : clubs.map((r) => r.number).join(' · #')}</span>
-        <span className="raf-cere__sub">In the rafters of the {list}</span>
-      </div>
+        <span className="raf-cere__sub">In the rafters of the {list} <span aria-hidden="true">→</span></span>
+      </button>
       <ul className="raf-cere__banners" aria-label={clubs.length === 1 ? 'Club that retired his number' : 'Clubs that retired his number'}>
         {clubs.map((r, i) => {
           const t = getNFLTeamById(r.teamKey);

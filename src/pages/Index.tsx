@@ -15,7 +15,6 @@ import CeremonyHost from '@/components/ceremony/CeremonyHost';
 import TributeHost from '@/components/tribute/TributeHost';
 import RivalryHost from '@/components/rivalry/RivalryHost';
 import ClubSeasonHost from '@/components/clubseason/ClubSeasonHost';
-import { onRaftersRequest } from '@/utils/raftersLink';
 import QuickPlayerSearch from '@/components/QuickPlayerSearch';
 import ScreensaverHost from '@/components/screensaver/ScreensaverHost';
 import PlayerPeekLayer from '@/components/peek/PlayerPeek';
@@ -24,6 +23,9 @@ import { onCompFinderRequest, onHeadToHeadRequest } from '@/components/stats/com
 import { HubRouteContext, useHashRoute } from '@/components/stats/hub/hashRoute';
 import { Helmet } from 'react-helmet-async';
 import { IS_NFL } from '@/config/edition';
+import { getNFLTeamById } from '@/utils/nflTeams';
+import { openTeamPage } from '@/utils/teamSearch';
+import { onRaftersRequest, scrollToTeamRafters, takeRaftersRequest } from '@/utils/raftersLink';
 import { decodeProgress, importProgress } from '@/utils/deviceSync';
 
 // Every tab is its own chunk, loaded the first time it is opened (the Collection one carries the card art and
@@ -39,6 +41,7 @@ const CollectionTab = lazyRetry(() => import('@/components/tabs/CollectionTab'))
 const BannerLab = import.meta.env.DEV ? lazyRetry(() => import('@/components/teams/banner/BannerLab')) : null;
 const ArcadeKitDemo = import.meta.env.DEV ? lazyRetry(() => import('@/components/arcade/ArcadeKitDemo')) : null;
 const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
+const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 
 const IndexContent = () => {
   // The visible page lives in the URL hash (#stats/teams, #stats/deepdive?p=…) so it is linkable and Back works.
@@ -93,7 +96,15 @@ const IndexContent = () => {
     });
     const offH2H = onHeadToHeadRequest(() => navigate({ tab: 'career', sub: 'h2h' }));
     // A retired number's strip on the player card opens that club's rafters (Hall of Fame tab, Rafters section)
-    const offRafters = onRaftersRequest(() => navigate(IS_NFL ? { tab: 'career', sub: 'teams' } : { tab: 'hof' }));
+    // The NFL edition has no Hall of Fame tab: the club's own page (Stats > Teams), scrolled to its rafters
+    const offRafters = onRaftersRequest((id) => {
+      if (!IS_NFL) return navigate({ tab: 'hof' });
+      const club = getNFLTeamById(id);
+      if (!club) return navigate({ tab: 'career', sub: 'teams' });
+      takeRaftersRequest();
+      openTeamPage(club.name);
+      scrollToTeamRafters();
+    });
     return () => {
       offDive();
       offH2H();
@@ -127,6 +138,7 @@ const IndexContent = () => {
                 {activeTab === 'season' && <SeasonTab />}
                 {activeTab === 'timeline' && <TimelineTab />}
                 {IS_NFL && activeTab === 'news' && <NewsTab />}
+                {IS_NFL && activeTab === 'college' && <CollegeTab />}
                 {activeTab === 'office' && <FrontOfficeTab />}
                 {activeTab === 'games' && <GamesTab />}
                 {ArcadeKitDemo && activeTab === 'arcadekit' && <ArcadeKitDemo />}

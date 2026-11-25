@@ -380,21 +380,40 @@ def bounds(w, rem):
 
 # ---------------------------------------------------------------- the simulation
 
-def playoff_games(seeds, rate, rng):
-    """Play one conference's bracket from its seven seeded clubs; returns (champion, set of clubs in the field)."""
-    def win(home, away, neutral=False):
+def playoff_games(seeds, rate, rng, exits=None):
+    """Play one conference's bracket from its seven seeded clubs; returns the champion. `exits` (optional) gets each
+    loser's round: 1 wild card, 2 divisional, 3 conference title (the draft order reads it; no extra random draws)."""
+    def win(home, away, neutral=False, rnd=0):
         d = rate[home] - rate[away] + (0 if neutral else HFA)
-        return home if rng.random() < phi(d / SIGMA) else away
+        w = home if rng.random() < phi(d / SIGMA) else away
+        if exits is not None:
+            exits[away if w == home else home] = rnd
+        return w
 
     s = seeds
-    w1 = [win(s[1], s[6]), win(s[2], s[5]), win(s[3], s[4])]
+    w1 = [win(s[1], s[6], rnd=1), win(s[2], s[5], rnd=1), win(s[3], s[4], rnd=1)]
     rest = sorted(w1, key=lambda t: s.index(t))
-    d1 = [win(s[0], rest[2]), win(rest[0], rest[1])]
+    d1 = [win(s[0], rest[2], rnd=2), win(rest[0], rest[1], rnd=2)]
     d1.sort(key=lambda t: s.index(t))
-    return win(d1[0], d1[1])
+    return win(d1[0], d1[1], rnd=3)
 
 
-def simulate(games, rate, rng, sims):
+def draft_order(season, exits, drng):
+    """The next draft's first round from a finished season (the NFL's order rules): the 18 clubs out of the playoffs by
+    record, worst first; then the playoff clubs by the round they went out (wild card 19-24, divisional 25-28,
+    conference title 29-30), each group by record; the Super Bowl loser 31, the champion 32. Ties within a group go to
+    the lower strength of schedule (opponents' win %), then a draw (the league's division and conference steps before
+    the coin toss are skipped). Returns the 32 clubs in pick order."""
+    sos = season.sos(range(32))
+    key = lambda t: (season.pct(t), sos[t], drng.random())  # noqa: E731
+    order = sorted((t for t in range(32) if t not in exits), key=key)
+    for rnd in (1, 2, 3):
+        order += sorted((t for t, r in exits.items() if r == rnd), key=key)
+    order += [t for t, r in exits.items() if r == 4] + [t for t, r in exits.items() if r == 5]
+    return order
+
+
+def simulate(games, rate, rng, sims, drng=None):
     rem = [i for i, g in enumerate(games) if g["hs"] is None]
     probs = [p_home(games[i], rate)[0] for i in rem]
     remcount = [0] * 32
@@ -403,6 +422,7 @@ def simulate(games, rate, rng, sims):
         remcount[games[i]["home"]] += 1
     acc = {k: [0] * 32 for k in ("playoffs", "division", "bye", "conf", "sb")}
     seedc = [[0] * 7 for _ in range(32)]
+    draftc = [[0] * 32 for _ in range(32)]
     winsum = [0.0] * 32
     base_g, base_w, base_n = build_results(games, {})
     rnd = rng.random
@@ -423,6 +443,7 @@ def simulate(games, rate, rng, sims):
         s = Season(g, w, n, rng)
         seeds, winners = s.seeds()
         champs = []
+        exits = {}
         for conf in CONFS:
             sd = seeds[conf]
             for k, t in enumerate(sd):
@@ -431,14 +452,19 @@ def simulate(games, rate, rng, sims):
             for t in winners[conf]:
                 acc["division"][t] += 1
             acc["bye"][sd[0]] += 1
-            champ = playoff_games(sd, rate, rng)
+            champ = playoff_games(sd, rate, rng, exits)
             acc["conf"][champ] += 1
             champs.append(champ)
         sb = champs[0] if rng.random() < phi((rate[champs[0]] - rate[champs[1]]) / SIGMA) else champs[1]
         acc["sb"][sb] += 1
+        if drng is not None:
+            exits[champs[1] if sb == champs[0] else champs[0]] = 4
+            exits[sb] = 5
+            for slot, t in enumerate(draft_order(s, exits, drng)):
+                draftc[t][slot] += 1
         for t in range(32):
             winsum[t] += w[t]
-    return acc, seedc, winsum, remcount
+    return acc, seedc, winsum, remcount, draftc
 
 
 # ---------------------------------------------------------------- clinch scenarios
@@ -655,6 +681,21 @@ def pct(x, sims):
     return round(x / sims, 4)
 
 
+def draft_slot(counts, sims):
+    """A club's simulated first-round slots: the most likely (mode), the mean, the middle 90% (5th to 95th percentile)
+    and the distribution (pick 1 first)."""
+    def q(f):
+        acc = 0
+        for i, c in enumerate(counts):
+            acc += c
+            if acc >= f * sims:
+                return i + 1
+        return 32
+    mode = max(range(32), key=lambda i: (counts[i], -i)) + 1
+    mean = sum((i + 1) * c for i, c in enumerate(counts)) / sims
+    return {"mode": mode, "mean": round(mean, 2), "lo": q(0.05), "hi": q(0.95), "dist": [round(c / sims, 4) for c in counts]}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", type=int)
@@ -682,7 +723,8 @@ def main():
         rem_n[g["away"]] += 1
         rem_n[g["home"]] += 1
     tags = bounds(base_w, rem_n)
-    acc, seedc, winsum, _ = simulate(games, rate, rng, args.sims)
+    drng = random.Random(zlib.crc32(f"draft-order-{args.season}-{len(played)}".encode()))
+    acc, seedc, winsum, _, draftc = simulate(games, rate, rng, args.sims, drng)
     clubs = {}
     rec_now = {}
     for t in range(32):
@@ -709,6 +751,7 @@ def main():
             "seeds": [pct(x, args.sims) for x in seedc[t]],
             "expWins": round(winsum[t] / args.sims, 1),
             "tag": tag,
+            "draft": draft_slot(draftc[t], args.sims),
         }
     # the bound check must agree with the simulation
     for t, tag in tags.items():
@@ -762,6 +805,13 @@ def main():
         "clubs": clubs,
         "scenarios": scen,
         "picks": {"week": week, "games": picks_games, "gameOfTheWeek": gotw, "scorecard": scorecard},
+        "draft": {
+            "year": args.season + 1,
+            "rule": "First round only, each club's own pick (traded picks are not in the data). Out of the playoffs: by record, worst first; "
+                    "then by playoff exit (wild card 19-24, divisional 25-28, conference title 29-30), the Super Bowl loser 31 and the champion 32; "
+                    "ties by the lower strength of schedule, then a draw. Range = the middle 90% of the simulated slots.",
+            "order": [TEAMS[t] for t in sorted(range(32), key=lambda t: (clubs[TEAMS[t]]["draft"]["mean"], TEAMS[t]))],
+        },
     }
     out = Path(args.out) if args.out else ROOT / "public" / "data" / "nfl" / "playoff_odds.json"
     out.parent.mkdir(parents=True, exist_ok=True)

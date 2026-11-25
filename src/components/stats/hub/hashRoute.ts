@@ -25,7 +25,7 @@ export type StatsSub = (typeof STATS_SUBS)[number];
 /** Internal tab ids (as used by Header / Index) → hash names. */
 const TAB_TO_HASH: Record<string, string> = { career: 'stats' };
 const HASH_TO_TAB: Record<string, string> = { stats: 'career', arcade: 'games', teamlab: 'lab' };
-const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'collection', ...(IS_NFL ? ['news'] : ['hof', 'timeline', 'office']), ...(import.meta.env.DEV ? ['arcadekit', 'bannerlab'] : [])]);
+const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'collection', ...(IS_NFL ? ['news', 'college'] : ['hof', 'timeline', 'office']), ...(import.meta.env.DEV ? ['arcadekit', 'bannerlab'] : [])]);
 
 /** Legacy section anchors from the old one-page Stats layout → where they live now. */
 const LEGACY_SECTIONS: Record<string, { sub: StatsSub; section?: string }> = {
@@ -86,19 +86,28 @@ export const parseHash = (hash: string): Route | null => {
     if (q.gx && q.gy && (!sub || sub === 'players')) return { tab, sub: 'graphs', q };
     return Object.keys(q).length ? { tab, sub, section: segs[2] || undefined, p, q } : { tab, sub, section: segs[2] || undefined, p };
   }
+  if (tab === 'college') {
+    // #college/<section>?y=2000 or ?s=<school slug> (the College tab's own state)
+    const q: Record<string, string> = {};
+    params.forEach((v, k) => {
+      if (k !== 'p') q[k] = v;
+    });
+    return { tab, section: segs[1] || undefined, ...(Object.keys(q).length ? { q } : {}) };
+  }
   const t = params.get('t') || undefined;
   return t ? { tab, p, t } : { tab, p };
 };
 
 export const buildHash = (r: Route): string => {
   let h = `#${TAB_TO_HASH[r.tab] ?? r.tab}`;
+  if (r.tab === 'college' && r.section) h += `/${encodeURIComponent(r.section)}`;
   if (r.tab === 'career' && r.sub) {
     h += `/${r.sub}`;
     if (r.section) h += `/${encodeURIComponent(r.section)}`;
   }
   if (r.p) h += `?p=${encodeURIComponent(r.p)}`;
   if (r.t) h += `${r.p ? '&' : '?'}t=${encodeURIComponent(r.t).replace(/%20/g, '+')}`;
-  if (r.tab === 'career' && r.q) {
+  if ((r.tab === 'career' || r.tab === 'college') && r.q) {
     const qs = new URLSearchParams(r.q).toString();
     if (qs) h += `${h.includes('?') ? '&' : '?'}${qs}`;
   }
