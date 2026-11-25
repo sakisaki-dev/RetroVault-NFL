@@ -35,6 +35,27 @@ CLUB = {"NWE": "Patriots", "GNB": "Packers", "CIN": "Bengals", "DAL": "Cowboys",
         "NE": "Patriots", "GB": "Packers", "TB": "Buccaneers", "SF": "49ers", "KC": "Chiefs", "NO": "Saints",
         "SD": "Chargers", "LV": "Raiders", "LA": "Rams", "WSH": "Commanders", "HST": "Texans", "BLT": "Ravens",
         "CLV": "Browns", "ARZ": "Cardinals", "SL": "Rams"}
+# Codes that name two different franchises over time: (first year, last year, today's club that owns that history). nflverse
+# files a pick under the code of the city, so by draft year: HOU 1980-96 is the Houston Oilers (franchise now the Titans; the
+# Texans began 2002), BAL 1980-83 the Baltimore Colts (the Colts, who moved to Indianapolis in 1984) and BAL 1996+ the
+# Ravens (the 1995 Browns moved; their history stayed in Cleveland), STL 1980-87 the St. Louis Cardinals (now Arizona) and
+# STL 1995-2015 the St. Louis Rams. PHO (Phoenix Cardinals), RAM / RAI / OAK / SDG / LAR / LAC keep one franchise each.
+CLUB_BY_YEAR = {
+    "HOU": [(1960, 1996, "Titans"), (1997, 3000, "Texans")],
+    "HST": [(1960, 1996, "Titans"), (1997, 3000, "Texans")],
+    "BAL": [(1960, 1983, "Colts"), (1984, 1995, "Colts"), (1996, 3000, "Ravens")],
+    "STL": [(1960, 1987, "Cardinals"), (1988, 1994, "Rams"), (1995, 3000, "Rams")],
+    "SL": [(1960, 1987, "Cardinals"), (1988, 1994, "Rams"), (1995, 3000, "Rams")],
+}
+
+
+def club_for(code, year):
+    for a, b, club in CLUB_BY_YEAR.get(code, []):
+        if a <= year <= b:
+            return club
+    return CLUB.get(code)
+
+
 ALIAS = {"texaselpaso": "utep", "texassanantonio": "utsa", "miamifl": "miami", "miamioh": "miamioh", "miamifla": "miami",
          "mississippi": "olemiss", "louisianamonroe": "ulmonroe", "louisianalafayette": "louisiana",
          "southerncalifornia": "usc", "louisianastate": "lsu", "brighamyoung": "byu", "centralflorida": "ucf",
@@ -151,9 +172,9 @@ def main():
             also[f'{p["pos"]}:{p["n"]}'] = parts[1:]
         rec = None
         if dp and dp["season"] and dp["round"] and dp["pick"]:
-            rec = [int(dp["season"]), int(dp["round"]), int(dp["pick"]), CLUB.get(dp["team"])]
+            rec = [int(dp["season"]), int(dp["round"]), int(dp["pick"]), club_for(dp["team"], int(dp["season"]))]
         elif pr and pr["draft_year"] and pr["draft_round"] and pr["draft_pick"]:
-            rec = [int(float(pr["draft_year"])), int(float(pr["draft_round"])), int(float(pr["draft_pick"])), CLUB.get(pr["draft_team"])]
+            rec = [int(float(pr["draft_year"])), int(float(pr["draft_round"])), int(float(pr["draft_pick"])), club_for(pr["draft_team"], int(float(pr["draft_year"])))]
         if not college and not rec:
             continue
         key = f'{p["pos"]}:{p["n"]}'
