@@ -19,6 +19,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import type { InjuryCode } from '@/utils/injuries';
 import FantasyField, { type FSpot } from './FantasyField';
 import SlotPicker from './SlotPicker';
+import { ClubMark } from '@/components/fantasy/ClubMark';
 import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
 import { useOpenCard } from './cardContext';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
@@ -98,7 +99,8 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
               const club = prof ? bannerTeamOf(prof.player) : dst;
               const f = prof ? fantasyFrom(raw, k) : null;
               return (
-                <li key={s.id} id={`fh-slot-${s.id}`} className={cn('fh-slot ix-card', k ? 'is-filled' : 'is-empty')} style={{ ...hcVars(club || undefined), ...stag(i, 50) }}>
+                <li key={s.id} id={`fh-slot-${s.id}`} className={cn('fh-slot ix-card', k ? 'is-filled fx-flat' : 'is-empty')} style={{ ...hcVars(club || undefined), ...stag(i, 50) }}>
+                  {k && club && <ClubMark club={club} size={96} />}
                   <span className="fh-slot__pos">{s.label}</span>
                   {k ? (
                     <>
@@ -181,7 +183,8 @@ const BoardRow = ({ c, i, max, week, fh, prefs, inLineup, inj }: { c: Cand; i: n
   const prof = c.pos === 'DST' ? undefined : fh.ctx.profiles.get(c.key);
   const club = findNFLTeam(c.club)?.name;
   return (
-    <li className={cn('fh-brow ix-card', inLineup && 'is-in')} style={{ ...hcVars(club), ...stag(Math.min(i, 8), 30) }}>
+    <li className={cn('fh-brow ix-card fx-flat fx-row', inLineup && 'is-in')} style={{ ...hcVars(club), ...stag(Math.min(i, 8), 30) }}>
+      <ClubMark club={club ?? c.club} size={80} />
       <span className="fh-brow__rank">{i + 1}</span>
       <span className="fh-brow__fig">{prof ? <PlayerHit pkey={c.key}><Sprite player={prof.player} club={club} /></PlayerHit> : <TeamLogo team={c.club} size={30} decorative backed />}</span>
       <span className="fh-brow__who">
