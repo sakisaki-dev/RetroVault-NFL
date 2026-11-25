@@ -10,6 +10,7 @@ import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import type { LeagueContent } from '@/utils/leagueContent';
 import type { CardInfo } from '../useCardPool';
 import { allCopies, portfolioValue } from './copies';
+import { PixelSelect } from '@/components/arcade';
 import Shop from './Shop';
 import Sets from './Sets';
 import TradeUp from './TradeUp';
@@ -125,6 +126,15 @@ const Exchange = ({ cards, byKey, tierPool, state, content, freeze, onOpenPack, 
         <CoinBalance coins={state.coins} />
       </div>
 
+      <div className="ec-pick">
+        <PixelSelect
+          label="Exchange section"
+          prefix="Section"
+          value={tab}
+          onChange={(v) => setTab(v as Tab)}
+          options={TABS.map((t) => ({ value: t.key, label: t.badge ? `${t.label} · ${t.badge}` : t.label, text: t.label }))}
+        />
+      </div>
       <div className="ec-tabs" role="tablist" aria-label="Exchange">
         {TABS.map((t) => (
           <button

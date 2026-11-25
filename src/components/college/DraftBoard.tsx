@@ -172,6 +172,15 @@ const DraftNight = ({ idx, year, d, players, school, onYear }: { idx: CollegeInd
           </button>
         </div>
         <PixelSelect className="dn__jump" label="Jump to a draft" prefix="Jump to" value={year} onChange={onYear} options={[...years].reverse().map((y) => ({ value: y, label: String(y) }))} />
+        <div className="dn__step" role="group" aria-label="Draft year">
+          <button type="button" className="dn__arrow" disabled={i <= 0} onClick={() => onYear(years[i - 1])} aria-label="The draft before">
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <PixelSelect className="dn__stepsel" label="Jump to a draft" prefix="Draft" value={year} onChange={onYear} options={[...years].reverse().map((y) => ({ value: y, label: String(y) }))} />
+          <button type="button" className="dn__arrow" disabled={i >= years.length - 1} onClick={() => onYear(years[i + 1])} aria-label="The draft after">
+            <ChevronRight aria-hidden="true" />
+          </button>
+        </div>
       </div>
       <div className="dn__feat">
         {no1 && <Feature p={no1} label="No. 1 pick" players={players} school={school} i={1} />}

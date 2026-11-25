@@ -93,8 +93,12 @@
   scrollbar-width: none;
 }
 .ec-tabs::-webkit-scrollbar { display: none; }
+.ec-tabs { display: none; }
+.ec-pick { margin-top: 14px; }
+.ec-pick .ax-select, .ec-pick .ax-select__btn { width: 100%; min-height: 42px; }
 @media (min-width: 640px) {
-  .ec-tabs { margin: 16px 0 0; padding: 0; flex-wrap: wrap; }
+  .ec-pick { display: none; }
+  .ec-tabs { display: flex; margin: 16px 0 0; padding: 0; flex-wrap: wrap; }
 }
 .ec-tab {
   display: inline-flex;

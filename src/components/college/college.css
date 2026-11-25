@@ -125,6 +125,15 @@ button.cl-chip:hover { background: rgb(0 0 0 / 0.62); }
 .dn__arrow svg { width: 18px; height: 18px; }
 .dn__arrow:disabled { opacity: 0.3; }
 .dn__jump { margin-top: 8px; }
+.dn__step { display: none; }
+/* phone: one row, a stepper with a year menu instead of the scrolling year strip */
+@media (max-width: 640px) {
+  .dn__years, .dn__jump { display: none; }
+  .dn__step { display: flex; align-items: center; gap: 6px; margin-top: 10px; min-width: 0; }
+  .dn__step .dn__arrow { width: 44px; height: 44px; padding: 0; flex: none; border: 1px solid hsl(var(--line)); background: rgb(255 255 255 / 0.06); }
+  .dn__stepsel { flex: 1; min-width: 0; }
+  .dn__stepsel .ax-select__btn { width: 100%; min-height: 44px; }
+}
 .dn__feat { position: absolute; right: 22px; bottom: 18px; z-index: 2; display: flex; gap: 12px; }
 .dn-ft {
   position: relative; width: 250px; height: 244px; overflow: hidden; border-radius: 16px;

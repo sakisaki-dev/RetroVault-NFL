@@ -410,3 +410,15 @@
   .ss-grp__h::after { display: none; } .ss-grp__h i { order: 0; }
   .ss-grp .ss-grp__list, .ss-grp > .ss-prompt { grid-column: 2; }
 }
+/* phone: the lineup stands two to a row, so a name tag may be wider (Smith-Njigba, St. Brown) */
+@media (max-width: 639px) { .fh-tag { max-width: 10rem; } }
+
+/* League sheet on a phone: room under the close button and above the home indicator, rows wide enough for their options */
+@media (max-width: 639px) {
+  .fh-sheet { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  .fh-sheet__g { margin-top: 2.3rem; }
+  .fh-sheet__g > .fh-set:nth-child(2), .fh-sheet__g > .fh-set:nth-child(7) { grid-column: 1 / -1; }
+  .fh-set__row > .ax-select, .fh-set__row > .ax-toggle { flex: 1 1 100%; }
+}
+/* phone: a long opponent name wraps to two lines instead of cutting off */
+@media (max-width: 639px) { .fh-vs__team > span.fh-vs__nm:first-child { white-space: normal; line-height: 1.1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } }

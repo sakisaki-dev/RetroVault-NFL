@@ -79,6 +79,12 @@ export interface PlayerSearchSheetProps {
   onPickCollege?: (slug: string) => void;
   /** NFL: two clubs typed list their latest meetings; picking one calls this */
   onPickGame?: (m: Meeting) => void;
+  /** A line of extra figures on the right of each row (the Fantasy slot picker's projection and salary) */
+  extra?: (p: Player) => ReactNode;
+  /** Hide the position chips (the pool is already one slot's players) */
+  hidePositions?: boolean;
+  /** From 768px: a centred panel instead of full screen */
+  dock?: boolean;
 }
 
 const teamVars = (team?: string): CSSProperties => {
@@ -101,9 +107,10 @@ interface RowProps {
   first: boolean;
   selected: boolean;
   onPick: (p: Player) => void;
+  extra?: ReactNode;
 }
 
-const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, selected, onPick }: RowProps) => {
+const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, selected, onPick, extra }: RowProps) => {
   const { first: firstName, last } = splitName(p.name);
   const club = bannerTeamOf(p);
   const team = findNFLTeam(club);
@@ -149,6 +156,7 @@ const Row = memo(({ player: p, number, ovr, grade, showActive, peek, first, sele
               Go
             </span>
           )}
+          {extra}
           {grade && (
             <span className="ss-grade" style={{ background: grade.color }}>
               {grade.grade}
@@ -182,12 +190,13 @@ interface ListProps {
   /** NFL: a college picked from the Colleges group (opens its school page) */
   onPickCollege?: (slug: string) => void;
   onPickGame?: (m: Meeting) => void;
+  extra?: (p: Player) => ReactNode;
   /** Reports the Enter target (the first row) */
   firstRef: { current: Player | null };
 }
 
 /** Results for the deferred query: re-renders only when the deferred query, filter or pool change */
-const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickCollege, onPickGame, firstRef }: ListProps) => {
+const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickCollege, onPickGame, extra, firstRef }: ListProps) => {
   const extras = usePlayerExtras();
   const skills = useSkillRatings();
   const { numberFor } = useJerseyNumbers();
@@ -331,6 +340,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
                   first={!!query.trim() && g === groups[0] && i === 0}
                   selected={selectedKey === k}
                   onPick={onPick}
+                  extra={extra?.(p)}
                 />
               );
             })}
@@ -368,6 +378,9 @@ const Sheet = ({
   onPickTeam,
   onPickCollege,
   onPickGame,
+  extra,
+  hidePositions,
+  dock,
   onGone,
 }: PlayerSearchSheetProps & { onGone: () => void }) => {
   const [query, setQuery] = useState('');
@@ -490,7 +503,7 @@ const Sheet = ({
   }, [query, deferredQuery, pos]);
 
   return (
-    <div ref={rootRef} className="ss-root" data-state={open ? 'open' : 'closed'}>
+    <div ref={rootRef} className="ss-root" data-state={open ? 'open' : 'closed'} data-dock={dock ? '' : undefined}>
       <div ref={backdropRef} className="ss-backdrop" aria-hidden="true" />
       <div
         ref={(n) => {
@@ -560,7 +573,7 @@ const Sheet = ({
               </button>
             )}
           </form>
-          <div role="group" aria-label="Filter by position" className="ss-chips" data-no-swipe>
+          {!hidePositions && <div role="group" aria-label="Filter by position" className="ss-chips" data-no-swipe>
             {(['ALL', ...POSITIONS] as const).map((k) => (
               <button
                 key={k}
@@ -573,7 +586,7 @@ const Sheet = ({
                 {k === 'ALL' ? 'All' : k}
               </button>
             ))}
-          </div>
+          </div>}
         </div>
         <div ref={scrollRef} className={cn('ss-scroll', stale && 'is-stale')} onTouchStart={onListTouchStart} onTouchMove={onListTouchMove}>
           <Results
@@ -590,6 +603,7 @@ const Sheet = ({
             onPickTeam={onPickTeam}
             onPickCollege={onPickCollege}
             onPickGame={onPickGame}
+            extra={extra}
             firstRef={firstRef}
           />
           {footer && <p className="ss-foot">{footer}</p>}

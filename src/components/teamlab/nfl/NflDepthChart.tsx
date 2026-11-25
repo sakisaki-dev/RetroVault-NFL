@@ -58,7 +58,7 @@ export const SlotRow = ({
         </button>
       )}
       {value && (
-        <button type="button" onClick={() => onChange('')} className="rounded p-0.5 text-muted-foreground hover:text-chalk focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label={`Clear ${label}`}>
+        <button type="button" onClick={() => onChange('')} className="nfl-rowclear rounded p-0.5 text-muted-foreground hover:text-chalk focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label={`Clear ${label}`}>
           <X className="h-3.5 w-3.5" aria-hidden="true" />
         </button>
       )}

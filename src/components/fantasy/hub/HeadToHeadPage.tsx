@@ -12,6 +12,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { FANTASY_IDS, F_SLOTS, projectWeek, replay, type FLineup } from '@/utils/nflFantasy';
 import { ClubMark } from '@/components/fantasy/ClubMark';
 import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
+import { surnameOf } from '@/utils/displayName';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
 import type { Sub } from './FantasyHub';
 
@@ -130,7 +131,7 @@ const HeadToHeadPage = ({ hub, onGo }: { hub: FantasyHub; onGo: (s: Sub) => void
               <span className={cn('fh-duel__p fx-flat fx-row', win && 'is-win')} style={hcVars(t?.name)}>
                 <ClubMark club={t?.name} size={64} />
                 <span className="fh-duel__fig">{prof ? <PlayerHit pkey={k}><Sprite player={prof.player} club={t?.name} /></PlayerHit> : <TeamLogo team={club} size={30} decorative backed />}</span>
-                {dst ? <b className="fh-slot__dst">{nameOf(k)}</b> : <NameStrip pkey={k} name={nameOf(k)} club={t?.name} />}
+                {dst ? <b className="fh-slot__dst">{nameOf(k)}</b> : <NameStrip pkey={k} name={<><span className="fh-lg">{nameOf(k)}</span><span className="fh-sm">{surnameOf(nameOf(k))}</span></>} club={t?.name} />}
               </span>
             );
           };

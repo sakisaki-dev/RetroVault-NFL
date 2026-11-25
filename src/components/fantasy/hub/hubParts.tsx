@@ -38,7 +38,7 @@ export const Sprite = ({ player, club, kind = 'bust', size = 's' }: { player?: P
 };
 
 /** The name as a tappable flat strip: club colour, logo, name. Tap: his player card. Hold: the quick look. */
-export const NameStrip = ({ pkey, name, club, extra, className }: { pkey: string; name: string; club?: string; extra?: ReactNode; className?: string }) => {
+export const NameStrip = ({ pkey, name, club, extra, className }: { pkey: string; name: ReactNode; club?: string; extra?: ReactNode; className?: string }) => {
   const t = club ? teamOf(club) ?? findNFLTeam(club) : null;
   const open = useOpenCard();
   return (
