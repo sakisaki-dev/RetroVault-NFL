@@ -163,11 +163,12 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
 
   const nav = (
     <nav aria-label="Primary" className="min-w-0">
-      <ul className="flex items-stretch gap-1 overflow-x-auto scrollbar-none -mx-1 px-1">
+      {/* NFL edition: the tabs share the header's free width evenly (owner: "fit the empty space … equally spaced out") */}
+      <ul className={cn('flex items-stretch gap-1 overflow-x-auto scrollbar-none -mx-1 px-1', IS_NFL && 'xl:justify-between xl:gap-2')}>
         {NAV_TABS.map((tab) => {
           const isActive = activeTab === tab.value;
           return (
-            <li key={tab.value} className="shrink-0">
+            <li key={tab.value} className={cn('shrink-0', IS_NFL && 'xl:flex-1 xl:flex xl:justify-center')}>
               <button
                 ref={(el) => (tabRefs.current[tab.value] = el)}
                 type="button"

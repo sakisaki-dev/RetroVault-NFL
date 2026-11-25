@@ -60,14 +60,14 @@ const ALL_MAIN = [
   { value: 'hof', label: 'Hall of Fame', short: 'HOF', Icon: Crown },
 ] as const;
 /**
- * The NFL edition's dock: Arcade, Stats, Season, Collection and More (Team Lab, News, College). Its Hall of Fame is a
+ * The NFL edition's dock: Arcade, Stats, Season, News and More (College, Team Lab, Collection; owner: News in the dock). Its Hall of Fame is a
  * plain fact on the player card, so there is no HOF tab; the Season is a main tab because the NFL is read by season.
  */
 const NFL_MAIN = [
   { value: 'games', label: 'Arcade', Icon: Gamepad2 },
   { value: 'career', label: 'Stats', Icon: BarChart3 },
   { value: 'season', label: 'Season', Icon: Radio },
-  { value: 'collection', label: 'Collection', Icon: Layers },
+  { value: 'news', label: 'News', Icon: Newspaper },
 ] as const;
 const MAIN: readonly { value: string; label: string; short?: string; Icon: LucideIcon }[] = IS_NFL ? NFL_MAIN : ALL_MAIN;
 /**
@@ -96,9 +96,10 @@ const ALL_MORE = [
   { value: 'timeline', label: 'Timeline', blurb: 'Eras, storylines and what changed', Icon: CalendarRange },
   { value: 'news', label: 'News', blurb: "Live NFL headlines and video from ESPN", Icon: Newspaper },
   { value: 'office', label: 'Front Office', blurb: "The coach's record, seasons and rivals", Icon: Briefcase },
+  { value: 'collection', label: 'Collection', blurb: 'Packs, your binder and the card market', Icon: Layers },
 ] as const;
 const MORE = ALL_MORE.filter(
-  (m) => !(IS_NFL && m.value === 'season') && (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)) && (m.value !== 'college' || (IS_NFL && isKnownTab('college'))),
+  (m) => !(IS_NFL && (m.value === 'season' || m.value === 'news')) && (IS_NFL || m.value !== 'collection') && (IS_NFL ? !NFL_HIDDEN_TABS.includes(m.value) : !NFL_ONLY_TABS.includes(m.value)) && (m.value !== 'college' || (IS_NFL && isKnownTab('college'))),
 );
 
 interface Section {
