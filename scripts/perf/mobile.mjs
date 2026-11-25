@@ -29,8 +29,8 @@ export const PAGES = [
   { id: 'fantasy-lineup', hash: '#fantasy/lineup', marker: 'Players board|Draft board' },
   { id: 'fantasy-trade', hash: '#fantasy/trade', marker: ' sends' },
   { id: 'fantasy-startsit', hash: '#fantasy/startsit', marker: 'No lineup to read yet|Start \\/ sit[\\s\\S]*floor' },
-  { id: 'fantasy-h2h', hash: '#fantasy/h2h', marker: 'Season replay|No lineup to read yet' },
-  { id: 'lab', hash: '#lab', marker: 'Team Lab' },
+  { id: 'fantasy-h2h', hash: '#fantasy/h2h', marker: 'No lineup to face yet|Season replay' },
+  { id: 'lab', hash: '#lab', marker: 'depth chart as of' },
 ];
 
 const INIT = `
