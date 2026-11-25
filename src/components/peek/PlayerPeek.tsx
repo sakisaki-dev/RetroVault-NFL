@@ -437,7 +437,13 @@ const PeekCard = ({
   const { numberFor } = useJerseyNumbers();
   const club = bannerTeamOf(p);
   const team = findNFLTeam(club);
-  const other = useMemo(() => compareTarget(p, byKey), [p, byKey]);
+  // On a page with its own "other player" (the Deep Dive's neighbourhood: the player being dived), Compare always runs
+  // against him, never whoever was peeked last
+  const pinned = state.ctx?.h2hWith;
+  const other = useMemo(
+    () => (pinned && pinned.name !== p.name ? pinned : compareTarget(p, byKey)),
+    [p, byKey, pinned],
+  );
   const stats = headlineStats(p).slice(0, 4);
   const hof = isHallOfFamer(p);
   const cardRef = useRef<HTMLDivElement | null>(null);
