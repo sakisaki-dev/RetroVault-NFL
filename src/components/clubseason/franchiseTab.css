@@ -26,3 +26,8 @@
   .ft-stats dd { font-size: 30px; }
   .ft-body { padding: 20px; }
 }
+
+.ft-name { display: flex; align-items: center; gap: 12px; margin: 0; min-width: 0; }
+.ft-name span { display: grid; min-width: 0; }
+.ft-name small { font-family: var(--font-pixel, 'Silkscreen', monospace); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; }
+.ft-name b { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 34px; line-height: 0.95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

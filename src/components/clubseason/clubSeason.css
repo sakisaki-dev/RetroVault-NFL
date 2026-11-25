@@ -29,8 +29,8 @@
   backdrop-filter: blur(6px);
 }
 .cs-bar-top .cs-tabs { width: 100%; }
-.cs-bar-top .cs-tabs > div, .cs-bar-top .cs-tabs [role="group"] { width: 100%; }
-.cs-bar-top .cs-tabs button { flex: 1 1 0; justify-content: center; }
+.cs-bar-top .cs-tabs { display: flex; }
+.cs-bar-top .cs-tabs .ax-seg { flex: 1 1 0; justify-content: center; text-align: center; }
 .cs-years {
   display: flex;
   gap: 6px;

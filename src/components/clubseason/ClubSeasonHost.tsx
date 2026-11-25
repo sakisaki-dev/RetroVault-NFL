@@ -22,10 +22,13 @@ const ClubSeasonHost = () => {
       setState((s) => ({ ...r, open: true, n: (s?.n ?? 0) + 1 }));
     };
     // the old route: put the Teams page's own hash back, then open the club as a new entry over it
+    // popstate and hashchange both fire for one change: the second must not undo what the first opened
+    let settle = 0;
     const legacy = () => {
       const club = parseLegacyTeamHash(window.location.hash);
       if (!club) return false;
       window.history.replaceState(window.history.state, '', '#stats/teams');
+      settle = performance.now() + 150;
       show({ club, tab: 'franchise' });
       return true;
     };
@@ -41,7 +44,7 @@ const ClubSeasonHost = () => {
     };
     // Back, Forward and edited hashes: the URL decides
     const sync = () => {
-      if (legacy()) return;
+      if (legacy() || performance.now() < settle) return;
       const r = parseClubHash(window.location.hash);
       if (r) setState((s) => (s && s.open && s.club === r.club && (s.tab ?? 'season') === (r.tab ?? 'season') ? s : { ...r, open: true, n: (s?.n ?? 0) + 1 }));
       else setState((s) => (s && s.open ? { ...s, open: false } : s));

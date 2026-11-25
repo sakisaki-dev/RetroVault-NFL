@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Trophy } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { ClubStrip, PixelChip, PixelIcon, PixelPanel, SectionHeader } from '@/components/arcade';
+import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
 import ProPlayerBanner from '@/components/brand/ProPlayerBanner';
 import RetiredRafters from '@/components/teams/RetiredRafters';
@@ -96,6 +97,10 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
     <div className="ft" data-club-tab="franchise">
       {stats.length > 0 && (
         <div className="ft-top">
+          <p className="ft-name">
+            <TeamLogo team={name} size={44} decorative className="cs-logo-plate" />
+            <span><small>{t ? `${t.city} · ${t.conference} ${t.division}` : 'Franchise'}</small><b>{name}</b></span>
+          </p>
           <dl className="ft-stats">
             {stats.map(([k, v]) => (
               <div key={k}>
