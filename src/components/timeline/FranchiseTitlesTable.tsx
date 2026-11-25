@@ -51,7 +51,7 @@ const FranchiseTitlesTable = ({ superBowls }: { superBowls: SuperBowlEntry[] }) 
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="rv-pin w-full text-sm">
           <caption className="sr-only">
             {view === 'yours' ? 'Super Bowl titles by your franchise' : 'Super Bowl titles by champion'}
           </caption>

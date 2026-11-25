@@ -57,7 +57,7 @@ const FamilyTable = ({ players, position, onSelect }: { players: Player[]; posit
   if (!fams) return <p className="text-sm text-muted-foreground">Too few {position}s to form families.</p>;
   return (
     <div className="relative max-h-[440px] overflow-auto rounded-md border border-line/60">
-      <table className="w-full text-sm">
+      <table className="rv-pin w-full text-sm">
         <caption className="sr-only">{position} families</caption>
         <thead className="sticky top-0 bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
           <tr>
@@ -152,7 +152,7 @@ const LeagueGallery = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Pla
           }
           table={
             <div className="relative max-h-[440px] overflow-auto rounded-md border border-line/60">
-              <table className="w-full text-sm">
+              <table className="rv-pin w-full text-sm">
                 <caption className="sr-only">{position} tier list</caption>
                 <thead className="sticky top-0 bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
                   <tr>

@@ -24,7 +24,7 @@ const OFF_INK = VIZ.series[0];
 const DEF_INK = VIZ.series[1];
 const FLAG = 'hsl(354 90% 65%)';
 const TURF = 'hsl(149 64% 45%)';
-const tableCls = 'w-full text-left text-xs sm:text-sm [&_td]:border-t [&_td]:border-line/60 [&_td]:py-1 [&_th]:pb-1 [&_th]:font-semibold [&_th]:text-muted-foreground';
+const tableCls = 'rv-pin w-full text-left text-xs sm:text-sm [&_td]:border-t [&_td]:border-line/60 [&_td]:py-1 [&_th]:pb-1 [&_th]:font-semibold [&_th]:text-muted-foreground';
 
 // ---------- 1. The age pyramid ----------
 

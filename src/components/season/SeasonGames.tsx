@@ -219,7 +219,7 @@ const PowerTable = ({ season, cols }: { season: ScheduleSeason; cols: ColumnSet 
   const rows = useMemo(() => [...season.table].sort((a, b) => a.power - b.power), [season]);
   const st = only('stats', cols);
   return (
-    <table className="w-full text-sm">
+    <table className="rv-pin w-full text-sm">
       <caption className="sr-only">Power rankings, {season.season}</caption>
       <thead>
         <tr className="text-left text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -286,7 +286,7 @@ const StandingsTable = ({ season, cols }: { season: ScheduleSeason; cols: Column
   const ratings = season.table.some((r) => r.off !== undefined);
   const form = season.table.some((r) => !!r.last5);
   return (
-    <table className="w-full text-sm">
+    <table className="rv-pin w-full text-sm">
       <caption className="sr-only">Standings by division, {season.season}</caption>
       <thead>
         <tr className="text-left text-[11px] uppercase tracking-wider text-muted-foreground">

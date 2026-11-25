@@ -132,7 +132,7 @@ export const HofTiers = ({ players }: { players: Player[] }) => {
       }
       table={
         <div className="overflow-x-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">Players per legacy tier, by position</caption>
             <thead className="bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>
@@ -256,7 +256,7 @@ export const FranchiseBars = ({ players }: { players: Player[] }) => {
       }
       table={
         <div className="relative max-h-[420px] overflow-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">Titles, Hall of Famers and players per franchise</caption>
             <thead className="sticky top-0 bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>

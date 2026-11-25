@@ -87,7 +87,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
       {STATUS_NOTE[p.status] && <p className="cg-note">{STATUS_NOTE[p.status]}</p>}
 
       {p.box && (
-        <table className="cg-box">
+        <table className="rv-pin cg-box">
           <caption className="sr-only">{`${yLabel(p.year)} box score with percentile among ${player.position}s that season (per game)`}</caption>
           <thead>
             <tr>
@@ -112,7 +112,7 @@ const SeasonPanel = ({ player, career, idx }: { player: Player; career: Career; 
         </table>
       )}
       {rates.length > 0 && (
-        <table className="cg-box">
+        <table className="rv-pin cg-box">
           <caption className="sr-only">{`${yLabel(p.year)} rates`}</caption>
           <thead>
             <tr>

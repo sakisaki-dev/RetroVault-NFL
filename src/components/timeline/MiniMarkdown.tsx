@@ -52,7 +52,7 @@ const MiniMarkdown = ({ source, className }: MiniMarkdownProps) => {
           const body = lines.slice(1).filter((l) => !/^\s*\|?\s*:?-{2,}/.test(l)).map(splitRow);
           return (
             <div key={bi} className="overflow-x-auto rounded-lg border border-border/40">
-              <table className="w-full text-xs sm:text-sm">
+              <table className="rv-pin w-full text-xs sm:text-sm">
                 <thead className="bg-secondary/40">
                   <tr>
                     {header.map((h, i) => (

@@ -110,7 +110,7 @@ const PlusHeatTable = ({ players, ctx, position, extras = [], onSelect }: Props)
         <p className="py-6 text-center text-sm text-muted-foreground">No {position} meets any minimum sample yet.</p>
       ) : (
         <div className="relative max-h-[480px] overflow-auto rounded-md border border-line/60">
-          <table className="w-full border-separate border-spacing-0 text-sm">
+          <table className="rv-pin w-full border-separate border-spacing-0 text-sm">
             <caption className="sr-only">
               {POSITION_NAMES[position]} {showRaw ? 'raw values' : '+ index (100 = position average)'} by stat
             </caption>

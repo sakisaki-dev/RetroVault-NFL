@@ -93,7 +93,7 @@ export const GraphTable = ({ model, onSelect }: { model: GraphModel; onSelect: (
   const rows = [...model.points].sort((a, b) => (model.spec.yInvert ? a.y - b.y : b.y - a.y) || b.x - a.x);
   return (
     <div className="relative max-h-[440px] overflow-auto rounded-md border border-line/60">
-      <table className="w-full text-sm">
+      <table className="rv-pin w-full text-sm">
         <caption className="sr-only">
           {model.ys.label} against {model.xs.label}: every plotted player
         </caption>

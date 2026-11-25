@@ -221,7 +221,7 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
             </p>
             <p className="text-xs text-muted-foreground">{f.definition}</p>
             {ok[axis] ? (
-              <table className="w-full text-sm">
+              <table className="rv-pin w-full text-sm">
                 <tbody>
                   <tr>
                     <th scope="row" className="py-0.5 text-left font-semibold" style={{ color: colors.main }}>

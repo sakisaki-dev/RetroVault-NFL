@@ -124,7 +124,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
       }
       table={
         <div className="relative overflow-x-auto rounded-md border border-line/60">
-          <table className="w-full text-sm">
+          <table className="rv-pin w-full text-sm">
             <caption className="sr-only">Career Legacy by source, top {TOP}</caption>
             <thead className="bg-panel-2 text-left font-pixel text-[9px] uppercase text-muted-foreground">
               <tr>

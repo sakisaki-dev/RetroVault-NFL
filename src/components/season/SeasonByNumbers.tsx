@@ -176,7 +176,7 @@ export const WeeklyChart = ({ season }: { season: ScheduleSeason }) => {
       <details className="relative mt-1 text-[11px]">
         <summary className="cursor-pointer text-muted-foreground hover:text-foreground">Weekly scoring table</summary>
         <div className="mt-1 max-h-60 overflow-auto rounded border border-[hsl(var(--line)/0.6)]">
-          <table className="w-full text-[11px]">
+          <table className="rv-pin w-full text-[11px]">
             <caption className="sr-only">Weekly scoring, {season.season}</caption>
             <thead>
               <tr className="text-muted-foreground">
