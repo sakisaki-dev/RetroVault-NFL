@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { seasonLabel } from '@/config/edition';
 import { playerKey, type SeasonOvrFile } from '@/config/ovr';
 import { gradeFor, percentileOf, type GradeStep, type Overall } from '@/config/skillGrades';
-import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import LeaderboardPeek, { type PeekBoard } from './LeaderboardPeek';
 import { InfoTip } from '@/components/ui/InfoTip';
 import TeamLogo from '@/components/brand/TeamLogo';
 import CountUp from '@/components/brand/CountUp';
@@ -118,88 +118,6 @@ const Row = ({ e, place, me, extras, sort, onOpen }: { e: SznEntry; place: numbe
 };
 
 /** The Season panel's sheet: every player at a position ranked by SZN, with his skill grade beside it. */
-const SznSheet = ({ boards, player, seasonOvr, onOpenPlayer, children }: { boards: Map<Position, SznEntry[]>; player: Player; seasonOvr: SeasonOvrFile; onOpenPlayer: (p: Player) => void; children: React.ReactElement }) => {
-  const narrow = useNarrow();
-  const extras = usePlayerExtras();
-  const [open, setOpen] = useState(false);
-  const [pos, setPos] = useState<Position>(player.position);
-  const [sort, setSort] = useState<'szn' | 'gap'>('szn');
-  const leaving = useRef(false);
-  const listRef = useRef<HTMLUListElement>(null);
-  useEffect(() => {
-    if (open) setPos(player.position);
-  }, [open, player.position]);
-  const rows = useMemo(() => {
-    const r = boards.get(pos) ?? [];
-    return sort === 'szn' ? r : [...r].sort((a, b) => (b.gap ?? -99) - (a.gap ?? -99) || b.szn - a.szn);
-  }, [boards, pos, sort]);
-  // scroll his own row into view (after the sheet's slide-in has laid the list out)
-  useEffect(() => {
-    if (!open) return;
-    const t = window.setTimeout(() => {
-      const el = listRef.current?.querySelector<HTMLElement>('[data-me]');
-      el?.scrollIntoView({ block: 'center' });
-    }, 260);
-    return () => window.clearTimeout(t);
-  }, [open, pos, sort]);
-  const go = (p: Player) => {
-    leaving.current = true;
-    setOpen(false);
-    onOpenPlayer(p);
-  };
-  const positions = POSITIONS.filter((x) => boards.has(x));
-  return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent
-        side={narrow ? 'bottom' : 'right'}
-        className={cn('rbk-sheet overflow-y-auto border-line bg-popover px-3 pb-4 pt-0', narrow ? 'max-h-[80vh] rounded-t-2xl' : 'sm:max-w-md')}
-        onOpenAutoFocus={(e) => e.preventDefault()}
-        onCloseAutoFocus={(e) => {
-          if (leaving.current) e.preventDefault();
-          leaving.current = false;
-        }}
-      >
-        <div>
-          <div className="sticky top-0 z-10 -mx-3 space-y-2.5 bg-popover px-3 pb-2 pt-7">
-          <div className="pr-12">
-            <SheetTitle className="font-display text-sm font-bold uppercase tracking-wide text-foreground">Season OVR · {pos}s</SheetTitle>
-            <SheetDescription className="font-pixel text-[8px] uppercase leading-relaxed text-muted-foreground">
-              {seasonLabel(seasonOvr.season)}
-              {seasonOvr.live ? ' so far' : ''} · {rows.length} ranked
-            </SheetDescription>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Position">
-            {positions.map((x) => (
-              <button
-                key={x}
-                type="button"
-                aria-pressed={pos === x}
-                onClick={() => setPos(x)}
-                className={cn('rounded-md border px-2 py-1 font-pixel text-[9px] uppercase', pos === x ? 'border-gold/60 bg-gold/20 text-gold' : 'border-line text-muted-foreground hover:text-foreground')}
-              >
-                {x}
-              </button>
-            ))}
-          </div>
-          <div role="group" aria-label="Sort" className="inline-flex overflow-hidden rounded-lg border border-line text-xs">
-            {([['szn', 'Season OVR'], ['gap', 'Skill vs SZN']] as const).map(([m, label]) => (
-              <button key={m} type="button" aria-pressed={sort === m} onClick={() => setSort(m)} className={cn('px-3 py-1.5 font-display font-bold uppercase tracking-wide', sort === m ? 'bg-gold/20 text-gold' : 'text-muted-foreground hover:text-foreground')}>
-                {label}
-              </button>
-            ))}
-          </div>
-          </div>
-          <ul ref={listRef} className="space-y-1 pt-1" aria-label={`${pos} season OVR leaders`}>
-            {rows.map((e, i) => (
-              <Row key={e.key} e={e} place={sort === 'szn' ? e.rank : i + 1} me={e.key === playerKey(player)} extras={extras} sort={sort} onOpen={go} />
-            ))}
-          </ul>
-        </div>
-      </SheetContent>
-    </Sheet>
-  );
-};
 
 interface Props {
   player: Player;
@@ -227,7 +145,18 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
   const pos = player.position;
   const lead = me.gap == null ? null : me.gap >= 3 ? 'up' : me.gap <= -3 ? 'down' : 'even';
   return (
-    <SznSheet boards={boards} player={player} seasonOvr={seasonOvr} onOpenPlayer={onOpenPlayer}>
+    // owner: "the szn ovr should use the same click and list as the skill and the rest, don't create a new one" — the
+    // shared LeaderboardPeek, fed this season's ratings at his position
+    <LeaderboardPeek
+      player={player}
+      onOpenPlayer={onOpenPlayer}
+      getBoard={(): PeekBoard => ({
+        title: 'Season OVR',
+        sub: `${pos}s who played ${seasonLabel(seasonOvr.season)} · ${list.length} rated`,
+        rows: list.map((e) => ({ player: e.player, display: String(e.szn), grade: e.grade })),
+      })}
+      self={() => ({ player, display: String(me.szn), grade: me.grade })}
+    >
       <button
         type="button"
         aria-label={`Season OVR ${me.szn}, grade ${me.grade?.grade ?? 'none'}, ${ordinal(me.rank)} of ${list.length} ${pos}s. Show the ${pos} season leaderboard`}
@@ -259,9 +188,9 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
             </span>
           )}
         </div>
-        <span className="font-pixel text-[8px] uppercase text-muted-foreground">See all {pos}s ›</span>
+        <span className="font-pixel text-[8px] uppercase text-muted-foreground">Tap for the {pos} list</span>
       </button>
-    </SznSheet>
+    </LeaderboardPeek>
   );
 };
 
