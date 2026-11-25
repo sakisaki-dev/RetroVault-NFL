@@ -185,17 +185,29 @@ export const scoreWeek = (ppr: number, rec: number, pos: FPos, s: TradeSettings)
 
 const keyName = (key: string) => key.slice(key.indexOf(':') + 1);
 
+const POS_ORDER: FPos[] = ['QB', 'RB', 'WR', 'TE'];
+
 /** Replacement level, the VOR scale and the free agent, from the pool already carrying rosW. */
 const levelPool = (pool: TradePlayer[], s: TradeSettings) => {
   const T = s.teams;
   const byPos: Record<FPos, TradePlayer[]> = { QB: [], RB: [], WR: [], TE: [] };
   [...pool].sort((a, b) => b.rosW - a.rosW || a.key.localeCompare(b.key)).forEach((p) => byPos[p.pos].push(p));
   const taken: Record<FPos, number> = { QB: STARTERS.QB * T, RB: STARTERS.RB * T, WR: STARTERS.WR * T, TE: STARTERS.TE * T };
-  const rest = () => (Object.keys(byPos) as FPos[]).flatMap((pos) => byPos[pos].slice(taken[pos]));
+  // the best player not yet taken among the eligible positions: each position's list is sorted, so it is the best of their heads
+  // (ties go to the first position in QB, RB, WR, TE order, as a stable sort of the concatenated rest would)
+  const best = (eligible: FPos[]) => {
+    let top: TradePlayer | undefined;
+    for (const pos of POS_ORDER) {
+      if (!eligible.includes(pos)) continue;
+      const head = byPos[pos][taken[pos]];
+      if (head && (!top || head.rosW > top.rosW)) top = head;
+    }
+    return top;
+  };
   const fill = (n: number, eligible: FPos[]) => {
     for (let i = 0; i < n; i++) {
-      const best = rest().filter((p) => eligible.includes(p.pos)).sort((a, b) => b.rosW - a.rosW)[0];
-      if (best) taken[best.pos]++;
+      const b = best(eligible);
+      if (b) taken[b.pos]++;
     }
   };
   fill(T, ['RB', 'WR', 'TE']); // FLEX
@@ -208,7 +220,7 @@ const levelPool = (pool: TradePlayer[], s: TradeSettings) => {
   const starters = { ...taken };
   // bench: the best remaining players fill TRADE_RULES.benchPerTeam spots a team (QBs only in superflex)
   fill(T * TRADE_RULES.benchPerTeam, s.superflex ? ['QB', 'RB', 'WR', 'TE'] : ['RB', 'WR', 'TE']);
-  const fa = rest().filter((p) => (s.superflex ? true : p.pos !== 'QB')).sort((a, b) => b.rosW - a.rosW)[0];
+  const fa = best(s.superflex ? POS_ORDER : ['RB', 'WR', 'TE']);
   return { byPos, taken: starters, replacement, fa };
 };
 

@@ -46,15 +46,16 @@ export const loadMarketLatest = (): Promise<MarketHistory> => {
  * The last two snapshots (oldest first, so `history[history.length - 1]` is the latest); null while loading. Same values
  * as the end of `useMarket()`, without waiting for the whole history.
  */
-export const useMarketLatest = (): MarketHistory | null => {
+export const useMarketLatest = (enabled = true): MarketHistory | null => {
   const [history, setHistory] = useState<MarketHistory | null>(() => (loaded ? loaded.slice(-2) : latestLoaded));
   useEffect(() => {
+    if (!enabled) return;
     let alive = true;
     loadMarketLatest().then((h) => alive && setHistory(h));
     return () => {
       alive = false;
     };
-  }, []);
+  }, [enabled]);
   return history;
 };
 
