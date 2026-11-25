@@ -382,13 +382,13 @@
 /* the players step out in turn on the first paint */
 @media (prefers-reduced-motion: no-preference) {
   .ss__man {
-    animation: ss-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+    animation: ss-in var(--mo-dur-run) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * var(--mo-gap) + 120ms);
   }
   @keyframes ss-in {
     from {
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(var(--mo-rise));
     }
     to {
       opacity: 1;

@@ -2,7 +2,8 @@
  * One interaction language for the Stats pages (Players, Teams, Graphs, Head to head, Deep Dive, the Record Book).
  * Owner: "the hover and other animations are lacking, make it immersive, some things hover, some don't".
  *
- * Everything here is scoped to .rv-stats and only touches things that DO something (a button, a link, a tab, a row
+ * Scoped to .rv-stats (every Stats page: tabs, chart dimming and the Players-only adapters) and .rv-ix (<main>, the rest of the
+ * site: Season, Game, Teams, Arcade, Collection, Front Office, News), and only touches things that DO something (a button, a link, a tab, a row
  * with a button in it), so a static panel never looks clickable. The pieces:
  *
  *   cards, tiles, plaques  lift 3px, a deeper shadow, the club colour rim brightening   (.ix-card + adapters below)
@@ -19,109 +20,109 @@
  * and `scale` properties so it never fights an element's own transform (the swaying banner plaques, the stagger-in).
  */
 
-.rv-stats {
-  --ix-lift: -3px;
-  --ix-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ix-dur: 180ms;
-  --ix-press: 0.98;
-  --press-scale: 0.98;
+:is(.rv-stats, .rv-ix) {
+  --ix-lift: var(--hv-lift);
+  --ix-ease: var(--ease-out);
+  --ix-dur: var(--hv-dur);
+  --ix-press: var(--hv-press);
+  --press-scale: var(--hv-press);
 }
 
 /* ---- every clickable thing: the pointer, no tap flash, no double-tap zoom, the press ---- */
-.rv-stats :where(button, a[href], [role='button'], [role='tab'], [role='link'], summary):not(:disabled, [aria-disabled='true']) {
+:is(.rv-stats, .rv-ix) :where(button, a[href], [role='button'], [role='tab'], [role='link'], summary):not(:disabled, [aria-disabled='true']) {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.rv-stats :where(button, a[href], [role='button'], [role='tab'], summary):not(:disabled, [aria-disabled='true'], .club-strip, td, th):active {
+:is(.rv-stats, .rv-ix) :where(button, a[href], [role='button'], [role='tab'], summary):not(:disabled, [aria-disabled='true'], .club-strip, td, th):active {
   scale: var(--ix-press);
 }
 
 /* ---- keyboard: one gold ring ---- */
-.rv-stats :is(button, a[href], [role='button'], [role='tab'], summary, [tabindex='0'], input, select):focus-visible {
+:is(.rv-stats, .rv-ix) :is(button, a[href], [role='button'], [role='tab'], summary, [tabindex='0'], input, select):focus-visible {
   outline: 2px solid hsl(var(--gold));
   outline-offset: 2px;
 }
 
 /* ---- cards, tiles, plaques ---------------------------------------------------------------------------------- */
-.rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque) {
+:is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque) {
   transition: translate var(--ix-dur) var(--ix-ease), scale 90ms var(--ix-ease), filter var(--ix-dur) var(--ix-ease), outline-color var(--ix-dur) var(--ix-ease),
     background-color var(--ix-dur) var(--ix-ease), border-color var(--ix-dur) var(--ix-ease);
   outline: 2px solid transparent;
   outline-offset: -2px;
 }
 @media (hover: hover) {
-  .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip):hover {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip):hover {
     translate: 0 var(--ix-lift);
     filter: brightness(1.06) drop-shadow(0 12px 14px rgb(0 0 0 / 0.42));
     outline-color: color-mix(in srgb, var(--cs-1, hsl(var(--gold))) 58%, white 42%);
   }
   /* the swaying banner plaques: lift along their own hang, the rim through a light edge */
-  .rv-stats .bn3-plaque:hover {
+  :is(.rv-stats, .rv-ix) .bn3-plaque:hover {
     translate: 0 2px;
     filter: brightness(1.18) drop-shadow(0 6px 6px rgb(0 0 0 / 0.4));
   }
   /* his figure hops when the card he stands on is hovered (a pose swap isn't needed for the feel) */
-  .rv-stats :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
     translate: -50% -5px;
   }
-  .rv-stats :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover .cw-fig,
-  .rv-stats :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover .ix-hop {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover .cw-fig,
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.cs-card, a.cs-card, button.rb-plaque, .cw-tile):hover .ix-hop {
     translate: 0 -5px;
   }
 }
-.rv-stats :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
+:is(.rv-stats, .rv-ix) :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
   transition: translate 220ms cubic-bezier(0.3, 1.5, 0.5, 1);
 }
 
 /* the Teams hero figures: they lift with their name plate, no box around them */
-.rv-stats .bn3-fig {
+:is(.rv-stats, .rv-ix) .bn3-fig {
   transition: translate var(--ix-dur) var(--ix-ease), scale 90ms var(--ix-ease), filter var(--ix-dur) var(--ix-ease);
 }
 @media (hover: hover) {
-  .rv-stats .bn3-fig:not(:disabled):hover {
+  :is(.rv-stats, .rv-ix) .bn3-fig:not(:disabled):hover {
     translate: 0 -4px;
     filter: brightness(1.1) drop-shadow(0 10px 6px rgb(0 0 0 / 0.5));
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rv-stats .bn3-fig:hover { translate: none; }
+  :is(.rv-stats, .rv-ix) .bn3-fig:hover { translate: none; }
 }
-[data-perf='lite'] .rv-stats .bn3-fig:hover { translate: none; filter: none; }
-.rv-stats .cw-tile:has(.cw-hit) { cursor: pointer; }
+[data-perf='lite'] :is(.rv-stats, .rv-ix) .bn3-fig:hover { translate: none; filter: none; }
+:is(.rv-stats, .rv-ix) .cw-tile:has(.cw-hit) { cursor: pointer; }
 
 /* ---- name strips: a slight scale and a brighter fill ---- */
 @media (hover: hover) {
-  .rv-stats :is(button, a).club-strip:hover {
+  :is(.rv-stats, .rv-ix) :is(button, a).club-strip:hover {
     scale: 1.03;
     filter: brightness(1.2) saturate(1.05);
   }
 }
-.rv-stats :is(button, a).club-strip:active {
+:is(.rv-stats, .rv-ix) :is(button, a).club-strip:active {
   scale: var(--ix-press);
 }
-.rv-stats :is(button, a).club-strip {
+:is(.rv-stats, .rv-ix) :is(button, a).club-strip {
   transition: transform var(--dur-1, 120ms) var(--ease-out), filter var(--dur-1, 120ms) var(--ease-out), scale var(--dur-1, 120ms) var(--ease-out);
 }
 
 /* ---- rows: a club-colour edge, a tint and the pointer, only where a row opens something ---- */
-.rv-stats :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer, .ix-row) {
+:is(.rv-stats, .rv-ix) :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer, .ix-row) {
   cursor: pointer;
 }
-.rv-stats :is(.ix-row, .dyn-row, .atp-row, .fl-pick, button.sbl__row, .rbk-row) {
+:is(.rv-stats, .rv-ix) :is(.ix-row, .dyn-row, .atp-row, .fl-pick, button.sbl__row, .rbk-row) {
   transition: background-color var(--ix-dur) var(--ix-ease), box-shadow var(--ix-dur) var(--ix-ease), translate var(--ix-dur) var(--ix-ease), border-color var(--ix-dur) var(--ix-ease);
 }
-.rv-stats :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer) > :is(td, th):first-child {
+:is(.rv-stats, .rv-ix) :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer) > :is(td, th):first-child {
   transition: box-shadow var(--ix-dur) var(--ix-ease);
 }
 @media (hover: hover) {
-  .rv-stats :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer):hover > :is(td, th) {
+  :is(.rv-stats, .rv-ix) :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer):hover > :is(td, th) {
     background-image: linear-gradient(color-mix(in srgb, var(--cs-1, hsl(var(--gold))) 14%, transparent), color-mix(in srgb, var(--cs-1, hsl(var(--gold))) 14%, transparent));
   }
-  .rv-stats :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer):hover > :is(td, th):first-child {
+  :is(.rv-stats, .rv-ix) :is(tr:has(button, a[href], [role='button']), tr.cursor-pointer):hover > :is(td, th):first-child {
     box-shadow: inset 3px 0 0 var(--cs-1, hsl(var(--gold)));
   }
-  .rv-stats :is(.ix-row, .dyn-row, .atp-row, .fl-pick, button.sbl__row, .rbk-row):hover {
+  :is(.rv-stats, .rv-ix) :is(.ix-row, .dyn-row, .atp-row, .fl-pick, button.sbl__row, .rbk-row):hover {
     background-image: linear-gradient(90deg, color-mix(in srgb, var(--cs-1, var(--p, hsl(var(--gold)))) 14%, transparent), transparent 85%);
     box-shadow: inset 3px 0 0 var(--cs-1, var(--p, hsl(var(--gold))));
   }
@@ -173,13 +174,13 @@
   }
 }
 /* small grid cells (the heat map, the trophy shelf columns): a quick grow and a rim, no lift */
-.rv-stats :is(.cg-heat__cell, .cg-shelf__col, .arc-ring) {
+:is(.rv-stats, .rv-ix) :is(.cg-heat__cell, .cg-shelf__col, .arc-ring) {
   transition: scale 140ms var(--ix-ease), filter 140ms var(--ix-ease), outline-color 140ms var(--ix-ease);
   outline: 2px solid transparent;
   outline-offset: 1px;
 }
 @media (hover: hover) {
-  .rv-stats :is(.cg-heat__cell:not(.cg-heat__cell--none), .cg-shelf__col, .arc-ring):hover {
+  :is(.rv-stats, .rv-ix) :is(.cg-heat__cell:not(.cg-heat__cell--none), .cg-shelf__col, .arc-ring):hover {
     scale: 1.12;
     filter: brightness(1.15);
     outline-color: hsl(var(--gold) / 0.8);
@@ -188,58 +189,87 @@
   }
 }
 /* the older lift utility moves with the same property as everything else, so it never doubles */
-.rv-stats .hover-lift:hover {
+:is(.rv-stats, .rv-ix) .hover-lift:hover {
   transform: none;
 }
 /* a club-wall tile is a div with a full-size button over it: the press goes on the tile */
-.rv-stats .cw-tile:has(.cw-hit:active) {
+:is(.rv-stats, .rv-ix) .cw-tile:has(.cw-hit:active) {
   scale: var(--ix-press);
 }
 
 /* ---- reduced motion and lite mode: no movement, colour and outline only ---- */
 @media (prefers-reduced-motion: reduce) {
-  .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque):hover,
-  .rv-stats :is(button, a).club-strip:hover,
-  .rv-stats svg g[role='button']:hover,
-  .rv-stats :is(.cg-heat__cell, .cg-shelf__col, .arc-ring):hover {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque):hover,
+  :is(.rv-stats, .rv-ix) :is(button, a).club-strip:hover,
+  :is(.rv-stats, .rv-ix) svg g[role='button']:hover,
+  :is(.rv-stats, .rv-ix) :is(.cg-heat__cell, .cg-shelf__col, .arc-ring):hover {
     translate: none;
     scale: none;
   }
-  .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
     translate: -50% 0;
   }
-  .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cw-fig, .ix-hop) {
+  :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cw-fig, .ix-hop) {
     translate: none;
   }
-  .rv-stats :where(button, a[href], [role='button'], [role='tab'], summary):active {
+  :is(.rv-stats, .rv-ix) :where(button, a[href], [role='button'], [role='tab'], summary):active {
     scale: none;
   }
 }
-[data-perf='lite'] .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque):hover {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, button.glass-card, a.glass-card, .cw-tile, .cg-season, .cg-spark, .cg-ticket, .rbk-chip, .bn3-plaque):hover {
   translate: none;
   filter: none;
 }
-[data-perf='lite'] .rv-stats :is(button, a).club-strip:hover,
-[data-perf='lite'] .rv-stats svg g[role='button']:hover,
-[data-perf='lite'] .rv-stats :is(.cg-heat__cell, .cg-shelf__col, .arc-ring):hover {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :is(button, a).club-strip:hover,
+[data-perf='lite'] :is(.rv-stats, .rv-ix) svg g[role='button']:hover,
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :is(.cg-heat__cell, .cg-shelf__col, .arc-ring):hover {
   scale: none;
 }
-[data-perf='lite'] .rv-stats svg g[role='button'] {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) svg g[role='button'] {
   transition: none;
 }
-[data-perf='lite'] .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cs-fig__sprite, .cw-fig, .ix-hop) {
   translate: -50% 0;
 }
-[data-perf='lite'] .rv-stats :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cw-fig, .ix-hop) {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :is(.ix-card, button.rb-plaque, button.cs-card, a.cs-card, .cw-tile):hover :is(.cw-fig, .ix-hop) {
   translate: none;
 }
-[data-perf='lite'] .rv-stats :where(button, a[href], [role='button'], [role='tab'], summary):active {
+[data-perf='lite'] :is(.rv-stats, .rv-ix) :where(button, a[href], [role='button'], [role='tab'], summary):active {
   scale: none;
 }
 
 /* sortable column heads and the season table's heads: they warm to gold */
 @media (hover: hover) {
-  .rv-stats :is(th button, button.ss-head, th[aria-sort]):hover {
+  :is(.rv-stats, .rv-ix) :is(th button, button.ss-head, th[aria-sort]):hover {
     color: hsl(var(--gold));
   }
+}
+
+/*
+ * The rest of the site (.rv-ix on <main>): any button or link that is a card, tile or plaque by name gets the same lift,
+ * rim and press without being listed one by one. Collectible cards (.fut), pack and tunnel art, the Rewind viewer and
+ * the screensaver keep their own motion. A card that is not itself a button (.ix-card) lifts too; its cursor says so when
+ * it holds a button or link.
+ */
+.rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-']) {
+  transition: translate var(--ix-dur) var(--ix-ease), scale 90ms var(--ix-ease), filter var(--ix-dur) var(--ix-ease), outline-color var(--ix-dur) var(--ix-ease);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+.rv-ix .ix-card:has(button, a[href], [role='button']) {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):not(:disabled, [aria-disabled='true'], .fut, .fut *, [class*='fut__'], [class*='pk-'], [class*='tn-'], [class*='rw-'], [class*='sv-'], [class*='bk-']):hover {
+    translate: 0 var(--ix-lift);
+    filter: brightness(1.06) drop-shadow(0 12px 14px rgb(0 0 0 / 0.42));
+    outline-color: color-mix(in srgb, var(--cs-1, hsl(var(--gold))) 58%, white 42%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):hover { translate: none; }
+}
+[data-perf='lite'] .rv-ix :is(button, a[href], [role='button']):is([class*='card'], [class*='tile'], [class*='plaque'], [class*='-cab'], [class*='stall']):hover {
+  translate: none;
+  filter: none;
 }

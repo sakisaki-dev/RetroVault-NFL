@@ -46,6 +46,27 @@ export const Reveal = <T extends ElementType = 'div'>({ as, ...rest }: RevealPro
   return createElement((as ?? 'div') as ElementType, { ref, ...rest });
 };
 
+/**
+ * Reveal a page's sections without editing each one: every direct child of a `<section aria-labelledby>` under the
+ * ref'd element (heading block, chip bar, panel, grid) waits and rises in, once, as it scrolls into view, staggered
+ * by its place (capped). Sections already inside a Reveal keep that Reveal's motion; later children (a tab's panel,
+ * a lazy chunk) are picked up as they mount. Motion off (reduced motion, lite mode) leaves everything as is.
+ */
+export const useAutoReveal = <T extends HTMLElement>(): RefCallback<T> =>
+  useCallback((root: T | null) => {
+    if (!root || !motionOk()) return;
+    const scan = () =>
+      root.querySelectorAll<HTMLElement>('section[aria-labelledby] > *').forEach((el) => {
+        if (el.dataset.mo || el.closest('[data-mo]')) return;
+        el.classList.add('mo-auto');
+        el.style.setProperty('--i', String(Math.min(Array.prototype.indexOf.call(el.parentElement?.children ?? [], el), 4)));
+        el.dataset.mo = 'wait';
+        shared().observe(el);
+      });
+    scan();
+    new MutationObserver(scan).observe(root, { childList: true, subtree: true });
+  }, []);
+
 /** `--i` for a stagger. */
 export const stag = (i: number, gap?: number): CSSProperties => ({ ['--i' as string]: i, ...(gap ? { ['--mo-gap' as string]: `${gap}ms` } : {}) });
 

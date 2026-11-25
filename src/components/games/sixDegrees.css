@@ -79,7 +79,7 @@
 /* ---------- Result: scorecard ---------- */
 .arcade .sd-result { --rt: var(--sky); margin-top: 20px; scroll-margin-top: 84px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 14px; border-radius: 14px; text-align: center;
   background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--rt) 26%, var(--panel)), var(--panel) 70%); box-shadow: 0 0 0 2px var(--rt), 0 0 34px color-mix(in srgb, var(--rt) 30%, transparent);
-  animation: sd-rise 0.45s ease both; }
+  animation: sd-rise var(--mo-dur) var(--ease-out) both; }
 .arcade .sd-result.t-gold { --rt: var(--gold); }
 .arcade .sd-result.t-turf { --rt: var(--turf); }
 .arcade .sd-result.t-sky { --rt: var(--sky); }
@@ -100,7 +100,7 @@
 @keyframes sd-draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes sd-pop { 0% { transform: scale(0.7); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: none; } }
 @keyframes sd-march { to { background-position: 14px 0; } }
-@keyframes sd-rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes sd-rise { from { transform: translateY(var(--mo-rise)); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes sd-slam { 0% { transform: scale(2.2); opacity: 0; } 100% { transform: none; opacity: 1; } }
 @media (min-width: 700px) {
   .arcade .sd-route { max-width: 760px; margin: 0 auto; }

@@ -151,8 +151,8 @@
 .arcade .flip-y { animation: arc-flip-y 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 @keyframes arc-flip-y { 0% { transform: perspective(900px) rotateY(-180deg); filter: brightness(0.3); } 55% { filter: brightness(1.6); } 100% { transform: none; filter: none; } }
 
-@keyframes arc-rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
-.arcade .rise { animation: arc-rise 0.4s ease both; }
+@keyframes arc-rise { from { transform: translateY(var(--mo-rise)); opacity: 0; } to { transform: none; opacity: 1; } }
+.arcade .rise { animation: arc-rise var(--mo-dur-quick) var(--ease-out) both; }
 .arcade .shake { animation: arc-shake 0.45s ease; }
 @keyframes arc-shake { 0%, 100% { transform: none; } 20% { transform: translateX(-8px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(3px); } }
 
@@ -176,7 +176,7 @@
 .arcade .dot.on { background: var(--gold); } .arcade .dot.done { background: var(--turf-deep); }
 
 /* Result strip */
-.arcade .result { margin-top: 18px; padding: 16px; border-radius: 10px; background: var(--panel-2); box-shadow: 0 0 0 2px var(--line); display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; animation: arc-rise 0.4s ease both; }
+.arcade .result { margin-top: 18px; padding: 16px; border-radius: 10px; background: var(--panel-2); box-shadow: 0 0 0 2px var(--line); display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; animation: arc-rise var(--mo-dur-quick) var(--ease-out) both; }
 .arcade .result .big { font-family: var(--f-display); font-weight: 800; font-size: 52px; line-height: 1; font-variant-numeric: tabular-nums; }
 .arcade .result .verdict { font-family: var(--f-display); font-weight: 600; font-size: 22px; color: var(--gold); }
 
@@ -271,7 +271,7 @@
 @keyframes arc-deal { from { transform: translateY(30px) rotate(-3deg); opacity: 0; } to { transform: none; opacity: 1; } }
 .arcade .anim-stage { animation: arc-stageIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
-.arcade .anim-rise { animation: arc-rise 0.45s both; }
+.arcade .anim-rise { animation: arc-rise var(--mo-dur) var(--ease-out) both; }
 
 .arcade .anim-stamp { animation: arc-stampIn 0.35s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
 .arcade .anim-flip { animation: arc-flipIn 0.55s ease both; }

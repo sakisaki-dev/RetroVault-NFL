@@ -45,7 +45,7 @@
 .gl-bar--post.is-sel { box-shadow: 0 -4px 0 hsl(var(--gold)), 0 0 0 2px hsl(var(--chalk) / 0.85); }
 .gl-wk { position: absolute; bottom: -18px; left: 0; right: 0; text-align: center; font: 9px 'JetBrains Mono', monospace; color: hsl(var(--muted-foreground)); }
 @media (prefers-reduced-motion: no-preference) {
-  .gl-bar--anim { animation: gl-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .gl-bar--anim { animation: gl-rise var(--mo-dur-grow) var(--ease-out) both; }
   @keyframes gl-rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 }
 .gl-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; align-items: center; margin-top: 0.4rem; font-size: 11px; color: hsl(var(--secondary-foreground)); }

@@ -1,5 +1,5 @@
 import DeferredSection from '@/components/ui/DeferredSection';
-import { Reveal } from '@/components/motion/Reveal';
+import { Reveal, useAutoReveal } from '@/components/motion/Reveal';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useLeague } from '@/context/LeagueContext';
@@ -137,6 +137,7 @@ const CareerTab = () => {
   const setSelectedPlayer = cardSlot.set;
   const sub: StatsSub = route.sub ?? 'players';
   const phone = usePhone();
+  const autoReveal = useAutoReveal<HTMLDivElement>();
 
   const book = useMemo(() => buildRecordBook(careerData, 10), [careerData]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -167,7 +168,7 @@ const CareerTab = () => {
       {/* Each sub-tab cross-fades in with a short rise (.rv-view-in). The switch is a transition (hashRoute), and the
           Suspense below stays mounted, so the old sub-tab stays up until a lazy one has loaded. */}
       {sub === 'players' && (
-        <div className="rv-view-in stats-arena container space-y-10 py-6 sm:py-8">
+        <div ref={autoReveal} className="rv-view-in stats-arena container space-y-10 py-6 sm:py-8">
           {/* The opener: a night stadium (jumbotron counts, the record holders on the turf, the live chase) */}
           <StatsStadium data={careerData} book={book} headline={headline} onSelect={setSelectedPlayer} />
           <nav aria-label="On this page" className="-mt-6 flex flex-wrap justify-center gap-x-3 gap-y-1 text-sm max-sm:hidden">

@@ -273,7 +273,7 @@
 
 /* ---------- Motion ---------- */
 .pc-enter {
-  animation: pc-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: pc-rise var(--mo-dur) var(--ease-out) both;
   animation-delay: calc(var(--i, 0) * 55ms);
 }
 @keyframes pc-rise {

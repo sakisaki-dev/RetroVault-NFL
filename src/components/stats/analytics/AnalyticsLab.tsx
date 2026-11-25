@@ -20,7 +20,7 @@ import { DEFAULT_CONFIG, useSavedPresets, type GraphConfig } from '../graph/grap
 import { lastGraph, openInGraphs } from '../graph/graphPrefs';
 import { useHubRoute } from '../hub/hashRoute';
 import LegacyMix from './LegacyMix';
-import { fmtNum } from './viz';
+import { Reveal, ViewCount, stag } from '@/components/motion/Reveal';
 import { GRID_ITEM, gridVars } from '../grid';
 import { peekProps } from '@/components/peek/peekProps';
 import { ClubWatermark, StageFigure } from '../visual/ClubStage';
@@ -55,14 +55,19 @@ const bestAcross = (players: Player[], ctx: AdvContext, id: string, caption: str
   return best ? { metric, caption, player: best.player, value: best.value } : null;
 };
 
-const InsightTile = ({ insight, onSelect }: { insight: Insight; onSelect: Select }) => (
-  <li className={`${GRID_ITEM} glass-card cs-card cs-flat cs-card--fig flex flex-col gap-1 p-3`} style={clubStyle(insight.player)}>
+const InsightTile = ({ insight, index, onSelect }: { insight: Insight; index: number; onSelect: Select }) => (
+  <li
+    className={`${GRID_ITEM} glass-card cs-card cs-flat cs-card--fig ix-card mo-rise flex flex-col gap-1 p-3`}
+    style={{ ...clubStyle(insight.player), ...stag(index, 70) }}
+    onClick={(e) => {
+      if (!(e.target as HTMLElement).closest('button, a')) onSelect(insight.player);
+    }}
+  >
     <ClubWatermark player={insight.player} />
     <StageFigure player={insight.player} action="celebrate" />
     <MetricLabel metric={insight.metric} className="font-display text-xs font-bold uppercase tracking-wider cs-flat__sub" />
     <span className="cs-flat__big font-display text-3xl font-extrabold leading-none sm:text-4xl">
-      {fmtNum(insight.value, insight.metric.decimals)}
-      {insight.metric.suffix ?? ''}
+      <ViewCount value={insight.value} decimals={insight.metric.decimals} suffix={insight.metric.suffix ?? ''} />
     </span>
     <button
       type="button"
@@ -132,11 +137,11 @@ const AnalyticsLab = ({ data, onSelect }: { data: LeagueData; onSelect: Select }
       </div>
 
       {insights.length > 0 && (
-        <ul className="flex flex-wrap gap-3" style={gridVars(insights.length, { base: 2, sm: 2, lg: 4 })} aria-label="League bests">
-          {insights.map((i) => (
-            <InsightTile key={i.metric.id} insight={i} onSelect={onSelect} />
+        <Reveal as="ul" className="flex flex-wrap gap-3" style={gridVars(insights.length, { base: 2, sm: 2, lg: 4 })} aria-label="League bests">
+          {insights.map((i, n) => (
+            <InsightTile key={i.metric.id} insight={i} index={n} onSelect={onSelect} />
           ))}
-        </ul>
+        </Reveal>
       )}
 
       <ValueAcrossBoard players={players} onSelect={onSelect} />

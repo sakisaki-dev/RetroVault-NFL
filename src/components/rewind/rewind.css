@@ -430,7 +430,7 @@ html .rw-dlg .dlg-bar {
 
 /* entrances, staggered by --d */
 .rw-in {
-  animation: rw-in 520ms var(--ease-out, ease-out) both;
+  animation: rw-in var(--mo-dur) var(--ease-out) both;
   animation-delay: calc(var(--d, 0) * 90ms + 60ms);
 }
 @keyframes rw-in {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { stag } from '@/components/motion/Reveal';
 import { leadersTakeaway } from './takeaways';
 import SectionIntro from './SectionIntro';
 import { Crown, ListOrdered } from 'lucide-react';
@@ -54,8 +55,8 @@ const RaceRow = ({ board, rank, value, player, max, onSelect }: { board: RecordB
         {/* Bar: team colour; length = share of the leader's mark */}
         <span aria-hidden="true" className="ml-6 block h-2 overflow-hidden rounded-sm bg-night/70">
           <span
-            className="block h-full rounded-r-[4px] motion-safe:transition-[width] motion-safe:duration-700 motion-safe:ease-out"
-            style={{ width: `${width}%`, background: fill, boxShadow: leader ? `0 0 0 1px hsl(var(--gold))` : undefined }}
+            className="mo-grow block h-full rounded-r-[4px] motion-safe:transition-[width] motion-safe:duration-700 motion-safe:ease-out"
+            style={{ width: `${width}%`, background: fill, boxShadow: leader ? `0 0 0 1px hsl(var(--gold))` : undefined, ...stag(rank + 2, 45) }}
           />
         </span>
       </button>
@@ -84,7 +85,7 @@ const leadText = (b: RecordBoardData) => {
   return `Leads #2 by ${formatDecimal(gap, b.decimals)}${pct >= 0.5 ? ` (${Math.round(pct)}%)` : ''}`;
 };
 
-const GroupCard = ({ group, boards, onSelect }: { group: GroupKey; boards: RecordBoardData[]; onSelect: Select }) => {
+const GroupCard = ({ group, boards, index, onSelect }: { group: GroupKey; boards: RecordBoardData[]; index: number; onSelect: Select }) => {
   const [activeId, setActiveId] = useState(boards[0].id);
   const active = boards.find((b) => b.id === activeId) ?? boards[0];
   const { label, hsl } = GROUP_META[group];
@@ -92,7 +93,7 @@ const GroupCard = ({ group, boards, onSelect }: { group: GroupKey; boards: Recor
   const lead = leadText(active);
 
   return (
-    <li className={GRID_ITEM}>
+    <li className={`${GRID_ITEM} mo-rise`} style={stag(index, 70)}>
       <article
         aria-labelledby={headingId}
         className="glass-card flex h-full flex-col overflow-hidden"
@@ -158,8 +159,8 @@ const PositionLeaders = ({ boards, data, onSelect }: { boards: Map<string, Recor
         Top ten all-time at every position. Bars are scaled to the leader and coloured by team; switch the stat and watch the board re-rank.
       </SectionIntro>
       <ul className="flex flex-wrap gap-3" style={gridVars(groups.length, { base: 1, sm: 2, lg: 2, xl: 4 })}>
-        {groups.map(({ g, items }) => (
-          <GroupCard key={g} group={g} boards={items} onSelect={onSelect} />
+        {groups.map(({ g, items }, n) => (
+          <GroupCard key={g} group={g} boards={items} index={n} onSelect={onSelect} />
         ))}
       </ul>
       <LeaderRadar data={data} onSelect={onSelect} />

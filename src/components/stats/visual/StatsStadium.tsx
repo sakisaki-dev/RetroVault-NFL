@@ -13,7 +13,7 @@ import { fmtNum } from '../analytics/viz';
 import type { RecordBoardData, RecordBook } from '../records';
 import GameSprite from '../../GameSprite';
 import TeamLogo from '../../brand/TeamLogo';
-import CountUp from '../../brand/CountUp';
+import { ViewCount, stag, useReveal } from '@/components/motion/Reveal';
 import { clubStyle } from './clubTone';
 import './statsStadium.css';
 import { seasonLabel } from '@/config/edition';
@@ -67,6 +67,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
   }, [headline, players]);
   const chase = book.pace[0];
 
+  const reveal = useReveal<HTMLElement>();
   const stageStyle = {
     ...(art.stands ? { '--ss-stands': `url(${art.stands})` } : {}),
     ...(art.crowd ? { '--ss-crowd': `url(${art.crowd})` } : {}),
@@ -74,7 +75,7 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
   } as CSSProperties;
 
   return (
-    <section className={`ss ${art.turf ? 'ss--art' : ''}`} style={stageStyle} aria-labelledby="stats-title">
+    <section ref={reveal} className={`ss ${art.turf ? 'ss--art' : ''}`} style={stageStyle} aria-labelledby="stats-title">
       <span className="ss__sky" aria-hidden="true" />
       <span className="ss__lights" aria-hidden="true" />
       <span className="ss__stands" aria-hidden="true" />
@@ -83,31 +84,31 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
 
       {/* The jumbotron: the page title and the league's counts */}
       <div className="ss__tron">
-        <p className="ss__kick">League Hub · Players{season ? ` · ${seasonLabel(season)}` : ''}</p>
-        <h1 id="stats-title" className="ss__title">
+        <p className="ss__kick mo-fade">League Hub · Players{season ? ` · ${seasonLabel(season)}` : ''}</p>
+        <h1 id="stats-title" className="ss__title mo-rise" style={stag(1)}>
           Stats <span>&amp;</span> Records
         </h1>
         <dl className="ss__leds">
-          <div>
+          <div className="mo-pop" style={stag(2, 70)}>
             <dt>Players</dt>
             <dd>
-              <CountUp value={players.length} />
+              <ViewCount value={players.length} />
             </dd>
           </div>
-          <div>
+          <div className="mo-pop" style={stag(3, 70)}>
             <dt>Hall of Famers</dt>
             <dd>
-              <CountUp value={hof} />
+              <ViewCount value={hof} />
             </dd>
           </div>
-          <div>
+          <div className="mo-pop" style={stag(4, 70)}>
             <dt>{ELITE_OVR}+ OVR</dt>
-            <dd>{ovrMap.size ? <CountUp value={elite} /> : '–'}</dd>
+            <dd>{ovrMap.size ? <ViewCount value={elite} /> : '–'}</dd>
           </div>
-          <div>
+          <div className="mo-pop" style={stag(5, 70)}>
             <dt>Records</dt>
             <dd>
-              <CountUp value={book.boards.size} />
+              <ViewCount value={book.boards.size} />
             </dd>
           </div>
         </dl>
@@ -115,12 +116,12 @@ const StatsStadium = ({ data, book, headline, onSelect }: { data: LeagueData; bo
 
       {/* The closest record chase, on its own scoreboard */}
       {chase && (
-        <button type="button" className="ss__chase" style={clubStyle(chase.player)} {...peekProps(chase.player)} onClick={() => onSelect(chase.player)}>
+        <button type="button" className="ss__chase mo-run-r" style={{ ...clubStyle(chase.player), ...stag(4, 70) }} {...peekProps(chase.player)} onClick={() => onSelect(chase.player)}>
           <span className="ss__chase-k">Live chase</span>
           <span className="ss__chase-name">{displayName(chase.player.name)}</span>
           <span className="ss__chase-rec">{chase.recordName}</span>
           <span className="ss__chase-bar" aria-hidden="true">
-            <i style={{ width: `${Math.min(100, chase.percentToRecord)}%` }} />
+            <i className="mo-grow" style={{ width: `${Math.min(100, chase.percentToRecord)}%`, ...stag(7, 70) }} />
           </span>
           <span className="ss__chase-num">
             <b>{Math.floor(chase.percentToRecord)}%</b> of {fmtNum(chase.recordValue, 0)} · ETA {chase.seasonsToBreak} {chase.seasonsToBreak === 1 ? 'season' : 'seasons'}

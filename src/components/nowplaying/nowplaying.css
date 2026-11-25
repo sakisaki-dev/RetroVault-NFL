@@ -252,7 +252,7 @@
   box-shadow:
     inset 0 0 0 1px rgb(30 215 96 / 0.3),
     0 10px 26px rgba(0, 0, 0, 0.45);
-  animation: np-in 0.35s var(--ease-out, ease-out) both;
+  animation: np-in var(--mo-dur-quick) var(--ease-out) both;
 }
 @keyframes np-in {
   from {

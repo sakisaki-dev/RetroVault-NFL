@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { stag } from '@/components/motion/Reveal';
 import { Layers } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { legacyMix, type LegacyMix as Mix } from '@/config/advanced';
@@ -71,7 +72,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
       }
       chart={
         <ol className="space-y-1.5" aria-label={`Top ${TOP} Career Legacy, split by source`}>
-          {rows.map(({ player, mix }) => {
+          {rows.map(({ player, mix }, ri) => {
             const width = mode === 'abs' ? (mix.total / max) * 100 : 100;
             return (
               <li key={keyOf(player)}>
@@ -90,7 +91,7 @@ const LegacyMix = ({ players, onSelect, title = 'Legacy composition', poster = f
                         <span className="truncate text-xs font-semibold sm:text-sm">{displayName(player.name)}</span>
                       </span>
                       <span className="flex items-center gap-2">
-                        <span className="flex h-3.5 gap-[2px]" style={{ width: `${width}%` }} aria-hidden="true">
+                        <span className="mo-grow flex h-3.5 gap-[2px]" style={{ width: `${width}%`, ...stag(ri, 35) }} aria-hidden="true">
                           {PARTS.filter((part) => mix[part.key] > 0).map((part, i, shown) => (
                             <span
                               key={part.key}

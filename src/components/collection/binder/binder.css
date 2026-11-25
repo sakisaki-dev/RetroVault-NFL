@@ -626,11 +626,11 @@
 /* cards slide into their sleeves when a page mounts; pills and the sheet's choices ease */
 @media (prefers-reduced-motion: no-preference) {
   .bk-pocket > .fut {
-    animation: bk-in 260ms cubic-bezier(0.22, 1, 0.36, 1) backwards; /* backwards: never holds the card's own tilt transform */
+    animation: bk-in var(--dur-3) var(--ease-out) backwards; /* backwards: never holds the card's own tilt transform */
   }
   .bk-pocket.fut-tile--fresh > .fut {
     animation:
-      bk-in 260ms cubic-bezier(0.22, 1, 0.36, 1) backwards,
+      bk-in var(--dur-3) var(--ease-out) backwards,
       fut-fresh 1.6s ease-out 300ms 2;
   }
   .bk-pocket:nth-child(3n + 2) > .fut {
