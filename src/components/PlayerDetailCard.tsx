@@ -12,6 +12,7 @@ import { formatDecimal, getMetricTier, getTierBgColor, getTierColor, getTierLabe
 import { AWARD_META, POSITION_NAMES } from '@/utils/playerMeta';
 import { IS_NFL } from '@/config/edition';
 import FantasyStrip from '@/components/fantasy/FantasyStrip';
+import { requestFantasyStat } from '@/components/fantasy/stats';
 import { openDeepDiveAt } from '@/components/stats/comps/compFinderLink';
 import { AWARD_POINTS, getLegacyTier, isDefensivePosition, isHallOfFamer } from '@/config/stats';
 import { ADV_METRICS, awardPoints, buildContext, evaluateMetric } from '@/config/advanced';
@@ -514,7 +515,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               <FantasyStrip
                 playerKey={`${player.position}:${displayName(player.name)}`}
                 active={player.status === 'Active'}
-                onOpen={() => {
+                onOpen={(stat) => {
+                  requestFantasyStat(stat ?? null);
                   onClose();
                   openDeepDiveAt(player, 'dd-fantasy');
                 }}

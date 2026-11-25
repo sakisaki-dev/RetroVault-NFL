@@ -597,7 +597,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
           {hasFantasy && player && (
             <DdSection id="dd-fantasy" index={0.6} title="Fantasy" icon={Trophy} kicker="PPR rank, form, matchups and consistency this season">
-              <FantasySection playerKey={keyOf(player)} active />
+              <FantasySection playerKey={keyOf(player)} active player={player} />
             </DdSection>
           )}
 

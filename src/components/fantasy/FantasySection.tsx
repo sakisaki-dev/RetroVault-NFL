@@ -1,29 +1,23 @@
-import { useMemo, type CSSProperties } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import type { Player } from '@/types/player';
+import GameSprite from '@/components/GameSprite';
+import { ChevronDown } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
 import { cn } from '@/lib/utils';
-import { boomN, f1, ord, pctOf, startN, TONE_LABEL, tierOfFinish, useFantasy, type Fantasy, type FanRec, type RankedStat } from '@/utils/fantasy';
-import { clubHue, NextLogos, TrendChip, teamOf, tileGrid, wk } from './parts';
+import { boomN, f1, ord, pctOf, startN, TONE_LABEL, tierOfFinish, useFantasy, useFantasyRaw, type Fantasy, type FanRec } from '@/utils/fantasy';
+import StatBoard, { Detail, type BoardTile } from './StatBoard';
+import { onFantasyStat, statContext, takeFantasyStat } from './stats';
+import { clubHue, NextLogos, TrendChip, teamOf, wk } from './parts';
 
-const OPP_LABEL: Record<string, { k: string; info: string; unit: string }> = {
-  og: { k: 'Opportunities / game', info: 'Carries plus targets a game (QB: pass attempts plus carries).', unit: '' },
-  ts: { k: 'Target share', info: 'His targets over his club\'s targets in the weeks he played.', unit: '%' },
-  ay: { k: 'Air yards share', info: 'His air yards over his club\'s in the weeks he played.', unit: '%' },
-  cs: { k: 'Carry share', info: 'His carries over his club\'s in the weeks he played.', unit: '%' },
-  sn: { k: 'Offence snaps', info: 'Average share of his club\'s offensive snaps in his games (snap counts).', unit: '%' },
-  po: { k: 'PPR / opportunity', info: 'PPR points per carry, target or (QB) pass attempt: efficiency.', unit: '' },
+const STAT_LABEL: Record<string, { k: string; unit: string }> = {
+  og: { k: 'Opportunities / game', unit: '' }, ts: { k: 'Target share', unit: '%' }, ay: { k: 'Air yards share', unit: '%' },
+  cs: { k: 'Carry share', unit: '%' }, sn: { k: 'Offence snaps', unit: '%' }, po: { k: 'PPR / opportunity', unit: '' },
 };
 const OPP_ORDER = ['og', 'ts', 'ay', 'cs', 'sn', 'po'] as const;
-
-const Tile = ({ k, v, sub, i, tone }: { k: string; v: string; sub?: string; i: number; tone?: string }) => (
-  <div className={cn('fx-tile mo-rise', tone && `fx-tile--${tone}`)} style={stag(i)}>
-    <span className="fx-tile__k">{k}</span>
-    <span className="fx-tile__v">{v}</span>
-    <span className="fx-tile__s">{sub ?? ' '}</span>
-  </div>
-);
+const OPP_INFO = 'Ranks are among players at his position with at least half their club\'s games. Red-zone touches and points over expectation are not in the weekly data, so they are not shown.';
 
 /** One season of weekly PPR: bars coloured by weekly finish, the 25th to 75th percentile band, tap a bar for the game. */
 const WeekChart = ({ f }: { f: Fantasy }) => {
@@ -96,18 +90,29 @@ const GameChips = ({ games, pos }: { games: FanRec['w']; pos: Fantasy['pos'] }) 
 
 const avg = (g: FanRec['w']) => g.reduce((s, x) => s + x[1], 0) / (g.length || 1);
 
-const Windows = ({ f }: { f: Fantasy }) => {
+const dateOf = (d?: string) => {
+  if (!d) return '';
+  const [y, m, day] = d.split('-').map(Number);
+  return new Date(y, m - 1, day).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
+const Windows = ({ f, open, onOpen }: { f: Fantasy; open: string | null; onOpen: (id: string | null) => void }) => {
   const { rec, pos } = f;
+  const raw = useFantasyRaw();
   const last = rec.w.slice(-3);
   const prev = rec.w.slice(-6, -3);
+  const l3 = open === 'l3' && raw ? statContext(raw, f.key, 'l3') : null;
   return (
     <div className="fx-win">
       {last.length === 3 && (
-        <div className="fx-panel mo-rise" style={stag(0)}>
-          <div className="fx-panel__h"><span className="fx-k">Last 3 games</span><TrendChip trend={f.trend} /></div>
+        <div className="fx-panel rbk-chip mo-rise" id="fx-stat-l3" style={stag(0)}>
+          <button type="button" className="fx-panel__btn" aria-expanded={open === 'l3'} onClick={() => onOpen(open === 'l3' ? null : 'l3')}>
+            <span className="fx-k">Last 3 games</span><TrendChip trend={f.trend} /><ChevronDown className="fx-tile__c" aria-hidden="true" />
+          </button>
           <div className="fx-panel__v"><b>{f1(avg(last))}</b><i>PPR / game</i></div>
           <GameChips games={last} pos={pos} />
-          <em className="fx-panel__s">{rec.l3r ? `${ord(rec.l3r[0])} of ${rec.l3r[1]} ${pos}s on that average` : 'Out of the recent weeks'}</em>
+          <em className="fx-panel__s">{rec.l3r ? `${ord(rec.l3r[0])} of ${rec.l3r[1]} ${pos}s` : ' '}</em>
+          {l3 && <div className="fx-det fx-det--in dd-enter"><Detail ctx={l3} pos={pos} /></div>}
         </div>
       )}
       {prev.length === 3 && (
@@ -115,22 +120,23 @@ const Windows = ({ f }: { f: Fantasy }) => {
           <div className="fx-panel__h"><span className="fx-k">The 3 before</span></div>
           <div className="fx-panel__v"><b>{f1(avg(prev))}</b><i>PPR / game</i></div>
           <GameChips games={prev} pos={pos} />
-          <em className="fx-panel__s">{f.trend ? `Last 3 are ${f.trend.delta >= 0 ? '+' : ''}${f.trend.delta.toFixed(1)} on these` : ' '}</em>
+          <em className="fx-panel__s">{f.trend ? `Last 3: ${f.trend.delta >= 0 ? '+' : ''}${f.trend.delta.toFixed(1)}` : ' '}</em>
         </div>
       )}
       {f.next.length > 0 && (
-        <div className="fx-panel fx-panel--next mo-rise" style={stag(2)}>
-          <div className="fx-panel__h"><span className="fx-k">Next 3 games</span></div>
+        <div className="fx-panel fx-panel--next mo-rise" id="fx-next" style={stag(2)}>
+          <div className="fx-panel__h"><span className="fx-k">Next 3 games</span><InfoTip label="About matchups">Rank 1 = the softest of 32 defences against {pos}s: the one allowing the most PPR a game to them.</InfoTip></div>
           <ul className="fx-mu">
             {f.next.map((s) => {
               const t = s.opp ? teamOf(s.opp) : null;
               return (
-                <li key={s.week} className={cn('fx-mu__r', s.tone && `fx-mu__r--${s.tone}`)}>
+                <li key={s.week} className={cn('fx-mu__r', s.tone && `fx-mu__r--${s.tone}`)} style={t ? ({ '--oc': `hsl(${t.primaryColor})` } as CSSProperties) : undefined}>
+                  {t && <TeamLogo team={t} size={64} decorative className="fx-mu__wm" />}
                   <span className="fx-mu__w">W{s.week}</span>
                   {s.opp ? (
                     <>
-                      <TeamLogo team={t ?? s.opp} size={26} decorative backed />
-                      <span className="fx-mu__o"><b>{s.home ? 'vs' : 'at'} {t?.name ?? s.opp}</b><em>allows {f1(s.allowed)} to {pos}s</em></span>
+                      <TeamLogo team={t ?? s.opp} size={30} decorative backed />
+                      <span className="fx-mu__o"><b>{s.home ? 'vs' : 'at'} {t?.name ?? s.opp}</b><em>{s.home ? 'Home' : 'Away'}{s.date ? ` · ${dateOf(s.date)}` : ''} · allows {f1(s.allowed)}</em></span>
                       <span className="fx-mu__t"><b>{s.rank ? ord(s.rank) : '—'}</b><em>{s.tone ? TONE_LABEL[s.tone] : ''}</em></span>
                     </>
                   ) : (
@@ -140,7 +146,6 @@ const Windows = ({ f }: { f: Fantasy }) => {
               );
             })}
           </ul>
-          <em className="fx-panel__s">Rank 1 = softest of 32 defences against {pos}s</em>
         </div>
       )}
     </div>
@@ -148,20 +153,56 @@ const Windows = ({ f }: { f: Fantasy }) => {
 };
 
 /** The Deep Dive's Fantasy section (active QB, RB, WR, TE with a game this season). */
-const FantasySection = ({ playerKey, active }: { playerKey: string; active: boolean }) => {
+const FantasySection = ({ playerKey, active, player }: { playerKey: string; active: boolean; player?: Player }) => {
   const f = useFantasy(active ? playerKey : null);
+  const [open, setOpen] = useState<string | null>(null);
+  const live = !!f;
+  useEffect(() => {
+    if (!live) return;
+    const go = (id: string) => {
+      if (id !== 'next') setOpen(id);
+      window.setTimeout(() => document.getElementById(id === 'next' ? 'fx-next' : `fx-stat-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 450);
+    };
+    const p = takeFantasyStat();
+    if (p) go(p);
+    return onFantasyStat(go);
+  }, [live]);
   if (!f) return null;
   const { rec, pos } = f;
   const op = rec.op ?? {};
   const opps = OPP_ORDER.filter((k) => op[k]);
   const few = rec.g < 4;
+  const hero: BoardTile[] = [
+    { id: 'ppr', k: 'PPR total', num: { value: rec.t, decimals: 1 }, sub: `${rec.g} games · week ${f.week}`, tone: 'lead' },
+    { id: 'pg', k: 'PPR / game', num: { value: rec.pg, decimals: 1 }, sub: rec.rk[4] ? `${ord(rec.rk[4])} of ${rec.rk[5]} ${pos}s` : 'Few games' },
+    { id: 'rank', k: `${pos} rank`, v: ord(rec.rk[0]), sub: `of ${rec.rk[1]}` },
+    { id: 'overall', k: 'Overall rank', v: ord(rec.rk[2]), sub: `of ${rec.rk[3]}` },
+  ];
+  const cons: BoardTile[] = [
+    { id: 'fl', k: 'Floor', num: { value: rec.fl ?? 0, decimals: 1 }, sub: '25th percentile' },
+    { id: 'md', k: 'Median', num: { value: rec.md ?? 0, decimals: 1 } },
+    { id: 'ce', k: 'Ceiling', num: { value: rec.ce ?? 0, decimals: 1 }, sub: '75th percentile' },
+    { id: 'sd', k: 'Std dev', num: { value: rec.sd ?? 0, decimals: 1 }, sub: rec.cv != null ? `CV ${rec.cv.toFixed(2)}` : undefined },
+    { id: 'sw', k: 'Start-worthy', num: { value: pctOf(rec.sw, rec.g), suffix: '%' }, sub: `${rec.sw} of ${rec.g} ${wk(rec.g)}`, tone: 'good' },
+    { id: 'bm', k: 'Boom', num: { value: pctOf(rec.bm, rec.g), suffix: '%' }, sub: `${rec.bm} ${wk(rec.bm)}` },
+    { id: 'bu', k: 'Bust', num: { value: pctOf(rec.bu, rec.g), suffix: '%' }, sub: `${rec.bu} ${wk(rec.bu)}`, tone: rec.bu ? 'bad' : undefined },
+  ];
+  const oppTiles: BoardTile[] = opps.map((k) => {
+    const s = op[k]!;
+    const def = STAT_LABEL[k];
+    return { id: k, k: def.k, v: `${k === 'po' ? s[0].toFixed(2) : s[0].toFixed(1)}${def.unit}`, sub: s[1] ? `${ord(s[1])} of ${s[2]} ${pos}s` : undefined };
+  });
   return (
     <Reveal className="fx" style={{ '--tc': clubHue(f.club) } as CSSProperties}>
-      <div className="fx-hero">
-        <Tile i={0} k="PPR total" v={f1(rec.t)} sub={`${rec.g} games · week ${f.week}`} tone="lead" />
-        <Tile i={1} k="PPR / game" v={f1(rec.pg)} sub={rec.rk[4] ? `${ord(rec.rk[4])} of ${rec.rk[5]} ${pos}s` : 'Few games'} />
-        <Tile i={2} k={`${pos} rank`} v={ord(rec.rk[0])} sub={`of ${rec.rk[1]}`} />
-        <Tile i={3} k="Overall rank" v={ord(rec.rk[2])} sub={`of ${rec.rk[3]}`} />
+      <div className="fx-top">
+        {player && (
+          <div className="fx-stage" aria-hidden="true">
+            <div className="fx-stage__turf" />
+            <div className="fx-stage__sprite"><GameSprite player={player} kind="figure" size="m" showKit /></div>
+            {teamOf(f.club) && <TeamLogo team={teamOf(f.club)} size={44} decorative backed className="fx-stage__logo" />}
+          </div>
+        )}
+        <StatBoard tiles={hero} playerKey={playerKey} pos={pos} open={open} onOpen={setOpen} className="fx-hero" />
       </div>
 
       <div className="fx-block mo-rise" style={stag(4)}>
@@ -170,51 +211,28 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
           <InfoTip label="About the weekly chart">
             Each bar is a game in standard PPR; a bye or a missed game is a gap. Colours follow his weekly finish among every {pos} with a line that
             week: boom is the top {boomN(pos)}, start-worthy the top {startN(pos)}, bust worse than {startN(pos) * 1.5}. The shaded band is the middle half of
-            his weeks (25th to 75th percentile), the line the median.
+            his weeks, the line the median.
           </InfoTip>
         </div>
         <WeekChart f={f} />
       </div>
 
-      <Windows f={f} />
+      <Windows f={f} open={open} onOpen={setOpen} />
 
       {!few && rec.sd != null && (
         <div className="fx-block mo-rise" style={stag(5)}>
-          <div className="fx-block__h">
-            <span className="fx-k">Consistency</span>
-            <InfoTip label="About consistency">
-              Floor and ceiling are the 25th and 75th percentile of his weekly PPR; the standard deviation and its ratio to his mean (CV, lower is steadier)
-              come from the same weeks. Start-worthy, boom and bust are shares of his games by weekly finish at {pos}.
-            </InfoTip>
-          </div>
-          <div className="fx-tiles" style={tileGrid(7)}>
-            <Tile i={0} k="Floor" v={f1(rec.fl)} sub="25th percentile" />
-            <Tile i={1} k="Median" v={f1(rec.md)} />
-            <Tile i={2} k="Ceiling" v={f1(rec.ce)} sub="75th percentile" />
-            <Tile i={3} k="Std dev" v={f1(rec.sd)} sub={rec.cv != null ? `CV ${rec.cv.toFixed(2)}` : undefined} />
-            <Tile i={4} k="Start-worthy" v={`${pctOf(rec.sw, rec.g)}%`} sub={`${rec.sw} of ${rec.g} ${wk(rec.g)}`} tone="good" />
-            <Tile i={5} k="Boom" v={`${pctOf(rec.bm, rec.g)}%`} sub={`${rec.bm} ${wk(rec.bm)}`} />
-            <Tile i={6} k="Bust" v={`${pctOf(rec.bu, rec.g)}%`} sub={`${rec.bu} ${wk(rec.bu)}`} tone={rec.bu ? 'bad' : undefined} />
-          </div>
+          <div className="fx-block__h"><span className="fx-k">Consistency</span></div>
+          <StatBoard grid tiles={cons} playerKey={playerKey} pos={pos} open={open} onOpen={setOpen} />
         </div>
       )}
 
-      {opps.length > 0 && (
+      {oppTiles.length > 0 && (
         <div className="fx-block mo-rise" style={stag(6)}>
           <div className="fx-block__h">
             <span className="fx-k">Opportunity</span>
-            <InfoTip label="About opportunity">
-              Ranks are among {pos}s with at least half their club's games played. {OPP_ORDER.filter((k) => op[k]).map((k) => `${OPP_LABEL[k].k}: ${OPP_LABEL[k].info}`).join(' ')}
-              {' '}Red-zone touches and points over expectation are not in the weekly data, so they are not shown.
-            </InfoTip>
+            <InfoTip label="About opportunity">{OPP_INFO}</InfoTip>
           </div>
-          <div className="fx-tiles" style={tileGrid(opps.length)}>
-            {opps.map((k, i) => {
-              const s = op[k] as RankedStat;
-              const { unit } = OPP_LABEL[k];
-              return <Tile key={k} i={i} k={OPP_LABEL[k].k} v={`${k === 'po' ? s[0].toFixed(2) : s[0].toFixed(1)}${unit}`} sub={s[1] ? `${ord(s[1])} of ${s[2]} ${pos}s` : undefined} />;
-            })}
-          </div>
+          <StatBoard grid tiles={oppTiles} playerKey={playerKey} pos={pos} open={open} onOpen={setOpen} />
         </div>
       )}
     </Reveal>
