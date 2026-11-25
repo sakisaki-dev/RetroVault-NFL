@@ -243,7 +243,7 @@ const FranchiseWall = ({ teams, records, onOpen }: Props) => {
       <div className="cw-bar">
         <SectionHeader title="Franchise wall" kicker={`${clubs.sorted.length} clubs${allTime ? ` · ${allTime.from}–${allTime.to}` : ''}`} className="cw-head" />
         <div className="cw-controls">
-          <ArcadeToggle<Sort> label="Sort" size="sm" value={sort} onChange={setSort} options={SORTS} />
+          <ArcadeToggle<Sort> label="Sort" size="sm" compact="always" value={sort} onChange={setSort} options={SORTS} />
           <ArcadeToggle<Conf> label="Conference" size="sm" value={conf} onChange={setConf} options={CONFS} />
         </div>
       </div>

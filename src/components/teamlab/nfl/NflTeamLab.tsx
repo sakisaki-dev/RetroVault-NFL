@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { Dices, Eraser, Plane, Shirt, SlidersHorizontal, Sparkles, Sun, Users } from 'lucide-react';
+import { Dices, Eraser, Plane, Settings2, Sparkles, Users, Wand2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -30,12 +30,16 @@ import {
   DEF_FORMS,
   OFF_FORMS,
 } from '@/utils/nflLab';
-import { ClubSelect, TurfSelect, Stands, openPicker, useStage } from './NflShared';
+import { ClubSelect, MenuPop, Seg, TURFS, Stands, openPicker, useStage } from './NflShared';
 import NflField, { type FieldItem } from './NflField';
 import { NflDepthChart } from './NflDepthChart';
 import NflHeader from './NflHeader';
+import FormationPicker from './FormationPicker';
 import { NflH2H, NflReport } from './NflReport';
 import NflSaved from './NflSaved';
+import type { Turf } from '../fieldArt';
+import PlayerDetailCard from '@/components/PlayerDetailCard';
+import type { Player } from '@/types/player';
 import { useNflLab, usePrefs, useSavedLabs, type NflLabReady } from './useNflLab';
 import '../teamlab.css';
 import './nflLab.css';
@@ -53,7 +57,7 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
   const [lineup, setLineup] = useState<NLineup>(() => emptyNLineup());
   const [loaded, setLoaded] = useState<{ club: string; skipped: Skipped[]; filled: string[] } | null>(null);
   const [anyPlayer, setAnyPlayer] = useState(false);
-  const [ctlOpen, setCtlOpen] = useState(false);
+  const [card, setCard] = useState<Player | null>(null);
   const [src, setSrc] = useState<RatingSource>('szn');
   const [kit, setKit] = useState('');
   const auto = useRef(false);
@@ -110,7 +114,7 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
   const stepAside = loaded?.skipped ?? [];
 
   return (
-    <div className="lab nfl-lab rv-load-in container min-w-0 py-3 sm:py-4" style={stage.vars}>
+    <div className="lab nfl-lab nfl-lab--team rv-load-in container min-w-0 py-3 sm:py-4" style={stage.vars}>
       <div className="lab-stadium">
         <NflHeader
           kitClub={kitClub}
@@ -135,75 +139,48 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
             { label: 'Formation', value: `${lineup.off}·${lineup.def}`, game: true, title: 'Offensive personnel and base defense' },
           ]}
         >
-          <div className={cn('lab-toolbar nfl-toolbar', ctlOpen && 'is-open')}>
-            <Button type="button" size="sm" onClick={() => load(prefs.club, lineup.off, null)} disabled={!depth} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90" title="That club's depth chart now, injured starters stepping aside">
-              <Plane className="mr-1 h-4 w-4" aria-hidden="true" /> Load {clubName}
-            </Button>
-            <button type="button" className="nfl-ctl-toggle" onClick={() => setCtlOpen((v) => !v)} aria-expanded={ctlOpen} aria-controls="nfl-ctl">
-              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" /> {ctlOpen ? 'Hide controls' : 'Formation, kit and more'}
-            </button>
-            <div className="nfl-ctl" id="nfl-ctl">
-            <ClubSelect value={prefs.club} onChange={(c) => setPrefs({ club: c })} />
-            <Select value={lineup.off} onValueChange={(v) => setForms(v as OffForm, lineup.def)}>
-              <SelectTrigger className="lab-btn h-9 w-auto min-w-[7.5rem]" aria-label="Offensive personnel">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="z-[70]">
-                {OFF_FORMS.map((f) => (
-                  <SelectItem key={f.id} value={f.id}>
-                    {f.label} <span className="text-muted-foreground">· {f.note}</span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={lineup.def} onValueChange={(v) => setForms(lineup.off, v as DefForm)}>
-              <SelectTrigger className="lab-btn h-9 w-auto min-w-[7.5rem]" aria-label="Base defense">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="z-[70]">
-                {DEF_FORMS.map((f) => (
-                  <SelectItem key={f.id} value={f.id}>
-                    {f.label} <span className="text-muted-foreground">· {f.note}</span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button type="button" size="sm" variant="outline" className="lab-btn" onClick={() => { setLineup(autoDraftN(ctx, lineup.off, lineup.def, src)); setLoaded(null); }} title="Best rating at every slot, then swaps that raise the team grade">
-              <Sparkles className="mr-1 h-4 w-4" aria-hidden="true" /> Dream team
-            </Button>
-            <Button type="button" size="sm" variant="outline" className="lab-btn" onClick={() => { setLineup(randomN(ctx, lineup.off, lineup.def, Math.floor(Math.random() * 1e9))); setLoaded(null); }}>
-              <Dices className="mr-1 h-4 w-4" aria-hidden="true" /> Random
-            </Button>
-            <button type="button" className={cn('nfl-pill', anyPlayer && 'is-on')} onClick={() => setAnyPlayer((v) => !v)} aria-pressed={anyPlayer} title="Pickers list any player (past and present) instead of the loaded club's roster">
-              <Users className="h-4 w-4" aria-hidden="true" /> Any player
-            </button>
-            <div className="nfl-seg nfl-seg--sm" role="group" aria-label="Rating source">
-              {RATING_SOURCES.map((r) => (
-                <button key={r.id} type="button" disabled={!r.ready} title={r.note} className={cn('nfl-seg-btn', src === r.id && 'is-on')} onClick={() => r.ready && setSrc(r.id)} aria-pressed={src === r.id}>
-                  {r.label}
+          <div className="nfl-bar">
+            <ClubSelect
+              compact
+              value={prefs.club}
+              onChange={(c) => {
+                setPrefs({ club: c });
+                load(c, lineup.off, null);
+              }}
+            />
+            <div className="nfl-bar-end">
+            <MenuPop aria="Lineup tools" label="Tools" icon={<Wand2 className="h-4 w-4" aria-hidden="true" />}>
+              <div className="nfl-opt">
+                <button type="button" className="nfl-act" onClick={() => { setLineup(autoDraftN(ctx, lineup.off, lineup.def, src)); setLoaded(null); }}>
+                  <Sparkles aria-hidden="true" /><span><b>Dream team</b><i>The best rated player at every slot</i></span>
                 </button>
-              ))}
-            </div>
-            <Select value={kit || 'auto'} onValueChange={(v) => setKit(v === 'auto' ? '' : v)}>
-              <SelectTrigger className="lab-btn h-9 w-auto min-w-[9rem]" aria-label="Kits the lineup wears">
-                <Shirt className="mr-1 h-4 w-4 shrink-0" aria-hidden="true" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="z-[70] max-h-80">
-                <SelectItem value="auto">Kit: auto ({autoKit})</SelectItem>
-                {[...NFL_TEAMS].sort((a, b) => a.name.localeCompare(b.name)).map((t) => (
-                  <SelectItem key={t.id} value={t.name}>
-                    <span className="inline-flex items-center gap-2"><TeamLogo team={t} size={16} decorative /> {t.name}</span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <TurfSelect turf={stage.turf} onTurf={stage.setTurf} />
-            {filled > 0 && (
-              <Button type="button" size="sm" variant="ghost" onClick={() => { setLineup((l) => emptyNLineup(l.off, l.def)); setLoaded(null); }} className="font-display text-[15px] font-bold uppercase text-muted-foreground">
-                <Eraser className="mr-1 h-4 w-4" aria-hidden="true" /> Clear
-              </Button>
-            )}
+                <button type="button" className="nfl-act" onClick={() => { setLineup(randomN(ctx, lineup.off, lineup.def, Math.floor(Math.random() * 1e9))); setLoaded(null); }}>
+                  <Dices aria-hidden="true" /><span><b>Random</b><i>Twenty-two players off the street</i></span>
+                </button>
+                <button type="button" className={cn('nfl-act', anyPlayer && 'is-on')} onClick={() => setAnyPlayer((v) => !v)} aria-pressed={anyPlayer}>
+                  <Users aria-hidden="true" /><span><b>Any player</b><i>{anyPlayer ? 'On: pickers list everyone' : 'Off: pickers list the club’s roster'}</i></span>
+                </button>
+                <button type="button" className="nfl-act" disabled={filled === 0} onClick={() => { setLineup((l) => emptyNLineup(l.off, l.def)); setLoaded(null); }}>
+                  <Eraser aria-hidden="true" /><span><b>Clear</b><i>Empty the field</i></span>
+                </button>
+              </div>
+            </MenuPop>
+            <MenuPop aria="Display" label="Display" icon={<Settings2 className="h-4 w-4" aria-hidden="true" />}>
+              <div className="nfl-opt">
+                <Seg label="Rating" value={src} options={RATING_SOURCES.map((r) => ({ id: r.id, label: r.label, title: r.note, disabled: !r.ready }))} onChange={(v) => setSrc(v as RatingSource)} />
+                <Seg label="Field" value={stage.turf} options={TURFS.map((t) => ({ id: t.id, label: t.label.replace(' game', '') }))} onChange={(v) => stage.setTurf(v as Turf)} />
+                <Seg label="Kit" value={kit ? 'club' : 'auto'} options={[{ id: 'auto', label: 'Auto' }, { id: 'club', label: 'A club' }]} onChange={(v) => setKit(v === 'auto' ? '' : kit || clubName)} />
+                {kit && (
+                  <div className="nfl-kit-grid" role="group" aria-label="Kits the lineup wears">
+                    {[...NFL_TEAMS].sort((a, b) => a.name.localeCompare(b.name)).map((t) => (
+                      <button key={t.id} type="button" className={cn('nfl-kit', kit === t.name && 'is-on')} aria-pressed={kit === t.name} title={t.fullName} onClick={() => setKit(t.name)}>
+                        <TeamLogo team={t} size={22} decorative />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </MenuPop>
             </div>
           </div>
         </NflHeader>
@@ -216,6 +193,9 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
             art={stage.art}
             tall={stage.tall}
             size="s"
+            className="nfl-field--team"
+            onOpen={(id) => { const k = lineup.s[id]; const pl = k ? ctx.profiles.get(k)?.player : undefined; if (pl) setCard(pl); }}
+            corner={<FormationPicker off={lineup.off} def={lineup.def} onChange={setForms} />}
             onPick={openPicker}
             overlay={
               !depth || !lab ? (
@@ -236,7 +216,7 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
               ) : undefined
             }
           />
-          <NflDepthChart ctx={ctx} lineup={lineup} onSlot={(id, k) => { setLineup((l) => setSlotN(l, id, k)); }} club={poolClub} injured={injured} />
+          <NflDepthChart onOpen={(k) => { const pl = ctx.profiles.get(k)?.player; if (pl) setCard(pl); }} ctx={ctx} lineup={lineup} onSlot={(id, k) => { setLineup((l) => setSlotN(l, id, k)); }} club={poolClub} injured={injured} />
         </div>
       </div>
 
@@ -265,6 +245,7 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
         </>
       )}
 
+      <PlayerDetailCard player={card} onClose={() => setCard(null)} />
       <NflSaved
         kind="team"
         list={saved.list}

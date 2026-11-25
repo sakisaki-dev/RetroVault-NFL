@@ -211,7 +211,7 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
         club={season.table[0]?.team}
         right={
           <div className="sw-controls">
-            <ArcadeToggle<Sort> label="Sort" size="sm" value={sort} onChange={setSort} options={SORTS} />
+            <ArcadeToggle<Sort> label="Sort" size="sm" compact="always" value={sort} onChange={setSort} options={SORTS} />
             <ArcadeToggle<Conf> label="Conference" size="sm" value={conf} onChange={setConf} options={CONFS} />
           </div>
         }
