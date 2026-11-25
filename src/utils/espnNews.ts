@@ -6,7 +6,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
  * News page opens and cached in sessionStorage for 5 minutes. Nothing is stored in the repo.
  */
 
-const FEED = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50';
+const FEED = 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50';
 const CACHE_KEY = 'espn:news:v2';
 const FRESH_MS = 5 * 60 * 1000;
 
@@ -29,6 +29,8 @@ export interface NewsItem {
   athleteIds: string[];
   /** ESPN's content record for the whole article (headline, story HTML, photos, video) */
   api?: string;
+  /** The writer's byline when the feed gives one (per-athlete items do) */
+  byline?: string;
 }
 
 interface RawCat { type: string; description?: string; athleteId?: number; athlete?: { id?: number; description?: string }; team?: { description?: string } }
@@ -40,6 +42,7 @@ interface RawItem {
   published?: string;
   images?: { url: string; caption?: string; credit?: string; width?: number }[];
   categories?: RawCat[];
+  byline?: string;
   links?: { web?: { href?: string }; api?: { self?: { href?: string } } };
 }
 
@@ -71,6 +74,7 @@ export const parseNews = (raw: { articles?: RawItem[] }): NewsItem[] =>
         teams: [...new Set(teams)],
         athleteIds: aths.map((x) => x.id),
         api: a.type === 'Media' ? undefined : a.links?.api?.self?.href,
+        byline: a.byline || undefined,
       };
     });
 
