@@ -50,6 +50,7 @@ import NflField, { type FieldItem } from './NflField';
 import NflHeader from './NflHeader';
 import { SlotRow } from './NflDepthChart';
 import NflSaved from './NflSaved';
+import FantasyDesk from './FantasyDesk';
 import { ClubSelect, ModeSwitch, Stands, TurfSelect, openPicker, useStage } from './NflShared';
 import { useSavedLabs, type NflLabReady, type Prefs } from './useNflLab';
 import { displayName } from '@/utils/displayName';
@@ -383,6 +384,15 @@ const FantasyMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: 
           </section>
         </div>
       </div>
+
+      {filled > 0 && (
+        <FantasyDesk
+          lineup={fl}
+          pool={cands.filter((c) => !excludes.has(c.key)).map((c) => c.key)}
+          injured={injured}
+          onSwap={(slot, key) => setFl((l) => setF(l, slot, key))}
+        />
+      )}
 
       {prefs.scoring === 'custom' && (
         <Card title="Custom scoring" icon={<Calculator className="h-5 w-5 text-gold" aria-hidden="true" />}>

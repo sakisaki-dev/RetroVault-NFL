@@ -159,5 +159,40 @@ export const projectGame = (f: Fantasy, slot?: Slot | null): Projection | null =
   const { rec } = f;
   const base = rec.l3 != null ? (rec.pg + rec.l3) / 2 : rec.pg;
   const k = slot?.allowed != null && f.leagueAllowed > 0 ? 1 + MATCHUP_DAMP * (slot.allowed / f.leagueAllowed - 1) : 1;
-  return { mid: base * k, lo: rec.fl != null ? rec.fl * k : null, hi: rec.ce != null ? rec.ce * k : null };
+  const mid = base * k;
+  return { mid, lo: rec.fl != null ? Math.min(rec.fl * k, mid) : null, hi: rec.ce != null ? Math.max(rec.ce * k, mid) : null };
+};
+
+// ---- start / sit (rules over the same numbers) ------------------------------------------------------------------------
+
+export type HintKind = 'start' | 'sit' | 'swap' | 'watch';
+export interface Hint { kind: HintKind; text: string; swap?: string }
+export interface Alt { key: string; name: string; mid: number }
+/** The rest-of-season ranking pool: his per-game rank must exist (at least half his club's games). */
+export const isRegular = (f: Fantasy) => f.rec.rk[4] != null;
+
+/** Lineup player's coming game: [Projection, slot] using the first game on his club's schedule. */
+export const outlookOf = (f: Fantasy): { proj: Projection | null; slot: Slot | null } => {
+  const slot = f.next[0] ?? null;
+  return { proj: projectGame(f, slot), slot };
+};
+
+/**
+ * One short hint for a lineup player, first rule that fires:
+ * bye or out -> sit; a pool player at an eligible slot projects at least max(2 points, 15%) more -> swap;
+ * soft matchup and trending up -> start; tough matchup and trending down -> watch; soft or tough alone -> start / watch.
+ */
+export const hintFor = (f: Fantasy, injury: string | undefined, alt: Alt | null): Hint | null => {
+  const { proj, slot } = outlookOf(f);
+  if (slot && !slot.opp) return { kind: 'sit', text: 'Bye week' };
+  if (injury === 'Out' || injury === 'IR') return { kind: 'sit', text: injury === 'IR' ? 'Injured reserve' : 'Ruled out' };
+  const mid = proj?.mid ?? 0;
+  if (alt && alt.mid - mid >= Math.max(2, 0.15 * mid)) return { kind: 'swap', text: `+${(alt.mid - mid).toFixed(1)} with ${alt.name}`, swap: alt.key };
+  const up = f.trend?.dir === 'up';
+  const down = f.trend?.dir === 'down';
+  if (slot?.tone === 'easy') return { kind: 'start', text: up ? 'Soft matchup, rising' : 'Soft matchup' };
+  if (slot?.tone === 'hard') return { kind: 'watch', text: down ? 'Tough matchup, cooling' : 'Tough matchup' };
+  if (up) return { kind: 'start', text: 'Rising form' };
+  if (down) return { kind: 'watch', text: 'Cooling off' };
+  return null;
 };
