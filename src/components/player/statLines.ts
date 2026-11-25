@@ -65,9 +65,9 @@ export const careerTotals = (p: Player): StatItem[] => {
     case 'TE':
       if (IS_NFL)
         return [
-          s('receptions', 'Rec', 'Career receptions', p.receptions),
           s('recYds', 'Rec yds', 'Career receiving yards', p.recYds),
           s('recTD', 'Rec TD', 'Career receiving touchdowns', p.recTD),
+          s('receptions', 'Rec', 'Career receptions', p.receptions),
           s('ypr', 'Yds / catch', 'Yards per reception', rate(p.recYds, p.receptions), 1),
           s('ypg', 'Yds / game', 'Receiving yards per game', rate(p.recYds, p.games), 1),
           s('long', 'Long', 'Longest reception', p.longest || null),
@@ -185,13 +185,13 @@ export const headlineStats = (p: Player): StatItem[] => {
     case 'RB':
       if (IS_NFL)
         return [
-          s('rushAtt', 'Carries', 'Career carries', p.rushAtt),
           s('rushYds', 'Rush yds', 'Career rushing yards', p.rushYds),
           s('rushTD', 'Rush TD', 'Career rushing touchdowns', p.rushTD),
-          s('ypc', 'Yds / carry', 'Yards per carry', rate(p.rushYds, p.rushAtt), 1),
-          s('receptions', 'Rec', 'Career receptions', p.receptions),
           s('recYds', 'Rec yds', 'Career receiving yards', p.recYds),
           s('recTD', 'Rec TD', 'Career receiving touchdowns', p.recTD),
+          s('rushAtt', 'Carries', 'Career carries', p.rushAtt),
+          s('ypc', 'Yds / carry', 'Yards per carry', rate(p.rushYds, p.rushAtt), 1),
+          s('receptions', 'Rec', 'Career receptions', p.receptions),
           s('games', 'Games', 'Games played', p.games),
         ];
       return [

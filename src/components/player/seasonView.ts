@@ -32,9 +32,9 @@ export const seasonHeadline = (player: Player, d: SeasonData): StatItem[] => {
   // position rather than rates (or rates if it's important)": eight counting tiles, the key rate kept
   const want: Record<string, string[]> = {
     QB: ['Pass yds', 'Pass TD', 'INT', 'Cmp %', 'Rush yds', 'Rush TD', 'Sacked'],
-    WR: ['Rec', 'Targets', 'Rec yds', 'Rec TD', 'Yds / catch', 'Catch %', '1st downs'],
-    TE: ['Rec', 'Targets', 'Rec yds', 'Rec TD', 'Yds / catch', 'Catch %', '1st downs'],
-    RB: ['Carries', 'Rush yds', 'Rush TD', 'Yds / carry', 'Rec', 'Rec yds', 'Rec TD'],
+    WR: ['Rec yds', 'Rec TD', 'Rec', 'Targets', 'Yds / catch', 'Catch %', '1st downs'],
+    TE: ['Rec yds', 'Rec TD', 'Rec', 'Targets', 'Yds / catch', 'Catch %', '1st downs'],
+    RB: ['Rush yds', 'Rush TD', 'Rec yds', 'Rec TD', 'Carries', 'Yds / carry', 'Rec'],
     DL: ['Tackles', 'Sacks', 'TFL', 'QB hits', 'FF', 'Pass def', 'INT'],
     LB: ['Tackles', 'Sacks', 'TFL', 'INT', 'Pass def', 'QB hits', 'FF'],
     DB: ['Tackles', 'INT', 'Pass def', 'TFL', 'Sacks', 'FF', 'Def TD'],
