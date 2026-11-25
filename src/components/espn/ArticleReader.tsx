@@ -9,6 +9,10 @@ import { openPlayerPeek } from '@/components/peek/PlayerPeek';
 import { nameKey } from '@/utils/newsMentions';
 import { NEWS_KIND_LABEL, timeAgo, type NewsItem } from '@/utils/espnNews';
 import { keyOfPlayer } from '@/utils/playerSearch';
+import { NFL_TEAMS, findNFLTeam } from '@/utils/nflTeams';
+import { liftForDarkBg } from '@/utils/teamColors';
+import { openClubSeason } from '@/utils/clubSeason';
+import { openSeasonDivision } from '@/utils/seasonLink';
 import { focusOf, mentionsOf } from '@/utils/newsMentions';
 import { KIND_ACCENT, SCENE_KIND, kindOf, openDeepDive, useTaggedPlayers } from './newsData';
 import './espn.css';
@@ -86,6 +90,27 @@ interface Props {
   players: Player[];
 }
 
+/** ESPN's club abbreviations that differ from ours */
+const ESPN_ABBR: Record<string, string> = { wsh: 'WAS' };
+const DIVISION = /^\s*(AFC|NFC)(?:\s+(East|North|South|West))?\s*$/i;
+
+/** What an ESPN link points at on this site: a club (href /nfl/team/_/name/<abbr>/..., else the link's own text when the href is a team page), a division or conference ("NFC North" / "AFC"), or the standings page. */
+export const linkTarget = (href: string, text: string): { club: string } | { div: string } | null => {
+  if (!/espn\.com\/nfl\//i.test(href)) return null;
+  const abbr = /\/nfl\/team\/(?:[a-z]+\/)?_\/name\/([a-z]+)/i.exec(href)?.[1]?.toLowerCase();
+  if (abbr) {
+    const t = NFL_TEAMS.find((x) => x.abbreviation === (ESPN_ABBR[abbr] ?? abbr.toUpperCase()));
+    if (t) return { club: t.name };
+  }
+  const d = DIVISION.exec(text);
+  if (d && /\/nfl\/(standings|scoreboard|team)|\/nfl\/?$/i.test(href)) return { div: d[2] ? `${d[1].toUpperCase()} ${d[2][0].toUpperCase()}${d[2].slice(1).toLowerCase()}` : d[1].toUpperCase() };
+  if (/\/nfl\/team\//i.test(href)) {
+    const t = findNFLTeam(text.trim());
+    if (t) return { club: t.name };
+  }
+  return null;
+};
+
 export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) => {
   const { article, loading, error, unavailable, retry } = useArticle(item);
   const lookup = useMemo(() => (item ? [item] : []), [item]);
@@ -113,6 +138,29 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
       if (k) {
         a.dataset.playerKey = k;
         a.classList.add('en-plink');
+        return;
+      }
+      // a club or a division: opens it on the site (the Season page's club sheet / standings), the ESPN page stays a long-press away
+      if (a.dataset.club || a.dataset.div) return;
+      const to = linkTarget(a.getAttribute('href') ?? '', a.textContent ?? '');
+      if (!to) return;
+      if ('club' in to) {
+        const t = findNFLTeam(to.club);
+        if (!t) return;
+        a.dataset.club = t.name;
+        a.classList.add('en-tlink');
+        a.style.setProperty('--club', liftForDarkBg(t.primaryColor));
+        const img = document.createElement('img');
+        img.className = 'en-tlogo';
+        img.src = t.logoUrl;
+        img.alt = '';
+        img.width = 14;
+        img.height = 14;
+        img.decoding = 'async';
+        a.prepend(img);
+      } else {
+        a.dataset.div = to.div;
+        a.classList.add('en-tlink', 'en-dlink');
       }
     });
     el.querySelectorAll<HTMLElement>('.fs-lede').forEach((p) => {
@@ -121,11 +169,15 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     });
   });
   const onBodyClick = (e: ReactMouseEvent<HTMLDivElement>) => {
-    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-player-key]');
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-player-key], a[data-club], a[data-div]');
     if (!a) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return; // a modified click still goes to ESPN
     e.preventDefault();
     e.stopPropagation();
-    openPlayerPeek(a.dataset.playerKey!, e.clientX, e.clientY);
+    if (a.dataset.playerKey) return openPlayerPeek(a.dataset.playerKey, e.clientX, e.clientY);
+    close();
+    if (a.dataset.club) openClubSeason(a.dataset.club);
+    else if (a.dataset.div) openSeasonDivision(a.dataset.div);
   };
 
   if (!item) return <FeatureSheet piece={null} onClose={close} players={players} onPlayer={openDeepDive} />;

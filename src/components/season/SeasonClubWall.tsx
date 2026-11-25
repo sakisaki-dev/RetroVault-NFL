@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -15,6 +15,7 @@ import { ArcadeToggle, PixelIcon } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { usePlayoffOdds } from '@/utils/playoffOdds';
 import { openClubSeason, prefetchClubSeason } from '@/utils/clubSeason';
+import { SEASON_DIV_EVENT, hashDivision } from '@/utils/seasonLink';
 import { SectionTitle } from './SeasonGames';
 import { signed } from './seasonGamesUi';
 import '@/components/teams/nfl/clubWall.css';
@@ -133,6 +134,19 @@ const Tile = ({ club, leader, big, at, seed, tag, champion, made, done, hasSprit
 const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcoming?: { away: string; home: string }[]; live: boolean }) => {
   const [sort, setSort] = useState<Sort>('division');
   const [conf, setConf] = useState<Conf>('all');
+  // a division ("NFC North") or conference ("AFC") from a link (#season?div=…, an ESPN story's standings link): the board shows just it
+  const [div, setDiv] = useState(hashDivision);
+  useEffect(() => {
+    const read = (e?: Event) => setDiv(e instanceof CustomEvent ? String(e.detail ?? '') : hashDivision());
+    window.addEventListener(SEASON_DIV_EVENT, read);
+    window.addEventListener('hashchange', read);
+    return () => (window.removeEventListener(SEASON_DIV_EVENT, read), window.removeEventListener('hashchange', read));
+  }, []);
+  useEffect(() => {
+    if (!div) return;
+    const t = window.setTimeout(() => document.getElementById('season-standings')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 350);
+    return () => window.clearTimeout(t);
+  }, [div, season.season]);
   const sprites = useGameSprites();
   const { getAllPlayers, dataVersion } = useLeague();
   const extras = usePlayerExtras();
@@ -173,13 +187,13 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
   }, [getAllPlayers, dataVersion, extras.stints, year, live]);
 
   const clubs = useMemo<Club[]>(() => {
-    const rows = season.table.filter((r) => conf === 'all' || r.conference === conf);
+    const rows = season.table.filter((r) => (conf === 'all' || r.conference === conf) && (!div || (div.includes(' ') ? divLabel(r) === div : r.conference === div)));
     const sorted = [...rows];
     if (sort === 'power') sorted.sort((a, b) => (a.power || 99) - (b.power || 99));
     else if (sort === 'record') sorted.sort(byRecord);
     else if (sort === 'name') sorted.sort((a, b) => a.team.localeCompare(b.team));
     return sorted.map((row) => ({ row, top: (byClub.get(findNFLTeam(row.team)?.name ?? row.team) ?? []).slice(0, 3) }));
-  }, [season.table, conf, sort, byClub]);
+  }, [season.table, conf, div, sort, byClub]);
 
   const boards = useMemo(() => {
     if (sort !== 'division') return null;
@@ -211,6 +225,19 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
         club={season.table[0]?.team}
         right={
           <div className="sw-controls">
+            {div && (
+              <button
+                type="button"
+                className="ax-chip is-on"
+                aria-label={`Showing ${div}. Show every division`}
+                onClick={() => {
+                  setDiv('');
+                  if (hashDivision()) window.history.replaceState(window.history.state, '', '#season');
+                }}
+              >
+                {div} ✕
+              </button>
+            )}
             <ArcadeToggle<Sort> label="Sort" size="sm" compact="always" value={sort} onChange={setSort} options={SORTS} />
             <ArcadeToggle<Conf> label="Conference" size="sm" value={conf} onChange={setConf} options={CONFS} />
           </div>
