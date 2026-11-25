@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
+import TradeEntry from '@/components/trade/TradeEntry';
 import { f1, ord, pctOf, useFantasy } from '@/utils/fantasy';
 import { clubHue, NextLogos, TrendChip } from './parts';
 
@@ -8,7 +9,7 @@ import { clubHue, NextLogos, TrendChip } from './parts';
  * points a game, last 3 games against the 3 before, the next 3 matchups by softness and how often he was a start-worthy week.
  * Everything from fantasy.json (scripts/nfl/fantasy.py); nothing for a retired or non-fantasy player.
  */
-const FantasyStrip = ({ playerKey, active, onOpen }: { playerKey: string; active: boolean; onOpen?: () => void }) => {
+const FantasyStrip = ({ playerKey, active, onOpen, onTrade }: { playerKey: string; active: boolean; onOpen?: () => void; /** runs before the trade simulator opens (the card closes) */ onTrade?: () => void }) => {
   const f = useFantasy(active ? playerKey : null);
   if (!f) return null;
   const { rec, pos } = f;
@@ -22,7 +23,8 @@ const FantasyStrip = ({ playerKey, active, onOpen }: { playerKey: string; active
           is among the 8 that allow the most PPR to {pos}s, red among the 8 that allow the least. Start-worthy: a weekly finish inside the top
           {pos === 'QB' || pos === 'TE' ? ' 12' : ' 24'} at his position.
         </InfoTip>
-        {onOpen && <button type="button" className="fx-more" onClick={onOpen}>Fantasy detail</button>}
+        <span className="fx-more"><TradeEntry playerKey={playerKey} onBefore={onTrade} /></span>
+        {onOpen && <button type="button" className="fx-more fx-more--r" onClick={onOpen}>Fantasy detail</button>}
       </header>
       <dl className="fx-strip__g">
         <div className="fx-cell fx-cell--lead">

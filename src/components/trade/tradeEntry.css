@@ -1,0 +1,3 @@
+/* The player card's and the Deep Dive's way into the trade simulator */
+.fx-trade { display: inline-flex; align-items: center; gap: 0.25rem; min-height: 28px; padding: 0 0.1rem; background: transparent; border: 0; font: 700 11px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: hsl(var(--gold)); }
+.fx-trade:hover { filter: brightness(1.2); }

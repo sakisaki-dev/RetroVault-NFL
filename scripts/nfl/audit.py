@@ -62,9 +62,9 @@ if fan and ts_:
         errors.append("fantasy.json: league rates per opportunity (lg) missing or implausible")
     for c, nn in fan["n"].items():
         rm = nn.get("rm")
-        if rm is None or any(w < 1 or w > 18 for w, _ in rm) or [w for w, _ in rm] != sorted({w for w, _ in rm}):
+        if rm is None or any(r[0] < 1 or r[0] > 18 for r in rm) or [r[0] for r in rm] != sorted({r[0] for r in rm}):
             errors.append(f"fantasy.json {c}: remaining schedule (rm) missing, out of order or outside weeks 1-18")
-        elif nn["bye"] and nn["bye"] > fan["week"] and nn["bye"] not in [w for w, o in rm if o is None]:
+        elif nn["bye"] and nn["bye"] > fan["week"] and nn["bye"] not in [r[0] for r in rm if r[1] is None]:
             errors.append(f"fantasy.json {c}: bye week {nn['bye']} is not a null slot in rm")
 rows = [r for r in csv.reader((PUB / "initial-data.csv").open()) if len(r) > 5 and r[0] not in ("Name",)]
 names = {r[0] for r in rows if r[1] in ("Active", "Retired")}

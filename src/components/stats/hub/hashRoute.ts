@@ -14,6 +14,7 @@ import { IS_NFL } from '@/config/edition';
  *   #stats/graphs?gx=ya&gy=intPct&pos=QB    Graph Builder on a shared chart (stats/graph/graphConfig);
  *                                            the old #stats/players?gx=… links land there too
  *   #lab?t=<lineup>              Team Lab with a lineup (utils/teamLab encodeLineup)
+ *   #lab/trade?p=WR:Name         NFL edition: the fantasy trade simulator (Team Lab's Trade mode), a player preloaded on side one
  *
  * Old in-page anchors (#leaders, #head-to-head, #comp-finder, ...) and the retired #teams tab still resolve.
  * Unknown hashes are ignored (the current page stays), so plain in-page anchors keep working.
@@ -98,6 +99,7 @@ export const parseHash = (hash: string): Route | null => {
     return { tab, section: segs[1] || undefined, ...(Object.keys(q).length ? { q } : {}) };
   }
   const t = params.get('t') || undefined;
+  if (tab === 'lab' && segs[1] === 'trade') return { tab, section: 'trade', p };
   return t ? { tab, p, t } : { tab, p };
 };
 
@@ -108,6 +110,7 @@ export const buildHash = (r: Route): string => {
     h += `/${r.sub}`;
     if (r.section) h += `/${encodeURIComponent(r.section)}`;
   }
+  if (r.tab === 'lab' && r.section === 'trade') h += '/trade';
   if (r.p) h += `?p=${encodeURIComponent(r.p)}`;
   if (r.t) h += `${r.p ? '&' : '?'}t=${encodeURIComponent(r.t).replace(/%20/g, '+')}`;
   if ((r.tab === 'career' || r.tab === 'college') && r.q) {

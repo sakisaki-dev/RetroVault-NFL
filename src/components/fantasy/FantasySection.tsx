@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
+import TradeEntry from '@/components/trade/TradeEntry';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
@@ -163,6 +164,7 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
         <Tile i={2} k={`${pos} rank`} v={ord(rec.rk[0])} sub={`of ${rec.rk[1]} on total`} />
         <Tile i={3} k="Overall rank" v={ord(rec.rk[2])} sub={`of ${rec.rk[3]} skill players`} />
       </div>
+      <div className="fx-trade-row"><TradeEntry playerKey={playerKey} /></div>
 
       <div className="fx-block mo-rise" style={stag(4)}>
         <div className="fx-block__h">

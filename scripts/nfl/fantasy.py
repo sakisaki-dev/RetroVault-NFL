@@ -17,8 +17,8 @@ Record (short keys):
   op {ts target share, ay air yards share, cs carry share, og opportunities per game, sn offence snap %, po PPR per opportunity}: [value, rank, of]
 
 Trade simulator inputs (src/utils/tradeSim.ts): wr receptions per game (aligned with w; re-scores half / standard / TE premium), tp touchdown points
-  (4 per passing TD, 6 per rushing or receiving TD) and ot opportunities over his games; n[club].rm every remaining game as [week, opponent | null]
-  (a bye is null; through week 18); lg[pos] league rates over every player line: po PPR per opportunity, tpo TD points per opportunity,
+  (4 per passing TD, 6 per rushing or receiving TD) and ot opportunities over his games; n[club].rm every remaining game as [week, opponent, home 1/0] or [week, null]
+  (a bye; through week 18); lg[pos] league rates over every player line: po PPR per opportunity, tpo TD points per opportunity,
   rpo receptions per opportunity.
 
 Thresholds (weekly finish at the position among every player with a line that week; N = 12 for QB and TE, 24 for RB and WR):
@@ -242,8 +242,14 @@ def main():
                 games_left += 1
             if games_left >= 3:
                 break
-        rm = [[w, None] if w == bye else ([w, (g["away_team"] if g["home_team"] == t else g["home_team"])] if (g := next((x for x in mine if int(x["week"]) == w), None)) else [w, None])
-              for w in range(done + 1, 19) if w == bye or any(int(x["week"]) == w for x in mine)]
+        rm = []
+        for w in range(done + 1, 19):
+            gm = next((x for x in mine if int(x["week"]) == w), None)
+            if gm:
+                home = gm["home_team"] == t
+                rm.append([w, gm["away_team"] if home else gm["home_team"], int(home)])
+            elif w == bye:
+                rm.append([w, None])
         n[t] = {"bye": bye, "nx": nx, "rm": rm}
     lg = {pos: {"po": round(v["pts"] / v["opp"], 4), "tpo": round(v["td"] / v["opp"], 4), "rpo": round(v["rec"] / v["opp"], 4)}
           for pos, v in sorted(lgsum.items()) if v["opp"]}

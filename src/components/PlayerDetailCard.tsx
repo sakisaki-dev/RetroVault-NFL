@@ -514,6 +514,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               <FantasyStrip
                 playerKey={`${player.position}:${displayName(player.name)}`}
                 active={player.status === 'Active'}
+                onTrade={onClose}
                 onOpen={() => {
                   onClose();
                   openDeepDiveAt(player, 'dd-fantasy');

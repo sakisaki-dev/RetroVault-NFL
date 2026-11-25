@@ -64,6 +64,9 @@ export const AVAIL_NOTE: Record<Status, string> = {
 export interface WeekProj {
   week: number;
   opp: string | null;
+  home: boolean;
+  /** PPR his opponent allows a game to his position */
+  allowed: number | null;
   /** opponent factor (1 = league average), capped */
   k: number;
   rank: number | null;
@@ -238,7 +241,7 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
     const slots = raw.n[rec.c]?.rm ?? [];
     const st = statusOf(key) ?? null;
     let gameIdx = 0;
-    const weeks: WeekProj[] = slots.map(([week, opp]) => {
+    const weeks: WeekProj[] = slots.map(([week, opp, hm]) => {
       weeksAll.add(week);
       let avail = 1;
       if (opp) {
@@ -248,7 +251,7 @@ export const buildTradeModel = (raw: FanRaw, s: TradeSettings, statusOf: (key: s
       } else avail = 0;
       const dd = opp ? raw.d[opp]?.[pos] : undefined;
       const k = opp && dd && lgAllowed[pos] > 0 ? clamp(1 + MATCHUP_DAMP * (dd[0] / lgAllowed[pos] - 1), 1 - R.matchupCap, 1 + R.matchupCap) : 1;
-      return { week, opp, k, rank: dd ? dd[1] : null, avail, proj: opp ? base * k * avail : 0, playoff: (R.playoffWeeks as readonly number[]).includes(week) };
+      return { week, opp, home: hm === 1, allowed: dd ? dd[0] : null, k, rank: dd ? dd[1] : null, avail, proj: opp ? base * k * avail : 0, playoff: (R.playoffWeeks as readonly number[]).includes(week) };
     });
     const ros = weeks.reduce((a, w) => a + w.proj, 0);
     const po = weeks.filter((w) => w.playoff).reduce((a, w) => a + w.proj, 0);

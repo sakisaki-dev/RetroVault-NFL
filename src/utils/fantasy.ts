@@ -33,7 +33,7 @@ export type SlotRaw = [number, string | null, number?, string?];
 export interface FanRaw {
   season: number;
   week: number;
-  n: Record<string, { bye: number | null; nx: SlotRaw[]; /** every remaining game [week, opponent | null (bye)] */ rm?: [number, string | null][] }>;
+  n: Record<string, { bye: number | null; nx: SlotRaw[]; /** every remaining game [week, opponent | null (bye)] */ rm?: ([number, string, number] | [number, null])[] }>;
   /** league rates per opportunity by position: PPR points, TD points, receptions */
   lg: Record<FPos, { po: number; tpo: number; rpo: number }>;
   /** defence -> position -> [PPR allowed per game, rank (1 = allows the most), games] */
