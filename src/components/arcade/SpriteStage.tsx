@@ -40,6 +40,8 @@ export interface SpriteStageProps {
   size?: SpriteSize;
   action?: SpriteAction;
   maxMobile?: number;
+  /** A tap on a figure calls this instead of opening his Deep Dive (a sheet that must close first) */
+  onPlayer?: (p: Player) => void;
   height?: number;
   children?: ReactNode;
   className?: string;
@@ -47,7 +49,7 @@ export interface SpriteStageProps {
 const isStage = (p: StagePlayer | Player): p is StagePlayer => 'player' in p;
 const SIZE_H: Record<SpriteSize, number> = { s: 150, m: 220, l: 290 };
 
-export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure', size = 'm', action = 'idle', maxMobile = 3, height, children, className }: SpriteStageProps) => {
+export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure', size = 'm', action = 'idle', maxMobile = 3, onPlayer, height, children, className }: SpriteStageProps) => {
   const art = useFieldArt(club, time);
   const sprites = useGameSprites();
   // the painted stadium and the sprite index are fetched: until they land the stage holds its size under a veil and the
@@ -100,6 +102,7 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
                       ...peekProps(p.player),
                       'aria-label': `Open ${p.player.name}'s Deep Dive`,
                       onClick: () => {
+                        if (onPlayer) return onPlayer(p.player);
                         window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: `${p.player.position}:${p.player.name}` });
                       },
                     }

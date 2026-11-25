@@ -24,6 +24,9 @@ import { useJerseyNumbers, type RetiredNumber } from '@/utils/jerseys';
 import { latestSeasonYear, matchPlayerByName, useLeagueContent } from '@/utils/leagueContent';
 import { useRafters } from '@/utils/rafters';
 import { scrollToTeamRafters } from '@/utils/raftersLink';
+import ClubStageHero from './ClubStageHero';
+import PixelCup from '@/components/frontoffice/PixelCup';
+import { Reveal, stag } from '@/components/motion/Reveal';
 import './franchiseTab.css';
 
 const LEGENDS_SHOWN = 8;
@@ -86,9 +89,6 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
 
   if (!summary) return <PixelLoader what={`the ${club} franchise`} minHeight={420} />;
   const name = t?.name ?? summary.label;
-  const stats: [string, string | number][] = record
-    ? [['Titles', record.titles], ['SB apps', record.appearances], ['HOF', record.hof.length], ['Power', `#${record.powerRank}`], ['Best OVR', record.bestOvr ?? '—']]
-    : [];
   const sbChips = record
     ? [...record.titleYears.map((y) => ({ y, won: true })), ...record.lossYears.map((y) => ({ y, won: false }))].sort((a, b) => a.y - b.y)
     : [];
@@ -96,22 +96,22 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
 
   return (
     <div className="ft" data-club-tab="franchise">
-      {stats.length > 0 && (
-        <div className="ft-top ft-top--banner">
-          {/* the club's banner behind the header: its colour, stripes and the big cropped logo (owner: "put the team banner behind this") */}
-          <span className="ft-top__wm" aria-hidden="true"><TeamLogo team={name} size={260} decorative /></span>
-          <p className="ft-name">
-            <TeamLogo team={name} size={44} decorative className="cs-logo-plate" />
-            <span><small>{t ? `${t.city} · ${t.conference} ${t.division}` : 'Franchise'}</small><b>{name}</b></span>
-          </p>
-          <dl className="ft-stats">
-            {stats.map(([k, v]) => (
-              <div key={k}>
-                <dd className={cn(k === 'Titles' && Number(v) > 0 && 'is-gold')}>{v}</dd>
-                <dt>{k}</dt>
-              </div>
-            ))}
-          </dl>
+      {record && (
+        <ClubStageHero
+          club={name}
+          kicker={t ? `${t.city} · ${t.conference} ${t.division}` : 'Franchise'}
+          title={name}
+          players={legends.slice(0, 22).map((l) => ({ player: l.player, badge: Math.round(l.player.careerLegacy || 0).toLocaleString() }))}
+          champion={record.titles > 0}
+          led={{ label: record.titles === 1 ? 'Super Bowl title' : 'Super Bowl titles', value: String(record.titles), sub: `${record.appearances} appearances · power #${record.powerRank}` }}
+          tiles={[
+            { value: record.appearances, label: 'SB apps' },
+            { value: record.hof.length, label: 'Hall of Famers' },
+            { value: record.powerRank, prefix: '#', label: 'All-time power' },
+            ...(record.bestOvr != null ? [{ value: Math.round(Number(record.bestOvr)), label: 'Best OVR' }] : []),
+          ]}
+          onPlayer={onPlayer}
+        >
           {sbChips.length > 0 && (
             <ul className="ft-sbs" aria-label="Super Bowl appearances">
               {sbChips.map(({ y, won }) => (
@@ -129,13 +129,23 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
               <span>{tenureText(coached.stints)} · {coached.w}–{coached.l}{coached.t ? `–${coached.t}` : ''} · {coached.titles} {coached.titles === 1 ? 'title' : 'titles'}</span>
             </p>
           )}
-        </div>
+        </ClubStageHero>
       )}
 
       <div className="ft-body">
         {record && (
           <section aria-labelledby="titles-timeline">
             <SectionHeader as="h3" kicker="Franchise" title="Super Bowl history" club={name} className="mb-2" />
+            {record.titleYears.length > 0 && (
+              <Reveal as="ul" className="ft-case" aria-label="Super Bowl titles">
+                {record.titleYears.map((y, i) => (
+                  <li key={y} className="mo-pop" style={stag(i, 70)}>
+                    <PixelCup band={t?.primaryColor ?? '43 100% 50%'} spark={i} className="ft-case__cup" />
+                    <b className="num">{seasonLabel(y)}</b>
+                  </li>
+                ))}
+              </Reveal>
+            )}
             <TitlesTimeline teamName={summary.label} primary={t?.primaryColor ?? '226 33% 30%'} titleYears={record.titleYears} lossYears={record.lossYears} coachedYears={coached?.years ?? []} years={lastSeason || undefined} />
           </section>
         )}
@@ -143,28 +153,28 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
         {legends.length > 0 && (
           <section aria-labelledby="franchise-icons">
             <SectionHeader as="h3" kicker="Best of the franchise" title="Franchise icons" club={name} className="mb-2" />
-            <ul className="grid gap-2 sm:grid-cols-3">
+            <Reveal as="ul" className="ft-icons">
               {legends.slice(0, 3).map((l, i) => (
-                <li key={`${l.player.position}:${displayName(l.player.name)}`} className="min-w-0">
+                <li key={`${l.player.position}:${displayName(l.player.name)}`} className="mo-rise" style={stag(i, 80)}>
                   <button
                     type="button"
                     onClick={() => onPlayer(l.player)}
                     {...peekProps(l.player)}
-                    className="ts-icon flex w-full min-w-0 items-center gap-3 p-2.5 text-left"
+                    className="ft-icon"
                     aria-label={`Number ${i + 1} franchise icon: ${displayName(l.player.name)}, ${l.player.position}, ${Math.round(l.player.careerLegacy || 0).toLocaleString()} Career Legacy. Open player`}
                   >
-                    {sprites ? <span className="flex-none" aria-hidden="true"><GameSprite player={l.player} team={name} kind="bust" size="s" /></span> : null}
-                    <span className="font-display text-3xl font-extrabold italic leading-none text-gold" aria-hidden="true">{i + 1}</span>
-                    <span className="min-w-0" aria-hidden="true">
-                      <span className="block truncate font-display text-base font-bold uppercase leading-tight">{displayName(l.player.name)}</span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {l.player.position}{l.years ? ` · ${l.years}` : ''} · {Math.round(l.player.careerLegacy || 0).toLocaleString()}
-                      </span>
+                    <span className="ft-icon__n" aria-hidden="true">{i + 1}</span>
+                    <span className="ft-icon__wm" aria-hidden="true"><TeamLogo team={name} size={90} decorative /></span>
+                    <span className="ft-icon__sp" aria-hidden="true">{sprites ? <GameSprite player={l.player} team={name} kind="figure" size="s" /> : <TeamLogo team={name} size={56} decorative />}</span>
+                    <span className="ft-icon__t" aria-hidden="true">
+                      <b>{displayName(l.player.name)}</b>
+                      <small>{l.player.position}{l.years ? ` · ${l.years}` : ''}</small>
+                      <em className="num">{Math.round(l.player.careerLegacy || 0).toLocaleString()}</em>
                     </span>
                   </button>
                 </li>
               ))}
-            </ul>
+            </Reveal>
           </section>
         )}
         <RetiredRafters team={t} retired={retired} yearsFor={yearsFor} onSelect={openRetired} ring={ringFor(t)} onRing={openRing} />
@@ -227,26 +237,30 @@ const FranchiseTab = ({ club, onPlayer, section }: { club: string; onPlayer: (p:
         {leaders.length > 0 && (
           <section aria-labelledby="franchise-leaders">
             <SectionHeader as="h3" kicker="Career totals" title="Franchise leaders" club={name} className="mb-2" />
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {leaders.map(({ stat, top }) => (
-                <li key={stat.key} className="min-w-0">
-                  <PixelPanel club={name} tone="stripe" pad="sm" className="h-full">
-                    <p className="font-pixel text-[8px] uppercase text-gold">{stat.label}</p>
-                    <ol className="mt-1.5 space-y-1">
-                      {top.map(({ player, value }, i) => (
-                        <li key={`${player.position}:${displayName(player.name)}`} className="flex min-w-0 items-baseline gap-2">
-                          <span className="w-3 shrink-0 font-pixel text-[8px] text-muted-foreground">{i + 1}</span>
-                          <ClubStrip club={name} size="sm" logo={i === 0} onClick={() => onPlayer(player)} {...peekProps(player)} className={cn('min-w-0 flex-1 justify-start', i === 0 && 'ts-lead')}>
-                            {displayName(player.name)} <small>{player.position}</small>
-                          </ClubStrip>
-                          <span className={cn('shrink-0 font-display font-extrabold tabular-nums', i === 0 ? 'text-xl text-gold' : 'text-sm text-muted-foreground')}>{value.toLocaleString()}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </PixelPanel>
+            <Reveal as="ul" className="ft-leaders">
+              {leaders.map(({ stat, top }, si) => (
+                <li key={stat.key} className="ft-ld mo-rise" style={stag(si, 40)}>
+                  <span className="ft-ld__wm" aria-hidden="true"><TeamLogo team={name} size={110} decorative /></span>
+                  <p className="ft-ld__k">{stat.label}</p>
+                  <button type="button" className="ft-ld__top" onClick={() => onPlayer(top[0].player)} {...peekProps(top[0].player)} aria-label={`${stat.label} leader: ${displayName(top[0].player.name)}, ${top[0].value.toLocaleString()}. Open player`}>
+                    {sprites && <span className="ft-ld__sp" aria-hidden="true"><GameSprite player={top[0].player} team={name} kind="bust" size="s" /></span>}
+                    <span className="ft-ld__who"><b>{displayName(top[0].player.name)}</b><small>{top[0].player.position}</small></span>
+                    <span className="ft-ld__v num">{top[0].value.toLocaleString()}</span>
+                  </button>
+                  <ol>
+                    {top.slice(1).map(({ player, value }, i) => (
+                      <li key={`${player.position}:${displayName(player.name)}`}>
+                        <span className="num">{i + 2}</span>
+                        <ClubStrip club={name} size="sm" logo={false} onClick={() => onPlayer(player)} {...peekProps(player)}>
+                          {displayName(player.name)} <small>{player.position}</small>
+                        </ClubStrip>
+                        <b className="num">{value.toLocaleString()}</b>
+                      </li>
+                    ))}
+                  </ol>
                 </li>
               ))}
-            </ul>
+            </Reveal>
           </section>
         )}
       </div>
