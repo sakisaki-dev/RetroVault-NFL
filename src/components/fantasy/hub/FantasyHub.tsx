@@ -87,7 +87,7 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
     <CardHost find={find}>
     <div className="fh rv-ix min-w-0" data-sub={sub}>
       <div className="container min-w-0 py-3 sm:py-4">
-        <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />
+        {sub !== 'trade' && <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />}
         <div className="fh-bar" role="navigation" aria-label="Fantasy pages">
           <ArcadeToggle<Sub> label="Fantasy page" value={sub} onChange={go} options={SUBS.map((s) => ({ value: s.value, label: <><span className="fh-lg">{s.label}</span><span className="fh-sm">{s.short}</span></> }))} />
           <InfoTip label="About the fantasy page" className="fh-info">
