@@ -29,7 +29,7 @@ const useLogs = (keys: string[]) => {
 };
 
 /** Everything the Fantasy page's sub-pages share: the lineup, locks, removed players, the draft, saved lineups, the projections. */
-export const useFantasyHub = (nl: NflLabReady, prefs: Prefs) => {
+export const useFantasyHub = (nl: NflLabReady, prefs: Prefs, needOpponents = true) => {
   const { ctx, data, injured, sched } = nl;
   const lab = data?.lab ?? null;
   const saved = useSavedLabs();
@@ -126,8 +126,10 @@ export const useFantasyHub = (nl: NflLabReady, prefs: Prefs) => {
   const myTurn = !!draft && onClock(draft) === draft.me;
 
   // ----- opponents for the head-to-head -----
+  // (two beam searches and the opponent's game logs: only the head-to-head page reads them, so only it pays)
   const opponents = useMemo(() => {
     const out: { id: string; name: string; lineup: FLineup }[] = [];
+    if (!needOpponents) return out;
     saved.list.filter((s) => s.kind === 'fantasy').forEach((s) => out.push({ id: `saved:${s.id}`, name: s.name, lineup: s.lineup as FLineup }));
     if (draft && onClock(draft) == null)
       for (let t = 0; t < draft.teams; t += 1) if (t !== draft.me) out.push({ id: `cpu:${t}`, name: `Draft team ${t + 1}`, lineup: lineupFromPicks(teamPicks(draft, t), (k) => candBy.get(k)?.value ?? 0) });
@@ -138,7 +140,7 @@ export const useFantasyHub = (nl: NflLabReady, prefs: Prefs) => {
       if (free) out.push({ id: 'best-free', name: 'Best lineup, no cap', lineup: free.lineup });
     }
     return out;
-  }, [saved.list, draft, cands, cap, candBy]);
+  }, [saved.list, draft, cands, cap, candBy, needOpponents]);
   const same = (a: FLineup, b: FLineup) => FANTASY_IDS.every((id) => (a[id] ?? '') === (b[id] ?? ''));
   const opp = opponents.find((o) => o.id === oppId) ?? opponents.find((o) => !same(o.lineup, fl)) ?? opponents[0];
   const oppLogs = useLogs(opp ? Object.values(opp.lineup) : []);

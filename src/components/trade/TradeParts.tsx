@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useDeferredValue, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown, Info, Plus, Search, X } from 'lucide-react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
@@ -176,12 +176,14 @@ export const PlayerPicker = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
+  // the list filters on the deferred text, so a keystroke paints the box first and the matches follow
+  const dq = useDeferredValue(q);
   const list = useMemo(() => {
     const pool = model.ranked.filter((p) => !taken.has(p.key) && (!pos || p.pos === pos));
-    const qq = q.replace(/['’]/g, '').replace(/[-.]/g, ' ').trim();
+    const qq = dq.replace(/['’]/g, '').replace(/[-.]/g, ' ').trim();
     const out = qq ? pool.filter((p) => matchPlayer(`${p.name} ${p.pos} ${p.club}`, qq, [p.name]) > 0) : pool;
     return out.slice(0, 40);
-  }, [model, taken, q, pos]);
+  }, [model, taken, dq, pos]);
   return (
     <Popover open={open} onOpenChange={(o) => { setOpen(o); if (!o) setQ(''); }}>
       <PopoverTrigger asChild>
@@ -249,11 +251,12 @@ export const RecvRow = ({ p, player, model }: { p: TradePlayer; player?: Player;
 export const AddSearch = ({ model, taken, cards, onPick, big }: { model: TradeModel; taken: Set<string>; cards: Map<string, Player>; onPick: (key: string) => void; big?: boolean }) => {
   const [q, setQ] = useState('');
   const [on, setOn] = useState(false);
+  const dq = useDeferredValue(q);
   const list = useMemo(() => {
     const pool = model.ranked.filter((p) => !taken.has(p.key));
-    const qq = q.replace(/['’]/g, '').replace(/[-.]/g, ' ').trim();
+    const qq = dq.replace(/['’]/g, '').replace(/[-.]/g, ' ').trim();
     return (qq ? pool.filter((p) => matchPlayer(`${p.name} ${p.pos} ${p.club}`, qq, [p.name]) > 0) : pool).slice(0, 8);
-  }, [model, taken, q]);
+  }, [model, taken, dq]);
   return (
     <div className={cn('tr-search', big && 'tr-search--big')}>
       <Search className="tr-search__i" aria-hidden="true" />
