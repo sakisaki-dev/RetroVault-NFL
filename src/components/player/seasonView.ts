@@ -28,17 +28,31 @@ export const seasonHeadline = (player: Player, d: SeasonData): StatItem[] => {
     value: x.value,
     decimals: Number.isInteger(x.value) ? 0 : 1,
   }));
-  if (player.position === 'QB') {
-    // owner: "for QBs I'd rather see yds, tds, rush yds, rush tds, ints, sacks"
-    const six = (['Pass yds', 'Pass TD', 'Rush yds', 'Rush TD', 'INT', 'Sacked'] as const).map(by).filter((x): x is NonNullable<typeof x> => !!x);
-    if (six.length >= 4)
-      return six.map((x) => ({
-        key: x.label,
-        label: x.label,
-        title: `${d.season} ${x.label === 'Sacked' ? 'times sacked' : x.label}${x.rank ? `, ${ord(x.rank)} of ${x.of} QBs` : ''}`,
-        value: x.value,
-        decimals: 0,
-      }));
+  // owner: "for QBs, WRs, TEs ... cmp%, yds, tds, ints, sacks, rush yds, rush tds, and WRs similar statistics for their
+  // position rather than rates (or rates if it's important)": eight counting tiles, the key rate kept
+  const want: Record<string, string[]> = {
+    QB: ['Pass yds', 'Pass TD', 'INT', 'Cmp %', 'Rush yds', 'Rush TD', 'Sacked'],
+    WR: ['Rec', 'Targets', 'Rec yds', 'Rec TD', 'Yds / catch', 'Catch %', '1st downs'],
+    TE: ['Rec', 'Targets', 'Rec yds', 'Rec TD', 'Yds / catch', 'Catch %', '1st downs'],
+    RB: ['Carries', 'Rush yds', 'Rush TD', 'Yds / carry', 'Rec', 'Rec yds', 'Rec TD'],
+    DL: ['Tackles', 'Sacks', 'TFL', 'QB hits', 'FF', 'Pass def', 'INT'],
+    LB: ['Tackles', 'Sacks', 'TFL', 'INT', 'Pass def', 'QB hits', 'FF'],
+    DB: ['Tackles', 'INT', 'Pass def', 'TFL', 'Sacks', 'FF', 'Def TD'],
+  };
+  const list = want[player.position];
+  if (list) {
+    const got = list.map(by).filter((x): x is NonNullable<typeof x> => !!x);
+    if (got.length >= 4)
+      return [
+        ...got.map((x) => ({
+          key: x.label,
+          label: x.label,
+          title: `${d.season} ${x.label === 'Sacked' ? 'times sacked' : x.label}${x.rank ? `, ${ord(x.rank)} of ${x.of} ${player.position}s` : ''}`,
+          value: x.value,
+          decimals: Number.isInteger(x.value) ? 0 : 1,
+        })),
+        { key: 'games', label: 'Games', title: `${d.season} games played`, value: d.line.games, decimals: 0 },
+      ];
   }
   return items;
 };

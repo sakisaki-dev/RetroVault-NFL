@@ -512,7 +512,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               <SectionTitle icon={Activity} id={`${headingId}-headline`}>
                 {seasonTiles && seasonView ? `Season at a glance · ${seasonView.season}` : 'Career at a glance'}
               </SectionTitle>
-              <dl className={cn('grid gap-2', headline.length === 6 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4')}>
+              <dl className={cn('grid gap-2', headline.length === 6 ? 'grid-cols-3' : headline.length === 8 ? 'grid-cols-4 [&_dd]:text-xl' : 'grid-cols-2 sm:grid-cols-4')}>
                 {headline.map((s, i) => (
                   <div key={s.key} className="pc-tile pc-enter flex flex-col-reverse p-3" style={{ '--i': i + 3 } as CSSProperties} title={s.title}>
                     <dt className="mt-1 text-xs text-muted-foreground">{s.label}</dt>
