@@ -7,11 +7,14 @@ import { useEffect, useRef, useState, type ComponentType } from 'react';
  * header before the chunk had arrived still opens it). `wakeKey` does the same for a shortcut: return the event name to
  * replay for a key press, or null.
  */
+const QUIET = 1200;
+const MAX = 25000;
+
 const LazyHost = ({
   load,
   wake = [],
   wakeKey,
-  delay = 7000,
+  delay = 3000,
 }: {
   load: () => Promise<{ default: ComponentType }>;
   wake?: string[];
@@ -40,8 +43,21 @@ const LazyHost = ({
     };
     wake.forEach((w) => window.addEventListener(w, onWake));
     if (wakeKey) window.addEventListener('keydown', onKey);
-    // not before `delay`: on a phone's first seconds the line belongs to the page's own data and chunks
-    const timer = window.setTimeout(() => go(), delay);
+    // not before `delay`, and then only once the line has been quiet for a moment (no new resource requested for
+    // `QUIET` ms, `MAX` at the latest): in a phone's first seconds it belongs to the page's own data, chunks and sprites
+    let seen = -1;
+    let quietSince = performance.now();
+    const started0 = performance.now();
+    let timer = window.setTimeout(function check() {
+      const n = performance.getEntriesByType('resource').length;
+      const now = performance.now();
+      if (n !== seen) {
+        seen = n;
+        quietSince = now;
+      }
+      if (now - quietSince >= QUIET || now - started0 >= MAX) go();
+      else timer = window.setTimeout(check, 400);
+    }, delay);
     return () => {
       dead = true;
       wake.forEach((w) => window.removeEventListener(w, onWake));
