@@ -15,13 +15,14 @@ export const Adaptive = ({
 }: {
   trigger: (open: boolean) => ReactNode;
   title: string;
-  children: ReactNode;
+  children: ReactNode | ((close: () => void) => ReactNode);
   footer?: ReactNode;
   align?: 'start' | 'end' | 'center';
   className?: string;
 }) => {
   const phone = usePhone();
   const [open, setOpen] = useState(false);
+  const body = typeof children === 'function' ? children(() => setOpen(false)) : children;
   if (phone) {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
@@ -30,7 +31,7 @@ export const Adaptive = ({
         <SheetContent side="bottom" className="ctl-sheet">
           <SheetTitle className="ctl-sheet__title">{title}</SheetTitle>
           <SheetDescription className="sr-only">{title} options</SheetDescription>
-          <div className="ctl-body">{children}</div>
+          <div className="ctl-body">{body}</div>
           {footer && <div className="ctl-foot">{footer}</div>}
         </SheetContent>
       </Sheet>
@@ -43,7 +44,7 @@ export const Adaptive = ({
       </PopoverTrigger>
       <PopoverContent align={align} className={cn('ctl-pop', className)}>
         <div className="ctl-pop__title">{title}</div>
-        <div className="ctl-body">{children}</div>
+        <div className="ctl-body">{body}</div>
         {footer && <div className="ctl-foot">{footer}</div>}
       </PopoverContent>
     </Popover>

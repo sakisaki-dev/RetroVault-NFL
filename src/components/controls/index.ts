@@ -2,3 +2,4 @@
 export { Choice, fitsSegmented, type ChoiceOption } from './Choice';
 export { FilterSheet, FilterGroup, type ActiveFilter } from './FilterSheet';
 export { SettingsPopover } from './SettingsPopover';
+export { ClubPicker } from './ClubPicker';

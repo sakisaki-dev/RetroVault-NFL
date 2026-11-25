@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Moon, Radio } from 'lucide-react';
+import { ClubPicker } from '@/components/controls';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { NFL_TEAMS, findNFLTeam } from '@/utils/nflTeams';
@@ -164,14 +165,7 @@ const ScoresBrowser = () => {
         />
       </div>
 
-      <div role="group" aria-label="Club" className="sx-clubs">
-        <button type="button" aria-pressed={!club} onClick={() => setClub(null)} className={cn('ax-chip', !club && 'is-on')}>All</button>
-        {CLUBS.map((t) => (
-          <button key={t.id} type="button" aria-pressed={club === t.abbreviation} aria-label={t.fullName} title={t.fullName} onClick={() => setClub(club === t.abbreviation ? null : t.abbreviation)} className={cn('sx-clubbtn', club === t.abbreviation && 'is-on')}>
-            <ClubBadge club={t.name} abbr={false} size="md" />
-          </button>
-        ))}
-      </div>
+      <ClubPicker value={club} onChange={setClub} />
 
       <p className="sx-pick" aria-live="polite">
         {club ? <><ClubBadge club={club} size="sm" /> {season} {clubName}{record && shown.length ? ` · ${record}` : ''}</> : <>{season} · {ROUND_LABEL[week] ?? `Week ${week}`}</>}
