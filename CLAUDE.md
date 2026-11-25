@@ -1074,6 +1074,41 @@ source names that file).
   run `SERIAL_ONE_BONUS` ×1.15 more (the portfolio uses the best parallel owned at that finish). Never
   hand-edit either file; rebuild and commit both.
 
+## NFL widget (the iPhone widget for the NFL edition)
+
+A Scriptable widget that follows one club (the Vikings; `RV_NFL_CLUB=MIN`, an nflverse abbreviation) through the season.
+Owner-approved mockup: every section of `nfl_widget_final.html` (game in progress, score bug, score ticker, Sunday slate,
+between games, lock screen). It never touches the Retro Bowl widget (`retro-vault-widget.js`).
+
+- **Data** (`scripts/nfl/widget_data.py`, run by `npm run nfl:rebuild` after `playoff_odds.py`): `public/data/nfl/widget.json`
+  (club, record, division place, power rank; the schedule with UTC kickoffs and ESPN event ids; the next game with its win
+  chance from `playoff_odds.json`'s model; playoff odds, the clinch tag and scenarios, the previous playoff chance for the
+  final's "odds change"; the MVP race by SZN; the club's best player; injuries; the week's slate; players the widget may
+  draw with their ESPN athlete ids), `public/data/nfl/widget-sprites/` (the site's own game sprites through
+  `scripts/widget_sprites.py`, nearest-neighbour **6x**, one anchor: figure, mirrored `left`, `cheer`, white `sil`) and
+  `public/data/nfl/widget-art/` (the game's football, timeout clocks, first-down ref, scoreboard frame, stands/crowd painted to
+  each club, turf). Rules only, no network. The audit checks it is current and every named file exists.
+- **Script** (`public/widgets/rv-nfl-widget.js`, one script for large, medium, small and the lock screen's inline, circular,
+  rectangular). Each run it picks the mode: club game live, else a primetime game live, else Sunday with games on (slate,
+  or ticker on medium and small), else within 12 h after the club's game (the final with its stars and the odds change),
+  else the day before (preview), else weekdays (club card / playoff race / MVP race, by day), else the offseason. Live
+  views read ESPN's public `scoreboard` and `summary?event=ID` (score, clock, down and distance, drive, leaders, team
+  stats, win probability); live styles alternate every 15 minutes (widget Parameter `bug` or `classic` pins one). All drawn
+  into one DrawContext image (rim, club colours, crowd and turf, sprites, pixel text), so it looks the same on every size.
+  Data and ESPN responses are cached: offline still draws.
+- **Refresh** (`refreshAfterDate`): +5 min while the club plays, +10 min while other games are live, otherwise at the next
+  kickoff or 7 am, +60 min in the final window. iOS may run it later (Low Power Mode); 5 minutes is the best a widget gets.
+- **Hosting**: the private repo `github.com/sakisaki-dev/rv-nfl-widget` (branch `main`: `widget.json`, `widget-sprites/`,
+  `widget-art/`, `rv-nfl-widget.js`), read through the contents API with `Authorization: Bearer <token>` and
+  `Accept: application/vnd.github.raw`; the token is in Scriptable's Keychain as `rv-nfl-token`. `LAN_BASE` (top of the
+  script) overrides it with the local preview (`http://<Mac IP>:4174/`, no token). Publish with
+  `bash scripts/nfl/widget_publish.sh [clone dir]` after a rebuild (copies, commits, pushes the data repo only).
+- **Install**: Scriptable > new script, paste `public/widgets/rv-nfl-install.js` (it loads the widget code from the private
+  repo, cached for offline), save the token once with `Keychain.set('rv-nfl-token', '<token>')`, add a Scriptable widget.
+- **Harness**: `node scripts/nfl/widget_harness.mjs [outDir] [filter]` stubs Scriptable and renders every mode x size
+  (HTML + tree dumps, `contact.html` has all) from `scripts/nfl/widget_fixtures/` (a recorded ESPN scoreboard and summary,
+  `fetch_fixtures.py` re-records them; the finished game is turned live for the live views). Pinned to Pacific time.
+
 ## Quick search
 
 The header search (`QuickPlayerSearch.tsx`: the ⌘K dialog on desktop, `search/PlayerSearchSheet.tsx` on a phone)
