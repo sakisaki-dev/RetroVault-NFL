@@ -11,7 +11,7 @@ import { normalizeName, signatureTeamOf, usePlayerExtras } from '@/utils/playerE
 import PlayerSearchSelect from '../../PlayerSearchSelect';
 import ProPlayerBanner from '../../brand/ProPlayerBanner';
 import TeamLogo from '../../brand/TeamLogo';
-import { bannerStats } from '../../hof/hofUtils';
+import { bannerFor, useSeasonView } from '../../player/seasonView';
 import GameSprite from '../../GameSprite';
 import TributeButton from '../../tribute/TributeButton';
 import { RetiredHangers } from '../../teams/RetiredBadge';
@@ -50,6 +50,8 @@ interface Props {
 const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
   const { numberFor } = useJerseyNumbers();
   const ink = useBlackInk(IS_NFL ? keyOf(player) : undefined);
+  const seasonView = useSeasonView(player);
+  const bannerNums = bannerFor(player, seasonView);
   const extras = usePlayerExtras();
   // The banner wears his signature team (where he was best known); the franchise chips list them all
   const club = signatureTeamOf(extras, player);
@@ -121,7 +123,8 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
           nameAs="h1"
           interactive
           figure={<GameSprite player={player} team={club} kind="figure" size={wide ? 'l' : 'm'} showKit />}
-          stats={[...bannerStats(player), ...(ink > 0 ? [{ label: 'Black ink', value: ink }] : [])]}
+          statsKicker={bannerNums.kicker}
+          stats={[...bannerNums.stats, ...(ink > 0 && !seasonView ? [{ label: 'Black ink', value: ink }] : [])]}
         />
       </button>
       {/* his retired number hangs from the hero's top edge, one banner per club (tap: their rafters) */}

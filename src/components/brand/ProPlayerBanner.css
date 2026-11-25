@@ -619,6 +619,8 @@ a.ppb__credit:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offse
 .ppb--hero .ppb__stage-fig { margin-bottom: -30px; } /* l sprite: 15 px of box under the feet, + sink into the plinth */
 .ppb--hero .ppb__pedestal { width: 11rem; height: 2.2rem; }
 .ppb--hero:has(.ppb__stage .game-sprite) .ppb__stats { display: flex; gap: 1.1rem; }
+.ppb__stats { flex-wrap: wrap; }
+.ppb__stats .ppb__stats-k { flex: 0 0 100%; font-family: var(--font-pixel); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--gold)); opacity: 1; margin: 0 0 -0.3rem; }
 .ppb__stat { display: flex; flex-direction: column; line-height: 1; }
 .ppb__stat b { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; font-variant-numeric: tabular-nums; }
 .ppb__stat span { font-family: var(--font-pixel); font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; margin-top: 0.25rem; }

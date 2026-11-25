@@ -35,7 +35,7 @@ import { FamilyChips, PlayerCardPanel, RealCareerPanel } from './player/ExtrasPa
 import { buildCareerArc } from './player/arcData';
 import { careerRates, careerTotals, headlineStats, type StatItem } from './player/statLines';
 import { teamThemeVars } from './player/teamTheme';
-import { bannerStats } from './hof/hofUtils';
+import { bannerFor, seasonHeadline, useSeasonView } from './player/seasonView';
 import GameSprite from './GameSprite';
 import TributeButton from './tribute/TributeButton';
 import ShareImageButton from './share/ShareImageButton';
@@ -227,6 +227,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
     return [...getAllPlayers(), ...legends].find((p) => normalizeName(p.name) === key) ?? null;
   };
 
+  const seasonView = useSeasonView(player);
   if (!player || !arc) return null;
 
   const realCareer = extras.realNflCareer[nameKey];
@@ -263,7 +264,9 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
   const awards = AWARD_META[isDefense ? 'defense' : 'offense'];
   const headingId = `pdc-${player.position}-${player.name.replace(/\W+/g, '-')}`;
   const posName = POSITION_NAMES[player.position];
-  const headline = headlineStats(player);
+  const seasonTiles = seasonView ? seasonHeadline(player, seasonView) : null;
+  const headline = seasonTiles ?? headlineStats(player);
+  const bannerNums = bannerFor(player, seasonView);
   const totals = careerTotals(player);
   const rates = careerRates(player);
   const points = awardPoints(player);
@@ -348,7 +351,8 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
             // leaves room for the Deep Dive and close buttons, which sit over the banner's top right
             topRight={<span className="w-20 shrink-0 sm:w-24" aria-hidden="true" />}
             figure={player.isRealLegend ? null : <GameSprite player={player} team={team?.name ?? player.team} kind="figure" size="l" showKit />}
-            stats={player.isRealLegend ? undefined : bannerStats(player)}
+            stats={player.isRealLegend ? undefined : bannerNums.stats}
+            statsKicker={bannerNums.kicker}
             className="rounded-none [&_.ppb\_\_field]:rounded-none"
           />
           {/* His retired number hangs from the top edge, one banner per club that retired it (tap: their rafters) */}
@@ -505,7 +509,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
 
             <section aria-labelledby={`${headingId}-headline`}>
               <SectionTitle icon={Activity} id={`${headingId}-headline`}>
-                Career at a glance
+                {seasonTiles && seasonView ? `Season at a glance · ${seasonView.season}` : 'Career at a glance'}
               </SectionTitle>
               <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {headline.map((s, i) => (

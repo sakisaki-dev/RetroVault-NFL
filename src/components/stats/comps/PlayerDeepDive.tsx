@@ -37,6 +37,7 @@ import SeasonTable from './SeasonTable';
 import DdGameLog from '../gamelog/DdGameLog';
 import SeasonHeader from '../gamelog/SeasonHeader';
 import DdSkills from './DdSkills';
+import DdCareerNumbers from './DdCareerNumbers';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
 import { DdSection } from './ddParts';
@@ -578,6 +579,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
               <DdGameLog player={player} header={<SeasonHeader player={player} />} />
             </DdSection>
           )}
+
+          {IS_NFL && <DdCareerNumbers player={player} />}
 
           <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
             <DdWhoPlays
