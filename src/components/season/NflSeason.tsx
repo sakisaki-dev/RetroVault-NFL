@@ -19,6 +19,7 @@ import { ArcadeToggle, ClubStrip, LedBoard, LedDigits, PixelIcon, ScoreTile, Sta
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { openClubSeason, prefetchClubSeason } from '@/utils/clubSeason';
 import './sx.css';
+import '@/components/season/seaPhone.css';
 
 /**
  * NFL edition Season page pieces (arcade kit, flat club colours): the season header (the leading club's stadium and
