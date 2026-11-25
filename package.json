@@ -15,6 +15,7 @@
     "market": "esbuild scripts/market_snapshot.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/market.cjs --log-level=error && node node_modules/.tmp/market.cjs",
     "test:surname": "esbuild scripts/test_surname.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/surname.cjs --log-level=error && node node_modules/.tmp/surname.cjs",
     "test:clubpair": "esbuild scripts/test_club_pair.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/clubpair.cjs --log-level=error && node node_modules/.tmp/clubpair.cjs",
+    "test:trade": "node scripts/run_test_trade.mjs",
     "audit": "esbuild scripts/audit.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/audit.cjs --log-level=error && node node_modules/.tmp/audit.cjs",
     "sim:packs": "esbuild scripts/simulate_packs.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/sim_packs.cjs --log-level=error && node node_modules/.tmp/sim_packs.cjs",
     "check:sprites": "esbuild scripts/check_sprites.ts --bundle --platform=node --alias:@=./src --outfile=node_modules/.tmp/check_sprites.cjs --log-level=error && node node_modules/.tmp/check_sprites.cjs",

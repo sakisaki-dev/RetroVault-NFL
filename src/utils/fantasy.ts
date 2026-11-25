@@ -25,13 +25,17 @@ export interface FanRec {
   sd?: number; cv?: number | null; fl?: number; md?: number; ce?: number;
   sw: number; bm: number; bu: number;
   op?: Partial<Record<'ts' | 'ay' | 'cs' | 'og' | 'po' | 'sn', RankedStat>>;
+  /** receptions per game (aligned with w), TD points over his games, opportunities over his games (the trade simulator re-scores with them) */
+  wr?: number[]; tp?: number; ot?: number;
 }
 /** [week, opponent | null (bye), home 1/0, date] */
 export type SlotRaw = [number, string | null, number?, string?];
 export interface FanRaw {
   season: number;
   week: number;
-  n: Record<string, { bye: number | null; nx: SlotRaw[] }>;
+  n: Record<string, { bye: number | null; nx: SlotRaw[]; /** every remaining game [week, opponent | null (bye)] */ rm?: [number, string | null][] }>;
+  /** league rates per opportunity by position: PPR points, TD points, receptions */
+  lg: Record<FPos, { po: number; tpo: number; rpo: number }>;
   /** defence -> position -> [PPR allowed per game, rank (1 = allows the most), games] */
   d: Record<string, Record<FPos, [number, number, number]>>;
   p: Record<string, FanRec>;
