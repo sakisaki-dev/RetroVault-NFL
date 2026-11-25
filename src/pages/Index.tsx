@@ -10,16 +10,13 @@ import BottomNav from '@/components/BottomNav';
 import PullToSearch from '@/components/PullToSearch';
 import AddToHomeScreen from '@/components/homescreen/AddToHomeScreen';
 import TabFallback from '@/components/TabFallback';
-import { GIFTS, giftSummary, redeemAutoGifts } from '@/utils/collection';
-import CardUnlockToasts from '@/components/collection/CardUnlockToasts';
-import LegendExchange from '@/components/collection/LegendExchange';
+import LazyHost from '@/components/LazyHost';
+import { QUICK_SEARCH_EVENT } from '@/utils/quickSearchEvent';
 import CeremonyHost from '@/components/ceremony/CeremonyHost';
 import TributeHost from '@/components/tribute/TributeHost';
 import RivalryHost from '@/components/rivalry/RivalryHost';
 import ClubSeasonHost from '@/components/clubseason/ClubSeasonHost';
-import QuickPlayerSearch from '@/components/QuickPlayerSearch';
 import ScreensaverHost from '@/components/screensaver/ScreensaverHost';
-import PlayerPeekLayer from '@/components/peek/PlayerPeek';
 import { LeagueProvider } from '@/context/LeagueContext';
 import { onCompFinderRequest, onHeadToHeadRequest } from '@/components/stats/comps/compFinderLink';
 import { HubRouteContext, useHashRoute } from '@/components/stats/hub/hashRoute';
@@ -32,6 +29,14 @@ import { decodeProgress, importProgress } from '@/utils/deviceSync';
 
 // Every tab is its own chunk, loaded the first time it is opened (the Collection one carries the card art and
 // pack opening; the Art lab and Card designs split off again inside it).
+// Hosts nothing needs at first paint: separate chunks, loaded when the browser is idle (components/LazyHost.tsx)
+const loadQuickSearch = () => import('@/components/QuickPlayerSearch');
+const loadPeekLayer = () => import('@/components/peek/PlayerPeek');
+const loadUnlockToasts = () => import('@/components/collection/CardUnlockToasts');
+const loadLegendExchange = () => import('@/components/collection/LegendExchange');
+const QUICK_SEARCH_WAKE = [QUICK_SEARCH_EVENT];
+const quickSearchKey = (e: KeyboardEvent) => ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k' ? QUICK_SEARCH_EVENT : null);
+
 const CareerTab = lazyRetry(() => import('@/components/tabs/CareerTab'));
 const HallOfFameTab = lazyRetry(() => import('@/components/tabs/HallOfFameTab'));
 const GamesTab = lazyRetry(() => import('@/components/tabs/GamesTab'));
@@ -85,13 +90,21 @@ const IndexContent = () => {
 
   // One-time pack gifts (collection.ts AUTO_GIFTS): granted once per device on the first load of a build that has them
   useEffect(() => {
-    redeemAutoGifts().forEach((id) =>
-      toast.success(`New packs added: ${giftSummary(id)}`, {
-        description: `${GIFTS[id].label} for the new card art, uniforms and poses.`,
-        duration: 12000,
-        action: { label: 'Open', onClick: () => navigate({ tab: 'collection' }) },
-      }),
-    );
+    // the collection module (cards, packs, autographs) is not in the entry bundle: asked for once the page is up
+    let dead = false;
+    import('@/utils/collection').then(({ GIFTS, giftSummary, redeemAutoGifts }) => {
+      if (dead) return;
+      redeemAutoGifts().forEach((id) =>
+        toast.success(`New packs added: ${giftSummary(id)}`, {
+          description: `${GIFTS[id].label} for the new card art, uniforms and poses.`,
+          duration: 12000,
+          action: { label: 'Open', onClick: () => navigate({ tab: 'collection' }) },
+        }),
+      );
+    });
+    return () => {
+      dead = true;
+    };
     // Once per load; navigate is stable
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -161,11 +174,11 @@ const IndexContent = () => {
         {!IS_NFL && <TributeHost />}
         {IS_NFL && <ClubSeasonHost />}
         {!IS_NFL && <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />}
-        <QuickPlayerSearch />
-        <PlayerPeekLayer />
+        <LazyHost load={loadQuickSearch} wake={QUICK_SEARCH_WAKE} wakeKey={quickSearchKey} />
+        <LazyHost load={loadPeekLayer} />
         <ScreensaverHost />
-        <CardUnlockToasts />
-        <LegendExchange />
+        <LazyHost load={loadUnlockToasts} />
+        <LazyHost load={loadLegendExchange} />
         <footer className="mt-12 border-t border-line/70 bg-night">
           <div className="h-1 turf-stripes" aria-hidden="true" />
           <div className="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">

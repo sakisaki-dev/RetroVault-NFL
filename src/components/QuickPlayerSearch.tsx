@@ -34,10 +34,9 @@ import { PEEK_ACTION_EVENT, peekProps } from '@/components/peek/peekProps';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
 import './quickSearch.css';
 import { bannerTeamOf } from '@/utils/playerExtras';
+import { QUICK_SEARCH_EVENT, openQuickSearch } from '@/utils/quickSearchEvent';
 
-/** Fired by the header's search button (and anything else) to open the quick search. */
-export const QUICK_SEARCH_EVENT = 'retrovault:quick-search';
-export const openQuickSearch = () => window.dispatchEvent(new Event(QUICK_SEARCH_EVENT));
+export { QUICK_SEARCH_EVENT, openQuickSearch };
 
 /** Rows rendered for a query (the rest is "keep typing") */
 const RESULT_LIMIT = 24;
