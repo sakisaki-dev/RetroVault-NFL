@@ -23,6 +23,7 @@ import { openCollege } from '@/utils/collegeData';
 import { Section, accentOn, inkOn, liftOnNight } from './ClubSeasonSection';
 import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './ClubSeasonParts';
 import './clubSeason.css';
+import '@/components/season/seaPhone.css';
 
 const FranchiseTab = lazy(() => import('./FranchiseTab'));
 
@@ -225,9 +226,11 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
                         <Leaders rows={rows} club={club} year={year} onPick={pick} />
                       </Section>
                       <ClubSeasonInk club={abbr} season={year} onPick={pick} />
-                      <Section title="The cap" note="contracts in force">
-                        <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
-                      </Section>
+                      {data.cap?.clubs[abbr] && year <= data.cap.lastSigned && (
+                        <Section title="The cap" note="contracts in force">
+                          <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />
+                        </Section>
+                      )}
                     </div>
                   </div>
                   <Section title="The roster · yearbook" note={rows.length ? `${rows.length} players` : undefined} className="pg-roster">

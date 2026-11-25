@@ -1,0 +1,36 @@
+/*
+ * Phone pass for the Season page, the club season sheet and the game page (touch screens, under 768px).
+ * Small controls keep their look and get a taller touch area; ragged chip rows fill their container; the TNF / SNF / MNF
+ * tag never sits over a score.
+ */
+@media (max-width: 767px) {
+  /* the night-game tag rides the footer's empty right end, not the top-right over the away score */
+  .sx-scorelist .ax-tile__slot { top: auto; bottom: 0; border-radius: 10px 0 0 0; padding: 4px 10px; }
+  /* an odd last tile fills the row instead of leaving half of it empty */
+  .sx-scorelist > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  /* "Dig deeper": two even columns, not 2 + 2 + 1 ragged chips */
+  #gm-deeper .gm-deeper { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #gm-deeper .gm-deeper > button { justify-content: center; min-height: 44px; }
+  #gm-deeper .gm-deeper > button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (pointer: coarse) {
+  /* club sheet: season pills, roster filter chips, "Show all", fixture and standings rows */
+  .cs-years button { min-height: 40px; display: inline-flex; align-items: center; }
+  button.pg-chip { min-height: 40px; padding-inline: 12px; }
+  button.pg-more { min-height: 40px; }
+  button.pg-fx { min-height: 40px; }
+  .pg-dr__needs button { min-height: 40px; }
+  /* shared pills and pickers on these pages: 35 px tall, now 40 */
+  .sx-block .ax-chip, .sx-sec .ax-chip, .gm-deeper .ax-chip, .cs-bar-top .ax-seg { min-height: 40px; }
+  .sx-block .ax-select__btn, .sx-sec .ax-select__btn { min-height: 40px; }
+  /* the banner's player ticker: a taller strip, so each name is a 40 px target */
+  .gm-back { min-height: 44px; }
+  .sx-tape__track { padding-block: 8px; }
+  .sx-tape__item { min-height: 24px; display: inline-flex; align-items: center; }
+}
+/* a tap leaves :hover stuck on a touch screen: no gold ring left behind on a pill that was just pressed */
+@media (hover: none) {
+  .sx-block .ax-chip:hover:not(.is-on), .sx-sec .ax-chip:hover:not(.is-on), .cs-bar-top .ax-seg:hover:not(.is-on),
+  .sx-block .ax-seg:hover:not(.is-on), .sx-sec .ax-seg:hover:not(.is-on) { color: hsl(var(--muted-foreground)); border-color: var(--ax-edge); }
+  .gm-deeper button:hover:not([aria-pressed='true']) { border-color: hsl(var(--line) / 0.8); }
+}

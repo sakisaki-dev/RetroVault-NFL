@@ -26,6 +26,7 @@ import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
 import './gameKit.css';
+import '@/components/season/seaPhone.css';
 import { displayName, surnameOf } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
 import { Reveal, ViewCount, stag, useReveal } from '@/components/motion/Reveal';
