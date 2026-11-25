@@ -114,7 +114,8 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
 /** The Fantasy page (#fantasy): lineup, start / sit, head-to-head and trade, with one shared lineup and league format. */
 const FantasyHub = () => {
   const nl = useNflLab();
-  if (!nl.ctx) return <div className="container"><FootballLoader ready={false} minHeight="60vh" what="the league" label="Fantasy" /></div>;
+  // (the lab files too: the page rendered once on the bare league and again when they landed)
+  if (!nl.ctx || !nl.data) return <div className="container"><FootballLoader ready={false} minHeight="60vh" what="the league" label="Fantasy" /></div>;
   return <Ready nl={nl as NflLabReady} />;
 };
 

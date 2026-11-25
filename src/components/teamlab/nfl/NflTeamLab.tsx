@@ -267,7 +267,8 @@ const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<
 const NflLabBody = () => {
   const nl = useNflLab();
   const [prefs, setPrefs] = usePrefs();
-  if (!nl.ctx) return <PixelLoader label="Team Lab" what="the league" minHeight="60vh" className="container justify-start pt-[14vh]" />;
+  // wait for the depth charts too: a first render on the bare league and a second on the starters ran the 500-lineup benchmark twice
+  if (!nl.ctx || !nl.data) return <PixelLoader label="Team Lab" what="the league" minHeight="60vh" className="container justify-start pt-[14vh]" />;
   return <TeamMode nl={nl as NflLabReady} prefs={prefs} setPrefs={setPrefs} />;
 };
 
