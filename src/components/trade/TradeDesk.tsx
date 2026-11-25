@@ -173,7 +173,7 @@ const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof us
               </button>
             )}
             {custom ? <span className="dk-flag dk-flag--warn">Custom</span>
-              : auto ? <span className="dk-flag dk-flag--good">Offer #{offers.indexOf(auto) + 1} of {offers.length}</span> : null}
+              : auto && auto !== best ? <span className="dk-flag dk-flag--good">Offer #{offers.indexOf(auto) + 1} of {offers.length}</span> : null}
           </div>
         )}
         {rosterMode && (
