@@ -288,7 +288,8 @@
   transition: border-color 0.15s;
 }
 .ax-tile--btn { cursor: pointer; }
-.ax-tile--btn:hover, .ax-tile.is-selected { border-color: hsl(var(--gold) / 0.7); }
+.ax-tile.is-selected { border-color: hsl(var(--gold) / 0.7); }
+.ax-tile--btn:hover { border-color: rgb(255 255 255 / 0.3); }
 .ax-tile__row {
   display: flex; align-items: center; gap: 8px;
   padding: 7px 12px 7px 10px;

@@ -11,6 +11,7 @@ import PullToSearch from '@/components/PullToSearch';
 import AddToHomeScreen from '@/components/homescreen/AddToHomeScreen';
 import TabFallback from '@/components/TabFallback';
 import LazyHost, { whenSettled } from '@/components/LazyHost';
+import { OPEN_PLAYER_CARD_EVENT } from '@/utils/playerCardLink';
 import { QUICK_SEARCH_EVENT } from '@/utils/quickSearchEvent';
 import CeremonyHost from '@/components/ceremony/CeremonyHost';
 import TributeHost from '@/components/tribute/TributeHost';
@@ -31,6 +32,7 @@ import { decodeProgress, importProgress } from '@/utils/deviceSync';
 // pack opening; the Art lab and Card designs split off again inside it).
 // Hosts nothing needs at first paint: separate chunks, loaded when the browser is idle (components/LazyHost.tsx)
 const loadQuickSearch = () => import('@/components/QuickPlayerSearch');
+const PEEK_WAKE = [OPEN_PLAYER_CARD_EVENT];
 const loadPeekLayer = () => import('@/components/peek/PlayerPeek');
 const loadUnlockToasts = () => import('@/components/collection/CardUnlockToasts');
 const loadLegendExchange = () => import('@/components/collection/LegendExchange');
@@ -178,7 +180,7 @@ const IndexContent = () => {
         {IS_NFL && <ClubSeasonHost />}
         {!IS_NFL && <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />}
         <LazyHost load={loadQuickSearch} wake={QUICK_SEARCH_WAKE} wakeKey={quickSearchKey} />
-        <LazyHost load={loadPeekLayer} />
+        <LazyHost load={loadPeekLayer} wake={PEEK_WAKE} />
         <ScreensaverHost />
         <LazyHost load={loadUnlockToasts} />
         <LazyHost load={loadLegendExchange} />

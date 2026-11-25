@@ -1,3 +1,4 @@
+import { openPlayerCard } from '@/utils/playerCardLink';
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { openGame, regularGameId, useGameIds } from '@/utils/nflGames';
 import { Flame, Gauge, Medal, Swords, Target, Zap } from 'lucide-react';
@@ -16,7 +17,6 @@ import { useLeague } from '@/context/LeagueContext';
 import { normalizeName } from '@/utils/playerExtras';
 import { stripSuffix } from '@/utils/nameSuffix';
 import { keyOfPlayer } from '@/utils/playerSearch';
-import { buildHash } from '@/components/stats/hub/hashRoute';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import './nflPodium.css';
@@ -143,7 +143,7 @@ const useKeyFinder = () => {
 };
 
 /**
- * A player figure that opens his Deep Dive on tap and the quick look on hold (owner: "the players are not clickable").
+ * A player figure that opens his player card on tap (owner: never the Deep Dive straight away) and the quick look on hold (owner: "the players are not clickable").
  * A name the roster doesn't have (a pre-1999 star) stays a plain figure.
  */
 export const PlayerHit = ({ name, pos, playerKey, className, style, children, label }: { name: string; pos?: string; playerKey?: string | null; className?: string; style?: CSSProperties; children: ReactNode; label?: string }) => {
@@ -154,10 +154,8 @@ export const PlayerHit = ({ name, pos, playerKey, className, style, children, la
     <button
       type="button"
       {...peekKeyProps(key)}
-      aria-label={label ?? `Open ${name}'s Deep Dive`}
-      onClick={() => {
-        window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: key });
-      }}
+      aria-label={label ?? `Open ${name}'s card`}
+      onClick={() => openPlayerCard(key)}
       style={style}
       className={cn('cursor-pointer text-left transition-[filter,transform] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--gold))] active:scale-[0.98]', className)}
     >

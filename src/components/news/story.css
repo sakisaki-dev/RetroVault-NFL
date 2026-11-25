@@ -300,7 +300,7 @@
   overflow: hidden;
   transition: border-color var(--dur-2) var(--ease-out);
 }
-.ss-lead:hover { border-color: var(--ss-gold); }
+.ss-lead:hover { border-color: rgb(255 255 255 / 0.3); }
 /* The "photo": a field in the club's colours (yard lines, scanlines, the club name as a watermark) carrying the big figure */
 .ss-lead__art {
   position: relative;

@@ -185,6 +185,18 @@
 .cw-facts { font-size: 10px; line-height: 1.2; font-weight: 600; opacity: .85; text-shadow: 0 1px 0 rgb(0 0 0 / .4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cw-tile--lead .cw-facts { font-size: 11px; }
 .cw-rec--link { position: relative; z-index: 2; pointer-events: auto; cursor: pointer; font: inherit; font-size: 12px; border: 0; transition: background-color .15s ease; }
-.cw-rec--link:hover, .cw-rec--link:focus-visible { background: rgb(0 0 0 / .65); outline: 1px solid hsl(var(--gold)); }
+.cw-rec--link:hover { background: rgb(0 0 0 / .55); }
+.cw-rec--link:focus-visible { background: rgb(0 0 0 / .65); outline: 1px solid hsl(var(--gold)); }
 .cw-tile--thin .cw-id { flex: 1; min-width: 0; }
 .cw-tile--thin .cw-rec--link { font-size: 11px; }
+
+/* Club tiles: their own calm hover (owner: the shared gold rim "is not it" and the hover "feels too snappy"): a slow, soft
+   lift with a deeper shadow, no outline; the leader's figures rise with it at the same pace */
+.cw-tile { transition: translate .45s cubic-bezier(.22, 1, .36, 1), filter .45s cubic-bezier(.22, 1, .36, 1), box-shadow .45s cubic-bezier(.22, 1, .36, 1); }
+.rv-ix .cw-tile .cw-fig, .rv-stats .cw-tile .cw-fig { transition-duration: .45s; }
+@media (hover: hover) {
+  .cw-tile:hover { translate: 0 -3px; filter: brightness(1.08); box-shadow: inset 0 -3px 0 var(--s), 0 14px 28px rgb(0 0 0 / .38); }
+  .cw-tile--champ:hover { box-shadow: inset 0 -3px 0 var(--s), inset 0 0 0 1px rgb(255 216 74 / .5), 0 14px 28px rgb(0 0 0 / .38); }
+}
+@media (prefers-reduced-motion: reduce) { .cw-tile, .cw-tile:hover { translate: none; } }
+[data-perf='lite'] .cw-tile:hover { filter: none; }

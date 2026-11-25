@@ -67,7 +67,7 @@
 .dk-pal__list [cmdk-group-items] { display: grid; gap: 0.3rem; }
 .dk-empty-note { display: block; padding: 1.2rem; text-align: center; color: hsl(var(--muted-foreground)); font-size: 13px; }
 .dk-pk-r.fx-flat { display: grid; grid-template-columns: 56px minmax(0, 1fr) 58px 52px 58px; align-items: center; gap: 0.5rem; min-height: 56px; padding: 0.2rem 0.6rem 0.2rem 0.3rem; border-radius: 12px; cursor: pointer; transition: transform 0.12s; }
-.dk-pk-r.fx-flat[data-selected='true'], .dk-pk-r.fx-flat:hover { outline: 2px solid hsl(var(--gold) / 0.85); outline-offset: -2px; }
+.dk-pk-r.fx-flat[data-selected='true'] { outline: 2px solid hsl(var(--gold) / 0.85); outline-offset: -2px; }
 .dk-pk-r.fx-flat:active { transform: scale(0.985); }
 .dk-pk-r__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .dk-pk-r__id b { font: 800 1.1rem/1 'Barlow Condensed', sans-serif; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

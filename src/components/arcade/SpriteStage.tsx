@@ -1,3 +1,4 @@
+import { displayName } from '@/utils/displayName';
 import { useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -10,7 +11,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { clubVars } from './clubInk';
 import { stag, useReveal } from '@/components/motion/Reveal';
 import { peekProps } from '@/components/peek/peekProps';
-import { buildHash } from '@/components/stats/hub/hashRoute';
+import { openPlayerCard } from '@/utils/playerCardLink';
 import './arcade.css';
 
 /**
@@ -100,10 +101,10 @@ export const SpriteStage = ({ club, players = [], time = 'night', kind = 'figure
                   ? {
                       type: 'button' as const,
                       ...peekProps(p.player),
-                      'aria-label': `Open ${p.player.name}'s Deep Dive`,
+                      'aria-label': `Open ${p.player.name}'s card`,
                       onClick: () => {
                         if (onPlayer) return onPlayer(p.player);
-                        window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: `${p.player.position}:${p.player.name}` });
+                        openPlayerCard(`${p.player.position}:${displayName(p.player.name)}`);
                       },
                     }
                   : { 'aria-hidden': true })}

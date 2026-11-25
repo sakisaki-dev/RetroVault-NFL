@@ -51,7 +51,7 @@
 .fh-vs__side.is-right .fh-vs__logo { right: auto; left: -22px; }
 
 @media (prefers-reduced-motion: reduce) { .fx-flat, .fx-flat * { transition: none !important; } }
-.fx-flat[data-selected='true'], .fx-flat:hover { outline: 2px solid hsl(var(--gold) / 0.85); outline-offset: -2px; }
+.fx-flat[data-selected='true'] { outline: 2px solid hsl(var(--gold) / 0.85); outline-offset: -2px; }
 /* beats the locker's solid team-accent header */
 .tr-locker .tr-col__h.fx-flat.fx-flat { background: color-mix(in srgb, var(--tc) 34%, #131a2e); border-top: 3px solid var(--tc); }
 .tr-locker .tr-col__h.fx-flat h2, .tr-locker .tr-col__h.fx-flat small { color: #fff; }

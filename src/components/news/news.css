@@ -228,7 +228,7 @@ button.wc-item:focus-visible {
   width: 6px;
   background: linear-gradient(180deg, var(--tc), var(--tc2));
 }
-.wc-spot__card:hover { border-color: var(--wc-gold); }
+.wc-spot__card:hover { border-color: rgb(255 255 255 / 0.3); }
 .wc-spot__card:focus-visible { outline: 3px solid var(--wc-gold); outline-offset: 2px; }
 .wc-spot__top { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .wc-spot__team { font-size: 12px; color: var(--wc-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

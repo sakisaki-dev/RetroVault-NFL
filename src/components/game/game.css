@@ -80,7 +80,7 @@
   position: relative; display: flex; align-items: flex-end; gap: 0.4rem; min-width: 0; overflow: hidden; padding: 0.4rem 0.6rem 0.4rem 0.3rem; border-radius: 12px;
   border: 1px solid hsl(var(--line) / 0.7); color: hsl(var(--chalk)); background: linear-gradient(135deg, hsl(var(--tc) / 0.45), hsl(228 55% 6%) 78%);
 }
-a.gm-star:hover { border-color: hsl(var(--gold)); }
+a.gm-star:hover { border-color: rgb(255 255 255 / 0.3); }
 .gm-star--big { border-color: hsl(var(--gold) / 0.7); box-shadow: 0 0 22px hsl(var(--gold) / 0.18); padding: 0.6rem 0.8rem 0.5rem 0.4rem; }
 .gm-star__sprite { flex: none; display: block; margin-bottom: -4px; }
 .gm-star > span:last-child { padding-bottom: 0.15rem; display: block; }

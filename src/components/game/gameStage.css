@@ -56,7 +56,7 @@
 
 /* strips (names as club-colour banners) */
 .gm-strip { display: inline-block; max-width: 100%; border-radius: 4px; padding: 0 0.4rem; color: #fff; background: linear-gradient(90deg, hsl(var(--tc) / 0.95), hsl(var(--tc) / 0.6)); box-shadow: 0 1px 0 rgb(0 0 0 / 0.5); text-shadow: 0 1px 0 rgb(0 0 0 / 0.7); }
-a.gm-strip:hover { filter: brightness(1.25); outline: 1px solid hsl(var(--gold)); }
+a.gm-strip:hover { filter: brightness(1.12); }
 
 /* recap */
 .gm-recap { font-size: 1rem; line-height: 1.6; }
