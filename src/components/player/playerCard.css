@@ -450,6 +450,10 @@
 /* Logo puck for the ID strip */
 .pc-logo-puck {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex: none;
   padding: 4px;
   border-radius: 999px;
   background: radial-gradient(circle, hsl(0 0% 100% / 0.92) 60%, hsl(0 0% 88% / 0.92));
@@ -579,6 +583,7 @@
   width: 52px !important;
   height: 52px !important;
 }
+.pc-logo-puck > img, .pc-logo-puck > span, .pc-logo-puck > svg { max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; }
 .pc-tile__k {
   margin-top: 4px;
   font-family: var(--font-pixel);
