@@ -65,7 +65,12 @@ export default defineConfig(() => ({
   publicDir: process.env.RV_PUBLIC_DIR || "public",
   define: { __PRIVATE_SPRITES__: JSON.stringify(PRIVATE_SPRITES) },
   // Source maps beside the bundles (not linked from them), so a crash screen's minified stack can be mapped back
-  build: { sourcemap: "hidden" },
+  build: {
+    sourcemap: "hidden",
+    // Rollup splits shared code into many 1 KB chunks (one per icon, one per helper); each costs a request on a phone, so
+    // chunks under 20 KB are merged into the ones that import them
+    rollupOptions: { output: { experimentalMinChunkSize: 20000 } },
+  },
   server: {
     host: "::",
     port: 8080,

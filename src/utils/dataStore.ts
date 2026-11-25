@@ -86,6 +86,8 @@ const scheduled = <T,>(path: string, run: () => Promise<T>): Promise<T> =>
   });
 
 const flights = new Map<string, Promise<Response | null>>();
+/** Paths started by `prewarmData` whose first reader has not come yet: their response is kept for him, even when it is already in */
+const warm = new Set<string>();
 
 const fetchOnce = async (path: string): Promise<Response | null> => {
   try {
@@ -119,8 +121,15 @@ export const dataFetch = async (path: string): Promise<Response | null> => {
   if (!job) {
     job = fetchOnce(path);
     flights.set(path, job);
-    // keep the entry only while the request is in flight; later calls hit Cache Storage (or the network again)
-    void job.finally(() => flights.delete(path));
+    // keep the entry only while the request is in flight (or, for a prewarm, until its first reader); later calls hit
+    // Cache Storage (or the network again)
+    void job.finally(() => {
+      if (!warm.has(path)) flights.delete(path);
+    });
+  } else if (warm.delete(path)) {
+    // the first reader of a prewarmed file takes its response even if it finished long before he asked, so a prewarm
+    // never means a second download (without Cache Storage there is no second copy to fall back on)
+    flights.delete(path);
   }
   const r = await job;
   return r ? r.clone() : null;
@@ -133,7 +142,12 @@ export const dataFetch = async (path: string): Promise<Response | null> => {
 export const prewarmData = (paths: string[]) => {
   void loadManifest().then((files) => {
     if (!files) return;
-    paths.filter((p) => files[p]).forEach((p) => void dataFetch(p));
+    paths
+      .filter((p) => files[p])
+      .forEach((p) => {
+        warm.add(p);
+        void dataFetch(p);
+      });
   });
 };
 /** Same as dataFetch but always a Response (a synthetic 404 on failure), a drop-in for `fetch(url)` call sites that read `.ok`. */

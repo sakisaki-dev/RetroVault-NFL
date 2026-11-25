@@ -17,10 +17,20 @@ if (IS_NFL) {
 }
 
 // The league sheet and the core extras start downloading now, not when the first tab has rendered (dataStore.ts)
+// The Collection prices cards from the small latest-prices file: when it is the open tab, that own file starts now too.
+const hash = window.location.hash;
 prewarmData([
   "data/initial-data.csv",
   "data/core/extras.json",
   "private-sprites/nfl/core.json",
+  // what every tab's ratings, search and cards read once it mounts (the lazy hosts used to ask for these at boot)
+  "data/sprites.json",
+  "data/legends.json",
+  "data/game-exclusions.json",
+  "data/league/season_ovr.json",
+  "data/nfl/career_rating.json",
+  "data/league/content.json",
+  ...(/^#\/?collection/.test(hash) ? ["data/market-latest.json"] : []),
 ]);
 
 // Tap feedback for every button, chip, row and card (src/utils/motion.ts)
