@@ -273,3 +273,9 @@ ol.en-list { list-style: decimal; }
 .en-around > li { display: flex; }
 .en-around__btn { flex: 1; }
 .en .ss-mast { margin-bottom: 2px; }
+
+/* a section's fold: its top 3 show, the rest open from this tag */
+.en-sec-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 7px 14px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--k, #ffd84a) 55%, transparent); background: color-mix(in srgb, var(--k, #ffd84a) 16%, transparent);
+  color: #fff; font: 700 12px/1 var(--font-display, 'Barlow Condensed', sans-serif); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+@media (hover: hover) { .en-sec-more:hover { background: color-mix(in srgb, var(--k, #ffd84a) 28%, transparent); } }

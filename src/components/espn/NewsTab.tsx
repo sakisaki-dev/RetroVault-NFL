@@ -135,6 +135,8 @@ const NewsTab = () => {
   const { items, at, loading, error, refresh } = useEspnNews();
   const cast = useNewsPlayers(items, players);
   const [section, setSection] = useState<Section>('all');
+  // each section shows its top 3; the rest fold under a tag (owner: the Fantasy section was gigantic)
+  const [openSec, setOpenSec] = useState<Set<string>>(() => new Set());
   const [team, setTeam] = useState<string>('all');
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -409,13 +411,23 @@ const NewsTab = () => {
                     {g.label}
                   </Rubric>
                   <FillGrid
-                    items={g.items}
+                    items={openSec.has(g.id) ? g.items : g.items.slice(0, 3)}
                     minW={270}
                     max={3}
                     gap={14}
                     className="en-cards"
                     render={(it, i, cell) => <StoryItem key={it.id} it={it} i={i + 4} cell={cell} {...itemProps} />}
                   />
+                  {g.items.length > 3 && (
+                    <button
+                      type="button"
+                      className="en-sec-more"
+                      aria-expanded={openSec.has(g.id)}
+                      onClick={() => setOpenSec((s) => { const n = new Set(s); if (n.has(g.id)) n.delete(g.id); else n.add(g.id); return n; })}
+                    >
+                      {openSec.has(g.id) ? `Show fewer ${g.label.toLowerCase()}` : `+ ${g.items.length - 3} more ${g.label.toLowerCase()}`}
+                    </button>
+                  )}
                 </section>
               ))}
             </div>
