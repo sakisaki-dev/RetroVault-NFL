@@ -170,6 +170,9 @@ const FAMOUS: [string, string][] = [
   ['Bears', 'Packers'], ['Cowboys', 'Eagles'], ['Steelers', 'Ravens'], ['Chiefs', 'Raiders'], ['49ers', 'Seahawks'], ['Patriots', 'Jets'],
   ['Giants', 'Cowboys'], ['Packers', 'Vikings'], ['Bills', 'Patriots'], ['Broncos', 'Raiders'], ['Eagles', 'Giants'], ['Browns', 'Steelers'], ['Saints', 'Falcons'], ['Ravens', 'Bengals'],
 ];
+/** The career-arc pool: the best N career-OVR players per position (4+ SZN seasons), 40 at most */
+const ARC_PER_POSITION = 5;
+const ARC_POOL = 40;
 const nflSaverB = (
   players: Player[],
   career: Awaited<ReturnType<typeof useCareerSeasons>>,
@@ -178,15 +181,25 @@ const nflSaverB = (
   schedule: ReturnType<typeof useSchedule>,
   ovrOf: (key: string) => number | null,
 ): Scene[][] => {
-  void ovrOf;
   const decks: Scene[][] = [];
   if (career) {
-    const arcs = players
-      .slice(0, 160)
-      .map((p) => ({ p, pts: arcFor(career, p, stints) }))
-      .filter((x): x is { p: Player; pts: NonNullable<typeof x.pts> } => !!x.pts)
-      .slice(0, 40);
-    decks.push(shuffle(arcs).slice(0, 14).map((x): Scene => ({ kind: 'careerarc', data: { player: x.p, points: x.pts, roll: Math.random() } })));
+    // The legends are derived, not listed: the top career-OVR players at each position with at least 4 recorded seasons of
+    // SZN (about 5 a position, 30 to 40 in all), dealt shuffled so the scene rotates through them across runs.
+    const ranked = players
+      .map((p) => ({ p, o: ovrOf(playerKey(p)) }))
+      .filter((x): x is { p: Player; o: number } => x.o != null)
+      .sort((a, b) => b.o - a.o);
+    const taken = new Map<string, number>();
+    const arcs: { p: Player; pts: NonNullable<ReturnType<typeof arcFor>> }[] = [];
+    for (const { p } of ranked) {
+      if ((taken.get(p.position) ?? 0) >= ARC_PER_POSITION) continue;
+      const pts = arcFor(career, p, stints, 4);
+      if (!pts) continue;
+      taken.set(p.position, (taken.get(p.position) ?? 0) + 1);
+      arcs.push({ p, pts });
+      if (arcs.length >= ARC_POOL) break;
+    }
+    decks.push(shuffle(arcs).slice(0, 16).map((x): Scene => ({ kind: 'careerarc', data: { player: x.p, points: x.pts, roll: Math.random() } })));
   }
   const years = schedule ? (schedule.seasonIndex ?? []).map((x) => x.season).filter((y) => Number(y) >= 1999) : [];
   if (years.length) {

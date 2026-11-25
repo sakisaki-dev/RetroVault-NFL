@@ -45,6 +45,8 @@ for y in range(FIRST, NOW + 1):
             FILES.append(("pfr_advstats", f"advstats_week_{k}_{y}.csv{'.gz' if y >= 2024 else ''}", cur))
     if y >= NOW - 1:  # the weekly injury reports: only the latest week is shown
         FILES.append(("injuries", f"injuries_{y}.csv", cur))
+    if 2001 <= y < NOW:  # the weekly depth charts: the starter in the years before snap counts (club season lineups)
+        FILES.append(("depth_charts", f"depth_charts_{y}.csv", False))
     if y >= 2013:
         FILES.append(("snap_counts", f"snap_counts_{y}.csv.gz", cur))
 

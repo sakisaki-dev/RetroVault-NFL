@@ -4,6 +4,7 @@ import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import { StarSprite } from '@/components/season/NflSeasonExtras';
+import type { ClubLineup } from '@/utils/clubSeason';
 import type { RosterEntry } from './ClubSeasonParts';
 import { surname } from './ClubSeasonHero';
 
@@ -70,12 +71,28 @@ const Card = ({ s, club, year, i, order, lead, onPick }: { s: Starter; club: str
 
 /**
  * The programme's centre spread: the season's starting lineup as programme player cards, offense with the quarterback
- * in the middle, then defense. The data has no games-started list for most seasons, so each spot goes to the club's
- * busiest player there that season (passing attempts, carries, catches, tackles).
+ * in the middle, then defense. The starters are chosen when the data is built (scripts/nfl/club_season.py, `lineup`):
+ * by snaps from 2013, the weekly depth charts 2001 to 2012, the current depth chart for the live season, else the club's busiest player at each spot (1999 and 2000). Without a
+ * `lineup` the busiest-player rule runs here.
  */
-const ClubSeasonLineup = ({ rows, club, clubName, year, onPick }: { rows: RosterEntry[]; club: string; clubName: string; year: number; onPick: (key: string) => void }) => {
-  const off = useMemo(() => pickUnit(rows, OFFENSE), [rows]);
-  const def = useMemo(() => pickUnit(rows, DEFENSE), [rows]);
+const NOTE: Record<ClubLineup['m'], string> = {
+  snaps: 'Each spot goes to the club\u2019s player with the most snaps there that season (nflverse snap counts).',
+  depth: 'The live season: each spot goes to the player on the club\u2019s current depth chart (ESPN), with the season\u2019s snap leaders filling any gap.',
+  weeks: 'No snap counts before 2013, so each spot goes to the player the club\u2019s weekly depth chart listed first there in the most regular-season weeks (nflverse depth charts, 2001 to 2012).',
+  busiest: 'No starter data before 2001, so each spot goes to the club\u2019s busiest player there that season: the most passing attempts, carries, catches or tackles.',
+};
+const ClubSeasonLineup = ({ rows, lineup, club, clubName, year, onPick }: { rows: RosterEntry[]; lineup?: ClubLineup | null; club: string; clubName: string; year: number; onPick: (key: string) => void }) => {
+  const picked = useMemo(() => {
+    if (!lineup) return null;
+    const by = new Map(rows.map((r) => [r.k, r]));
+    const take = (slots: Slot[]) => {
+      const keys = lineup.k.filter((k) => slots.some((s) => k.startsWith(`${s.pos}:`)));
+      return slots.flatMap((s) => keys.filter((k) => k.startsWith(`${s.pos}:`)).map((k) => by.get(k)).filter((r): r is RosterEntry => !!r).map((r) => ({ r, figure: s.figure(r) })));
+    };
+    return { off: take(OFFENSE), def: take(DEFENSE) };
+  }, [rows, lineup]);
+  const off = useMemo(() => picked?.off ?? pickUnit(rows, OFFENSE), [rows, picked]);
+  const def = useMemo(() => picked?.def ?? pickUnit(rows, DEFENSE), [rows, picked]);
   if (off.length + def.length < 3) return null;
   return (
     <Reveal as="section" className="pg-spread" aria-label={`${year} ${clubName} starting lineup`}>
@@ -101,7 +118,7 @@ const ClubSeasonLineup = ({ rows, club, clubName, year, onPick }: { rows: Roster
           </ol>
         </div>
       )}
-      <p className="pg-spread__note">With no games-started list in the data, each spot goes to the club&rsquo;s busiest player there that season: the most passing attempts, carries, catches or tackles.</p>
+      <p className="pg-spread__note">{NOTE[lineup?.m ?? 'busiest']}</p>
     </Reveal>
   );
 };
