@@ -6,6 +6,8 @@
  * Import: a code (or a link with #sync=<code>) replaces those keys on this device, then the page reloads.
  */
 
+import { IS_NFL } from '@/config/edition';
+
 const PREFIX = 'retroVault:';
 /** Personal progress worth carrying over. League data and old caches are excluded on purpose. */
 const INCLUDE = [/^retroVault:collection/, /^retroVault:games:/, /^retroVault:teamLab:/, /^retroVault:(hofSeen|ringSeen|hofClasses|coachName)$/];
@@ -83,8 +85,8 @@ export const importProgress = (data: Record<string, string>) => {
 /** A shareable link to this page that carries the code (only useful from an address the other device can open). */
 export const transferLink = (code: string) => `${window.location.origin}${window.location.pathname}#sync=${code}`;
 
-/** The public site (GitHub Pages). Progress lives per web address, so the LAN preview and this are separate. */
-export const PUBLIC_SITE = 'https://sakisaki-dev.github.io/RetroVault/';
+/** The public site (GitHub Pages; the NFL edition has its own). Progress lives per web address, so the LAN preview and this are separate. */
+export const PUBLIC_SITE = IS_NFL ? 'https://sakisaki-dev.github.io/RetroVault-NFL/' : 'https://sakisaki-dev.github.io/RetroVault/';
 export const isPublicSite = () => window.location.hostname === 'sakisaki-dev.github.io';
 /** A link that opens the public site and imports this browser's progress there. */
 export const publicTransferLink = (code: string) => `${PUBLIC_SITE}#sync=${code}`;
