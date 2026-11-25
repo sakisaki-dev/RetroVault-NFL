@@ -129,13 +129,18 @@ const DEF_WIDE: Record<DefForm, Record<string, [number, number]>> = {
 };
 export const spotOf = (l: Pick<NLineup, 'off' | 'def'>, id: string, tall: boolean): { x: number; y: number } => {
   const s = SLOT_DEFS[id];
-  const [x, y] = s.side === 'offense' ? OFF_WIDE_OVERRIDE[l.off]?.[id] ?? OFF_WIDE[id] : DEF_WIDE[l.def][id];
+  const [x0, y0] = s.side === 'offense' ? OFF_WIDE_OVERRIDE[l.off]?.[id] ?? OFF_WIDE[id] : DEF_WIDE[l.def][id];
+  // The painted turf runs from about 13% to 85% of the field's height (the far sideline crews fill the rest): feet rows
+  // 18-98 are squeezed into 23-82 so a sprite and its name tag stay on the grass, and the two sides spread a little
+  // wider from the line so the front rows don't touch.
+  const x = Math.min(92, Math.max(8, 50 + (x0 - 50) * 1.2));
+  const y = 23 + (y0 - 18) * (59 / 80);
   if (!tall) return { x, y };
   // tall: the line of scrimmage runs across at 56% from the top; offense below it, defense above
-  const tx = 13 + ((y - 16) / 82) * 74;
+  const tx = 13 + ((y0 - 16) / 82) * 74;
   // names are wider than the sprites on a phone: the line zig-zags a little so the tags clear each other
   const zig = ({ wr1: -4, lt: 3, lg: -3, c: 3, rg: -3, rt: 3, te1: -3, wr2: 3, te2: 3 } as Record<string, number>)[id] ?? 0;
-  const ty = (s.side === 'offense' ? 60 + (46 - x) * 1.45 : 56 - (x - 50) * 1.2) + zig;
+  const ty = (s.side === 'offense' ? 60 + (46 - x0) * 1.45 : 56 - (x0 - 50) * 1.2) + zig;
   return { x: tx, y: ty };
 };
 
