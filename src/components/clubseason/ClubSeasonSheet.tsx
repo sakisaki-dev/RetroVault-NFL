@@ -70,7 +70,13 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
     [data?.roster],
   );
   const hero = useMemo<HeroPlayer[]>(
-    () => rows.filter((r) => r.szn != null).slice(0, 5).map((r) => ({ key: r.k, name: r.name, number: r.number, szn: r.szn })),
+    () => {
+      // the starting QB (most passing attempts, then games) stands in the middle stall; the other four are the best by SZN
+      const rated = rows.filter((r) => r.szn != null);
+      const qb = rows.filter((r) => r.pos === 'QB' && r.g > 0).sort((a, b) => (b.att ?? 0) - (a.att ?? 0) || b.g - a.g)[0];
+      const pick = qb ? [qb, ...rated.filter((r) => r.k !== qb.k).slice(0, 4)] : rated.slice(0, 5);
+      return pick.map((r) => ({ key: r.k, name: r.name, number: r.number, szn: r.szn }));
+    },
     [rows],
   );
   const tickets = useMemo(() => (data?.games && abbr ? ticketsOf(data.games, abbr) : []), [data?.games, abbr]);

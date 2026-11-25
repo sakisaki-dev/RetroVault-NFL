@@ -22,7 +22,7 @@ export interface HeroPlayer {
 interface Props {
   club: string;
   year: number;
-  /** The season's best five by SZN, best first */
+  /** The starting QB first (he takes the middle stall), then the season's best by SZN */
   players: HeroPlayer[];
   record: string;
   pf?: number;
@@ -129,6 +129,8 @@ const ClubSeasonHero = ({ club, year, players, record, pf, pa, power, result, on
   const diff = pf != null && pa != null ? pf - pa : null;
   return (
     <section className="cs-hero" style={vars} aria-label={`${year} ${team?.fullName ?? club} locker room`}>
+      <span aria-hidden="true" className="cs-hero__logo cs-hero__logo--l"><TeamLogo team={club} size={420} decorative /></span>
+      <span aria-hidden="true" className="cs-hero__logo cs-hero__logo--r"><TeamLogo team={club} size={420} decorative /></span>
       <div className={`cs-banner${result.champion ? ' is-champ' : ''}`}>
         {result.champion && (
           <span className="cs-confetti" aria-hidden="true">

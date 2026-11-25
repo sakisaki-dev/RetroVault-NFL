@@ -81,7 +81,10 @@
 /* Hero: the locker room */
 .cs-hero {
   position: relative;
-  background: radial-gradient(90% 60% at 50% 0%, #2a1c11 0%, #140e09 70%);
+  /* the club's colour wall with its logo, like the club wall cards; the stalls' wood stays in front */
+  background:
+    radial-gradient(70% 55% at 50% 0%, rgb(255 233 184 / 0.16), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--cs-fill) 62%, #0b0f1c) 0%, color-mix(in srgb, var(--cs-fill) 38%, #07090f) 100%);
   padding: 16px 10px 0;
   overflow: hidden;
 }
@@ -739,3 +742,10 @@ button.cs-tix__t:focus-visible {
 .cs-ink__n{font:italic 800 15px/1 "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;background:var(--cs-fill,#2a3352);color:var(--cs-ink,#fff);padding:4px 8px;border-radius:6px;border:0;cursor:pointer}
 .cs-ink__d{font-size:13px;color:#c9d0e4}
 .cs-ink__d b{color:#fff}
+
+.cs-hero__logo { position: absolute; top: 50%; width: 420px; height: 420px; opacity: 0.2; pointer-events: none; z-index: 0; }
+.cs-hero__logo img, .cs-hero__logo > * { width: 100%; height: 100%; max-width: none; object-fit: contain; }
+.cs-hero__logo--l { left: -110px; transform: translateY(-46%) rotate(-8deg); }
+.cs-hero__logo--r { right: -110px; transform: translateY(-46%) rotate(8deg); }
+.cs-hero > .cs-banner, .cs-hero > .cs-stalls { position: relative; z-index: 1; }
+@media (max-width: 640px) { .cs-hero__logo { width: 300px; height: 300px; } .cs-hero__logo--l { left: -120px; } .cs-hero__logo--r { right: -120px; } }
