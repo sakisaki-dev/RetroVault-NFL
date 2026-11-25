@@ -1124,6 +1124,20 @@ between games, lock screen). It never touches the Retro Bowl widget (`retro-vaul
   (HTML + tree dumps, `contact.html` has all) from `scripts/nfl/widget_fixtures/` (a recorded ESPN scoreboard and summary,
   `fetch_fixtures.py` re-records them; the finished game is turned live for the live views). Pinned to Pacific time.
 
+## NFL edition icons and launch screens
+
+Owner picked "Kickoff, night game" for Retro Vault: NFL Edition. `python3 scripts/nfl/build_nfl_icons.py` (`--icons` /
+`--splash` for one half; deterministic, whole art pixels, nearest neighbour, reusing `scripts/build_app_icons.py`'s helpers)
+writes `public/nfl-icons/`: apple-touch-icon, icon-192/512, icon-maskable-192/512, favicon-32, favicon.ico, a manifest
+("Retro Vault NFL" / "RV NFL", `start_url` `../` because it lives in the folder) and `splash/launch-<w>x<h>.png` for every
+size in `build_app_icons.SPLASH` (night stadium with floodlight towers and beams, stands, the red/white/blue NFL EDITION
+ribbon, the varsity RETRO VAULT wordmark, a navy end zone with stars; ball and wordmark below `safe_rows`). It is a one-off,
+not part of `npm run nfl:rebuild`: run it only when the art changes. `public/`'s Kickoff icons are the Retro Bowl edition's and
+stay untouched. `vite.config.ts`'s `nfl-icons` plugin (VITE_EDITION=nfl) rewrites `index.html`'s icon, manifest and
+`apple-touch-startup-image` links to the folder with `?v=nightgame` (bump it when the art changes; also in the script's
+`VERSION` and `BrandGlyph`); the Retro Bowl build drops `nfl-icons/` from its output. `BrandGlyph` shows the night-game
+`icon-192.png` when `IS_NFL`.
+
 ## Quick search
 
 The header search (`QuickPlayerSearch.tsx`: the ⌘K dialog on desktop, `search/PlayerSearchSheet.tsx` on a phone)

@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils';
+import { IS_NFL } from '@/config/edition';
 
-/** The Retro Vault mark: the app icon itself ("Kickoff", scripts/build_app_icons.py), so the header matches the
+/** The Retro Vault mark: the app icon itself ("Kickoff", scripts/build_app_icons.py; the NFL edition's "night game", scripts/nfl/build_nfl_icons.py), so the header matches the
  *  Home Screen and the browser tab. Pixel art, drawn with nearest-neighbour scaling. */
 export const BrandGlyph = ({ size = 36, className }: { size?: number; className?: string }) => (
   <img
-    src={`${import.meta.env.BASE_URL}icon-192.png?v=kickoff`}
+    src={IS_NFL ? `${import.meta.env.BASE_URL}nfl-icons/icon-192.png?v=nightgame` : `${import.meta.env.BASE_URL}icon-192.png?v=kickoff`}
     width={size}
     height={size}
     alt=""
