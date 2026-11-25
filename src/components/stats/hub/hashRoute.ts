@@ -25,7 +25,11 @@ export type StatsSub = (typeof STATS_SUBS)[number];
 /** Internal tab ids (as used by Header / Index) → hash names. */
 const TAB_TO_HASH: Record<string, string> = { career: 'stats' };
 const HASH_TO_TAB: Record<string, string> = { stats: 'career', arcade: 'games', teamlab: 'lab' };
+// College (nfl-college): add 'college' to the NFL list here and render it in pages/Index.tsx; the dock's More menu and the top nav then show it by themselves
 const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'collection', ...(IS_NFL ? ['news'] : ['hof', 'timeline', 'office']), ...(import.meta.env.DEV ? ['arcadekit', 'bannerlab'] : [])]);
+
+/** Is this a top-level tab the router knows in this edition? (the nav hides entries whose route isn't there yet) */
+export const isKnownTab = (tab: string): boolean => KNOWN_TABS.has(tab);
 
 /** Legacy section anchors from the old one-page Stats layout → where they live now. */
 const LEGACY_SECTIONS: Record<string, { sub: StatsSub; section?: string }> = {

@@ -1,0 +1,32 @@
+/*
+ * Phone tap targets (touch screens only). Small controls keep their look and get a larger touch area: an invisible
+ * ::before reaches out around the control (44 px is Apple's floor), or a control that can grow does. The Stats and Arcade
+ * pages already size their own; this covers the Season, Team Lab, Deep Dive and Collection controls that were 18 to 28 px.
+ */
+@media (pointer: coarse) {
+  .ax-strip,
+  .ax-toggle .ax-seg,
+  .a2hs-tag,
+  button[aria-label^='Clear '],
+  button[aria-label^='Open '].club-strip {
+    position: relative;
+  }
+  .ax-strip::before,
+  .ax-toggle .ax-seg::before,
+  .a2hs-tag::before,
+  button[aria-label^='Clear ']::before {
+    content: '';
+    position: absolute;
+    inset: -8px -4px;
+  }
+  button[aria-label^='Clear ']::before {
+    inset: -14px;
+  }
+  button[aria-label^='Compare '] {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .link-chip {
+    min-height: 36px;
+  }
+}

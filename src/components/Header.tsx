@@ -21,6 +21,7 @@ interface HeaderProps {
   onTabChange: (tab: string) => void;
 }
 
+import { isKnownTab } from '@/components/stats/hub/hashRoute';
 import { IS_NFL, NFL_HIDDEN_TABS, NFL_ONLY_TABS } from '@/config/edition';
 
 const ALL_TABS = [
@@ -32,9 +33,10 @@ const ALL_TABS = [
   { value: 'collection', label: 'Collection' },
   { value: 'timeline', label: 'Timeline' },
   { value: 'news', label: 'News' },
+  { value: 'college', label: 'College' },
   { value: 'office', label: 'Front Office' },
 ] as const;
-export const NAV_TABS = ALL_TABS.filter((t) => (IS_NFL ? !NFL_HIDDEN_TABS.includes(t.value) : !NFL_ONLY_TABS.includes(t.value)));
+export const NAV_TABS = ALL_TABS.filter((t) => (IS_NFL ? !NFL_HIDDEN_TABS.includes(t.value) && (t.value !== 'college' || isKnownTab('college')) : !NFL_ONLY_TABS.includes(t.value)));
 
 /** Header toggle for performance mode: cycles Auto → On → Off (persisted per viewer). */
 const PerfToggle = () => {
