@@ -1,5 +1,5 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
-import { ChevronDown, Plus, Search, X } from 'lucide-react';
+import { ChevronDown, Info, Plus, Search, X } from 'lucide-react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
 import { matchPlayer } from '@/components/PlayerSearchSelect';
@@ -107,13 +107,14 @@ export const StatPanel = ({ p, model, cardValue, age }: { p: TradePlayer; model:
 
 /** One player in a side: flat club colour, sprite, position rank, points a game, ROS, VOR, flags; the stats open under it. */
 export const TradeCard = ({
-  p, model, player, cardValue, dest, onRemove, ghost,
+  p, model, player, cardValue, dest, actions, onRemove, ghost,
 }: {
   p: TradePlayer;
   model: TradeModel;
   player?: Player;
   cardValue: number | null;
   dest?: ReactNode;
+  actions?: ReactNode;
   onRemove?: () => void;
   /** a player the side receives (read-only) */
   ghost?: boolean;
@@ -145,13 +146,15 @@ export const TradeCard = ({
       <dl className="tr-nums">
         <div><dt>{SCORING_LABEL[model.settings.scoring]}/g</dt><dd>{f1(p.ppg)}</dd></div>
         <div><dt>ROS</dt><dd>{p.ros.toFixed(0)}</dd></div>
-        <div><dt>VOR</dt><dd className={p.vor < 0 ? 'is-neg' : undefined}>{signed(p.vor, 0)}</dd></div>
+        <div><dt>Value</dt><dd className={p.vor < 0 ? 'is-neg' : undefined}>{signed(p.vor, 0)}</dd></div>
       </dl>
       <FlagBadges flags={flags} />
       <div className="tr-card__foot">
         {dest}
-        <button type="button" className="tr-more" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
-          Stats <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} aria-hidden="true" />
+        {actions}
+        <button type="button" className="tr-more" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label={open ? 'Hide stats' : 'Show stats'}>
+          <Info className="h-4 w-4" aria-hidden="true" />
+          <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} aria-hidden="true" />
         </button>
       </div>
       {open && <StatPanel p={p} model={model} cardValue={cardValue} age={bio?.age ?? null} />}
@@ -222,5 +225,51 @@ export const MethodTip = ({ model }: { model: TradeModel }) => {
       ))}
       <p className="mt-1.5">{s.teams} teams, weeks 15-17 weighted x{s.playoffWeight}. Flags and card value never change the verdict.</p>
     </InfoTip>
+  );
+};
+
+/** A package a side receives: compact read-only row (sprite, name opens his card, rank, points a game). */
+export const RecvRow = ({ p, player, model }: { p: TradePlayer; player?: Player; model: TradeModel }) => {
+  const openCard = useOpenCard();
+  return (
+    <button type="button" className="tr-recv" style={{ '--tc': clubHue(p.club) } as CSSProperties} {...peekKeyProps(p.key)} onClick={() => openCard(p.key)} aria-label={`Open ${p.name}'s card`}>
+      <Fig player={player} club={p.club} />
+      <span className="tr-id"><b className="tr-name">{p.name}</b><span className="tr-sub"><em className="tr-pos">{p.pos}{p.posRank}</em><span>{p.club}</span></span></span>
+      <span className="tr-recv__n"><b>{f1(p.ppg)}</b><i>{SCORING_LABEL[model.settings.scoring]}/g</i></span>
+    </button>
+  );
+};
+
+/** "Add a player…": a search box at the top of a column; matches show sprite, position rank and points a game, a tap adds. */
+export const AddSearch = ({ model, taken, cards, onPick, big }: { model: TradeModel; taken: Set<string>; cards: Map<string, Player>; onPick: (key: string) => void; big?: boolean }) => {
+  const [q, setQ] = useState('');
+  const [on, setOn] = useState(false);
+  const list = useMemo(() => {
+    const pool = model.ranked.filter((p) => !taken.has(p.key));
+    const qq = q.replace(/['’]/g, '').replace(/[-.]/g, ' ').trim();
+    return (qq ? pool.filter((p) => matchPlayer(`${p.name} ${p.pos} ${p.club}`, qq, [p.name]) > 0) : pool).slice(0, 8);
+  }, [model, taken, q]);
+  return (
+    <div className={cn('tr-search', big && 'tr-search--big')}>
+      <Search className="tr-search__i" aria-hidden="true" />
+      <input
+        type="text" value={q} placeholder="Add a player…" aria-label="Add a player" autoComplete="off" enterKeyHint="search"
+        onChange={(e) => setQ(e.target.value)} onFocus={() => setOn(true)} onBlur={() => setOn(false)}
+      />
+      {on && (
+        <ul className="tr-search__list" role="listbox" onMouseDown={(e) => e.preventDefault()}>
+          {list.length === 0 && <li className="tr-muted tr-search__none">No fantasy player matches.</li>}
+          {list.map((p) => (
+            <li key={p.key}>
+              <button type="button" role="option" aria-selected="false" onClick={() => { onPick(p.key); setQ(''); setOn(false); (document.activeElement as HTMLElement | null)?.blur(); }}>
+                <Fig player={cards.get(p.key)} club={p.club} />
+                <span className="tr-id"><b className="tr-name">{p.name}</b><span className="tr-sub"><em className="tr-pos">{p.pos}{p.posRank}</em><span>{p.club}</span></span></span>
+                <span className="tr-recv__n"><b>{f1(p.ppg)}</b><i>{SCORING_LABEL[model.settings.scoring]}/g</i></span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };

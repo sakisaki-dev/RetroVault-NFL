@@ -1,11 +1,8 @@
 import { useMemo, useState, type CSSProperties } from 'react';
-import { BarChart3, Scale, Users } from 'lucide-react';
+import { BarChart3, MoreHorizontal, Scale, Users, X } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { InfoTip } from '@/components/ui/InfoTip';
-import { ArcadeToggle, LedDigits } from '@/components/arcade';
-import { useOpenCard } from '@/components/fantasy/hub/cardContext';
-import { peekKeyProps } from '@/components/peek/peekProps';
-import { stag } from '@/components/motion/Reveal';
-import { clubHue } from '@/components/fantasy/parts';
+import { LedDigits } from '@/components/arcade';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
@@ -136,70 +133,85 @@ export const SideTotals = ({ r, model, cardValue }: { r: TradeResult; model: Tra
   </div>
 );
 
-/** Concept B's finder: fair 1-for-1 and 2-for-1 packages for what side one gives, nearest first. */
-export const PartnerFinder = ({
-  model, giveKeys, partner, onUse, cards,
-}: {
-  model: TradeModel;
-  giveKeys: string[];
-  partner: number;
-  onUse: (keys: string[]) => void;
-  cards: Map<string, Player>;
-}) => {
-  const [pos, setPos] = useState<FPos | null>(null);
-  const [kind, setKind] = useState<'all' | '1' | '2'>('all');
+/** "Find a fair deal" on a player card: the nearest 1-for-1 and 2-for-1 packages for him; one tap drops a package in the other column. */
+export const FindDeal = ({ model, playerKey, cards, onUse, partnerLabel }: { model: TradeModel; playerKey: string; cards: Map<string, Player>; onUse: (keys: string[]) => void; partnerLabel: string }) => {
   const [open, setOpen] = useState(false);
-  const openCard = useOpenCard();
-  const list = useMemo(() => {
-    const all = suggestPartner(model, giveKeys, { pos, limit: 30 });
-    return all.filter((p) => (kind === 'all' ? true : kind === '1' ? p.keys.length === 1 : p.keys.length === 2)).slice(0, 8);
-  }, [model, giveKeys, pos, kind]);
+  const list = useMemo(() => (open ? suggestPartner(model, [playerKey], { limit: 5 }) : []), [open, model, playerKey]);
   return (
-    <section className="tr-panel tr-finder" aria-labelledby="tr-finder-h">
-      <header className="tr-panel__h">
-        <h2 id="tr-finder-h">Draft board</h2>
-        <InfoTip label="About partner suggestions">
-          For the players {TEAM_LABELS[0]} gives, 1-for-1 and 2-for-1 packages from the top of the pool (positive VOR, not on IR), nearest in value first. The side giving two players gets the roster-spot credit. Pick one to fill {TEAM_LABELS[partner]}.
-        </InfoTip>
-        <button type="button" className="fh-btn fh-btn--go tr-finder__go" onClick={() => setOpen((o) => !o)} disabled={!giveKeys.length} aria-expanded={open}>
-          <Users className="h-4 w-4" aria-hidden="true" /> {open ? 'Hide partners' : 'Suggest a partner'}
-        </button>
-      </header>
-      {!giveKeys.length && <p className="tr-muted">Add a player to {TEAM_LABELS[0]} first.</p>}
-      {open && giveKeys.length > 0 && (
-        <>
-          <div className="tr-filters">
-            <ArcadeToggle<string> label="Position" size="sm" value={pos ?? 'all'} onChange={(p) => setPos(p === 'all' ? null : (p as FPos))} options={['all', 'QB', 'RB', 'WR', 'TE'].map((p) => ({ value: p, label: p === 'all' ? 'All' : p }))} />
-            <ArcadeToggle<string> label="Package size" size="sm" value={kind} onChange={(k) => setKind(k as 'all' | '1' | '2')} options={[{ value: 'all', label: 'Any' }, { value: '1', label: '1-for-1' }, { value: '2', label: '2-for-1' }]} />
-          </div>
-          {!list.length ? (
-            <p className="tr-muted">No package within 25% of that value.</p>
-          ) : (
-            <ol className="tr-pk tr-pk--board">
-              {list.map((pk, i) => (
-                <li key={pk.keys.join('+')} className="mo-rise" style={stag(i, 45)}>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button type="button" className="tr-find"><Users className="h-4 w-4" aria-hidden="true" /> Find a fair deal</button>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="tr-pop tr-deals z-[70] w-[min(94vw,24rem)] p-2">
+        <p className="tr-set__k">For {partnerLabel} to send, nearest first</p>
+        {!list.length ? <p className="tr-muted">No package within 25% of his value.</p> : (
+          <ol className="tr-pk tr-pk--board">
+            {list.map((pk, i) => (
+              <li key={pk.keys.join('+')}>
+                <button type="button" className="tr-deal" onClick={() => { onUse(pk.keys); setOpen(false); }}>
                   <span className="tr-pk__rank" aria-hidden="true">{i + 1}</span>
                   <span className="tr-pk__who">
                     {pk.keys.map((k) => {
                       const p = model.players.get(k)!;
-                      return (
-                        <button key={k} type="button" className="tr-pk__p tr-open" {...peekKeyProps(k)} onClick={() => openCard(k)} style={{ '--tc': clubHue(p.club) } as CSSProperties} aria-label={`Open ${p.name}'s card`}>
-                          <Fig player={cards.get(k)} club={p.club} />
-                          <span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span>
-                        </button>
-                      );
+                      return <span key={k} className="tr-pk__p"><Fig player={cards.get(k)} club={p.club} /><span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span></span>;
                     })}
                   </span>
-                  <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>{pk.lean ? (pk.lean === 'give' ? `${TEAM_LABELS[0]} ahead` : `${TEAM_LABELS[partner]} ahead`) : 'level'}</i></span>
-                  <button type="button" className="tr-use" onClick={() => onUse(pk.keys)}>Use</button>
-                </li>
-              ))}
-            </ol>
-          )}
+                  <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>gap</i></span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+/** The verdict, always in view: a compact sticky bar on a phone, the centre column on a desktop. */
+export const VerdictBar = ({ r, cards, onDrawer, onClear, any }: { r: TradeResult; cards: Map<string, Player>; onDrawer: () => void; onClear: () => void; any: boolean }) => {
+  const n = r.teams.length;
+  return (
+    <section className="tr-vbar" aria-label="Verdict">
+      <FairMeter r={r} />
+      {n === 2 ? (
+        <>
+          <div className="tr-vbar__vals" aria-label="Value each side gets">
+            {r.teams.map((t, i) => (
+              <span key={i} style={teamVars(i)} className={cn(r.winner === i && 'is-heavy')}><i>{TEAM_LABELS[i].slice(-1)} gets</i><b>{pts(t.receivedValue + t.credit, 0)}</b></span>
+            ))}
+          </div>
+          <div className="tr-vbar__scale"><BalanceScale r={r} cards={cards} /></div>
         </>
-      )}
+      ) : <NetBars r={r} />}
+      <div className="tr-vbar__f">
+        <DrawerButton onClick={onDrawer} disabled={!any} />
+        <Popover>
+          <PopoverTrigger asChild><button type="button" className="tr-menu" aria-label="More"><MoreHorizontal className="h-5 w-5" aria-hidden="true" /></button></PopoverTrigger>
+          <PopoverContent align="end" className="tr-pop z-[70] w-44 p-1">
+            <button type="button" className="tr-menu__i" onClick={onClear} disabled={!any}><X className="h-4 w-4" aria-hidden="true" /> Clear the trade</button>
+          </PopoverContent>
+        </Popover>
+      </div>
     </section>
   );
+};
+
+/** Quick starts for an empty page, from today's top players (nothing typed in): a 1-for-1, a 2-for-1 and a sell-high. */
+export const quickStarts = (model: TradeModel): { id: string; label: string; a: string[]; b: string[] }[] => {
+  const out: { id: string; label: string; a: string[]; b: string[] }[] = [];
+  const sur = (k: string) => (model.players.get(k)?.name ?? k).split(' ').slice(1).join(' ') || (model.players.get(k)?.name ?? k);
+  const top = (pos: FPos) => model.ranked.filter((p) => p.pos === pos)[0];
+  const pkg = (key: string, size: 1 | 2, pos?: FPos) => suggestPartner(model, [key], { limit: 200, pos: pos ?? null }).find((x) => x.keys.length === size) ?? suggestPartner(model, [key], { limit: 200 }).find((x) => x.keys.length === size);
+  const wr = top('WR');
+  const one = wr && pkg(wr.key, 1, 'WR');
+  if (wr && one) out.push({ id: '1', label: `1-for-1: ${sur(wr.key)} for ${sur(one.keys[0])}`, a: [wr.key], b: one.keys });
+  const rb = top('RB');
+  const two = rb && pkg(rb.key, 2);
+  if (rb && two) out.push({ id: '2', label: `2-for-1: ${sur(rb.key)} for ${two.keys.map(sur).join(' + ')}`, a: [rb.key], b: two.keys });
+  const luck = model.ranked.slice(0, 40).filter((p) => p.tdObs - p.tdExp > 0).sort((x, y) => y.tdObs - y.tdExp - (x.tdObs - x.tdExp))[0];
+  const sold = luck && pkg(luck.key, 1, luck.pos);
+  if (luck && sold) out.push({ id: 's', label: `Sell high: ${sur(luck.key)}`, a: [luck.key], b: sold.keys });
+  return out;
 };
 
 /** Before / after: weekly projected points, a pair of bars a week; tap a week for the figures (graphKit's tap-to-pick). */

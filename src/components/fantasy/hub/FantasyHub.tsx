@@ -55,12 +55,12 @@ const Hero = ({ hub, sub, turf, onLeague, summary }: { hub: FantasyHub; sub: Sub
       maxMobile={3}
       kicker={`${week ? `Week ${week} · ` : ''}${SUB_TITLE[sub]}`}
       title={<>Fantasy <span className="text-gold">hub</span></>}
-      right={
+      right={filled ? (
         <div className="fh-led" aria-label="Projected total">
-          <span className="ax-kicker">{filled ? 'Projected' : 'Top scorers'}</span>
-          {filled ? <ViewCount className="fh-led__n" value={proj} decimals={1} /> : <span className="fh-led__n fh-led__n--off">--</span>}
+          <span className="ax-kicker">Projected</span>
+          <ViewCount className="fh-led__n" value={proj} decimals={1} />
         </div>
-      }
+      ) : undefined}
     >
       <div className="fh-hero-chip"><LeagueChip summary={summary} onClick={onLeague} /></div>
     </StadiumHeader>

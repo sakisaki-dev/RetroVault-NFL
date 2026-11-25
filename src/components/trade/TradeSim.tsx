@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Users, X } from 'lucide-react';
+import { ArrowRight, Users, X } from 'lucide-react';
 import { ArcadeToggle } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
-import { Reveal } from '@/components/motion/Reveal';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { stag } from '@/components/motion/Reveal';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { evaluateTrade, type TradeTeam } from '@/utils/tradeSim';
-import { BalanceScale, BeforeAfter, DrawerButton, FairMeter, NetBars, PartnerFinder, SideTotals } from './TradeViews';
-import { MethodTip, PlayerPicker, TEAM_LABELS, TradeCard, teamVars } from './TradeParts';
+import { BeforeAfter, FindDeal, quickStarts, SideTotals, VerdictBar } from './TradeViews';
+import { AddSearch, MethodTip, PlayerPicker, RecvRow, TEAM_LABELS, TradeCard, teamVars } from './TradeParts';
 import type { useTradeEnv } from './useTrade';
-import { teamOf } from '@/components/fantasy/parts';
-import TeamLogo from '@/components/brand/TeamLogo';
 import './trade.css';
 
 /**
@@ -54,13 +51,22 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
   const removeGive = (i: number, key: string) => setSides((ss) => ss.map((s, k) => (k === i ? { ...s, give: s.give.filter((g) => g.key !== key) } : s)));
   const addRoster = (i: number, key: string) => setSides((ss) => ss.map((s, k) => (k === i ? { ...s, roster: [...s.roster, key] } : s)));
   const removeRoster = (i: number, key: string) => setSides((ss) => ss.map((s, k) => (k === i ? { ...s, roster: s.roster.filter((x) => x !== key) } : s)));
-  const useForPartner = (keys: string[]) =>
-    setSides((ss) => ss.map((s, i) => (i === 1 ? { ...s, give: keys.filter((k) => !ss.some((x, j) => j !== 1 && (x.give.some((g) => g.key === k) || x.roster.includes(k)))).map((key) => ({ key, to: 0 })) } : s)));
+  /** a package from "Find a fair deal" lands in another column (the next team), replacing what that team was sending */
+  const dropPackage = (from: number, keys: string[]) =>
+    setSides((ss) => {
+      const target = (from + 1) % n;
+      return ss.map((s, i) => (i === target ? { ...s, give: keys.filter((k) => !ss.some((x, j) => j !== target && (x.give.some((g) => g.key === k) || x.roster.includes(k)))).map((key) => ({ key, to: from })) } : s));
+    });
   const reset = () => setSides(emptySides());
+  const quick = (a: string[], b: string[]) => {
+    setN(2);
+    setSides(() => emptySides().map((s, i) => (i === 0 ? { ...s, give: a.map((key) => ({ key, to: 1 })) } : i === 1 ? { ...s, give: b.map((key) => ({ key, to: 0 })) } : s)));
+  };
 
   const active = sides.slice(0, n);
   const result = useMemo(() => (model ? evaluateTrade(model, active.map<TradeTeam>((s) => ({ give: s.give, roster: s.roster })), rosterMode) : null), [model, active, rosterMode]);
   const anyPlayers = taken.size > 0;
+  const starts = useMemo(() => (model && !anyPlayers ? quickStarts(model) : []), [model, anyPlayers]);
 
   return (
     <div className="tr fh-trade min-w-0">
@@ -73,27 +79,26 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
                 <ArcadeToggle<string> label="Rosters" size="sm" value={rosterMode ? 'r' : 'p'} onChange={(v) => setRosterMode(v === 'r')} options={[{ value: 'p', label: 'Players' }, { value: 'r', label: 'My rosters' }]} />
                 <MethodTip model={model} />
               </div>
-
-              <Reveal className="tr-verdict-panel tr-panel" aria-label="Verdict">
-                <FairMeter r={result} />
-                {n === 2 ? <BalanceScale r={result} cards={cards} /> : <NetBars r={result} />}
-                <div className="tr-verdict-panel__f">
-                  <DrawerButton onClick={() => setDrawer(true)} disabled={!anyPlayers} />
-                  {anyPlayers && <button type="button" className="tr-reset" onClick={reset}><X className="h-4 w-4" aria-hidden="true" /> Clear</button>}
+              {starts.length > 0 && (
+                <div className="tr-quick" aria-label="Quick starts">
+                  <span className="tr-set__k">Try</span>
+                  {starts.map((q) => <button key={q.id} type="button" className="tr-qchip" onClick={() => quick(q.a, q.b)}>{q.label}</button>)}
                 </div>
-                {!anyPlayers && <p className="tr-muted tr-hint">Add players to each side to weigh the trade.</p>}
-              </Reveal>
+              )}
 
-              <div className={cn('tr-cols', `tr-cols--${n}`)}>
+              <div className={cn('tr-stage', `tr-stage--${n}`)}>
+                <VerdictBar r={result} cards={cards} any={anyPlayers} onDrawer={() => setDrawer(true)} onClear={reset} />
                 {active.map((side, i) => {
                   const res = result.teams[i];
+                  const mirror = n === 2 ? res.received : [];
                   return (
-                    <section key={i} className="tr-col tr-locker mo-rise" style={{ ...teamVars(i), ...stag(i, 90) }} aria-label={TEAM_LABELS[i]}>
+                    <section key={i} className={cn('tr-col tr-locker mo-rise', `tr-col--${'abcd'[i]}`)} style={{ ...teamVars(i), ...stag(i, 90) }} aria-label={TEAM_LABELS[i]}>
                       <header className="tr-col__h">
                         <span className="tr-col__badge" aria-hidden="true">{TEAM_LABELS[i].slice(-1)}</span>
-                        <h2>{TEAM_LABELS[i]}</h2>
-                        <small>gives {side.give.length} · gets {res.received.length}</small>
+                        <h2>{TEAM_LABELS[i]} sends</h2>
+                        <small>{side.give.length ? `${side.give.length} player${side.give.length > 1 ? 's' : ''}` : 'nobody yet'}</small>
                       </header>
+                      <AddSearch model={model} taken={taken} cards={cards} big={!side.give.length} onPick={(k) => addGive(i, k, n)} />
                       <ul className="tr-col__list">
                         {side.give.map((g) => {
                           const p = model.players.get(g.key);
@@ -103,27 +108,25 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
                               <TradeCard
                                 p={p} model={model} player={cards.get(g.key)} cardValue={cardValue(g.key)} onRemove={() => removeGive(i, g.key)}
                                 dest={n > 2 ? (
-                                  <span className="tr-dest" role="group" aria-label={`${p.name} goes to`}>
-                                    <i>To</i>
-                                    {Array.from({ length: n }, (_, j) => j).filter((j) => j !== i).map((j) => (
-                                      <button key={j} type="button" className={cn('tr-dest__b', g.to === j && 'is-on')} style={teamVars(j)} aria-pressed={g.to === j} onClick={() => setTo(i, g.key, j)}>{TEAM_LABELS[j].slice(-1)}</button>
-                                    ))}
-                                  </span>
+                                  <button type="button" className="tr-destchip" style={teamVars(g.to)} onClick={() => { let t = (g.to + 1) % n; if (t === i) t = (t + 1) % n; setTo(i, g.key, t); }} aria-label={`${p.name} goes to ${TEAM_LABELS[g.to]}. Change`}>
+                                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> {TEAM_LABELS[g.to]}
+                                  </button>
                                 ) : undefined}
+                                actions={<FindDeal model={model} playerKey={g.key} cards={cards} partnerLabel={TEAM_LABELS[(i + 1) % n]} onUse={(keys) => dropPackage(i, keys)} />}
                               />
                             </li>
                           );
                         })}
                       </ul>
-                      <PlayerPicker model={model} taken={taken} onPick={(k) => addGive(i, k, n)} label="Give a player" />
-                      {res.received.length > 0 && (
+                      {n === 2 ? (
                         <div className="tr-gets" aria-label={`${TEAM_LABELS[i]} receives`}>
-                          <span className="tr-gets__k">Gets</span>
-                          <ul>
-                            {res.received.map((p) => (
-                              <li key={p.key}><TeamLogo team={teamOf(p.club)} size={16} decorative backed /><b>{p.name}</b><i>{p.pos}{p.posRank}</i></li>
-                            ))}
-                          </ul>
+                          <span className="tr-gets__k">{TEAM_LABELS[i]} receives</span>
+                          {mirror.length ? mirror.map((p) => <RecvRow key={p.key} p={p} player={cards.get(p.key)} model={model} />) : <span className="tr-muted">what {TEAM_LABELS[1 - i]} sends shows here</span>}
+                        </div>
+                      ) : res.received.length > 0 && (
+                        <div className="tr-gets" aria-label={`${TEAM_LABELS[i]} receives`}>
+                          <span className="tr-gets__k">{TEAM_LABELS[i]} receives</span>
+                          {res.received.map((p) => <RecvRow key={p.key} p={p} player={cards.get(p.key)} model={model} />)}
                         </div>
                       )}
                       {rosterMode && (
@@ -150,11 +153,9 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
 
               <SideTotals r={result} model={model} cardValue={cardValue} />
 
-              <PartnerFinder model={model} giveKeys={sides[0].give.map((g) => g.key)} partner={1} cards={cards} onUse={useForPartner} />
-
               <p className="tr-foot">
                 <InfoTip label="What the data cannot say">
-                  Routes run and red-zone touches are not in the data, so target share and snap share stand in. Card value is a separate lens and never part of the verdict. Weekly finishes for start-worthy, boom and bust use PPR ranks.
+                  Routes run and red-zone touches are not in the data, so target share and snap share stand in. Card value is a separate lens and never part of the verdict. Weekly finishes for start-worthy, boom and bust follow the chosen scoring.
                 </InfoTip>
                 <span>Week {model.week} data · {model.season}</span>
               </p>
