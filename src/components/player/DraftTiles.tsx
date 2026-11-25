@@ -9,20 +9,23 @@ const initials = (s: string) => s.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter
 
 /** A school's mark: ESPN's college logo, else a plate in the school's colours with its short name. */
 export const CollegeMark = ({ info, size = 40 }: { info: DraftInfo; size?: number }) => {
-  const [bad, setBad] = useState(false);
+  // ESPN's dark-background logos first (the light ones black out text like Ohio State's on our navy), then the light
+  // ones, then the colour plate
+  const [step, setStep] = useState(0);
   const s = info.school;
   if (!s) return null;
-  if (s.id && !bad) {
+  if (s.id && step < 2) {
     return (
       <img
-        src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${s.id}.png`}
+        key={step}
+        src={`https://a.espncdn.com/i/teamlogos/ncaa/${step === 0 ? '500-dark' : '500'}/${s.id}.png`}
         alt=""
         width={size}
         height={size}
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        onError={() => setBad(true)}
+        onError={() => setStep((n) => n + 1)}
         className="pc-college__logo"
         style={{ width: size, height: size }}
       />
