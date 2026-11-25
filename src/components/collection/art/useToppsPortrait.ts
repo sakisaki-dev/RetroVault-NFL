@@ -33,12 +33,14 @@ export const useToppsPortrait = (player: GamePlayer, uniform: Uniform): Portrait
     // home: his club's kit as the save drew it (else the neutral kit, painted below); other kits: the neutral kit
     const pick = home ? nflSpriteFor(nfl, key, player.team, player.team, 'idle', false, tone, 1) : nflSpriteFor(nfl, key, undefined, undefined, 'idle', false, tone, 1);
     if (!pick) return null;
+    // a silhouette, baked into his index entry (`silhouette: true`, scripts/nfl/silhouettes.py) or made at runtime (no entry): the classic helmet-and-pads Topps art reads better than a black-head portrait
+    if (pick.silhouette || (nfl.players[key] as { silhouette?: boolean } | undefined)?.silhouette) return null;
     const body = bodyFor(key, looks?.[player.name]);
     const paint = pick.paint || pick.kit === 'neutral';
-    return { src: pick.src, uniform: paint ? uniform : undefined, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot, silhouette: pick.silhouette };
+    return { src: pick.src, uniform: paint ? uniform : undefined, rows: body.rows, cols: body.cols, cx: pick.cx, foot: pick.foot };
   }, [sprites, key, player.name, player.team, player.spriteSkin, player.isRealLegend, uniform]);
 
-  const jobKey = job ? `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}|${job.silhouette ?? ''}` : '';
+  const jobKey = job ? `${job.src}|${job.uniform ? JSON.stringify(job.uniform) : ''}|${job.rows},${job.cols}|${job.cx},${job.foot}` : '';
   const [out, setOut] = useState<{ key: string; url: string | null } | null>(null);
   useEffect(() => {
     if (!job) return;
