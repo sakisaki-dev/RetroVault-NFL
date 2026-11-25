@@ -287,7 +287,7 @@ export const BestSeasons = ({ player, career, league, onIdx }: { player: Player;
       <p className="cg-sub">
         {full.length === 0
           ? 'No full season has a season rating (SZN) yet.'
-          : `Ranked by SZN, the season rating the career graphs plot. ${n90} of his ${full.length} full seasons rated ${GOLD_SZN} or better. Tap a season to open it.`}
+          : `${n90} of ${full.length} full seasons rated ${GOLD_SZN}+ SZN`}
       </p>
       <div className="cg-fill">
         {best.length > 0 && (

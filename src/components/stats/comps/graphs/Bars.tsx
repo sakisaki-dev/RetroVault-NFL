@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { fmtFixed } from '@/utils/numberFormat';
@@ -200,9 +201,8 @@ export const PeakChart = ({ player, career, idx, onIdx }: { player: Player; care
     <div className="cg-card glass-card">
       <h3>Peak vs longevity</h3>
       <p className="cg-sub">
-        Bars: season score, the mean percentile of his skill-grade traits that season (0–100). Line: career games. {seasons} recorded seasons played
-        {peak != null ? `; peak ${yLabel(career.points[peak].year)} (${Math.round(bars[peak] as number)})` : ''}
-        {prime ? `; prime ${yLabel(prime.from)}–${yLabel(prime.to)} averaged ${Math.round(prime.mean)}` : ''}.
+        Bars: season score (0–100). Line: career games. {seasons} seasons
+        <InfoTip className="ml-1 align-middle">Season score is the mean percentile of his skill-grade traits that season.</InfoTip>
       </p>
       <dl className="cg-split__stats">
         {[
@@ -306,8 +306,7 @@ export const VolumeRate = ({ player, career, idx, onIdx }: { player: Player; car
     <div className="cg-card glass-card">
       <h3>Volume vs efficiency</h3>
       <p className="cg-sub">
-        {pair.vol} each season against {pair.eff}. Across {eff.length} seasons his {pair.eff} averaged {pair.effFmt(mean)}, varying {Math.round(cv * 100)}% season to season (
-        {cv < 0.12 ? 'rock steady' : cv < 0.25 ? 'steady' : 'streaky'}).
+        {pair.vol} vs {pair.eff}: averaged {pair.effFmt(mean)}, {cv < 0.12 ? 'rock steady' : cv < 0.25 ? 'steady' : 'streaky'}
       </p>
       <dl className="cg-split__stats">
         {(() => {

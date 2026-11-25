@@ -298,8 +298,8 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         <div className="pn-feed">
           <p className="en-dd__sub">
             {articles.length
-              ? `${articles.length} ESPN ${articles.length === 1 ? 'piece' : 'pieces'} on ${displayName(player.name)}, newest first. A game recap carries his line against his average.`
-              : `ESPN hasn’t tagged ${displayName(player.name)} lately. Around the ${club}:`}
+              ? `${articles.length} ESPN ${articles.length === 1 ? 'piece' : 'pieces'}, newest first`
+              : `Nothing tagged lately. Around the ${club}:`}
           </p>
           <ul className="ss-list">
             {(open ? shown : shown.slice(0, 3)).flatMap((it, i) => {
@@ -322,7 +322,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </div>
       ) : (
         <p className="en-dd__sub">
-          {active ? `Nothing in ESPN’s feeds for ${displayName(player.name)} right now.` : `${displayName(player.name)} has no recent news. From the archive:`}
+          {active ? 'No news right now' : 'No recent news. From the archive:'}
         </p>
       )}
 
@@ -352,8 +352,8 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
       )}
 
       <p className="pn-foot">
-        {RULES[player.position].hasLine ? `Key stat: ${keyLabelOf(player.position)}. ` : ''}Articles and the player note are ESPN&apos;s, live; every analysis card is generated from our game logs, schedule and card market, with its source on the card.
-        {overview === null && !!espnId && ' ESPN’s player feed could not be reached, so only the league and club feeds are shown.'}
+        {RULES[player.position].hasLine ? `Key stat: ${keyLabelOf(player.position)} · ` : ''}Articles are ESPN&apos;s; analysis cards are generated from our data
+        {overview === null && !!espnId && ' · ESPN feed unreachable'}
       </p>
       <ArticleReader item={shown.find((i) => i.id === openId) ?? feed.find((i) => i.id === openId) ?? null} order={feed} onOpen={(x) => setOpenId(x.id)} onClose={() => setOpenId(null)} players={players} />
     </div>

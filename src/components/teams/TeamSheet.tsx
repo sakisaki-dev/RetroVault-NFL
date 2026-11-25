@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState, type KeyboardEvent } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Trophy } from 'lucide-react';
 import { ArcadeToggle, ClubStrip, PixelChip, PixelIcon, PixelPanel, SectionHeader } from '../arcade';
 import GameSprite from '../GameSprite';
@@ -328,8 +329,9 @@ const TeamSheet = ({ summary, record, coached, league, ovrFor, onClose }: TeamSh
                     {summary.franchisePlayers.length > 0 && (
                       <section aria-labelledby="position-strength">
                         <SectionHeader as="h3" kicker="By position" title="All-time strength" club={t?.name} className="mb-1" />
-                        <p className="mb-3 text-xs text-muted-foreground">
-                          Best player ever at each position here, as a league percentile of Career Legacy at that position.
+                        <p className="mb-3 flex items-center gap-1 text-xs text-muted-foreground">
+                          Best ever at each position
+                          <InfoTip>As a league percentile of Career Legacy at that position.</InfoTip>
                         </p>
                         <PositionRadar teamName={summary.label} primary={primary} rows={strength} onSelect={setSelectedPlayer} />
                       </section>

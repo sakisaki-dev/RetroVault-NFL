@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArrowLeftRight, Check, Swords, Users } from 'lucide-react';
 import type { LeagueData, Player } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -376,9 +377,9 @@ const HeadToHead = ({ data, onSelect }: { data: LeagueData; onSelect: Select }) 
           <Swords className="h-7 w-7 text-gold sm:h-8 sm:w-8" aria-hidden="true" />
           Head-to-<span className="text-gold">Head</span>
         </h2>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Any two league players, every stat that applies to both. Advanced metrics show the + index (100 = position average) and the percentile within
-          the position; tap or hover an underlined metric for its definition.
+        <p className="flex max-w-2xl items-center gap-1 text-sm text-muted-foreground">
+          Any two league players, every shared stat
+          <InfoTip>Advanced metrics show the + index (100 = position average) and the percentile within the position; tap or hover an underlined metric for its definition.</InfoTip>
         </p>
         <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-full border border-line bg-night/60 px-3 py-1.5 text-xs font-semibold">
           <input

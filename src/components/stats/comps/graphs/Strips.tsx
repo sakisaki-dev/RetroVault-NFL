@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { cn } from '@/lib/utils';
@@ -37,8 +38,8 @@ export const HeatStrip = ({ player, career, idx, onIdx, wide }: { player: Player
     <div className="cg-card glass-card cg-span">
       <h3>Percentile heat strip</h3>
       <p className="cg-sub">
-        Each season ranked among {player.position}s with 8+ games that season (rates, and box stats per game). Lighter is better; hatched: no season line. Rates
-        needing attempts or carries appear only where the live save supplies them.
+        Percentile by season, lighter is better
+        <InfoTip className="ml-1 align-middle">Each season is ranked among {player.position}s with 8+ games that season. Hatched: no season line. Rates needing attempts or carries appear only where the live save supplies them.</InfoTip>
       </p>
       <div className="cg-heat" style={grid} role="table" aria-label={`${displayName(player.name)} percentiles by season`} data-no-swipe-x>
         <span role="columnheader" />
@@ -99,9 +100,8 @@ export const TrophyShelf = ({ player, career, idx, onIdx, wide }: { player: Play
     <div className="cg-card glass-card cg-span">
       <h3>Trophy shelf</h3>
       <p className="cg-sub">
-        Rings stack up season by season ({total} in all{pts[0].totals.rings ? `, ${pts[0].totals.rings} before the records begin in ${yLabel(pts[0].year)}` : ''}); the season&rsquo;s new ones glow. Awards and
-        records sit on top, the club underneath.
-        {hof ? ` ${hof.label}: ${hof.detail}.` : ''}
+        {total} rings{pts[0].totals.rings ? `, ${pts[0].totals.rings} before ${yLabel(pts[0].year)}` : ''}
+        {hof ? ` · ${hof.label}: ${hof.detail}` : ''}
       </p>
       <div className="cg-shelf" style={grid} data-no-swipe-x>
         {pts.map((p, i) => {

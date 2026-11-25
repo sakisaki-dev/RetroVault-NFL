@@ -83,7 +83,7 @@ const DdRealComps = ({ sets, ovrMap, onSelect }: Props) => {
         Real-life comps
       </h3>
       <p className="mb-3 text-xs text-muted-foreground">
-        Real NFL players whose career rates look most like his, measured on the league&rsquo;s own scale. Tap one for his card.
+        Real NFL players with the closest career rates. Tap one for his card.
       </p>
       <div className="grid gap-4 md:grid-cols-2">
         {sets.map((s) => (

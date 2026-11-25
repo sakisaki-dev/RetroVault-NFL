@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Signature } from 'lucide-react';
 import { type OwnedAuto } from '@/utils/collection';
 import { useMarket } from '@/utils/useMarket';
@@ -60,10 +61,13 @@ const AutographsSection = ({ autos, onOpen }: { autos: OwnedAuto[]; onOpen: (aut
           </span>
           <div className="min-w-0 space-y-1">
             <p className="font-display text-xl font-extrabold uppercase italic leading-none">No autographs yet</p>
-            <p className="text-sm text-muted-foreground">
-              The Autograph is the rarest card art: {autographOddsLine()} cards pulled, rarer still on better players and finishes. Each one is
-              its own numbered card from a run (Sticker /99 up to a Hall of Famer&apos;s Cut 1/1), signed in the player&apos;s own hand and printed in the
-              design of his era. Autographs can&apos;t be claimed or crafted with shards.
+            <p className="flex items-center gap-1 text-sm text-muted-foreground">
+              The rarest card art
+              <InfoTip>
+                {autographOddsLine()} cards pulled, rarer still on better players and finishes. Each one is
+                its own numbered card from a run (Sticker /99 up to a Hall of Famer&apos;s Cut 1/1), signed in the player&apos;s own hand and printed in the
+                design of his era. Autographs can&apos;t be claimed or crafted with shards.
+              </InfoTip>
             </p>
           </div>
         </div>

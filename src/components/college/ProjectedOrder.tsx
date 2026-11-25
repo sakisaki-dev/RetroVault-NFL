@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { InfoTip, SectionNote } from '@/components/ui/InfoTip';
 import { SectionHeader } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -50,9 +51,7 @@ export const ProjectedOrder = ({ focus, onMock }: { focus?: string; onMock: (clu
         title={<span id="cl-order-title">{year} draft order, projected</span>}
         right={<button type="button" className="cl-linkbtn" onClick={() => onMock()}>Needs mock →</button>}
       />
-      <p className="cl-callout">
-        {rule}
-      </p>
+      <SectionNote className="cl-callout">{rule}</SectionNote>
       <Reveal as="ol" className="cl-order">
         {order.map((abbr, i) => {
           const c = odds.clubs[abbr];
@@ -75,8 +74,8 @@ export const ProjectedOrder = ({ focus, onMock }: { focus?: string; onMock: (clu
         })}
       </Reveal>
       <p className="cl-foot">
-        The order lists clubs by their average simulated slot, so two clubs can share a most likely pick. Bars: each pick's share of the {odds.sims.toLocaleString()} simulated
-        seasons, the middle 90% lit, the most likely gold.
+        Bars: share of {odds.sims.toLocaleString()} simulated seasons
+        <InfoTip>The order lists clubs by their average simulated slot, so two clubs can share a most likely pick. The middle 90% is lit, the most likely pick gold.</InfoTip>
       </p>
     </section>
   );
@@ -148,10 +147,13 @@ export const NeedsMock = ({ focus, onOrder }: { focus?: string; onOrder: () => v
         right={<button type="button" className="cl-linkbtn" onClick={onOrder}>Projected order →</button>}
       />
       <p className="cl-callout cl-callout--warn">
-        A needs-based projection, not real prospects: there is no {odds.draft.year} prospect data, so no player is named as a pick. Each club's "pick" is its biggest
-        positional need from its current depth chart: the starters' average SZN at each spot ({groups}) against the league's, in standard deviations, plus a
-        little for each year the oldest starter is past {needs.ageFrom}. {needs.unrated.length ? `${needs.unrated.join(', ')} has no season rating in the data, so it is left out. ` : ''}
-        Contracts aren't used (the contract file stops in 2022).
+        Needs only, no real prospects
+        <InfoTip>
+          There is no {odds.draft.year} prospect data, so no player is named as a pick. Each club's "pick" is its biggest
+          positional need from its current depth chart: the starters' average SZN at each spot ({groups}) against the league's, in standard deviations, plus a
+          little for each year the oldest starter is past {needs.ageFrom}. {needs.unrated.length ? `${needs.unrated.join(', ')} has no season rating in the data, so it is left out. ` : ''}
+          Contracts aren't used (the contract file stops in 2022).
+        </InfoTip>
       </p>
       <Reveal as="ol" className="cl-mocks">
         {odds.draft.order.map((abbr, i) => (

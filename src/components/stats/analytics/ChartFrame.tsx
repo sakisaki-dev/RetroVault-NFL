@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react';
+import { SectionNote } from '@/components/ui/InfoTip';
 import { BarChart3, Table2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -37,9 +38,9 @@ const ChartFrame = ({ title, description, icon, controls, chart, table, footer, 
             {icon}
             {title}
           </h3>
-          <p id={`${id}-d`} className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+          <SectionNote id={`${id}-d`} className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
             {description}
-          </p>
+          </SectionNote>
         </div>
         <button
           type="button"

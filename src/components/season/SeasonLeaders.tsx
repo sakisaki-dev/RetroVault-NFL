@@ -1,4 +1,5 @@
 import { useMemo, useState, type CSSProperties } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { displayName } from '@/utils/displayName';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -140,7 +141,7 @@ export const SeasonLeaders = ({ season, inProgress }: { season: number; inProgre
       )}
       <div className="sl-tabs">
         <ArcadeToggle label="Stat group" size="sm" value={group} onChange={(v) => setGroup(v as typeof group)} options={GROUPS.map((g) => ({ value: g.id, label: g.label }))} />
-        <span className="sx-note">Regular season{inProgress ? ' so far' : ''}. The pill is a player&rsquo;s black ink: seasons he led the league in a headline stat.</span>
+        <span className="sx-note">Regular season{inProgress ? ' so far' : ''}<InfoTip>The pill is a player&rsquo;s black ink: seasons he led the league in a headline stat.</InfoTip></span>
       </div>
       <Reveal className="sl-boards" key={group} style={{ ['--n' as string]: stats.length }}>
         {stats.map((s, i) => (

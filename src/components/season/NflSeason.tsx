@@ -1,4 +1,5 @@
 import { useMemo, useState, type CSSProperties, type KeyboardEvent } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { displayName } from '@/utils/displayName';
@@ -163,7 +164,7 @@ export const PlayoffBracket = ({ season }: { season: SeasonView }) => {
           )}
         </div>
       </Reveal>
-      {seeds.size > 0 && <p className="sx-note">Seeds: division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</p>}
+      {seeds.size > 0 && <p className="sx-note">Seeds by record, then point differential<InfoTip>Division winners first, then wild cards, each by win percentage then point differential (a simplified tiebreak).</InfoTip></p>}
     </div>
   );
 };

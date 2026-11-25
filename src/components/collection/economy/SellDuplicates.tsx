@@ -51,7 +51,7 @@ const SellDuplicates = ({ open, onClose, byKey, state }: SellDuplicatesProps) =>
       <DialogContent phoneSheet className="max-h-[calc(var(--safe-h)-1rem)] max-w-xl overflow-y-auto border-line bg-night p-4 sm:p-6">
         <p className="ec-kicker">Sell to the market · {Math.round(SELL_RATE * 100)}% of value</p>
         <DialogTitle className="font-display text-3xl uppercase italic">Sell duplicates</DialogTitle>
-        <DialogDescription>Every copy beyond the best one of each art and finish. Your best copy of each always stays.</DialogDescription>
+        <DialogDescription>Your best copy of each always stays.</DialogDescription>
         <label className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-line bg-panel/60 px-3 py-2 text-sm">
           <span>
             Keep one of each kit and Prizm colour

@@ -1,4 +1,5 @@
 import { useProgressiveRows } from '@/hooks/useProgressiveRows';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { useMemo, useState } from 'react';
 import FitName from '../FitName';
 import { BarChart3, ListOrdered, Table2 } from 'lucide-react';
@@ -64,9 +65,12 @@ const MetricLeaderboard = ({ players, ctx, position, extras = [], onSelect }: Pr
             <ListOrdered className="h-4 w-4 text-gold" aria-hidden="true" />
             {POSITION_NAMES[position]} leaderboard
           </h3>
-          <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
-            Pick a metric. Each stem runs from the position average (dashed) to the player on the <b className="text-foreground">+</b> index axis
-            (100 = average qualifier, 120 = 20% better): blue right of the line is better, red left is worse. The table adds percentiles.
+          <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground sm:text-sm">
+            Pick a metric
+            <InfoTip>
+              Each stem runs from the position average (dashed) to the player on the <b className="text-foreground">+</b> index axis
+              (100 = average qualifier, 120 = 20% better): blue right of the line is better, red left is worse. The table adds percentiles.
+            </InfoTip>
           </p>
         </div>
         <button

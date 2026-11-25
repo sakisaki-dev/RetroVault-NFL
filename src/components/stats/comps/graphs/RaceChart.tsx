@@ -70,7 +70,7 @@ const RaceChart = ({ player, career, league, idx, onIdx }: { player: Player; car
     <div className="cg-card glass-card cg-span">
       <h3>The race</h3>
       <p className="cg-sub">
-        Career {b.label.toLowerCase()} at each season end against the all-time top five {g === 'DEF' ? 'defenders' : `${player.position}s`}. He is{' '}
+        Career {b.label.toLowerCase()} vs the all-time top five. He is{' '}
         <b className="text-chalk">{data.rank === 1 ? 'the all-time leader' : `#${data.rank} all time`}</b>
         {holder ? <> · record: {holder} ({shortNum(data.record.total)})</> : null}.
       </p>

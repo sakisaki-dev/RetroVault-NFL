@@ -37,7 +37,7 @@ const DdAdvancedFactors = ({
   const scope = picker ? (picked && scopes.includes(picked) ? picked : scopes[0]) : forced && scopes.includes(forced) ? forced : null;
   if (!adv || !mine || !scope) {
     return picker && adv ? (
-      <p className="glass-card p-4 text-sm text-muted-foreground">No advanced data for {displayName(player.name)}: his position or seasons are not covered by the sources (nflverse advanced data starts in 2016-2018).</p>
+      <p className="text-xs text-muted-foreground">No advanced data on file</p>
     ) : null;
   }
   const entries = Object.entries(mine[scope] ?? {})

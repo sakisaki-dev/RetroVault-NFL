@@ -1,3 +1,5 @@
+import { InfoTip } from '@/components/ui/InfoTip';
+import { SectionNote } from '@/components/ui/InfoTip';
 import type { CSSProperties, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,6 +11,7 @@ export const DdSection = ({
   title,
   icon: Icon,
   kicker,
+  info,
   actions,
   index,
   children,
@@ -18,6 +21,8 @@ export const DdSection = ({
   title: string;
   icon: LucideIcon;
   kicker?: ReactNode;
+  /** Method notes and legends: behind a small (i). */
+  info?: ReactNode;
   actions?: ReactNode;
   index: number;
   children: ReactNode;
@@ -29,8 +34,9 @@ export const DdSection = ({
         <h2 id={`${id}-title`} className="section-title text-xl sm:text-2xl">
           <Icon className="h-5 w-5 text-gold" aria-hidden="true" />
           {title}
+          {info && <InfoTip className="ml-1">{info}</InfoTip>}
         </h2>
-        {kicker && <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{kicker}</p>}
+        {kicker && <SectionNote className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{kicker}</SectionNote>}
       </div>
       {actions}
     </div>

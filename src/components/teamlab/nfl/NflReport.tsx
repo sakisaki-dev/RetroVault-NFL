@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ClipboardList, Dices, Medal, Swords, TrendingUp } from 'lucide-react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Button } from '@/components/ui/button';
@@ -66,8 +67,11 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
   return (
     <div className="lab-analysis nfl-report">
       <Card title="Unit ratings" className="lab-order-1" icon={<TrendingUp className="h-5 w-5 text-gold" aria-hidden="true" />}>
-        <p className="mb-3 text-xs text-muted-foreground">
+        <p className="mb-3 flex items-center gap-1 text-xs text-muted-foreground">
+          Percentile vs random lineups
+          <InfoTip>
           Each score is a percentile against {BENCH_SIZE} random {lineup.off} / {lineup.def} lineups of today's depth-chart starters: 80 means better than 80% of possible teams. Offense {Math.round(UNIT_WEIGHTS.team.offense * 100)}%, defense {Math.round(UNIT_WEIGHTS.team.defense * 100)}%, star power {Math.round(UNIT_WEIGHTS.team.star * 100)}% of the team grade. Ratings: {RATING_SOURCES.find((r) => r.id === src)?.label}.{carFallback.length > 0 && ` No 2026 snaps, so rated on ${CAREER_LABEL}: ${carFallback.slice(0, 6).join(', ')}${carFallback.length > 6 ? ` and ${carFallback.length - 6} more` : ''}.`}
+          </InfoTip>
         </p>
         <div className="space-y-4">
           {GROUPS.map((g) => (
@@ -101,7 +105,7 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
         </Card>
         {ranking.length > 0 && (
           <Card title={`Ranks ${ordinal(rank)} of ${ranking.length}`} icon={<Medal className="h-5 w-5 text-gold" aria-hidden="true" />}>
-            <p className="mb-2 text-xs text-muted-foreground">Against the 32 clubs' real starting lineups (their depth charts now, injured starters out).</p>
+            <p className="mb-2 text-xs text-muted-foreground">Vs the 32 clubs' real starters</p>
             <ol className="space-y-1">
               {near.map((r) => {
                 const t = findNFLTeam(r.abbr);
@@ -123,7 +127,7 @@ export const NflReport = ({ ctx, lineup, depth, lab, injured, src }: ReportProps
 
       <div className="lab-span-2 lab-order-2 min-w-0">
         <Card title="Call sheet" icon={<ClipboardList className="h-5 w-5 text-gold" aria-hidden="true" />}>
-          <p className="mb-2 text-xs text-muted-foreground">Rules over the grades and the real per-game numbers (sacks and hits, passes defended, yards) of these players.</p>
+          <p className="mb-2 flex items-center gap-1 text-xs text-muted-foreground">Rules over grades and per-game numbers<InfoTip>Sacks and hits, passes defended and yards of these players.</InfoTip></p>
           <ul className="nfl-calls">
             {calls.map((c) => (
               <li key={c.id} className={`nfl-call nfl-call--${c.tone}`}>
@@ -281,7 +285,7 @@ export const NflH2H = ({ ctx, lineup, depth, lab, injured, src, saved, kitClub }
               ))}
             </ul>
           </div>
-          <p className="text-[11px] text-muted-foreground">Win chance: the team-grade gap and the six real matchups through a logistic curve. Units: {ALL_UNITS.length}.</p>
+          <p className="flex items-center gap-1 text-[11px] text-muted-foreground">Win chance · {ALL_UNITS.length} units<InfoTip>The team-grade gap and the six real matchups through a logistic curve.</InfoTip></p>
         </div>
       )}
     </Card>

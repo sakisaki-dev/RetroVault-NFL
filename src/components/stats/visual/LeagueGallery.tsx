@@ -118,8 +118,7 @@ const LeagueGallery = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Pla
           League Landscape
         </h2>
         <SectionIntro id="landscape" takeaway={landscapeTakeaway(tiers, position, tierBy === 'skill' ? 'skill rating' : 'official OVR')}>
-          Position-by-position graphics: a tier list, every rate stat as a strip, and a family map of play styles. Pick a position, then a graphic. For any other
-          comparison, open the Graph Builder in the Lab.
+          Pick a position, then a graphic. For any other comparison, use the Graph Builder in the Lab.
         </SectionIntro>
       </div>
 

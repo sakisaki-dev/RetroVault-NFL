@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { BarChart3, History, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -163,9 +164,7 @@ const SeasonTab = () => {
           }
         />
         {IS_NFL && (
-          <p className="sx-note">
-            One season at a time: switch the year above to see that season's standings, power ladder, awards and every game. Each franchise's history lives on Teams.
-          </p>
+          <p className="sx-note">One season at a time <InfoTip>Switch the year above to see that season's standings, power ladder, awards and every game. Each franchise's history lives on Teams.</InfoTip></p>
         )}
 
         {loadingSeason ? (

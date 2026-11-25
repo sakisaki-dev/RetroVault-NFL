@@ -420,8 +420,8 @@ const AutographsTab = ({ pick, league }: LabTabProps) => <AutographPreview cards
 export const LAB_TABS: LabTab[] = [
   { key: 'packs', label: 'Pack opening', hint: 'Pick a pack and open a sample of it: the real tear, tell, flips and walkouts.', Tab: PacksTab },
   { key: 'walkout', label: 'Walkout', hint: 'His walkout at any tier, finish, art and kit, one at a time.', Tab: WalkoutTab },
-  { key: 'designs', label: 'Card designs', hint: "His card in each of the five art variants at one finish (the Autograph a sample roll), the Prizm parallels, and his club's uniforms.", Tab: DesignsTab },
-  { key: 'autographs', label: 'Autographs', hint: 'His autograph as a pack would roll it: roll again for another parallel, pen, era and serial.', Tab: AutographsTab },
+  { key: 'designs', label: 'Card designs', hint: 'Each art variant, the Prizm parallels and club kits', Tab: DesignsTab },
+  { key: 'autographs', label: 'Autographs', hint: 'Roll again for another parallel, pen and serial', Tab: AutographsTab },
 ];
 // The heavy grids (Combinations: 4 variants × 4 finishes; Uniforms: all 32 clubs) were replaced by these (owner:
 // "update the artlab to be less intensive and show me just the parts of the cards opening"). The sprite tabs (Poses,

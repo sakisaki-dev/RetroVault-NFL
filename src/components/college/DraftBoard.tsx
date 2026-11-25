@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArcadeToggle, PixelSelect, PixelStepper, SectionHeader } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -79,7 +80,7 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
           <Verdict title="Busts" kicker={`Top 10 · OVR ${idx.bustBar} or lower`} tone="bust" picks={busts} players={players} empty="No top-10 pick fell to the bust bar." onSchool={onSchool} school={school} />
         </div>
       ) : (
-        <p className="cl-callout">Too early to call steals and busts: a draft is judged after {idx.judgeAfter} seasons, so {year}'s waits until {year + idx.judgeAfter}.</p>
+        <p className="cl-callout">Too early to call: judged in {year + idx.judgeAfter}</p>
       ))}
 
       {d && (
@@ -119,8 +120,8 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
         </div>
       )}
       <p className="cl-foot">
-        Picks, Pro Bowls, first-team All-Pro and games from nflverse's draft file; OVR is the site's career rating; HOF is a real inductee. Clubs carry today's
-        names; the codes that changed franchises (Houston, Baltimore, St. Louis) are read by year.
+        Source: nflverse draft file
+        <InfoTip>Picks, Pro Bowls, first-team All-Pro and games from nflverse's draft file; OVR is the site's career rating; HOF is a real inductee. Clubs carry today's names; the codes that changed franchises (Houston, Baltimore, St. Louis) are read by year.</InfoTip>
       </p>
     </section>
   );

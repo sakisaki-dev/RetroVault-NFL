@@ -763,8 +763,7 @@ const PerfectSeason = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap: Map
           ))}
         </ol>
         <p className="arc-hint ps-fine">
-          Fourteen games: six against your division, four against the rest of your conference, four against the other conference. Seven teams per
-          conference make the playoffs, and every seed plays the Wild Card round.
+          14 games, then 7 playoff seeds a conference
         </p>
       </div>
     );

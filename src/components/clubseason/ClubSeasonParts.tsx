@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
@@ -148,7 +149,7 @@ export const Yearbook = ({ rows, club, year, onPick }: { rows: RosterEntry[]; cl
       {group === 'All' && shown.length > FIRST && (
         <button type="button" className="pg-more" onClick={() => setAll((v) => !v)}>{all ? 'Show the top 16' : `Show all ${shown.length}`}</button>
       )}
-      <p className="pg-note">Every player with a regular-season game for the club that year, by SZN (the season rating). Tap a player for his card.</p>
+      <p className="pg-note">By SZN · tap a player for his card</p>
     </div>
   );
 };
@@ -162,7 +163,7 @@ export const CapBreakdown = ({ cap, club, clubName, year }: { cap: CapFile | nul
   const c = cap?.clubs[club];
   const team = findNFLTeam(club);
   if (!cap || !c || year > cap.lastSigned) {
-    return <p className="cs-note">No cap data for this season. The contracts file (OverTheCap through nflverse) holds deals signed up to {cap?.lastSigned ?? 2022} and none for this club this year.</p>;
+    return <p className="cs-note">No cap data for this season</p>;
   }
   const groups = Object.entries(c.groups).sort((a, b) => b[1] - a[1]);
   const total = c.total;
@@ -204,7 +205,10 @@ export const CapBreakdown = ({ cap, club, clubName, year }: { cap: CapFile | nul
         ))}
       </Reveal>
       <p className="cs-note">
-        Source: OverTheCap contracts through nflverse. These are contract values (average per year), not cap hits, so they are not the club&rsquo;s payroll. Only deals still in force that year for a player on the club&rsquo;s roster are counted, and the file holds deals signed through {cap.lastSigned}{c.n < 25 ? `; for ${year} it holds only the ${c.n} contracts shown, so read the split as that group, not the whole roster` : ''}.
+        Average per year, not cap hits{c.n < 25 ? ` · ${c.n} contracts shown` : ''}
+        <InfoTip>
+          Source: OverTheCap contracts through nflverse. These are contract values (average per year), not cap hits, so they are not the club&rsquo;s payroll. Only deals still in force that year for a player on the club&rsquo;s roster are counted, and the file holds deals signed through {cap.lastSigned}{c.n < 25 ? `; for ${year} it holds only the ${c.n} contracts shown, so read the split as that group, not the whole roster` : ''}.
+        </InfoTip>
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useState, type ReactNode } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { usePlayerSearch } from '@/utils/usePlayerSearch';
 import { ArrowUpDown, BarChart3, Check, ChevronDown, Clock, Link2, Pin, SlidersHorizontal, Sparkles, Star, Table2, X } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
@@ -438,7 +439,7 @@ const GraphBuilder = ({
           )}
         </section>
 
-        {model && <p className="text-[15px] leading-relaxed text-secondary-foreground">{config.subtitle ? `${config.subtitle} ` : ''}{explainer(model, config)}</p>}
+        {model && <p className="flex items-center gap-1 text-sm text-secondary-foreground">{config.subtitle ?? 'How to read it'}<InfoTip>{explainer(model, config)}</InfoTip></p>}
 
         <div className="gb-strip">
           <button type="button" aria-pressed={asTable} onClick={() => setAsTable((v) => !v)} className="gb-chip gb-chip--ghost">
@@ -602,9 +603,9 @@ const GraphBuilder = ({
               {title}
             </h2>
             {model && (
-              <p className="text-sm text-secondary-foreground">
-                {config.subtitle ? `${config.subtitle} ` : ''}
-                {explainer(model, config)}
+              <p className="flex items-center gap-1 text-sm text-secondary-foreground">
+                {config.subtitle ?? 'How to read it'}
+                <InfoTip>{explainer(model, config)}</InfoTip>
               </p>
             )}
             {model && (

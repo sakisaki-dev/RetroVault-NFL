@@ -120,8 +120,7 @@ const AnalyticsLab = ({ data, onSelect }: { data: LeagueData; onSelect: Select }
           Analytics Lab
         </h2>
         <SectionIntro id="analytics" takeaway={takeaway}>
-          Rate stats, value over replacement and position-relative indexes, all from career totals. Tap or hover any underlined metric for
-          its formula and minimum sample.
+          Career-total rates and indexes. Tap an underlined metric for its formula.
         </SectionIntro>
         <div className="flex flex-wrap items-center gap-2 pt-1">
           <button

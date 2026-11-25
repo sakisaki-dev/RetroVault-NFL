@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
 import { ClubStrip } from '@/components/arcade';
 import { Reveal } from '@/components/motion/Reveal';
@@ -94,7 +95,7 @@ export const AwardsHistory = ({ players, onSelect }: { players: Player[]; onSele
       <button type="button" className="ax-chip" onClick={() => setAll((v) => !v)}>
         {all ? 'Hide seasons before 1999' : 'Show seasons back to 1957'}
       </button>
-      <p className="ra-foot">AP awards and Super Bowl MVPs. A name opens his card when he is in the league data; earlier winners are listed for the record. Comeback Player of the Year starts in 1998.</p>
+      <p className="ra-foot">AP awards and Super Bowl MVPs<InfoTip>A name opens his card when he is in the league data; earlier winners are listed for the record. Comeback Player of the Year starts in 1998.</InfoTip></p>
     </div>
   );
 };

@@ -50,6 +50,8 @@ const best = (key: string, k: string, fmt: (n: number) => string) => (): Best | 
   return v >= 0 ? { k, v: fmt(v) } : null;
 };
 
+const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
+
 const GAMES: GameDef[] = [
   {
     id: 'perfect',
@@ -66,7 +68,7 @@ const GAMES: GameDef[] = [
   {
     id: 'rank',
     title: 'Blind Rank',
-    pitch: `Slot five players by rating (${CAREER_LABEL}, or SZN) before you see who comes next.`,
+    pitch: 'Slot five players by rating, blind.',
     rule: `Five players arrive one at a time. Slot each from 1 to 5 by rating (${CAREER_LABEL}, or SZN) before you see who comes next. No moving them later.`,
     color: 'var(--gold)',
     record: best(STAT_KEYS.rankBest, 'Best round', (n) => `${n}/10`),
@@ -88,7 +90,7 @@ const GAMES: GameDef[] = [
     id: 'legend',
     title: 'Guess the Legend',
     pitch: 'Name the mystery player. Every miss opens a clue.',
-    rule: 'A sealed card and six clues that unlock with every miss. Name him on clue 1 for 5 points; needing all six scores nothing.',
+    rule: 'Six clues, one per miss. Clue 1 scores 5; all six scores nothing.',
     color: 'var(--sky)',
     record: best(STAT_KEYS.legendBest, 'Best streak', String),
     render: (players, ovrMap) => <GuessTheLegend players={players} ovrMap={ovrMap} />,
@@ -400,7 +402,7 @@ const GamesTab = () => {
                     Game of the day
                   </p>
                   <h2 id="hall-feature-title">{featured.title}</h2>
-                  <p className="hall-feature-rule">{featured.rule}</p>
+                  <p className="hall-feature-rule">{firstSentence(featured.rule)}</p>
                   <div className="hall-feature-foot">
                     <ArcadeButton tone="go" className="hall-play" onClick={() => open(featured.id)} aria-label={`Play ${featured.title}`}>
                       Play now

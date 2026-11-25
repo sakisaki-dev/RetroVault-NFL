@@ -1,4 +1,5 @@
 import { IS_NFL, seasonLabel } from '@/config/edition';
+import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import { careerRatingOf } from '@/config/ovr';
 import PlayerNews from '@/components/espn/PlayerNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -550,12 +551,14 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
       <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-1.5 lg:hidden">{nav}</div>
 
       {classic && (
-        <p className="mb-4 rounded-md border border-gold/30 bg-gold/5 px-3 py-2 text-xs leading-snug text-gold/90" data-testid="dd-classic-note">
-          Season-by-season data starts in 1999; career totals from Wikipedia
-          {classic.d ? ` (${classic.d}${classic.l && classic.l !== classic.d ? `–${classic.l}` : ''})` : ''}.
-          {classic.c ? ' No weekly data exists for this career, so there are no season graphs or game log.' : ' Graphs and the game log run from 1999.'}
-          {classic.m?.length ? ' Graded on the stats that exist: ' + classic.m.join(', ') + ' were not recorded in his era (never counted as zero).' : ''}
-          {classic.e ? ' Games are estimated from his seasons.' : ''}
+        <p className="mb-4" data-testid="dd-classic-note">
+          <NoteChip short={classic.c ? 'Career totals only, no weekly data' : 'Weekly data from 1999'}>
+            Season-by-season data starts in 1999; career totals from Wikipedia
+            {classic.d ? ` (${classic.d}${classic.l && classic.l !== classic.d ? `–${classic.l}` : ''})` : ''}.
+            {classic.c ? ' No weekly data exists for this career, so there are no season graphs or game log.' : ' Graphs and the game log run from 1999.'}
+            {classic.m?.length ? ' Graded on the stats that exist: ' + classic.m.join(', ') + ' were not recorded in his era (never counted as zero).' : ''}
+            {classic.e ? ' Games are estimated from his seasons.' : ''}
+          </NoteChip>
         </p>
       )}
 
@@ -570,25 +573,26 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}
           {lowerReady && <>
-          <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker={IS_NFL && careerPoolLabel(player.position) ? `Letter grades by percentile among qualified ${player.position}s (career: ${careerPoolLabel(player.position)}; a season: its weekly bar below), on rates shrunk by sample size; S = top 10%. A stat with no between-player signal gets no tile.` : `Letter grades by percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games (S = top 8%). Same grades as Build-a-Legend.`}>
+          <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker="Letter grades by position percentile"
+              info={IS_NFL && careerPoolLabel(player.position) ? `Percentile among qualified ${player.position}s (career: ${careerPoolLabel(player.position)}; a season: its weekly bar), on rates shrunk by sample size. S = top 10%. A stat with no between-player signal gets no tile.` : `Percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games. S = top 8%.`}>
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 
           {IS_NFL && (
-            <DdSection id="dd-gamelog" index={0.5} title={player.status === 'Active' ? 'This season & game log' : 'Game log'} icon={ClipboardList} kicker={player.status === 'Active' ? 'His live season with league ranks, then every game on file: last 5, splits, the full log, best games, streaks and how steady he is.' : 'Every game on file: last 5, splits, the full log, best games, streaks and how steady he is.'}>
+            <DdSection id="dd-gamelog" index={0.5} title={player.status === 'Active' ? 'This season & game log' : 'Game log'} icon={ClipboardList} kicker={player.status === 'Active' ? 'Live season, then every game' : 'Every game on file'}>
               <DdGameLog player={player} header={<SeasonHeader player={player} />} />
             </DdSection>
           )}
 
           {IS_NFL && (
-            <DdSection id="dd-news" index={0.75} title="News" icon={Newspaper} kicker="Every ESPN article on him in the site's news cards, with deeper analysis by rule from our own data: his line in the game, form, milestones, injury report, card market and the fantasy matchup.">
+            <DdSection id="dd-news" index={0.75} title="News" icon={Newspaper} kicker="Articles and game-by-game analysis">
               <PlayerNews player={player} />
             </DdSection>
           )}
 
           {IS_NFL && <DdCareerNumbers player={player} />}
 
-          <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
+          <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="Closest comps by style and overall">
             <DdWhoPlays
               player={player}
               model={model}
@@ -612,7 +616,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             index={2}
             title="Neighbourhood"
             icon={ChartScatter}
-            kicker="His closest comparable careers over the rest of his position. Closer = plays more alike."
+            kicker="Closer = plays more alike"
           >
             <DeferredSection ids={[]} minHeight={560}>
               <MapSection
@@ -636,7 +640,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             </DeferredSection>
           </DdSection>
 
-          <DdSection id="dd-advanced" index={3} title="Advanced profile" icon={Activity} kicker="Every advanced metric for his position: percentile, + index (100 = average qualifier) and rank among qualifiers.">
+          <DdSection id="dd-advanced" index={3} title="Advanced profile" icon={Activity} kicker="Percentile, + index and rank"
+            info="+ index: 100 = average qualifier. Rank is among qualifiers at his position.">
             <DdAdvanced player={player} boards={boards} />
             {IS_NFL && <DdAdvancedFactors player={player} players={players} picker onOpenPlayer={(p) => choose(keyOf(p))} />}
           </DdSection>
@@ -646,7 +651,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             index={4}
             title="Career graphs"
             icon={LineChart}
-            kicker="Season by season: drag through his career on the timeline, every season's box score, rates and percentiles, the trophy shelf, the race to the record and how he stacks up."
+            kicker="Season by season"
           >
             <DdGraphsLazy player={player} players={players} wide={wide} />
             {IS_NFL && (

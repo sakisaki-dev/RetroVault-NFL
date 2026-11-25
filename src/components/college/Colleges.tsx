@@ -1,4 +1,5 @@
 import { useDeferredValue, useMemo, useState } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { ArrowLeft, Search } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { ArcadeToggle, SectionHeader } from '@/components/arcade';
@@ -109,8 +110,8 @@ export const CollegeIndexView = ({ idx, onSchool }: { idx: CollegeIndex; onSchoo
           </table>
         </Reveal>
         <p className="cl-foot">
-          Drafted and first-rounders count every pick since 1980 by draft year; total OVR adds up the career OVR of the school's players with a card on the site (by draft
-          year, else first season). The site's older players are fewer, so OVR totals lean recent.
+          Counts since 1980
+          <InfoTip>Drafted and first-rounders count every pick since 1980 by draft year; total OVR adds up the career OVR of the school's players with a card on the site (by draft year, else first season). The site's older players are fewer, so OVR totals lean recent.</InfoTip>
         </p>
       </div>
     </section>

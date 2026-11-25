@@ -1,4 +1,5 @@
 import { useMemo, useState, type CSSProperties } from 'react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import { Info } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -262,9 +263,9 @@ const AdvancedPanel = ({ player, players, onSelect }: Props) => {
           <LegacyComposition player={player} />
         </section>
       ) : (
-        <p className="pc-panel p-3 text-xs text-muted-foreground">
-          Imported legends aren't rated on the league's True Talent scale, so there is no Dominance, Career Legacy or legacy breakdown. The
-          metrics below rank his real NFL totals against league {pos}s.
+        <p className="flex items-center gap-1 text-xs text-muted-foreground">
+          Real NFL totals vs league {pos}s
+          <InfoTip>Imported legends aren't rated on the league's True Talent scale, so there is no Dominance, Career Legacy or legacy breakdown.</InfoTip>
         </p>
       )}
 

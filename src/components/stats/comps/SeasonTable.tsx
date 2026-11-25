@@ -321,8 +321,7 @@ const SeasonTable = ({ player }: { player: Player }) => {
         </table>
       </div>
       <p className="st-foot">
-        Regular season, from the real game log{latest ? ` (${rows[0].year}–${latest})` : ''}. <Star className="st-star st-star--inline" aria-hidden /> led the league that year
-        {inkFile ? `, ${INK_STATS.length} headline stats` : ''}. SZN is the season rating.
+        Regular season{latest ? `, ${rows[0].year}–${latest}` : ''} · <Star className="st-star st-star--inline" aria-hidden /> led the league · SZN = season rating
       </p>
     </Reveal>
   );

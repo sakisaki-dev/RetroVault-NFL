@@ -235,7 +235,7 @@ const TeamRankingsTab = () => {
       )}
       {IS_NFL && (
         <p className="-mt-3 text-sm text-muted-foreground">
-          Every franchise, all time since {firstSeason ? seasonLabel(firstSeason) : '1999'}: records, titles, playoff trips, greatest players and club sheets.{' '}
+          Every franchise since {firstSeason ? seasonLabel(firstSeason) : '1999'}{' · '}
           <a href="#season" className="font-semibold text-gold hover:underline">This season → Season page</a>
         </p>
       )}

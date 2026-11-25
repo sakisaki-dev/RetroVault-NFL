@@ -1,4 +1,5 @@
 import { Crown, Home, Plane, Scale, Star, Swords, Target, TrendingDown, TrendingUp, Zap } from 'lucide-react';
+import { InfoTip } from '@/components/ui/InfoTip';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { CoachGame, CoachGameBrief, ScheduleSeason } from '@/utils/schedule';
@@ -301,7 +302,7 @@ export const ClubSplits = ({ season }: { season: ScheduleSeason }) => {
               <VsLeague label="Points per game" club={d.ppg} league={season.league.ppg} team={team} better="higher" />
               <VsLeague label="Allowed per game" club={d.papg} league={season.league.ppg} team={team} better="lower" />
             </dl>
-            <p className="mt-2 text-[11px] text-muted-foreground">Club figures include the playoffs; the league average is per club per regular-season game.</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">Club figures include playoffs<InfoTip className="ml-1 align-middle">The league average is per club per regular-season game.</InfoTip></p>
           </Panel>
         )}
         {(d.avgOppOff != null || d.avgOppDef != null) && (

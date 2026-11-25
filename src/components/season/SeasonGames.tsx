@@ -1,4 +1,5 @@
 import '@/components/stats/visual/recordShelves.css';
+import { InfoTip } from '@/components/ui/InfoTip';
 import './gameRecords.css';
 import { useMemo, useState, type ReactNode } from 'react';
 import { CalendarX2, ListOrdered, Trophy } from 'lucide-react';
@@ -424,10 +425,13 @@ export const LeagueTable = ({ season }: { season: ScheduleSeason }) => {
         </p>
       )}
       {view === 'power' && (
-        <p className="text-[11px] leading-snug text-muted-foreground">
-          Power score = 100 × win % + 1.5 × point differential per game + 40 × (strength of schedule − 0.5), regular season
+        <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          Power score, regular season
+          <InfoTip>
+            Power score = 100 × win % + 1.5 × point differential per game + 40 × (strength of schedule − 0.5), regular season
           only. Strength of schedule is the average final win % of the clubs faced. Form and splits are regular season;
           one-score games were decided by 8 or fewer.
+          </InfoTip>
         </p>
       )}
       <div className="max-h-[560px] overflow-auto rounded-lg border border-border/40" tabIndex={0} aria-label={`League table, ${view}`}>

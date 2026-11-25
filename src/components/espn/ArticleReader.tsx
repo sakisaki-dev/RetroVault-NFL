@@ -128,7 +128,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
           </span>
           <div className="en-fallback__text">
             <b>The full story lives on ESPN</b>
-            <span>Only the summary comes through here. Open the article for the whole piece, with its photos and video.</span>
+            <span>Open the article for the full piece.</span>
           </div>
           <div className="en-fallback__row">
             <a className="en-read en-read--solid" href={item.href} target="_blank" rel="noopener noreferrer">
