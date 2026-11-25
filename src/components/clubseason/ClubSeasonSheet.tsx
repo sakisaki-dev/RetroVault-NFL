@@ -148,7 +148,7 @@ const ClubSeasonSheet = ({ club, season, open, onClose }: Props) => {
                     <Block kicker="Every game" title="Game log">
                       {tickets.length ? <Tickets tickets={tickets} onOpen={openGameFromSheet} /> : <p className="cs-note">No games on file for {year}.</p>}
                     </Block>
-                    <ClubSeasonInk club={abbr} season={year} />
+                    <ClubSeasonInk club={abbr} season={year} onPick={pick} />
                     <Block kicker="Season lines" title="Roster">
                       {rows.length ? <Roster rows={rows} club={club} onPick={pick} /> : <p className="cs-note">No roster lines on file for {year}.</p>}
                     </Block>
