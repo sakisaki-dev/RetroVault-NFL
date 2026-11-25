@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Player } from '@/types/player';
 import { SIM_MIN_GAMES, type SimilarityMode } from '@/config/advanced';
 import { isHallOfFamer } from '@/config/stats';
@@ -9,6 +9,7 @@ import { VIZ } from '../analytics/viz';
 import Chips from '../analytics/Chips';
 import { keyOf } from '../records';
 import { peekProps } from '../../peek/peekProps';
+import { openPlayerPeek, registerPeekContext, type PeekContext } from '../../peek/PlayerPeek';
 import { dotColors } from './compColors';
 import { pairScores, type PositionModel } from './compModel';
 import { displayName, surnameOf } from '@/utils/displayName';
@@ -139,7 +140,23 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       alive = false;
     };
   }, [era]);
+  // The quick look opened from a square: Head-to-Head runs the dived player against the one clicked, Deep Dive switches the dive
+  const peekCtx = useMemo<PeekContext>(() => ({ h2hWith: player, onDive: onPick }), [player, onPick]);
+  useEffect(() => registerPeekContext('nbhd', peekCtx), [peekCtx]);
   const [sel, setSel] = useState<Player | null>(null);
+  const showCard = (p: Player, e: { clientX: number; clientY: number; currentTarget: Element }, keyboard = false) => {
+    const k = peekProps(p)['data-player-key'];
+    if (!k) return;
+    let { clientX: x, clientY: y } = e;
+    if (keyboard || (x === 0 && y === 0)) {
+      const r = e.currentTarget.getBoundingClientRect();
+      x = r.left + r.width / 2;
+      y = r.top + r.height / 2;
+      keyboard = true;
+    }
+    setSel(p);
+    openPlayerPeek(k, x, y, { ctx: peekCtx, keyboard });
+  };
   useEffect(() => setSel(null), [key, mode]);
 
   const qMin = useMemo(() => {
@@ -250,7 +267,6 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view, W, H, wide]);
 
-  const selRef = useRef<HTMLDivElement | null>(null);
   const sim = (n: { sim: number }) => `${Math.round(n.sim)}%`;
   const closest = view.near.slice(0, 3).map((d) => d.p.name);
   const hofN = view.near.filter((d) => isHallOfFamer(d.p)).length;
@@ -341,8 +357,15 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
                 role="button"
                 aria-label={`${displayName(d.p.name)}, ${sim(d)} similar`}
                 style={{ cursor: 'pointer', outline: 'none' }}
-                onClick={() => setSel(on ? null : d.p)}
-                onKeyDown={(e) => (e.key === 'Enter' ? onPick(d.p) : e.key === ' ' ? (e.preventDefault(), setSel(d.p)) : null)}
+                onClick={(e) => showCard(d.p, e)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    showCard(d.p, { clientX: 0, clientY: 0, currentTarget: e.currentTarget }, true);
+                  }
+                }}
+                data-peek-ctx="nbhd"
+                data-no-press
                 {...peekProps(d.p)}
               >
                 <title>{`${displayName(d.p.name)} · ${sim(d)} similar · ${X.label} ${fmt(X, d.x)} · ${Y.label} ${fmt(Y, d.y)}`}</title>
@@ -352,7 +375,23 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
             );
           })}
           {view.meOk && (
-            <g>
+            <g
+              tabIndex={0}
+              role="button"
+              aria-label={`${displayName(player.name)}, the player on show`}
+              style={{ cursor: 'pointer', outline: 'none' }}
+              onClick={(e) => showCard(player, e)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  showCard(player, { clientX: 0, clientY: 0, currentTarget: e.currentTarget }, true);
+                }
+              }}
+              data-peek-ctx="nbhd"
+                data-no-press
+              {...peekProps(player)}
+            >
+              <circle cx={px(view.me.x)} cy={py(view.me.y)} r={wide ? 14 : 12} fill="transparent" />
               <circle cx={px(view.me.x)} cy={py(view.me.y)} r={wide ? 13 : 11} fill="none" stroke="hsl(43 100% 62%)" strokeWidth={2} />
               <path d={`M${px(view.me.x)} ${py(view.me.y) - 7} l6 7 l-6 7 l-6 -7 z`} fill="hsl(43 100% 62%)" stroke="#111627" strokeWidth={1.4} />
             </g>
@@ -369,21 +408,6 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
         <span><span className="inline-block h-2 w-2 rounded-sm bg-gold" /> him</span>
         <span>squares: his {Math.min(N_NEIGHBOURS, view.near.length)} nearest, gold rim = Hall of Famer</span>
       </p>
-
-      {sel && (
-        <div ref={selRef} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-panel-2/70 p-2.5 text-sm">
-          <div>
-            <span className="font-bold">{displayName(sel.name)}</span>{' '}
-            <span className="text-muted-foreground">
-              {sel.position} · {bannerTeamOf(sel) || 'FA'} · {sel.status === 'Active' ? 'Active' : 'Retired'} · {sel.games} G
-              {view.near.find((d) => d.p === sel) ? ` · ${sim(view.near.find((d) => d.p === sel)!)} similar` : ''}
-            </span>
-          </div>
-          <button type="button" onClick={() => onPick(sel)} className="tap-40 rounded bg-gold px-3 py-1 font-display text-xs font-bold uppercase text-night">
-            Open Deep Dive
-          </button>
-        </div>
-      )}
 
       <div className="rounded-lg border border-gold/25 bg-gold/5 p-2.5 text-sm">
         <div className="font-display text-[11px] font-bold uppercase tracking-wider text-gold">What this says</div>

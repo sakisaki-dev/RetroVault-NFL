@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { Star } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -10,6 +10,9 @@ import { useCareerSeasons } from '@/utils/careerSeasons';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import { INK_STATS, inkFor, useHonours, useInk } from '@/utils/seasonBoards';
 import { findNFLTeam } from '@/utils/nflTeams';
+import { bannerTeamOf } from '@/utils/playerExtras';
+import { NFL_TIER_OVR_MIN } from '@/config/cardTiers';
+import { getReadableTextOn, liftForDarkBg } from '@/utils/teamColors';
 import { groupOf } from './graphs/statDefs';
 import { keyOf } from '../records';
 import './seasonTable.css';
@@ -73,6 +76,21 @@ const ABBR: Record<string, string> = { LA: 'LAR', STL: 'LAR', OAK: 'LV', SD: 'LA
 const clubName = (a: string) => findNFLTeam(ABBR[a] ?? a)?.name ?? a;
 
 const KIND_LABEL: Record<string, string> = { mvp: 'MVP', opoy: 'OPOY', dpoy: 'DPOY', oroy: 'OROY', droy: 'DROY', cpoy: 'CPOY', sbmvp: 'SB MVP' };
+/** honour chip tone: MVP gold, OPOY/DPOY blue, OROY/DROY green, Ring gold outline, SB MVP purple */
+const CHIP_TONE: Record<string, string> = { MVP: 'mvp', OPOY: 'off', DPOY: 'def', OROY: 'roy', DROY: 'roy', CPOY: 'cpoy', 'SB MVP': 'sb', Ring: 'ring' };
+/** SZN pill by the site's rating tiers (Legendary 96+, Epic 90+, Rare 78+, else Common) */
+const sznTier = (v: number) => (v >= NFL_TIER_OVR_MIN.legendary ? 'legendary' : v >= NFL_TIER_OVR_MIN.epic ? 'epic' : v >= NFL_TIER_OVR_MIN.rare ? 'rare' : 'common');
+/** a season with this few games or fewer reads as a short one (dimmed, games cell noted) */
+const FEW_GAMES = 7;
+
+const clubVars = (clubs: string[], band: boolean): CSSProperties => {
+  const t = findNFLTeam(ABBR[clubs[0]] ?? clubs[0]);
+  const t2 = clubs[1] ? findNFLTeam(ABBR[clubs[1]] ?? clubs[1]) : null;
+  const c = t ? liftForDarkBg(t.primaryColor, 42) : 'hsl(var(--line))';
+  const c2 = t2 ? liftForDarkBg(t2.primaryColor, 42) : c;
+  return { '--c': c, '--c2': c2, '--tint': band ? '13%' : '7%' } as CSSProperties;
+};
+
 const KIND_ORDER = ['mvp', 'opoy', 'dpoy', 'sbmvp', 'oroy', 'droy', 'cpoy'];
 
 interface SeasonRow {
@@ -118,16 +136,19 @@ const buildRows = (rows: GameRow[], cols: Col[]): SeasonRow[] => {
     });
 };
 
-const Plates = ({ clubs }: { clubs: string[] }) => (
-  <span className="st-clubs">
-    {clubs.slice(0, 3).map((c) => (
-      <span key={c} title={clubName(c)}>
-        <TeamLogo team={ABBR[c] ?? c} size={22} decorative backed />
-      </span>
-    ))}
-    {clubs.length > 1 && <span className="st-clubs__n">{clubs.length}</span>}
-  </span>
-);
+const Plates = ({ clubs }: { clubs: string[] }) => {
+  const names = clubs.map((c) => findNFLTeam(ABBR[c] ?? c));
+  const short = clubs.length === 1 ? names[0]?.name ?? clubs[0] : clubs.map((c) => ABBR[c] ?? c).join(' / ');
+  return (
+    <span className="st-clubs" title={clubs.map(clubName).join(' and ')}>
+      {clubs.slice(0, 3).map((c) => (
+        <TeamLogo key={c} team={ABBR[c] ?? c} size={22} decorative backed />
+      ))}
+      <span className="st-clubs__name">{short}</span>
+      <span className="st-clubs__abbr">{clubs.map((c) => ABBR[c] ?? c).join('/')}</span>
+    </span>
+  );
+};
 
 const SeasonTable = ({ player }: { player: Player }) => {
   const key = keyOf(player);
@@ -189,6 +210,13 @@ const SeasonTable = ({ player }: { player: Player }) => {
     });
     return ok ? { g, v } : null;
   })();
+  const banner = findNFLTeam(bannerTeamOf(player));
+  const footVars = (banner
+    ? { '--fb': `hsl(${banner.primaryColor})`, '--ff': getReadableTextOn(banner.primaryColor), '--fa': `hsl(${banner.secondaryColor})` }
+    : {}) as CSSProperties;
+  // a new band each time the club he opened the season with changes
+  const bands: boolean[] = [];
+  rows.forEach((r, i) => bands.push(i === 0 ? false : r.clubs[0] === rows[i - 1].clubs[0] ? bands[i - 1] : !bands[i - 1]));
   const noLog = rows.length === 0;
   const latest = rows.length ? rows[rows.length - 1].year : 0;
 
@@ -241,18 +269,22 @@ const SeasonTable = ({ player }: { player: Player }) => {
                 <td>–</td>
               </tr>
             )}
-            {rows.map((r) => {
+            {rows.map((r, i) => {
               const w = won(r.year);
               const s = szn.get(r.year);
+              const few = r.g <= FEW_GAMES;
               return (
-                <tr key={r.year} className={cn(w.length > 0 && 'st-hl')}>
+                <tr key={r.year} style={clubVars(r.clubs, bands[i])} className={cn('st-row', r.clubs.length > 1 && 'st-row--two', w.length > 0 && 'st-hl', few && 'st-few')}>
                   <td className="st-pin st-pin--a">
                     <b>{seasonLabel(r.year)}</b>
                   </td>
                   <td className="st-pin st-pin--b">
                     <Plates clubs={r.clubs} />
                   </td>
-                  <td>{r.g}</td>
+                  <td className="st-g" title={few ? `Only ${r.g} games played this season` : undefined}>
+                    {r.g}
+                    {few && <i className="st-few__dot" aria-label="Few games" />}
+                  </td>
                   {cols.map((c) => (
                     <td key={c.id} className={cn(led(c.ink, r.year) && 'st-led')}>
                       {fmt(r.v[c.id])}
@@ -261,26 +293,26 @@ const SeasonTable = ({ player }: { player: Player }) => {
                   ))}
                   <td className="st-honours">
                     {w.map((x) => (
-                      <span key={x} className={cn('st-chip', x === 'MVP' && 'st-chip--mvp')}>
+                      <span key={x} className={cn('st-chip', `st-chip--${CHIP_TONE[x] ?? 'plain'}`)}>
                         {x}
                       </span>
                     ))}
                   </td>
-                  <td>{s != null ? <span className={cn('st-szn', s >= 90 && 'st-szn--gold')}>{s}</span> : '–'}</td>
+                  <td>{s != null ? <span className={cn('st-szn', `st-szn--${sznTier(s)}`)}>{s}</span> : '–'}</td>
                 </tr>
               );
             })}
           </tbody>
-          {!noLog && <tfoot>
+          {!noLog && <tfoot style={footVars}>
             <tr>
               <td className="st-pin st-pin--a">Career</td>
-              <td className="st-pin st-pin--b" />
+              <td className="st-pin st-pin--b">{banner && <TeamLogo team={banner.abbreviation} size={22} decorative backed />}</td>
               <td>{fmt(player.games)}</td>
               {cols.map((c) => (
                 <td key={c.id}>{fmt(cardOf(c) ?? sums[c.id])}</td>
               ))}
               <td className="st-honours">
-                {player.rings > 0 && <span className="st-chip">{player.rings}× Ring</span>}
+                {player.rings > 0 && <span className="st-chip st-chip--ring">{player.rings}× Ring</span>}
                 {player.mvp > 0 && <span className="st-chip st-chip--mvp">{player.mvp}× MVP</span>}
               </td>
               <td />
