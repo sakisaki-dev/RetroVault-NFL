@@ -360,13 +360,13 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </p>
       )}
 
-      {feed.length > 3 && (
+      {(feed.length > 3 || (!active && cards.length > 0)) && (
         <button type="button" className="pn-more pn-more--all" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? 'See less' : `See ${feed.length - 3} more ${feed.length - 3 === 1 ? 'story' : 'stories'}`}
+          {open ? 'See less' : `See more${feed.length > 3 ? `: ${feed.length - 3} ${feed.length - 3 === 1 ? 'story' : 'stories'}` : ''}${!active && cards.length > 0 ? `${feed.length > 3 ? ', ' : ': '}from the archive` : ''}`}
         </button>
       )}
 
-      {cards.length > 0 && (
+      {cards.length > 0 && (active || open) && (
         <section className="pn-deep en-section" aria-labelledby="pn-deep-t" style={{ '--k': KIND_ACCENT.fantasy } as CSSProperties}>
           <Rubric id="pn-deep-t" kicker="From our data" count={cards.length} big>{active ? 'Deeper analysis' : 'From the archive'}</Rubric>
           <FillGrid
