@@ -9,6 +9,7 @@ import { fantasyFrom, hintFor, isRegular, outlookOf, useFantasyRaw, type Alt, ty
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { TrendChip, teamOf } from '../parts';
+import { ClubMark } from '@/components/fantasy/ClubMark';
 import { NameStrip, OppChip, PlayerHit, RangeBar, Sprite, hcVars } from './hubParts';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
 import type { Sub } from './FantasyHub';
@@ -72,8 +73,8 @@ const StartSitPage = ({ hub, onGo }: { hub: FantasyHub; onGo: (s: Sub) => void }
           const kind = hint?.kind ?? 'start';
           const B = BADGE[kind];
           return (
-            <li key={s.id} className={cn('fh-ss__card ix-card', `is-${kind}`)} style={{ ...hcVars(t?.name), ...stag(i, 60) }}>
-              {t && <span className="fh-wm" aria-hidden="true"><TeamLogo team={t} size={150} decorative /></span>}
+            <li key={s.id} className={cn('fh-ss__card ix-card fx-flat', `is-${kind}`)} style={{ ...hcVars(t?.name), ...stag(i, 60) }}>
+              <ClubMark club={t?.name} size={170} />
               <span className="fh-ss__pos">{s.label}</span>
               <span className={cn('fh-call', `fh-call--${kind}`)}><B.I className="h-3.5 w-3.5" aria-hidden="true" />{B.t}</span>
               <div className="fh-ss__fig">{prof && <PlayerHit pkey={key}><Sprite player={prof.player} club={t?.name} kind="figure" size="m" /></PlayerHit>}</div>

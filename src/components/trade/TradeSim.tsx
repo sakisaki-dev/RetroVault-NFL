@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Users, X } from 'lucide-react';
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowRight, ChevronDown, SlidersHorizontal, Users, X } from 'lucide-react';
 import { ArcadeToggle } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
@@ -8,6 +8,8 @@ import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import { evaluateTrade, type TradeTeam } from '@/utils/tradeSim';
 import { BeforeAfter, FindDeal, quickStarts, SideTotals, VerdictBar } from './TradeViews';
+import { ClubChips, ClubMark, fxTone } from '@/components/fantasy/ClubMark';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { AddSearch, MethodTip, PlayerPicker, RecvRow, TEAM_LABELS, TradeCard, teamVars } from './TradeParts';
 import type { useTradeEnv } from './useTrade';
 import './trade.css';
@@ -19,6 +21,10 @@ import './trade.css';
  * Rules and constants: src/utils/tradeSim.ts. Settings are remembered per device.
  */
 interface Side { give: { key: string; to: number }[]; roster: string[] }
+/** The distinct clubs a side sends (his column's header wears them). */
+const hdrClubs = (side: { give: { key: string }[] }, model: { players: Map<string, { club: string }> }) =>
+  [...new Set(side.give.map((g) => model.players.get(g.key)?.club).filter((c): c is string => !!c))];
+
 const emptySides = (): Side[] => Array.from({ length: 4 }, () => ({ give: [], roster: [] }));
 
 /** The Fantasy page's Trade sub-page: `env` is the page's one trade environment (model, league format, card players). */
@@ -75,14 +81,30 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
           {model && result && (
             <>
               <div className="fh-actions fh-actions--trade">
-                <ArcadeToggle<number> label="Trade sides" size="sm" value={n} onChange={setCount} options={[2, 3, 4].map((c) => ({ value: c, label: `${c} teams` }))} />
-                <ArcadeToggle<string> label="Rosters" size="sm" value={rosterMode ? 'r' : 'p'} onChange={(v) => setRosterMode(v === 'r')} options={[{ value: 'p', label: 'Players' }, { value: 'r', label: 'My rosters' }]} />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button type="button" className="fh-chip tr-setup" aria-haspopup="dialog" aria-label="Trade setup: team count and players or rosters">
+                      <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                      <span className="fh-chip__k">Setup</span>
+                      <b>{n} teams · {rosterMode ? 'Rosters' : 'Players'}</b>
+                      <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="tr-pop tr-setpop z-[70] w-[min(92vw,19rem)] p-3">
+                    <p className="tr-set__k">Teams in the trade</p>
+                    <ArcadeToggle<number> label="Trade sides" size="sm" value={n} onChange={setCount} options={[2, 3, 4].map((c) => ({ value: c, label: `${c} teams` }))} />
+                    <p className="tr-set__k mt-2">Trade with</p>
+                    <ArcadeToggle<string> label="Rosters" size="sm" value={rosterMode ? 'r' : 'p'} onChange={(v) => setRosterMode(v === 'r')} options={[{ value: 'p', label: 'Players' }, { value: 'r', label: 'My rosters' }]} />
+                  </PopoverContent>
+                </Popover>
                 <MethodTip model={model} />
               </div>
               {starts.length > 0 && (
-                <div className="tr-quick" aria-label="Quick starts">
+                <div className="tr-quick" role="group" aria-label="Quick starts">
                   <span className="tr-set__k">Try</span>
-                  {starts.map((q) => <button key={q.id} type="button" className="tr-qchip" onClick={() => quick(q.a, q.b)}>{q.label}</button>)}
+                  <div className="tr-quick__row">
+                    {starts.map((q) => <button key={q.id} type="button" className="tr-qchip" onClick={() => quick(q.a, q.b)}>{q.label}</button>)}
+                  </div>
                 </div>
               )}
 
@@ -93,7 +115,8 @@ const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
                   const mirror = n === 2 ? res.received : [];
                   return (
                     <section key={i} className={cn('tr-col tr-locker mo-rise', `tr-col--${'abcd'[i]}`)} style={{ ...teamVars(i), ...stag(i, 90) }} aria-label={TEAM_LABELS[i]}>
-                      <header className="tr-col__h">
+                      <header className={cn('tr-col__h', hdrClubs(side, model).length && 'fx-flat fx-row')} style={hdrClubs(side, model).length === 1 ? fxTone(hdrClubs(side, model)[0]) : { '--tc': 'var(--tm)' } as CSSProperties}>
+                        {hdrClubs(side, model).length === 1 ? <ClubMark club={hdrClubs(side, model)[0]} size={90} /> : <ClubChips clubs={hdrClubs(side, model)} />}
                         <span className="tr-col__badge" aria-hidden="true">{TEAM_LABELS[i].slice(-1)}</span>
                         <h2>{TEAM_LABELS[i]} sends</h2>
                         <small>{side.give.length ? `${side.give.length} player${side.give.length > 1 ? 's' : ''}` : 'nobody yet'}</small>

@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
 import { f1, type FPos } from '@/utils/fantasy';
 import { FAIR_PCT, LEAN_PCT, suggestPartner, type TradeModel, type TradeResult } from '@/utils/tradeSim';
+import { ClubMark, fxTone } from '@/components/fantasy/ClubMark';
 import { Fig, pts, signed, TEAM_LABELS, teamVars } from './TradeParts';
 import type { Player } from '@/types/player';
 
@@ -148,12 +149,13 @@ export const FindDeal = ({ model, playerKey, cards, onUse, partnerLabel }: { mod
           <ol className="tr-pk tr-pk--board">
             {list.map((pk, i) => (
               <li key={pk.keys.join('+')}>
-                <button type="button" className="tr-deal" onClick={() => { onUse(pk.keys); setOpen(false); }}>
+                <button type="button" className="tr-deal fx-flat fx-row" style={fxTone(model.players.get(pk.keys[0])?.club)} onClick={() => { onUse(pk.keys); setOpen(false); }}>
+                  <ClubMark club={model.players.get(pk.keys[0])?.club} size={72} />
                   <span className="tr-pk__rank" aria-hidden="true">{i + 1}</span>
                   <span className="tr-pk__who">
                     {pk.keys.map((k) => {
                       const p = model.players.get(k)!;
-                      return <span key={k} className="tr-pk__p"><Fig player={cards.get(k)} club={p.club} /><span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span></span>;
+                      return <span key={k} className="tr-pk__p" style={fxTone(p.club)}><Fig player={cards.get(k)} club={p.club} /><span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span></span>;
                     })}
                   </span>
                   <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>gap</i></span>

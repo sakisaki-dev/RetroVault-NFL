@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
+import { ClubMark, fxTone } from '@/components/fantasy/ClubMark';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
@@ -45,14 +46,16 @@ const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot | nul
             <CommandGroup>
               {slot?.id === 'dst'
                 ? [...NFL_TEAMS].sort((a, b) => a.name.localeCompare(b.name)).map((t) => (
-                    <CommandItem key={t.id} value={t.abbreviation} onSelect={() => done(`DST:${t.abbreviation}`)} className="fh-pick">
+                    <CommandItem key={t.id} value={t.abbreviation} onSelect={() => done(`DST:${t.abbreviation}`)} className="fh-pick fx-flat fx-row" style={fxTone(t.name)}>
+                      <ClubMark club={t.name} size={64} />
                       <TeamLogo team={t} size={24} decorative backed />
                       <span className="fh-pick__n">{t.fullName}</span>
                       <span className="fh-pick__m">${lab ? salaryOf(lab, `DST:${t.abbreviation}`) : 0}</span>
                     </CommandItem>
                   ))
                 : list.map(({ p, v }) => (
-                    <CommandItem key={p.key} value={p.key} onSelect={() => done(p.key)} className="fh-pick">
+                    <CommandItem key={p.key} value={p.key} onSelect={() => done(p.key)} className="fh-pick fx-flat fx-row" style={fxTone(bannerTeamOf(p.player))}>
+                      <ClubMark club={bannerTeamOf(p.player)} size={64} />
                       <TeamLogo team={teamOf(bannerTeamOf(p.player)) ?? bannerTeamOf(p.player)} size={24} decorative backed />
                       <span className="fh-pick__n">{nameOf(p.key)}</span>
                       <span className="fh-pick__m">{f1(v)} pts{lab ? ` · $${salaryOf(lab, p.key)}` : ''}</span>

@@ -1,0 +1,56 @@
+/* Fantasy cards in the site's flat club tone (the Record Book plaques, the College pick cards): the club colour toned
+   into the night panel, a 3px club-colour top stripe in place of an outline, the big cropped logo behind, a soft club
+   glow and a floor shadow under the sprite. Chalk text always reads on the 34% tone. */
+.fx-flat.fx-flat {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: color-mix(in srgb, var(--tc, #1a2147) 34%, #131a2e);
+  border: 1px solid color-mix(in srgb, var(--tc, #1a2147) 42%, transparent);
+  border-top: 3px solid var(--tc, #1a2147);
+  color: #fff;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.28);
+}
+.fx-flat.fx-row.fx-row { border-top-width: 2px; box-shadow: none; }
+.fx-wm {
+  position: absolute; right: -20px; top: -18px; z-index: -1; opacity: 0.2; pointer-events: none;
+  filter: saturate(1.1); line-height: 0;
+}
+.fx-row > .fx-wm { right: -12px; top: -14px; opacity: 0.17; }
+.fx-chips { position: absolute; right: 6px; top: 50%; translate: 0 -50%; z-index: -1; display: flex; opacity: 0.28; pointer-events: none; line-height: 0; }
+.fx-chips > * { margin-left: -10px; }
+
+/* the sprite's stand: a club glow behind and a small floor shadow under his feet */
+.tr-fig, .fh-slot__fig, .fh-brow__fig, .fh-duel__fig, .fh-ss__fig, .fh-vs__figs {
+  position: relative; isolation: isolate;
+}
+.tr-fig, .fh-slot__fig, .fh-brow__fig, .fh-duel__fig, .fh-ss__fig {
+  background: radial-gradient(closest-side at 50% 62%, color-mix(in srgb, var(--tc, transparent) 60%, transparent), transparent 82%);
+}
+.fh-slot__fig::after, .fh-brow__fig::after, .fh-duel__fig::after, .fh-ss__fig::after {
+  content: ''; position: absolute; z-index: -1; left: 14%; right: 14%; bottom: 1px; height: 7px; border-radius: 50%;
+  background: color-mix(in srgb, var(--tc, #000) 45%, #000); opacity: 0.6;
+}
+.fh-ss__fig::after { left: 22%; right: 22%; bottom: 2px; height: 10px; }
+.fh-vs__figs { background: radial-gradient(closest-side at 50% 70%, rgb(255 255 255 / 0.16), transparent 80%); }
+.tr-fig::before { opacity: 0.7; }
+
+/* a card that has gone flat drops the old left bar and its own thin watermark */
+.fh-ss__card .fh-wm { display: none; }
+.fx-flat .fh-ss__pos { color: #fff; }
+
+/* the team columns' headers: the club (or clubs) behind "Team A sends" */
+.tr-col__h.fx-flat.fx-flat { padding: 0.35rem 0.5rem; border-radius: 10px; min-height: 46px; }
+.tr-col__h.fx-flat > :not(.fx-wm):not(.fx-chips) { position: relative; z-index: 1; }
+.tr-col__h.fx-flat small { color: rgb(255 255 255 / 0.8); }
+
+/* head to head halves: the cropped logo, the 3px stripe, the glow behind the four stars */
+.fh-vs__side { border-top: 3px solid var(--vsA); }
+.fh-vs__side.is-right { border-top-color: var(--vsB); }
+.fh-vs__side .fh-vs__logo { top: -14px; left: auto; right: -22px; translate: none; opacity: 0.22; line-height: 0; }
+.fh-vs__side.is-right .fh-vs__logo { right: auto; left: -22px; }
+
+@media (prefers-reduced-motion: reduce) { .fx-flat, .fx-flat * { transition: none !important; } }
+.fx-flat[data-selected='true'], .fx-flat:hover { outline: 2px solid hsl(var(--gold) / 0.85); outline-offset: -2px; }
+/* beats the locker's solid team-accent header */
+.tr-locker .tr-col__h.fx-flat.fx-flat { background: color-mix(in srgb, var(--tc) 34%, #131a2e); border-top: 3px solid var(--tc); }
+.tr-locker .tr-col__h.fx-flat h2, .tr-locker .tr-col__h.fx-flat small { color: #fff; }
+.tr-locker .tr-col__h.fx-flat .tr-col__badge { background: var(--tm); color: #0b1020; }

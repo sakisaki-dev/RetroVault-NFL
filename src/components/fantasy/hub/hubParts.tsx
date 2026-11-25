@@ -9,7 +9,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { clubPlate } from '@/components/arcade/clubInk';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { useGameSprites } from '@/utils/gameSprites';
-import { clubHue, NextLogos, teamOf } from '../parts';
+import { NextLogos, teamOf } from '../parts';
 import type { Slot } from '@/utils/fantasy';
 
 /** Anything that shows a player: a tap opens his player card, a hold the quick look. */
@@ -26,7 +26,7 @@ export const PlayerHit = ({ pkey, className, children, label }: { pkey: string; 
 /** Flat club-colour variables: --hc (fill), --hc2 (edge), --hink (text on fill). */
 export const hcVars = (club?: string | null): CSSProperties => {
   const p = clubPlate(club ?? null);
-  return { '--hc': p.fill, '--hc2': p.edge, '--hink': p.ink, '--tc': clubHue(club ?? '') } as CSSProperties;
+  return { '--hc': p.fill, '--hc2': p.edge, '--hink': p.ink, '--tc': p.fill } as CSSProperties;
 };
 
 /** His game sprite in his club's kit (a bust or the whole figure); the club logo where the build has no sprites. */

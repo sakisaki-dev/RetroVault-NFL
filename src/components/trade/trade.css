@@ -212,3 +212,14 @@
   .tr-pk li { grid-template-columns: minmax(0, 1fr) auto; }
   .tr-pk .tr-use { grid-column: 1 / -1; }
 }
+
+/* setup chip and the "Try" row: one compact row, the chips scroll sideways inside their own box */
+.tr-setup { max-width: 100%; }
+.tr-setup .fh-chip__k { display: inline; }
+.fh-actions--trade { flex-wrap: nowrap; }
+.tr-setpop .tr-seg, .tr-setpop [role='radiogroup'] { width: 100%; }
+.tr-quick { flex-wrap: nowrap; min-width: 0; margin-bottom: 0.6rem; }
+.tr-quick > .tr-set__k { flex: none; }
+.tr-quick__row { display: flex; gap: 0.4rem; min-width: 0; flex: 1 1 auto; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px 0; }
+.tr-quick__row::-webkit-scrollbar { display: none; }
+.tr-qchip { flex: none; max-width: none; white-space: nowrap; }

@@ -3,7 +3,8 @@ import { ChevronDown, Info, Plus, Search, X } from 'lucide-react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
 import { matchPlayer } from '@/components/PlayerSearchSelect';
-import { clubHue, NextLogos, teamOf } from '@/components/fantasy/parts';
+import { ClubMark, fxTone } from '@/components/fantasy/ClubMark';
+import { NextLogos, teamOf } from '@/components/fantasy/parts';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -124,7 +125,8 @@ export const TradeCard = ({
   const bio = useBioInfo(p.key);
   const flags = useMemo(() => flagsFor(p, bio?.age ?? null), [p, bio]);
   return (
-    <article className={cn('tr-card ix-card', ghost && 'tr-card--ghost')} style={{ '--tc': clubHue(p.club) } as CSSProperties}>
+    <article className={cn('tr-card ix-card fx-flat', ghost && 'tr-card--ghost')} style={fxTone(p.club)}>
+      <ClubMark club={p.club} size={150} />
       <div className="tr-card__main">
         <button type="button" className="tr-open" {...peekKeyProps(p.key)} onClick={() => openCard(p.key)} aria-label={`Open ${p.name}'s card`}>
           <Fig player={player} club={p.club} />
@@ -201,8 +203,10 @@ export const PlayerPicker = ({
                   key={p.key}
                   value={p.key}
                   onSelect={() => { onPick(p.key); setOpen(false); setQ(''); }}
-                  className="tr-pick"
+                  className="tr-pick fx-flat fx-row"
+                  style={fxTone(p.club)}
                 >
+                  <ClubMark club={p.club} size={64} />
                   <TeamLogo team={teamOf(p.club)} size={22} decorative backed />
                   <span className="tr-pick__n">{p.name}</span>
                   <span className="tr-pick__m">{p.pos}{p.posRank} · {p.ros.toFixed(0)} ROS</span>
@@ -232,7 +236,8 @@ export const MethodTip = ({ model }: { model: TradeModel }) => {
 export const RecvRow = ({ p, player, model }: { p: TradePlayer; player?: Player; model: TradeModel }) => {
   const openCard = useOpenCard();
   return (
-    <button type="button" className="tr-recv" style={{ '--tc': clubHue(p.club) } as CSSProperties} {...peekKeyProps(p.key)} onClick={() => openCard(p.key)} aria-label={`Open ${p.name}'s card`}>
+    <button type="button" className="tr-recv fx-flat fx-row" style={fxTone(p.club)} {...peekKeyProps(p.key)} onClick={() => openCard(p.key)} aria-label={`Open ${p.name}'s card`}>
+      <ClubMark club={p.club} size={84} />
       <Fig player={player} club={p.club} />
       <span className="tr-id"><b className="tr-name">{p.name}</b><span className="tr-sub"><em className="tr-pos">{p.pos}{p.posRank}</em><span>{p.club}</span></span></span>
       <span className="tr-recv__n"><b>{f1(p.ppg)}</b><i>{SCORING_LABEL[model.settings.scoring]}/g</i></span>
@@ -261,7 +266,8 @@ export const AddSearch = ({ model, taken, cards, onPick, big }: { model: TradeMo
           {list.length === 0 && <li className="tr-muted tr-search__none">No fantasy player matches.</li>}
           {list.map((p) => (
             <li key={p.key}>
-              <button type="button" role="option" aria-selected="false" onClick={() => { onPick(p.key); setQ(''); setOn(false); (document.activeElement as HTMLElement | null)?.blur(); }}>
+              <button type="button" role="option" aria-selected="false" className="fx-flat fx-row" style={fxTone(p.club)} onClick={() => { onPick(p.key); setQ(''); setOn(false); (document.activeElement as HTMLElement | null)?.blur(); }}>
+                <ClubMark club={p.club} size={72} />
                 <Fig player={cards.get(p.key)} club={p.club} />
                 <span className="tr-id"><b className="tr-name">{p.name}</b><span className="tr-sub"><em className="tr-pos">{p.pos}{p.posRank}</em><span>{p.club}</span></span></span>
                 <span className="tr-recv__n"><b>{f1(p.ppg)}</b><i>{SCORING_LABEL[model.settings.scoring]}/g</i></span>
