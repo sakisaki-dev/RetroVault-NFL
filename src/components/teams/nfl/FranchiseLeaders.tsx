@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { SectionHeader } from '@/components/arcade';
+import { ClubPicker } from '@/components/controls';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import { PlayerHit, StarSprite } from '@/components/season/NflSeasonExtras';
@@ -118,13 +119,7 @@ const FranchiseLeaders = ({ teams, league }: { teams: TeamSummary[]; league: Pla
   return (
     <section aria-labelledby="fl-heading" className="fl space-y-3" style={{ ['--p' as string]: `hsl(${club.primaryColor})`, ['--s' as string]: `hsl(${secondary})` }}>
       <SectionHeader kicker={`${club.city} ${club.name}`} title={<span id="fl-heading">Franchise leaders</span>} club={club.name} />
-      <div className="fl-picker" role="group" aria-label="Club">
-        {clubs.map((c) => (
-          <button key={c.key} type="button" aria-pressed={c.team!.name === club.name} aria-label={c.label} title={c.label} onClick={() => setPicked(c.team!.name)} className={cn('fl-pick', c.team!.name === club.name && 'is-on')}>
-            <TeamLogo team={c.team!} size={28} decorative />
-          </button>
-        ))}
-      </div>
+      <ClubPicker label="Club" allLabel={null} value={club.abbreviation} onChange={(a) => { const c = clubs.find((x) => x.team!.abbreviation === a); if (c) setPicked(c.team!.name); }} />
       {cards.length === 0 ? (
         <p className="sx-note">No career totals on record for this club yet.</p>
       ) : (

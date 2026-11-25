@@ -33,7 +33,7 @@
 .ctl-foot:empty { display: none; }
 /* a Choice inside a sheet may wrap rather than scroll: there is room */
 .ctl-group__body .ax-toggle { flex-wrap: wrap; border-radius: 14px; }
-.ctl-hint { font-size: 12px; line-height: 1.3; color: hsl(var(--muted-foreground)); }
+.ctl-hint { flex-basis: 100%; font-size: 12px; line-height: 1.3; color: hsl(var(--muted-foreground)); }
 .ctl-clubs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .ctl-club { display: grid; place-items: center; min-height: 44px; border-radius: 10px; border: 1px solid transparent; background: hsl(var(--card)); opacity: 0.85; }
 .ctl-club:hover { opacity: 1; border-color: hsl(var(--gold) / 0.6); }
