@@ -1092,7 +1092,8 @@ github.com/sakisaki-dev/RetroVault-NFL (owner approved, 2026-11-24: "deployed li
   static build (`VITE_STATIC_HOST=1`, `FULL_ARTICLES` in `src/utils/espnArticle.ts`) shows the feed's summary and a
   "Read on ESPN" link without fetching; dev and `vite preview` keep the full reader (fetches time out after 8 s).
 - Before a push, scan new commits for anything private (tokens, emails, phone numbers, addresses); raw saves
-  (`data/saves/`) and upload images stay git-ignored. The widget's tap (`SITE` in `public/widgets/rv-nfl-widget.js`)
+  (`data/saves/`) and upload images stay git-ignored. The daily widget job commits only to the `widget-data` branch,
+  so it never conflicts with this push (see the NFL widget section). The widget's tap (`SITE` in `public/widgets/rv-nfl-widget.js`)
   opens the public site.
 
 ## NFL widget (the iPhone widget for the NFL edition)
@@ -1119,29 +1120,44 @@ between games, lock screen). It never touches the Retro Bowl widget (`retro-vaul
   Data and ESPN responses are cached: offline still draws.
 - **Refresh** (`refreshAfterDate`): +5 min while the club plays, +10 min while other games are live, otherwise at the next
   kickoff or 7 am, +60 min in the final window. iOS may run it later (Low Power Mode); 5 minutes is the best a widget gets.
-- **Hosting and the daily refresh** (owner: "nothing to run on the mac, put it on github pages the same way we have the
-  widget working for retrovault"): the PUBLIC repo `github.com/sakisaki-dev/rv-nfl-widget` (clone `~/Code/rv-nfl-widget`,
-  branch `main`). A GitHub Actions workflow there (`.github/workflows/daily.yml`, cron `7 14 * * *`: 6:07 am Pacific in
-  winter, 7:07 in summer, plus `gh workflow run daily.yml -R sakisaki-dev/rv-nfl-widget`) downloads the season's nflverse
-  files (games, injuries, roster, depth charts, weekly player stats, snap counts), runs its own `scripts/` (copies of
-  `injuries.py`, `depth_charts.py`, `season_ovr.py`'s live SZN, `playoff_odds.py` and `widget_data.py`, standard library
-  only, checked to give the same results as this repo's on the same files) and commits `widget.json` when it
-  changed; nothing runs on the Mac (the old launchd job `~/Code/Tools/rv-nfl-daily.sh` is gone). It never draws sprites:
-  it names the files already in the repo's `widget-sprites/` (a player with none yet is drawn without one, logo or
-  number). Served raw (`https://raw.githubusercontent.com/sakisaki-dev/rv-nfl-widget/main/<file>`) and on GitHub Pages
-  (`https://sakisaki-dev.github.io/rv-nfl-widget/<file>`, branch main, root, `.nojekyll`); the script and the installer
-  read raw, then Pages, then the cache. No token anywhere. `LAN_BASE` (top of the script) overrides it with the local
-  preview (`http://<Mac IP>:4174/`). No site code goes to that repo.
-- **Manual refresh** (new players' sprites, a widget code change; occasional, never daily): after `npm run nfl:rebuild`,
-  `bash scripts/nfl/widget_publish.sh [clone dir]`. It reruns `widget_data.py` with `RV_NFL_SPARE=1` (also draws spare
+- **Hosting and the daily refresh** (owner, 2026-11-25: fold the widget into the site's repo so one public repo holds everything; earlier "nothing to run on the
+  mac, put it on github pages"): the widget lives IN this repo, github.com/sakisaki-dev/RetroVault-NFL. The old
+  `github.com/sakisaki-dev/rv-nfl-widget` is archived (read-only, still served; its `rv-nfl-widget.js` is a one-file
+  forwarder that loads the code from here, so phones installed before the move keep updating with no action).
+  - **Where things are:** `widget/` (outside the Vite build; `widget/scripts/` the daily build, standard library only,
+    `widget/inputs/` players with gsis / pfr ids, ESPN ids, art paths, `widget/README.md` the full widget README with
+    its screenshots in `widget/docs/`); the widget code `public/widgets/rv-nfl-widget.js` and installer
+    `public/widgets/rv-nfl-install.js`; the sprites and art are the site's own `public/data/nfl/widget-sprites/` and
+    `widget-art/` (one copy, no duplicate under `widget/`: they are already tracked, served by Pages and read as raw files).
+  - **The daily job** `.github/workflows/nfl-widget-daily.yml` (cron `7 14 * * *`: 6:07 am Pacific in winter, 7:07 in
+    summer, plus `gh workflow run nfl-widget-daily.yml -R sakisaki-dev/RetroVault-NFL`; guarded to that repo) sparse-checks-out `widget/` and
+    the sprite and art folders from `main`, downloads the season's nflverse files, runs `widget/scripts/` and commits
+    `widget.json` to the **`widget-data` branch** (one file; an empty-diff day commits nothing), then starts the Pages
+    deploy with `gh workflow run deploy-nfl-pages.yml` (a `GITHUB_TOKEN` push starts no workflow by itself, but
+    `workflow_dispatch` is allowed). It never draws sprites and never touches `main`.
+  - **Why a branch (no conflicts):** `main` is updated only by the owner's `git push nfl nfl-demo:main`; a bot committing
+    to `main` every morning would make that push non-fast-forward. `widget-data` is a separate ref only the bot writes;
+    `deploy-nfl-pages.yml` copies its `widget.json` into `dist/widget/widget.json` (plus the widget code and installer into
+    `dist/widget/`) after the site build, so every deploy, from a push or from the bot, ships the newest data. Never commit
+    `widget/widget.json` (git-ignored locally) and never push to `widget-data` by hand.
+  - **URLs the widget reads** (raw, then Pages, then the phone's cache; no token): `widget.json` from
+    `https://raw.githubusercontent.com/sakisaki-dev/RetroVault-NFL/widget-data/widget.json`, then
+    `https://sakisaki-dev.github.io/RetroVault-NFL/widget/widget.json`; sprites and art (named `data/nfl/...` in
+    widget.json) from `https://raw.githubusercontent.com/sakisaki-dev/RetroVault-NFL/main/public/data/nfl/...`, then
+    `https://sakisaki-dev.github.io/RetroVault-NFL/data/nfl/...`. The installer fetches the code from
+    `.../main/public/widgets/rv-nfl-widget.js`, then Pages `/widgets/rv-nfl-widget.js`. `LAN_BASE` (top of the script)
+    overrides all with the local preview (`http://<Mac IP>:4174/`).
+- **Manual refresh** (new players' sprites; occasional, never daily): after `npm run nfl:rebuild`,
+  `bash scripts/nfl/widget_publish.sh [--push]`. It reruns `widget_data.py` with `RV_NFL_SPARE=1` (also draws spare
   sprites: every club's six best skill players and both depth-chart QBs, the MVP race's ten, every Vikings player with a
-  game, so the daily build finds a sprite when the week's picks move on), writes the repo's `inputs/`
-  (`scripts/nfl/widget_inputs.py`: players who can play this season with gsis / pfr ids and clubs, their ESPN ids, the
-  art paths), copies `widget-sprites/`, `widget-art/` and `rv-nfl-widget.js`, commits, pushes and starts the workflow.
+  game, so the daily build finds a sprite when the week's picks move on), writes `widget/inputs/`
+  (`scripts/nfl/widget_inputs.py`), commits those and the sprite and art folders on the current branch, and with `--push`
+  pushes to the NFL repo's `main` and starts the daily workflow. A widget code change is an ordinary commit of
+  `public/widgets/rv-nfl-widget.js`; the next push to `main` publishes it (phones fetch it on their next run).
 - **Install**: Scriptable > new script, paste `public/widgets/rv-nfl-install.js` (it loads the widget code from the public
   repo, cached for offline), add a Scriptable widget. No key.
-- **Harness**: `node scripts/nfl/widget_harness.mjs [outDir] [filter]` (`RV_NFL_WIDGET_DATA=~/Code/rv-nfl-widget` to run it on
-  the repo's GitHub-built data; `raw-down-large` checks the Pages fallback) stubs Scriptable and renders every mode x size
+- **Harness**: `node scripts/nfl/widget_harness.mjs [outDir] [filter]` (`RV_NFL_WIDGET_DATA=<dir>` to run it on another data folder with
+  the same layout, e.g. one holding the bot's `widget.json`; `raw-down-large` checks the Pages fallback) stubs Scriptable and renders every mode x size
   (HTML + tree dumps, `contact.html` has all) from `scripts/nfl/widget_fixtures/` (a recorded ESPN scoreboard and summary,
   `fetch_fixtures.py` re-records them; the finished game is turned live for the live views). Pinned to Pacific time.
 

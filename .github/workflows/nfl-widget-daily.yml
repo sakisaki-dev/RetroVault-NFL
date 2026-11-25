@@ -1,0 +1,81 @@
+name: NFL widget daily data
+
+# Rebuilds the NFL widget's feed (widget.json) every morning from the public nflverse data, with nothing running on a Mac:
+# download the season's files, then injuries, depth charts, SZN, playoff odds and widget.json (widget/scripts/, standard
+# library only), and commit what changed to the `widget-data` BRANCH, never to main.
+#
+# Why a separate branch: the site's source of truth is the local nfl-demo branch, pushed by hand with
+# `git push nfl nfl-demo:main`. A bot committing to main would make that push non-fast-forward every morning. widget-data
+# holds one file (widget.json), so the two never touch the same ref. The widget reads widget.json from raw GitHub's
+# widget-data branch; the Pages deploy (deploy-nfl-pages.yml) copies it from that branch into the site at /widget/widget.json.
+# A push made with GITHUB_TOKEN does not start other workflows, so this job starts the deploy itself
+# (workflow_dispatch is the one event a GITHUB_TOKEN may trigger).
+# Sprites and art are never drawn here: the files in public/data/nfl/widget-sprites/ and widget-art/ (main) are reused.
+on:
+  schedule:
+    - cron: "7 14 * * *"   # 6:07 am Pacific in winter (PST, UTC-8), 7:07 am in summer (PDT); Actions may start it a little late
+  workflow_dispatch:
+
+permissions:
+  contents: write   # push to widget-data
+  actions: write    # start the Pages deploy
+
+concurrency:
+  group: nfl-widget-daily
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.repository == 'sakisaki-dev/RetroVault-NFL'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # only what the build reads: widget/ (scripts, inputs) and the site's sprite and art folders
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          sparse-checkout: |
+            widget
+            public/data/nfl/widget-sprites
+            public/data/nfl/widget-art
+      - uses: actions/checkout@v5
+        with:
+          ref: widget-data
+          path: wd
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      # standard library only: no pip install
+      - name: Download the season's nflverse files
+        run: python3 widget/scripts/fetch.py
+      - name: Build widget.json
+        env:
+          TZ: America/Los_Angeles
+        run: |
+          cd widget/scripts
+          python3 injuries.py
+          python3 depth_charts.py
+          python3 season_ovr.py
+          python3 playoff_odds.py
+          python3 widget_data.py
+      - name: Commit to widget-data when something changed
+        id: commit
+        run: |
+          cp widget/widget.json wd/widget.json
+          cd wd
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add widget.json
+          if git diff --cached --quiet; then
+            echo "widget data unchanged"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -q -m "Widget data: $(python3 -c "import json;d=json.load(open('widget.json'));print(f\"{d['season']} week {d['week']}\")") (daily)"
+            git push origin HEAD:widget-data
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Redeploy the site so Pages serves the new widget.json
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-nfl-pages.yml --ref main -R "${{ github.repository }}"

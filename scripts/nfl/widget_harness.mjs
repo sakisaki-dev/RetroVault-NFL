@@ -4,8 +4,7 @@
  * as scripts/widget_harness.mjs: it stubs the Scriptable API, runs the script once per view and renders each widget
  * tree to HTML (DrawContext calls as SVG, the script's own output).
  *
- *   - widget data, sprites and art: served from public/data/nfl/ (or RV_NFL_WIDGET_DATA, e.g. a clone of the data repo
- *     ~/Code/rv-nfl-widget, whose layout is the same) as raw.githubusercontent.com and GitHub Pages would serve the
+ *   - widget data, sprites and art: served from public/data/nfl/ (or RV_NFL_WIDGET_DATA, a folder with the same layout) as raw.githubusercontent.com and GitHub Pages would serve the
  *     public repo; `raw-down` scenarios lose raw GitHub, so the script must fall back to Pages
  *   - ESPN: recorded fixtures in scripts/nfl/widget_fixtures/ (scoreboard.json, summary.json, scoreboard_upcoming.json,
  *     fetched by fetch_fixtures.py). The finished game is turned into a live one for the live views (status, clock,
@@ -171,7 +170,9 @@ function makeEnv(family, opts) {
       requests.push(this.url);
       if (opts.offline) { this.response.statusCode = 0; throw new Error('offline ' + this.url); }
       let m;
-      if ((m = /^https:\/\/(?:raw\.githubusercontent\.com\/sakisaki-dev\/rv-nfl-widget\/main|sakisaki-dev\.github\.io\/rv-nfl-widget)\/(.+)$/.exec(this.url))) {
+      // the widget's home: raw GitHub (widget.json on the widget-data branch, sprites and art under main's public/) and
+      // GitHub Pages (widget.json at /widget/, the rest at the site's data/nfl/), all served from public/data/nfl/
+      if ((m = /^https:\/\/(?:raw\.githubusercontent\.com\/sakisaki-dev\/RetroVault-NFL\/(?:widget-data|main\/public\/data\/nfl)|sakisaki-dev\.github\.io\/RetroVault-NFL\/(?:widget|data\/nfl))\/(.+)$/.exec(this.url))) {
         if (opts.rawDown && this.url.includes('raw.githubusercontent.com')) { this.response.statusCode = 503; throw new Error('raw down'); }
         const p = join(NFL, m[1]);
         if (!existsSync(p)) { this.response.statusCode = 404; throw new Error('404 ' + m[1]); }
@@ -450,8 +451,8 @@ for (const [id, family, opts] of views) {
     const w = box.widget;
     if (opts.rawDown) {
       // raw GitHub refused every file: widget.json and the sprites must have come from GitHub Pages
-      const pages = box.requests.filter((u) => u.startsWith('https://sakisaki-dev.github.io/rv-nfl-widget/'));
-      if (!pages.some((u) => u.endsWith('/widget.json')) || !pages.some((u) => u.includes('/widget-sprites/'))) throw new Error('no GitHub Pages fallback');
+      const pages = box.requests.filter((u) => u.startsWith('https://sakisaki-dev.github.io/RetroVault-NFL/'));
+      if (!pages.some((u) => u.endsWith('/widget/widget.json')) || !pages.some((u) => u.includes('/widget-sprites/'))) throw new Error('no GitHub Pages fallback');
     }
     results[id] = w;
     writeFileSync(join(OUT, `${id}.tree.txt`), dump(w));

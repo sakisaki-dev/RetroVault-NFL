@@ -11,7 +11,7 @@
 //   6  weekdays                       a rotating between-games view: the club card, the playoff race, the MVP race
 //   7  the offseason                  the season in the books
 //
-// Data: widget.json and its sprites and art (rebuilt daily on GitHub Actions in the repo below; scripts/nfl/widget_data.py
+// Data: widget.json and its sprites and art (rebuilt daily on GitHub Actions in the repo below; widget/scripts/widget_data.py
 // is the local copy), live scores from ESPN. Both are cached, so it still draws offline.
 //
 // Refresh (refreshAfterDate): every 5 minutes while the club plays, every 10 while other games are live, at kickoff
@@ -23,25 +23,27 @@
 // first one; otherwise they alternate.
 
 // ---------- where the data lives ----------
-// The public repo github.com/sakisaki-dev/rv-nfl-widget: a GitHub Actions workflow there rebuilds widget.json every
-// morning from nflverse (nothing runs on a Mac); scripts/nfl/widget_publish.sh pushes the sprites, art and this code.
-// Read from raw.githubusercontent.com first, then the same files on GitHub Pages, then the last cached copy: no key,
-// no API rate limit. LAN_BASE is an optional override for testing: `npm run nfl:dev` serves public/ at :4174 on the
-// LAN, e.g. 'http://192.168.1.243:4174/'.
-const REPO = 'sakisaki-dev/rv-nfl-widget';
-const PAGES = 'https://sakisaki-dev.github.io/rv-nfl-widget/';
+// One public repo, github.com/sakisaki-dev/RetroVault-NFL (the NFL edition's site). widget.json is rebuilt every morning
+// by a GitHub Actions workflow there (nfl-widget-daily.yml; nothing runs on a Mac) and kept on the `widget-data` branch;
+// the sprites and art are the site's own public/data/nfl/ files on `main`. Read from raw.githubusercontent.com first,
+// then the same files on GitHub Pages (widget.json at /widget/widget.json), then the last cached copy: no key, no API
+// rate limit. LAN_BASE is an optional override for testing: `npm run nfl:dev` serves public/ at :4174 on the LAN, e.g.
+// 'http://192.168.1.243:4174/'.
+const REPO = 'sakisaki-dev/RetroVault-NFL';
+const PAGES = 'https://sakisaki-dev.github.io/RetroVault-NFL/';
 const LAN_BASE = '';
 // Tap with no Parameter: the NFL edition's public site
 const SITE = 'https://sakisaki-dev.github.io/RetroVault-NFL/';
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
 // Kept for the offline screen's wording: the repo is public, so a key is never needed
 const TOKEN = 'public';
-// widget.json names files by their site path ('data/nfl/widget-sprites/x.png'); the repo keeps them without 'data/nfl/'
-const repoPath = (p) => p.replace(/^data\/nfl\//, '');
-// Where one of our files can be fetched, in order: raw GitHub, then Pages
+// widget.json names files by their site path ('data/nfl/widget-sprites/x.png'). Where one of our files can be fetched, in
+// order: raw GitHub, then Pages. widget.json itself is the one file that lives on the widget-data branch.
+const FEED = 'data/nfl/widget.json';
 function dataUrls(path) {
   if (LAN_BASE) return [LAN_BASE + path];
-  return [`https://raw.githubusercontent.com/${REPO}/main/${repoPath(path)}`, PAGES + repoPath(path)];
+  if (path === FEED) return [`https://raw.githubusercontent.com/${REPO}/widget-data/widget.json`, PAGES + 'widget/widget.json'];
+  return [`https://raw.githubusercontent.com/${REPO}/main/public/${path}`, PAGES + path];
 }
 
 // ---------- look ----------

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""The slow-changing inputs of the NFL widget's daily build on GitHub (github.com/sakisaki-dev/rv-nfl-widget,
-scripts/ there), written into that repo's inputs/ folder. Run by `bash scripts/nfl/widget_publish.sh --refresh`.
+"""The slow-changing inputs of the NFL widget's daily build on GitHub (.github/workflows/nfl-widget-daily.yml
+running widget/scripts/), written into widget/inputs/. Run by `bash scripts/nfl/widget_publish.sh`.
 
-    python3 scripts/nfl/widget_inputs.py <clone dir>
+    python3 scripts/nfl/widget_inputs.py [dir, default widget/]
 
   players.json   every player who can play this season (on a roster of the last two seasons, or a game or snap this
                  season): key `POS:Name`, gsis id, pfr id (nflverse players.csv, for snap counts) and his club now
@@ -23,7 +23,7 @@ SEASON = 2026
 
 
 def main():
-    dest = Path(sys.argv[1]) / "inputs"
+    dest = (Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "widget") / "inputs"
     dest.mkdir(parents=True, exist_ok=True)
     live = set()
     for y in (SEASON - 1, SEASON):
@@ -50,7 +50,7 @@ def main():
     rows.sort()
     keys = {r[0] for r in rows}
     w = lambda name, data: (dest / name).write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")  # noqa: E731
-    w("players.json", {"_about": "Players who can play this season, for the daily widget build. Written by the Retro Vault NFL edition (scripts/nfl/widget_inputs.py).",
+    w("players.json", {"_about": "Players who can play this season, for the daily widget build. Written by scripts/nfl/widget_inputs.py.",
                        "season": SEASON, "cols": ["key", "gsis", "pfr", "team"], "rows": rows})
     espn = json.loads((ROOT / "public/data/nfl/espn_ids.json").read_text())
     w("espn_ids.json", {k: v for k, v in sorted(espn.items()) if v in keys})

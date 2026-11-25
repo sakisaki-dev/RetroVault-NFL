@@ -248,6 +248,16 @@ local weather (Open-Meteo, rounded coordinates kept on the device), and real rai
 
 ---
 
+## Widget
+
+<!-- The full site README (another task) keeps this heading; the widget's own README is widget/README.md. -->
+
+**RV NFL** is an iPhone (Scriptable) widget that follows one NFL club through the season in Retro Bowl pixel art: live
+game, Sunday slate, final, preview, playoff race and MVP race, on every size and the lock screen. It lives in this
+repo: the code is `public/widgets/rv-nfl-widget.js`, the daily data build is `widget/` plus
+`.github/workflows/nfl-widget-daily.yml` (it commits `widget.json` to the `widget-data` branch every morning), and the
+sprites and art are the site's `public/data/nfl/widget-*` folders. Install and details: [widget/README.md](widget/README.md).
+
 ## Running it
 
 ```bash

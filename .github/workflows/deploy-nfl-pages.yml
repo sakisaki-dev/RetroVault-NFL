@@ -34,6 +34,17 @@ jobs:
           BASE_PATH: /RetroVault-NFL/
           # No /espn-content proxy on Pages: the News reader shows the summary and a "Read on ESPN" link
           VITE_STATIC_HOST: "1"
+      # The widget (Scriptable, iPhone): widget.json is kept on the widget-data branch by nfl-widget-daily.yml, so main's
+      # pushes and the bot's data never collide; it is copied in here, at /widget/widget.json, beside the widget's code
+      - name: Add the widget data
+        run: |
+          mkdir -p dist/widget
+          cp public/widgets/rv-nfl-widget.js public/widgets/rv-nfl-install.js dist/widget/
+          if git fetch --depth 1 origin widget-data; then
+            git show FETCH_HEAD:widget.json > dist/widget/widget.json
+          else
+            echo "::warning::no widget-data branch: /widget/widget.json is not served"
+          fi
       # Deep links fall back to the app instead of GitHub's 404 page
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
