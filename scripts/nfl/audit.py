@@ -90,6 +90,20 @@ if po:
                 errors.append("playoff_odds.json final field is not 14 clubs")
         if not any(str(x.get("season")) == str(po["season"]) for x in (sched or {}).get("seasonIndex", [])) and po["status"] == "live":
             warns.append("playoff_odds.json season has no schedule.json entry")
+wd = load("nfl/widget.json")
+if wd:
+    if po and (wd["season"] != po["season"] or wd["week"] != po["week"]):
+        errors.append("nfl/widget.json is stale (season or week differs from playoff_odds.json): run scripts/nfl/widget_data.py")
+    sprites = {u for p in wd["players"].values() for u in p["sprites"].values()}
+    art = [u for k, v in wd["art"].items() for u in (v.values() if isinstance(v, dict) else [v])]
+    for u in list(sprites) + art:
+        if not (PUB.parent / "public" / u).exists() and not (ROOT / "public" / u).exists():
+            errors.append(f"nfl/widget.json names {u}, which is not a file")
+            break
+    if wd["club"]["w"] + wd["club"]["l"] + wd["club"]["t"] != sum(1 for g in wd["schedule"] if g["played"]):
+        errors.append("nfl/widget.json: the club's record does not match its played games")
+    if len(wd["mvp"]) < 3 or not wd.get("best"):
+        warns.append("nfl/widget.json has no MVP race or club best player")
 print(f"nfl audit: {len(players)} players, {len(errors)} errors, {len(warns)} warnings")
 for w in warns[:10]:
     print("warn:", w)
