@@ -45,6 +45,7 @@ import { useLegendPhoto } from './player/useLegendPhoto';
 import { useDeferredStage } from '@/hooks/useDeferredStage';
 import './player/playerCard.css';
 import DraftTiles from './player/DraftTiles';
+import BioTile from './player/BioTiles';
 import { useDraftInfo } from '@/utils/draftInfo';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { RetiredHangers, RetiredStrip } from './teams/RetiredBadge';
@@ -453,6 +454,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
               )}
             </div>
             <DraftTiles playerKey={`${player.position}:${player.name}`} bannerClub={team?.name ?? null} />
+            <BioTile player={player} />
             <RetiredStrip player={player} onLeave={onClose} className="pc-ids__retired" />
             {formerName && <p className="pc-ids__former">Formerly known as {formerName}</p>}
           </div>
