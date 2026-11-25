@@ -23,6 +23,8 @@ interface Props {
   players: Player[];
   seasonOvr: SeasonOvrFile | null;
   onOpenPlayer: (p: Player) => void;
+  /** Career OVR by key (a retiree's slot under the skill card) */
+  careerOvr?: Map<string, number>;
 }
 
 /**
@@ -30,7 +32,7 @@ interface Props {
  * played it, Career for a retiree. The season grades rank his season's per-game rates against everyone at his position
  * who played that season (same traits, same curve); a stat the season line lacks shows "no data".
  */
-const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props) => {
+const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer, careerOvr }: Props) => {
   const key = playerKey(player);
   const line = seasonOvr?.lines?.[key];
   const hasSeason = !!line && player.status === 'Active';
@@ -138,7 +140,7 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer }: Props
         overall={grades.overall}
         players={useSeason ? seasonPlayers : players}
         onOpenPlayer={(p) => onOpenPlayer(players.find((x) => playerKey(x) === playerKey(p)) ?? p)}
-        below={<DdSzn player={player} players={players} seasonOvr={seasonOvr} onOpenPlayer={onOpenPlayer} />}
+        below={<DdSzn player={player} players={players} seasonOvr={seasonOvr} careerOvr={careerOvr} onOpenPlayer={onOpenPlayer} />}
         overallList={IS_NFL ? overallList : undefined}
       />
       {IS_NFL && useSeason && (grades as { smallSample?: boolean }).smallSample && seasonPoolLabel(seasonPlayers, player.position) && (
