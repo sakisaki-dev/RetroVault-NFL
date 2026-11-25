@@ -389,13 +389,14 @@ export const careerSkillOveralls = (players: Player[], advPctsOf: (key: string) 
   });
   byPos.forEach((group, pos) => {
     const ctx = IS_NFL && advReady(pos) ? careerCtx(players, pos) : null;
+    const poolSet = ctx ? new Set(ctx.pool) : null;
     const rows = group.flatMap((p) => {
-      const base = playerSkillGrades(players, p).overall;
+      const base = playerOverallOnly(players, p);
       if (!base) return [];
       const key = `${p.position}:${p.name}`;
       const pcts = ctx ? advPctsOf(key).filter(Number.isFinite) : [];
       const folded = pcts.length ? foldAdvanced(base, pcts)! : base;
-      return [{ key, folded, cover: pcts.length > 0, q: !!ctx && ctx.pool.includes(p) }];
+      return [{ key, folded, cover: pcts.length > 0, q: !!poolSet && poolSet.has(p) }];
     });
     const withAdv: number[] = [];
     const classic: number[] = [];
@@ -424,6 +425,22 @@ export interface SkillGrade {
   /** NFL career grades: the stat has no between-player signal, so there is no tile ("not enough signal") */
   noSignal?: boolean;
 }
+
+/**
+ * Just his overall, for the bulk grade pass over every player (careerSkillOveralls): the same maths as playerSkillGrades
+ * but without the per-trait rows and their display strings (7,000 players × ~12 traits of Intl formatting).
+ */
+const playerOverallOnly = (players: Player[], player: Player): Overall | null => {
+  const cc = careerCtx(players, player.position);
+  if (!cc) return playerSkillGrades(players, player).overall;
+  const pos = player.position;
+  const traits = cc.features;
+  const raw = overallFor(traits, cc.baseline, traits.map((t) => (isNoSignal(pos, t.id, cc.season) ? null : finiteOrNull(shrunkOf(cc, pos, t, player)))), pos, cc.season);
+  if (!raw) return null;
+  const pct = percentileOf(cc.overallSorted, raw.pct);
+  const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
+  return { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
+};
 
 /** Every trait of one player: value, percentile and letter grade, plus his overall on the same mapping. */
 export const playerSkillGrades = (players: Player[], player: Player): { traits: SkillGrade[]; overall: Overall | null; smallSample?: boolean } => {

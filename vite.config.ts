@@ -31,6 +31,32 @@ const nflIcons = (): Plugin => ({
   },
 });
 
+// The data store (src/utils/dataStore.ts) can only name a file's `?v=` URL once it has public/data/manifest.json, and
+// it used to ask for the manifest only after the JS had booted and a tab chunk wanted data, behind the tab's chunk
+// requests. index.html now starts the (10 KB) manifest request first thing, and the entry module prewarms the league
+// sheet and the core extras the moment it runs (main.tsx, prewarmData). A page that does not ship the manifest is
+// untouched. (Preloading the data files from the HTML itself was measured and is slower: they share the line with the
+// JS and CSS and delay first paint.)
+const earlyManifest = (): Plugin => {
+  let base = "/";
+  return {
+    name: "early-manifest",
+    apply: "build",
+    configResolved(config) {
+      base = config.base.endsWith("/") ? config.base : `${config.base}/`;
+    },
+    transformIndexHtml() {
+      return [
+        {
+          tag: "script",
+          children: `window.__rvManifest=fetch(${JSON.stringify(`${base}data/manifest.json`)},{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null});`,
+          injectTo: "head-prepend" as const,
+        },
+      ];
+    },
+  };
+};
+
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   // GitHub Pages serves the site from /RetroVault/; the deploy workflow sets BASE_PATH. Local dev stays at /.
@@ -48,6 +74,7 @@ export default defineConfig(() => ({
   preview: { proxy: ESPN_PROXY },
   plugins: [
     react(),
+    earlyManifest(),
     process.env.VITE_EDITION === "nfl" && nflIcons(),
     process.env.VITE_EDITION !== "nfl" &&
       ((): Plugin => {

@@ -73,13 +73,22 @@ export interface ClassicNote {
 const EMPTY: PlayerExtras = { realNflCareer: {}, cards: {}, formerNames: {}, family: {}, franchises: {}, stints: {}, signatureTeams: {}, legacyTeams: {}, retiredBy: {} };
 
 /** Name key that ignores case, extra spaces and curly vs straight apostrophes/quotes. */
-export const normalizeName = (name: string) =>
-  name
-    .replace(/[‘’ʼ`´]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
+// Memoized: the league's ~7,000 names are normalized again for every map and index built from them (a Season cold start
+// spent ~180 ms of real time, ~700 ms at 4x CPU, in these regexes), and the same strings come back each time.
+const NORMAL = new Map<string, string>();
+export const normalizeName = (name: string): string => {
+  let n = NORMAL.get(name);
+  if (n === undefined) {
+    n = name
+      .replace(/[‘’ʼ`´]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+    NORMAL.set(name, n);
+  }
+  return n;
+};
 
 const reindex = <T,>(rec: unknown): Record<string, T> => {
   const out: Record<string, T> = {};

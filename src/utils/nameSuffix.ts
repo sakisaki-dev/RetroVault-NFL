@@ -7,7 +7,16 @@
 const SUFFIX = /\s+(jr|sr|ii|iii|iv|v)\.?$/i;
 
 /** "James Cook III" -> "James Cook"; a two-word name ("Jr. Smith") is left alone. */
-export const stripSuffix = (name: string): string => (name.trim().split(/\s+/).length > 2 ? name.trim().replace(SUFFIX, '') : name.trim());
+const STRIPPED = new Map<string, string>();
+export const stripSuffix = (name: string): string => {
+  let r = STRIPPED.get(name);
+  if (r === undefined) {
+    const t = name.trim();
+    r = t.split(/\s+/).length > 2 ? t.replace(SUFFIX, '') : t;
+    STRIPPED.set(name, r);
+  }
+  return r;
+};
 
 /** `POS:Name` key without the suffix: "WR:Marvin Harrison Jr." -> "WR:Marvin Harrison". */
 export const stripKeySuffix = (key: string): string => {

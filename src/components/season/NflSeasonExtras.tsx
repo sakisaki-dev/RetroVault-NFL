@@ -114,16 +114,21 @@ const useKeyFinder = () => {
   const { getAllPlayers, dataVersion } = useLeague();
   return useMemo(() => {
     const by = new Map<string, Player[]>();
-    const exact = new Set(getAllPlayers().map((p) => normalizeName(p.name.replace(/\s*\(.*\)$/, ''))));
-    getAllPlayers().forEach((p) => {
-      const n = normalizeName(p.name.replace(/\s*\(.*\)$/, ''));
-      by.set(n, [...(by.get(n) ?? []), p]);
+    const all = getAllPlayers();
+    const full = all.map((p) => normalizeName(p.name.replace(/\s*\(.*\)$/, '')));
+    const exact = new Set(full);
+    all.forEach((p, i) => {
+      const l = by.get(full[i]);
+      if (l) l.push(p);
+      else by.set(full[i], [p]);
     });
     // game lines and award lists drop the suffix ("James Cook" for "James Cook III"): an exact name still wins
-    getAllPlayers().forEach((p) => {
+    all.forEach((p, i) => {
       const bare = normalizeName(stripSuffix(p.name.replace(/\s*\(.*\)$/, '')));
-      if (bare === normalizeName(p.name.replace(/\s*\(.*\)$/, '')) || exact.has(bare)) return;
-      by.set(bare, [...(by.get(bare) ?? []), p]);
+      if (bare === full[i] || exact.has(bare)) return;
+      const l = by.get(bare);
+      if (l) l.push(p);
+      else by.set(bare, [p]);
     });
     return (name: string, pos?: string): string | null => {
       const list = by.get(normalizeName(name)) ?? by.get(normalizeName(stripSuffix(name))) ?? [];
