@@ -3,7 +3,7 @@ import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import { careerRatingOf } from '@/config/ovr';
 import PlayerNews from '@/components/espn/PlayerNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
+import { Activity, CalendarClock, Trophy, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
 import {
   POSITIONS,
@@ -38,6 +38,8 @@ import SeasonTable from './SeasonTable';
 import DdGameLog from '../gamelog/DdGameLog';
 import SeasonHeader from '../gamelog/SeasonHeader';
 import DdSkills from './DdSkills';
+import FantasySection from '@/components/fantasy/FantasySection';
+import { useFantasy } from '@/utils/fantasy';
 import DdCareerNumbers from './DdCareerNumbers';
 import DdWhoPlays from './DdWhoPlays';
 import DdRealComps, { realCompSets, uniqueRealComps } from './DdRealComps';
@@ -87,6 +89,8 @@ const ALL_SECTIONS = [
 const SECTIONS: readonly { id: string; label: string; short: string; icon: typeof Gauge }[] = IS_NFL
   ? ALL_SECTIONS.filter((s) => s.id !== 'dd-clock').flatMap((s) => (s.id === 'dd-gamelog' ? [s, { id: 'dd-news', label: 'News', short: 'News', icon: Newspaper }] : [s]))
   : ALL_SECTIONS;
+
+const FANTASY_SECTION = { id: 'dd-fantasy', label: 'Fantasy', short: 'Fantasy', icon: Trophy };
 
 const useMedia = (query: string) => {
   const [on, setOn] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia(query).matches);
@@ -390,6 +394,9 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   );
 
   // ---------- Section index (scroll-spy) ----------
+  // Fantasy leads the index for an active QB / RB / WR / TE with a game this season
+  const hasFantasy = !!useFantasy(IS_NFL && player?.status === 'Active' ? keyOf(player) : null);
+  const sections = useMemo(() => (hasFantasy ? [FANTASY_SECTION, ...SECTIONS] : SECTIONS), [hasFantasy]);
   const [active, setActive] = useState<string>(SECTIONS[0].id);
   useEffect(() => {
     // Scroll-spy on the scroll position itself: the section whose top has passed a line 30% down the screen is the
@@ -400,13 +407,13 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
       raf = 0;
       const line = window.innerHeight * 0.3;
       let cur = SECTIONS[0].id;
-      for (const s of SECTIONS) {
+      for (const s of sections) {
         const el = document.getElementById(s.id);
         if (el && el.getBoundingClientRect().top - line <= 0) cur = s.id;
       }
       // at the very bottom the last section counts even if its top never reaches the line
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
-        const last = [...SECTIONS].reverse().find((s) => document.getElementById(s.id));
+        const last = [...sections].reverse().find((s) => document.getElementById(s.id));
         if (last) cur = last.id;
       }
       setActive(cur);
@@ -422,7 +429,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
       window.removeEventListener('resize', onScroll);
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, [player]);
+  }, [player, sections]);
   const jump = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
     setActive(id);
@@ -491,7 +498,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   const nav = (
     <nav aria-label="Deep Dive sections">
       <ul className="flex gap-1 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible">
-        {SECTIONS.map((s) => {
+        {sections.map((s) => {
           const on = s.id === active;
           return (
             <li key={s.id} className="shrink-0">
@@ -573,6 +580,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}
           {lowerReady && <>
+          {hasFantasy && player && (
+            <DdSection id="dd-fantasy" index={-1} title="Fantasy" icon={Trophy} kicker="PPR rank, form, matchups and consistency this season">
+              <FantasySection playerKey={keyOf(player)} active />
+            </DdSection>
+          )}
+
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker="Letter grades by position percentile"
               info={IS_NFL && careerPoolLabel(player.position) ? `Percentile among qualified ${player.position}s (career: ${careerPoolLabel(player.position)}; a season: its weekly bar), on rates shrunk by sample size. S = top 10%. A stat with no between-player signal gets no tile.` : `Percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games. S = top 8%.`}>
             <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
