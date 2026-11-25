@@ -1,9 +1,12 @@
 import { cn } from '@/lib/utils';
+import { IS_NFL } from '@/config/edition';
 import { useIncludeLegends } from './useIncludeLegends';
 
 /** Switch for overlaying real NFL players on the Lab charts (league baselines never change). */
 const LegendsToggle = ({ className }: { className?: string }) => {
   const [on, setOn] = useIncludeLegends();
+  // the NFL edition has no separate real-player pool: everyone is already in the league
+  if (IS_NFL) return null;
   return (
     <button
       type="button"
