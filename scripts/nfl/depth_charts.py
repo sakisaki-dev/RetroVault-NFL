@@ -14,11 +14,12 @@ Injuries are applied on the site (public/data/nfl/injuries.json). Deterministic.
 import csv
 import gzip
 import json
+from datetime import date
 import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SEASON = 2026
+SEASON = date.today().year if date.today().month >= 8 else date.today().year - 1  # the season in progress (as fetch.py)
 SRC = Path(os.environ.get("RV_DEPTH_DIR") or ROOT / "data" / "nfl-cache") / f"depth_charts_{SEASON}.csv.gz"
 ABBR = {"LA": "LAR", "WSH": "WAS", "ARZ": "ARI", "BLT": "BAL", "CLV": "CLE", "HST": "HOU", "SD": "LAC", "STL": "LAR", "OAK": "LV", "JAC": "JAX"}
 OFF = ["QB", "RB", "WR", "TE", "LT", "LG", "C", "RG", "RT"]

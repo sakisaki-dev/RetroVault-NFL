@@ -10,6 +10,11 @@ name: NFL widget daily data
 # widget-data branch; the Pages deploy (deploy-nfl-pages.yml) copies it from that branch into the site at /widget/widget.json.
 # A push made with GITHUB_TOKEN does not start other workflows, so this job starts the deploy itself
 # (workflow_dispatch is the one event a GITHUB_TOKEN may trigger).
+# The same job also keeps the SITE's live-season files fresh (they were built only by hand in `npm run nfl:rebuild`):
+# public/data/nfl/ thisseason.json, fantasy.json (also the trade simulator), injuries.json, playoff_odds.json and
+# depth_charts.json. They are rebuilt here with the site's own scripts (scripts/nfl/, standard library only) from a live
+# fetch (scripts/nfl/fetch.py --live) and committed to widget-data under site/nfl/; the Pages deploy lays them over
+# public/data/nfl/ and re-versions them in data/manifest.json (scripts/nfl/overlay_live.py). Main's copies stay the fallback.
 # Sprites and art are never drawn here: the files in public/data/nfl/widget-sprites/ and widget-art/ (main) are reused.
 on:
   schedule:
@@ -36,6 +41,8 @@ jobs:
           ref: main
           sparse-checkout: |
             widget
+            scripts/nfl
+            data/y80/players.json
             public/data/nfl/widget-sprites
             public/data/nfl/widget-art
       - uses: actions/checkout@v5
@@ -58,14 +65,28 @@ jobs:
           python3 season_ovr.py
           python3 playoff_odds.py
           python3 widget_data.py
+      # the site's live-season files: the season in progress's nflverse files into data/nfl-cache/ (git-ignored), then the
+      # site's own scripts (the order matters: This season reads the odds' picks); about 25 s
+      - name: Build the site's live-season files
+        env:
+          TZ: America/Los_Angeles
+        run: |
+          python3 scripts/nfl/fetch.py --live
+          python3 scripts/nfl/playoff_odds.py
+          python3 scripts/nfl/injuries.py
+          python3 scripts/nfl/depth_charts.py
+          python3 scripts/nfl/this_season.py
+          python3 scripts/nfl/fantasy.py
       - name: Commit to widget-data when something changed
         id: commit
         run: |
           cp widget/widget.json wd/widget.json
+          mkdir -p wd/site/nfl
+          for f in thisseason fantasy injuries playoff_odds depth_charts; do cp public/data/nfl/$f.json wd/site/nfl/$f.json; done
           cd wd
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add widget.json
+          git add widget.json site/nfl
           if git diff --cached --quiet; then
             echo "widget data unchanged"
             echo "pushed=false" >> "$GITHUB_OUTPUT"
