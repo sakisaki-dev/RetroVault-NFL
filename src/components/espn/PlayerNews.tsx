@@ -137,7 +137,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
   const inj = useInjury(key);
   const log = useGameLog(key);
   const [openSec, setOpenSec] = useState<Set<string>>(() => new Set());
-  // the section is long: collapsed it shows his top bar, next game, note and three stories; See more opens the rest
+  // only the stories fold: collapsed it shows three, See more opens the rest; analysis, timeline and teammates always show
   const [open, setOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -360,13 +360,13 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </p>
       )}
 
-      {!open && (feed.length > 3 || cards.length > 0 || timeline || mates) && (
-        <button type="button" className="pn-more pn-more--all" onClick={() => setOpen(true)} aria-expanded={false}>
-          See more: {feed.length > 3 ? `${feed.length - 3} more ${feed.length - 3 === 1 ? 'story' : 'stories'}, ` : ''}deeper analysis{timeline ? ', timeline' : ''}
+      {feed.length > 3 && (
+        <button type="button" className="pn-more pn-more--all" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          {open ? 'See less' : `See ${feed.length - 3} more ${feed.length - 3 === 1 ? 'story' : 'stories'}`}
         </button>
       )}
 
-      {open && cards.length > 0 && (
+      {cards.length > 0 && (
         <section className="pn-deep en-section" aria-labelledby="pn-deep-t" style={{ '--k': KIND_ACCENT.fantasy } as CSSProperties}>
           <Rubric id="pn-deep-t" kicker="From our data" count={cards.length} big>{active ? 'Deeper analysis' : 'From the archive'}</Rubric>
           <FillGrid
@@ -381,13 +381,7 @@ const PlayerNewsBody = ({ player }: { player: Player }) => {
         </section>
       )}
 
-      {open && (timeline || mates) && <div className="pn-pair">{timeline}{mates}</div>}
-
-      {open && (
-        <button type="button" className="pn-more pn-more--all" onClick={() => setOpen(false)} aria-expanded>
-          See less
-        </button>
-      )}
+      {(timeline || mates) && <div className="pn-pair">{timeline}{mates}</div>}
 
       <p className="pn-foot">
         {RULES[player.position].hasLine ? `Key stat: ${keyLabelOf(player.position)}. ` : ''}Articles and the player note are ESPN&apos;s, live; every analysis card is generated from our game logs, schedule and card market, with its source on the card.
