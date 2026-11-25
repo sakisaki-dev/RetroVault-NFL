@@ -226,7 +226,7 @@ const MapSection = ({
                   <p className="mt-1.5">
                     His {N_NEAR} nearest careers (by the same {mapMode === 'style' ? 'style (shape correlation)' : 'level + style'} score the comps use, over {model.features.map((f) => f.label).join(', ')}) are the squares,
                     in club colours with a gold rim for Hall of Famers; the faint blue pixels are where the rest of the position sits (darker = more players), dashed lines are the position medians.
-                    Pick the axes with the presets or the X and Y menus; the filters (era, active or retired, starters) apply to the whole chart and to who counts as a neighbour. Tap a square for his card.
+                    Pick the axes with the presets or the X and Y menus; the filters (era, active or retired, starters) apply to the whole chart and to who counts as a neighbour. Tap a square (or press Enter on it) for a quick look with Head-to-Head, Deep Dive and his card.
                   </p>
                   <p className="mt-1.5">
                     Families: places every {player.position} by play-style shape instead (his style percentiles with his overall level taken out, so how he plays, not how good

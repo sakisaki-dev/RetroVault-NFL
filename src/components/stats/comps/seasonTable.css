@@ -1,35 +1,63 @@
-/* Deep Dive, Season by season (SeasonTable.tsx): a professional table, flat and readable; the club logos and the gold stars carry the colour. */
+/* Deep Dive, Season by season (SeasonTable.tsx): each season wears its club (stripe, logo, tint), stints alternate in bands, the career row is the banner club's footer. Numbers stay Barlow tabular. */
 .st { display: grid; gap: 8px; min-width: 0; }
 .st-scroll { overflow-x: auto; border: 1px solid hsl(var(--line)); border-radius: 14px; background: hsl(var(--panel)); overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
 .st-scroll:focus-visible { outline: 2px solid hsl(var(--gold)); outline-offset: 2px; }
-.st-table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-size: 13px; }
-.st-table th, .st-table td { padding: 7px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid hsl(var(--line) / 0.5); background: hsl(var(--panel)); }
-.st-table thead th { position: sticky; top: 0; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); background: hsl(var(--panel-2)); }
+.st-table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-size: 14px; }
+.st-table th, .st-table td { padding: 8px 11px; text-align: right; white-space: nowrap; border-bottom: 1px solid hsl(var(--line) / 0.4); background: hsl(var(--panel)); font-family: var(--font-display); font-weight: 600; letter-spacing: 0.01em; }
+.st-table thead th { position: sticky; top: 0; padding-top: 10px; padding-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: hsl(var(--muted-foreground)); background: hsl(var(--panel-2)); border-bottom: 2px solid hsl(var(--line)); }
 .st-table tbody tr:last-child td { border-bottom: 0; }
 .st-table .st-pin { position: sticky; z-index: 2; text-align: left; }
-.st-table .st-pin--a { left: 0; width: 78px; min-width: 78px; }
-.st-table .st-pin--b { left: 78px; width: 70px; min-width: 70px; box-shadow: 6px 0 8px -6px rgb(0 0 0 / 0.55); }
+.st-table .st-pin--a { left: 0; width: 76px; min-width: 76px; }
+.st-table .st-pin--b { left: 76px; width: 138px; min-width: 138px; box-shadow: 6px 0 8px -6px rgb(0 0 0 / 0.55); }
 .st-table thead .st-pin { z-index: 3; }
-.st-table td.st-pin--a b { font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 0.02em; }
-.st-hl td { background: hsl(var(--gold) / 0.06); }
-.st-hl td.st-pin { background: hsl(var(--panel)); }
+.st-table td.st-pin--a b { font-size: 16px; font-weight: 800; letter-spacing: 0.02em; }
+
+/* the club's identity: tint across the row (opaque, so the pinned cells cover what scrolls under them), a stripe on the left edge */
+.st-row td { background: color-mix(in srgb, var(--c) var(--tint), hsl(var(--panel))); }
+.st-row td.st-pin--a { box-shadow: inset 5px 0 0 var(--c); padding-left: 16px; }
+.st-row--two td.st-pin--a { box-shadow: inset 5px 0 0 var(--c); background-image: linear-gradient(to bottom, transparent 50%, var(--c2) 50%); background-size: 5px 100%; background-repeat: no-repeat; padding-left: 16px; }
+.st-few td { opacity: 0.62; }
+.st-few td.st-pin--a, .st-few td.st-pin--b { opacity: 0.85; }
+.st-few td.st-g { opacity: 1; color: hsl(var(--muted-foreground)); }
+.st-few__dot { display: inline-block; width: 6px; height: 6px; margin-left: 5px; border-radius: 50%; background: hsl(var(--gold)); vertical-align: middle; }
 .st-pre td { color: hsl(var(--muted-foreground)); font-style: italic; }
-.st-table tfoot td { font-weight: 700; border-top: 2px solid hsl(var(--line)); border-bottom: 0; background: hsl(var(--panel-2)); }
-.st-clubs { display: inline-flex; align-items: center; gap: 3px; }
-.st-clubs__n { font-size: 10px; color: hsl(var(--muted-foreground)); }
-.st-honours { text-align: left !important; white-space: normal !important; min-width: 130px; }
+
+.st-clubs { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; }
+.st-clubs__name { margin-left: 3px; font-weight: 700; color: hsl(var(--foreground)); }
+.st-clubs__abbr { display: none; margin-left: 2px; font-size: 12px; }
+.st-honours { text-align: left !important; white-space: normal !important; min-width: 150px; font-weight: 400 !important; }
 .st-honours .st-chip { margin: 1px 4px 1px 0; }
-.st-chip { display: inline-block; padding: 1px 7px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: hsl(var(--night, 226 50% 8%)); border: 1px solid hsl(var(--line)); color: hsl(var(--foreground)); font-style: normal; }
+.st-chip { display: inline-block; padding: 1px 8px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: hsl(var(--night, 226 50% 8%)); border: 1px solid hsl(var(--line)); color: hsl(var(--foreground)); font-style: normal; }
 .st-chip--mvp { background: hsl(var(--gold)); border-color: hsl(var(--gold)); color: hsl(226 50% 8%); }
+.st-chip--off, .st-chip--def { background: hsl(212 80% 56% / 0.2); border-color: hsl(212 80% 60%); color: hsl(212 90% 78%); }
+.st-chip--roy { background: hsl(148 60% 42% / 0.2); border-color: hsl(148 60% 48%); color: hsl(148 70% 72%); }
+.st-chip--cpoy { background: hsl(174 60% 40% / 0.2); border-color: hsl(174 60% 46%); color: hsl(174 70% 70%); }
+.st-chip--sb { background: hsl(268 70% 60% / 0.22); border-color: hsl(268 80% 70%); color: hsl(268 90% 82%); }
+.st-chip--ring { background: transparent; border: 1.5px solid hsl(var(--gold)); color: hsl(var(--gold)); }
 .st-note { font-size: 11px; font-style: italic; color: hsl(var(--muted-foreground)); font-weight: 400; }
-.st-led { color: hsl(var(--gold)); font-weight: 800; }
+
+/* a stat he led the league in */
+.st-table td.st-led { color: hsl(var(--gold)); font-weight: 800; background: color-mix(in srgb, hsl(var(--gold)) 14%, hsl(var(--panel))); }
 .st-star { display: inline-block; width: 11px; height: 11px; margin: -2px 0 0 3px; fill: hsl(var(--gold)); color: hsl(var(--gold)); vertical-align: middle; }
 .st-star--inline { margin: -2px 2px 0 0; }
-.st-szn { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 8px; text-align: center; font-weight: 800; background: hsl(var(--panel-2)); border: 1px solid hsl(var(--line)); }
-.st-szn--gold { background: hsl(var(--gold)); border-color: hsl(var(--gold)); color: hsl(226 50% 8%); }
+
+/* SZN pill by rating tier */
+.st-szn { display: inline-block; min-width: 34px; padding: 1px 8px; border-radius: 999px; text-align: center; font-weight: 800; background: hsl(22 62% 56% / 0.18); border: 1px solid hsl(22 62% 56% / 0.7); color: hsl(22 70% 72%); }
+.st-szn--rare { background: hsl(208 72% 66% / 0.18); border-color: hsl(208 72% 66%); color: hsl(208 85% 80%); }
+.st-szn--epic { background: hsl(268 86% 70% / 0.2); border-color: hsl(268 86% 70%); color: hsl(268 90% 84%); }
+.st-szn--legendary { background: hsl(26 100% 58%); border-color: hsl(26 100% 58%); color: hsl(226 50% 8%); }
+
+/* career footer band in the banner club's colour */
+.st-table tfoot td { font-weight: 800; font-size: 15px; border-top: 0; border-bottom: 0; background: var(--fb, hsl(var(--panel-2))); color: var(--ff, hsl(var(--foreground))); }
+.st-table tfoot td.st-pin--a { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.st-table tfoot .st-chip { background: rgb(0 0 0 / 0.28); border-color: rgb(255 255 255 / 0.5); color: #fff; }
+.st-table tfoot .st-chip--mvp { background: hsl(var(--gold)); color: hsl(226 50% 8%); border-color: hsl(var(--gold)); }
 .st-foot { font-size: 11px; color: hsl(var(--muted-foreground)); }
 @media (max-width: 640px) {
-  .st-table th, .st-table td { padding: 7px 8px; }
-  .st-table .st-pin--a { width: 64px; min-width: 64px; }
-  .st-table .st-pin--b { left: 64px; width: 62px; min-width: 62px; }
+  .st-table th, .st-table td { padding: 8px 8px; }
+  .st-table .st-pin--a { width: 62px; min-width: 62px; }
+  .st-table .st-pin--b { left: 62px; width: 88px; min-width: 88px; }
+  .st-clubs__name { display: none; }
+  .st-clubs__abbr { display: inline; }
+  .st-row--two .st-clubs__abbr { display: none; }
 }
