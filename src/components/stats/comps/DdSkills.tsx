@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { Player } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { overallBoard, skillBoard, type Overall, type SkillBoard, type SkillGrade } from '@/config/skillGrades';
@@ -19,6 +19,8 @@ interface Props {
   /** League players (the grade pools are built from these) */
   players: Player[];
   onOpenPlayer: (p: Player) => void;
+  /** The Season panel: stacked under the Skill tile (left column on a desktop) */
+  below?: ReactNode;
 }
 
 const toPeek = (title: string, metric: string, pos: string, b: SkillBoard): PeekBoard => ({
@@ -32,18 +34,22 @@ const toPeek = (title: string, metric: string, pos: string, b: SkillBoard): Peek
 });
 
 /** Broadcast-style rating cards: one letter grade per play-style skill, graded by percentile within the position. */
-const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, players, onOpenPlayer }: Props) => {
+const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, players, onOpenPlayer, below }: Props) => {
   const graded = traits.filter((t) => t.grade);
   if (!graded.length) {
     return (
-      <p className="glass-card p-4 text-sm text-muted-foreground">
-        No graded skills yet: too few of {displayName(player.name)}&rsquo;s rates are on record. Grades appear once he has the stats for them.
-      </p>
+      <div className="space-y-3">
+        <p className="glass-card p-4 text-sm text-muted-foreground">
+          No graded skills yet: too few of {displayName(player.name)}&rsquo;s rates are on record. Grades appear once he has the stats for them.
+        </p>
+        {below}
+      </div>
     );
   }
   const best = [...graded].sort((a, b) => b.percentile - a.percentile)[0];
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
+      <div className="min-w-0 space-y-3">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -84,6 +90,8 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
           </button>
         </LeaderboardPeek>
       )}
+      {below}
+      </div>
       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
