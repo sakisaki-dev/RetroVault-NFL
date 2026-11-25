@@ -231,6 +231,10 @@ def main():
             ks = sorted((k for k in active if club_of(k) == t and k.split(":")[0] in SKILL), key=lambda k: (-szn["ovr"][k], k))
             for k in ks[:6] + (depth.get(t, {}).get("o", {}).get("QB") or [])[:2]:
                 extra(k, "", "left")
+        # every active player on a club, in his current kit (owner: "make pictures of every active player"), so only a
+        # trade or a signing between refreshes ever falls back to a number
+        for k in sorted(k for k in active if club_of(k)):
+            extra(k, "")
         for k in sorted(mvp_pool, key=lambda k: (-szn["ovr"][k], k))[:10]:
             extra(k, "", "sil")
         everyone = sorted((k for k in active if club_of(k) == CLUB), key=lambda k: (-szn["ovr"][k], k))
