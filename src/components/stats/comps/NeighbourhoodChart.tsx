@@ -324,13 +324,13 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
           {xt.map((t) => (
             <g key={`x${t}`}>
               <line x1={px(t)} x2={px(t)} y1={pad.t} y2={H - pad.b} stroke={VIZ.grid} strokeWidth={0.6} />
-              <text x={px(t)} y={H - pad.b + 13} textAnchor="middle" fontSize={9} fill={VIZ.muted}>{fmt(X, t)}</text>
+              <text x={px(t)} y={H - pad.b + 13} textAnchor="middle" fontSize={12} fill={VIZ.muted}>{fmt(X, t)}</text>
             </g>
           ))}
           {yt.map((t) => (
             <g key={`y${t}`}>
               <line y1={py(t)} y2={py(t)} x1={pad.l} x2={W - pad.r} stroke={VIZ.grid} strokeWidth={0.6} />
-              <text x={pad.l - 5} y={py(t) + 3} textAnchor="end" fontSize={9} fill={VIZ.muted}>{fmt(Y, t)}</text>
+              <text x={pad.l - 5} y={py(t) + 3} textAnchor="end" fontSize={12} fill={VIZ.muted}>{fmt(Y, t)}</text>
             </g>
           ))}
           {[...view.cells].map(([k, c]) => {
@@ -341,8 +341,8 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
           })}
           {Number.isFinite(view.medX) && <line x1={px(view.medX)} x2={px(view.medX)} y1={pad.t} y2={H - pad.b} stroke={VIZ.axis} strokeDasharray="3 4" strokeWidth={0.9} />}
           {Number.isFinite(view.medY) && <line y1={py(view.medY)} y2={py(view.medY)} x1={pad.l} x2={W - pad.r} stroke={VIZ.axis} strokeDasharray="3 4" strokeWidth={0.9} />}
-          <text x={(pad.l + W - pad.r) / 2} y={H - 4} textAnchor="middle" fontSize={10} fontWeight={700} fill={VIZ.ink}>{X.label}{X.lower ? ' (lower is better)' : ''}</text>
-          <text transform={`translate(10 ${(pad.t + H - pad.b) / 2}) rotate(-90)`} textAnchor="middle" fontSize={10} fontWeight={700} fill={VIZ.ink}>{Y.label}{Y.lower ? ' (lower is better)' : ''}</text>
+          <text x={(pad.l + W - pad.r) / 2} y={H - 4} textAnchor="middle" fontSize={12} fontWeight={700} fill={VIZ.ink}>{X.label}{X.lower ? ' (lower is better)' : ''}</text>
+          <text transform={`translate(10 ${(pad.t + H - pad.b) / 2}) rotate(-90)`} textAnchor="middle" fontSize={12} fontWeight={700} fill={VIZ.ink}>{Y.label}{Y.lower ? ' (lower is better)' : ''}</text>
           {view.meOk && view.near.slice(0, 5).map((d) => (
             <line key={`l${keyOf(d.p)}`} x1={px(view.me.x)} y1={py(view.me.y)} x2={px(d.x)} y2={py(d.y)} stroke="hsl(43 100% 62%)" strokeOpacity={0.45} strokeWidth={1} />
           ))}
@@ -397,7 +397,7 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
             </g>
           )}
           {labels.map((l, i) => (
-            <text key={i} x={l.x} y={l.y} textAnchor={l.anchor} fontSize={l.gold ? 11 : 9.5} fontWeight={l.gold ? 800 : 600} fill={l.gold ? 'hsl(43 100% 62%)' : VIZ.ink} stroke="#111627" strokeWidth={3} paintOrder="stroke" style={{ pointerEvents: 'none' }}>
+            <text key={i} x={l.x} y={l.y} textAnchor={l.anchor} fontSize={l.gold ? 12.5 : 11.5} fontWeight={l.gold ? 800 : 600} fill={l.gold ? 'hsl(43 100% 62%)' : VIZ.ink} stroke="#111627" strokeWidth={3} paintOrder="stroke" style={{ pointerEvents: 'none' }}>
               {l.text}
             </text>
           ))}
