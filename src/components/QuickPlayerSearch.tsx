@@ -1,7 +1,7 @@
 import { displayName, firstAndLast } from '@/utils/displayName';
 import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
-import { Clock, Radar, Radio, Search, Shield, Sparkles, Star } from 'lucide-react';
+import { Clock, Radar, Radio, Search, Shield, Sparkles, Star, GraduationCap } from 'lucide-react';
 import InLeague from '@/components/InLeague';
 import type { Player, Position } from '@/types/player';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,9 @@ import { useSkillRatings } from '@/utils/useSkillRatings';
 import { getTeamColors } from '@/utils/teamColors';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openTeamPage } from '@/utils/teamSearch';
+import { openSchoolPage, useCollegeSearch } from '@/utils/collegeSearch';
+import { CollegeMark } from '@/components/player/DraftTiles';
+import { markInfo } from '@/utils/collegeData';
 import { clubsOfQuery } from '@/utils/gameFinder';
 import { openGame } from '@/utils/nflGames';
 import { MeetingItem, useMeetings } from './search/GameMeetings';
@@ -228,6 +231,10 @@ const QuickSearchPhone = () => {
           setOpen(false);
           openTeamPage(t.name);
         }}
+        onPickCollege={(slug) => {
+          setOpen(false);
+          openSchoolPage(slug);
+        }}
         onPickGame={(m) => {
           setOpen(false);
           openGame(m.id);
@@ -318,6 +325,7 @@ const QuickSearchDialog = () => {
   const clubs = useMemo(() => (pos === 'ALL' ? clubsOfQuery(deferredQuery) : []), [deferredQuery, pos]);
 
   const meetings = useMeetings(deferredQuery);
+  const schools = useCollegeSearch(deferredQuery, pos === 'ALL');
 
   // Typing never scrolls the list (cmdk scrolls its selected item into view when the groups reorder): reset to the
   // top on every query change, and for a moment after it while cmdk re-selects. Arrow keys still scroll the active row.
@@ -335,9 +343,9 @@ const QuickSearchDialog = () => {
     toTop();
     const id = requestAnimationFrame(toTop);
     return () => cancelAnimationFrame(id);
-  }, [deferredQuery, meetings.length, clubs.length, pos]);
+  }, [deferredQuery, meetings.length, clubs.length, schools.length, pos]);
 
-  const activePlayer = active.startsWith('team ') || active.startsWith('game ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
+  const activePlayer = active.startsWith('team ') || active.startsWith('game ') || active.startsWith('school ') ? null : byKey.get(active)?.p ?? groups[0]?.players[0] ?? null;
 
   const choose = (p: Player, deepDive = false) => {
     pushRecent(playerKey(p));
@@ -357,9 +365,19 @@ const QuickSearchDialog = () => {
             onValueChange={setActive}
             className="bg-transparent"
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.shiftKey && activePlayer && !active.startsWith('team ') && !active.startsWith('game ')) {
+              if (e.key === 'Enter' && e.shiftKey && activePlayer && !active.startsWith('team ') && !active.startsWith('game ') && !active.startsWith('school ')) {
                 e.preventDefault();
                 choose(activePlayer, true);
+              } else if (e.key === 'Enter' && !e.shiftKey && query.trim() && !listRef.current?.querySelector('[cmdk-item][aria-selected="true"]')) {
+                // nothing highlighted yet: Enter takes the top result (a club, then a college, then a player)
+                e.preventDefault();
+                if (clubs[0]) {
+                  setOpen(false);
+                  openTeamPage(clubs[0].name);
+                } else if (schools[0]) {
+                  setOpen(false);
+                  openSchoolPage(schools[0].slug);
+                } else if (activePlayer) choose(activePlayer);
               }
             }}
           >
@@ -397,7 +415,7 @@ const QuickSearchDialog = () => {
 
             <div>
               <CommandList ref={listRef} onScroll={() => performance.now() - typedAt.current < 600 && toTop()} className="max-h-[min(26rem,calc(var(--dvh)*0.55))] overscroll-contain p-1.5">
-                <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">No players or games match <b>{query.trim()}</b>.</CommandEmpty>
+                <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">No players, clubs, colleges or games match <b>{query.trim()}</b>.</CommandEmpty>
                 {clubs.length > 0 && (
                   <CommandGroup
                     heading={
@@ -432,6 +450,44 @@ const QuickSearchDialog = () => {
                         </span>
                       </CommandItem>
                     ))}
+                  </CommandGroup>
+                )}
+                {schools.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <GraduationCap className="h-3 w-3 text-gold" aria-hidden="true" />
+                        Colleges
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {schools.map((c) => {
+                      const info = markInfo(c);
+                      return (
+                        <CommandItem
+                          key={`school:${c.slug}`}
+                          value={`school ${c.name} ${c.s}`}
+                          keywords={[c.name]}
+                          onSelect={() => {
+                            setOpen(false);
+                            openSchoolPage(c.slug);
+                          }}
+                          className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0"
+                        >
+                          <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center">{info && <CollegeMark info={info} size={34} />}</span>
+                            <span className="flex min-w-0 flex-1 flex-col items-start leading-none">
+                              <span className="qs-name truncate font-display text-xl font-extrabold uppercase italic tracking-wide">{c.name}</span>
+                              <span className="qs-sub mt-1 truncate text-[11px]">
+                                {c.drafted} drafted · {c.active} active
+                              </span>
+                            </span>
+                            <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">School page</span>
+                          </span>
+                        </CommandItem>
+                      );
+                    })}
                   </CommandGroup>
                 )}
                 {meetings.length > 0 && (

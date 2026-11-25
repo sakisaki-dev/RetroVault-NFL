@@ -1,7 +1,10 @@
+import { useCollegeSearch } from '@/utils/collegeSearch';
+import { CollegeMark } from '@/components/player/DraftTiles';
+import { markInfo } from '@/utils/collegeData';
 import { displayName, firstAndLast } from '@/utils/displayName';
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
 import { memo, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type TouchEvent as RTouchEvent } from 'react';
-import { Clock, CornerDownLeft, Radio, Search, Shield, Star, X } from 'lucide-react';
+import { Clock, CornerDownLeft, Radio, Search, Shield, Star, X, GraduationCap } from 'lucide-react';
 import type { Player, Position } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { isHallOfFamer } from '@/config/stats';
@@ -72,6 +75,8 @@ export interface PlayerSearchSheetProps {
   footer?: ReactNode;
   /** Clubs matching the query lead the results (the header search); picking one calls this */
   onPickTeam?: (team: NFLTeam) => void;
+  /** NFL: a college picked from the Colleges group (opens its school page) */
+  onPickCollege?: (slug: string) => void;
   /** NFL: two clubs typed list their latest meetings; picking one calls this */
   onPickGame?: (m: Meeting) => void;
 }
@@ -174,13 +179,15 @@ interface ListProps {
   selectedKey?: string;
   onPick: (p: Player) => void;
   onPickTeam?: (team: NFLTeam) => void;
+  /** NFL: a college picked from the Colleges group (opens its school page) */
+  onPickCollege?: (slug: string) => void;
   onPickGame?: (m: Meeting) => void;
   /** Reports the Enter target (the first row) */
   firstRef: { current: Player | null };
 }
 
 /** Results for the deferred query: re-renders only when the deferred query, filter or pool change */
-const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickGame, firstRef }: ListProps) => {
+const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickCollege, onPickGame, firstRef }: ListProps) => {
   const extras = usePlayerExtras();
   const skills = useSkillRatings();
   const { numberFor } = useJerseyNumbers();
@@ -201,6 +208,7 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
   }, [query, index, keep, suggestions]);
   const clubs = useMemo(() => (onPickTeam && pos === 'ALL' ? clubsOfQuery(query) : []), [onPickTeam, pos, query]);
   const meetings = useMeetings(onPickGame ? query : '');
+  const schools = useCollegeSearch(query, !!onPickCollege && pos === 'ALL');
   const firstPlayer = query.trim() ? groups[0]?.players[0] ?? null : null;
   useLayoutEffect(() => {
     firstRef.current = firstPlayer;
@@ -233,6 +241,36 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     </section>
   );
 
+  const schoolList = schools.length > 0 && (
+    <section aria-label="Colleges">
+      <h3 className="ss-head">
+        <span className="lamp">
+          <GraduationCap className="h-3 w-3" aria-hidden="true" />
+          Colleges
+        </span>
+      </h3>
+      <ul className="ss-list">
+        {schools.map((c) => {
+          const info = markInfo(c);
+          return (
+            <li key={c.slug}>
+              <button type="button" className="ss-team" onClick={() => onPickCollege?.(c.slug)}>
+                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center">{info && <CollegeMark info={info} size={32} />}</span>
+                <span className="ss-team__text">
+                  <span className="ss-team__name">{c.name}</span>
+                  <span className="ss-team__sub">
+                    {c.drafted} drafted · {c.active} active
+                  </span>
+                </span>
+                <span className="ss-team__go">School page</span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+
   const gameList = meetings.length > 0 && (
     <section aria-label="Games">
       <h3 className="ss-head">
@@ -251,22 +289,23 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     </section>
   );
 
-  if (!groups.length && !clubList && !gameList)
+  if (!groups.length && !clubList && !schoolList && !gameList)
     return (
       <p className="ss-empty">
         {query.trim() ? (
           <>
-            No players or games match <b>{query.trim()}</b>
+            No players, clubs, colleges or games match <b>{query.trim()}</b>
             {pos !== 'ALL' ? ` at ${pos}` : ''}.
           </>
         ) : (
-          'Type a name, nickname, club or position.'
+          'Type a name, nickname, club, college or position.'
         )}
       </p>
     );
   return (
     <>
       {clubList}
+      {schoolList}
       {gameList}
       {groups.map((g) => (
         <section key={g.id} aria-label={g.label}>
@@ -327,6 +366,7 @@ const Sheet = ({
   selectedKey,
   footer,
   onPickTeam,
+  onPickCollege,
   onPickGame,
   onGone,
 }: PlayerSearchSheetProps & { onGone: () => void }) => {
@@ -548,6 +588,7 @@ const Sheet = ({
             selectedKey={selectedKey}
             onPick={pick}
             onPickTeam={onPickTeam}
+            onPickCollege={onPickCollege}
             onPickGame={onPickGame}
             firstRef={firstRef}
           />
