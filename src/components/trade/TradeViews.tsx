@@ -1,6 +1,9 @@
 import { useMemo, useState, type CSSProperties } from 'react';
-import { BarChart3, Scale } from 'lucide-react';
+import { BarChart3, Scale, Users } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
+import { ArcadeToggle, LedDigits } from '@/components/arcade';
+import { stag } from '@/components/motion/Reveal';
+import { clubHue } from '@/components/fantasy/parts';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
@@ -24,7 +27,7 @@ export const FairMeter = ({ r }: { r: TradeResult }) => {
     <div className={cn('tr-meter', `tr-meter--${r.verdict.toLowerCase()}`)}>
       <div className="tr-meter__top">
         <b className="tr-verdict">{verdictText(r, r.teams.length)}</b>
-        <span className="tr-gap">{r.verdict === 'Empty' ? '—' : `${gap.toFixed(1)}%`}<i>gap</i></span>
+        <span className="tr-gap">{r.verdict === 'Empty' ? '—' : <LedDigits value={`${gap.toFixed(1)}%`} dot={2.6} />}<i>gap</i></span>
       </div>
       <div className="tr-meter__track" role="img" aria-label={`Gap ${gap.toFixed(1)} percent: Fair under ${FAIR_PCT}, Leans to ${LEAN_PCT}, Lopsided above`}>
         <span className="z z--fair" style={{ width: `${(FAIR_PCT / 30) * 100}%` }} />
@@ -143,6 +146,7 @@ export const PartnerFinder = ({
 }) => {
   const [pos, setPos] = useState<FPos | null>(null);
   const [kind, setKind] = useState<'all' | '1' | '2'>('all');
+  const [open, setOpen] = useState(false);
   const list = useMemo(() => {
     const all = suggestPartner(model, giveKeys, { pos, limit: 30 });
     return all.filter((p) => (kind === 'all' ? true : kind === '1' ? p.keys.length === 1 : p.keys.length === 2)).slice(0, 8);
@@ -150,44 +154,46 @@ export const PartnerFinder = ({
   return (
     <section className="tr-panel tr-finder" aria-labelledby="tr-finder-h">
       <header className="tr-panel__h">
-        <h2 id="tr-finder-h">Suggest a partner</h2>
+        <h2 id="tr-finder-h">Draft board</h2>
         <InfoTip label="About partner suggestions">
           For the players {TEAM_LABELS[0]} gives, 1-for-1 and 2-for-1 packages from the top of the pool (positive VOR, not on IR), nearest in value first. The side giving two players gets the roster-spot credit. Pick one to fill {TEAM_LABELS[partner]}.
         </InfoTip>
+        <button type="button" className="fh-btn fh-btn--go tr-finder__go" onClick={() => setOpen((o) => !o)} disabled={!giveKeys.length} aria-expanded={open}>
+          <Users className="h-4 w-4" aria-hidden="true" /> {open ? 'Hide partners' : 'Suggest a partner'}
+        </button>
       </header>
-      <div className="tr-chips" role="group" aria-label="Filter packages">
-        {([null, 'QB', 'RB', 'WR', 'TE'] as const).map((p) => (
-          <button key={p ?? 'all'} type="button" className={cn('tr-chip', pos === p && 'is-on')} aria-pressed={pos === p} onClick={() => setPos(p)}>{p ?? 'All'}</button>
-        ))}
-        <span className="tr-chips__sep" aria-hidden="true" />
-        {([['all', 'Any'], ['1', '1-for-1'], ['2', '2-for-1']] as const).map(([k, l]) => (
-          <button key={k} type="button" className={cn('tr-chip', kind === k && 'is-on')} aria-pressed={kind === k} onClick={() => setKind(k)}>{l}</button>
-        ))}
-      </div>
-      {!giveKeys.length ? (
-        <p className="tr-muted">Add a player to {TEAM_LABELS[0]} first.</p>
-      ) : !list.length ? (
-        <p className="tr-muted">No package within 25% of that value.</p>
-      ) : (
-        <ul className="tr-pk">
-          {list.map((pk) => (
-            <li key={pk.keys.join('+')}>
-              <span className="tr-pk__who">
-                {pk.keys.map((k) => {
-                  const p = model.players.get(k)!;
-                  return (
-                    <span key={k} className="tr-pk__p">
-                      <Fig player={cards.get(k)} club={p.club} />
-                      <span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span>
-                    </span>
-                  );
-                })}
-              </span>
-              <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>{pk.lean ? (pk.lean === 'give' ? `${TEAM_LABELS[0]} ahead` : `${TEAM_LABELS[partner]} ahead`) : 'level'}</i></span>
-              <button type="button" className="tr-use" onClick={() => onUse(pk.keys)}>Use</button>
-            </li>
-          ))}
-        </ul>
+      {!giveKeys.length && <p className="tr-muted">Add a player to {TEAM_LABELS[0]} first.</p>}
+      {open && giveKeys.length > 0 && (
+        <>
+          <div className="tr-filters">
+            <ArcadeToggle<string> label="Position" size="sm" value={pos ?? 'all'} onChange={(p) => setPos(p === 'all' ? null : (p as FPos))} options={['all', 'QB', 'RB', 'WR', 'TE'].map((p) => ({ value: p, label: p === 'all' ? 'All' : p }))} />
+            <ArcadeToggle<string> label="Package size" size="sm" value={kind} onChange={(k) => setKind(k as 'all' | '1' | '2')} options={[{ value: 'all', label: 'Any' }, { value: '1', label: '1-for-1' }, { value: '2', label: '2-for-1' }]} />
+          </div>
+          {!list.length ? (
+            <p className="tr-muted">No package within 25% of that value.</p>
+          ) : (
+            <ol className="tr-pk tr-pk--board">
+              {list.map((pk, i) => (
+                <li key={pk.keys.join('+')} className="mo-rise" style={stag(i, 45)}>
+                  <span className="tr-pk__rank" aria-hidden="true">{i + 1}</span>
+                  <span className="tr-pk__who">
+                    {pk.keys.map((k) => {
+                      const p = model.players.get(k)!;
+                      return (
+                        <span key={k} className="tr-pk__p" style={{ '--tc': clubHue(p.club) } as CSSProperties}>
+                          <Fig player={cards.get(k)} club={p.club} />
+                          <span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span>
+                        </span>
+                      );
+                    })}
+                  </span>
+                  <span className={cn('tr-pk__gap', pk.gap * 100 < FAIR_PCT ? 'is-fair' : 'is-lean')}>{(pk.gap * 100).toFixed(1)}%<i>{pk.lean ? (pk.lean === 'give' ? `${TEAM_LABELS[0]} ahead` : `${TEAM_LABELS[partner]} ahead`) : 'level'}</i></span>
+                  <button type="button" className="tr-use" onClick={() => onUse(pk.keys)}>Use</button>
+                </li>
+              ))}
+            </ol>
+          )}
+        </>
       )}
     </section>
   );

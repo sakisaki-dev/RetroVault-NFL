@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Users, X } from 'lucide-react';
+import { ArcadeToggle } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { Reveal } from '@/components/motion/Reveal';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
+import { stag } from '@/components/motion/Reveal';
 import { InfoTip } from '@/components/ui/InfoTip';
-import { ModeSwitch, type LabMode } from '@/components/teamlab/nfl/NflShared';
-import { usePrefs } from '@/components/teamlab/nfl/useNflLab';
-import { usePhone } from '@/hooks/usePhone';
 import { cn } from '@/lib/utils';
-import { evaluateTrade, SCORING_LABEL, SCORING_KINDS, type TradeSettings, type TradeTeam } from '@/utils/tradeSim';
+import { evaluateTrade, type TradeTeam } from '@/utils/tradeSim';
 import { BalanceScale, BeforeAfter, DrawerButton, FairMeter, NetBars, PartnerFinder, SideTotals } from './TradeViews';
 import { MethodTip, PlayerPicker, TEAM_LABELS, TradeCard, teamVars } from './TradeParts';
-import { useTradeEnv } from './useTrade';
+import type { useTradeEnv } from './useTrade';
 import { teamOf } from '@/components/fantasy/parts';
 import TeamLogo from '@/components/brand/TeamLogo';
 import './trade.css';
@@ -25,44 +24,14 @@ import './trade.css';
 interface Side { give: { key: string; to: number }[]; roster: string[] }
 const emptySides = (): Side[] => Array.from({ length: 4 }, () => ({ give: [], roster: [] }));
 
-const Seg = <T extends string | number>({ label, value, options, onChange }: { label: string; value: T; options: { v: T; l: string }[]; onChange: (v: T) => void }) => (
-  <div className="tr-set">
-    <span className="tr-set__k">{label}</span>
-    <div className="tr-seg" role="group" aria-label={label}>
-      {options.map((o) => (
-        <button key={String(o.v)} type="button" className={cn('tr-seg__b', value === o.v && 'is-on')} aria-pressed={value === o.v} onClick={() => onChange(o.v)}>{o.l}</button>
-      ))}
-    </div>
-  </div>
-);
-const Toggle = ({ label, on, onChange, hint }: { label: string; on: boolean; onChange: (v: boolean) => void; hint?: string }) => (
-  <button type="button" className={cn('tr-tog', on && 'is-on')} aria-pressed={on} onClick={() => onChange(!on)} title={hint}>
-    <i aria-hidden="true" />{label}
-  </button>
-);
-
-const summary = (s: TradeSettings, n: number, roster: boolean) =>
-  [SCORING_LABEL[s.scoring], `${s.teams} teams`, s.superflex && 'Superflex', s.tePremium && 'TE premium', s.playoffWeight > 1 && `Wk 15–17 ×${s.playoffWeight}`, `${n} sides`, roster && 'Rosters'].filter(Boolean).join(' · ');
-
-const TradeSim = () => {
-  const env = useTradeEnv();
-  const { model, settings, setSettings, cards, cardValue } = env;
-  const phone = usePhone();
-  const { route, navigate } = useHubRoute();
-  const [, setPrefs] = usePrefs();
+/** The Fantasy page's Trade sub-page: `env` is the page's one trade environment (model, league format, card players). */
+const TradeSim = ({ env }: { env: ReturnType<typeof useTradeEnv> }) => {
+  const { model, cards, cardValue } = env;
+  const { route } = useHubRoute();
   const [n, setN] = useState(2);
   const [sides, setSides] = useState<Side[]>(emptySides);
   const [rosterMode, setRosterMode] = useState(false);
-  const [fmt, setFmt] = useState(!phone);
   const [drawer, setDrawer] = useState(false);
-  const fmtTouched = useRef(false);
-  useEffect(() => { if (!fmtTouched.current) setFmt(!phone); }, [phone]);
-
-  const toMode = (m: LabMode) => {
-    if (m === 'trade') return;
-    setPrefs({ mode: m });
-    navigate({ tab: 'lab' });
-  };
 
   const taken = useMemo(() => new Set(sides.flatMap((s) => [...s.give.map((g) => g.key), ...s.roster])), [sides]);
   const addGive = useCallback((i: number, key: string, sideCount = 2) => setSides((ss) => ss.map((s, k) => (k === i && !ss.some((x) => x.give.some((g) => g.key === key) || x.roster.includes(key)) ? { ...s, give: [...s.give, { key, to: (i + 1) % sideCount }] } : s))), []);
@@ -93,46 +62,17 @@ const TradeSim = () => {
   const result = useMemo(() => (model ? evaluateTrade(model, active.map<TradeTeam>((s) => ({ give: s.give, roster: s.roster })), rosterMode) : null), [model, active, rosterMode]);
   const anyPlayers = taken.size > 0;
 
-  const head: ReactNode = (
-    <header className="tr-head">
-      <div className="tr-head__t">
-        <p className="tr-kicker">Team Lab · Fantasy</p>
-        <h1 className="tr-title">Trade <span>simulator</span></h1>
-      </div>
-      <div className="tr-head__r">
-        <ModeSwitch mode="trade" onMode={toMode} />
-        {model && <MethodTip model={model} />}
-      </div>
-    </header>
-  );
-
   return (
-    <div className="tr rv-ix min-w-0 py-3 sm:py-4">
-      <div className="container min-w-0">
-        {head}
+    <div className="tr fh-trade min-w-0">
+      <div className="min-w-0">
         <FootballLoader ready={!!model && !!result} minHeight={420} what="the fantasy data">
           {model && result && (
             <>
-              <section className="tr-panel tr-format" aria-label="League format">
-                <button type="button" className="tr-format__h" aria-expanded={fmt} onClick={() => { fmtTouched.current = true; setFmt((v) => !v); }}>
-                  <span className="tr-set__k">Format</span>
-                  <span className="tr-format__sum">{summary(settings, n, rosterMode)}</span>
-                  <span className="tr-format__c" aria-hidden="true">{fmt ? 'Hide' : 'Edit'}</span>
-                </button>
-                {fmt && (
-                  <div className="tr-format__b">
-                    <Seg label="Scoring" value={settings.scoring} options={SCORING_KINDS.map((k) => ({ v: k, l: k === 'ppr' ? 'PPR' : k === 'half' ? 'Half' : 'Std' }))} onChange={(v) => setSettings({ scoring: v })} />
-                    <Seg label="League" value={settings.teams} options={[10, 12, 14].map((t) => ({ v: t as 10 | 12 | 14, l: `${t} teams` }))} onChange={(v) => setSettings({ teams: v })} />
-                    <Seg label="Weeks 15–17" value={settings.playoffWeight} options={[{ v: 1, l: 'Off' }, { v: 1.5, l: '×1.5' }, { v: 2, l: '×2' }] as { v: 1 | 1.5 | 2; l: string }[]} onChange={(v) => setSettings({ playoffWeight: v })} />
-                    <Seg label="Trade sides" value={n} options={[2, 3, 4].map((c) => ({ v: c, l: `${c} teams` }))} onChange={setCount} />
-                    <div className="tr-set tr-set--tog">
-                      <Toggle label="Superflex" on={settings.superflex} onChange={(v) => setSettings({ superflex: v })} hint="A second QB slot: the QB replacement line moves" />
-                      <Toggle label="TE premium" on={settings.tePremium} onChange={(v) => setSettings({ tePremium: v })} hint="+0.5 per TE reception on top of the scoring" />
-                      <Toggle label="My rosters" on={rosterMode} onChange={setRosterMode} hint="Enter each side's roster: the verdict becomes each lineup's change" />
-                    </div>
-                  </div>
-                )}
-              </section>
+              <div className="fh-actions fh-actions--trade">
+                <ArcadeToggle<number> label="Trade sides" size="sm" value={n} onChange={setCount} options={[2, 3, 4].map((c) => ({ value: c, label: `${c} teams` }))} />
+                <ArcadeToggle<string> label="Rosters" size="sm" value={rosterMode ? 'r' : 'p'} onChange={(v) => setRosterMode(v === 'r')} options={[{ value: 'p', label: 'Players' }, { value: 'r', label: 'My rosters' }]} />
+                <MethodTip model={model} />
+              </div>
 
               <Reveal className="tr-verdict-panel tr-panel" aria-label="Verdict">
                 {n === 2 ? <BalanceScale r={result} cards={cards} /> : <NetBars r={result} />}
@@ -148,7 +88,7 @@ const TradeSim = () => {
                 {active.map((side, i) => {
                   const res = result.teams[i];
                   return (
-                    <section key={i} className="tr-col" style={teamVars(i)} aria-label={TEAM_LABELS[i]}>
+                    <section key={i} className="tr-col tr-locker mo-rise" style={{ ...teamVars(i), ...stag(i, 90) }} aria-label={TEAM_LABELS[i]}>
                       <header className="tr-col__h">
                         <span className="tr-col__badge" aria-hidden="true">{TEAM_LABELS[i].slice(-1)}</span>
                         <h2>{TEAM_LABELS[i]}</h2>
@@ -159,7 +99,7 @@ const TradeSim = () => {
                           const p = model.players.get(g.key);
                           if (!p) return null;
                           return (
-                            <li key={g.key}>
+                            <li key={g.key} className="mo-pop">
                               <TradeCard
                                 p={p} model={model} player={cards.get(g.key)} cardValue={cardValue(g.key)} onRemove={() => removeGive(i, g.key)}
                                 dest={n > 2 ? (

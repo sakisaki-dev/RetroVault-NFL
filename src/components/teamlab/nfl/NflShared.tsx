@@ -33,17 +33,6 @@ export const TURFS: { id: Turf; label: string }[] = [
   { id: 'snow', label: 'Snow game' },
 ];
 
-export type LabMode = 'team' | 'fantasy' | 'trade';
-export const ModeSwitch = ({ mode, onMode }: { mode: LabMode; onMode: (m: LabMode) => void }) => (
-  <div className="nfl-seg" role="tablist" aria-label="Team Lab mode">
-    {(['team', 'fantasy', 'trade'] as const).map((m) => (
-      <button key={m} type="button" role="tab" aria-selected={mode === m} className={cn('nfl-seg-btn', mode === m && 'is-on')} onClick={() => onMode(m)}>
-        {m === 'team' ? 'Real football' : m === 'fantasy' ? 'Fantasy' : 'Trade'}
-      </button>
-    ))}
-  </div>
-);
-
 export const ClubSelect = ({ value, onChange, label = 'Club' }: { value: string; onChange: (abbr: string) => void; label?: string }) => (
   <Select value={value} onValueChange={onChange}>
     <SelectTrigger className="lab-btn h-9 w-auto min-w-[10rem]" aria-label={label}>

@@ -14,7 +14,8 @@ import { IS_NFL } from '@/config/edition';
  *   #stats/graphs?gx=ya&gy=intPct&pos=QB    Graph Builder on a shared chart (stats/graph/graphConfig);
  *                                            the old #stats/players?gx=… links land there too
  *   #lab?t=<lineup>              Team Lab with a lineup (utils/teamLab encodeLineup)
- *   #lab/trade?p=WR:Name         NFL edition: the fantasy trade simulator (Team Lab's Trade mode), a player preloaded on side one
+ *   #fantasy/<lineup|startsit|h2h|trade>   NFL edition: the Fantasy page (#fantasy/trade?p=WR:Name preloads a player on side one)
+ *   #lab/trade and #lab?mode=fantasy      old links: they open the Fantasy page
  *
  * Old in-page anchors (#leaders, #head-to-head, #comp-finder, ...) and the retired #teams tab still resolve.
  * Unknown hashes are ignored (the current page stays), so plain in-page anchors keep working.
@@ -26,7 +27,7 @@ export type StatsSub = (typeof STATS_SUBS)[number];
 /** Internal tab ids (as used by Header / Index) → hash names. */
 const TAB_TO_HASH: Record<string, string> = { career: 'stats' };
 const HASH_TO_TAB: Record<string, string> = { stats: 'career', arcade: 'games', teamlab: 'lab' };
-const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'collection', ...(IS_NFL ? ['news', 'college'] : ['hof', 'timeline', 'office']), ...(import.meta.env.DEV ? ['arcadekit', 'bannerlab'] : [])]);
+const KNOWN_TABS = new Set(['games', 'career', 'season', 'lab', 'collection', ...(IS_NFL ? ['news', 'college', 'fantasy'] : ['hof', 'timeline', 'office']), ...(import.meta.env.DEV ? ['arcadekit', 'bannerlab'] : [])]);
 
 /** Is this a top-level tab the router knows in this edition? (the nav hides entries whose route isn't there yet) */
 export const isKnownTab = (tab: string): boolean => KNOWN_TABS.has(tab);
@@ -55,6 +56,7 @@ export interface Route {
   q?: Record<string, string>;
 }
 
+export const FANTASY_SUBS = ['lineup', 'startsit', 'h2h', 'trade'];
 const isSub = (s: string | undefined): s is StatsSub => !!s && (STATS_SUBS as readonly string[]).includes(s);
 
 export const parseHash = (hash: string): Route | null => {
@@ -99,7 +101,11 @@ export const parseHash = (hash: string): Route | null => {
     return { tab, section: segs[1] || undefined, ...(Object.keys(q).length ? { q } : {}) };
   }
   const t = params.get('t') || undefined;
-  if (tab === 'lab' && segs[1] === 'trade') return { tab, section: 'trade', p };
+  if (tab === 'fantasy') return { tab, section: FANTASY_SUBS.includes(segs[1]) ? segs[1] : undefined, p };
+  // old links: Team Lab's Trade and Fantasy modes moved to the Fantasy page
+  if (IS_NFL && tab === 'lab' && segs[1] === 'trade') return { tab: 'fantasy', section: 'trade', p };
+  if (IS_NFL && tab === 'lab' && params.get('mode') === 'fantasy') return { tab: 'fantasy', section: 'lineup' };
+  if (IS_NFL && tab === 'lab' && params.get('mode') === 'trade') return { tab: 'fantasy', section: 'trade', p };
   return t ? { tab, p, t } : { tab, p };
 };
 
@@ -110,7 +116,7 @@ export const buildHash = (r: Route): string => {
     h += `/${r.sub}`;
     if (r.section) h += `/${encodeURIComponent(r.section)}`;
   }
-  if (r.tab === 'lab' && r.section === 'trade') h += '/trade';
+  if (r.tab === 'fantasy' && r.section) h += `/${r.section}`;
   if (r.p) h += `?p=${encodeURIComponent(r.p)}`;
   if (r.t) h += `${r.p ? '&' : '?'}t=${encodeURIComponent(r.t).replace(/%20/g, '+')}`;
   if ((r.tab === 'career' || r.tab === 'college') && r.q) {

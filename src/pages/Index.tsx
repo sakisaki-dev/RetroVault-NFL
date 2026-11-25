@@ -47,6 +47,7 @@ const FrontOfficeTab = lazyRetry(() => import('@/components/tabs/FrontOfficeTab'
 const CollectionTab = lazyRetry(() => import('@/components/tabs/CollectionTab'));
 const BannerLab = import.meta.env.DEV ? lazyRetry(() => import('@/components/teams/banner/BannerLab')) : null;
 const ArcadeKitDemo = import.meta.env.DEV ? lazyRetry(() => import('@/components/arcade/ArcadeKitDemo')) : null;
+const FantasyHub = lazyRetry(() => import('@/components/fantasy/hub/FantasyHub'));
 const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
 const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 
@@ -153,6 +154,7 @@ const IndexContent = () => {
               <div key={activeTab} ref={SCROLL_IN_TABS.has(activeTab) ? scrollIn : undefined} className="rv-view-in">
                 {activeTab === 'career' && <CareerTab />}
                 {activeTab === 'lab' && <TeamLabTab />}
+                {IS_NFL && activeTab === 'fantasy' && <FantasyHub />}
                 {!IS_NFL && activeTab === 'hof' && <HallOfFameTab />}
                 {activeTab === 'collection' && <CollectionTab />}
                 {activeTab === 'season' && <SeasonTab />}

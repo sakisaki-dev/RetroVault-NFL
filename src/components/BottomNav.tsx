@@ -28,6 +28,7 @@ import {
   TrendingUp,
   Trophy,
   Users,
+  ClipboardList,
   type LucideIcon,
   Newspaper,
 } from 'lucide-react';
@@ -83,6 +84,7 @@ const TAB_COLOR: Record<string, string> = {
   more: '#3fd0b4',
   season: '#ff9a3c',
   lab: '#5fd28a',
+  fantasy: '#ffd23f',
   college: '#e8794a',
   timeline: '#4fb3ff',
   news: '#4fb3ff',
@@ -93,6 +95,7 @@ const ALL_MORE = [
   { value: 'season', label: 'Season', blurb: 'Live standings, leaders and the award race', Icon: Radio },
   { value: 'college', label: 'College', blurb: 'Draft boards, schools and the projected order', Icon: GraduationCap },
   { value: 'lab', label: 'Team Lab', blurb: 'Build a lineup and get a scouting report', Icon: Users },
+  { value: 'fantasy', label: 'Fantasy', blurb: 'Lineups, start / sit, head-to-head and trades', Icon: ClipboardList },
   { value: 'timeline', label: 'Timeline', blurb: 'Eras, storylines and what changed', Icon: CalendarRange },
   { value: 'news', label: 'News', blurb: "Live NFL headlines and video from ESPN", Icon: Newspaper },
   { value: 'office', label: 'Front Office', blurb: "The coach's record, seasons and rivals", Icon: Briefcase },

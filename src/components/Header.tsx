@@ -28,6 +28,7 @@ const ALL_TABS = [
   ...(IS_NFL ? ([{ value: 'season', label: 'Season' }, { value: 'career', label: 'Stats' }, { value: 'games', label: 'Arcade' }] as const) : ([{ value: 'games', label: 'Arcade' }, { value: 'career', label: 'Stats' }, { value: 'season', label: 'Season' }] as const)),
   { value: 'college', label: 'College' },
   { value: 'lab', label: 'Team Lab' },
+  { value: 'fantasy', label: 'Fantasy' },
   { value: 'hof', label: 'Hall of Fame' },
   { value: 'collection', label: 'Collection' },
   { value: 'timeline', label: 'Timeline' },

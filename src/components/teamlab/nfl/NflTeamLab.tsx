@@ -1,11 +1,9 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Dices, Eraser, Plane, Shirt, SlidersHorizontal, Sparkles, Sun, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TeamLogo from '@/components/brand/TeamLogo';
 import PixelLoader from '@/components/ui/PixelLoader';
-import { useHubRoute } from '@/components/stats/hub/hashRoute';
-import { openTrade } from '@/utils/tradeLink';
 import { cn } from '@/lib/utils';
 import { findNFLTeam, NFL_TEAMS } from '@/utils/nflTeams';
 import { bannerTeamOf } from '@/utils/playerExtras';
@@ -32,13 +30,12 @@ import {
   DEF_FORMS,
   OFF_FORMS,
 } from '@/utils/nflLab';
-import { ModeSwitch, type LabMode, ClubSelect, TurfSelect, Stands, openPicker, useStage } from './NflShared';
+import { ClubSelect, TurfSelect, Stands, openPicker, useStage } from './NflShared';
 import NflField, { type FieldItem } from './NflField';
 import { NflDepthChart } from './NflDepthChart';
 import NflHeader from './NflHeader';
 import { NflH2H, NflReport } from './NflReport';
 import NflSaved from './NflSaved';
-import FantasyMode from './FantasyMode';
 import { useNflLab, usePrefs, useSavedLabs, type NflLabReady } from './useNflLab';
 import '../teamlab.css';
 import './nflLab.css';
@@ -46,11 +43,11 @@ import './nflLab.css';
 /**
  * Team Lab, NFL edition (#lab): real 11-man lineups on the game's field in a club's kit (that club's real current
  * starters from the nflverse depth charts, or any players), the same "vs random lineups" grades, a call sheet and a
- * head-to-head with real matchup numbers. The mode switch folds fantasy in (FantasyMode.tsx) with the same field.
+ * head-to-head with real matchup numbers. Fantasy and Trade live on their own page (components/fantasy/hub).
  * Engine: utils/nflLab.ts (team) and utils/nflFantasy.ts (fantasy); data: scripts/nfl/depth_charts.py, lab_data.py.
  */
 
-const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: ReturnType<typeof usePrefs>[0]; setPrefs: ReturnType<typeof usePrefs>[1]; onMode: (m: LabMode) => void }) => {
+const TeamMode = ({ nl, prefs, setPrefs }: { nl: NflLabReady; prefs: ReturnType<typeof usePrefs>[0]; setPrefs: ReturnType<typeof usePrefs>[1] }) => {
   const { ctx, data, injured } = nl;
   const saved = useSavedLabs();
   const [lineup, setLineup] = useState<NLineup>(() => emptyNLineup());
@@ -139,7 +136,6 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
           ]}
         >
           <div className={cn('lab-toolbar nfl-toolbar', ctlOpen && 'is-open')}>
-            <ModeSwitch mode="team" onMode={onMode} />
             <Button type="button" size="sm" onClick={() => load(prefs.club, lineup.off, null)} disabled={!depth} className="bg-gold font-display text-[15px] font-bold uppercase text-black hover:bg-gold/90" title="That club's depth chart now, injured starters stepping aside">
               <Plane className="mr-1 h-4 w-4" aria-hidden="true" /> Load {clubName}
             </Button>
@@ -287,28 +283,14 @@ const TeamMode = ({ nl, prefs, setPrefs, onMode }: { nl: NflLabReady; prefs: Ret
   );
 };
 
-const TradeSim = lazy(() => import('@/components/trade/TradeSim'));
-
 const NflLabBody = () => {
   const nl = useNflLab();
   const [prefs, setPrefs] = usePrefs();
   if (!nl.ctx) return <PixelLoader label="Team Lab" what="the league" minHeight="60vh" className="container justify-start pt-[14vh]" />;
-  const onMode = (m: LabMode) => (m === 'trade' ? openTrade() : setPrefs({ mode: m }));
-  const ready = nl as NflLabReady;
-  return prefs.mode === 'fantasy' ? <FantasyMode nl={ready} prefs={prefs} setPrefs={setPrefs} onMode={onMode} /> : <TeamMode nl={ready} prefs={prefs} setPrefs={setPrefs} onMode={onMode} />;
+  return <TeamMode nl={nl as NflLabReady} prefs={prefs} setPrefs={setPrefs} />;
 };
 
-/** #lab/trade is the fantasy trade simulator (components/trade); every other #lab route is the lab. */
-const NflTeamLab = () => {
-  const { route } = useHubRoute();
-  if (route.section === 'trade') {
-    return (
-      <Suspense fallback={<PixelLoader label="Trade simulator" what="the league" minHeight="60vh" className="container justify-start pt-[14vh]" />}>
-        <TradeSim />
-      </Suspense>
-    );
-  }
-  return <NflLabBody />;
-};
+/** Team Lab is real football only; Fantasy and Trade are the Fantasy page (#fantasy). */
+const NflTeamLab = () => <NflLabBody />;
 
 export default NflTeamLab;
