@@ -30,7 +30,7 @@ const shortRound = (g: CoachGame) => (g.playoff ? SHORT_ROUND[g.round] ?? g.roun
 const Lamp = ({ label, value }: { label: string; value: number }) => (
   <div className="flex min-w-[3.5rem] flex-col items-center rounded-md border border-[hsl(var(--line)/0.8)] bg-black/50 px-2 pb-1 pt-1.5 sm:min-w-[4.5rem]">
     <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground">{label}</span>
-    <span className={cn('font-pixel text-3xl leading-none tabular-nums sm:text-4xl', lampText)}>{value}</span>
+    <span className={cn('font-pixel-art text-3xl leading-none tabular-nums sm:text-4xl', lampText)}>{value}</span>
   </div>
 );
 
@@ -64,7 +64,7 @@ const ResultsRibbon = ({ season }: { season: ScheduleSeason }) => {
               <span
                 aria-hidden
                 className={cn(
-                  'flex h-7 w-full items-center justify-center rounded-[3px] font-pixel text-[9px] text-[hsl(228_47%_7%)]',
+                  'flex h-7 w-full items-center justify-center rounded-[3px] font-pixel-art text-[9px] text-[hsl(228_47%_7%)]',
                   g?.playoff && 'ring-1 ring-[hsl(var(--gold))] ring-offset-1 ring-offset-black',
                   r === 'W' && 'h-8',
                 )}
