@@ -64,9 +64,9 @@ const ALL_MAIN = [
  * plain fact on the player card, so there is no HOF tab; the Season is a main tab because the NFL is read by season.
  */
 const NFL_MAIN = [
-  { value: 'games', label: 'Arcade', Icon: Gamepad2 },
-  { value: 'career', label: 'Stats', Icon: BarChart3 },
   { value: 'season', label: 'Season', Icon: Radio },
+  { value: 'career', label: 'Stats', Icon: BarChart3 },
+  { value: 'games', label: 'Arcade', Icon: Gamepad2 },
   { value: 'news', label: 'News', Icon: Newspaper },
 ] as const;
 const MAIN: readonly { value: string; label: string; short?: string; Icon: LucideIcon }[] = IS_NFL ? NFL_MAIN : ALL_MAIN;

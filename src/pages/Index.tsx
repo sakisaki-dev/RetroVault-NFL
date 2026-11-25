@@ -46,7 +46,7 @@ const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 
 const IndexContent = () => {
   // The visible page lives in the URL hash (#stats/teams, #stats/deepdive?p=…) so it is linkable and Back works.
-  const { route, target, navigate } = useHashRoute('games');
+  const { route, target, navigate } = useHashRoute(IS_NFL ? 'season' : 'games');
   const activeTab = route.tab;
   const hub = useMemo(() => ({ route, target, navigate }), [route, target, navigate]);
   // "Deep Dive" requests (player card, Map, Stats search) open Stats › Deep Dive on that player; the view consumes the
