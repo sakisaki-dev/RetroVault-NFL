@@ -44,6 +44,8 @@ import { shareFileName } from '@/utils/shareImage';
 import { useLegendPhoto } from './player/useLegendPhoto';
 import { useDeferredStage } from '@/hooks/useDeferredStage';
 import './player/playerCard.css';
+import DraftTiles from './player/DraftTiles';
+import { useDraftInfo } from '@/utils/draftInfo';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { RetiredHangers, RetiredStrip } from './teams/RetiredBadge';
 import { displayName } from '@/utils/displayName';
@@ -185,6 +187,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
     scrollRef.current?.scrollTo({ top: 0 });
   }, [playerId]);
 
+  const draftInfo = useDraftInfo(player ? `${player.position}:${player.name}` : null);
   const nameKey = player ? normalizeName(player.name) : '';
   const card = extras.cards[nameKey];
   const careerStints = player ? extras.stints[nameKey] : undefined; // read only with a player open: the history loads on that read
@@ -412,7 +415,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
 
           {/* ID tiles under one steel truss (owner, 2026-11-17: the position, number and club "fit this enlarged space", the
               retired banners on the same line): position, number, club and, for a retired number, its rafters slice */}
-          <div className={cn('pc-ids', retired && 'pc-ids--retired')}>
+          <div className={cn('pc-ids', retired && 'pc-ids--retired', draftInfo && 'pc-ids--draft')}>
             <span className="pc-ids__truss" aria-hidden="true" />
             <div className="pc-tile">
               <span className="pc-tile__icon pc-tile__icon--pos">
@@ -449,6 +452,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
                 <span className="pc-tile__v">No team</span>
               )}
             </div>
+            <DraftTiles playerKey={`${player.position}:${player.name}`} bannerClub={team?.name ?? null} />
             <RetiredStrip player={player} onLeave={onClose} className="pc-ids__retired" />
             {formerName && <p className="pc-ids__former">Formerly known as {formerName}</p>}
           </div>
