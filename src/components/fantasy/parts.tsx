@@ -44,3 +44,16 @@ export const NextLogos = ({ slots, size = 26, label = true }: { slots: Slot[]; s
 );
 
 export const toneVar = (tone: string | null): CSSProperties => ({ '--fx-tone': tone === 'easy' ? 'var(--fx-good)' : tone === 'hard' ? 'var(--fx-bad)' : 'var(--fx-mid)' }) as CSSProperties;
+
+/** "1 week", "3 weeks". */
+export const wk = (n: number) => (n === 1 ? 'week' : 'weeks');
+
+/** Grid variables so a tile grid never leaves an orphan: the last tile spans the rest of its row (2 columns on a phone,
+ *  `cols` from 640px, `colsWide` from 1100px). */
+export const tileGrid = (n: number): CSSProperties => {
+  const pick = (max: number) => (n <= max ? n : n % 4 === 0 ? 4 : n % 3 === 0 ? 3 : 4);
+  const span = (c: number) => (n % c ? c - (n % c) + 1 : 1);
+  const c = pick(5);
+  const w = pick(7);
+  return { '--sp-m': n % 2 ? 2 : 1, '--cols': c, '--sp-d': span(c), '--cols-w': w, '--sp-w': span(w) } as CSSProperties;
+};

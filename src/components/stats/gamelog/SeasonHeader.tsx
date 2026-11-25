@@ -4,6 +4,7 @@ import { Reveal, stag } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { useThisSeason, type NextGame } from '@/utils/thisSeason';
+import { cn } from '@/lib/utils';
 import { keyOf } from '../records';
 
 const ABBR: Record<string, string> = { LA: 'LAR' };
@@ -25,13 +26,17 @@ const kickoff = (g: NextGame) => {
  * his position, a 17-game pace (a projection), fantasy PPR and the club's next game with its win chance. Data from
  * thisseason.json (scripts/nfl/this_season.py). Nothing for a retired player or one with no game this season.
  */
-const SeasonHeader = ({ player }: { player: Player }) => {
+const SeasonHeader = ({ player, hidePpr }: { player: Player; /** the Deep Dive's Fantasy section already shows PPR */ hidePpr?: boolean }) => {
   const d = useThisSeason(player.status === 'Active' ? keyOf(player) : null);
   if (!d) return null;
   const { line, next } = d;
   const club = findNFLTeam(ABBR[line.club] ?? line.club);
   const opp = next ? findNFLTeam(ABBR[next.opp] ?? next.opp) : null;
   const ko = next ? kickoff(next) : null;
+  const tiles = [{ label: 'Games', value: line.games, rank: null as number | null, of: null as number | null }, ...line.stats];
+  const n = tiles.length;
+  const cols = n <= 5 ? n : n % 4 === 0 ? 4 : n % 3 === 0 ? 3 : 4;
+  const spanD = n % cols ? cols - (n % cols) + 1 : 1;
   const hue = club ? `hsl(${club.primaryColor})` : 'hsl(var(--gold))';
   return (
     <Reveal className="ts" style={{ '--tc': hue } as CSSProperties} aria-label={`${d.season} season so far`}>
@@ -44,13 +49,13 @@ const SeasonHeader = ({ player }: { player: Player }) => {
           </div>
         </div>
       </div>
-      <div className="ts__tiles">
-        {line.stats.map((s, i) => (
-          <div key={s.label} className="ts__tile mo-rise" style={stag(i + 1)}>
+      <div className="ts__tiles" style={{ '--cols': cols,  '--sp-m': tiles.length % 2 ? 2 : 1, '--sp-d': spanD } as CSSProperties}>
+        {tiles.map((s, i) => (
+          <div key={s.label} className={cn('ts__tile mo-rise', i === tiles.length - 1 && 'ts__tile--last')} style={stag(i + 1)}>
             <span className="ts__tk">{s.label}</span>
             <span className="ts__tv">{Number.isInteger(s.value) ? fmt(s.value) : s.value.toFixed(1)}</span>
             <span className="ts__tr" title={s.rank ? `Among ${s.of} ${player.position}s with a game this season` : undefined}>
-              {s.rank ? <><b>{ord(s.rank)}</b> of {s.of}</> : ' '}
+              {s.rank ? <><b>{ord(s.rank)}</b> of {s.of}</> : ' '}
             </span>
           </div>
         ))}
@@ -67,7 +72,7 @@ const SeasonHeader = ({ player }: { player: Player }) => {
             <span className="ts__note">His per-game rate over {line.games} games, times 17.</span>
           </div>
         )}
-        {line.ppr && (
+        {line.ppr && !hidePpr && (
           <div className="ts__card mo-rise" style={stag(7)}>
             <span className="ts__tk">Fantasy · standard PPR scoring</span>
             <div className="ts__pace">

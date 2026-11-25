@@ -5,7 +5,7 @@ import { Reveal, stag } from '@/components/motion/Reveal';
 import { useTapPick } from '../stats/comps/graphs/graphKit';
 import { cn } from '@/lib/utils';
 import { boomN, f1, ord, pctOf, startN, TONE_LABEL, tierOfFinish, useFantasy, type Fantasy, type FanRec, type RankedStat } from '@/utils/fantasy';
-import { clubHue, NextLogos, TrendChip, teamOf } from './parts';
+import { clubHue, NextLogos, TrendChip, teamOf, tileGrid, wk } from './parts';
 
 const OPP_LABEL: Record<string, { k: string; info: string; unit: string }> = {
   og: { k: 'Opportunities / game', info: 'Carries plus targets a game (QB: pass attempts plus carries).', unit: '' },
@@ -159,9 +159,9 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
     <Reveal className="fx" style={{ '--tc': clubHue(f.club) } as CSSProperties}>
       <div className="fx-hero">
         <Tile i={0} k="PPR total" v={f1(rec.t)} sub={`${rec.g} games · week ${f.week}`} tone="lead" />
-        <Tile i={1} k="PPR / game" v={f1(rec.pg)} sub={rec.rk[4] ? `${ord(rec.rk[4])} of ${rec.rk[5]} ${pos}s` : 'Under half his club\'s games'} />
-        <Tile i={2} k={`${pos} rank`} v={ord(rec.rk[0])} sub={`of ${rec.rk[1]} on total`} />
-        <Tile i={3} k="Overall rank" v={ord(rec.rk[2])} sub={`of ${rec.rk[3]} skill players`} />
+        <Tile i={1} k="PPR / game" v={f1(rec.pg)} sub={rec.rk[4] ? `${ord(rec.rk[4])} of ${rec.rk[5]} ${pos}s` : 'Few games'} />
+        <Tile i={2} k={`${pos} rank`} v={ord(rec.rk[0])} sub={`of ${rec.rk[1]}`} />
+        <Tile i={3} k="Overall rank" v={ord(rec.rk[2])} sub={`of ${rec.rk[3]}`} />
       </div>
 
       <div className="fx-block mo-rise" style={stag(4)}>
@@ -187,14 +187,14 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
               come from the same weeks. Start-worthy, boom and bust are shares of his games by weekly finish at {pos}.
             </InfoTip>
           </div>
-          <div className="fx-tiles">
+          <div className="fx-tiles" style={tileGrid(7)}>
             <Tile i={0} k="Floor" v={f1(rec.fl)} sub="25th percentile" />
             <Tile i={1} k="Median" v={f1(rec.md)} />
             <Tile i={2} k="Ceiling" v={f1(rec.ce)} sub="75th percentile" />
             <Tile i={3} k="Std dev" v={f1(rec.sd)} sub={rec.cv != null ? `CV ${rec.cv.toFixed(2)}` : undefined} />
-            <Tile i={4} k="Start-worthy" v={`${pctOf(rec.sw, rec.g)}%`} sub={`${rec.sw} of ${rec.g} weeks`} tone="good" />
-            <Tile i={5} k="Boom" v={`${pctOf(rec.bm, rec.g)}%`} sub={`${rec.bm} ${rec.bm === 1 ? 'week' : 'weeks'}`} />
-            <Tile i={6} k="Bust" v={`${pctOf(rec.bu, rec.g)}%`} sub={`${rec.bu} ${rec.bu === 1 ? 'week' : 'weeks'}`} tone={rec.bu ? 'bad' : undefined} />
+            <Tile i={4} k="Start-worthy" v={`${pctOf(rec.sw, rec.g)}%`} sub={`${rec.sw} of ${rec.g} ${wk(rec.g)}`} tone="good" />
+            <Tile i={5} k="Boom" v={`${pctOf(rec.bm, rec.g)}%`} sub={`${rec.bm} ${wk(rec.bm)}`} />
+            <Tile i={6} k="Bust" v={`${pctOf(rec.bu, rec.g)}%`} sub={`${rec.bu} ${wk(rec.bu)}`} tone={rec.bu ? 'bad' : undefined} />
           </div>
         </div>
       )}
@@ -208,7 +208,7 @@ const FantasySection = ({ playerKey, active }: { playerKey: string; active: bool
               {' '}Red-zone touches and points over expectation are not in the weekly data, so they are not shown.
             </InfoTip>
           </div>
-          <div className="fx-tiles">
+          <div className="fx-tiles" style={tileGrid(opps.length)}>
             {opps.map((k, i) => {
               const s = op[k] as RankedStat;
               const { unit } = OPP_LABEL[k];

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { f1, ord, pctOf, useFantasy } from '@/utils/fantasy';
-import { clubHue, NextLogos, TrendChip } from './parts';
+import { clubHue, NextLogos, TrendChip, wk } from './parts';
 
 /**
  * The player card's fantasy strip for an active QB, RB, WR or TE with a game this season: PPR rank (position and overall),
@@ -37,18 +37,18 @@ const FantasyStrip = ({ playerKey, active, onOpen }: { playerKey: string; active
         </div>
         <div className="fx-cell">
           <dt>Last 3</dt>
-          <dd><b>{rec.l3 != null ? f1(rec.l3) : '—'}</b>{f.trend && <TrendChip trend={f.trend} />}</dd>
-          <em>{rec.p3 != null ? `prev 3: ${f1(rec.p3)}` : rec.l3r ? `${ord(rec.l3r[0])} of ${rec.l3r[1]}` : ' '}</em>
+          <dd><b>{rec.l3 != null ? f1(rec.l3) : '—'}</b></dd>
+          <em className="fx-cell__t">{f.trend ? <TrendChip trend={f.trend} /> : null}{rec.p3 != null ? `prev ${f1(rec.p3)}` : rec.l3r ? `${ord(rec.l3r[0])} of ${rec.l3r[1]}` : ' '}</em>
         </div>
         <div className="fx-cell">
           <dt>Next 3</dt>
           <dd>{f.next.length ? <NextLogos slots={f.next} size={22} label={false} /> : <b>—</b>}</dd>
           <em>{f.next.length ? f.next.map((s) => (s.opp ? s.opp : 'bye')).join(' · ') : ' '}</em>
         </div>
-        <div className="fx-cell">
+        <div className="fx-cell fx-cell--wide">
           <dt>Start-worthy</dt>
           <dd><b>{pctOf(rec.sw, rec.g)}%</b></dd>
-          <em>{rec.sw} of {rec.g} weeks</em>
+          <em>{rec.sw} of {rec.g} {wk(rec.g)}</em>
         </div>
       </dl>
     </section>

@@ -5,6 +5,7 @@ import { useGameLog } from '@/utils/gameLogs';
 import { gameHash, openGame } from '@/utils/nflGames';
 import { cn } from '@/lib/utils';
 import { RULES, roundShort, abbrOf, avg, dist, fmtDate, fmtN, parseGames, streaksOf, teamHue, teamOf, type Game } from './gameLogModel';
+import { PixelSelect } from '@/components/arcade/PixelSelect';
 import './gameLog.css';
 import { displayName } from '@/utils/displayName';
 
@@ -41,8 +42,8 @@ const useReduced = () => {
   return r;
 };
 
-const Seg = <T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: { v: T; l: string }[]; label: string }) => (
-  <div className="gl-seg" role="group" aria-label={label}>
+const Seg = <T extends string>({ value, onChange, options, label, className }: { value: T; onChange: (v: T) => void; options: { v: T; l: string }[]; label: string; className?: string }) => (
+  <div className={cn('gl-seg', className)} role="group" aria-label={label}>
     {options.map((o) => (
       <button key={o.v} type="button" aria-pressed={value === o.v} className={cn('gl-seg__b', value === o.v && 'is-on')} onClick={() => onChange(o.v)}>
         {o.l}
@@ -81,6 +82,14 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
   }, [key]);
 
   const seasons = useMemo(() => [...new Set(all.map((g) => g.season))].sort((a, b) => b - a), [all]);
+  const stepIdx = season === 'all' ? -1 : seasons.indexOf(season);
+  const stepSeason = (d: 1 | -1) => {
+    const next = season === 'all' ? (d === 1 ? seasons[0] : undefined) : seasons[stepIdx + d];
+    if (next == null) return;
+    setSeason(next);
+    setPage(0);
+    setSel(null);
+  };
   const hasPost = all.some((g) => g.post);
   const games = useMemo(() => all.filter((g) => (season === 'all' || g.season === season) && (type === 'ALL' || (type === 'POST') === g.post)), [all, season, type]);
   const chartSeason = season === 'all' ? seasons[0] : season;
@@ -217,33 +226,36 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
   return (
     <div className="gl space-y-3">
       {header}
-      <div className="gl-tabs">
-        <Seg<typeof tab> label="Game log view" value={tab} onChange={setTab} options={[{ v: 'overview', l: 'Overview' }, { v: 'last5', l: 'Last 5' }, { v: 'splits', l: 'Splits' }, { v: 'log', l: 'Game log' }]} />
+      <div className="gl-bar" role="toolbar" aria-label="Game log controls">
+        <Seg<typeof tab> label="Game log view" value={tab} onChange={setTab} options={[{ v: 'overview', l: 'Overview' }, { v: 'last5', l: 'Last 5' }, { v: 'splits', l: 'Splits' }, { v: 'log', l: 'Game log' }]} className="gl-seg--view" />
+        {tab !== 'last5' && (
+          <div className="gl-bar__row">
+            <div className="gl-step" role="group" aria-label="Season">
+              <button type="button" className="gl-step__b" aria-label="Older season" disabled={season === 'all' ? false : stepIdx >= seasons.length - 1} onClick={() => stepSeason(1)}>
+                <span className="ax-tri ax-tri--l" aria-hidden="true" />
+              </button>
+              <PixelSelect<string | number>
+                className="gl-step__sel"
+                label="Season"
+                value={season}
+                onChange={(v) => { setSeason(v as 'all' | number); setPage(0); setSel(null); }}
+                options={[{ value: 'all', label: 'All seasons' }, ...seasons.map((y) => ({ value: y, label: String(y) }))]}
+              />
+              <button type="button" className="gl-step__b" aria-label="Newer season" disabled={season === 'all' || stepIdx <= 0} onClick={() => stepSeason(-1)}>
+                <span className="ax-tri ax-tri--r" aria-hidden="true" />
+              </button>
+            </div>
+            {hasPost && (
+              <Seg label="Game type" value={type} onChange={(v) => { setType(v); setPage(0); setSel(null); }} options={[{ v: 'ALL', l: 'All' }, { v: 'REG', l: 'Reg' }, { v: 'POST', l: 'Post' }]} />
+            )}
+          </div>
+        )}
       </div>
       {tab === 'last5' && (
         <div className="gl-panel">
           <div className="gl-head"><h3 className="gl-h">Last 5 games</h3><span className="gl-sub">newest first, any season</span></div>
           {logTable([...all].reverse().slice(0, 5))}
         </div>
-      )}
-      {tab !== 'last5' && (
-        <>
-      {/* filters */}
-      <div className="gl-filters">
-        <div className="gl-chips" role="group" aria-label="Season">
-          <button type="button" aria-pressed={season === 'all'} className={cn('gl-chip', season === 'all' && 'is-on')} onClick={() => { setSeason('all'); setPage(0); }}>All</button>
-          {seasons.map((s) => (
-            <button key={s} type="button" aria-pressed={season === s} className={cn('gl-chip', season === s && 'is-on')} onClick={() => { setSeason(s); setPage(0); setSel(null); }}>
-              {s}
-            </button>
-          ))}
-        </div>
-        {hasPost && (
-          <Seg label="Game type" value={type} onChange={(v) => { setType(v); setPage(0); setSel(null); }} options={[{ v: 'ALL', l: 'All' }, { v: 'REG', l: 'Regular' }, { v: 'POST', l: 'Playoffs' }]} />
-        )}
-      </div>
-
-        </>
       )}
       {tab === 'overview' && (
         <>

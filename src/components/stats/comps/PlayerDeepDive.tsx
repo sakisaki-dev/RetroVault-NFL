@@ -593,7 +593,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
 
           {IS_NFL && (
             <DdSection id="dd-gamelog" index={0.5} title={player.status === 'Active' ? 'This season & game log' : 'Game log'} icon={ClipboardList} kicker={player.status === 'Active' ? 'Live season, then every game' : 'Every game on file'}>
-              <DdGameLog player={player} header={<SeasonHeader player={player} />} />
+              <DdGameLog player={player} header={<SeasonHeader player={player} hidePpr={hasFantasy} />} />
             </DdSection>
           )}
 
