@@ -10,9 +10,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import { useBioInfo } from '@/utils/bioInfo';
+import { useOpenCard } from '@/components/fantasy/hub/cardContext';
+import { peekKeyProps } from '@/components/peek/peekProps';
 import { f1, ord, toneOfRank, type FPos, type Slot } from '@/utils/fantasy';
 import { useGameSprites } from '@/utils/gameSprites';
-import { AVAIL_NOTE, flagsFor, SCORING_LABEL, type Flag, type TradeModel, type TradePlayer } from '@/utils/tradeSim';
+import { AVAIL_NOTE, flagsFor, SCORING_LABEL, TRADE_METHOD_NOTES, type Flag, type TradeModel, type TradePlayer } from '@/utils/tradeSim';
 
 export const TEAM_LABELS = ['Team A', 'Team B', 'Team C', 'Team D'] as const;
 /** One accent per side (gold, blue, green, rose): the side is never told apart by colour alone, its letter is always shown. */
@@ -71,8 +73,8 @@ export const StatPanel = ({ p, model, cardValue, age }: { p: TradePlayer; model:
         <Tile k={`${unit} / game`} v={f1(p.ppg)} s={`${p.g} games`} />
         <Tile k="Last 3" v={p.l3 != null ? f1(p.l3) : '—'} s={p.p3 != null ? `prev 3: ${f1(p.p3)}` : undefined} tone={p.l3 != null && p.p3 != null ? (p.l3 > p.p3 + 1 ? 'good' : p.l3 < p.p3 - 1 ? 'bad' : undefined) : undefined} />
         <Tile k="Floor · mid · ceiling" v={p.fl != null ? `${f1(p.fl)} · ${f1(p.md)} · ${f1(p.ce)}` : '—'} s="25th · 50th · 75th week" />
-        <Tile k="Start-worthy" v={`${rec.g ? Math.round((100 * rec.sw) / rec.g) : 0}%`} s={`${rec.sw} of ${rec.g} weeks`} />
-        <Tile k="Boom · bust" v={`${rec.g ? Math.round((100 * rec.bm) / rec.g) : 0}% · ${rec.g ? Math.round((100 * rec.bu) / rec.g) : 0}%`} s="weekly finish" />
+        <Tile k="Start-worthy" v={`${Math.round(100 * p.startRate)}%`} s={`${p.sw} of ${p.g} weeks`} />
+        <Tile k="Boom · bust" v={`${Math.round(100 * p.boomRate)}% · ${Math.round(100 * p.bustRate)}%`} s="weekly finish" />
         {op.ts && <Tile k="Target share" v={`${rate(op.ts)}%`} s={op.ts[1] ? `${ord(op.ts[1])} of ${op.ts[2]}` : undefined} />}
         {op.ay && <Tile k="Air yards share" v={`${rate(op.ay)}%`} s={op.ay[1] ? `${ord(op.ay[1])} of ${op.ay[2]}` : undefined} />}
         {op.sn && <Tile k="Snap share" v={`${rate(op.sn)}%`} s={op.sn[1] ? `${ord(op.sn[1])} of ${op.sn[2]}` : undefined} />}
@@ -117,20 +119,23 @@ export const TradeCard = ({
   ghost?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const openCard = useOpenCard();
   const bio = useBioInfo(p.key);
   const flags = useMemo(() => flagsFor(p, bio?.age ?? null), [p, bio]);
   return (
-    <article className={cn('tr-card', ghost && 'tr-card--ghost')} style={{ '--tc': clubHue(p.club) } as CSSProperties}>
+    <article className={cn('tr-card ix-card', ghost && 'tr-card--ghost')} style={{ '--tc': clubHue(p.club) } as CSSProperties}>
       <div className="tr-card__main">
-        <Fig player={player} club={p.club} />
-        <div className="tr-id">
-          <b className="tr-name">{p.name}</b>
-          <span className="tr-sub">
-            <em className="tr-pos">{p.pos}{p.posRank}</em>
-            <TeamLogo team={teamOf(p.club)} size={16} decorative backed />
-            <span>{p.club}</span>
+        <button type="button" className="tr-open" {...peekKeyProps(p.key)} onClick={() => openCard(p.key)} aria-label={`Open ${p.name}'s card`}>
+          <Fig player={player} club={p.club} />
+          <span className="tr-id">
+            <b className="tr-name">{p.name}</b>
+            <span className="tr-sub">
+              <em className="tr-pos">{p.pos}{p.posRank}</em>
+              <TeamLogo team={teamOf(p.club)} size={16} decorative backed />
+              <span>{p.club}</span>
+            </span>
           </span>
-        </div>
+        </button>
         {onRemove && (
           <button type="button" className="tr-x" onClick={onRemove} aria-label={`Remove ${p.name}`}>
             <X className="h-4 w-4" aria-hidden="true" />
@@ -212,11 +217,10 @@ export const MethodTip = ({ model }: { model: TradeModel }) => {
   const s = model.settings;
   return (
     <InfoTip label="How trade values are made" className="tr-info">
-      <p><b>Projection.</b> Each week blends his last 3 games (35%), his season shrunk toward the average player at his position (40%) and usage: opportunities a game times the league's points per opportunity (25%). TD points regress toward the league TD rate per opportunity.</p>
-      <p className="mt-1.5"><b>ROS</b> is that projection times each remaining week's matchup factor (the defence's PPR allowed to his position, damped, capped ±15%), a bye is 0 and Out, Doubtful, Questionable or IR counts the next game(s) less. Weeks 15–17 are weighted ×{s.playoffWeight}.</p>
-      <p className="mt-1.5"><b>VOR</b> is weighted ROS minus the replacement level: the last starter at his position once {s.teams} teams fill QB, 2 RB, 2 WR, TE, a flex{s.superflex ? ' and a superflex' : ''} from the pool ({model.starters.QB} QB, {model.starters.RB} RB, {model.starters.WR} WR, {model.starters.TE} TE).</p>
-      <p className="mt-1.5"><b>Stud premium.</b> A side's value is the sum of each VOR raised to the power 1.25 (scaled so an average starter is unchanged), so one star outweighs two mid starters with the same total. The side that gives more players gains roster spots, credited at the best unrostered player's VOR (floored at 0: {model.freeAgent.credit.toFixed(1)} here).</p>
-      <p className="mt-1.5"><b>Verdict.</b> The gap between the sides' net, as a share of the value moved: under 5% Fair, 5–15% Leans, over 15% Lopsided. Flags and the card value never change it. Routes run and red-zone touches aren't in the data, so target share and snap share stand in.</p>
+      {(['projection', 'role', 'rates', 'ros', 'vor', 'value', 'verdict'] as const).map((k, i) => (
+        <p key={k} className={i ? 'mt-1.5' : undefined}>{TRADE_METHOD_NOTES[k]}</p>
+      ))}
+      <p className="mt-1.5">{s.teams} teams, weeks 15-17 weighted x{s.playoffWeight}. Flags and card value never change the verdict.</p>
     </InfoTip>
   );
 };

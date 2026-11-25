@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
 import { peekKeyProps } from '@/components/peek/peekProps';
-import { buildHash } from '@/components/stats/hub/hashRoute';
+import { useOpenCard } from './cardContext';
 import { cn } from '@/lib/utils';
 import type { Player } from '@/types/player';
 import { findNFLTeam } from '@/utils/nflTeams';
@@ -12,10 +12,15 @@ import { useGameSprites } from '@/utils/gameSprites';
 import { clubHue, NextLogos, teamOf } from '../parts';
 import type { Slot } from '@/utils/fantasy';
 
-/** A tap on a player opens his Deep Dive (a hold gives the quick look through data-player-key). */
-export const openPlayer = (key: string) => {
-  if (!key || key.startsWith('DST:')) return;
-  window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: key });
+/** Anything that shows a player: a tap opens his player card, a hold the quick look. */
+export const PlayerHit = ({ pkey, className, children, label }: { pkey: string; className?: string; children: ReactNode; label?: string }) => {
+  const open = useOpenCard();
+  if (!pkey || pkey.startsWith('DST:')) return <span className={className}>{children}</span>;
+  return (
+    <button type="button" className={cn('fh-hit', className)} {...peekKeyProps(pkey)} onClick={() => open(pkey)} aria-label={label ?? `Open ${pkey.slice(pkey.indexOf(':') + 1)}'s card`}>
+      {children}
+    </button>
+  );
 };
 
 /** Flat club-colour variables: --hc (fill), --hc2 (edge), --hink (text on fill). */
@@ -32,11 +37,12 @@ export const Sprite = ({ player, club, kind = 'bust', size = 's' }: { player?: P
   return <TeamLogo team={teamOf(kit ?? '') ?? kit} size={size === 's' ? 34 : size === 'm' ? 56 : 80} decorative backed />;
 };
 
-/** The name as a tappable flat strip: club colour, logo, name. Tap: Deep Dive. Hold: the quick look. */
+/** The name as a tappable flat strip: club colour, logo, name. Tap: his player card. Hold: the quick look. */
 export const NameStrip = ({ pkey, name, club, extra, className }: { pkey: string; name: string; club?: string; extra?: ReactNode; className?: string }) => {
   const t = club ? teamOf(club) ?? findNFLTeam(club) : null;
+  const open = useOpenCard();
   return (
-    <button type="button" className={cn('fh-name', className)} style={hcVars(club)} {...peekKeyProps(pkey)} onClick={() => openPlayer(pkey)}>
+    <button type="button" className={cn('fh-name', className)} style={hcVars(club)} {...peekKeyProps(pkey)} onClick={() => open(pkey)}>
       {t && <TeamLogo team={t} size={16} decorative backed />}
       <b>{name}</b>
       {extra}

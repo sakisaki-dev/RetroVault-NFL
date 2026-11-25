@@ -10,7 +10,7 @@ import { displayName } from '@/utils/displayName';
 import { bannerTeamOf } from '@/utils/playerExtras';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { FANTASY_IDS, F_SLOTS, projectWeek, replay, type FLineup } from '@/utils/nflFantasy';
-import { NameStrip, Sprite, hcVars } from './hubParts';
+import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
 import type { Sub } from './FantasyHub';
 
@@ -38,9 +38,9 @@ const Side = ({ hub, lineup, club, right }: { hub: FantasyHub; lineup: FLineup; 
         {stars.map(({ k }, i) => {
           const p = hub.ctx.profiles.get(k)?.player;
           return (
-            <button key={k} type="button" className="fh-vs__fig mo-pop" style={stag(i, 70)} data-player-key={k} onClick={() => (window.location.hash = `#stats/deepdive?p=${encodeURIComponent(k)}`)} aria-label={`Open ${nameOf(k)}`}>
+            <PlayerHit key={k} pkey={k} className="fh-vs__fig mo-pop">
               {p && <Sprite player={p} club={findNFLTeam(bannerTeamOf(p))?.name} kind="figure" size="s" />}
-            </button>
+            </PlayerHit>
           );
         })}
       </div>
@@ -127,7 +127,7 @@ const HeadToHeadPage = ({ hub, onGo }: { hub: FantasyHub; onGo: (s: Sub) => void
             const prof = dst ? undefined : hub.ctx.profiles.get(k);
             return (
               <span className={cn('fh-duel__p', win && 'is-win')} style={hcVars(t?.name)}>
-                <span className="fh-duel__fig">{prof ? <Sprite player={prof.player} club={t?.name} /> : <TeamLogo team={club} size={30} decorative backed />}</span>
+                <span className="fh-duel__fig">{prof ? <PlayerHit pkey={k}><Sprite player={prof.player} club={t?.name} /></PlayerHit> : <TeamLogo team={club} size={30} decorative backed />}</span>
                 {dst ? <b className="fh-slot__dst">{nameOf(k)}</b> : <NameStrip pkey={k} name={nameOf(k)} club={t?.name} />}
               </span>
             );

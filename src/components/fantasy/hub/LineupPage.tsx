@@ -19,7 +19,8 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import type { InjuryCode } from '@/utils/injuries';
 import FantasyField, { type FSpot } from './FantasyField';
 import SlotPicker from './SlotPicker';
-import { NameStrip, Sprite, hcVars, openPlayer } from './hubParts';
+import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
+import { useOpenCard } from './cardContext';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
 import { teamOf } from '../parts';
 
@@ -31,6 +32,7 @@ const POS_OPTS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'DST'] as const;
 const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Prefs; setPrefs: (p: Partial<Prefs>) => void; turf: Turf }) => {
   const { ctx, lab, injured, fl, setFl, locks, excludes, setExcludes, fctx, cands, board, cap, capMode, week, filled, cost, draft, setDraft, clubName } = hub;
   const raw = useFantasyRaw();
+  const open = useOpenCard();
   const tall = useMedia('(max-width: 639px)');
   const art = useFieldArt(clubName, turf, tall);
   const [pick, setPick] = useState<string | null>(null);
@@ -81,7 +83,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
 
       <div className="fh-pitch">
         <Reveal className="fh-fieldwrap">
-          <FantasyField spots={spots} kitClub={clubName} turf={turf} art={art} tall={tall} size={tall ? 's' : 'm'} onPick={setPick} />
+          <FantasyField onOpen={open} spots={spots} kitClub={clubName} turf={turf} art={art} tall={tall} size={tall ? 's' : 'm'} onPick={setPick} />
         </Reveal>
         <section className="fh-slots" aria-label="Lineup slots">
           <header className="fh-slots__h">
@@ -100,7 +102,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
                   <span className="fh-slot__pos">{s.label}</span>
                   {k ? (
                     <>
-                      <span className="fh-slot__fig">{prof ? <Sprite player={prof.player} club={findNFLTeam(club)?.name} /> : <TeamLogo team={dst} size={34} decorative backed />}</span>
+                      <span className="fh-slot__fig">{prof ? <PlayerHit pkey={k}><Sprite player={prof.player} club={findNFLTeam(club)?.name} /></PlayerHit> : <TeamLogo team={dst} size={34} decorative backed />}</span>
                       <span className="fh-slot__who">
                         {prof ? <NameStrip pkey={k} name={nameOf(k)} club={club} extra={injured.get(k) ? <InjMini code={injured.get(k)!} /> : undefined} /> : <b className="fh-slot__dst">{nameOf(k)}</b>}
                         {f && <span className="fh-slot__opp"><OppInline f={f} /></span>}
@@ -175,12 +177,13 @@ const OppInline = ({ f }: { f: NonNullable<ReturnType<typeof fantasyFrom>> }) =>
 };
 
 const BoardRow = ({ c, i, max, week, fh, prefs, inLineup, inj }: { c: Cand; i: number; max: number; week: number; fh: FantasyHub; prefs: Prefs; inLineup: boolean; inj?: InjuryCode }) => {
+  const open = useOpenCard();
   const prof = c.pos === 'DST' ? undefined : fh.ctx.profiles.get(c.key);
   const club = findNFLTeam(c.club)?.name;
   return (
     <li className={cn('fh-brow ix-card', inLineup && 'is-in')} style={{ ...hcVars(club), ...stag(Math.min(i, 8), 30) }}>
       <span className="fh-brow__rank">{i + 1}</span>
-      <span className="fh-brow__fig">{prof ? <Sprite player={prof.player} club={club} /> : <TeamLogo team={c.club} size={30} decorative backed />}</span>
+      <span className="fh-brow__fig">{prof ? <PlayerHit pkey={c.key}><Sprite player={prof.player} club={club} /></PlayerHit> : <TeamLogo team={c.club} size={30} decorative backed />}</span>
       <span className="fh-brow__who">
         {prof ? <NameStrip pkey={c.key} name={nameOf(c.key)} club={club} extra={inj ? <InjMini code={inj} /> : undefined} /> : <b className="fh-slot__dst">{nameOf(c.key)}</b>}
         <i>{c.pos === 'DST' ? 'D/ST' : c.pos}</i>
@@ -199,7 +202,7 @@ const BoardRow = ({ c, i, max, week, fh, prefs, inLineup, inj }: { c: Cand; i: n
           </>
         )}
       </span>
-      <button type="button" className="fh-brow__open" onClick={() => openPlayer(c.key)} aria-label={`Open ${nameOf(c.key)}`} tabIndex={-1} />
+      <button type="button" className="fh-brow__open" onClick={() => open(c.key)} aria-label={`Open ${nameOf(c.key)}'s card`} tabIndex={-1} data-player-key={c.pos === 'DST' ? undefined : c.key} />
     </li>
   );
 };

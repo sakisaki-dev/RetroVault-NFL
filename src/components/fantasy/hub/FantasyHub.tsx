@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArcadeToggle, StadiumHeader } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { ViewCount } from '@/components/motion/Reveal';
@@ -14,6 +14,7 @@ import LeagueSheet, { LeagueChip, leagueSummary } from './LeagueSheet';
 import LineupPage from './LineupPage';
 import StartSitPage from './StartSitPage';
 import HeadToHeadPage from './HeadToHeadPage';
+import { CardHost } from './cardContext';
 import './fantasyHub.css';
 import '@/components/teamlab/teamlab.css';
 import '@/components/teamlab/nfl/nflLab.css';
@@ -79,8 +80,10 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
     if (!window.location.hash.startsWith('#fantasy')) navigate({ tab: 'fantasy', section: sub, p: route.p }, { replace: true });
   }, [navigate, sub, route.p]);
   const go = (s: Sub) => navigate({ tab: 'fantasy', section: s });
+  const find = useCallback((key: string) => env.cards.get(key) ?? nl.ctx.profiles.get(key)?.player, [env.cards, nl.ctx]);
   const summary = leagueSummary(prefs, env.settings);
   return (
+    <CardHost find={find}>
     <div className="fh rv-ix min-w-0" data-sub={sub}>
       <div className="container min-w-0 py-3 sm:py-4">
         <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />
@@ -104,6 +107,7 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
       <LeagueSheet open={open} onOpenChange={setOpen} prefs={prefs} setPrefs={setPrefs} settings={env.settings} setSettings={env.setSettings} scoring={hub.scoring} turf={turf} setTurf={setTurf} />
       <span className="sr-only">{SCORING_LABELS[prefs.scoring]}</span>
     </div>
+    </CardHost>
   );
 };
 

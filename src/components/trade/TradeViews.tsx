@@ -2,6 +2,8 @@ import { useMemo, useState, type CSSProperties } from 'react';
 import { BarChart3, Scale, Users } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { ArcadeToggle, LedDigits } from '@/components/arcade';
+import { useOpenCard } from '@/components/fantasy/hub/cardContext';
+import { peekKeyProps } from '@/components/peek/peekProps';
 import { stag } from '@/components/motion/Reveal';
 import { clubHue } from '@/components/fantasy/parts';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
@@ -147,6 +149,7 @@ export const PartnerFinder = ({
   const [pos, setPos] = useState<FPos | null>(null);
   const [kind, setKind] = useState<'all' | '1' | '2'>('all');
   const [open, setOpen] = useState(false);
+  const openCard = useOpenCard();
   const list = useMemo(() => {
     const all = suggestPartner(model, giveKeys, { pos, limit: 30 });
     return all.filter((p) => (kind === 'all' ? true : kind === '1' ? p.keys.length === 1 : p.keys.length === 2)).slice(0, 8);
@@ -180,10 +183,10 @@ export const PartnerFinder = ({
                     {pk.keys.map((k) => {
                       const p = model.players.get(k)!;
                       return (
-                        <span key={k} className="tr-pk__p" style={{ '--tc': clubHue(p.club) } as CSSProperties}>
+                        <button key={k} type="button" className="tr-pk__p tr-open" {...peekKeyProps(k)} onClick={() => openCard(k)} style={{ '--tc': clubHue(p.club) } as CSSProperties} aria-label={`Open ${p.name}'s card`}>
                           <Fig player={cards.get(k)} club={p.club} />
                           <span><b>{p.name}</b><i>{p.pos}{p.posRank} · {p.club}</i></span>
-                        </span>
+                        </button>
                       );
                     })}
                   </span>

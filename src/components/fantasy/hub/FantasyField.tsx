@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Replace } from 'lucide-react';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
 import PixelLoader from '@/components/ui/PixelLoader';
@@ -37,7 +37,7 @@ const INJ: Record<InjuryCode, string> = { IR: '#ef4444', Out: '#ef4444', Doubtfu
  * his logo, the projection, and the next opponent's logo ringed by matchup difficulty. An empty spot is a soft position plate.
  * Every spot is a button (tap: change that slot).
  */
-const FantasyField = ({ spots, kitClub, turf, art, tall, size, onPick }: { spots: FSpot[]; kitClub: string; turf: Turf; art: FieldArt; tall: boolean; size: 's' | 'm' | 'l'; onPick: (id: string) => void }) => {
+const FantasyField = ({ spots, kitClub, turf, art, tall, size, onPick, onOpen }: { spots: FSpot[]; kitClub: string; turf: Turf; art: FieldArt; tall: boolean; size: 's' | 'm' | 'l'; onPick: (id: string) => void; onOpen: (key: string) => void }) => {
   const { numberFor } = useJerseyNumbers();
   const team = findNFLTeam(kitClub);
   const vars = {
@@ -76,17 +76,20 @@ const FantasyField = ({ spots, kitClub, turf, art, tall, size, onPick }: { spots
         const t = findNFLTeam(club);
         const kit = t?.name ?? kitClub;
         return (
-          <button key={s.id} type="button" className="lab-spot fh-spot mo-pop" style={style} {...peekProps(p.player)} onClick={() => onPick(s.id)} aria-label={`${s.label} ${p.name}. Change`}>
-            <span className="lab-fig fh-fig">
-              {FIELD_ART ? <GameSprite player={p.player} team={kit} kind="figure" size={size} /> : <PixelPlayer club={kit} number={numberFor(p.player)} unit={size === 'l' ? 4 : size === 'm' ? 3 : 2} />}
-              {s.injury && <span className="nfl-inj" style={{ background: INJ[s.injury] }} title={s.injury}>{s.injury === 'IR' ? 'IR' : s.injury[0]}</span>}
-            </span>
-            <span className="fh-tag" style={{ '--hc': t ? `hsl(${t.primaryColor})` : '#333', '--hink': t ? getReadableTextOn(t.primaryColor) : '#fff' } as CSSProperties}>
-              {t && <TeamLogo team={t} size={14} decorative />}
-              <b>{s.label}</b><span className="fh-tag__n">{surnameOf(p.name)}</span>{s.badge != null && <i>{s.badge}</i>}
-            </span>
+          <div key={s.id} className="lab-spot fh-spot fh-spot--pl mo-pop" style={style}>
+            <button type="button" className="fh-spot__hit" {...peekProps(p.player)} onClick={() => onOpen(p.key)} aria-label={`${s.label} ${p.name}. Open his card`}>
+              <span className="lab-fig fh-fig">
+                {FIELD_ART ? <GameSprite player={p.player} team={kit} kind="figure" size={size} /> : <PixelPlayer club={kit} number={numberFor(p.player)} unit={size === 'l' ? 4 : size === 'm' ? 3 : 2} />}
+                {s.injury && <span className="nfl-inj" style={{ background: INJ[s.injury] }} title={s.injury}>{s.injury === 'IR' ? 'IR' : s.injury[0]}</span>}
+              </span>
+              <span className="fh-tag" style={{ '--hc': t ? `hsl(${t.primaryColor})` : '#333', '--hink': t ? getReadableTextOn(t.primaryColor) : '#fff' } as CSSProperties}>
+                {t && <TeamLogo team={t} size={14} decorative />}
+                <b>{s.label}</b><span className="fh-tag__n">{surnameOf(p.name)}</span>{s.badge != null && <i>{s.badge}</i>}
+              </span>
+            </button>
             {s.slots && <span className="fh-opp"><OppChip slots={s.slots} size={size === 's' ? 20 : 24} label={false} /></span>}
-          </button>
+            <button type="button" className="fh-spot__chg" onClick={() => onPick(s.id)} aria-label={`Change ${s.label}`}><Replace aria-hidden="true" /></button>
+          </div>
         );
       })}
     </div>
