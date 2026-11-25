@@ -586,7 +586,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
           {lowerReady && <>
           <DdSection id="dd-ratings" index={0} title="Skill ratings" icon={Gauge} kicker="Letter grades by position percentile"
               info={IS_NFL && careerPoolLabel(player.position) ? `Percentile among qualified ${player.position}s (career: ${careerPoolLabel(player.position)}; a season: its weekly bar), on rates shrunk by sample size. S = top 10%. A stat with no between-player signal gets no tile.` : `Percentile among ${player.position}s with ${SIM_MIN_GAMES}+ games. S = top 8%.`}>
-            <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} onOpenPlayer={(p) => choose(keyOf(p))} />
+            <DdSkillsSwitch player={player} car={car} players={players} seasonOvr={seasonOvr} careerOvr={careerOvrMap} onOpenPlayer={(p) => choose(keyOf(p))} />
           </DdSection>
 
           {IS_NFL && (

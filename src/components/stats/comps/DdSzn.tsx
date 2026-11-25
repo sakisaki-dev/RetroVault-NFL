@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import type { Player, Position } from '@/types/player';
 import { cn } from '@/lib/utils';
 import { seasonLabel } from '@/config/edition';
-import { playerKey, type SeasonOvrFile } from '@/config/ovr';
+import { playerKey, CAREER_LABEL, type SeasonOvrFile } from '@/config/ovr';
 import { gradeFor, percentileOf, type GradeStep, type Overall } from '@/config/skillGrades';
 import LeaderboardPeek, { type PeekBoard } from './LeaderboardPeek';
 import { InfoTip } from '@/components/ui/InfoTip';
@@ -37,10 +37,16 @@ export interface SznEntry {
  * mid-rank percentile among his position's season ratings, on the same S / A+ ... F scale as the skill grades
  * (skillGrades.ts GRADE_SCALE), so the two letters mean the same share of the position.
  */
-const useSznBoards = (players: Player[], seasonOvr: SeasonOvrFile | null, skills: Map<string, Overall>) =>
+const useSznBoards = (players: Player[], ovrByKey: Record<string, number> | Map<string, number> | null, skills: Map<string, Overall>) =>
   useMemo(() => {
     const out = new Map<Position, SznEntry[]>();
-    if (!seasonOvr) return out;
+    if (!ovrByKey) return out;
+    const get = (k: string): number | undefined => (ovrByKey instanceof Map ? ovrByKey.get(k) : ovrByKey[k]);
+    const seasonOvr = { ovr: { } as Record<string, number> };
+    players.forEach((p) => {
+      const v = get(playerKey(p));
+      if (v != null) seasonOvr.ovr[playerKey(p)] = v;
+    });
     const byPos = new Map<Position, Player[]>();
     players.forEach((p) => {
       if (p.isRealLegend || seasonOvr.ovr[playerKey(p)] == null) return;
@@ -64,7 +70,7 @@ const useSznBoards = (players: Player[], seasonOvr: SeasonOvrFile | null, skills
       out.set(pos, rows);
     });
     return out;
-  }, [players, seasonOvr, skills]);
+  }, [players, ovrByKey, skills]);
 
 const useNarrow = () => {
   const q = '(max-width: 640px)';
@@ -123,6 +129,8 @@ interface Props {
   player: Player;
   players: Player[];
   seasonOvr: SeasonOvrFile | null;
+  /** Career OVR by player key: a retired player's card in this slot ranks by it instead of a season rating */
+  careerOvr?: Map<string, number>;
   onOpenPlayer: (p: Player) => void;
 }
 
@@ -134,10 +142,13 @@ export const hasSznPanel = (player: Player, seasonOvr: SeasonOvrFile | null) => 
  * in the Skill tile's style (big letter from his SZN percentile at his position, the number, his rank), a one-line
  * SZN vs Skill chip, and the position's SZN list behind a tap.
  */
-const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
+const DdSzn = ({ player, players, seasonOvr, careerOvr, onOpenPlayer }: Props) => {
   const skills = useSkillRatings();
-  const boards = useSznBoards(players, seasonOvr, skills);
-  if (!seasonOvr || !hasSznPanel(player, seasonOvr)) return null;
+  // A retired player gets the same card for his career OVR (owner, 2026-11-25: "replace that season score with ovr
+  // same format same style"); an active one with a season rating keeps the season card.
+  const career = !hasSznPanel(player, seasonOvr) && player.status !== 'Active' && !player.isRealLegend && !!careerOvr;
+  const boards = useSznBoards(players, career ? careerOvr! : seasonOvr?.ovr ?? null, skills);
+  if (!career && (!seasonOvr || !hasSznPanel(player, seasonOvr))) return null;
   const key = playerKey(player);
   const list = boards.get(player.position);
   const me = list?.find((e) => e.key === key);
@@ -151,8 +162,8 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
       player={player}
       onOpenPlayer={onOpenPlayer}
       getBoard={(): PeekBoard => ({
-        title: 'Season OVR',
-        sub: `${pos}s who played ${seasonLabel(seasonOvr.season)} · ${list.length} rated`,
+        title: career ? `Career ${CAREER_LABEL}` : 'Season OVR',
+        sub: career ? `Every ${pos} · ${list.length} rated` : `${pos}s who played ${seasonLabel(seasonOvr!.season)} · ${list.length} rated`,
         rows: list.map((e) => ({ player: e.player, display: String(e.szn), grade: e.grade })),
       })}
       self={() => ({ player, display: String(me.szn), grade: me.grade })}
@@ -160,7 +171,7 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
       {/* the Skill card's exact layout and wording (owner: "mirror that card to the skill grade") */}
       <button
         type="button"
-        aria-label={`Season grade ${me.grade?.grade ?? 'none'}, season OVR ${me.szn}. Show the ${pos} leaderboard`}
+        aria-label={`${career ? 'Career' : 'Season'} grade ${me.grade?.grade ?? 'none'}, ${career ? 'career' : 'season'} OVR ${me.szn}. Show the ${pos} leaderboard`}
         className={cn(
           'rbk-chip glass-card flex w-full flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
           me.grade?.grade === 'S' && 'dd-card--s',
@@ -168,17 +179,17 @@ const DdSzn = ({ player, players, seasonOvr, onOpenPlayer }: Props) => {
       >
         <GradeChip grade={me.grade} size="xl" />
         <div className="min-w-0 space-y-1.5">
-          <p className="font-pixel text-[9px] uppercase text-gold">Season grade</p>
+          <p className="font-pixel text-[9px] uppercase text-gold">{career ? 'Career grade' : 'Season grade'}</p>
           <div className="flex flex-wrap gap-1.5">
-            <span className="lamp" title="Season OVR: this season ranked within the position">
-              SZN <b>{me.szn}</b>
+            <span className="lamp" title={career ? 'Career OVR: his whole career ranked within the position' : 'Season OVR: this season ranked within the position'}>
+              {career ? CAREER_LABEL : 'SZN'} <b>{me.szn}</b>
             </span>
-            <span className="lamp" title="His rank among this season's rated players at the position">
+            <span className="lamp" title={career ? 'His rank among every player at the position' : "His rank among this season's rated players at the position"}>
               Rank <b>{me.rank}</b>/{list.length}
             </span>
           </div>
           <p className="text-xs text-muted-foreground">
-            {ordinal(Math.round(me.pct))} percentile among {pos}s this season.{lead === 'up' ? ' Above his skill grade.' : lead === 'down' ? ' Below his skill grade.' : ''}
+            {ordinal(Math.round(me.pct))} percentile among {career ? `all ${pos}s` : `${pos}s this season`}.{!career && lead === 'up' ? ' Above his skill grade.' : lead === 'down' ? ' Below his skill grade.' : ''}
           </p>
         </div>
       </button>
