@@ -26,7 +26,7 @@ players = json.loads((ROOT / "data/y80/players.json").read_text())
 keys = {f"{p['pos']}:{p['n']}" for p in players}
 
 # bio.json and thisseason.json (Deep Dive bio pills and This season header)
-for rel in ("nfl/bio.json", "nfl/thisseason.json"):
+for rel in ("nfl/bio.json", "nfl/thisseason.json", "nfl/fantasy.json"):
     d = load(rel)
     if d:
         ks = set(d["p"])
@@ -38,6 +38,19 @@ for rel in ("nfl/bio.json", "nfl/thisseason.json"):
             bad = [k for k, v in d["p"].items() if (v[0] and not 48 <= v[0] <= 94) or (v[1] and not 120 <= v[1] <= 450)]
             if bad:
                 warns.append(f"bio.json: {len(bad)} implausible height/weight rows, e.g. {bad[:3]}")
+# fantasy.json: the same PPR totals as thisseason.json, ranks inside their pools, weekly lines add up
+fan, ts_ = load("nfl/fantasy.json"), load("nfl/thisseason.json")
+if fan and ts_:
+    for k, v in fan["p"].items():
+        t = ts_["p"].get(k, {}).get("ppr")
+        if t and abs(t[0] - v["t"]) > 0.2:
+            errors.append(f"fantasy.json {k}: PPR total {v['t']} differs from thisseason.json {t[0]}")
+        if abs(sum(w[1] for w in v["w"]) - v["t"]) > 0.3:
+            errors.append(f"fantasy.json {k}: weekly lines do not add up to the total")
+        if v["rk"][0] > v["rk"][1] or v["g"] != len(v["w"]):
+            errors.append(f"fantasy.json {k}: rank or games out of range")
+    if not all(c in fan["d"] for c in fan["n"]):
+        errors.append("fantasy.json: a club has no matchup table")
 rows = [r for r in csv.reader((PUB / "initial-data.csv").open()) if len(r) > 5 and r[0] not in ("Name",)]
 names = {r[0] for r in rows if r[1] in ("Active", "Retired")}
 if len(names) < len({p["n"] for p in players}):
