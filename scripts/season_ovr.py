@@ -13,6 +13,7 @@ A season line is the sum of his regular-season game lines for that year (data/nf
   small samples  adj = prior + (pace - prior) x min(1, effective games / SHRINK_GAMES): few effective games pull him
               toward the position's FLOOR (its 5th percentile pace), never toward the average, so two good games do not make
               a 99 and a bench player rates at the bottom
+  no signal   OL (no blocking stats in the data) get no SZN at all: null, the site shows OVR
   rating      OVR = round(62 + 37 x pct ** 2.3), pct = his adj's rank within his position among everyone with a game that
               season (about 10% reach 90). Players with no game that season have no line (the site then shows CAR).
 Only players in players.json are rated, so a past season is ranked among the players the site holds (the 1999-and-later
@@ -36,6 +37,9 @@ NOW = 2026
 SHRINK_GAMES = 10
 PACE = 17
 OFF = ("QB", "RB", "WR", "TE", "OL")
+# Positions whose season line carries no stat signal at all (nflverse has no blocking stats): a season there has no
+# SZN (null, the site falls back to OVR), never a rating built on games alone ("missing stats are skipped, never zero").
+UNRATED = ("OL",)
 
 FIELD_MAP = {
     "QB": {"g": "games", "att": "attempts", "cmp": "completions", "yds": "passYds", "td": "passTD", "int": "interceptions", "sck": "sacks", "ratt": "rushAtt", "ryds": "rushYds", "rtd": "rushTD"},
@@ -148,7 +152,8 @@ def rate_season(year):
     out = {}
     by = defaultdict(list)
     for r in rows:
-        by[r[1]].append(r)
+        if r[1] not in UNRATED:
+            by[r[1]].append(r)
     for pos, lst in by.items():
         paces = sorted(r[3] for r in lst)
         prior = paces[int(0.05 * (len(paces) - 1))]
@@ -159,19 +164,21 @@ def rate_season(year):
             pct = i / (n - 1) if n > 1 else 1
             out[k] = round(62 + 37 * pct ** 2.3)
     lines = {r[0]: r[2] for r in rows}
-    return {k: (v, lines[k]) for k, v in out.items()}
+    res = {k: (v, lines[k]) for k, v in out.items()}
+    res.update({k: (None, lines[k]) for k in lines if k.split(':')[0] in UNRATED})
+    return res
 
 
 def history_ratings():
     """{season: {key: season OVR}} for every completed season of the data (1999-2025)."""
     d = _load()
     years = sorted({y for s in d["logs"].values() for y in s if y <= NOW})
-    return {y: {k: v[0] for k, v in rate_season(y).items()} for y in years}
+    return {y: {k: v[0] for k, v in rate_season(y).items() if v[0] is not None} for y in years}
 
 
 def live_ratings():
     r = rate_season(NOW)
-    return (NOW, {k: v[0] for k, v in r.items()}) if r else None
+    return (NOW, {k: v[0] for k, v in r.items() if v[0] is not None}) if r else None
 
 
 def lines_for_skills():
