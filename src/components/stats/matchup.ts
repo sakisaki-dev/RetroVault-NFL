@@ -400,6 +400,63 @@ export const buildMatchup = (
   };
 };
 
+// ---------- Season scope ----------
+
+/** One side of a season matchup: the player as his season line (null = no season this year) plus what the page loads for it. */
+export interface SeasonSide {
+  /** seasonPlayerOf(p, line); null when he has no games this season */
+  line: Player | null;
+  szn: number | null;
+  skill: number | null;
+  ppr: { perGame: number; rank: number; of: number } | null;
+}
+
+/**
+ * Season Head-to-Head: the same rows and leader rules over this season's lines (position stats), plus the season
+ * block (games, SZN, season skill rating, fantasy PPR). A side with no season has dashes and never leads.
+ */
+export const buildSeasonMatchup = (p1: Player, p2: Player, s1: SeasonSide, s2: SeasonSide, label: string): Matchup => {
+  const sameFamily = familyOf(p1.position) === familyOf(p2.position);
+  const samePosition = p1.position === p2.position;
+  const sections: Section[] = [];
+  const pair = (get: (s: SeasonSide) => number | null) => ({ a: { value: get(s1) }, b: { value: get(s2) } });
+  const seasonRows: Row[] = [
+    row({ id: 's-games', label: 'Games', decimals: 0, ...pair((s) => (s.line ? s.line.games : null)) }),
+    row({ id: 's-szn', label: 'SZN', def: { label: 'SZN', short: 'SZN', definition: 'Season rating: this season\u2019s League Score ranked within the position among players who played it.', minLabel: label }, decimals: 0, ...pair((s) => s.szn) }),
+    row({ id: 's-skill', label: 'Skill rating', decimals: 0, note: `${label} per-game rates vs the position`, ...pair((s) => s.skill) }),
+  ];
+  if (s1.ppr || s2.ppr) {
+    seasonRows.push(
+      row({ id: 's-ppr', label: 'PPR / G', decimals: 1, ...pair((s) => s.ppr?.perGame ?? null) }),
+      row({ id: 's-pprRank', label: 'PPR rank', decimals: 0, lowerIsBetter: true, ...pair((s) => s.ppr?.rank ?? null) }),
+    );
+  }
+  sections.push({ id: 'season', title: `${label} season`, short: 'Season', rows: seasonRows });
+  if (sameFamily) {
+    const fam = POSITION_ROWS[familyOf(p1.position)];
+    sections.push({
+      id: 'position',
+      title: fam.title,
+      short: fam.title.split(' ')[0],
+      rows: fam.rows.map((r) =>
+        row({ id: r.id, label: r.label, decimals: r.decimals, lowerIsBetter: r.lowerIsBetter, ...pair((s) => (s.line ? r.get(s.line) : null)) }),
+      ),
+    });
+  }
+  const score: Record<Side, number> = { 1: 0, 2: 0 };
+  const tallies = sections.map((sec) => {
+    const t = { id: sec.id, short: sec.short, a: 0, b: 0 };
+    sec.rows.forEach((r) => {
+      if (r.leader === 1) t.a += 1;
+      else if (r.leader === 2) t.b += 1;
+    });
+    score[1] += t.a;
+    score[2] += t.b;
+    return t;
+  });
+  return { sections, score, tallies, samePosition, sameFamily, similarity: null, styleSimilarity: null, legacy: [legacyMix(p1), legacyMix(p2)] };
+};
+
 /** Default matchup: the best Career Legacy in the league against the best other career at his position. */
 export const defaultPair = (players: Player[]): [Player, Player] | null => {
   const sorted = [...players].sort((a, b) => b.careerLegacy - a.careerLegacy);
