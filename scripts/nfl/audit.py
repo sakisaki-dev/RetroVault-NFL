@@ -148,6 +148,22 @@ if wd:
         errors.append("nfl/widget.json: the club's record does not match its played games")
     if len(wd["mvp"]) < 3 or not wd.get("best"):
         warns.append("nfl/widget.json has no MVP race or club best player")
+pn = load("nfl/pnews.json")
+if pn:
+    if any(len(pn["vs"].get(pos, {})) != pn["teams"] for pos in ("QB", "RB", "WR", "TE")):
+        errors.append("nfl/pnews.json: a position's defence ranks do not cover every club")
+    for pos in ("QB", "RB", "WR", "TE"):
+        for t, (rank, _f) in pn["vs"].get(pos, {}).items():
+            if not 1 <= rank <= pn["teams"]:
+                errors.append(f"nfl/pnews.json: {pos} {t} rank {rank} out of range")
+    for k, (rank, tot, g, ppg) in pn["ppr"].items():
+        if k not in keys or rank < 1 or g < 1:
+            errors.append(f"nfl/pnews.json: bad PPR entry {k}")
+            break
+    for k in pn["m"]:
+        if k not in keys or any(m[2] <= m[1] for m in pn["m"][k]):
+            errors.append(f"nfl/pnews.json: bad milestone for {k}")
+            break
 print(f"nfl audit: {len(players)} players, {len(errors)} errors, {len(warns)} warnings")
 for w in warns[:10]:
     print("warn:", w)

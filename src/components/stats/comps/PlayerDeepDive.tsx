@@ -1,6 +1,6 @@
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import { careerRatingOf } from '@/config/ovr';
-import InTheNews from '@/components/espn/InTheNews';
+import PlayerNews from '@/components/espn/PlayerNews';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, CalendarClock, ClipboardList, ChartScatter, Gauge, LineChart, Medal, Milestone, Newspaper, Users } from 'lucide-react';
 import type { LeagueData, Player, Position } from '@/types/player';
@@ -83,7 +83,7 @@ const ALL_SECTIONS = [
 ] as const;
 /** No live save in the NFL edition, so no Age & clock */
 const SECTIONS: readonly { id: string; label: string; short: string; icon: typeof Gauge }[] = IS_NFL
-  ? [...ALL_SECTIONS.filter((s) => s.id !== 'dd-clock'), { id: 'dd-news', label: 'In the news', short: 'News', icon: Newspaper }]
+  ? ALL_SECTIONS.filter((s) => s.id !== 'dd-clock').flatMap((s) => (s.id === 'dd-gamelog' ? [s, { id: 'dd-news', label: 'News', short: 'News', icon: Newspaper }] : [s]))
   : ALL_SECTIONS;
 
 const useMedia = (query: string) => {
@@ -579,6 +579,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             </DdSection>
           )}
 
+          {IS_NFL && (
+            <DdSection id="dd-news" index={0.75} title="News" icon={Newspaper} kicker="Every ESPN article on him in the site's news cards, with deeper analysis by rule from our own data: his line in the game, form, milestones, injury report, card market and the fantasy matchup.">
+              <PlayerNews player={player} />
+            </DdSection>
+          )}
+
           <DdSection id="dd-who" index={1} title="Who plays like him" icon={Users} kicker="His closest comps by play style and overall, his style hexagon with any comp overlaid, and the full ranked list.">
             <DdWhoPlays
               player={player}
@@ -663,11 +669,6 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
             </DeferredSection>
           </DdSection>
 
-          {IS_NFL && (
-            <DdSection id="dd-news" index={8} title="In the news" icon={Newspaper} kicker="The real ESPN articles and clips that tag him, from the latest NFL news and his club's feed.">
-              <InTheNews player={player} />
-            </DdSection>
-          )}
           </>}
         </div>
       </div>
