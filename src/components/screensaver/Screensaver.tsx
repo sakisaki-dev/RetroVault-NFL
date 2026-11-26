@@ -54,6 +54,9 @@ import { makeLookup, notability, replayable, sample, useSaverGames, weeksOf, typ
 import ScoreboardScene from './scenes/ScoreboardScene';
 import RingSweepScene from './scenes/RingSweepScene';
 import GameWeekScene from './scenes/GameWeekScene';
+import { LiveShow } from './scenes/LiveGameScenes';
+import { liveFixtureScene } from '@/utils/liveGames';
+import { useSaverLive } from '@/utils/saverLive';
 import { useCareerSeasons } from '@/utils/careerSeasons';
 import CareerArcScene, { arcFor, loadStints, type CareerArcData } from './scenes/CareerArcScene';
 import RivalryNightScene, { type RivalryNightData } from './scenes/RivalryNightScene';
@@ -2443,6 +2446,13 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     sprites,
     lookup: makeLookup(players),
   };
+  // Live games: while an NFL game is on, the live scenes (Game Day, the Red Zone wall) take the screen; see scenes/LiveGameScenes
+  const liveSetting = useSaverLive();
+  const fixtureScene = liveFixtureScene();
+  const liveMode = fixtureScene ? 'always' : liveSetting;
+  useEffect(() => {
+    if (fixtureScene) void import('./scenes/liveFixture').then((m) => m.installFixture());
+  }, [fixtureScene]);
   const render = (s: Scene) => {
     switch (s.kind) {
       case 'scoreboard':
@@ -2531,6 +2541,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
           {render(scenes[i])}
         </div>
       ))}
+      {!asleep && IS_NFL && liveMode !== 'off' && <LiveShow mode={liveMode} deps={saverDeps} players={players} />}
       {!asleep && fx && fx !== 'clear' && fx !== 'cloud' && (
         <span className={`sv-weather sv-weather--${fx}`} aria-hidden="true">
           {(fx === 'rain' || fx === 'storm') && <Rain />}

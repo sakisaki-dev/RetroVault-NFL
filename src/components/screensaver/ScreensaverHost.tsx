@@ -1,5 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { completeSpotifyLogin } from '@/utils/spotify';
+import { liveFixtureScene } from '@/utils/liveGames';
 import { isNightRest, onScreensaverStart, saverSupported, useSaverIdle, useSaverNight } from '@/utils/screensaver';
 
 const Screensaver = lazy(() => import('./Screensaver'));
@@ -11,7 +12,7 @@ const ACTIVITY = ['pointermove', 'pointerdown', 'keydown', 'wheel', 'scroll', 't
  * desktop while the tab is visible. The screensaver itself is lazy, so nothing loads until it runs.
  */
 const ScreensaverHost = () => {
-  const [on, setOn] = useState(() => import.meta.env.DEV && new URLSearchParams(location.search).has('saverScene'));
+  const [on, setOn] = useState(() => (import.meta.env.DEV && new URLSearchParams(location.search).has('saverScene')) || liveFixtureScene() !== null);
   const idle = useSaverIdle();
   const night = useSaverNight();
   const last = useRef(Date.now());
