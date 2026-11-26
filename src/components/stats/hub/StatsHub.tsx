@@ -296,11 +296,11 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
             Stats
           </span>
           {tabs}
-          <div className="hidden w-[min(380px,36vw)] shrink-0 md:block">{search}</div>
+          {sub !== 'deepdive' && <div className="hidden w-[min(380px,36vw)] shrink-0 md:block">{search}</div>}
         </div>
       </div>
       {/* Small tablets: the search scrolls with the page so the pinned bar stays one row tall (phones use the header search). */}
-      <div className="container pt-3 max-sm:hidden md:hidden">{search}</div>
+      {sub !== 'deepdive' && <div className="container pt-3 max-sm:hidden md:hidden">{search}</div>}
 
       <div style={total ? { ['--site-header-h' as string]: `${total}px` } : undefined}>{children}</div>
     </div>

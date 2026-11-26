@@ -506,9 +506,27 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
     if (!ul || !a || ul.scrollWidth <= ul.clientWidth) return;
     ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
   }, [active, reduced]);
+  // edge fades say the chip row scrolls: data-fade is l, r, both or none
+  useEffect(() => {
+    const ul = navRef.current;
+    if (!ul) return;
+    const set = () => {
+      const l = ul.scrollLeft > 4;
+      const r = ul.scrollLeft + ul.clientWidth < ul.scrollWidth - 4;
+      ul.dataset.fade = l && r ? 'both' : l ? 'l' : r ? 'r' : 'none';
+    };
+    set();
+    ul.addEventListener('scroll', set, { passive: true });
+    const ro = new ResizeObserver(set);
+    ro.observe(ul);
+    return () => {
+      ul.removeEventListener('scroll', set);
+      ro.disconnect();
+    };
+  }, []);
   const nav = (
     <nav aria-label="Deep Dive sections">
-      <ul ref={navRef} className="mx-auto flex w-full gap-1 overflow-x-auto scrollbar-none">
+      <ul ref={navRef} className="dd-chiprow mx-auto flex w-full gap-1 overflow-x-auto scrollbar-none">
         {sections.map((s) => {
           const on = s.id === active;
           return (

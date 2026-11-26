@@ -101,7 +101,7 @@ const Plaque = ({ item, index, onSelect }: { item: PlaqueItem; index: number; on
         </span>
         {item.year && <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{item.year}</span>}
       </span>
-      {item.sub && <span className={/over #2/.test(item.sub) ? 'rb-plaque__chip' : 'rb-plaque__sub'}>{item.sub}</span>}
+      {item.sub && <span className={/^\+.* over /.test(item.sub) ? 'rb-plaque__chip' : 'rb-plaque__sub'}>{item.sub}</span>}
       <ClubLine row={item.club} />
     </>
   );
@@ -200,7 +200,7 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
               player: matchPlayerByName(name, players),
               team: top.team,
               year: top.season,
-              sub: next ? `${gap > 0 ? `+${gap.toLocaleString()} over #2` : 'Tied for the lead'} (${entryName(next)}${next.season ? ` ${next.season}` : ''})` : null,
+              sub: next ? (gap > 0 ? `+${gap.toLocaleString()} over ${entryName(next).split(' ').slice(-1)[0]}${next.season ? ` '${String(next.season).slice(-2)}` : ''}` : 'Tied for the lead') : null,
               club: r,
               broken: !!r.broken,
             };

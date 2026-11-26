@@ -114,6 +114,18 @@ export const useModalChrome = <T extends HTMLElement>(
     const cs = getComputedStyle(box);
     const gap = parseFloat(cs.rowGap) || 0;
     bar.style.margin = `-${cs.paddingTop} -${cs.paddingRight} ${gap ? -gap : 0}px -${cs.paddingLeft}`;
+    // A plain block box (side and bottom sheets): the zero-height bar's negative margin would pull the title up under
+    // the grab handle. Give the bar the padding's own height instead, with at least the handle's 28 px, so the handle
+    // has its own strip above the content.
+    if (cs.display === 'block' && swipeToClose && window.matchMedia('(pointer: coarse), (max-width: 640px)').matches) {
+      let pt = parseFloat(cs.paddingTop) || 0;
+      if (pt < 28) {
+        box.style.paddingTop = '28px';
+        pt = 28;
+      }
+      bar.style.height = `${pt}px`;
+      bar.style.margin = `-${pt}px -${cs.paddingRight} 0 -${cs.paddingLeft}`;
+    }
   });
   const bar = (
     <div ref={barRef} className="dlg-bar">

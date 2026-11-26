@@ -272,6 +272,7 @@ const NewsTab = () => {
                 <li key={keyOfPlayer(p)} className="mo-pop" style={{ ...teamVars(club), '--i': i, '--ink': getTeamTextColor(club) ?? 'var(--tc)' } as CSSProperties}>
                   <button type="button" className="en-trend__btn" {...peekProps(p)} onClick={() => openDeepDive(p)} aria-label={`${displayName(p.name)}, in ${n} stories. Open his card`}>
                     <span className="en-trend__sprite" aria-hidden>
+                      <TeamLogo team={club} size={26} decorative backed className="en-trend__logo" />
                       <GameSprite player={p} team={club} kind="bust" size="m" />
                     </span>
                     <span className="en-trend__name">{displayName(p.name)}</span>
@@ -377,6 +378,7 @@ const NewsTab = () => {
                         <button type="button" className="en-rank__btn" {...peekProps(p)} onClick={() => openDeepDive(p)} aria-label={`${displayName(p.name)}, in ${n} stories. Open his card`}>
                           <span className="en-rank__n">{i + 1}</span>
                           <span className="en-trend__sprite" aria-hidden>
+                            <TeamLogo team={club} size={22} decorative backed className="en-trend__logo" />
                             <GameSprite player={p} team={club} kind="bust" size="s" />
                           </span>
                           <span className="en-rank__name">{displayName(p.name)}</span>

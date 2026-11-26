@@ -112,7 +112,7 @@ const PlusLollipop = ({ board, rows, allRows, onSelect }: { board: MetricBoard; 
           {scale.ticks.map((t, i) => (
             <span
               key={t}
-              className={cn('absolute top-0.5 font-mono text-[10px] tabular-nums text-muted-foreground', i === 0 ? '' : i === scale.ticks.length - 1 ? '-translate-x-full' : '-translate-x-1/2')}
+              className={cn('absolute top-0.5 font-mono text-[10px] tabular-nums text-muted-foreground', i !== 0 && i !== scale.ticks.length - 1 && !(scale.ticks.length % 2 === 1 && i === (scale.ticks.length - 1) / 2) && 'max-sm:hidden', i === 0 ? '' : i === scale.ticks.length - 1 ? '-translate-x-full' : '-translate-x-1/2')}
               style={{ left: `${x(t)}%` }}
             >
               {scale.fmtTick(t)}
