@@ -640,7 +640,21 @@ async function loadAssets(data, abbrs, keys = [], kinds = ['fig']) {
   return A;
 }
 const sprOf = (A, key, kind = 'fig') => (key && A.spr[key] && (A.spr[key][kind] || (kind === 'left' || kind === 'cheer' ? A.spr[key].fig : null))) || null;
-const byEspnId = (data) => { const m = {}; Object.values(data.players || {}).forEach((p) => { if (p.espn) m[String(p.espn)] = p; }); return m; };
+// widget.json's `roster` (every other active player with a published sprite: ESPN id -> [key, last, file stem, mirrored?])
+// joins `players` here, so a live leader in any game gets his face (owner: "we do have a Konata Mumpfield sprite")
+function withRoster(data) {
+  if (!data || data._rosterIn) return data;
+  data.players = data.players || {};
+  Object.entries(data.roster || {}).forEach(([id, r]) => {
+    const [key, last, stem, left] = r;
+    if (data.players[key]) return;
+    const base = 'data/nfl/widget-sprites/' + stem;
+    data.players[key] = { key, last, pos: key.split(':')[0], espn: id, sprites: Object.assign({ fig: base + '.png' }, left ? { left: base + '-left.png' } : {}) };
+  });
+  data._rosterIn = true;
+  return data;
+}
+const byEspnId = (data) => { withRoster(data); const m = {}; Object.values(data.players || {}).forEach((p) => { if (p.espn) m[String(p.espn)] = p; }); return m; };
 // A player the widget has a sprite for: the ESPN leader's athlete id -> our player
 function playerFor(data, espnMap, leader) {
   return leader && leader.id ? espnMap[String(leader.id)] || null : null;

@@ -34,6 +34,7 @@ import csv
 import gzip
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -271,6 +272,16 @@ def main():
     written = sset.write()
     sprites = {k: {kind: written.get(u) and u for kind, u in us.items() if written.get(u)} for k, us in urls.items()}
 
+    roster = {}
+    for key in sorted(active):
+        t = club_of(key)
+        e_id = espn.get(key)
+        if not t or not e_id or key in want:
+            continue
+        stem = "-".join(x for x in (re.sub(r"[^a-z0-9]+", "-", key.replace(":", " ").lower()).strip("-"), re.sub(r"[^a-z0-9]+", "-", CLUBS[t][0].lower()).strip("-")) if x)
+        if (DATA / "widget-sprites" / (stem + ".png")).exists():
+            roster[str(e_id)] = [key, last_name(key), stem, 1 if (DATA / "widget-sprites" / (stem + "-left.png")).exists() else 0]
+
     pl = {}
     for key in sorted(want):
         e = entry(key)
@@ -306,6 +317,10 @@ def main():
         "injuries": injuries[:4],
         "top": {t: top3[t] for t in sorted(top3)},
         "players": pl,
+        # every other active player with a published sprite, so ESPN's live leaders in ANY game get a face (owner: "we do
+        # have a Konata Mumpfield sprite"): ESPN athlete id -> [key, last name, sprite file stem]; the widget reads the
+        # figure as data/nfl/widget-sprites/<stem>.png and the mirrored one as <stem>-left.png when it was published
+        "roster": roster,
         "sigma": SIGMA,
         "art": build_art(),
     }

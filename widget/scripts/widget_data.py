@@ -239,6 +239,16 @@ def main():
                 u[kind] = SPRITE_URL + name
         sprites[key] = u
 
+    roster = {}
+    for key in sorted(active):
+        t = club_of(key)
+        e_id = espn.get(key)
+        if not t or not e_id or key in want:
+            continue
+        stem = sprite_name(key, CLUBS[t][0])[:-4]
+        if (SPRITES / (stem + ".png")).exists():
+            roster[str(e_id)] = [key, last_name(key), stem, 1 if (SPRITES / (stem + "-left.png")).exists() else 0]
+
     pl = {}
     for key in sorted(want):
         e = entry(key)
@@ -274,6 +284,10 @@ def main():
         "injuries": injuries[:4],
         "top": {t: top3[t] for t in sorted(top3)},
         "players": pl,
+        # every other active player with a published sprite, so ESPN's live leaders in ANY game get a face (owner: "we do
+        # have a Konata Mumpfield sprite"): ESPN athlete id -> [key, last name, sprite file stem]; the widget reads the
+        # figure as data/nfl/widget-sprites/<stem>.png and the mirrored one as <stem>-left.png when it was published
+        "roster": roster,
         "sigma": SIGMA,
         "art": load_json(INPUTS / "art.json"),
     }
