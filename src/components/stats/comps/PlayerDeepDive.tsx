@@ -526,11 +526,11 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
   }, []);
   const nav = (
     <nav aria-label="Deep Dive sections">
-      <ul ref={navRef} className="dd-chiprow mx-auto flex w-full gap-1 overflow-x-auto scrollbar-none">
+      <ul ref={navRef} className="dd-chiprow flex gap-1 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible">
         {sections.map((s) => {
           const on = s.id === active;
           return (
-            <li key={s.id} className="min-w-fit flex-1 shrink-0">
+            <li key={s.id} className="shrink-0">
               <a
                 href={`#${s.id}`}
                 onClick={(e) => {
@@ -539,12 +539,13 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
                 }}
                 aria-current={on ? 'location' : undefined}
                 className={cn(
-                  'flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 font-display text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+                  'flex items-center gap-2 rounded-md px-2.5 py-1.5 font-display text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
                   on ? 'bg-gold text-night' : 'text-muted-foreground hover:bg-panel-2 hover:text-foreground',
                 )}
               >
                 <s.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                <span>{s.short}</span>
+                <span className="lg:hidden">{s.short}</span>
+                <span className="hidden lg:inline">{s.label}</span>
               </a>
             </li>
           );
@@ -582,8 +583,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         }
       />
 
-      {/* sticky section chips: one centred line at every width (scrolls inside when it truly can't fit) */}
-      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-2">{nav}</div>
+      {/* Mobile: sticky section chips */}
+      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-1.5 lg:hidden">{nav}</div>
 
       {classic && (
         <p className="mb-4" data-testid="dd-classic-note">
@@ -597,7 +598,13 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         </p>
       )}
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 lg:grid-cols-[12.5rem_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <div className="dd-sticky chrome-follow sticky space-y-3">
+            <p className="font-pixel text-[9px] uppercase text-gold">Scouting report</p>
+            {nav}
+          </div>
+        </aside>
 
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}

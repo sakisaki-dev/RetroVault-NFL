@@ -1,3 +1,4 @@
+import { openPlayerCard } from '@/utils/playerCardLink';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import GameSprite from '@/components/GameSprite';
@@ -14,6 +15,7 @@ import { score, sitePos, unitOf, v, impact, type Side } from './gameModel';
 
 /** Shared bits and the data-dense sections of the game page (QB duel, ground game, air attack, pass rush, tiles, fantasy, special teams). */
 
+/** Returns the player's card key (POS:Name) when he has a card, else null: a tap opens his player card. */
 export type Linker = (p: GamePlayer) => string | null;
 
 /** A club's colour for bars and strips: its primary, or its secondary when the primary is near-black (so it shows on dark). */
@@ -36,8 +38,8 @@ export const NameStrip = ({ p, g, link, children, className }: { p: GamePlayer; 
       logo={false}
       size="sm"
       className={cn('gm-strip', className)}
-      title={`${displayName(p.name)}${href ? ': open Deep Dive' : ''}`}
-      {...(href ? { onClick: () => { window.location.hash = href; } } : {})}
+      title={`${displayName(p.name)}${href ? ': open card' : ''}`}
+      {...(href ? { onClick: () => openPlayerCard(href) } : {})}
     >
       {body}
     </ClubStrip>

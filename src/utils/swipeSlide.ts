@@ -9,6 +9,11 @@ import { reducedMotion } from '@/utils/motion';
  *    vertical scroll stays native (a vertical-dominant start never locks). At the first or last option the content
  *    rubber-bands. Past 25% of the width, or a flick over 0.4 px/ms, it slides out and the next option's content
  *    slides in from that side (~320ms, the site's --ease-out); otherwise it springs back.
+ *  - Two-finger trackpad swipe (desktop): horizontal wheel events (|deltaX| > |deltaY|) do the same through the same
+ *    code: the content follows the accumulated deltaX, and past WHEEL_PX one switch happens per gesture; the gesture ends
+ *    after WHEEL_GAP_MS with no wheel event (momentum included, which is swallowed so it can't switch twice). Never acts
+ *    over horizontal scrollers, ignored elements, with ctrl/meta held (zoom), at the first/last option, or when the page
+ *    itself scrolls sideways; vertical wheel is never touched.
  *  - Taps: when a pill is pressed, the new content slides in from the side it lies on (the order of the options).
  *  - The incoming slide starts when the content really changed (a mutation under the content's container once the
  *    navigator's index moved, and not while a `[data-swipe-pending]` ancestor says a lazy view is still loading), so a
@@ -34,6 +39,8 @@ export const OUT_MS = 150;
 const THRESHOLD = 0.25;
 const FLICK = 0.4;
 const LOCK_PX = 10;
+const WHEEL_PX = 80;
+const WHEEL_GAP_MS = 180;
 
 const calm = () => reducedMotion() || document.documentElement.dataset.perf === 'lite';
 
@@ -255,6 +262,22 @@ export const attachSwipe = (root: Document | HTMLElement, o: DragOptions) => {
     }
   };
 
+  /** Gets the content and the navigator's thumb ready to follow a drag toward `dir` */
+  const begin = (c: SwipeCtx, dir: Dir) => {
+    els = c.content();
+    if (!els.length) return false;
+    W = els[0].offsetWidth || window.innerWidth;
+    const nav = c.nav;
+    const th = thumbOf(nav);
+    if (th && nav) {
+      const opts = optionsOf(nav);
+      const i = opts.findIndex((x) => x.matches(ON));
+      if (i >= 0) thumb = { el: th, from: opts[i], to: opts[i + dir] ?? null, t0: th.style.transform, w0: th.style.width };
+    }
+    els.forEach((el) => (el.style.willChange = 'transform, opacity'));
+    return true;
+  };
+
   function move(e: TouchEvent) {
     if (st === 'idle' || !ctx) return;
     const t = e.touches[0];
@@ -264,18 +287,7 @@ export const attachSwipe = (root: Document | HTMLElement, o: DragOptions) => {
     if (st === 'pending') {
       if (Math.abs(dx) < LOCK_PX && Math.abs(dy) < LOCK_PX) return;
       if (Math.abs(dx) < 1.3 * Math.abs(dy) || (sx < 24 && dx > 0)) return reset();
-      els = ctx.content();
-      if (!els.length) return reset();
-      W = els[0].offsetWidth || window.innerWidth;
-      const nav = ctx.nav;
-      const th = thumbOf(nav);
-      if (th && nav) {
-        const opts = optionsOf(nav);
-        const i = opts.findIndex((x) => x.matches(ON));
-        const dir: Dir = dx < 0 ? 1 : -1;
-        if (i >= 0) thumb = { el: th, from: opts[i], to: opts[i + dir] ?? null, t0: th.style.transform, w0: th.style.width };
-      }
-      els.forEach((el) => (el.style.willChange = 'transform, opacity'));
+      if (!begin(ctx, dx < 0 ? 1 : -1)) return reset();
       st = 'drag';
       void target;
     }
@@ -299,10 +311,13 @@ export const attachSwipe = (root: Document | HTMLElement, o: DragOptions) => {
     reset();
     if (was !== 'drag' || !c) return;
     const te = e as TouchEvent;
-    const dx = (te.changedTouches?.[0]?.clientX ?? lx) - sx;
+    settle(c, (te.changedTouches?.[0]?.clientX ?? lx) - sx, te.type === 'touchcancel');
+  };
+
+  /** A drag is over: slide on to the next option (a far or fast enough drag, or `force`d by the wheel) or spring back */
+  const settle = (c: SwipeCtx, dx: number, cancelled: boolean, force = false) => {
     const dir: Dir = dx < 0 ? 1 : -1;
-    const cancelled = te.type === 'touchcancel';
-    const commit = !cancelled && c.has(dir) && (Math.abs(dx) > W * THRESHOLD || (Math.abs(vel) > FLICK && Math.abs(dx) > 16));
+    const commit = !cancelled && c.has(dir) && (force || Math.abs(dx) > W * THRESHOLD || (Math.abs(vel) > FLICK && Math.abs(dx) > 16));
     const nodes = els;
     const curOp = nodes[0]?.style.opacity || '1';
     const curTf = `translate3d(${off.toFixed(1)}px,0,0)`;
@@ -346,10 +361,67 @@ export const attachSwipe = (root: Document | HTMLElement, o: DragOptions) => {
     });
   };
 
+  // ----- two-finger trackpad swipe -----
+  let wst: 'idle' | 'drag' | 'spent' = 'idle';
+  let wctx: SwipeCtx | null = null;
+  let acc = 0;
+  let wtimer = 0;
+  const wheelEnd = () => {
+    const was = wst, c = wctx;
+    wst = 'idle';
+    wctx = null;
+    acc = 0;
+    if (was === 'drag' && c) {
+      vel = 0;
+      settle(c, off, true); // short of the threshold: spring back
+    }
+  };
+  const wheel = (e: Event) => {
+    const we = e as WheelEvent & { rvClaimed?: boolean };
+    if (we.ctrlKey || we.metaKey) return; // pinch / zoom
+    const k = we.deltaMode === 1 ? 16 : we.deltaMode === 2 ? window.innerWidth : 1;
+    const dX = we.deltaX * k;
+    const dY = we.deltaY * k;
+    if (wst === 'idle') {
+      if (Math.abs(dX) <= Math.abs(dY) || we.rvClaimed) return; // vertical wheel is never touched
+      if (o.claim) we.rvClaimed = true;
+      const t = we.target as Element | null;
+      if (!t || t.closest(o.ignore) || scrollsSideways(t, o.within)) return;
+      const de = document.documentElement;
+      if (de.scrollWidth > de.clientWidth + 2) return; // the page itself scrolls sideways: let it
+      const c = o.resolve(t);
+      const dir: Dir = dX > 0 ? 1 : -1;
+      if (!c || !c.has(dir) || !begin(c, dir)) return;
+      wctx = c;
+      wst = 'drag';
+      acc = 0;
+      off = 0;
+    } else if (Math.abs(dX) < Math.abs(dY) && Math.abs(dX) < 2) {
+      return; // a vertical turn in the middle of a gesture
+    }
+    // we act on this gesture: keep the browser's back/forward swipe out of it
+    if (we.cancelable) we.preventDefault();
+    clearTimeout(wtimer);
+    wtimer = window.setTimeout(wheelEnd, WHEEL_GAP_MS);
+    if (wst !== 'drag' || !wctx) return; // spent: momentum after the switch is swallowed
+    acc += dX;
+    const dir: Dir = acc > 0 ? 1 : -1;
+    place(-acc, dir);
+    if (Math.abs(acc) >= WHEEL_PX && wctx.has(dir)) {
+      const c = wctx;
+      wst = 'spent';
+      vel = 0;
+      settle(c, -acc, false, true);
+    }
+  };
+
+  root.addEventListener('wheel', wheel, { passive: false });
   root.addEventListener('touchstart', start as EventListener, { passive: true });
   root.addEventListener('touchend', end, { passive: true });
   root.addEventListener('touchcancel', end, { passive: true });
   return () => {
+    clearTimeout(wtimer);
+    root.removeEventListener('wheel', wheel);
     root.removeEventListener('touchstart', start as EventListener);
     root.removeEventListener('touchend', end);
     root.removeEventListener('touchcancel', end);

@@ -10,7 +10,7 @@ import TeamLogo from '@/components/brand/TeamLogo';
 import { PlayerStrip } from '@/components/brand/ClubStrip';
 import { CollegeMark } from '@/components/player/DraftTiles';
 import { clubPlate } from '@/components/arcade/clubInk';
-import { openInCompFinder } from '@/components/stats/comps/compFinderLink';
+import { openPlayerCard } from '@/utils/playerCardLink';
 import type { FieldArt } from '@/components/teamlab/fieldArt';
 import { markInfo, type SchoolInfo } from '@/utils/collegeData';
 import type { SpriteAction } from '@/utils/gameSprites';
@@ -130,8 +130,8 @@ export const CardName = ({ name, siteKey, className }: { name: string; siteKey: 
     <button
       type="button"
       className={`cl-cname ${className ?? ''}`}
-      onClick={() => openInCompFinder({ position: posOfKey(siteKey), name: nameOfKey(siteKey) } as Pick<Player, 'position' | 'name'> as Player)}
-      aria-label={`${name}: open in the Deep Dive`}
+      onClick={() => openPlayerCard(siteKey)}
+      aria-label={`${name}: open his card`}
       data-player-key={siteKey}
     >
       {name}

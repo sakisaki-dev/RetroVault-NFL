@@ -1,3 +1,4 @@
+import { openPlayerCard } from '@/utils/playerCardLink';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Building2, UserX } from 'lucide-react';
 import type { Player } from '@/types/player';
@@ -196,7 +197,7 @@ const TeamRankingsTab = () => {
     <div className="container py-6 sm:py-8 space-y-6">
       {/* Page header: the power ladder leader's stadium and stars, the franchise counts as scoreboards */}
       {IS_NFL && bannerData ? (
-        <BannerRing data={bannerData} onOpenClub={openClub} onOpenPlayer={(p) => navigate({ tab: 'career', sub: 'deepdive', p: `${p.position}:${p.name}` })} />
+        <BannerRing data={bannerData} onOpenClub={openClub} onOpenPlayer={(p) => openPlayerCard(`${p.position}:${p.name}`)} />
       ) : (
       <StadiumHeader
         club={stage.club}

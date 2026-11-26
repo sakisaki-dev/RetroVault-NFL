@@ -1,3 +1,4 @@
+import { openPlayerCard } from '@/utils/playerCardLink';
 import { Suspense, lazy, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { ArrowLeft, CalendarDays, CloudSun, Gauge, MapPin, ScrollText, Shield, Sparkles, Swords, Trophy, Users, Wind } from 'lucide-react';
@@ -171,6 +172,9 @@ const atsChip = (g: GameDetail): string | null => {
   return ats.covered ? `${teamName(fav)} covered −${pts}` : `${teamName(dog)} covered as +${pts} underdogs`;
 };
 
+/** An anchor's props that open the player's card (the key is POS:Name). */
+const cardLink = (key: string) => ({ href: '#', onClick: (e: { preventDefault(): void }) => { e.preventDefault(); openPlayerCard(key); } });
+
 const Stadium = ({ g, link }: { g: GameDetail; link: Linker }) => {
   const done = played(g);
   const w = winnerOf(g);
@@ -320,7 +324,7 @@ const Figure = ({ p, g, unit, link }: { p: GamePlayer; g: GameDetail; unit: Unit
     </>
   );
   const cls = cn('gm-fig', hot && 'is-hot');
-  return href ? <a href={href} className={cls} title={`${displayName(p.name)}, ${p.pos}: open Deep Dive`}>{inner}</a> : <div className={cls} title={`${displayName(p.name)}, ${p.pos}`}>{inner}</div>;
+  return href ? <a {...cardLink(href)} className={cls} title={`${displayName(p.name)}, ${p.pos}: open card`}>{inner}</a> : <div className={cls} title={`${displayName(p.name)}, ${p.pos}`}>{inner}</div>;
 };
 
 const Roster = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }) => {
@@ -354,7 +358,7 @@ const Roster = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }) 
                 {rest.map((p, i) => {
                   const href = link(p);
                   const t = `${displayName(p.name)}${shortLine(p, u.def.id) ? ` (${shortLine(p, u.def.id)})` : ''}`;
-                  return <span key={p.gsis + p.name}>{href ? <a href={href}>{t}</a> : t}{i < rest.length - 1 ? ', ' : ''}</span>;
+                  return <span key={p.gsis + p.name}>{href ? <a {...cardLink(href)}>{t}</a> : t}{i < rest.length - 1 ? ', ' : ''}</span>;
                 })}
               </p>
             )}
@@ -436,7 +440,7 @@ const StatTable = ({ title, rows, cols, g, link, tag }: { title: string; rows: G
               return (
                 <tr key={p.gsis + p.name}>
                   <th scope="row">
-                    {href ? <a href={href}>{displayName(p.name)}</a> : p.name}
+                    {href ? <a {...cardLink(href)}>{displayName(p.name)}</a> : p.name}
                     <small>{p.pos}</small>
                   </th>
                   {shown.map((c) => {
@@ -487,7 +491,7 @@ const SnapBars = ({ g, side, link }: { g: GameDetail; side: Side; link: Linker }
           const href = link(p);
           return (
             <li key={p.gsis + p.name} className="mo-rise" style={stag(i)}>
-              <span className="gm-snaps__n">{href ? <a href={href}>{displayName(p.name)}</a> : p.name}<small>{p.pos}</small></span>
+              <span className="gm-snaps__n">{href ? <a {...cardLink(href)}>{displayName(p.name)}</a> : p.name}<small>{p.pos}</small></span>
               <span className="gm-snaps__bar"><i className="mo-grow" style={{ width: `${(n / max) * 100}%`, ['--i' as string]: i }} /></span>
               <span className="gm-snaps__v">{n}<small>{Math.round((n / max) * 100)}%</small></span>
             </li>
@@ -601,7 +605,7 @@ const GameView = ({ g }: { g: GameDetail }) => {
     const full = `${sitePos(p.pos)}:${displayName(p.name)}`;
     // and the other way: the game line carries a suffix the sheet doesn't ("Deebo Samuel Sr.")
     const key = pool.get(full) ?? pool.get(stripKeySuffix(full));
-    return key ? buildHash({ tab: 'career', sub: 'deepdive', p: key }) : null;
+    return key ?? null;
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);
   const done = played(g);
