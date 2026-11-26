@@ -86,12 +86,48 @@ export const parseVideo = (v: RawVideo): ArticleVideo => ({
   duration: v.duration,
 });
 
+/**
+ * Wire stories (AP "Preview" pieces) come as bare text and links split by blank lines, with no <p> tags, so the block
+ * walk below saw nothing but the odd tagged line (owner: the Anthony Richardson / J.J. McCarthy story "doesn't load
+ * fully"). Loose inline runs at the top level become paragraphs, a blank line starting a new one.
+ */
+const INLINE = new Set(['A', 'B', 'STRONG', 'EM', 'I', 'U', 'SPAN', 'BR', 'SUP', 'SUB', 'SMALL', 'ABBR', 'CITE', 'Q']);
+const wrapLooseText = (doc: Document) => {
+  const body = doc.body;
+  const nodes = [...body.childNodes];
+  let para: HTMLParagraphElement | null = null;
+  const open = (before: Node) => {
+    para = doc.createElement('p');
+    body.insertBefore(para, before);
+    return para;
+  };
+  for (const n of nodes) {
+    const inline = n.nodeType === 3 || (n.nodeType === 1 && INLINE.has((n as Element).tagName));
+    if (!inline) {
+      para = null;
+      continue;
+    }
+    if (n.nodeType === 3) {
+      const parts = (n.textContent ?? '').split(/\n\s*\n/);
+      parts.forEach((part, i) => {
+        if (i > 0) para = null;
+        if (!part.trim()) return;
+        (para ?? open(n)).appendChild(doc.createTextNode(part));
+      });
+      n.remove();
+    } else (para ?? open(n)).appendChild(n);
+  }
+  // a link nested in a link (wire copy wraps ESPN's player link in an AP one): keep the inner one
+  body.querySelectorAll('a a').forEach((inner) => inner.parentElement?.closest('a')?.replaceWith(inner));
+};
+
 export const parseArticle = (raw: RawArticle): Article => {
   const photos: ArticlePhoto[] = (raw.images ?? [])
     .filter((i) => i.type !== 'Media' && i.url)
     .map((i) => ({ url: i.url!, caption: (i.caption ?? '').trim(), credit: (i.credit ?? '').trim() }));
   const videos = (raw.video ?? []).map(parseVideo);
   const doc = new DOMParser().parseFromString(`<body>${raw.story ?? ''}</body>`, 'text/html');
+  wrapLooseText(doc);
   const blocks: ArticleBlock[] = [];
   const usedPhoto = new Set<number>();
   const usedVideo = new Set<number>();
@@ -117,6 +153,8 @@ export const parseArticle = (raw: RawArticle): Article => {
     if (!html) return;
     // ESPN's "Also see" / "Related" teasers are a paragraph that is only a link to another story
     if (tag === 'p' && /^<a [^>]*>[^<]{0,140}<\/a>$/.test(html) && /^(also see|related|more|watch|read)/i.test(el.textContent ?? '')) return;
+    // the wire's sign-off ("See AP's full NFL coverage here", "AP NFL: ...")
+    if (tag === 'p' && /^(see ap\b|ap nfl:)/i.test((el.textContent ?? '').trim())) return;
     blocks.push({ t: 'html', tag, html: tag === 'ul' || tag === 'ol' ? clean(el) : html });
   });
   // media the story never placed: photos after paragraph 2 (then 6, 10 ...), videos after paragraph 4 (then 8 ...);
