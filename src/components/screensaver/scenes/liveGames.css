@@ -1,5 +1,5 @@
 /* Live games on the screensaver: Game Day and the Red Zone wall. Sizes in --u so 1440x900 and 1920x1080 match. */
-.sv-live { position: absolute; inset: 0; --u: min(1vw, 1.78vh); }
+.sv-live { position: absolute; inset: 0; z-index: 2; background: #05070f; --u: min(1vw, 1.78vh); }
 .sv-live > .sv-slide { --u: min(1vw, 1.78vh); }
 .sv:has(.sv-live) .sv-progress { display: none; }
 .sv-stadium > .sv-lg, .sv-lg { position: absolute; inset: 0; z-index: 5; font-family: var(--font-display); color: #f5f2e8; }

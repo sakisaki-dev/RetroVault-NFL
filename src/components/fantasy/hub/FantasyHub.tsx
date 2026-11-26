@@ -1,6 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeftRight, ClipboardList, ListChecks, Swords } from 'lucide-react';
+import { PageTabBar, PageTabs, type PageTab } from '@/components/nav/PageTabs';
 import { useSwipeTabs } from '@/hooks/useSwipeTabs';
-import { ArcadeToggle, StadiumHeader } from '@/components/arcade';
+import { StadiumHeader } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { ViewCount } from '@/components/motion/Reveal';
 import { FANTASY_SUBS, useHubRoute } from '@/components/stats/hub/hashRoute';
@@ -25,12 +27,12 @@ import '@/components/trade/trade.css';
 const TradePage = lazy(() => import('./TradePage'));
 
 export type Sub = 'lineup' | 'startsit' | 'h2h' | 'trade';
-const SUBS: { value: Sub; label: string; short: string }[] = [
+const SUBS: PageTab<Sub>[] = [
   // owner: "move trade to be the first tab" (and the page opens on it)
-  { value: 'trade', label: 'Trade', short: 'Trade' },
-  { value: 'lineup', label: 'Lineup', short: 'Lineup' },
-  { value: 'startsit', label: 'Start / sit', short: 'Start/sit' },
-  { value: 'h2h', label: 'Head-to-head', short: 'H2H' },
+  { value: 'trade', label: 'Trade', short: 'Trade', Icon: ArrowLeftRight },
+  { value: 'lineup', label: 'Lineup', short: 'Lineup', Icon: ClipboardList },
+  { value: 'startsit', label: 'Start / sit', short: 'Start/sit', Icon: ListChecks },
+  { value: 'h2h', label: 'Head-to-head', short: 'H2H', Icon: Swords },
 ];
 const SUB_TITLE: Record<Sub, string> = { lineup: 'Lineup', startsit: 'Start / sit', h2h: 'Head-to-head', trade: 'Trade' };
 
@@ -95,11 +97,11 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
   return (
     <CardHost find={find}>
     <div className="fh rv-ix min-w-0" data-sub={sub} ref={swipeRef}>
+      {/* the page switcher sits first on every page, so it never moves; each page's banner follows at one height */}
+      <PageTabBar>
+        <PageTabs<Sub> label="Fantasy pages" value={sub} onChange={go} tabs={SUBS} />
+      </PageTabBar>
       <div className="container min-w-0 py-3 sm:py-4">
-        {/* the page switcher sits first on every page, so it never moves; each page's banner follows at one height */}
-        <div className="fh-bar" role="navigation" aria-label="Fantasy pages">
-          <ArcadeToggle<Sub> fill label="Fantasy page" value={sub} onChange={go} options={SUBS.map((s) => ({ value: s.value, label: <><span className="fh-lg">{s.label}</span><span className="fh-sm">{s.short}</span></> }))} />
-        </div>
         {sub !== 'trade' && <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />}
         <div key={sub} className="fh-view">
           {sub === 'lineup' && <LineupPage hub={hub} prefs={prefs} setPrefs={setPrefs} turf={turf} />}

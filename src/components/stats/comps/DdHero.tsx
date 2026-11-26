@@ -8,7 +8,6 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { POSITION_NAMES } from '@/utils/playerMeta';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { normalizeName, signatureTeamOf, usePlayerExtras } from '@/utils/playerExtras';
-import PlayerSearchSelect from '../../PlayerSearchSelect';
 import ProPlayerBanner from '../../brand/ProPlayerBanner';
 import TeamLogo from '../../brand/TeamLogo';
 import { bannerFor, useSeasonView } from '../../player/seasonView';
@@ -49,7 +48,7 @@ interface Props {
 }
 
 /** Search + navigation bar and the full-width team-themed banner. */
-const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
+const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRandom, prev, next, onOpenCard, family, onFamily }: Props) => {
   const { numberFor } = useJerseyNumbers();
   const ink = useBlackInk(IS_NFL ? keyOf(player) : undefined);
   const seasonView = useSeasonView(player);
@@ -65,11 +64,8 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <div className="min-w-0 flex-1 [&_[role=combobox]]:h-12 [&_[role=combobox]]:text-base">
-          <PlayerSearchSelect showOvr players={options} value={keyOf(player)} onValueChange={(v) => v && onChoose(v)} placeholder="Search any league player..." ariaLabel="Deep Dive player" />
-        </div>
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2 sm:flex">
+      <div className="flex">
+        <div className="grid w-full grid-cols-3 gap-2">
           <button type="button" onClick={onRandom} className={ctl}>
             <Shuffle className="h-4 w-4" aria-hidden="true" />
             Random
@@ -83,7 +79,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             title={prev ? `Prev ${player.position}: ${displayName(prev.name)}` : undefined}
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden md:inline">Prev</span>
+            <span>Prev</span>
           </button>
           <button
             type="button"
@@ -93,7 +89,7 @@ const DdHero = ({ player, options, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoo
             aria-label={next ? `Next ${player.position} by OVR: ${displayName(next.name)}` : 'No next player'}
             title={next ? `Next ${player.position}: ${displayName(next.name)}` : undefined}
           >
-            <span className="hidden md:inline">Next</span>
+            <span>Next</span>
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
