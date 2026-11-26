@@ -50,6 +50,8 @@ const InjuryRow = ({ r }: { r: Row }) => {
 export const InjuryDesk = ({ players, team, onTeam }: { players: Player[]; team: string; onTeam: (t: string) => void }) => {
   const list = useInjuryList();
   const [all, setAll] = useState(false);
+  // a club's "+N more" opens the rest of its report in place (owner: pressing it "doesn't do anything")
+  const [open, setOpen] = useState<Set<string>>(() => new Set());
   const rows = useMemo<Row[]>(() => {
     if (!list) return [];
     const byKey = new Map(players.map((p) => [keyOfPlayer(p), p]));
@@ -118,8 +120,13 @@ export const InjuryDesk = ({ players, team, onTeam }: { players: Player[]; team:
                 <TeamLogo team={club} size={20} decorative /> {nick(club)} <b>{rs.length}</b>
               </button>
             </h4>
-            <ul className="en-inj__list">{rs.slice(0, 6).map((r) => <InjuryRow key={r.key} r={r} />)}</ul>
-            {rs.length > 6 && <button type="button" className="en-inj__more" onClick={() => onTeam(club)}>+ {rs.length - 6} more on the {nick(club)} report</button>}
+            <ul className="en-inj__list">{(open.has(club) ? rs : rs.slice(0, 6)).map((r) => <InjuryRow key={r.key} r={r} />)}</ul>
+            {rs.length > 6 && (
+              <button type="button" className="en-inj__more" aria-expanded={open.has(club)}
+                onClick={() => setOpen((o) => { const n = new Set(o); if (n.has(club)) n.delete(club); else n.add(club); return n; })}>
+                {open.has(club) ? `Show fewer ${nick(club)}` : `+ ${rs.length - 6} more on the ${nick(club)} report`}
+              </button>
+            )}
           </div>
         ))}
       {!clubMode && clubs.length > CLUBS_SHOWN && (

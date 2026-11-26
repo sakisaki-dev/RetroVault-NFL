@@ -197,9 +197,10 @@ ol.en-list { list-style: decimal; }
   .en .ss-lead { align-self: start; }
   .en .ss-side { display: block; grid-area: side; grid-row: 1 / -1; align-self: stretch; min-width: 0; padding-left: 20px; border-left: 1px solid var(--ss-line); }
   .en .ss-side__in {
-    position: sticky; top: calc(var(--site-header-h, 56px) + 12px);
+    /* below the site header AND the sticky News tab bar (about 56px), so its header never slides under them */
+    position: sticky; top: calc(var(--site-header-h, 56px) + var(--en-tabs-h, 58px) + 14px);
     display: flex; flex-direction: column; gap: 22px;
-    max-height: calc(100vh - var(--site-header-h, 56px) - 24px); overflow-y: auto; overscroll-behavior: contain;
+    max-height: calc(100vh - var(--site-header-h, 56px) - var(--en-tabs-h, 58px) - 28px); overflow-y: auto; overscroll-behavior: contain;
     scrollbar-width: thin; scrollbar-color: var(--ss-line) transparent; padding-right: 4px;
   }
   .en .ss-side .ss-top, .en .ss-side .ss-dyk { padding-left: 0; border-left: 0; grid-area: auto; grid-row: auto; align-self: auto; }
@@ -405,3 +406,7 @@ ol.en-list { list-style: decimal; }
 .en-mod, .en-section { gap: 0; }
 .en-mod > :not(.en-rub) + *, .en-section > :not(.en-rub) + * { margin-top: 12px; }
 .en .ss-hits.en-section, .en .en-inj.en-mod { gap: 0; }
+
+/* the "+N more" under a club's injury report is a real button */
+.en-inj__more { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; margin-top: 8px; border-radius: 999px; border: 1px solid var(--ss-line); background: transparent; color: var(--ss-chalk, #eef1f8); font: 600 13px var(--font-body, inherit); cursor: pointer; transition: background-color var(--hv-dur) var(--ease-out), border-color var(--hv-dur) var(--ease-out); }
+@media (hover: hover) { .en-inj__more:hover { background: rgb(255 255 255 / 0.06); border-color: rgb(255 255 255 / 0.3); } }
