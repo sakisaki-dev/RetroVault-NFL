@@ -145,6 +145,11 @@
 .ax-toggle:not(.ax-toggle--wrap) .ax-seg:not(.is-on) { background: transparent; }
 .ax-toggle--sm .ax-seg { min-height: 24px; padding: 3px 10px; font-size: 12.5px; }
 
+/* page-level navigator: centred, fills its row (up to 620px), segments share it evenly, never hugging the left edge */
+.ax-toggle--fill { display: flex; width: 100%; max-width: 620px; margin-inline: auto; }
+.ax-toggle--fill .ax-seg { flex: 1 1 0; justify-content: center; text-align: center; min-width: fit-content; }
+.ax-toggle--fill:not(.ax-toggle--wrap) .ax-seg { min-height: 36px; }
+
 /* ---------- PixelSelect, PixelStepper ---------- */
 .ax-select { position: relative; display: inline-block; max-width: 100%; }
 .ax-select__btn {

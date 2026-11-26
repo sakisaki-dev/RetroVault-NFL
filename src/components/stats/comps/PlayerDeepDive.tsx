@@ -499,13 +499,20 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
     { key: 'tpg', label: 'TPG', title: 'True Talent per game', value: player.tpg, decimals: 2, pct: pctIn(vals.tpg, player.tpg) },
   ];
 
+  const navRef = useRef<HTMLUListElement | null>(null);
+  useEffect(() => {
+    const ul = navRef.current;
+    const a = ul?.querySelector<HTMLElement>('[aria-current="location"]');
+    if (!ul || !a || ul.scrollWidth <= ul.clientWidth) return;
+    ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+  }, [active, reduced]);
   const nav = (
     <nav aria-label="Deep Dive sections">
-      <ul className="flex gap-1 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible">
+      <ul ref={navRef} className="mx-auto flex w-full gap-1 overflow-x-auto scrollbar-none">
         {sections.map((s) => {
           const on = s.id === active;
           return (
-            <li key={s.id} className="shrink-0">
+            <li key={s.id} className="min-w-fit flex-1 shrink-0">
               <a
                 href={`#${s.id}`}
                 onClick={(e) => {
@@ -514,13 +521,12 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
                 }}
                 aria-current={on ? 'location' : undefined}
                 className={cn(
-                  'flex items-center gap-2 rounded-md px-2.5 py-1.5 font-display text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+                  'flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 font-display text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
                   on ? 'bg-gold text-night' : 'text-muted-foreground hover:bg-panel-2 hover:text-foreground',
                 )}
               >
                 <s.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                <span className="lg:hidden">{s.short}</span>
-                <span className="hidden lg:inline">{s.label}</span>
+                <span>{s.short}</span>
               </a>
             </li>
           );
@@ -558,8 +564,8 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         }
       />
 
-      {/* Mobile: sticky section chips */}
-      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-1.5 lg:hidden">{nav}</div>
+      {/* sticky section chips: one centred line at every width (scrolls inside when it truly can't fit) */}
+      <div className="dd-chips chrome-follow sticky z-20 -mx-4 border-y border-line/60 bg-background px-4 py-2">{nav}</div>
 
       {classic && (
         <p className="mb-4" data-testid="dd-classic-note">
@@ -573,13 +579,7 @@ const PlayerDeepDive = ({ data, players: playersProp, onSelect, initialPlayerKey
         </p>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[12.5rem_minmax(0,1fr)]">
-        <aside className="hidden lg:block">
-          <div className="dd-sticky chrome-follow sticky space-y-3">
-            <p className="font-pixel text-[9px] uppercase text-gold">Scouting report</p>
-            {nav}
-          </div>
-        </aside>
+      <div className="grid gap-6">
 
         <div key={keyOf(player)} className="min-w-0 space-y-8">
           {!lowerReady && <div style={{ minHeight: 900 }} aria-hidden="true" />}

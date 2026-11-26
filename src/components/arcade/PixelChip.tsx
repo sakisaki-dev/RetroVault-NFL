@@ -11,7 +11,7 @@ import './arcade.css';
  * ArcadeToggle: a segmented control of pixel buttons, an ARIA radio group with a roving tabindex (arrows, Home and End
  * move and select). Props: options [{value, label, icon?, disabled?}], value, onChange, label (accessible name),
  * size? 'sm' | 'md', club?, wrap? (let the segments wrap to rows instead of scrolling), className?.
- * It never makes the page scroll sideways. A long list (more than 6 options, or more than 32 characters of labels) is
+ * `fill` makes it a page-level navigator (centred, up to 620px wide, segments share the row). It never makes the page scroll sideways. A long list (more than 6 options, or more than 32 characters of labels) is
  * shown as a select (PixelSelect) with the current value instead of a row that scrolls; `compact` = 'never' keeps the
  * row. The select's kicker is the label when it is short.
  */
@@ -63,6 +63,7 @@ export const ArcadeToggle = <T extends string | number>({
   club,
   wrap,
   compact = 'auto',
+  fill,
   className,
 }: {
   options: ToggleOption<T>[];
@@ -73,6 +74,8 @@ export const ArcadeToggle = <T extends string | number>({
   club?: string | null;
   wrap?: boolean;
   compact?: 'auto' | 'never' | 'always';
+  /** a page-level navigator: centred, full width up to 620px, segments share the row evenly */
+  fill?: boolean;
   className?: string;
 }) => {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -139,7 +142,7 @@ export const ArcadeToggle = <T extends string | number>({
     );
   }
   return (
-    <div ref={boxRef} role="radiogroup" aria-label={label} className={cn('ax-toggle', `ax-toggle--${size}`, wrap && 'ax-toggle--wrap', !wrap && 'ax-toggle--slide', className)} style={club ? clubVars(club) : undefined}>
+    <div ref={boxRef} role="radiogroup" aria-label={label} className={cn('ax-toggle', `ax-toggle--${size}`, wrap && 'ax-toggle--wrap', fill && 'ax-toggle--fill', !wrap && 'ax-toggle--slide', className)} style={club ? clubVars(club) : undefined}>
       {/* the highlight is one pill that slides to the chosen option (owner: "the pill switcher should animate the switch
           instead of snapping") */}
       {!wrap && <span ref={thumbRef} className="ax-toggle__thumb" aria-hidden="true" />}
