@@ -399,3 +399,9 @@ ol.en-list { list-style: decimal; }
 .en-inj__tag { display: inline-flex; align-items: center; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; white-space: nowrap; }
 .en-inj__more { align-self: flex-start; font-size: 12px; color: var(--ss-muted); text-decoration: none; }
 .en-inj__more:hover { color: var(--ss-chalk); }
+
+/* every rail and section header: 14px between its underline and what follows (the header's own margin; FillGrid sets inline margins on lists) */
+.en .en-rub { margin-bottom: 14px; }
+.en-mod, .en-section { gap: 0; }
+.en-mod > :not(.en-rub) + *, .en-section > :not(.en-rub) + * { margin-top: 12px; }
+.en .ss-hits.en-section, .en .en-inj.en-mod { gap: 0; }

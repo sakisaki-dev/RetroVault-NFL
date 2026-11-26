@@ -349,12 +349,12 @@ const NewsTab = () => {
               <div className="en-empty" role="status">
                 <p className="en-empty__t">
                   {team !== 'all' && <TeamLogo team={team} size={22} decorative />}
-                  Nothing {section === 'all' ? '' : `in ${SECTIONS.find((x) => x.id === section)!.label} `}
+                  Nothing {section === 'all' ? '' : `in ${SECTIONS.find((x) => x.value === section)!.label} `}
                   {team !== 'all' ? `for the ${team} ` : ''}right now.
                 </p>
                 <div className="en-state__row">
                   {team !== 'all' && section !== 'all' && <button type="button" className="en-refresh" onClick={() => setSection('all')}>All {team} news</button>}
-                  {section !== 'all' && <button type="button" className="en-refresh" onClick={() => setTeam('all')}>All {SECTIONS.find((x) => x.id === section)!.label.toLowerCase()}</button>}
+                  {section !== 'all' && <button type="button" className="en-refresh" onClick={() => setTeam('all')}>All {SECTIONS.find((x) => x.value === section)!.label.toLowerCase()}</button>}
                   {team !== 'all' && section === 'all' && <button type="button" className="en-refresh" onClick={() => setTeam('all')}>All teams</button>}
                 </div>
               </div>
