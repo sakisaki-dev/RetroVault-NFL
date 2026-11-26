@@ -1,3 +1,4 @@
+import { useSectionRequest } from '@/utils/sectionLink';
 import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useSwipeTabs } from '@/hooks/useSwipeTabs';
 import { Activity, ArrowLeftRight, BookOpen, ChevronRight, Clock, FileText, Newspaper, Play, RefreshCw, Video, WifiOff, Zap } from 'lucide-react';
@@ -139,6 +140,7 @@ const NewsTab = () => {
   const { items, at, loading, error, refresh } = useEspnNews();
   const cast = useNewsPlayers(items, players);
   const [section, setSection] = useState<Section>('all');
+  useSectionRequest('news', (v) => { if (SECTIONS.some((x) => x.value === v)) setSection(v as Section); });
   // each section shows its top 3; the rest fold under a tag (owner: the Fantasy section was gigantic)
   const [openSec, setOpenSec] = useState<Set<string>>(() => new Set());
   const [team, setTeam] = useState<string>('all');

@@ -1,3 +1,4 @@
+import { requestSection } from '@/utils/sectionLink';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent } from 'react';
 import { NowPlayingStrip } from '@/components/nowplaying/NowPlaying';
 import {
@@ -114,6 +115,8 @@ interface Section {
   sub?: StatsSub;
   /** Element id to scroll to on the tab's page */
   anchor?: string;
+  /** A page section to open (Fantasy's routed sub-pages, News sections, Arcade games) */
+  section?: string;
 }
 /** Hold-a-tab sections (the Arcade has no fixed sections: its games are one page) */
 const SECTIONS: Record<string, { title: string; items: Section[] }> = {
@@ -162,6 +165,41 @@ const SECTIONS: Record<string, { title: string; items: Section[] }> = {
   },
 };
 
+// Every main tab gets a hold menu (owner: "arcade, news, fantasy etc don't have this popup of separate items")
+if (IS_NFL) {
+  Object.assign(SECTIONS, {
+    fantasy: {
+      title: 'Fantasy',
+      items: [
+        { id: 'trade', label: 'Trade', Icon: ArrowLeftRight, section: 'trade' },
+        { id: 'lineup', label: 'Lineup', Icon: Users, section: 'lineup' },
+        { id: 'startsit', label: 'Start / Sit', Icon: Star, section: 'startsit' },
+        { id: 'h2h', label: 'Head-to-Head', Icon: Swords, section: 'h2h' },
+      ],
+    },
+    news: {
+      title: 'News',
+      items: [
+        { id: 'all', label: 'All', Icon: Newspaper, section: 'all' },
+        { id: 'recap', label: 'Recaps', Icon: Flag, section: 'recap' },
+        { id: 'trade', label: 'Moves', Icon: ArrowLeftRight, section: 'trade' },
+        { id: 'injury', label: 'Injuries', Icon: Shield, section: 'injury' },
+        { id: 'video', label: 'Video', Icon: Sparkles, section: 'video' },
+      ],
+    },
+    games: {
+      title: 'Arcade',
+      items: [
+        { id: 'perfect', label: 'Go 18–0', Icon: Trophy, section: 'perfect' },
+        { id: 'hol', label: 'Higher or Lower', Icon: TrendingUp, section: 'hol' },
+        { id: 'legend', label: 'Guess the Legend', Icon: Crown, section: 'legend' },
+        { id: 'grid', label: 'League Grid', Icon: Layers, section: 'grid' },
+        { id: 'rank', label: 'Blind Rank', Icon: Gem, section: 'rank' },
+        { id: 'imposter', label: 'Imposter', Icon: Users, section: 'imposter' },
+      ],
+    },
+  });
+}
 if (IS_NFL) delete (SECTIONS as Record<string, unknown>).hof;
 else delete (SECTIONS as Record<string, unknown>).season;
 
@@ -261,6 +299,14 @@ const BottomNav = ({ activeTab, onTabChange, onRoute }: { activeTab: string; onT
   };
 
   const goSection = (tab: string, s: Section) => {
+    if (s.section) {
+      if (tab === 'fantasy' && onRoute) onRoute({ tab: 'fantasy', section: s.section });
+      else {
+        if (tab !== activeTab) onTabChange(tab);
+        requestSection(tab, s.section);
+      }
+      return;
+    }
     if (s.sub) {
       if (onRoute) onRoute({ tab: 'career', sub: s.sub });
       else onTabChange(tab);
