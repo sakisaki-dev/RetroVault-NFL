@@ -22,6 +22,7 @@ import { HomeNews } from '../news/WhatChanged';
 import { ArcadeRatingContext, STAT_KEYS, loadGameStat, saveGameStat, useGamePlayers, type ArcadeRating, type GamePlayer } from '../games/gameUtils';
 import { fnv1a } from '@/utils/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
+import { useLeague } from '@/context/LeagueContext';
 import { CAREER_LABEL } from '@/config/ovr';
 
 type GameId = 'rank' | 'perfect' | 'kc' | 'legend' | 'hol' | 'grid' | 'imposter' | 'sixdeg' | 'ou' | 'build';
@@ -239,6 +240,7 @@ const GamesTab = () => {
   // Each game keeps its own Players (All / Active) and Rating (SZN / OVR) choice; the hall's switch seeds a game with none saved
   const gs = useGameSettings(game, rating);
   const effRating: ArcadeRating = game ? gs.settings.rating : rating;
+  const leagueState = useLeague();
   const { players: rawPlayers, league, legends, ovrMap, legendsLoaded, dataVersion } = useGamePlayers(includeLegends, effRating, era);
   // Active only: SZN already is; otherwise the active league players. Too few left (under 40): keep the game playable with everyone and say so.
   const MIN_ACTIVE = 40;
@@ -363,6 +365,17 @@ const GamesTab = () => {
       </div>
     </header>
   );
+
+  if (league.length < 5 && leagueState.isLoading) {
+    return (
+      <div className="arcade">
+        <div className="wrap">
+          {marquee}
+          <PixelLoader label="Loading" what="the arcade" minHeight="50vh" />
+        </div>
+      </div>
+    );
+  }
 
   if (league.length < 5) {
     return (

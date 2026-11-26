@@ -24,6 +24,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "scripts" / "nfl"))
 import build_app_icons as B  # noqa: E402
 
 RGB = tuple
@@ -499,9 +500,12 @@ def build_icons() -> None:
 
 
 def build_splash() -> None:
-    print("Launch screens (night stadium):")
+    # The launch screen is the closed vault door on navy: index.html's pre-JS splash (scripts/nfl/vault_art.py) opens from it
+    import vault_art as V  # noqa: E402
+
+    print("Launch screens (the closed vault on navy):")
     for w, h, dpr in B.SPLASH:
-        save(launch(w, h, dpr), B.splash_name(w, h, dpr))
+        save(V.launch_image(w, h, dpr), B.splash_name(w, h, dpr))
 
 
 def main() -> None:

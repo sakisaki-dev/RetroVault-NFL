@@ -57,6 +57,24 @@ const earlyManifest = (): Plugin => {
   };
 };
 
+// The built stylesheet link blocks rendering, so on a slow line nothing (not even index.html's inline splash) painted until the
+// whole CSS file had arrived. It loads as a non-blocking sheet instead (media swap); the splash stays up until it is in
+// (index.html __rvBootDone waits for data-ok), so the app is never drawn unstyled.
+const nonBlockingCss = (): Plugin => ({
+  name: "non-blocking-css",
+  apply: "build",
+  transformIndexHtml: {
+    order: "post",
+    handler(html) {
+      return html.replace(
+        /<link rel="stylesheet"([^>]*?) href="([^"]+\.css)"([^>]*)>/g,
+        (_m, a, href, b) =>
+          `<link rel="stylesheet"${a} href="${href}"${b} media="print" onload="this.media='all';this.dataset.ok=1" data-app-css><noscript><link rel="stylesheet" href="${href}"></noscript>`,
+      );
+    },
+  },
+});
+
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   // GitHub Pages serves the site from /RetroVault/; the deploy workflow sets BASE_PATH. Local dev stays at /.
@@ -80,6 +98,7 @@ export default defineConfig(() => ({
   plugins: [
     react(),
     earlyManifest(),
+    nonBlockingCss(),
     process.env.VITE_EDITION === "nfl" && nflIcons(),
     process.env.VITE_EDITION !== "nfl" &&
       ((): Plugin => {
