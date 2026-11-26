@@ -1,0 +1,308 @@
+{
+ "version": 1,
+ "season": "2026",
+ "edition": {
+  "number": 0,
+  "season": "2026",
+  "upload": "",
+  "seed": 2655009955,
+  "label": "2026 · NFL"
+ },
+ "title": "2026 NFL",
+ "source": "scripts/nfl/content.py (NFL edition)",
+ "eras": [],
+ "storylines": [],
+ "rivalries": [],
+ "rivalryFiles": [],
+ "lineages": [],
+ "snubs": [],
+ "outsiders": [],
+ "openQuestions": [],
+ "playerNotes": [],
+ "headlines": [],
+ "headlinesInfo": {},
+ "hofClasses": [],
+ "journal": [],
+ "speeches": {},
+ "seasonStoryIndex": [],
+ "hotTakesIndex": [],
+ "tributeIndex": [],
+ "tributeCandidates": [],
+ "tributePlan": [],
+ "tributeQueue": [],
+ "seasonRewindIndex": [],
+ "mechanics": {},
+ "ruleFacts": [],
+ "superBowls": [
+  {
+   "number": 33,
+   "roman": "XXXIV",
+   "year": 1999,
+   "winner": "Rams",
+   "loser": "Titans",
+   "score": "23-16",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 34,
+   "roman": "XXXV",
+   "year": 2000,
+   "winner": "Ravens",
+   "loser": "Giants",
+   "score": "34-7",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 35,
+   "roman": "XXXVI",
+   "year": 2001,
+   "winner": "Patriots",
+   "loser": "Rams",
+   "score": "20-17",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 36,
+   "roman": "XXXVII",
+   "year": 2002,
+   "winner": "Buccaneers",
+   "loser": "Raiders",
+   "score": "48-21",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 37,
+   "roman": "XXXVIII",
+   "year": 2003,
+   "winner": "Patriots",
+   "loser": "Panthers",
+   "score": "32-29",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 38,
+   "roman": "XXXIX",
+   "year": 2004,
+   "winner": "Patriots",
+   "loser": "Eagles",
+   "score": "24-21",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 39,
+   "roman": "XL",
+   "year": 2005,
+   "winner": "Steelers",
+   "loser": "Seahawks",
+   "score": "21-10",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 40,
+   "roman": "XLI",
+   "year": 2006,
+   "winner": "Colts",
+   "loser": "Bears",
+   "score": "29-17",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 41,
+   "roman": "XLII",
+   "year": 2007,
+   "winner": "Giants",
+   "loser": "Patriots",
+   "score": "17-14",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 42,
+   "roman": "XLIII",
+   "year": 2008,
+   "winner": "Steelers",
+   "loser": "Cardinals",
+   "score": "27-23",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 43,
+   "roman": "XLIV",
+   "year": 2009,
+   "winner": "Saints",
+   "loser": "Colts",
+   "score": "31-17",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 44,
+   "roman": "XLV",
+   "year": 2010,
+   "winner": "Packers",
+   "loser": "Steelers",
+   "score": "31-25",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 45,
+   "roman": "XLVI",
+   "year": 2011,
+   "winner": "Giants",
+   "loser": "Patriots",
+   "score": "21-17",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 46,
+   "roman": "XLVII",
+   "year": 2012,
+   "winner": "Ravens",
+   "loser": "49ers",
+   "score": "34-31",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 47,
+   "roman": "XLVIII",
+   "year": 2013,
+   "winner": "Seahawks",
+   "loser": "Broncos",
+   "score": "43-8",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 48,
+   "roman": "XLIX",
+   "year": 2014,
+   "winner": "Patriots",
+   "loser": "Seahawks",
+   "score": "28-24",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 49,
+   "roman": "50",
+   "year": 2015,
+   "winner": "Broncos",
+   "loser": "Panthers",
+   "score": "24-10",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 50,
+   "roman": "LI",
+   "year": 2016,
+   "winner": "Patriots",
+   "loser": "Falcons",
+   "score": "34-28",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 51,
+   "roman": "LII",
+   "year": 2017,
+   "winner": "Eagles",
+   "loser": "Patriots",
+   "score": "41-33",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 52,
+   "roman": "LIII",
+   "year": 2018,
+   "winner": "Patriots",
+   "loser": "Rams",
+   "score": "13-3",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 53,
+   "roman": "LIV",
+   "year": 2019,
+   "winner": "Chiefs",
+   "loser": "49ers",
+   "score": "31-20",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 54,
+   "roman": "LV",
+   "year": 2020,
+   "winner": "Buccaneers",
+   "loser": "Chiefs",
+   "score": "31-9",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 55,
+   "roman": "LVI",
+   "year": 2021,
+   "winner": "Rams",
+   "loser": "Bengals",
+   "score": "23-20",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 56,
+   "roman": "LVII",
+   "year": 2022,
+   "winner": "Chiefs",
+   "loser": "Eagles",
+   "score": "38-35",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 57,
+   "roman": "LVIII",
+   "year": 2023,
+   "winner": "Chiefs",
+   "loser": "49ers",
+   "score": "25-22",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 58,
+   "roman": "LIX",
+   "year": 2024,
+   "winner": "Eagles",
+   "loser": "Chiefs",
+   "score": "40-22",
+   "yourResult": "not in it",
+   "yourTeam": null
+  },
+  {
+   "number": 59,
+   "roman": "LX",
+   "year": 2025,
+   "winner": "Seahawks",
+   "loser": "Patriots",
+   "score": "29-13",
+   "yourResult": "not in it",
+   "yourTeam": null
+  }
+ ]
+}

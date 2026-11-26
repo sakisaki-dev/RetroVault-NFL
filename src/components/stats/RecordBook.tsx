@@ -226,7 +226,7 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
             };
           });
   const chip = (on: boolean) =>
-    cn('rounded-full border px-3 py-1 font-display text-xs font-bold uppercase tracking-wide', on ? 'border-gold bg-gold text-night' : 'border-line bg-night/60 text-secondary-foreground');
+    cn('rounded-full border px-3 py-1 font-display text-xs font-bold uppercase tracking-wide [@media(pointer:coarse)]:min-h-10', on ? 'border-gold bg-gold text-night' : 'border-line bg-night/60 text-secondary-foreground');
   return (
     <section id="record-book" aria-labelledby="record-book-title" className="scroll-mt-20 space-y-3">
       <h2 id="record-book-title" className="section-title text-2xl">

@@ -33,7 +33,7 @@ const TierChip = ({ e, onSelect }: { e: TierEntry; onSelect: (p: Player) => void
         {...peekProps(e.player)}
         onClick={() => onSelect(e.player)}
         aria-label={`${displayName(e.player.name)}${e.player.team ? `, ${e.player.team}` : ''}: ${e.value}${hof ? ', Hall of Famer' : ''}. Open player`}
-        className="flex max-w-[13rem] items-center gap-1.5 rounded-md py-1 pl-1 pr-2 text-left text-xs font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+        className="flex max-w-[13rem] items-center gap-1.5 rounded-md py-1 pl-1 [@media(pointer:coarse)]:min-h-10 pr-2 text-left text-xs font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-night"
         style={{ background: bg, color: ink, boxShadow: hof ? '0 0 0 2px hsl(var(--gold))' : undefined }}
       >
         {e.player.team && (

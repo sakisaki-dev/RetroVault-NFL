@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <script>window.__rvManifest=fetch("/data/manifest.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null});</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover" />
+    <title>Retro Vault — League Hub</title>
+    <meta name="description" content="Retro Vault is the league hub for your Retro Bowl franchise: career stats, team pages, records and the Hall of Fame." />
+    <meta name="author" content="Saketh Machiraju" />
+    <meta name="theme-color" content="#090d1a" />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:title" content="Retro Vault — League Hub" />
+    <meta property="og:description" content="Career stats, team pages, records and the Hall of Fame for your Retro Bowl league." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/x-icon" href="/nfl-icons/favicon.ico?v=nightgame" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/nfl-icons/favicon-32.png?v=nightgame" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/nfl-icons/apple-touch-icon.png?v=nightgame" />
+    <link rel="manifest" href="/nfl-icons/manifest.webmanifest?v=nightgame" />
+    <!-- Home Screen app (CLAUDE.md "Home Screen app"): standalone, the page runs under a translucent status bar and the
+         header pads itself by env(safe-area-inset-top); art from scripts/build_app_icons.py -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RV NFL" />
+    <meta name="application-name" content="RV NFL" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- iOS launch screens, portrait, one per current iPhone size (python3 scripts/build_app_icons.py --links) -->
+    <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1320x2868.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1206x2622.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1260x2736.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1290x2796.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1179x2556.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1284x2778.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1170x2532.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1125x2436.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/nfl-icons/splash/launch-1242x2688.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/nfl-icons/splash/launch-828x1792.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/nfl-icons/splash/launch-750x1334.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://a.espncdn.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap"
+    />
+  <style>
+      /* first paint before the app's script arrives: the pixel football (same art as ui/PixelLoader) hops on the night background; React replaces it */
+      html,body{background:#080c18}
+      .boot{min-height:70vh;display:flex;align-items:center;justify-content:center;opacity:0;animation:boot-in .3s ease-out .25s forwards}
+      .boot svg{width:48px;height:27px;image-rendering:pixelated;animation:boot-hop .64s infinite cubic-bezier(.25,.6,.4,1)}
+      @keyframes boot-in{to{opacity:1}}
+      @keyframes boot-hop{50%{transform:translateY(-14px) rotate(180deg)}to{transform:translateY(0) rotate(360deg)}}
+      @media (prefers-reduced-motion:reduce){.boot svg{animation:none}}
+    </style>
+    <script type="module" crossorigin src="/assets/index-CSlwhp0V.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BSVW0uMG.css">
+  </head>
+
+  <body>
+    <div id="root"><div class="boot" aria-hidden="true"><svg viewBox="0 0 16 9" shape-rendering="crispEdges"><rect x="5" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="6" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="7" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="8" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="9" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="10" y="0" width="1.04" height="1.04" fill="#2a140a"/><rect x="3" y="1" width="1.04" height="1.04" fill="#2a140a"/><rect x="4" y="1" width="1.04" height="1.04" fill="#2a140a"/><rect x="5" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="6" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="7" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="8" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="9" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="10" y="1" width="1.04" height="1.04" fill="#c27a3f"/><rect x="11" y="1" width="1.04" height="1.04" fill="#2a140a"/><rect x="12" y="1" width="1.04" height="1.04" fill="#2a140a"/><rect x="1" y="2" width="1.04" height="1.04" fill="#2a140a"/><rect x="2" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="3" y="2" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="4" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="5" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="6" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="7" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="8" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="9" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="10" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="11" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="12" y="2" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="13" y="2" width="1.04" height="1.04" fill="#9b5426"/><rect x="14" y="2" width="1.04" height="1.04" fill="#2a140a"/><rect x="0" y="3" width="1.04" height="1.04" fill="#2a140a"/><rect x="1" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="2" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="3" y="3" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="4" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="5" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="6" y="3" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="7" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="8" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="9" y="3" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="10" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="11" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="12" y="3" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="13" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="14" y="3" width="1.04" height="1.04" fill="#9b5426"/><rect x="15" y="3" width="1.04" height="1.04" fill="#2a140a"/><rect x="0" y="4" width="1.04" height="1.04" fill="#2a140a"/><rect x="1" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="2" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="3" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="4" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="5" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="6" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="7" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="8" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="9" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="10" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="11" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="12" y="4" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="13" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="14" y="4" width="1.04" height="1.04" fill="#9b5426"/><rect x="15" y="4" width="1.04" height="1.04" fill="#2a140a"/><rect x="0" y="5" width="1.04" height="1.04" fill="#2a140a"/><rect x="1" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="2" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="3" y="5" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="4" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="5" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="6" y="5" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="7" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="8" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="9" y="5" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="10" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="11" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="12" y="5" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="13" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="14" y="5" width="1.04" height="1.04" fill="#9b5426"/><rect x="15" y="5" width="1.04" height="1.04" fill="#2a140a"/><rect x="1" y="6" width="1.04" height="1.04" fill="#2a140a"/><rect x="2" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="3" y="6" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="4" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="5" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="6" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="7" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="8" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="9" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="10" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="11" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="12" y="6" width="1.04" height="1.04" fill="#f6ecd9"/><rect x="13" y="6" width="1.04" height="1.04" fill="#9b5426"/><rect x="14" y="6" width="1.04" height="1.04" fill="#2a140a"/><rect x="3" y="7" width="1.04" height="1.04" fill="#2a140a"/><rect x="4" y="7" width="1.04" height="1.04" fill="#2a140a"/><rect x="5" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="6" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="7" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="8" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="9" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="10" y="7" width="1.04" height="1.04" fill="#9b5426"/><rect x="11" y="7" width="1.04" height="1.04" fill="#2a140a"/><rect x="12" y="7" width="1.04" height="1.04" fill="#2a140a"/><rect x="5" y="8" width="1.04" height="1.04" fill="#2a140a"/><rect x="6" y="8" width="1.04" height="1.04" fill="#2a140a"/><rect x="7" y="8" width="1.04" height="1.04" fill="#2a140a"/><rect x="8" y="8" width="1.04" height="1.04" fill="#2a140a"/><rect x="9" y="8" width="1.04" height="1.04" fill="#2a140a"/><rect x="10" y="8" width="1.04" height="1.04" fill="#2a140a"/></svg></div></div>
+  </body>
+</html>

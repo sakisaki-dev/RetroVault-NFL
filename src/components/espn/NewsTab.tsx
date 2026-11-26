@@ -228,6 +228,8 @@ const NewsTab = () => {
         </div>
       </header>
 
+      {/* holds the Wire's place while the feed loads, so the rows below do not jump */}
+      {wire.length === 0 && (loading || (!items.length && !error)) && <div className="en-wire-ghost" aria-hidden="true" />}
       {wire.length > 0 && (
         <section className="en-wire" aria-label="The Wire">
           <h3 className="en-wire__h">The Wire</h3>
@@ -464,7 +466,7 @@ const NewsTab = () => {
         </div>
       )}
 
-      <p className="en-credit-line">Headlines, articles, photos and video are ESPN&apos;s, fetched live and kept for this browser session only.</p>
+      <p className="en-credit-line" style={!items.length && loading ? { visibility: 'hidden' } : undefined}>Headlines, articles, photos and video are ESPN&apos;s, fetched live and kept for this browser session only.</p>
       <ArticleReader item={open} order={order} onOpen={read} onClose={() => setOpenId(null)} players={players} />
     </div>
   );

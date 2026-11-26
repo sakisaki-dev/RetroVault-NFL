@@ -1,0 +1,6 @@
+import{c as l,j as t}from"./index-CSlwhp0V.js";/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const d=l("ArrowUp",[["path",{d:"m5 12 7-7 7 7",key:"hav0vg"}],["path",{d:"M12 19V5",key:"x0mq9r"}]]),x=({x:a,y:r,width:e,children:o,dock:n})=>{const s=a>e/2;return n?t.jsx("div",{role:"status",className:"pointer-events-none absolute z-20 w-max max-w-[min(15rem,calc(100%-16px))] rounded-lg border border-gold/50 bg-popover px-3 py-2 text-[13px] leading-snug shadow-elevated",style:{top:6,...s?{left:8}:{right:8}},children:o}):t.jsx("div",{role:"presentation",className:"pointer-events-none absolute z-20 w-max max-w-[15rem] rounded-md border border-line bg-popover px-3 py-2 text-xs shadow-elevated",style:{top:Math.max(0,r-8),left:s?void 0:a+14,right:s?Math.max(0,e-a+14):void 0,transform:"translateY(-100%)"},children:o})},m=({items:a,label:r="Legend"})=>t.jsx("ul",{className:"flex flex-wrap gap-x-3 gap-y-1 text-xs text-secondary-foreground","aria-label":r,children:a.map(e=>t.jsxs("li",{className:"inline-flex items-center gap-1.5",children:[e.swatch,e.label]},e.key))});export{d as A,x as C,m as L};

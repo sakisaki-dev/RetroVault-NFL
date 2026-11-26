@@ -1,0 +1,1 @@
+.fz-zone{transition:fill-opacity .18s ease,stroke-opacity .18s ease,opacity .18s ease}.fz-dot{transition:opacity .18s ease}[data-perf=lite] .fz-zone,[data-perf=lite] .fz-dot,[data-perf=lite] .fz-legend{transition:none!important}@media (prefers-reduced-motion: reduce){.fz-zone,.fz-dot{transition:none}}

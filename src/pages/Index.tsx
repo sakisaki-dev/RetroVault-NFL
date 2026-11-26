@@ -149,7 +149,7 @@ const IndexContent = () => {
         <Header activeTab={target.tab} onTabChange={(tab) => navigate({ tab })} />
 
         <HubRouteContext.Provider value={hub}>
-          <main id="main" tabIndex={-1} className="rv-ix flex-1 focus:outline-none">
+          <main id="main" tabIndex={-1} className="rv-ix min-h-[100svh] flex-1 focus:outline-none">
             {/* Tab changes are transitions (hashRoute), so the old tab stays until the new one is ready; it then
                 cross-fades in (.rv-view-in). The fallback only shows on a cold first load, after ~150 ms. */}
             <TabBoundary key={activeTab}><Suspense fallback={<TabFallback />}>

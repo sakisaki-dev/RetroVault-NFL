@@ -10,7 +10,7 @@ export const InfoTip = ({ children, label = 'More info', className }: { children
       <button
         type="button"
         aria-label={label}
-        className={cn('inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-gold focus-visible:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/60', className)}
+        className={cn('relative inline-flex h-5 w-5 shrink-0 [@media(pointer:coarse)]:before:absolute [@media(pointer:coarse)]:before:-inset-3 [@media(pointer:coarse)]:before:content-[""] items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-gold focus-visible:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/60', className)}
       >
         <Info className="h-3.5 w-3.5" aria-hidden="true" />
       </button>

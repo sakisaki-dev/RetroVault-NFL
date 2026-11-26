@@ -313,3 +313,7 @@ ol.en-list { list-style: decimal; }
 
 /* a lede that opens on a player's name keeps the name whole: no drop cap splitting "P|atrick" out of the chip */
 .fs-body .fs-lede.fs-lede--nocap::first-letter { float: none; margin: 0; font: inherit; color: inherit; line-height: inherit; }
+
+/* The Wire's place while the feed loads (its height: one row, 42 px) */
+.en-wire-ghost { min-height: 42px; border-radius: 12px; background: var(--ss-panel); opacity: 0.5; }
+.en { min-height: 100svh; align-content: start; }
