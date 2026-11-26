@@ -236,7 +236,7 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
         {SUB_TABS.map(({ id, label, short, Icon, blurb }) => {
           const active = id === lit;
           return (
-            <li key={id} className="shrink-0 max-sm:flex-1">
+            <li key={id} className="flex-1 max-sm:min-w-0 sm:min-w-fit sm:shrink-0">
               <a
                 href={buildHash({ tab: 'career', sub: id })}
                 aria-current={active ? 'page' : undefined}
@@ -250,7 +250,7 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
                   onSubChange(id);
                 }}
                 className={cn(
-                  'group relative flex h-10 items-center gap-1 rounded-md px-2 font-display text-[15px] font-bold uppercase tracking-wide transition-colors max-sm:h-11 max-sm:justify-center max-sm:px-1 sm:gap-1.5 sm:px-3 sm:text-base',
+                  'group relative flex h-10 items-center justify-center gap-1 rounded-md px-2 font-display text-[15px] font-bold uppercase tracking-wide transition-colors max-sm:h-11 max-sm:justify-center max-sm:px-1 sm:gap-1.5 sm:px-3 sm:text-base',
                   active ? 'bg-gold text-primary-foreground shadow-[0_0_18px_hsl(var(--gold)/0.35)]' : 'text-muted-foreground hover:bg-panel-2 hover:text-chalk',
                 )}
               >

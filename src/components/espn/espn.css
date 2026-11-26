@@ -334,3 +334,13 @@ ol.en-list { list-style: decimal; }
 /* The Wire's place while the feed loads (its height: one row, 42 px) */
 .en-wire-ghost { min-height: 42px; border-radius: 12px; background: var(--ss-panel); opacity: 0.5; }
 .en { min-height: 100svh; align-content: start; }
+
+/* News heads and section pills: centred, the pills share the row (owner: "news heads show off center") */
+.en .ss-mast { flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; gap: 10px; padding-bottom: 14px; }
+.en .ss-mast__text { flex: none; width: 100%; display: grid; justify-items: center; gap: 2px; }
+.en .ss-mast__tagline { margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 10px; }
+.en .ss-seasons { display: flex; flex-wrap: nowrap; width: 100%; max-width: 620px; margin-inline: auto; gap: 6px; }
+.en .ss-seasons .ss-season { flex: 1 1 0; min-width: 0; padding: 0 8px; }
+.en .en-rub { text-align: center; }
+.en .en-rub__kicker, .en .en-rub__title { justify-content: center; }
+.en .en-rub--big, .en .en-rub { padding-inline: 4px; }

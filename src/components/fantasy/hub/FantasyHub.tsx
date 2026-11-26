@@ -1,4 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSwipeTabs } from '@/hooks/useSwipeTabs';
 import { ArcadeToggle, StadiumHeader } from '@/components/arcade';
 import FootballLoader from '@/components/motion/FootballLoader';
 import { ViewCount } from '@/components/motion/Reveal';
@@ -87,15 +88,17 @@ const Ready = ({ nl }: { nl: NflLabReady }) => {
     if (!window.location.hash.startsWith('#fantasy')) navigate({ tab: 'fantasy', section: sub, p: route.p }, { replace: true });
   }, [navigate, sub, route.p]);
   const go = (s: Sub) => navigate({ tab: 'fantasy', section: s });
+  const swipeRef = useRef<HTMLDivElement>(null);
+  useSwipeTabs({ ref: swipeRef, values: SUBS.map((s) => s.value), value: sub, onChange: go });
   const find = useCallback((key: string) => env.cards.get(key) ?? nl.ctx.profiles.get(key)?.player, [env.cards, nl.ctx]);
   const summary = leagueSummary(prefs, env.settings);
   return (
     <CardHost find={find}>
-    <div className="fh rv-ix min-w-0" data-sub={sub}>
+    <div className="fh rv-ix min-w-0" data-sub={sub} ref={swipeRef}>
       <div className="container min-w-0 py-3 sm:py-4">
         {/* the page switcher sits first on every page, so it never moves; each page's banner follows at one height */}
         <div className="fh-bar" role="navigation" aria-label="Fantasy pages">
-          <ArcadeToggle<Sub> label="Fantasy page" value={sub} onChange={go} options={SUBS.map((s) => ({ value: s.value, label: <><span className="fh-lg">{s.label}</span><span className="fh-sm">{s.short}</span></> }))} />
+          <ArcadeToggle<Sub> fill label="Fantasy page" value={sub} onChange={go} options={SUBS.map((s) => ({ value: s.value, label: <><span className="fh-lg">{s.label}</span><span className="fh-sm">{s.short}</span></> }))} />
         </div>
         {sub !== 'trade' && <Hero hub={hub} sub={sub} turf={turf} onLeague={() => setOpen(true)} summary={summary} />}
         <div key={sub} className="fh-view">

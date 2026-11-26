@@ -1,5 +1,6 @@
 import PixelLoader from '@/components/ui/PixelLoader';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useSwipeTabs } from '@/hooks/useSwipeTabs';
 import { ArcadeToggle } from '@/components/arcade';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { useCollegeIndex, type CollegeSection } from '@/utils/collegeData';
@@ -34,6 +35,8 @@ const CollegeTab = () => {
     (s: CollegeSection, next: Record<string, string> = {}, replace = false) => navigate({ tab: 'college', section: s, ...(Object.keys(next).length ? { q: next } : {}) }, { replace }),
     [navigate],
   );
+  const swipeRef = useRef<HTMLDivElement>(null);
+  useSwipeTabs({ ref: swipeRef, values: SECTIONS.map((s) => s.value), value: section, onChange: (s) => go(s, s === 'draft' && year != null ? { y: String(year) } : {}) });
   useEffect(() => {
     if (!legacy) return;
     go('warroom', { ...(q.club ? { club: q.club } : {}), ...(legacy === 'order' ? { v: 'order' } : {}) }, true);
@@ -44,9 +47,9 @@ const CollegeTab = () => {
   if (idx === null || year == null) return <p className="cl-note container py-6">The college data isn't built yet (npm run nfl:rebuild).</p>;
 
   return (
-    <div className="cl container py-6 sm:py-8">
+    <div className="cl container py-6 sm:py-8" ref={swipeRef}>
       <nav className="cl-nav" aria-label="College sections">
-        <ArcadeToggle<CollegeSection> label="College section" value={section} onChange={(s) => go(s, s === 'draft' ? { y: String(year) } : {})} options={SECTIONS} />
+        <ArcadeToggle<CollegeSection> fill label="College section" value={section} onChange={(s) => go(s, s === 'draft' ? { y: String(year) } : {})} options={SECTIONS} />
       </nav>
 
       {section === 'draft' && (

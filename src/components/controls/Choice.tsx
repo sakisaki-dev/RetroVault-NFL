@@ -38,6 +38,7 @@ export const Choice = <T extends string | number>({
   size = 'sm',
   club,
   wrap,
+  fill,
   className,
 }: {
   options: ChoiceOption<T>[];
@@ -50,6 +51,8 @@ export const Choice = <T extends string | number>({
   club?: string | null;
   /** inside a sheet or popover: always chips that wrap (there is room, and a menu would clip) */
   wrap?: boolean;
+  /** page-level navigator: centred, full width, even segments */
+  fill?: boolean;
   className?: string;
 }) =>
   wrap || fitsSegmented(options as ChoiceOption<string | number>[], segmentedMax) ? (
@@ -58,6 +61,7 @@ export const Choice = <T extends string | number>({
       size={size}
       club={club}
       wrap={wrap}
+      fill={fill}
       className={className}
       value={value}
       onChange={onChange}

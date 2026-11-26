@@ -1,4 +1,5 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useSwipeTabs } from '@/hooks/useSwipeTabs';
 import { BookOpen, ChevronRight, Clock, Newspaper, Play, RefreshCw, Video, WifiOff, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
@@ -194,6 +195,8 @@ const NewsTab = () => {
   const open = order.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null;
   const read = (it: NewsItem) => setOpenId(it.id);
   const itemProps = { players, cast, onRead: read };
+  const swipeRef = useRef<HTMLDivElement>(null);
+  useSwipeTabs({ ref: swipeRef, values: SECTIONS.map((s) => s.id), value: section, onChange: (v) => setSection(v as Section) });
 
   const leadReveal = useReveal<HTMLElement>();
   const leadCast = lead ? cast.get(lead.id) ?? [] : [];
@@ -203,7 +206,7 @@ const NewsTab = () => {
   const ago = lead ? agoParts(lead.published) : null;
 
   return (
-    <div className="en container py-6 sm:py-8">
+    <div className="en container py-6 sm:py-8" ref={swipeRef}>
       <header className="ss-mast">
         <div className="ss-mast__text">
           <p className="ss-mast__kicker">

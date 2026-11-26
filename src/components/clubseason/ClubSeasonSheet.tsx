@@ -207,7 +207,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
           {team && abbr && (
             <div className="cs">
               <div className="cs-bar-top">
-                <Choice<ClubTab> label="Club page" size="md" club={team.name} className="cs-tabs" value={tab} onChange={setTab} options={TAB_OPTIONS} />
+                <Choice<ClubTab> fill label="Club page" size="md" club={team.name} className="cs-tabs" value={tab} onChange={setTab} options={TAB_OPTIONS} />
               </div>
               {tab === 'franchise' ? (
                 <Suspense fallback={<PixelLoader what={`the ${team.name} franchise`} minHeight={420} />}>
