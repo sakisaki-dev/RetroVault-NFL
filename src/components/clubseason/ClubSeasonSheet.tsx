@@ -200,7 +200,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
             scroller.current?.focus({ preventScroll: true });
           }}
           style={vars}
-          className="cs-sheet grid-cols-[minmax(0,1fr)] w-screen max-w-none h-[var(--safe-h,100dvh)] max-h-none overflow-y-auto overflow-x-hidden rounded-none border-0 gap-0 p-0 sm:h-auto sm:max-h-[calc(var(--safe-h,100dvh)-2rem)] sm:w-[min(1080px,calc(100vw-2rem))] sm:rounded-2xl sm:border [&_.dlg-x]:border-white/20 [&_.dlg-x]:bg-black/55 [&_.dlg-x]:text-white"
+          className="cs-sheet grid-cols-[minmax(0,1fr)] w-screen max-w-none h-[var(--safe-h,100dvh)] max-h-none overflow-y-auto overflow-x-hidden rounded-none border-0 gap-0 p-0 sm:h-auto sm:max-h-[calc(var(--safe-h,100dvh)-2rem)] sm:w-[min(1080px,calc(100vw-2rem))] sm:rounded-2xl sm:border [&_.dlg-x]:border-white/20 [&_.dlg-x]:bg-black/55 [&_.dlg-x]:text-white max-sm:[&_.dlg-x]:hidden"
         >
           <DialogTitle className="sr-only">{year} {team?.fullName}</DialogTitle>
           <DialogDescription className="sr-only">The {year} {team?.name} season programme: the cover, the season at a glance, the starting lineup, the schedule, stat leaders, the cap and the roster.</DialogDescription>

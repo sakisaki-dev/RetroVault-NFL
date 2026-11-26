@@ -28,7 +28,10 @@
   border-bottom: 1px solid rgb(255 255 255 / 0.08);
   backdrop-filter: blur(6px);
 }
-.cs-bar-top .cs-tabs { width: 100%; }
+.cs-bar-top .cs-tabs { width: 100%; max-width: none; }
+/* phones close the sheet by swiping down (owner: "we don't need the x we just swipe down"), so the pill runs the full
+   width; the X stays from 640px, where the sheet is a centred dialog */
+@media (max-width: 639px) { .cs-bar-top { padding-right: 12px; } }
 .cs-bar-top .cs-tabs { display: flex; }
 .cs-bar-top .cs-tabs .ax-seg { flex: 1 1 0; justify-content: center; text-align: center; }
 .cs-years {

@@ -551,8 +551,11 @@ function quarterText(g) {
 const ordinal = (n) => ({ 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' })[n] || '';
 function ddText(g) {
   const s = g.sit;
-  if (!s || !s.down) return '';
-  return `${ordinal(s.down)} & ${s.dist || 'Goal'}`;
+  if (!s) return '';
+  // ESPN's own short text first ("1st & Goal"); between plays (timeouts, reviews) the down is -1 and there is none
+  if (/^\d(st|nd|rd|th)\b/i.test(s.dd || '')) return s.dd.replace(/\s+at\s+.*$/i, '');
+  if (!(s.down >= 1 && s.down <= 4)) return '';
+  return `${ordinal(s.down)} & ${s.dist > 0 ? s.dist : 'Goal'}`;
 }
 // Field position as a fraction 0..1 from the possessing club's own goal line, and the spot's text
 function fieldPos(g) {
@@ -809,8 +812,11 @@ async function liveLarge(data, ctx) {
   const td = boxStat(summary, L.abbr, 'thirdDownEff'), td2 = boxStat(summary, Rr.abbr, 'thirdDownEff');
   const series = winSeries(summary, g, involves(g, club) ? club : g.home.abbr);
   const nBars = [ty && ty2, tp && tp2 && toSeconds(tp) != null, td && td2].filter(Boolean).length;
-  // stage
-  const stageH = 112 + (3 - nBars) * 17;
+  // stage: as tall as the rest leaves room for, so the bottom rows never run into the footer (owner's screenshot:
+  // the timeouts sat under "UPDATED")
+  const lp = lastPlayText(g, summary);
+  const below = 4 + 19 + 33 + 50 + nBars * 17 + 3 + (lp ? 24 : 0) + 30 + 14;
+  const stageH = Math.max(84, Math.min(112 + (3 - nBars) * 17, sz.h - PAD.bottom - y - below));
   drawStage(dc, A, x0, y, cw, stageH, L.abbr, Rr.abbr, false);
   const lg = (ab, x) => { if (A.logos[ab]) dc.drawImageInRect(A.logos[ab], new Rect(x, y + 12, 26, 26)); };
   lg(L.abbr, x0 + cw * 0.25 - 13); lg(Rr.abbr, x0 + cw * 0.75 - 13);
@@ -849,22 +855,26 @@ async function liveLarge(data, ctx) {
   rowsData.forEach((r) => { statBar(dc, x0 + 6, y, cw - 12, r[0], r[1], isNaN(r[2]) ? 0.5 : r[2], L.abbr, Rr.abbr); y += 17; });
   y += 3;
   // last play
-  const lp = lastPlayText(g, summary);
   if (lp) {
     fillRounded(dc, x0, y, cw, 20, 8, rgba('#080c1a', 0.55));
     const kw = pix(dc, 'LAST PLAY', x0 + 8, y + 7.5, 1.1, HEX.dim);
     T(dc, clip(lp, cw - kw - 22, 10.5), x0 + 8 + kw + 6, y + 3.5, cw - kw - 20, 10.5, { font: bodyF(10.5) });
   }
-  y += 24;
+  if (lp) y += 24;
   // win chance and timeouts
   const me = g.home.abbr === club || g.away.abbr === club ? club : g.home.abbr;
   const stripH = 28;
-  if (series) sparkline(dc, x0, y, cw * 0.62, stripH, series, stripColor(me) === '#101820' ? secondary(me) : mixHex(stripColor(me), '#ffffff', 0.35));
+  // the label sits above the line (it used to be struck through by it), both on a dark plate
   const wp = series ? series[series.length - 1] : null;
-  if (wp != null && series) T(dc, `${me} ${Math.round(wp * 100)}%`, x0 + 6, y + 3, 100, 10, { font: boldF(10), color: C.chalk });
-  const tx = series ? x0 + cw * 0.62 + 10 : x0;
-  const to = (ab, n, yy) => { T(dc, ab, tx, yy, 30, 9.5, { font: boldF(9.5), color: C.dim }); timeoutPips(dc, A, tx + 34, yy + 1, n == null ? 3 : n); };
-  to(L.abbr, g.sit && g.sit.awayTO, y + 2);
+  if (series) {
+    fillRounded(dc, x0, y, cw * 0.62, stripH, 8, rgba('#080c1a', 0.62));
+    sparkline(dc, x0 + 4, y + 12, cw * 0.62 - 8, stripH - 14, series, stripColor(me) === '#101820' ? secondary(me) : mixHex(stripColor(me), '#ffffff', 0.35));
+    if (wp != null) T(dc, `${me} ${Math.round(wp * 100)}%`, x0 + 7, y + 2, 100, 10, { font: boldF(10), color: C.chalk });
+  }
+  const tx = series ? x0 + cw * 0.62 + 8 : x0;
+  fillRounded(dc, tx, y, x0 + cw - tx, stripH, 8, rgba('#080c1a', 0.62));
+  const to = (ab, n, yy) => { T(dc, ab, tx + 8, yy, 30, 9.5, { font: boldF(9.5), color: C.chalk }); timeoutPips(dc, A, tx + 42, yy + 1, n == null ? 3 : n); };
+  to(L.abbr, g.sit && g.sit.awayTO, y + 3);
   to(Rr.abbr, g.sit && g.sit.homeTO, y + 15);
   y += stripH + 6;
   pix(dc, series ? `WIN CHANCE · TIMEOUTS` : 'TIMEOUTS', x0, sz.h - PAD.bottom - 7, 0.95, '#6d7896');
