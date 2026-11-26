@@ -16,7 +16,7 @@ import { MARKET_FORMAT, expandMarket } from '@/utils/marketHistory';
 
 const read = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 const data = parseCSV(readFileSync('public/data/initial-data.csv', 'utf8')) as unknown as Record<string, Player[]>;
-const KEYS = ['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline'];
+const KEYS = ['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline', 'kickers'];
 const league = normalizeLeague(KEYS.flatMap((k) => data[k] ?? [])).filter((p) => !p.isRealLegend);
 const content = read('public/data/league/content.json');
 const extras = read('public/data/player-extras.json');

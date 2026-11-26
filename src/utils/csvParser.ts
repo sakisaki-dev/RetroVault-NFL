@@ -8,6 +8,7 @@ import type {
   LBPlayer,
   DBPlayer,
   DLPlayer,
+  KPlayer,
   Status,
   Position,
 } from '@/types/player';
@@ -104,7 +105,7 @@ const findPositionSections = (
   lines: string[][],
 ): Map<Position, { headerRow: number; dataStart: number; dataEnd: number }> => {
   const sections = new Map<Position, { headerRow: number; dataStart: number; dataEnd: number }>();
-  const positions: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+  const positions: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
   for (let i = 0; i < lines.length; i++) {
     const firstCell = (lines[i][0] ?? '').trim().toUpperCase();
@@ -286,6 +287,28 @@ const parseDefensive = <T extends 'LB' | 'DB' | 'DL'>(
   };
 };
 
+const parseK = (row: string[], header: HeaderIndex, metricCols: MetricColumns): KPlayer | null => {
+  const base = baseFields(row, header, metricCols);
+  if (!base) return null;
+  // a blank cell is a stat the source lacks, never a zero (parseStat)
+  const f = (label: string) => parseStat(getField(row, header, label));
+  return {
+    position: 'K',
+    ...base,
+    fgMade: f('FGM'),
+    fgAtt: f('FGA'),
+    fgMade39: f('FGM 0-39'),
+    fgAtt39: f('FGA 0-39'),
+    fgMade49: f('FGM 40-49'),
+    fgAtt49: f('FGA 40-49'),
+    fgMade50: f('FGM 50+'),
+    fgAtt50: f('FGA 50+'),
+    xpMade: f('XPM'),
+    xpAtt: f('XPA'),
+    longest: f('Longest'),
+  };
+};
+
 // ---------- Public API ----------
 
 export const parseCSV = (csvContent: string): LeagueData => {
@@ -303,6 +326,7 @@ export const parseCSV = (csvContent: string): LeagueData => {
     linebackers: [],
     defensivebacks: [],
     defensiveline: [],
+    kickers: [],
   };
 
   const parseSection = <T>(
@@ -334,6 +358,7 @@ export const parseCSV = (csvContent: string): LeagueData => {
   parseSection('LB', (r, h, m) => parseDefensive(r, h, m, 'LB') as LBPlayer, (p) => data.linebackers.push(p));
   parseSection('DB', (r, h, m) => parseDefensive(r, h, m, 'DB') as DBPlayer, (p) => data.defensivebacks.push(p));
   parseSection('DL', (r, h, m) => parseDefensive(r, h, m, 'DL') as DLPlayer, (p) => data.defensiveline.push(p));
+  parseSection('K', parseK, (p) => data.kickers.push(p));
 
   return data;
 };

@@ -21,7 +21,7 @@ const ROOT = resolve(process.argv[2] ?? '.');
 };
 
 const KEYS: (keyof Omit<LeagueData, 'metadata'>)[] = [
-  'quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline',
+  'quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline', 'kickers',
 ];
 
 const main = async () => {

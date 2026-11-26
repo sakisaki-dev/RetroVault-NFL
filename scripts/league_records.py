@@ -53,6 +53,10 @@ RULES = {
     "Most sacks, career": ("career", DEF, lambda p, s: s.get("sck") or 0, ""),
     "Most interceptions, career": ("career", DEF, lambda p, s: s.get("int") or 0, ""),
     "Most forced fumbles, career": ("career", DEF, lambda p, s: s.get("ff") or 0, ""),
+    # kickers (NFL edition): the best percentage needs 100 career / 25 season attempts so a hot cameo never holds it
+    "Most field goals, career": ("career", ("K",), lambda p, s: s.get("fgm") or 0, ""),
+    "Longest field goal, career": ("career", ("K",), lambda p, s: s.get("lng") or 0, "yds"),
+    "Best field goal %, career": ("career", ("K",), lambda p, s: round(100 * s["fgm"] / s["fga"], 1) if (s.get("fga") or 0) >= 100 else 0, "%"),
     "Best passing season": ("season", ("QB",), lambda p, s: s.get("yds") or 0, "yds"),
     "Most TD passes, season": ("season", ("QB",), lambda p, s: s.get("td") or 0, ""),
     "Best receiving season": ("season", REC, rec_yds, "yds"),
@@ -63,6 +67,8 @@ RULES = {
     "Most sacks, season": ("season", DEF, lambda p, s: s.get("sck") or 0, ""),
     "Most interceptions, season": ("season", DEF, lambda p, s: s.get("int") or 0, ""),
     "Most forced fumbles, season": ("season", DEF, lambda p, s: s.get("ff") or 0, ""),
+    "Most field goals, season": ("season", ("K",), lambda p, s: s.get("fgm") or 0, ""),
+    "Best field goal %, season": ("season", ("K",), lambda p, s: round(100 * s["fgm"] / s["fga"], 1) if (s.get("fga") or 0) >= 25 else 0, "%"),
 }
 TOP = 3
 
@@ -79,11 +85,12 @@ def num(v: float):
 # A short label for the tiles: "Rush yds", "Pass TDs"...
 SHORT = {"passing": "Pass yds", "TD passes": "Pass TDs", "receiving": "Rec yds", "TD receptions": "Rec TDs",
          "rushing": "Rush yds", "rushing TDs": "Rush TDs", "tackles": "Tackles", "sacks": "Sacks",
-         "interceptions": "INTs", "forced fumbles": "Forced fumbles"}
+         "interceptions": "INTs", "forced fumbles": "Forced fumbles", "field goals": "Field goals",
+         "field goal %": "FG %", "field goal": "Long FG"}
 
 
 def short_label(record: str) -> str:
-    m = re.match(r"(?:Best|Most) (.+?)(?: career| season|, career|, season)$", record)
+    m = re.match(r"(?:Best|Most|Longest) (.+?)(?: career| season|, career|, season)$", record)
     return SHORT.get(m.group(1), m.group(1)) if m else record
 
 

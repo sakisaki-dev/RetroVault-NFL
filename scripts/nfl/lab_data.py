@@ -36,6 +36,13 @@ TWO = ["passing_2pt_conversions", "rushing_2pt_conversions", "receiving_2pt_conv
 D = ["def_sacks", "def_qb_hits", "def_pass_defended", "def_interceptions", None, "def_tackles_for_loss", "def_fumbles_forced"]
 
 
+def kick_pts(g, row):
+    """A kicker's fantasy points for one game row: 3 / 4 / 5 a field goal by distance, 1 an extra point, -1 a miss."""
+    m = lambda *bs: sum(g(row, f"fg_made_{b}") for b in bs)
+    miss = sum(g(row, f"fg_missed_{b}") for b in ("0_19", "20_29", "30_39", "40_49", "50_59", "60_")) + max(0, g(row, "pat_att") - g(row, "pat_made"))
+    return 3 * m("0_19", "20_29", "30_39") + 4 * m("40_49") + 5 * m("50_59", "60_") + g(row, "pat_made") - miss
+
+
 def r2(x):
     return round(x, 2) if x != int(x) else int(x)
 
@@ -46,6 +53,8 @@ def abbr(t):
 
 def main():
     roster = {f"{p['pos']}:{p['name']}": p for p in json.loads((ROOT / "data/nfl/roster.json").read_text())["players"]}
+    # kickers (owner, 2026-11-25) are not in the save's roster: their club is players.json's, their salary a rule below
+    kick_club = {f"K:{p['n']}": p["team"] for p in json.loads((ROOT / "data/y80/players.json").read_text()) if p["pos"] == "K"}
     out_p = {}
     allowed = defaultdict(lambda: defaultdict(list))  # (opp team) -> pos -> [(week, ppr pts)]
     for f in sorted((ROOT / "data/nfl/games").glob("*.json")):
@@ -61,6 +70,18 @@ def main():
                 if row[0] == SEASON and row[2] == "REG":
                     byw = allowed[abbr(row[4])][pos]
                     byw.append((row[1], key, g(row, "fantasy_points_ppr")))
+        if pos == "K":
+            for row in games:
+                if row[0] == SEASON and row[2] == "REG":
+                    allowed[abbr(row[4])]["K"].append((row[1], key, kick_pts(g, row)))
+            club = kick_club.get(key)
+            if not club or club == "FA" or not games or games[-1][0] < SEASON - 1:
+                continue
+            recent = [r for r in games if r[0] >= SEASON - 1][-LAST:]
+            ws = [DECAY ** k for k in range(len(recent) - 1, -1, -1)]
+            kp = sum(w * kick_pts(g, r) for w, r in zip(ws, recent)) / sum(ws)
+            out_p[key] = {"t": abbr(ABBR.get(club, club)), "s": 0, "n": len(recent), "f": [0] * 10, "r": [0, 0, 0], "kp": r2(round(kp, 2))}
+            continue
         ro = roster.get(key)
         if not ro or ro["club"] == "FA" or not games or games[-1][0] < SEASON - 1:
             continue
@@ -122,7 +143,11 @@ def main():
             for w, _k, pts in lst:
                 wk[w] += pts
             per.setdefault(t, {})[pos] = [wk[w] for w in sorted(wk)][-8:]
-    for pos in ("QB", "RB", "WR", "TE"):
+    # a kicker's salary (the save has none for him): 2 to 6 by his rank among the kickers' weighted points per game
+    ks = sorted((v["kp"], k) for k, v in out_p.items() if k.startswith("K:"))
+    for i, (_, k) in enumerate(ks):
+        out_p[k]["s"] = 2 + round(4 * i / max(1, len(ks) - 1))
+    for pos in ("QB", "RB", "WR", "TE", "K"):
         vals = [sum(per[t][pos]) / len(per[t][pos]) for t in per if per[t].get(pos)]
         league = sum(vals) / len(vals)
         for t in per:

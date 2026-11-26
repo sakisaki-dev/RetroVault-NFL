@@ -179,7 +179,7 @@ def main():
     mvp_keys = sorted(mvp_pool, key=lambda k: (-szn["ovr"][k], k))[:3]
     mine = [k for k in active if club_of(k) == CLUB and lines[k]["games"] >= max(1, (me["w"] + me["l"] + me["t"]) // 2)]
     mine.sort(key=lambda k: (-szn["ovr"][k], k))
-    best_key = mine[0] if mine else None
+    best_key = next((k for k in mine if not k.startswith("K:")), None)   # the club's best player: a kicker is on the card (club_keys) but never the headline
 
     starters = []
     for grp in ("o", "d"):

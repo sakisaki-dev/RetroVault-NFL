@@ -43,7 +43,9 @@ def main():
         if not key:
             continue
         rank = int(r["pos_rank"])
-        if r["pos_grp"] == "3WR 1TE" and r["pos_abb"] in OFF:
+        if r["pos_grp"] == "Special Teams" and r["pos_abb"] == "PK":   # the kicker (owner, 2026-11-25; punters stay out)
+            c.setdefault("st", {}).setdefault("K", {})[rank] = key
+        elif r["pos_grp"] == "3WR 1TE" and r["pos_abb"] in OFF:
             c["off"].setdefault(r["pos_abb"], {})[rank] = key
         elif r["pos_grp"] in DEF and r["pos_abb"] in DEF[r["pos_grp"]][1]:
             c["def"].setdefault(r["pos_grp"], {}).setdefault(r["pos_abb"], {})[rank] = key
@@ -60,7 +62,7 @@ def main():
         _, name, grp, slots = best
         d = c["def"].get(grp, {})
         o = {s: [v for _, v in sorted(c["off"].get(s, {}).items())][: (8 if s == "WR" else DEPTH)] for s in OFF}
-        out[t] = {"base": name, "o": o, "d": {s: [v for _, v in sorted(d.get(s, {}).items())][:DEPTH] for s in slots}}
+        out[t] = {"base": name, "o": o, "st": {"K": [v for _, v in sorted(c.get("st", {}).get("K", {}).items())][:DEPTH]}, "d": {s: [v for _, v in sorted(d.get(s, {}).items())][:DEPTH] for s in slots}}
     dest = ROOT / "public/data/nfl/depth_charts.json"
     dest.write_text(json.dumps({"season": SEASON, "at": at[:10], "clubs": out}, ensure_ascii=False, separators=(",", ":")) + "\n")
     print(f"depth charts: {len(out)} clubs, snapshot {at}, {dest.stat().st_size // 1024} KB")

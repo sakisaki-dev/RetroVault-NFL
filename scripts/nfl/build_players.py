@@ -40,7 +40,7 @@ INCLUDE_PRE1999_HOF = os.environ.get("RV_INCLUDE_PRE1999_HOF", "1") != "0"  # ow
 # nflverse position -> Retro Vault position group (the save's, as scripts/nfl/match.py)
 RV_POS = {"QB": "QB", "RB": "RB", "FB": "RB", "HB": "RB", "WR": "WR", "TE": "TE", "OL": "OL", "T": "OL", "G": "OL", "C": "OL",
           "OT": "OL", "OG": "OL", "DL": "DL", "DE": "DL", "DT": "DL", "NT": "DL", "LB": "LB", "ILB": "LB", "OLB": "LB",
-          "MLB": "LB", "DB": "DB", "CB": "DB", "S": "DB", "SS": "DB", "FS": "DB"}
+          "MLB": "LB", "DB": "DB", "CB": "DB", "S": "DB", "SS": "DB", "FS": "DB", "K": "K"}
 
 ABBR = {"BUF": "Bills", "MIA": "Dolphins", "NE": "Patriots", "NYJ": "Jets", "DEN": "Broncos", "KC": "Chiefs",
         "LAC": "Chargers", "SD": "Chargers", "LV": "Raiders", "OAK": "Raiders", "BAL": "Ravens", "CIN": "Bengals",
@@ -57,6 +57,25 @@ def n(r, k):
         return 0.0
 
 
+def cv(r, col):
+    """One column, or the sum of several (a tuple): the kicker's distance bands."""
+    return sum(n(r, c) for c in col) if isinstance(col, tuple) else n(r, col)
+
+
+# Kickers (owner, 2026-11-25: "just kickers"): field goals made / attempted overall and by distance (0-39, 40-49, 50+), extra
+# points, the longest. nflverse has no kickoff columns, so touchbacks are skipped. Attempts by band = made + missed there.
+KB39 = ("0_19", "20_29", "30_39")
+KB49 = ("40_49",)
+KB50 = ("50_59", "60_")
+K_FIELDS = {"fgm": "fg_made", "fga": "fg_att",
+            "fgm39": tuple(f"fg_made_{b}" for b in KB39), "fga39": tuple(f"fg_{m}_{b}" for b in KB39 for m in ("made", "missed")),
+            "fgm49": tuple(f"fg_made_{b}" for b in KB49), "fga49": tuple(f"fg_{m}_{b}" for b in KB49 for m in ("made", "missed")),
+            "fgm50": tuple(f"fg_made_{b}" for b in KB50), "fga50": tuple(f"fg_{m}_{b}" for b in KB50 for m in ("made", "missed")),
+            "xpm": "pat_made", "xpa": "pat_att"}
+K_PARTIAL_MIN_GAMES = 64   # a kicker who debuted before 1999 needs this many regular-season games in the data to join (partial career)
+K_LOG = ["fg_made", "fg_att", "fg_long", "pat_made", "pat_att"] + [f"fg_{m}_{b}" for b in KB39 + KB49 + KB50 for m in ("made", "missed")]
+
+
 FIELDS = {
     "QB": {"att": "attempts", "cmp": "completions", "yds": "passing_yards", "td": "passing_tds",
            "int": "passing_interceptions", "sck": "sacks_suffered", "ratt": "carries", "ryds": "rushing_yards",
@@ -69,6 +88,7 @@ FIELDS = {
     "LB": {"tkl": None, "int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},
     "DB": {"tkl": None, "int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},
     "DL": {"tkl": None, "int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},
+    "K": K_FIELDS,
 }
 # the game log keeps every column a page shows (game-by-game, fantasy, advanced) and nothing else
 LOG = ["completions", "attempts", "passing_yards", "passing_tds", "passing_interceptions", "sacks_suffered",
@@ -77,7 +97,8 @@ LOG = ["completions", "attempts", "passing_yards", "passing_tds", "passing_inter
        "target_share", "air_yards_share", "wopr", "fumbles_lost_total", "def_tackles_solo", "def_tackle_assists",
        "def_tackles_for_loss", "def_sacks", "def_qb_hits", "def_interceptions", "def_pass_defended",
        "def_fumbles_forced", "def_tds", "passing_2pt_conversions", "rushing_2pt_conversions",
-       "receiving_2pt_conversions", "special_teams_tds", "fantasy_points", "fantasy_points_ppr"]
+       "receiving_2pt_conversions", "special_teams_tds", "fantasy_points", "fantasy_points_ppr",
+       "punt_returns", "punt_return_yards", "kickoff_returns", "kickoff_return_yards"]
 
 
 def norm(s: str) -> str:
@@ -171,7 +192,9 @@ def legend_rows(roster, awards):
         if early:
             # debuted before 1999: a partial (1999-on) career. Only with INCLUDE_PRE1999_HOF, and only real Hall of Famers.
             # a real Hall of Famer, or someone with a Wikipedia award in 1999 or later
-            if not (INCLUDE_PRE1999_HOF and (norm(r["display_name"]) in hof_names or awarded) and (rk or 0) < 1999 and (games.get(pid) or awarded)):
+            # kickers (owner, 2026-11-25) with 4+ seasons of games in the data join the same way (Vinatieri debuted in 1996)
+            long_k = pos == "K" and len(games.get(pid, ())) >= K_PARTIAL_MIN_GAMES
+            if not (INCLUDE_PRE1999_HOF and (norm(r["display_name"]) in hof_names or awarded or long_k) and (rk or 0) < 1999 and (games.get(pid) or awarded)):
                 continue
             partial = True
         debut = rk if rk and rk >= 1999 else fy
@@ -294,11 +317,20 @@ def main():
     logs = defaultdict(list)          # gsis -> game rows
     played = defaultdict(set)         # gsis -> {(season, game_id)}
     team_games = defaultdict(lambda: defaultdict(int))  # gsis -> (season, club) -> games
+    kick_rates = {}                   # season -> {"fg": {band: [made, attempts]}, "xp": [made, attempts]}, every kicker
     starts = defaultdict(int)         # OL starts
     starts_y = defaultdict(lambda: defaultdict(int))  # OL starts by season
     for y in range(FIRST, LAST + 1):
         for r in rows(f"stats_player_week_{y}.csv.gz"):
             pid = r["player_id"]
+            if r["position"] == "K" and r["season_type"] == "REG":   # the league's field goal and extra point rates by season: kicker_rating's baseline
+                kr = kick_rates.setdefault(y, {"fg": {}, "xp": [0, 0]})
+                for b in KB39 + KB49 + KB50:
+                    cell = kr["fg"].setdefault(b, [0, 0])
+                    cell[0] += int(n(r, f"fg_made_{b}"))
+                    cell[1] += int(n(r, f"fg_made_{b}") + n(r, f"fg_missed_{b}"))
+                kr["xp"][0] += int(n(r, "pat_made"))
+                kr["xp"][1] += int(n(r, "pat_att"))
             if pid not in want:
                 continue
             logs[pid].append(r)
@@ -374,9 +406,11 @@ def main():
             if key == "tkl":
                 rec[key] = int(sum(n(r, "def_tackles_solo") + n(r, "def_tackle_assists") for r in reg))
             else:
-                rec[key] = int(round(sum(n(r, col) for r in reg)))
+                rec[key] = int(round(sum(cv(r, col) for r in reg)))
         if pos in ("WR", "TE"):
             rec["lng"] = None  # not in the weekly data
+        if pos == "K":
+            rec["lng"] = int(max((n(r, "fg_long") for r in reg), default=0)) or None  # his longest field goal
         if pos == "OL":
             rec["blk"] = starts.get(pid, 0)
         # clubs by season (games played for each), rings, awards
@@ -466,7 +500,9 @@ def main():
                     if key == "tkl":
                         cum[key] += n(r, "def_tackles_solo") + n(r, "def_tackle_assists")
                     else:
-                        cum[key] += n(r, col)
+                        cum[key] += cv(r, col)
+                if pos == "K":
+                    cum["lng"] = max(cum["lng"], n(r, "fg_long"))
             cum["g"] += len(by_y.get(y, []))
             if pos == "OL":
                 cum["blk"] += starts_y[pid][y] if pid else 0
@@ -475,7 +511,7 @@ def main():
             club_y = max(by_season[y].items(), key=lambda x: x[1])[0]
             line[y] = {"n": p["display"], "pos": pos, "team": club_y, "g": int(cum["g"]),
                        **{k: int(round(cum[k])) for k in FIELDS[pos]},
-                       **({"lng": None} if pos in ("WR", "TE") else {}),
+                       **({"lng": None} if pos in ("WR", "TE") else {"lng": int(cum["lng"]) or None} if pos == "K" else {}),
                        "rings": sum(1 for ry in rings if ry <= y), "mvp": won["mvp"], "opoy": won["opoy"],
                        "dpoy": won["dpoy"], "sbmvp": won["sbmvp"], "roty": won["oroy"] + won["droy"]}
         ends[p["key"]] = line
@@ -503,16 +539,18 @@ def main():
                                 if ce else "Games played for each club, season by season (nflverse)."}
         careers[p["key"]] = {str(y): dict(c) for y, c in sorted(by_season.items())}
         if L:
+            cols = LOG + (K_LOG if pos == "K" else [])
             (NFL / "games" / (re.sub(r"[^a-z0-9]+", "-", p["key"].lower()).strip("-") + ".json")).write_text(json.dumps(
                 {"key": p["key"], "games": [[int(r["season"]), int(r["week"]), r["season_type"], r["team"],
-                                              r.get("opponent_team", ""), r["game_id"]] + [round(n(r, c), 3) for c in LOG]
-                                             for r in L], "cols": ["season", "week", "type", "team", "opp", "game"] + LOG},
+                                              r.get("opponent_team", ""), r["game_id"]] + [round(n(r, c), 3) for c in cols]
+                                             for r in L], "cols": ["season", "week", "type", "team", "opp", "game"] + cols},
                 separators=(",", ":")))
 
     apply_nicknames(players)
     Y80.mkdir(parents=True, exist_ok=True)
     (Y80 / "players.json").write_text(json.dumps(players, indent=1) + "\n")
     (Y80 / "stints.json").write_text(json.dumps(stints, indent=1) + "\n")
+    (NFL / "kick_rates.json").write_text(json.dumps({str(y): v for y, v in sorted(kick_rates.items())}, separators=(",", ":"), sort_keys=True) + "\n")
     (NFL / "season_ends.json").write_text(json.dumps(ends, separators=(",", ":")))
     (NFL / "careers.json").write_text(json.dumps(careers, separators=(",", ":")) + "\n")
     print(f"current clubs from the {LAST} week {latest_week} roster: {len(moved)} differ from the save "

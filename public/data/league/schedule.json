@@ -13464,6 +13464,11 @@
      "team": "Colts",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Andrew Luck",
+     "team": "Colts",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Julian Edelman",
      "team": "Patriots",
@@ -17096,6 +17101,11 @@
      "player": "Nick Bosa",
      "team": "49ers",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Ryan Tannehill",
+     "team": "Titans",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Patrick Mahomes",
@@ -20775,6 +20785,11 @@
      "player": "Chase Young",
      "team": "Commanders",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Alex Smith",
+     "team": "Commanders",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Tom Brady",
@@ -24579,6 +24594,11 @@
      "player": "Micah Parsons",
      "team": "Cowboys",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Joe Burrow",
+     "team": "Bengals",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Cooper Kupp",
@@ -28393,6 +28413,11 @@
      "team": "Jets",
      "position": "CB"
     },
+    "cpoy": {
+     "player": "Geno Smith",
+     "team": "Seahawks",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Patrick Mahomes",
      "team": "Chiefs",
@@ -32185,6 +32210,11 @@
      "player": "Will Anderson Jr.",
      "team": "Texans",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Joe Flacco",
+     "team": "Browns",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Patrick Mahomes",
@@ -35991,6 +36021,11 @@
      "player": "Jared Verse",
      "team": "Rams",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Joe Burrow",
+     "team": "Bengals",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Jalen Hurts",
@@ -39808,6 +39843,11 @@
      "player": "Carson Schwesinger",
      "team": "Browns",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Christian McCaffrey",
+     "team": "49ers",
+     "position": "RB"
     },
     "sbmvp": {
      "player": "Kenneth Walker III",

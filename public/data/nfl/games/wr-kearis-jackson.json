@@ -1,1 +1,1 @@
-{"key":"WR:Kearis Jackson","cols":["season","week","type","team","opp","game","date","home","pf","pa"],"games":[[2023,1,"REG","TEN","NO","2023_01_TEN_NO","2023-09-10",0,15,16],[2023,2,"REG","TEN","LAC","2023_02_LAC_TEN","2023-09-17",1,27,24]]}
+{"key":"WR:Kearis Jackson","cols":["season","week","type","team","opp","game","punt_returns","punt_return_yards","date","home","pf","pa"],"games":[[2023,1,"REG","TEN","NO","2023_01_TEN_NO",4,37,"2023-09-10",0,15,16],[2023,2,"REG","TEN","LAC","2023_02_LAC_TEN",2,11,"2023-09-17",1,27,24]]}

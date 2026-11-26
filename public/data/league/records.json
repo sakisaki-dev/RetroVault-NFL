@@ -414,6 +414,129 @@
    "broken": false
   },
   {
+   "record": "Most field goals, career",
+   "short": "Field goals",
+   "club": {
+    "mark": "",
+    "value": null,
+    "holder": "",
+    "year": ""
+   },
+   "scope": "career",
+   "league": {
+    "value": 516,
+    "mark": "516",
+    "top": [
+     {
+      "value": 516,
+      "mark": "516",
+      "player": "Adam Vinatieri",
+      "pos": "K",
+      "team": "Indianapolis Colts"
+     },
+     {
+      "value": 447,
+      "mark": "447",
+      "player": "Robbie Gould",
+      "pos": "K",
+      "team": "Chicago Bears"
+     },
+     {
+      "value": 444,
+      "mark": "444",
+      "player": "Nick Folk",
+      "pos": "K",
+      "team": "New York Jets"
+     }
+    ],
+    "basis": "career cards",
+    "clubHolds": false
+   },
+   "broken": false
+  },
+  {
+   "record": "Longest field goal, career",
+   "short": "Long FG",
+   "club": {
+    "mark": "",
+    "value": null,
+    "holder": "",
+    "year": ""
+   },
+   "scope": "career",
+   "league": {
+    "value": 68,
+    "mark": "68 yds",
+    "top": [
+     {
+      "value": 68,
+      "mark": "68 yds",
+      "player": "Cam Little",
+      "pos": "K",
+      "team": "Jacksonville Jaguars"
+     },
+     {
+      "value": 66,
+      "mark": "66 yds",
+      "player": "Justin Tucker",
+      "pos": "K",
+      "team": "Kansas City Chiefs"
+     },
+     {
+      "value": 65,
+      "mark": "65 yds",
+      "player": "Brandon Aubrey",
+      "pos": "K",
+      "team": "Dallas Cowboys"
+     }
+    ],
+    "basis": "career cards",
+    "clubHolds": false
+   },
+   "broken": false
+  },
+  {
+   "record": "Best field goal %, career",
+   "short": "FG %",
+   "club": {
+    "mark": "",
+    "value": null,
+    "holder": "",
+    "year": ""
+   },
+   "scope": "career",
+   "league": {
+    "value": 93.1,
+    "mark": "93.1 %",
+    "top": [
+     {
+      "value": 93.1,
+      "mark": "93.1 %",
+      "player": "Cameron Dicker",
+      "pos": "K",
+      "team": "Los Angeles Chargers"
+     },
+     {
+      "value": 89.1,
+      "mark": "89.1 %",
+      "player": "Justin Tucker",
+      "pos": "K",
+      "team": "Kansas City Chiefs"
+     },
+     {
+      "value": 88.6,
+      "mark": "88.6 %",
+      "player": "Eddy Pineiro",
+      "pos": "K",
+      "team": "San Francisco 49ers"
+     }
+    ],
+    "basis": "career cards",
+    "clubHolds": false
+   },
+   "broken": false
+  },
+  {
    "record": "Best passing season",
    "short": "Pass yds",
    "club": {
@@ -846,6 +969,94 @@
       "pos": "DL",
       "team": "Colts",
       "season": "2002"
+     }
+    ],
+    "basis": "seasons 1999-2026",
+    "clubHolds": false
+   },
+   "broken": false
+  },
+  {
+   "record": "Most field goals, season",
+   "short": "Field goals",
+   "club": {
+    "mark": "",
+    "value": null,
+    "holder": "",
+    "year": ""
+   },
+   "scope": "season",
+   "league": {
+    "value": 44,
+    "mark": "44",
+    "top": [
+     {
+      "value": 44,
+      "mark": "44",
+      "player": "David Akers",
+      "pos": "K",
+      "team": "49ers",
+      "season": "2011"
+     },
+     {
+      "value": 44,
+      "mark": "44",
+      "player": "Ka'imi Fairbairn",
+      "pos": "K",
+      "team": "Texans",
+      "season": "2025"
+     },
+     {
+      "value": 41,
+      "mark": "41",
+      "player": "Chris Boswell",
+      "pos": "K",
+      "team": "Steelers",
+      "season": "2024"
+     }
+    ],
+    "basis": "seasons 1999-2026",
+    "clubHolds": false
+   },
+   "broken": false
+  },
+  {
+   "record": "Best field goal %, season",
+   "short": "FG %",
+   "club": {
+    "mark": "",
+    "value": null,
+    "holder": "",
+    "year": ""
+   },
+   "scope": "season",
+   "league": {
+    "value": 100,
+    "mark": "100 %",
+    "top": [
+     {
+      "value": 100,
+      "mark": "100 %",
+      "player": "Mike Vanderjagt",
+      "pos": "K",
+      "team": "Colts",
+      "season": "2003"
+     },
+     {
+      "value": 97.4,
+      "mark": "97.4 %",
+      "player": "Justin Tucker",
+      "pos": "K",
+      "team": "Ravens",
+      "season": "2016"
+     },
+     {
+      "value": 97.1,
+      "mark": "97.1 %",
+      "player": "Josh Lambo",
+      "pos": "K",
+      "team": "Jaguars",
+      "season": "2019"
      }
     ],
     "basis": "seasons 1999-2026",

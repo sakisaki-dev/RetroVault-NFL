@@ -179,6 +179,20 @@ if wd:
         errors.append("nfl/widget.json: the club's record does not match its played games")
     if len(wd["mvp"]) < 3 or not wd.get("best"):
         warns.append("nfl/widget.json has no MVP race or club best player")
+# kickers (owner, 2026-11-25): consistent lines, a rating for every qualified one, the league baseline file
+import gzip as _gz  # noqa: E402
+_ps = json.loads((ROOT / "data/y80/players.json").read_text()) if (ROOT / "data/y80/players.json").exists() else []
+_cr = load("nfl/career_rating.json") or {"p": {}}
+_ks = [p for p in _ps if p["pos"] == "K"]
+for p in _ks:
+    if (p.get("fgm") or 0) > (p.get("fga") or 0) or (p.get("xpm") or 0) > (p.get("xpa") or 0):
+        errors.append(f"K:{p['n']}: made exceeds attempted")
+    if (p.get("fgm39") or 0) + (p.get("fgm49") or 0) + (p.get("fgm50") or 0) != (p.get("fgm") or 0):
+        errors.append(f"K:{p['n']}: field goals by distance do not add up to the total")
+    if (p.get("fga") or 0) >= 100 and f"K:{p['n']}" not in _cr["p"]:
+        errors.append(f"K:{p['n']}: qualified kicker has no career rating")
+if _ks and not (ROOT / "data/nfl/kick_rates.json").exists():
+    errors.append("data/nfl/kick_rates.json (the kickers' league baseline) is missing")
 pn = load("nfl/pnews.json")
 if pn:
     if any(len(pn["vs"].get(pos, {})) != pn["teams"] for pos in ("QB", "RB", "WR", "TE")):

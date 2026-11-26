@@ -3,7 +3,7 @@
 
 Source: nflverse stats_player_week_<latest>.csv.gz (REG), snap_counts_<latest>.csv.gz, games.csv.gz and players.csv.gz (gsis <-> pfr ids),
 with the key mapping of data/y80/players.json (nfl.gsis). Everything is a sum, a ratio, a rank or a percentile of real weekly lines.
-Nothing is imputed: a missing week is a missing week (bye or out), never a zero. Scoring is nflverse's fantasy_points_ppr (PPR).
+Nothing is imputed: a missing week is a missing week (bye or out), never a zero. Scoring is nflverse's fantasy_points_ppr (PPR); a kicker's week is scored 3 / 4 / 5 a field goal by distance, 1 an extra point, -1 a miss.
 
 File: {season, week (last week with scores), n: {club: {bye, nx: [[week, opp, home, date] | [week, null]]}}, d: {defence: {pos: [allowed per game, rank, games]}},
        p: {"QB:Josh Allen": record}}.
@@ -37,8 +37,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / "data" / "nfl-cache"
 OUT = ROOT / "public" / "data" / "nfl" / "fantasy.json"
-POS = ("QB", "RB", "WR", "TE")
-START_N = {"QB": 12, "TE": 12, "RB": 24, "WR": 24}
+POS = ("QB", "RB", "WR", "TE", "K")
+START_N = {"QB": 12, "TE": 12, "RB": 24, "WR": 24, "K": 12}
+# Kickers (owner, 2026-11-25): nflverse scores none, so a kicker's week is scored here: a field goal 3 / 4 / 5 by distance
+# (0-39, 40-49, 50+), an extra point 1, each miss -1 (scripts/nfl/this_season.py kick_points). His projection is his own
+# last-3 / season average like every position (nothing imputed).
+import sys  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from this_season import kick_points  # noqa: E402
+
+
+def week_ppr(pos, r):
+    return kick_points(r) if pos == "K" else f(r["fantasy_points_ppr"])
 
 
 def f(x):
@@ -98,7 +108,7 @@ def main():
             team_wk[(r["team"], wk)][k] += f(r[k])
         pos = "RB" if r["position"] == "FB" else r["position"]
         if pos in POS:
-            ppr = f(r["fantasy_points_ppr"])
+            ppr = week_ppr(pos, r)
             pool[(wk, pos)].append(ppr)
             allowed[(r["opponent_team"], pos)] += ppr
             lg = lgsum[pos]
@@ -121,7 +131,7 @@ def main():
 
     lines = defaultdict(dict)  # gsis -> week -> dict
     for g, wk, team, opp, pos, r in rows:
-        lines[g][wk] = {"team": team, "opp": opp, "ppr": f(r["fantasy_points_ppr"]), "car": f(r["carries"]), "tgt": f(r["targets"]),
+        lines[g][wk] = {"team": team, "opp": opp, "ppr": week_ppr(pos, r), "car": f(r["carries"]), "tgt": f(r["targets"]),
                         "ay": f(r["receiving_air_yards"]), "att": f(r["attempts"]), "rec": f(r["receptions"]),
                         "td": 4 * f(r["passing_tds"]) + 6 * (f(r["rushing_tds"]) + f(r["receiving_tds"]))}
     for g, sw in snaps.items():

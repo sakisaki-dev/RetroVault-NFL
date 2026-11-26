@@ -4,6 +4,15 @@
  "edition": "nfl",
  "members": [
   {
+   "key": "K:Adam Vinatieri",
+   "name": "Adam Vinatieri",
+   "pos": "K",
+   "class": "Class of 2026",
+   "classSeason": "2026",
+   "real": true,
+   "frozenSeason": "2019"
+  },
+  {
    "key": "QB:Drew Brees",
    "name": "Drew Brees",
    "pos": "QB",
@@ -515,6 +524,15 @@
    "classSeason": "2017",
    "real": true,
    "frozenSeason": "2011"
+  },
+  {
+   "key": "K:Morten Andersen",
+   "name": "Morten Andersen",
+   "pos": "K",
+   "class": "Class of 2017",
+   "classSeason": "2017",
+   "real": true,
+   "frozenSeason": "2007"
   },
   {
    "key": "RB:Terrell Davis",
@@ -1697,6 +1715,7 @@
     "Kenny Easley",
     "Kurt Warner",
     "LaDainian Tomlinson",
+    "Morten Andersen",
     "Terrell Davis"
    ]
   },
@@ -1801,6 +1820,7 @@
    "season": "2026",
    "label": "Class of 2026",
    "members": [
+    "Adam Vinatieri",
     "Drew Brees",
     "Larry Fitzgerald",
     "Luke Kuechly",
@@ -1818,7 +1838,7 @@
    {
     "name": "Jerry Rice",
     "pos": "WR",
-    "careerLegacy": 8955,
+    "careerLegacy": 8145,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2004"
@@ -1826,7 +1846,7 @@
    {
     "name": "Rickey Jackson",
     "pos": "LB",
-    "careerLegacy": 8710,
+    "careerLegacy": 7989,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1995"
@@ -1834,7 +1854,7 @@
    {
     "name": "Ronnie Lott",
     "pos": "DB",
-    "careerLegacy": 8618,
+    "careerLegacy": 7964,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1995"
@@ -1842,7 +1862,7 @@
    {
     "name": "Joe Montana",
     "pos": "QB",
-    "careerLegacy": 8202,
+    "careerLegacy": 7675,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1994"
@@ -1850,7 +1870,7 @@
    {
     "name": "Steve Young",
     "pos": "QB",
-    "careerLegacy": 8114,
+    "careerLegacy": 7331,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -1858,7 +1878,7 @@
    {
     "name": "Roger Craig",
     "pos": "RB",
-    "careerLegacy": 6244,
+    "careerLegacy": 5788,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -1866,31 +1886,31 @@
    {
     "name": "Terrell Owens",
     "pos": "WR",
-    "careerLegacy": 6132,
+    "careerLegacy": 5618,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2010"
    },
    {
-    "name": "Bryant Young",
-    "pos": "DL",
-    "careerLegacy": 5326,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2007"
-   },
-   {
     "name": "Fred Dean",
     "pos": "DL",
-    "careerLegacy": 5274,
+    "careerLegacy": 4871,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
    },
    {
+    "name": "Bryant Young",
+    "pos": "DL",
+    "careerLegacy": 4822,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2007"
+   },
+   {
     "name": "Patrick Willis",
     "pos": "LB",
-    "careerLegacy": 2541,
+    "careerLegacy": 2341,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2014"
@@ -1900,7 +1920,7 @@
    {
     "name": "Walter Payton",
     "pos": "RB",
-    "careerLegacy": 9121,
+    "careerLegacy": 8385,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1987"
@@ -1908,7 +1928,7 @@
    {
     "name": "Richard Dent",
     "pos": "DL",
-    "careerLegacy": 6744,
+    "careerLegacy": 6232,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1997"
@@ -1916,7 +1936,7 @@
    {
     "name": "Jim Covert",
     "pos": "OL",
-    "careerLegacy": 6603,
+    "careerLegacy": 6051,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1990"
@@ -1924,7 +1944,7 @@
    {
     "name": "Steve McMichael",
     "pos": "DL",
-    "careerLegacy": 5510,
+    "careerLegacy": 5078,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1994"
@@ -1932,7 +1952,7 @@
    {
     "name": "Mike Singletary",
     "pos": "LB",
-    "careerLegacy": 5045,
+    "careerLegacy": 4733,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1992"
@@ -1940,7 +1960,7 @@
    {
     "name": "Brian Urlacher",
     "pos": "LB",
-    "careerLegacy": 4501,
+    "careerLegacy": 4179,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -1948,7 +1968,7 @@
    {
     "name": "Dan Hampton",
     "pos": "DL",
-    "careerLegacy": 3454,
+    "careerLegacy": 3197,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1990"
@@ -1956,7 +1976,7 @@
    {
     "name": "Devin Hester",
     "pos": "WR",
-    "careerLegacy": 1580,
+    "careerLegacy": 1475,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2016"
@@ -1966,7 +1986,7 @@
    {
     "name": "Anthony Muñoz",
     "pos": "OL",
-    "careerLegacy": 7628,
+    "careerLegacy": 6975,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -1976,7 +1996,7 @@
    {
     "name": "Bruce Smith",
     "pos": "DL",
-    "careerLegacy": 9518,
+    "careerLegacy": 8596,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2003"
@@ -1984,7 +2004,7 @@
    {
     "name": "Joe DeLamielleure",
     "pos": "OL",
-    "careerLegacy": 7492,
+    "careerLegacy": 6851,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
@@ -1992,7 +2012,7 @@
    {
     "name": "Thurman Thomas",
     "pos": "RB",
-    "careerLegacy": 6207,
+    "careerLegacy": 5541,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -2000,7 +2020,7 @@
    {
     "name": "O. J. Simpson",
     "pos": "RB",
-    "careerLegacy": 5714,
+    "careerLegacy": 5253,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1979"
@@ -2008,7 +2028,7 @@
    {
     "name": "Jim Kelly",
     "pos": "QB",
-    "careerLegacy": 5332,
+    "careerLegacy": 4881,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1996"
@@ -2016,7 +2036,7 @@
    {
     "name": "Andre Reed",
     "pos": "WR",
-    "careerLegacy": 4909,
+    "careerLegacy": 4374,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -2026,7 +2046,7 @@
    {
     "name": "Shannon Sharpe",
     "pos": "TE",
-    "careerLegacy": 9085,
+    "careerLegacy": 8169,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2003"
@@ -2034,7 +2054,7 @@
    {
     "name": "Gary Zimmerman",
     "pos": "OL",
-    "careerLegacy": 7955,
+    "careerLegacy": 7294,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1997"
@@ -2042,7 +2062,7 @@
    {
     "name": "John Elway",
     "pos": "QB",
-    "careerLegacy": 6935,
+    "careerLegacy": 6429,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1998"
@@ -2050,7 +2070,7 @@
    {
     "name": "DeMarcus Ware",
     "pos": "LB",
-    "careerLegacy": 6283,
+    "careerLegacy": 5811,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2016"
@@ -2058,7 +2078,7 @@
    {
     "name": "Randy Gradishar",
     "pos": "LB",
-    "careerLegacy": 5726,
+    "careerLegacy": 5280,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1983"
@@ -2066,7 +2086,7 @@
    {
     "name": "Champ Bailey",
     "pos": "DB",
-    "careerLegacy": 5261,
+    "careerLegacy": 4839,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2013"
@@ -2074,7 +2094,7 @@
    {
     "name": "Steve Atwater",
     "pos": "DB",
-    "careerLegacy": 4638,
+    "careerLegacy": 4168,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -2082,7 +2102,7 @@
    {
     "name": "Terrell Davis",
     "pos": "RB",
-    "careerLegacy": 4234,
+    "careerLegacy": 3878,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2001"
@@ -2092,7 +2112,7 @@
    {
     "name": "Ozzie Newsome",
     "pos": "TE",
-    "careerLegacy": 6438,
+    "careerLegacy": 5937,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1990"
@@ -2102,7 +2122,7 @@
    {
     "name": "Warren Sapp",
     "pos": "DL",
-    "careerLegacy": 6025,
+    "careerLegacy": 5496,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2007"
@@ -2110,7 +2130,7 @@
    {
     "name": "Ronde Barber",
     "pos": "DB",
-    "careerLegacy": 5821,
+    "careerLegacy": 5373,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -2118,7 +2138,7 @@
    {
     "name": "Derrick Brooks",
     "pos": "LB",
-    "careerLegacy": 5406,
+    "careerLegacy": 4975,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2008"
@@ -2126,7 +2146,7 @@
    {
     "name": "John Lynch",
     "pos": "DB",
-    "careerLegacy": 5164,
+    "careerLegacy": 4682,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2007"
@@ -2134,7 +2154,7 @@
    {
     "name": "Lee Roy Selmon",
     "pos": "DL",
-    "careerLegacy": 4998,
+    "careerLegacy": 4617,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -2144,7 +2164,7 @@
    {
     "name": "Dan Dierdorf",
     "pos": "OL",
-    "careerLegacy": 6969,
+    "careerLegacy": 6371,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1983"
@@ -2152,7 +2172,7 @@
    {
     "name": "Larry Fitzgerald",
     "pos": "WR",
-    "careerLegacy": 6770,
+    "careerLegacy": 6267,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2020"
@@ -2160,7 +2180,7 @@
    {
     "name": "Aeneas Williams",
     "pos": "DB",
-    "careerLegacy": 6432,
+    "careerLegacy": 5759,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2004"
@@ -2170,7 +2190,7 @@
    {
     "name": "LaDainian Tomlinson",
     "pos": "RB",
-    "careerLegacy": 7799,
+    "careerLegacy": 7164,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2011"
@@ -2178,7 +2198,7 @@
    {
     "name": "Antonio Gates",
     "pos": "TE",
-    "careerLegacy": 6425,
+    "careerLegacy": 5956,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2018"
@@ -2186,7 +2206,7 @@
    {
     "name": "Junior Seau",
     "pos": "LB",
-    "careerLegacy": 5757,
+    "careerLegacy": 5223,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2194,7 +2214,7 @@
    {
     "name": "Dan Fouts",
     "pos": "QB",
-    "careerLegacy": 5626,
+    "careerLegacy": 5163,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1987"
@@ -2204,7 +2224,7 @@
    {
     "name": "Will Shields",
     "pos": "OL",
-    "careerLegacy": 8219,
+    "careerLegacy": 7520,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2006"
@@ -2212,7 +2232,7 @@
    {
     "name": "Tony Gonzalez",
     "pos": "TE",
-    "careerLegacy": 7195,
+    "careerLegacy": 6614,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2013"
@@ -2220,7 +2240,7 @@
    {
     "name": "Derrick Thomas",
     "pos": "LB",
-    "careerLegacy": 6913,
+    "careerLegacy": 6106,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -2230,7 +2250,7 @@
    {
     "name": "Peyton Manning",
     "pos": "QB",
-    "careerLegacy": 8256,
+    "careerLegacy": 7756,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2015"
@@ -2238,7 +2258,7 @@
    {
     "name": "Marvin Harrison",
     "pos": "WR",
-    "careerLegacy": 6264,
+    "careerLegacy": 5689,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2008"
@@ -2246,7 +2266,7 @@
    {
     "name": "Edgerrin James",
     "pos": "RB",
-    "careerLegacy": 5958,
+    "careerLegacy": 5378,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2254,33 +2274,17 @@
    {
     "name": "Dwight Freeney",
     "pos": "DL",
-    "careerLegacy": 5518,
+    "careerLegacy": 5119,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2017"
-   },
-   {
-    "name": "Reggie Wayne",
-    "pos": "WR",
-    "careerLegacy": 6399,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2014"
-   },
-   {
-    "name": "Robert Mathis",
-    "pos": "LB",
-    "careerLegacy": 6070,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2016"
    }
   ],
   "Commanders": [
    {
     "name": "Russ Grimm",
     "pos": "OL",
-    "careerLegacy": 6874,
+    "careerLegacy": 6368,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1991"
@@ -2288,7 +2292,7 @@
    {
     "name": "John Riggins",
     "pos": "RB",
-    "careerLegacy": 6551,
+    "careerLegacy": 6030,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
@@ -2296,7 +2300,7 @@
    {
     "name": "Art Monk",
     "pos": "WR",
-    "careerLegacy": 6475,
+    "careerLegacy": 5998,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1995"
@@ -2304,7 +2308,7 @@
    {
     "name": "Darrell Green",
     "pos": "DB",
-    "careerLegacy": 6241,
+    "careerLegacy": 5636,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2002"
@@ -2314,7 +2318,7 @@
    {
     "name": "Larry Allen",
     "pos": "OL",
-    "careerLegacy": 8029,
+    "careerLegacy": 7365,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2007"
@@ -2322,7 +2326,7 @@
    {
     "name": "Emmitt Smith",
     "pos": "RB",
-    "careerLegacy": 7396,
+    "careerLegacy": 6739,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2004"
@@ -2330,7 +2334,7 @@
    {
     "name": "Deion Sanders",
     "pos": "DB",
-    "careerLegacy": 7077,
+    "careerLegacy": 6448,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2005"
@@ -2338,23 +2342,15 @@
    {
     "name": "Randy White",
     "pos": "DL",
-    "careerLegacy": 6224,
+    "careerLegacy": 5736,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1988"
    },
    {
-    "name": "Troy Aikman",
-    "pos": "QB",
-    "careerLegacy": 5930,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2000"
-   },
-   {
     "name": "Roger Staubach",
     "pos": "QB",
-    "careerLegacy": 5910,
+    "careerLegacy": 5460,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1979"
@@ -2362,15 +2358,23 @@
    {
     "name": "Tony Dorsett",
     "pos": "RB",
-    "careerLegacy": 5863,
+    "careerLegacy": 5389,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1988"
    },
    {
+    "name": "Troy Aikman",
+    "pos": "QB",
+    "careerLegacy": 5361,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2000"
+   },
+   {
     "name": "Charles Haley",
     "pos": "DL",
-    "careerLegacy": 5651,
+    "careerLegacy": 5152,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -2378,7 +2382,7 @@
    {
     "name": "Michael Irvin",
     "pos": "WR",
-    "careerLegacy": 5458,
+    "careerLegacy": 4915,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -2386,7 +2390,7 @@
    {
     "name": "Chuck Howley",
     "pos": "LB",
-    "careerLegacy": 5182,
+    "careerLegacy": 4791,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1973"
@@ -2394,7 +2398,7 @@
    {
     "name": "Cliff Harris",
     "pos": "DB",
-    "careerLegacy": 4695,
+    "careerLegacy": 4341,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1979"
@@ -2402,7 +2406,7 @@
    {
     "name": "Drew Pearson",
     "pos": "WR",
-    "careerLegacy": 3687,
+    "careerLegacy": 3405,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1983"
@@ -2412,7 +2416,7 @@
    {
     "name": "Jason Taylor",
     "pos": "LB",
-    "careerLegacy": 7258,
+    "careerLegacy": 6696,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2011"
@@ -2420,7 +2424,7 @@
    {
     "name": "Dan Marino",
     "pos": "QB",
-    "careerLegacy": 6970,
+    "careerLegacy": 6212,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -2428,7 +2432,7 @@
    {
     "name": "Jim Langer",
     "pos": "OL",
-    "careerLegacy": 6049,
+    "careerLegacy": 5575,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1981"
@@ -2436,7 +2440,7 @@
    {
     "name": "Dwight Stephenson",
     "pos": "OL",
-    "careerLegacy": 5174,
+    "careerLegacy": 4730,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1988"
@@ -2444,7 +2448,7 @@
    {
     "name": "Larry Csonka",
     "pos": "RB",
-    "careerLegacy": 4720,
+    "careerLegacy": 4379,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1979"
@@ -2452,7 +2456,7 @@
    {
     "name": "Zach Thomas (LB, Cowboys)",
     "pos": "LB",
-    "careerLegacy": 4343,
+    "careerLegacy": 3938,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2008"
@@ -2460,7 +2464,7 @@
    {
     "name": "Jake Scott",
     "pos": "DB",
-    "careerLegacy": 7522,
+    "careerLegacy": 6926,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "1978"
@@ -2470,7 +2474,7 @@
    {
     "name": "Brian Dawkins",
     "pos": "DB",
-    "careerLegacy": 5424,
+    "careerLegacy": 4981,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2011"
@@ -2478,7 +2482,7 @@
    {
     "name": "Eric Allen",
     "pos": "DB",
-    "careerLegacy": 5187,
+    "careerLegacy": 4623,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2001"
@@ -2486,7 +2490,7 @@
    {
     "name": "Harold Carmichael",
     "pos": "WR",
-    "careerLegacy": 4517,
+    "careerLegacy": 4165,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -2494,27 +2498,19 @@
   ],
   "Falcons": [
    {
-    "name": "John Abraham",
-    "pos": "LB",
-    "careerLegacy": 6272,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2014"
-   },
-   {
-    "name": "Patrick Kerney",
-    "pos": "DL",
-    "careerLegacy": 6101,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2009"
+    "name": "Morten Andersen",
+    "pos": "K",
+    "careerLegacy": 3896,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2007"
    }
   ],
   "Giants": [
    {
     "name": "Lawrence Taylor",
     "pos": "LB",
-    "careerLegacy": 10653,
+    "careerLegacy": 9918,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -2522,7 +2518,7 @@
    {
     "name": "Michael Strahan",
     "pos": "DL",
-    "careerLegacy": 8258,
+    "careerLegacy": 7492,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2007"
@@ -2530,25 +2526,17 @@
    {
     "name": "Harry Carson",
     "pos": "LB",
-    "careerLegacy": 1949,
+    "careerLegacy": 1827,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1988"
-   },
-   {
-    "name": "Ottis Anderson",
-    "pos": "RB",
-    "careerLegacy": 6362,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "1992"
    }
   ],
   "Jaguars": [
    {
     "name": "Tony Boselli",
     "pos": "OL",
-    "careerLegacy": 5859,
+    "careerLegacy": 5348,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2002"
@@ -2558,7 +2546,7 @@
    {
     "name": "Kevin Mawae",
     "pos": "OL",
-    "careerLegacy": 8370,
+    "careerLegacy": 7661,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2566,7 +2554,7 @@
    {
     "name": "Curtis Martin",
     "pos": "RB",
-    "careerLegacy": 5303,
+    "careerLegacy": 4758,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2005"
@@ -2574,17 +2562,25 @@
    {
     "name": "Joe Klecko",
     "pos": "DL",
-    "careerLegacy": 4115,
+    "careerLegacy": 3771,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1988"
+   },
+   {
+    "name": "Nick Folk",
+    "pos": "K",
+    "careerLegacy": 7248,
+    "hof": false,
+    "why": "Career Legacy",
+    "frozenSeason": "2026"
    }
   ],
   "Lions": [
    {
     "name": "Barry Sanders",
     "pos": "RB",
-    "careerLegacy": 7131,
+    "careerLegacy": 6556,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1998"
@@ -2592,7 +2588,7 @@
    {
     "name": "Calvin Johnson",
     "pos": "WR",
-    "careerLegacy": 4693,
+    "careerLegacy": 4315,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2015"
@@ -2600,7 +2596,7 @@
    {
     "name": "Al Baker",
     "pos": "DL",
-    "careerLegacy": 6733,
+    "careerLegacy": 6161,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "1990"
@@ -2610,7 +2606,7 @@
    {
     "name": "Charles Woodson",
     "pos": "DB",
-    "careerLegacy": 8575,
+    "careerLegacy": 7947,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2015"
@@ -2618,7 +2614,7 @@
    {
     "name": "Reggie White",
     "pos": "DL",
-    "careerLegacy": 8000,
+    "careerLegacy": 7236,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -2626,7 +2622,7 @@
    {
     "name": "Brett Favre",
     "pos": "QB",
-    "careerLegacy": 6697,
+    "careerLegacy": 6234,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2010"
@@ -2634,7 +2630,7 @@
    {
     "name": "James Lofton",
     "pos": "WR",
-    "careerLegacy": 5605,
+    "careerLegacy": 5143,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -2642,7 +2638,7 @@
    {
     "name": "LeRoy Butler",
     "pos": "DB",
-    "careerLegacy": 4577,
+    "careerLegacy": 4106,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2001"
@@ -2650,7 +2646,7 @@
    {
     "name": "Sterling Sharpe",
     "pos": "WR",
-    "careerLegacy": 3791,
+    "careerLegacy": 3470,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1994"
@@ -2660,7 +2656,7 @@
    {
     "name": "Julius Peppers",
     "pos": "DL",
-    "careerLegacy": 7576,
+    "careerLegacy": 7019,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2018"
@@ -2668,7 +2664,7 @@
    {
     "name": "Luke Kuechly",
     "pos": "LB",
-    "careerLegacy": 3095,
+    "careerLegacy": 2907,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2019"
@@ -2678,15 +2674,23 @@
    {
     "name": "John Hannah",
     "pos": "OL",
-    "careerLegacy": 7700,
+    "careerLegacy": 7041,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
    },
    {
+    "name": "Adam Vinatieri",
+    "pos": "K",
+    "careerLegacy": 7024,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2019"
+   },
+   {
     "name": "Andre Tippett",
     "pos": "LB",
-    "careerLegacy": 7523,
+    "careerLegacy": 6874,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -2694,7 +2698,7 @@
    {
     "name": "Ty Law",
     "pos": "DB",
-    "careerLegacy": 6737,
+    "careerLegacy": 6138,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2702,7 +2706,7 @@
    {
     "name": "Darrelle Revis",
     "pos": "DB",
-    "careerLegacy": 4061,
+    "careerLegacy": 3772,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2017"
@@ -2710,7 +2714,7 @@
    {
     "name": "Richard Seymour",
     "pos": "DL",
-    "careerLegacy": 3983,
+    "careerLegacy": 3724,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -2718,23 +2722,23 @@
    {
     "name": "Tom Brady",
     "pos": "QB",
-    "careerLegacy": 9081,
+    "careerLegacy": 8679,
     "hof": false,
     "why": "6 rings with the club",
     "frozenSeason": "2022"
    },
    {
-    "name": "Rob Gronkowski",
-    "pos": "TE",
-    "careerLegacy": 6182,
+    "name": "Stephen Gostkowski",
+    "pos": "K",
+    "careerLegacy": 5751,
     "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2021"
+    "why": "3 rings with the club",
+    "frozenSeason": "2020"
    },
    {
     "name": "Devin McCourty",
     "pos": "DB",
-    "careerLegacy": 6060,
+    "careerLegacy": 5671,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2022"
@@ -2742,7 +2746,7 @@
    {
     "name": "Julian Edelman",
     "pos": "WR",
-    "careerLegacy": 3644,
+    "careerLegacy": 3443,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2020"
@@ -2750,7 +2754,7 @@
    {
     "name": "Kevin Faulk",
     "pos": "RB",
-    "careerLegacy": 3450,
+    "careerLegacy": 3236,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2011"
@@ -2758,15 +2762,23 @@
    {
     "name": "Patrick Chung",
     "pos": "DB",
-    "careerLegacy": 3325,
+    "careerLegacy": 3142,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2019"
    },
    {
+    "name": "Tedy Bruschi",
+    "pos": "LB",
+    "careerLegacy": 3132,
+    "hof": false,
+    "why": "3 rings with the club",
+    "frozenSeason": "2008"
+   },
+   {
     "name": "Dont'a Hightower",
     "pos": "LB",
-    "careerLegacy": 2645,
+    "careerLegacy": 2508,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2021"
@@ -2774,7 +2786,7 @@
    {
     "name": "Matthew Slater",
     "pos": "WR",
-    "careerLegacy": 1426,
+    "careerLegacy": 1405,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2023"
@@ -2782,7 +2794,7 @@
    {
     "name": "Patrick Pass",
     "pos": "RB",
-    "careerLegacy": 1330,
+    "careerLegacy": 1278,
     "hof": false,
     "why": "3 rings with the club",
     "frozenSeason": "2007"
@@ -2792,7 +2804,7 @@
    {
     "name": "Mike Haynes",
     "pos": "DB",
-    "careerLegacy": 6900,
+    "careerLegacy": 6340,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1989"
@@ -2800,7 +2812,7 @@
    {
     "name": "Ken Stabler",
     "pos": "QB",
-    "careerLegacy": 5608,
+    "careerLegacy": 5188,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -2808,7 +2820,7 @@
    {
     "name": "Dave Casper",
     "pos": "TE",
-    "careerLegacy": 5523,
+    "careerLegacy": 5077,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -2816,7 +2828,7 @@
    {
     "name": "Howie Long",
     "pos": "DL",
-    "careerLegacy": 5190,
+    "careerLegacy": 4779,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -2824,7 +2836,7 @@
    {
     "name": "Tim Brown",
     "pos": "WR",
-    "careerLegacy": 4991,
+    "careerLegacy": 4490,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2004"
@@ -2832,7 +2844,7 @@
    {
     "name": "Fred Biletnikoff",
     "pos": "WR",
-    "careerLegacy": 4669,
+    "careerLegacy": 4319,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1978"
@@ -2840,7 +2852,7 @@
    {
     "name": "Cliff Branch",
     "pos": "WR",
-    "careerLegacy": 4608,
+    "careerLegacy": 4292,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
@@ -2848,7 +2860,7 @@
    {
     "name": "Lester Hayes",
     "pos": "DB",
-    "careerLegacy": 6546,
+    "careerLegacy": 6070,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "1986"
@@ -2856,25 +2868,25 @@
   ],
   "Rams": [
    {
-    "name": "Kevin Greene",
-    "pos": "LB",
-    "careerLegacy": 7873,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "1999"
-   },
-   {
     "name": "Jack Youngblood",
     "pos": "DL",
-    "careerLegacy": 7724,
+    "careerLegacy": 7063,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
    },
    {
+    "name": "Kevin Greene",
+    "pos": "LB",
+    "careerLegacy": 6965,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "1999"
+   },
+   {
     "name": "Orlando Pace",
     "pos": "OL",
-    "careerLegacy": 7585,
+    "careerLegacy": 6955,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2882,7 +2894,7 @@
    {
     "name": "Jackie Slater",
     "pos": "OL",
-    "careerLegacy": 7401,
+    "careerLegacy": 6781,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1995"
@@ -2890,7 +2902,7 @@
    {
     "name": "Marshall Faulk",
     "pos": "RB",
-    "careerLegacy": 6897,
+    "careerLegacy": 6240,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2005"
@@ -2898,7 +2910,7 @@
    {
     "name": "Eric Dickerson",
     "pos": "RB",
-    "careerLegacy": 6429,
+    "careerLegacy": 5888,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -2906,7 +2918,7 @@
    {
     "name": "Isaac Bruce",
     "pos": "WR",
-    "careerLegacy": 5891,
+    "careerLegacy": 5333,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2914,7 +2926,7 @@
    {
     "name": "Kurt Warner",
     "pos": "QB",
-    "careerLegacy": 5690,
+    "careerLegacy": 5190,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2009"
@@ -2924,7 +2936,7 @@
    {
     "name": "Rod Woodson",
     "pos": "DB",
-    "careerLegacy": 9063,
+    "careerLegacy": 8156,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2003"
@@ -2932,7 +2944,7 @@
    {
     "name": "Jonathan Ogden",
     "pos": "OL",
-    "careerLegacy": 7817,
+    "careerLegacy": 7168,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2007"
@@ -2940,7 +2952,7 @@
    {
     "name": "Ray Lewis",
     "pos": "LB",
-    "careerLegacy": 7287,
+    "careerLegacy": 6827,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -2948,7 +2960,7 @@
    {
     "name": "Ed Reed",
     "pos": "DB",
-    "careerLegacy": 6602,
+    "careerLegacy": 6118,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2013"
@@ -2956,7 +2968,7 @@
    {
     "name": "Terrell Suggs",
     "pos": "LB",
-    "careerLegacy": 7779,
+    "careerLegacy": 7276,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "2019"
@@ -2966,7 +2978,7 @@
    {
     "name": "Willie Roaf",
     "pos": "OL",
-    "careerLegacy": 7787,
+    "careerLegacy": 7120,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2005"
@@ -2974,7 +2986,7 @@
    {
     "name": "Drew Brees",
     "pos": "QB",
-    "careerLegacy": 5910,
+    "careerLegacy": 5531,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2020"
@@ -2982,7 +2994,7 @@
    {
     "name": "Sam Mills",
     "pos": "LB",
-    "careerLegacy": 3990,
+    "careerLegacy": 3663,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1997"
@@ -2990,7 +3002,7 @@
    {
     "name": "Pat Swilling",
     "pos": "LB",
-    "careerLegacy": 6730,
+    "careerLegacy": 6202,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "1998"
@@ -3000,7 +3012,7 @@
    {
     "name": "Walter Jones",
     "pos": "OL",
-    "careerLegacy": 7656,
+    "careerLegacy": 7000,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2008"
@@ -3008,7 +3020,7 @@
    {
     "name": "Steve Largent",
     "pos": "WR",
-    "careerLegacy": 5750,
+    "careerLegacy": 5269,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1989"
@@ -3016,7 +3028,7 @@
    {
     "name": "Kenny Easley",
     "pos": "DB",
-    "careerLegacy": 5013,
+    "careerLegacy": 4624,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1987"
@@ -3024,7 +3036,7 @@
    {
     "name": "Cortez Kennedy",
     "pos": "DL",
-    "careerLegacy": 3454,
+    "careerLegacy": 3136,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -3034,7 +3046,7 @@
    {
     "name": "Mel Blount",
     "pos": "DB",
-    "careerLegacy": 9559,
+    "careerLegacy": 8865,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1983"
@@ -3042,7 +3054,7 @@
    {
     "name": "Mike Webster",
     "pos": "OL",
-    "careerLegacy": 8694,
+    "careerLegacy": 8043,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1990"
@@ -3050,7 +3062,7 @@
    {
     "name": "Donnie Shell",
     "pos": "DB",
-    "careerLegacy": 8287,
+    "careerLegacy": 7665,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1987"
@@ -3058,7 +3070,7 @@
    {
     "name": "Alan Faneca",
     "pos": "OL",
-    "careerLegacy": 8102,
+    "careerLegacy": 7432,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2010"
@@ -3066,7 +3078,7 @@
    {
     "name": "Dermontti Dawson",
     "pos": "OL",
-    "careerLegacy": 7613,
+    "careerLegacy": 6961,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -3074,7 +3086,7 @@
    {
     "name": "Franco Harris",
     "pos": "RB",
-    "careerLegacy": 7311,
+    "careerLegacy": 6785,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -3082,7 +3094,7 @@
    {
     "name": "Jack Ham",
     "pos": "LB",
-    "careerLegacy": 6861,
+    "careerLegacy": 6361,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1982"
@@ -3090,7 +3102,7 @@
    {
     "name": "Terry Bradshaw",
     "pos": "QB",
-    "careerLegacy": 6777,
+    "careerLegacy": 6331,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1983"
@@ -3098,7 +3110,7 @@
    {
     "name": "Joe Greene",
     "pos": "DL",
-    "careerLegacy": 6110,
+    "careerLegacy": 5765,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1981"
@@ -3106,7 +3118,7 @@
    {
     "name": "Jack Lambert",
     "pos": "LB",
-    "careerLegacy": 5630,
+    "careerLegacy": 5282,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -3114,31 +3126,31 @@
    {
     "name": "Troy Polamalu",
     "pos": "DB",
-    "careerLegacy": 5049,
+    "careerLegacy": 4722,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2014"
    },
    {
-    "name": "Jerome Bettis",
-    "pos": "RB",
-    "careerLegacy": 4903,
-    "hof": true,
-    "why": "Hall of Famer",
-    "frozenSeason": "2005"
-   },
-   {
     "name": "John Stallworth",
     "pos": "WR",
-    "careerLegacy": 4846,
+    "careerLegacy": 4526,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1987"
    },
    {
+    "name": "Jerome Bettis",
+    "pos": "RB",
+    "careerLegacy": 4434,
+    "hof": true,
+    "why": "Hall of Famer",
+    "frozenSeason": "2005"
+   },
+   {
     "name": "Lynn Swann",
     "pos": "WR",
-    "careerLegacy": 3721,
+    "careerLegacy": 3508,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1982"
@@ -3146,25 +3158,17 @@
    {
     "name": "Hines Ward",
     "pos": "WR",
-    "careerLegacy": 6785,
+    "careerLegacy": 6276,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "2011"
-   },
-   {
-    "name": "James Harrison",
-    "pos": "LB",
-    "careerLegacy": 6190,
-    "hof": false,
-    "why": "Career Legacy",
-    "frozenSeason": "2017"
    }
   ],
   "Texans": [
    {
     "name": "Andre Johnson",
     "pos": "WR",
-    "careerLegacy": 5557,
+    "careerLegacy": 5127,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2016"
@@ -3172,7 +3176,7 @@
    {
     "name": "J.J. Watt",
     "pos": "DL",
-    "careerLegacy": 6410,
+    "careerLegacy": 6042,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "2022"
@@ -3182,7 +3186,7 @@
    {
     "name": "Bruce Matthews",
     "pos": "OL",
-    "careerLegacy": 8982,
+    "careerLegacy": 8227,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2001"
@@ -3190,7 +3194,7 @@
    {
     "name": "Mike Munchak",
     "pos": "OL",
-    "careerLegacy": 7217,
+    "careerLegacy": 6596,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1993"
@@ -3198,7 +3202,7 @@
    {
     "name": "Warren Moon",
     "pos": "QB",
-    "careerLegacy": 5991,
+    "careerLegacy": 5333,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2000"
@@ -3206,7 +3210,7 @@
    {
     "name": "Earl Campbell",
     "pos": "RB",
-    "careerLegacy": 4962,
+    "careerLegacy": 4588,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1985"
@@ -3214,7 +3218,7 @@
    {
     "name": "Robert Brazile",
     "pos": "LB",
-    "careerLegacy": 4855,
+    "careerLegacy": 4445,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1984"
@@ -3224,7 +3228,7 @@
    {
     "name": "Alan Page",
     "pos": "DL",
-    "careerLegacy": 8310,
+    "careerLegacy": 7660,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1981"
@@ -3232,7 +3236,7 @@
    {
     "name": "Randall McDaniel",
     "pos": "OL",
-    "careerLegacy": 8165,
+    "careerLegacy": 7470,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2001"
@@ -3240,7 +3244,7 @@
    {
     "name": "Steve Hutchinson",
     "pos": "OL",
-    "careerLegacy": 7490,
+    "careerLegacy": 6847,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -3248,7 +3252,7 @@
    {
     "name": "Fran Tarkenton",
     "pos": "QB",
-    "careerLegacy": 7150,
+    "careerLegacy": 6579,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1978"
@@ -3256,7 +3260,7 @@
    {
     "name": "Chris Doleman",
     "pos": "DL",
-    "careerLegacy": 7094,
+    "careerLegacy": 6279,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "1999"
@@ -3264,7 +3268,7 @@
    {
     "name": "Randy Moss",
     "pos": "WR",
-    "careerLegacy": 6642,
+    "careerLegacy": 6096,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2012"
@@ -3272,7 +3276,7 @@
    {
     "name": "Jared Allen",
     "pos": "DL",
-    "careerLegacy": 6168,
+    "careerLegacy": 5673,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2015"
@@ -3280,7 +3284,7 @@
    {
     "name": "Cris Carter",
     "pos": "WR",
-    "careerLegacy": 5619,
+    "careerLegacy": 5018,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2002"
@@ -3288,7 +3292,7 @@
    {
     "name": "John Randle",
     "pos": "DL",
-    "careerLegacy": 5107,
+    "careerLegacy": 4569,
     "hof": true,
     "why": "Hall of Famer",
     "frozenSeason": "2003"
@@ -3296,7 +3300,7 @@
    {
     "name": "Adrian Peterson",
     "pos": "RB",
-    "careerLegacy": 7240,
+    "careerLegacy": 6711,
     "hof": false,
     "why": "Career Legacy",
     "frozenSeason": "2021"

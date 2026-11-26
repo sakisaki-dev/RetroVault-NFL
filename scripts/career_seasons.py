@@ -34,6 +34,7 @@ FIELDS = {
     "TE": ["g", "rec", "yds", "td", *AWARDS, "opoy"],
     "OL": ["g", "blk", *AWARDS, "opoy"],
     "DEF": ["g", "tkl", "int", "sck", "ff", *AWARDS, "dpoy"],
+    "K": ["g", "fgm", "fga", "fgm39", "fga39", "fgm49", "fga49", "fgm50", "fga50", "xpm", "xpa", *AWARDS, "opoy"],
 }
 GROUP = {"LB": "DEF", "DB": "DEF", "DL": "DEF"}
 

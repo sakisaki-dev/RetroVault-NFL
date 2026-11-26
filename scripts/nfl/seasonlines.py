@@ -21,6 +21,7 @@ POS_COLS = {
     "WR": {"rec": "receptions", "yds": "receiving_yards", "td": "receiving_tds"},
     "TE": {"rec": "receptions", "yds": "receiving_yards", "td": "receiving_tds"},
     "OL": {},
+    "K": {"fgm": "fg_made", "fga": "fg_att"},   # kickers (owner, 2026-11-25)
     "LB": {"int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},
     "DB": {"int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},
     "DL": {"int": "def_interceptions", "sck": "def_sacks", "ff": "def_fumbles_forced"},

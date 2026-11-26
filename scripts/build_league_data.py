@@ -92,11 +92,19 @@ def tt_dl(p):
     return 0.55 * g(p, "tkl") + 5.5 * g(p, "sck") + 2.75 * g(p, "ff") + 0.11 * g(p, "g")
 
 
-TT_FORMULAS = {"RB": tt_rb, "WR": tt_wr, "TE": tt_te, "OL": tt_ol, "LB": tt_lb, "DB": tt_db, "DL": tt_dl}
+def tt_k(p):
+    """Kickers (NFL edition): the points he put on the board (3 / 4 / 5 for a field goal by distance, 1 for an extra point)
+    less 2 for each missed field goal and 1 for each missed extra point, a tenth of it, plus the games."""
+    pts = 3 * g(p, "fgm39") + 4 * g(p, "fgm49") + 5 * g(p, "fgm50") + g(p, "xpm")
+    miss = 2 * (g(p, "fga") - g(p, "fgm")) + (g(p, "xpa") - g(p, "xpm"))
+    return 0.1 * (pts - miss) + 0.05 * g(p, "g")
+
+
+TT_FORMULAS = {"RB": tt_rb, "WR": tt_wr, "TE": tt_te, "OL": tt_ol, "LB": tt_lb, "DB": tt_db, "DL": tt_dl, "K": tt_k}
 
 
 # Volume stat used to measure how much a career grew between the sheet and a newer screenshot.
-PRIMARY_STAT = {"QB": "yds", "RB": "ryds", "WR": "yds", "TE": "yds", "OL": "blk", "LB": "tkl", "DB": "tkl", "DL": "tkl"}
+PRIMARY_STAT = {"QB": "yds", "RB": "ryds", "WR": "yds", "TE": "yds", "OL": "blk", "LB": "tkl", "DB": "tkl", "DL": "tkl", "K": "fgm"}
 # Copied as-is rather than scaled: identity, awards, rates and single-play maxima.
 COPY_AS_IS = {"n", "pos", "team", "nick", "lng", "pct", "rings", "mvp", "opoy", "dpoy", "sbmvp", "roty"}
 SHEET_ONLY = {"tt", "legacy", "st"}
@@ -179,6 +187,8 @@ APP_KEYS = {
     "LB": {"tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles"},
     "DB": {"tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles"},
     "DL": {"tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles"},
+    "K": {"fgm": "fgMade", "fga": "fgAtt", "fgm39": "fgMade39", "fga39": "fgAtt39", "fgm49": "fgMade49", "fga49": "fgAtt49",
+          "fgm50": "fgMade50", "fga50": "fgAtt50", "xpm": "xpMade", "xpa": "xpAtt", "lng": "longest"},
 }
 
 
@@ -513,7 +523,7 @@ def main():
                 share[(pos_, k)] = sum(w * (q.get(k) or 0) for q in full) / tot
     estimated = []
     estimated_fields = []
-    out = {pos: [] for pos in ("QB", "RB", "WR", "TE", "OL", "LB", "DB", "DL")}
+    out = {pos: [] for pos in ("QB", "RB", "WR", "TE", "OL", "LB", "DB", "DL", "K")}
     legends = [p for p in players if p.get("legend")]
     for p in players:
         if p.get("legend"):
@@ -555,6 +565,8 @@ def main():
         "LB": (["Tackles", "INT", "Sacks", "FF"], ["tkl", "int", "sck", "ff"], "DPOY"),
         "DB": (["Tackles", "INT", "Sacks", "FF"], ["tkl", "int", "sck", "ff"], "DPOY"),
         "DL": (["Tackles", "INT", "Sacks", "FF"], ["tkl", "int", "sck", "ff"], "DPOY"),
+        "K": (["FGM", "FGA", "FGM 0-39", "FGA 0-39", "FGM 40-49", "FGA 40-49", "FGM 50+", "FGA 50+", "XPM", "XPA", "Longest"],
+              ["fgm", "fga", "fgm39", "fga39", "fgm49", "fga49", "fgm50", "fga50", "xpm", "xpa", "lng"], "OPOY"),
     }
 
     inducted = inducted_keys()

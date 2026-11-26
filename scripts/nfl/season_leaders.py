@@ -44,6 +44,8 @@ def main():
             "tkl": int(s("def_tackles_solo") + s("def_tackle_assists")), "sck": round(s("def_sacks"), 1),
             "dint": int(s("def_interceptions")), "ff": int(s("def_fumbles_forced")), "pd": int(s("def_pass_defended")),
             "ppr": round(s("fantasy_points_ppr"), 1),
+            "fgm": int(s("fg_made")), "fga": int(s("fg_att")), "xpm": int(s("pat_made")),
+            "long": int(max((x.get("fg_long", 0) or 0 for x in gs), default=0)),
             "weeks": {x["week"]: x for x in gs},
         })
 
@@ -59,6 +61,12 @@ def main():
         "sacks": [(r["key"], r["sck"], f"{r['g']} games") for r in top(rows, lambda r: r["sck"])],
         "interceptions": [(r["key"], r["dint"], f"{r['pd']} passes defended") for r in top(rows, lambda r: r["dint"])],
     }
+    # kickers (owner, 2026-11-25): most field goals made (the line: made / attempted, the longest, extra points) and the best
+    # percentage among kickers with at least 1 attempt a game played by the league's busiest club schedule (>= 5 attempts here)
+    leaders["kicking"] = [(r["key"], r["fgm"], f"{r['fgm']}/{r['fga']}, long {r['long']}, {r['xpm']} XP") for r in top(rows, lambda r: r["fgm"] if r["pos"] == "K" else 0, 8)]
+    q = max((r["g"] for r in rows), default=0)
+    leaders["kickingPct"] = [(r["key"], round(100 * r["fgm"] / r["fga"], 1), f"{r['fgm']}/{r['fga']}") for r in
+                             sorted((r for r in rows if r["pos"] == "K" and r["fga"] >= max(5, q)), key=lambda r: (-r["fgm"] / r["fga"], -r["fga"], r["key"]))[:8]]
     fantasy = [(r["key"], r["ppr"], f"{round(r['ppr'] / r['g'], 1)} a game") for r in top(rows, lambda r: r["ppr"], 8)]
 
     mvp = lambda r: (r["pass"] + 20 * r["ptd"] - 45 * r["int"] + r["rush"] + 6 * r["rtd"]) / r["g"] if r["pos"] == "QB" else 0

@@ -85,8 +85,18 @@ SPECS = {
     ],
 }
 SPECS["TE"] = SPECS["WR"]
-PACE = {"QB": 2, "RB": 2, "WR": 3, "TE": 3, "DL": 2, "LB": 2, "DB": 2}  # how many leading specs project (all counting)
-FANTASY = {"QB", "RB", "WR", "TE"}
+# kickers (owner, 2026-11-25): field goals by distance from the weekly band columns; the longest is the season's maximum
+SPECS["K"] = [
+    ("FG made", lambda d: S(d, "fg_made"), "count", "n"),
+    ("FG %", lambda d: 100 * S(d, "fg_made") / S(d, "fg_att") if S(d, "fg_att") else None, "rate:fg_att:1", "1"),
+    ("Long", lambda d: S(d, "fg_long_max"), "count", "n"),
+    ("XP", lambda d: S(d, "pat_made"), "count", "n"),
+    ("FG att", lambda d: S(d, "fg_att"), "count", "n"),
+    ("FG 40+", lambda d: S(d, "fg_made_40_49", "fg_made_50_59", "fg_made_60_"), "count", "n"),
+    ("FG 50+", lambda d: S(d, "fg_made_50_59", "fg_made_60_"), "count", "n"),
+]
+PACE = {"QB": 2, "RB": 2, "WR": 3, "TE": 3, "DL": 2, "LB": 2, "DB": 2, "K": 2}  # how many leading specs project (all counting)
+FANTASY = {"QB", "RB", "WR", "TE", "K"}   # a kicker's points: 3 / 4 / 5 a field goal by distance, 1 an extra point, -1 a miss (kick_common.py)
 FIELDS = sorted({k for sp in SPECS.values() for _, f, _, _ in sp for k in ()} | set())
 
 
@@ -95,6 +105,13 @@ def fnum(s):
         return float(s)
     except (TypeError, ValueError):
         return 0.0
+
+
+def kick_points(r):
+    """Fantasy points of one kicker week: field goals 3 / 4 / 5 by distance, extra points 1, each miss -1."""
+    m = lambda *bs: sum(fnum(r.get(f"fg_made_{b}")) for b in bs)
+    miss = sum(fnum(r.get(f"fg_missed_{b}")) for b in ("0_19", "20_29", "30_39", "40_49", "50_59", "60_")) + max(0, fnum(r.get("pat_att")) - fnum(r.get("pat_made")))
+    return 3 * m("0_19", "20_29", "30_39") + 4 * m("40_49") + 5 * m("50_59", "60_") + fnum(r.get("pat_made")) - miss
 
 
 def rank_of(vals, v, reverse=True):
@@ -132,6 +149,9 @@ def main():
                      "season_type", "game_id", "team", "opponent_team", "fg_made_list", "fg_missed_list", "fg_blocked_list"):
                 continue
             tot[g][k] += fnum(v)
+        if r["position"] == "K":
+            tot[g]["fg_long_max"] = max(tot[g]["fg_long_max"], fnum(r["fg_long"]))
+            tot[g]["kfp"] += kick_points(r)
     teamg = {t: len(w) for t, w in weeks_by_team.items()}
     by_pos = defaultdict(list)
     for g in tot:
@@ -158,7 +178,7 @@ def main():
                     continue  # a zero is not ranked
                 vals[g] = v
             table.append(vals)
-        ppr = {g: tot[g]["fantasy_points_ppr"] for g in ids} if pos in FANTASY else {}
+        ppr = {g: tot[g]["kfp" if pos == "K" else "fantasy_points_ppr"] for g in ids} if pos in FANTASY else {}
         for g in ids:
             games_n = len(gp[g])
             rows = []
