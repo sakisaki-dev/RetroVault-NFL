@@ -772,11 +772,15 @@ function sparkline(dc, x, y, w, h, series, hex) {
 function handTile(dc, A, data, x, y, w, side, abbr, hand, espnMap) {
   if (!hand) return;
   const pl = playerFor(data, espnMap, hand);
-  const bust = bustImage(pl ? sprOf(A, pl.key, 'fig') : null, 32, abbr);
+  const spr = pl ? sprOf(A, pl.key, 'fig') : null;
   const bx = side === 'left' ? x : x + w - 32;
-  dc.drawImageInRect(bust, new Rect(bx, y, 32, 32));
-  if (!pl) {
-    T(dc, hand.jersey ? '#' + hand.jersey : (hand.short || '?')[0], bx, y + 9, 32, 14, { font: dispI(14), color: Color.white(), align: 'center' });
+  if (spr) dc.drawImageInRect(bustImage(spr, 32, abbr), new Rect(bx, y, 32, 32));
+  else {
+    // no game sprite for him yet (a rookie the sprite set hasn't got): his club's logo on a dark plate, his number under
+    // it, instead of the outlined number tile (owner: "this weird outline and his face doesn't show")
+    fillRounded(dc, bx, y, 32, 32, 8, rgba('#080c1a', 0.7));
+    if (A.logos[abbr]) dc.drawImageInRect(A.logos[abbr], new Rect(bx + 5, y + 2, 22, 22));
+    if (hand.jersey) T(dc, '#' + hand.jersey, bx, y + 22, 32, 9, { font: dispI(9), color: C.chalk, align: 'center' });
   }
   const tw = w - 32 - 7;
   const tx = side === 'left' ? x + 39 : x;
@@ -877,8 +881,9 @@ async function liveLarge(data, ctx) {
   to(L.abbr, g.sit && g.sit.awayTO, y + 3);
   to(Rr.abbr, g.sit && g.sit.homeTO, y + 15);
   y += stripH + 6;
-  pix(dc, series ? `WIN CHANCE · TIMEOUTS` : 'TIMEOUTS', x0, sz.h - PAD.bottom - 7, 0.95, '#6d7896');
-  pixRight(dc, `UPDATED ${clockAmPm(NOW)}`, x0 + cw, sz.h - PAD.bottom - 7, 0.95, '#6d7896');
+  fillRounded(dc, x0 - 4, sz.h - PAD.bottom - 10, cw + 8, 12, 5, rgba('#080c1a', 0.55));
+  pix(dc, series ? `WIN CHANCE · TIMEOUTS` : 'TIMEOUTS', x0, sz.h - PAD.bottom - 7, 0.95, '#aab3cc');
+  pixRight(dc, `UPDATED ${clockAmPm(NOW)}`, x0 + cw, sz.h - PAD.bottom - 7, 0.95, '#aab3cc');
   finishShell(dc, sz.w, sz.h);
   return newWidget(sz.w, sz.h, dc, tap(SITE));
 }
