@@ -41,7 +41,7 @@ import './searchSheet.css';
  * club line, OVR; the row wears his club colours (edge and tint). Desktop never shows this (the dropdowns stay).
  */
 
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 const LIMIT = 20;
 
 export interface SheetGroup {

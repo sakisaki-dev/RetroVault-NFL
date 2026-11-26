@@ -79,6 +79,8 @@ def split_advanced() -> None:
     by_pos = {}
     for key, v in p.items():
         by_pos.setdefault(key.split(':', 1)[0], {})[key] = v
+    for pos in ('QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'):  # a position with no advanced rows (kickers) still gets its (empty) file
+        by_pos.setdefault(pos, {})
     for pos, rows in by_pos.items():
         dump(DATA / 'nfl' / 'advanced' / f'{pos}.json', rows)
 

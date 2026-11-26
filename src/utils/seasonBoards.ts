@@ -18,7 +18,7 @@ import { findNFLTeam } from '@/utils/nflTeams';
  * reaches the latest completed season. `streaksForClubSeason(club, season)` is the helper for a club-season sheet.
  */
 
-export const INK_STATS: { id: string; label: string; short: string; group: 'pass' | 'rush' | 'rec' | 'def' }[] = [
+export const INK_STATS: { id: string; label: string; short: string; group: 'pass' | 'rush' | 'rec' | 'def' | 'kick' }[] = [
   { id: 'pyds', label: 'Passing yards', short: 'Pass yds', group: 'pass' },
   { id: 'ptd', label: 'Passing TD', short: 'Pass TD', group: 'pass' },
   { id: 'ryds', label: 'Rushing yards', short: 'Rush yds', group: 'rush' },
@@ -29,6 +29,8 @@ export const INK_STATS: { id: string; label: string; short: string; group: 'pass
   { id: 'tkl', label: 'Tackles', short: 'Tackles', group: 'def' },
   { id: 'sck', label: 'Sacks', short: 'Sacks', group: 'def' },
   { id: 'int', label: 'Interceptions', short: 'INT', group: 'def' },
+  { id: 'fgm', label: 'Field goals made', short: 'FG', group: 'kick' },
+  { id: 'fg50', label: 'Field goals from 50+', short: 'FG 50+', group: 'kick' },
 ];
 export const INK_LABEL: Record<string, string> = Object.fromEntries(INK_STATS.map((s) => [s.id, s.label]));
 

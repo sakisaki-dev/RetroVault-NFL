@@ -283,6 +283,10 @@ const PAIRS: Record<Group, Pair[]> = {
     { id: 'tkl', label: 'Tackles vs big plays', vol: 'Tackles', eff: 'Sacks + INT + FF a game', volOf: bx('tkl'), effOf: perG(['sck', 'int', 'ff']), effFmt: f2 },
     { id: 'tklg', label: 'Games vs tackles a game', vol: 'Games', eff: 'Tackles/G', volOf: (p) => (p.box ? p.games : null), effOf: perG(['tkl']), effFmt: f1 },
   ],
+  K: [
+    { id: 'fgpct', label: 'Field goals vs accuracy', vol: 'Field goals made', eff: 'FG %', volOf: bx('fgm'), effOf: ratio(['fgm'], ['fga'], 100), effFmt: f1 },
+    { id: 'long', label: 'Attempts from 50+ vs accuracy', vol: 'FG attempts from 50+', eff: 'FG % from 50+', volOf: bx('fga50'), effOf: ratio(['fgm50'], ['fga50'], 100), effFmt: f1 },
+  ],
 };
 
 // The live save's attempt and carry keys give QBs Y/A and RBs Y/C on the seasons that have them

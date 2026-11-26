@@ -116,6 +116,7 @@ const EFF_AXES: Record<Position, { x: string; y: string }> = {
   LB: { x: 'tklG', y: 'impactG' },
   DB: { x: 'tklG', y: 'impactG' },
   DL: { x: 'tklG', y: 'impactG' },
+  K: { x: 'fgG', y: 'fgPct' },
 };
 
 /** The Lab's fixed charts. Efficiency follows the Lab's position. */
@@ -246,6 +247,7 @@ export const POSITION_COLORS: Record<Position, string> = {
   LB: '#e5b83a',
   DB: '#4fc3d9',
   DL: '#e5484d',
+  K: '#8b7bff',
 };
 
 /** Legacy tier colours: the gold ramp used by the Hall of Fame charts, neutral below the bar. */

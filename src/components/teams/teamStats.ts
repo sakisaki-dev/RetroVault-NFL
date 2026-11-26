@@ -38,7 +38,7 @@ export interface TeamSummary {
   franchisePlayers: Player[];
 }
 
-export const POSITION_ORDER: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB'];
+export const POSITION_ORDER: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB', 'K'];
 
 export const POSITION_LABELS: Record<Position, string> = {
   QB: 'Quarterbacks',
@@ -49,6 +49,7 @@ export const POSITION_LABELS: Record<Position, string> = {
   DL: 'Defensive Line',
   LB: 'Linebackers',
   DB: 'Defensive Backs',
+  K: 'Kickers',
 };
 
 export const DIVISIONS = ['East', 'North', 'South', 'West'] as const;
@@ -308,6 +309,7 @@ export const LEADER_STATS: LeaderStat[] = [
   { key: 'sacks', label: 'Sacks', get: (p) => (isDefender(p) && 'sacks' in p ? p.sacks : null) },
   { key: 'int', label: 'Interceptions', get: (p) => (isDefender(p) && 'interceptions' in p ? p.interceptions : null) },
   { key: 'blocks', label: 'Blocks', get: (p) => (p.position === 'OL' ? p.blocks : null) },
+  { key: 'fgMade', label: 'Field goals', get: (p) => (p.position === 'K' ? p.fgMade : null) },
   { key: 'rings', label: 'Rings', get: (p) => p.rings || 0 },
   { key: 'mvp', label: 'MVPs', get: (p) => p.mvp || 0 },
 ];

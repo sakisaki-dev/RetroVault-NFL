@@ -44,7 +44,7 @@ export { QUICK_SEARCH_EVENT, openQuickSearch };
 /** Rows rendered for a query (the rest is "keep typing") */
 const RESULT_LIMIT = 24;
 
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 /** True when the key press happens inside something the user is typing in. */
 const typingTarget = (t: EventTarget | null) =>

@@ -49,7 +49,7 @@ export const POS_NAMES: Record<string, string> = {
   DL: 'Defensive line',
 };
 
-export const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'] as const;
+export const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'] as const;
 
 /** The key career numbers for his position (label, value). */
 export const careerLine = (p: Player): { label: string; value: number }[] => {
@@ -64,6 +64,8 @@ export const careerLine = (p: Player): { label: string; value: number }[] => {
       return [{ label: 'Catches', value: p.receptions }, { label: 'Rec yds', value: p.recYds }, { label: 'Rec TD', value: p.recTD }, ...(IS_NFL ? [] : [{ label: 'Long', value: p.longest }]), g];
     case 'OL':
       return [{ label: 'Blocks', value: p.blocks }, g];
+    case 'K':
+      return [{ label: 'FG made', value: p.fgMade }, { label: 'FG att', value: p.fgAtt }, { label: 'XP made', value: p.xpMade }, ...(p.longest > 0 ? [{ label: 'Long', value: p.longest }] : []), g];
     default:
       return [{ label: 'Tackles', value: p.tackles }, { label: 'Sacks', value: p.sacks }, { label: 'INT', value: p.interceptions }, { label: 'FF', value: p.forcedFumbles }, g];
   }

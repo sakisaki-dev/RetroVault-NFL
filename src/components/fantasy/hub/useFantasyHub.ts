@@ -89,7 +89,7 @@ export const useFantasyHub = (nl: NflLabReady, prefs: Prefs, needOpponents = tru
     });
   const [locks, setLocks] = useState<FLineup>({});
   const [excludes, setExcludes] = useState<Set<string>>(new Set());
-  const [posFilter, setPosFilter] = useState<'ALL' | 'QB' | 'RB' | 'WR' | 'TE' | 'DST'>('ALL');
+  const [posFilter, setPosFilter] = useState<'ALL' | 'QB' | 'RB' | 'WR' | 'TE' | 'K' | 'DST'>('ALL');
   const [query, setQuery] = useState('');
   const [draft, setDraft] = useState<DraftState | null>(null);
   const [oppId, setOppId] = useState('');

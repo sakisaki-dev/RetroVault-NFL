@@ -12,11 +12,11 @@ export const v = (s: Stat | undefined, k: string) => s?.[k] ?? 0;
 export const SITE_POS: Record<string, string> = {
   QB: 'QB', RB: 'RB', FB: 'RB', HB: 'RB', WR: 'WR', TE: 'TE', T: 'OL', G: 'OL', C: 'OL', OT: 'OL', OG: 'OL', OL: 'OL', LS: 'OL',
   DE: 'DL', DT: 'DL', NT: 'DL', DL: 'DL', EDGE: 'DL', LB: 'LB', ILB: 'LB', OLB: 'LB', MLB: 'LB',
-  CB: 'DB', S: 'DB', FS: 'DB', SS: 'DB', DB: 'DB', SAF: 'DB', K: 'WR', P: 'WR',
+  CB: 'DB', S: 'DB', FS: 'DB', SS: 'DB', DB: 'DB', SAF: 'DB', K: 'K', P: 'WR',
 };
 export const sitePos = (pos: string): string => SITE_POS[pos] ?? 'WR';
-/** Only these have a card in the pool (a K or P links nowhere). */
-export const hasCardPos = (pos: string) => !['K', 'P', 'LS', ''].includes(pos);
+/** Only these have a card in the pool (a punter or long snapper links nowhere; kickers do, owner 2026-11-25). */
+export const hasCardPos = (pos: string) => !['P', 'LS', ''].includes(pos);
 
 export type UnitId = 'qb' | 'bf' | 'rec' | 'ol' | 'dl' | 'lb' | 'db' | 'st';
 export interface UnitDef {

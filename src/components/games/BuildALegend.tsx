@@ -69,6 +69,7 @@ const PLURAL: Record<Position, string> = {
   LB: 'linebackers',
   DB: 'defensive backs',
   DL: 'defensive linemen',
+  K: 'kickers',
 };
 const plural = (pos: Position) => PLURAL[pos];
 

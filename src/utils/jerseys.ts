@@ -84,6 +84,7 @@ export const POSITION_NUMBER_RANGES: Record<Position, number[]> = {
   LB: [...range(40, 59), ...range(90, 99)],
   DB: [...range(20, 49), ...range(0, 9)],
   DL: [...range(50, 79), ...range(90, 99)],
+  K: range(1, 19),
 };
 
 const ALL_NUMBERS = range(0, 99);

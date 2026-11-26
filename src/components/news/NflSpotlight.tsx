@@ -59,6 +59,13 @@ const lineFor = (pos: string, rows: GameRow[]): Line[] => {
       ];
     case 'OL':
       return [{ label: 'GAMES', value: String(g) }];
+    case 'K':
+      return [
+        { label: 'FG', value: `${t('fg_made_0_19') + t('fg_made_20_29') + t('fg_made_30_39') + t('fg_made_40_49') + t('fg_made_50_59') + t('fg_made_60_')}/${t('fg_att') || t('fg_made_0_19') + t('fg_made_20_29') + t('fg_made_30_39') + t('fg_made_40_49') + t('fg_made_50_59') + t('fg_made_60_')}` },
+        { label: 'LONG', value: String(Math.max(0, ...rows.map((r) => n(r, 'fg_long')))) },
+        { label: 'XP', value: `${t('pat_made')}/${t('pat_att')}` },
+        { label: 'GAMES', value: String(g) },
+      ];
     default:
       return [
         { label: 'TACKLES', value: String(t('def_tackles_solo') + t('def_tackle_assists')) },
@@ -81,6 +88,10 @@ const gameText = (pos: string, r: GameRow): string => {
       return `${plural(c('receptions'), 'catch', 'catches')} for ${c('receiving_yards')}${c('receiving_tds') ? `, ${plural(c('receiving_tds'), 'TD')}` : ''}`;
     case 'OL':
       return 'played';
+    case 'K': {
+      const made = c('fg_made_0_19') + c('fg_made_20_29') + c('fg_made_30_39') + c('fg_made_40_49') + c('fg_made_50_59') + c('fg_made_60_');
+      return `${made} of ${made + c('fg_missed_0_19') + c('fg_missed_20_29') + c('fg_missed_30_39') + c('fg_missed_40_49') + c('fg_missed_50_59') + c('fg_missed_60_')} field goals${c('fg_long') ? `, long ${c('fg_long')}` : ''}${c('pat_att') ? `, ${c('pat_made')}/${c('pat_att')} XP` : ''}`;
+    }
     default:
       return `${plural(c('def_tackles_solo') + c('def_tackle_assists'), 'tackle')}${c('def_sacks') ? `, ${plural(c('def_sacks'), 'sack')}` : ''}${c('def_interceptions') ? `, ${plural(c('def_interceptions'), 'INT')}` : ''}`;
   }
@@ -92,6 +103,7 @@ const bar = (pos: string, r: GameRow): number => {
   if (pos === 'RB') return n(r, 'rushing_yards') + n(r, 'receiving_yards');
   if (pos === 'WR' || pos === 'TE') return n(r, 'receiving_yards');
   if (pos === 'OL') return 0;
+  if (pos === 'K') return n(r, 'fg_made_0_19') + n(r, 'fg_made_20_29') + n(r, 'fg_made_30_39') + n(r, 'fg_made_40_49') + n(r, 'fg_made_50_59') + n(r, 'fg_made_60_');
   return n(r, 'def_tackles_solo') + n(r, 'def_tackle_assists') + n(r, 'def_sacks') * 3 + n(r, 'def_interceptions') * 4;
 };
 

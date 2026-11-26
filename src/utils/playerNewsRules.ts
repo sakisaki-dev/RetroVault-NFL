@@ -267,7 +267,7 @@ export const archiveCards = (player: Player, all: Game[]): RuleCard[] => {
     }
   }
   const honours: RuleRow[] = [
-    ['Rings', player.rings], ['MVP', player.mvp], [pos === 'QB' || pos === 'RB' || pos === 'WR' || pos === 'TE' || pos === 'OL' ? 'OPOY' : 'DPOY', player.opoy], ['Super Bowl MVP', player.sbmvp], ['Rookie of the Year', player.roty],
+    ['Rings', player.rings], ['MVP', player.mvp], [pos === 'QB' || pos === 'RB' || pos === 'WR' || pos === 'TE' || pos === 'OL' || pos === 'K' ? 'OPOY' : 'DPOY', player.opoy], ['Super Bowl MVP', player.sbmvp], ['Rookie of the Year', player.roty],
   ].filter(([, v]) => (v as number) > 0).map(([l, v]) => ({ label: String(l), value: String(v) }));
   if (honours.length) {
     out.push({

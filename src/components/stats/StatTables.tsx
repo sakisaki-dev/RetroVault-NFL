@@ -14,6 +14,7 @@ import RBTable from '../tables/RBTable';
 import ReceiverTable from '../tables/ReceiverTable';
 import OLTable from '../tables/OLTable';
 import DefenseTable from '../tables/DefenseTable';
+import KickerTable from '../tables/KickerTable';
 
 const TABS: { pos: Position; key: keyof Omit<LeagueData, 'metadata'>; label: string }[] = [
   { pos: 'QB', key: 'quarterbacks', label: 'Quarterbacks' },
@@ -24,6 +25,7 @@ const TABS: { pos: Position; key: keyof Omit<LeagueData, 'metadata'>; label: str
   { pos: 'LB', key: 'linebackers', label: 'Linebackers' },
   { pos: 'DB', key: 'defensivebacks', label: 'Defensive Backs' },
   { pos: 'DL', key: 'defensiveline', label: 'Defensive Line' },
+  { pos: 'K', key: 'kickers', label: 'Kickers' },
 ];
 
 const matchesSearch = (p: Player, q: string) =>
@@ -74,6 +76,8 @@ const StatTables = ({ data }: { data: LeagueData }) => {
         return <DefenseTable players={players as typeof data.defensivebacks} position="DB" title="Defensive Backs" searchQuery={searchQuery} />;
       case 'DL':
         return <DefenseTable players={players as typeof data.defensiveline} position="DL" title="Defensive Line" searchQuery={searchQuery} />;
+      case 'K':
+        return <KickerTable players={players as typeof data.kickers} searchQuery={searchQuery} />;
     }
   };
 

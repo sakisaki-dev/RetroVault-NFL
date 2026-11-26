@@ -83,7 +83,7 @@ export interface LeagueSeasons {
 }
 
 const posOf = (key: string) => key.slice(0, key.indexOf(':')) as Position;
-const POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL']);
+const POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K']);
 
 const CACHE = new WeakMap<CareerSeasonsFile, Map<string, LeagueSeasons>>();
 

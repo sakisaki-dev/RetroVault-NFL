@@ -2,6 +2,7 @@ import type { GameLog, GameRow } from '@/utils/gameLogs';
 import { rowsOf } from '@/utils/gameLogs';
 import { findNFLTeam } from '@/utils/nflTeams';
 import type { Position } from '@/types/player';
+import { kickPoints, rowFg } from '@/utils/kicking';
 
 /** Everything the Game log section computes from a per-player log: one parsed game, position rules, splits, streaks, consistency. */
 export interface Game {
@@ -139,6 +140,21 @@ export const RULES: Record<Position, PosRule> = {
   },
   LB: {} as PosRule,
   DB: {} as PosRule,
+  K: {
+    keyLabel: 'Fantasy points', keyShort: 'FPTS', unit: 'pts', hasLine: true,
+    line: [
+      C('fg', 'FG', (r) => rowFg(r).m39 + rowFg(r).m49 + rowFg(r).m50, (r) => `${rowFg(r).m39 + rowFg(r).m49 + rowFg(r).m50}/${rowFg(r).m39 + rowFg(r).m49 + rowFg(r).m50 + rowFg(r).missed}`),
+      C('lng', 'LONG', (r) => num(r, 'fg_long')),
+      C('xp', 'XP', (r) => num(r, 'pat_made'), (r) => `${num(r, 'pat_made')}/${num(r, 'pat_att')}`),
+    ],
+    splitCols: [C('fg', 'FG', (r) => rowFg(r).m39 + rowFg(r).m49 + rowFg(r).m50), C('xp', 'XP', (r) => num(r, 'pat_made')), C('pts', 'Pts', kickPoints)],
+    streaks: [
+      { id: 'fg', label: 'Games with a field goal', test: (g) => rowFg(g.r).m39 + rowFg(g.r).m49 + rowFg(g.r).m50 > 0 },
+      { id: 'perfect', label: 'Games without a miss', test: (g) => rowFg(g.r).missed === 0 && num(g.r, 'pat_att') === num(g.r, 'pat_made'), skip: (g) => rowFg(g.r).m39 + rowFg(g.r).m49 + rowFg(g.r).m50 + rowFg(g.r).missed + num(g.r, 'pat_att') === 0 },
+      { id: '40', label: 'Games with a 40+ yard field goal', test: (g) => rowFg(g.r).m49 + rowFg(g.r).m50 > 0 },
+      { id: '10p', label: 'Games with 10+ points', test: (g) => kickPoints(g.r) >= 10 },
+    ],
+  },
 };
 RULES.TE = { ...RULES.WR };
 RULES.LB = RULES.DL;
@@ -160,6 +176,7 @@ const defScore = (r: GameRow) =>
 export const scoreOf = (pos: Position, r: GameRow): number => {
   if (pos === 'OL') return num(r, 'pf') - num(r, 'pa');
   if (pos === 'DL' || pos === 'LB' || pos === 'DB') return Math.round(defScore(r) * 10) / 10;
+  if (pos === 'K') return kickPoints(r);
   const f = r['fantasy_points_ppr'];
   return typeof f === 'number' ? f : 0;
 };

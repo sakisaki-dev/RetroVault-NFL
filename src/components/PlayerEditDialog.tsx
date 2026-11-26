@@ -54,7 +54,7 @@ interface PlayerEditDialogProps {
   onDelete?: () => void;
 }
 
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 const getPositionStats = (position: Position): string[] => {
   switch (position) {
@@ -67,6 +67,8 @@ const getPositionStats = (position: Position): string[] => {
       return ['receptions', 'recYds', 'recTD', 'fumbles', 'longest'];
     case 'OL':
       return ['blocks'];
+    case 'K':
+      return ['fgMade', 'fgAtt', 'fgMade39', 'fgAtt39', 'fgMade49', 'fgAtt49', 'fgMade50', 'fgAtt50', 'xpMade', 'xpAtt', 'longest'];
     case 'LB':
     case 'DB':
     case 'DL':

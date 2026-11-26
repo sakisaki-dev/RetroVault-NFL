@@ -21,6 +21,7 @@ import ClubSeasonFacing from './ClubSeasonFacing';
 import ClubSeasonLineup from './ClubSeasonLineup';
 import ClubSeasonInk from './ClubSeasonInk';
 import ClubSeasonDraft from './ClubSeasonDraft';
+import ClubSeasonSpecial from './ClubSeasonSpecial';
 import { openCollege } from '@/utils/collegeData';
 import { Section, accentOn, inkOn, liftOnNight } from './ClubSeasonSection';
 import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './ClubSeasonParts';
@@ -267,6 +268,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
                         <Leaders rows={rows} club={club} year={year} onPick={pick} />
                       </Section>
                       <ClubSeasonInk club={abbr} season={year} onPick={pick} />
+                      <ClubSeasonSpecial st={data.special} club={club} year={year} onPick={pick} />
                       {data.cap?.clubs[abbr] && year <= data.cap.lastSigned && (
                         <Section title="The cap" note="contracts in force">
                           <CapBreakdown cap={data.cap} club={abbr} clubName={team.name} year={year} />

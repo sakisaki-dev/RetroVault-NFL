@@ -41,7 +41,7 @@ export const DeskPicker = ({ model, cards, taken, onPick, label, big }: { model:
   const index = useMemo(() => buildSearchIndex(pool.map((x) => x.pl), { formerNames: extras.formerNames }), [pool, extras]);
   const positions = useMemo(() => {
     const have = new Set(pool.map((x) => x.pl.position));
-    return (['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'] as Position[]).filter((p) => have.has(p));
+    return (['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'] as Position[]).filter((p) => have.has(p));
   }, [pool]);
   const list = useMemo((): { label: string; players: Player[] } => {
     if (!open) return { label: '', players: [] };

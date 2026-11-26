@@ -3,6 +3,7 @@ import { rowsOf } from '@/utils/gameLogs';
 import type { InjuryCode } from '@/utils/injuries';
 import type { LabFile, UpcomingGame } from '@/utils/nflLabData';
 import { rng } from '@/utils/teamLab';
+import { kickPoints } from '@/utils/kicking';
 
 /**
  * NFL edition fantasy engine (pure): scoring, rule-based weekly projections, the salary-cap builder and the snake draft.
@@ -14,7 +15,7 @@ import { rng } from '@/utils/teamLab';
  * last eight games, scaled by how well the opponent scores.
  */
 
-export type FPos = 'QB' | 'RB' | 'WR' | 'TE';
+export type FPos = 'QB' | 'RB' | 'WR' | 'TE' | 'K';
 export interface FSlot {
   id: string;
   label: string;
@@ -28,6 +29,7 @@ export const F_SLOTS: FSlot[] = [
   { id: 'wr2', label: 'WR', positions: ['WR'] },
   { id: 'te1', label: 'TE', positions: ['TE'] },
   { id: 'flex', label: 'FLEX', positions: ['RB', 'WR', 'TE'] },
+  { id: 'k', label: 'K', positions: ['K'] },
   { id: 'dst', label: 'D/ST', positions: ['DST'] },
 ];
 export type FLineup = Record<string, string>;
@@ -83,6 +85,8 @@ export const pointsOf = (f: number[], s: Scoring): number =>
 /** The same for one game-log row (nflverse column names). */
 export const rowPoints = (r: Record<string, number | string | null>, s: Scoring): number => {
   const n = (c: string) => Number(r[c] ?? 0) || 0;
+  // a kicker's week: the row carries field goals by distance (nflverse scores none for him)
+  if ('fg_made_0_19' in r || 'pat_made' in r || 'fg_made_40_49' in r || 'fg_missed_30_39' in r) return kickPoints(r);
   return pointsOf(
     [n('passing_yards'), n('passing_tds'), n('passing_interceptions'), n('rushing_yards'), n('rushing_tds'), n('receptions'), n('receiving_yards'), n('receiving_tds'), n('fumbles_lost_total'), n('passing_2pt_conversions') + n('rushing_2pt_conversions') + n('receiving_2pt_conversions')],
     s,
@@ -158,7 +162,10 @@ export const projectWeek = (c: Ctx, key: string, week: number): number => {
   const vs = c.lab.teams[g.opp]?.vs?.[fPos(key) as string] ?? 1;
   // small samples drift toward the position's middling line: a rookie with 3 games is not a 25-point back
   const conf = lp.n / (lp.n + 2);
-  return Math.max(0, pointsOf(lp.f, c.scoring)) * vs * injuryFactor(c.injured.get(key), weekIndex) * (0.6 + 0.4 * conf);
+  // a kicker's weighted per-game points (3 / 4 / 5 a field goal by distance, 1 an extra point, -1 a miss: the scoring
+  // settings do not apply to him), from lab.json `kp`
+  const base = fPos(key) === 'K' ? lp.kp ?? 0 : pointsOf(lp.f, c.scoring);
+  return Math.max(0, base) * vs * injuryFactor(c.injured.get(key), weekIndex) * (0.6 + 0.4 * conf);
 };
 /** The next `k` weeks (default 4) summed: the auto-builder's value. */
 export const projectRest = (c: Ctx, key: string, k = 4) => c.sched.weeks.slice(0, k).reduce((s, w) => s + projectWeek(c, key, w), 0);
@@ -188,7 +195,7 @@ export const candidates = (c: Ctx): Cand[] => {
   const out: Cand[] = [];
   Object.entries(c.lab.p).forEach(([key, lp]) => {
     const pos = fPos(key);
-    if (pos === 'DST' || !['QB', 'RB', 'WR', 'TE'].includes(pos) || lp.n < 3 || lp.s <= 0) return;
+    if (pos === 'DST' || !['QB', 'RB', 'WR', 'TE', 'K'].includes(pos) || lp.n < 3 || lp.s <= 0) return;
     const value = projectRest(c, key);
     if (value > 0) out.push({ key, pos, salary: lp.s, value, club: lp.t });
   });
@@ -206,7 +213,7 @@ export interface BuildOpts {
   locks: FLineup;
   excludes: Set<string>;
 }
-const ORDER = ['dst', 'qb', 'te1', 'wr1', 'wr2', 'rb1', 'rb2', 'flex'];
+const ORDER = ['dst', 'k', 'qb', 'te1', 'wr1', 'wr2', 'rb1', 'rb2', 'flex'];
 export const buildBest = (cands: Cand[], { cap, locks, excludes }: BuildOpts): { lineup: FLineup; cost: number; value: number } | null => {
   const byKey = new Map(cands.map((x) => [x.key, x]));
   const slotCands = (slot: FSlot) => cands.filter((x) => canFill(slot, x.key) && !excludes.has(x.key));
@@ -285,10 +292,10 @@ export interface DraftState {
   picks: DraftPick[];
   seed: number;
 }
-export const DRAFT_ROUNDS = 8;
+export const DRAFT_ROUNDS = 9;
 export const draftOrder = (teams: number): number[] => Array.from({ length: DRAFT_ROUNDS }, (_, r) => (r % 2 === 0 ? [...Array(teams).keys()] : [...Array(teams).keys()].reverse())).flat();
 export const onClock = (d: DraftState): number | null => (d.picks.length >= d.teams * DRAFT_ROUNDS ? null : draftOrder(d.teams)[d.picks.length]);
-const CAP: Record<string, number> = { QB: 1, RB: 3, WR: 3, TE: 2, DST: 1 };
+const CAP: Record<string, number> = { QB: 1, RB: 3, WR: 3, TE: 2, K: 1, DST: 1 };
 export const teamPicks = (d: DraftState, team: number) => d.picks.filter((p) => p.team === team).map((p) => p.key);
 export const canDraft = (d: DraftState, team: number, key: string) => {
   const mine = teamPicks(d, team);
@@ -296,14 +303,14 @@ export const canDraft = (d: DraftState, team: number, key: string) => {
   if (mine.filter((k) => fPos(k) === pos).length >= CAP[pos]) return false;
   // flex: at most 3 RB + WR + TE beyond the required starters
   const flexOk = mine.filter((k) => ['RB', 'WR', 'TE'].includes(fPos(k))).length < 6;
-  return pos === 'QB' || pos === 'DST' || flexOk;
+  return pos === 'QB' || pos === 'DST' || pos === 'K' || flexOk;
 };
 /** Value over replacement: his rest-of-season projection minus the 10th best at the position (QB 12th), the CPU's board. */
 export const boardOf = (cands: Cand[]) => {
   const rep: Record<string, number> = {};
-  (['QB', 'RB', 'WR', 'TE', 'DST'] as const).forEach((pos) => {
+  (['QB', 'RB', 'WR', 'TE', 'K', 'DST'] as const).forEach((pos) => {
     const v = cands.filter((c) => c.pos === pos).map((c) => c.value).sort((a, b) => b - a);
-    rep[pos] = v[Math.min(v.length - 1, pos === 'QB' ? 11 : pos === 'DST' ? 9 : pos === 'TE' ? 9 : 17)] ?? 0;
+    rep[pos] = v[Math.min(v.length - 1, pos === 'QB' ? 11 : pos === 'DST' || pos === 'K' ? 9 : pos === 'TE' ? 9 : 17)] ?? 0;
   });
   return cands.map((c) => ({ ...c, vorp: c.value - rep[c.pos] })).sort((a, b) => b.vorp - a.vorp);
 };
@@ -332,6 +339,8 @@ export const lineupFromPicks = (keys: string[], value: (k: string) => number): F
   if (tes[0]) l.te1 = tes[0];
   const flex = [rbs[2], wrs[2], tes[1]].filter(Boolean).sort((a, b) => value(b) - value(a))[0];
   if (flex) l.flex = flex;
+  const kk = by('K')[0];
+  if (kk) l.k = kk;
   const dst = by('DST')[0];
   if (dst) l.dst = dst;
   return l;
