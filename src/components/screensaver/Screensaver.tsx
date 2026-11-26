@@ -2529,6 +2529,20 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   };
 
   const shown = [prev, idx].filter((i): i is number => i !== null && !!scenes[i]);
+  // live games own the screen: the normal show stops underneath (owner: "it buffers with the actual screensaver behind
+  // it"), and on open it waits a moment for the first scoreboard so it doesn't flash a normal scene first
+  const [liveOn, setLiveOn] = useState(false);
+  const [liveHold, setLiveHold] = useState(() => IS_NFL && liveMode !== 'off');
+  useEffect(() => {
+    if (!liveHold) return;
+    const t = window.setTimeout(() => setLiveHold(false), 2500);
+    return () => window.clearTimeout(t);
+  }, [liveHold]);
+  const onLiveShown = useCallback((on: boolean) => {
+    setLiveOn(on);
+    if (on) setLiveHold(false);
+  }, []);
+  const deckOff = liveOn || liveHold;
 
   return (
     <div
@@ -2536,12 +2550,12 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       className={`sv ${lite ? 'sv--lite' : ''} ${wind >= 0.1 ? 'sv--windy' : ''} ${resting ? 'sv--rest' : ''}`}
       style={{ '--sv-wind': wind } as CSSProperties}
       role="dialog" aria-modal="true" aria-label="Screensaver: press any key to return">
-      {!asleep && shown.map((i) => (
+      {!asleep && !deckOff && shown.map((i) => (
         <div key={`${i}-${scenes[i].kind}`} className={i === idx ? 'sv-slide sv-slide--in' : 'sv-slide sv-slide--out'} style={{ '--sv-dur': `${SCENE_MS}ms` } as CSSProperties}>
           {render(scenes[i])}
         </div>
       ))}
-      {!asleep && IS_NFL && liveMode !== 'off' && <LiveShow mode={liveMode} deps={saverDeps} players={players} />}
+      {!asleep && IS_NFL && liveMode !== 'off' && <LiveShow mode={liveMode} deps={saverDeps} players={players} onShown={onLiveShown} />}
       {!asleep && fx && fx !== 'clear' && fx !== 'cloud' && (
         <span className={`sv-weather sv-weather--${fx}`} aria-hidden="true">
           {(fx === 'rain' || fx === 'storm') && <Rain />}
