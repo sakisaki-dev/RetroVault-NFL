@@ -171,23 +171,7 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
     />
   );
 
-  // One control: on Deep Dive the pick loads there; anywhere else it opens the player's card (Deep Dive is one click from the card).
-  const search = (
-    <div className="min-w-0 [&_[role=combobox]]:h-10">
-      <PlayerSearchSelect showOvr
-        players={sorted}
-        value=""
-        onValueChange={(key) => {
-          const p = sorted.find((x) => keyOf(x) === key);
-          if (!p) return;
-          if (sub === 'deepdive') openInCompFinder(p);
-          else onOpenPlayer(p);
-        }}
-        placeholder={sub === 'deepdive' ? 'Deep Dive on a player…' : 'Find a player…'}
-        ariaLabel={sub === 'deepdive' ? 'Load a player in the Deep Dive' : "Open a player's card"}
-      />
-    </div>
-  );
+  // no search of its own: the site header's search is right above (owner: "remove the find a player search bar in the stats page")
 
   return (
     <div ref={rootRef} className="rv-stats" data-swipe-pending={litSub !== sub ? '' : undefined} style={{ ['--stats-bar-h' as string]: `${offset.bar}px` }}>
@@ -202,11 +186,8 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
             Stats
           </span>
           {tabs}
-          {sub !== 'deepdive' && <div className="hidden w-[min(380px,36vw)] shrink-0 md:block">{search}</div>}
         </div>
       </div>
-      {/* Small tablets: the search scrolls with the page so the pinned bar stays one row tall (phones use the header search). */}
-      {sub !== 'deepdive' && <div className="container pt-3 max-sm:hidden md:hidden">{search}</div>}
 
       <div style={total ? { ['--site-header-h' as string]: `${total}px` } : undefined}>{children}</div>
     </div>

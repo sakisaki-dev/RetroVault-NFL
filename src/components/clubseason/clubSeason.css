@@ -33,8 +33,9 @@
    width; the X stays from 640px, where the sheet is a centred dialog */
 /* the drag handle has its own 24px strip above the pill */
 @media (max-width: 639px) { .cs-bar-top { padding-right: 12px; padding-top: 26px; } }
-.cs-bar-top .cs-tabs { display: flex; }
-.cs-bar-top .cs-tabs .ax-seg { flex: 1 1 0; justify-content: center; text-align: center; }
+/* the shared page tabs run the full width of the sheet, tabs sharing it evenly */
+.cs-bar-top .cs-tabs { display: block; width: 100%; }
+.cs-bar-top .cs-tabs > ul { width: 100%; }
 .cs-years {
   display: flex;
   gap: 6px;
