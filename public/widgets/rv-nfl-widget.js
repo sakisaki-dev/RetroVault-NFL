@@ -4,7 +4,7 @@
 //
 //   1  the club's game is live        the live game (score bug, drive, field, leaders, team stats, win chance), read from
 //                                     ESPN's public scoreboard and the game's summary
-//   2  any other game is live         the same view for it (several at once take turns each refresh, tightest first)
+//   2  any other game is live         one game: the same view for it; several: the score ticker (1b) with all of them
 //   3  Sunday with games on           the slate (large) or the score ticker (medium, small)
 //   4  within 12 hours after the game the final with its stars and the playoff odds change
 //   5  the day before                 the preview: the opponent, kickoff, win chance
@@ -502,13 +502,10 @@ function decide(data, board) {
   const mineFinal = mine && mine.state === 'post' && NOWMS - mine.kick < GAME_LEN + FINAL_WINDOW ? mine : null;
   let mode = null, game = null;
   if (mineLive) { mode = 'live'; game = mineLive; }
-  // every live game is followed (owner: "it needs to follow all games"): one game on = that game; several = the club's
-  // first, else they take turns each 5-minute refresh, the tightest game (closest score, latest quarter) first
-  else if (live.length) {
-    mode = 'live';
-    const order = live.slice().sort((a, b) => (prime(b) ? 1 : 0) - (prime(a) ? 1 : 0) || Math.abs(a.away.score - a.home.score) - Math.abs(b.away.score - b.home.score) || b.period - a.period || a.kick - b.kick);
-    game = order[Math.floor(NOWMS / (5 * MIN)) % order.length];
-  }
+  // every live game is followed (owner: "it needs to follow all games"): one game on = its live view; several = the
+  // score ticker (concepts 1b, the one the owner liked) with every live game on it
+  else if (live.length === 1) { mode = 'live'; game = live[0]; }
+  else if (live.length > 1) { mode = 'slate'; }
   else if (board && sunday && board.some(kickToday) && !mineFinal) { mode = 'slate'; }
   else if (mineFinal) { mode = 'final'; game = mineFinal; }
   else if (!mineFinal && !board && lk && NOWMS - lk > 0 && NOWMS - lk < GAME_LEN + FINAL_WINDOW && NOWMS - lk > GAME_LEN) { mode = 'final'; game = null; }
@@ -1052,13 +1049,13 @@ const tickStyle = (names) => {
   if (m && names.includes(m[1].toLowerCase())) return m[1].toLowerCase();
   return names[Math.floor(NOWMS / (15 * MIN)) % names.length];
 };
-/** The live views keep the pixel score bug (owner: the classic layout is "the 1a version that we didn't want"); the
- * Parameter's `classic` still pins the old one */
+/** One live game: the "Game in progress" designs (concepts section 1). The 1a score bug is the one the owner didn't
+ * want ("the widget that is live is the 1a version ... not a fan"), so it shows only when the Parameter says `bug` */
 const liveStyle = (names) => {
   if (FORCE.style && names.includes(FORCE.style)) return FORCE.style;
   const m = /\b(bug|classic)\b/i.exec(PARAM);
   if (m && names.includes(m[1].toLowerCase())) return m[1].toLowerCase();
-  return 'bug';
+  return names.includes('classic') ? 'classic' : names.includes('live') ? 'live' : names[0];
 };
 function winChance(ctx, g, club) {
   const s = winSeries(ctx.summary, g, g.home.abbr === club || g.away.abbr === club ? club : g.home.abbr);
@@ -1082,7 +1079,7 @@ function liveHead(dc, x, y, w, g, data, short) {
 }
 async function liveMedium(data, ctx) {
   const sz = widgetSize('medium');
-  const style = liveStyle(['classic', 'shot', 'bug']);
+  const style = liveStyle(['classic', 'bug']);
   const L = await liveCommon(data, ctx);
   const { g, A } = L;
   const club = data.club.abbr;
@@ -2126,7 +2123,8 @@ async function render(data, ctx) {
     return FAMILY === 'medium' ? liveMedium(data, ctx) : liveSmall(data, ctx);
   }
   if (ctx.mode === 'slate') {
-    if (FAMILY === 'large') return tickStyle(['slate', 'bottom']) === 'bottom' ? slateLargeBottom(data, ctx) : slateLarge(data, ctx);
+    // games on now: the 1b bottom line; a Sunday before kickoff: the slate
+    if (FAMILY === 'large') return (ctx.live && ctx.live.length) || tickStyle(['slate', 'bottom']) === 'bottom' ? slateLargeBottom(data, ctx) : slateLarge(data, ctx);
     return FAMILY === 'medium' ? slateMedium(data, ctx) : slateSmall(data, ctx);
   }
   if (ctx.mode === 'final' && ctx.game) return FAMILY === 'large' ? finalLarge(data, ctx) : FAMILY === 'medium' ? finalMedium(data, ctx) : finalSmall(data, ctx);
