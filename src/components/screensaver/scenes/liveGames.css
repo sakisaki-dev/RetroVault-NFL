@@ -140,3 +140,7 @@
   .sv-lg__confetti { display: none; }
   .sv-lg__marker, .sv-lg__winh, .sv-lg__wina { transition: none; }
 }
+
+/* weather over the live scenes: the layer (z 19) sits above .sv-live (z 2) and its flakes are already soft;
+   a roofed Game Day stadium keeps rain and snow out of the picture (the weather corner still shows the local weather) */
+.sv:has(.sv-live [data-dome="1"]) .sv-weather { visibility: hidden; }

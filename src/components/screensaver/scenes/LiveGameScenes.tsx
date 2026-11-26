@@ -275,6 +275,11 @@ const rollFor = (g: LiveGame, now: number) => {
   return h >= 19 || h < 3 ? 0.9 : h >= 16 ? 0.4 : 0.1;
 };
 
+/** The stadium picture for a game: a roof is a dome (nothing falls inside it, the corner still shows the local weather),
+ * snow only while the weather is snow (real or forced), else the time of day */
+const gameLook = (g: LiveGame, roll: number, fx?: string | null): 'day' | 'dusk' | 'night' | 'snow' | 'dome' =>
+  g.indoor ? 'dome' : fx === 'snow' ? 'snow' : roll < 0.3 ? 'day' : roll < 0.55 ? 'dusk' : 'night';
+
 /* ---------- Game Day ---------- */
 export const GameDayScene = ({ g, detail, events, deps, players, ms }: { g: LiveGame; detail?: LiveDetail; events: ScoreEvent[]; deps: SaverDeps; players: Player[]; ms: number }) => {
   const now = useNow(500);
@@ -294,8 +299,8 @@ export const GameDayScene = ({ g, detail, events, deps, players, ms }: { g: Live
   const wxLine = [g.venue, g.indoor ? 'Roof' : 'Open air', g.weather].filter(Boolean).join(' · ');
   const { Stadium } = deps;
   return (
-    <Stadium club={g.home.name} roll={rollFor(g, now)}>
-      <div className={`sv-lg ${rz ? 'is-rz' : ''}`} style={{ ...teamVars(g.away.abbr, g.home.abbr), '--sv-dur': `${ms}ms` } as CSSProperties}>
+    <Stadium club={g.home.name} roll={rollFor(g, now)} look={gameLook(g, rollFor(g, now), deps.fx)}>
+      <div className={`sv-lg ${rz ? 'is-rz' : ''}`} data-dome={g.indoor ? '1' : undefined} style={{ ...teamVars(g.away.abbr, g.home.abbr), '--sv-dur': `${ms}ms` } as CSSProperties}>
         {rz && <span className="sv-lg__vig" aria-hidden="true" />}
         <p className="sv-lg__kick">
           <Live /> <span>Game day</span> <span>{quarterWord(g)}</span> {wxLine && <span className="sv-lg__wx">{wxLine}</span>}

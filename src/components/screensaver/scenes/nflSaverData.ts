@@ -117,7 +117,9 @@ export const sample = <T,>(xs: T[], n: number): T[] => {
 };
 export const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 export type SaverDeps = {
-  Stadium: React.ComponentType<{ club: string; roll: number; children?: React.ReactNode; className?: string }>;
+  Stadium: React.ComponentType<{ club: string; roll: number; children?: React.ReactNode; className?: string; look?: 'day' | 'dusk' | 'night' | 'snow' | 'dome' }>;
+  /** the weather effect over the show now (real or forced): 'snow', 'rain', 'storm' or null */
+  fx?: string | null;
   lookFor: (club: string, roll: number) => 'day' | 'dusk' | 'night' | 'snow' | 'dome';
   sprites: boolean;
   lookup: Lookup;
