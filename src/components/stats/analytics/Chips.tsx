@@ -15,12 +15,14 @@ const Chips = <T extends string>({
   onChange,
   label,
   className,
+  fill,
 }: {
   options: Option<NoInfer<T>>[];
   value: T;
   onChange: (v: NoInfer<T>) => void;
   label: string;
   className?: string;
-}) => <Choice label={label} value={value} onChange={onChange} options={options} className={className} />;
+  fill?: boolean;
+}) => <Choice label={label} value={value} onChange={onChange} options={options} className={className} fill={fill} />;
 
 export default Chips;

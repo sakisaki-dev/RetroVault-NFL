@@ -308,14 +308,15 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
           </label>
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        <Chips label="Era" value={era} onChange={setEra} options={ERAS.map((e) => ({ value: e.id, label: e.id === 'all' ? 'All eras' : e.id, title: e.id === 'all' ? undefined : 'By the middle of his career' }))} />
-        <Chips label="Status" value={status} onChange={setStatus} options={[{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'retired', label: 'Retired' }]} />
+      <div className="grid grid-cols-1 gap-1.5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-3">
+        <Chips fill label="Era" value={era} onChange={setEra} options={ERAS.map((e) => ({ value: e.id, label: e.id === 'all' ? 'All eras' : e.id, title: e.id === 'all' ? undefined : 'By the middle of his career' }))} />
+        <Chips fill label="Status" value={status} onChange={setStatus} options={[{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'retired', label: 'Retired' }]} />
         <Chips
+          fill
           label="Qualified"
           value={qualified ? 'on' : 'off'}
           onChange={(v) => setQualified(v === 'on')}
-          options={[{ value: 'on', label: `Starters (${qMin}+ G)`, title: 'Players with enough games to trust their rates' }, { value: 'off', label: 'Everyone' }]}
+          options={[{ value: 'on', label: 'Starters', title: `Players with ${qMin}+ games, enough to trust their rates` }, { value: 'off', label: 'Everyone' }]}
         />
       </div>
 
@@ -403,10 +404,10 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
           ))}
         </svg>
       </div>
-      <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
-        <span><span className="inline-block h-2 w-2 rounded-sm" style={{ background: 'rgba(57,135,229,.55)' }} /> the other {view.n.toLocaleString()} {pos}s (darker = more)</span>
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground" title="Darker = more players. Squares are his nearest comps; a gold rim marks a Hall of Famer.">
+        <span><span className="inline-block h-2 w-2 rounded-sm" style={{ background: 'rgba(57,135,229,.55)' }} /> {view.n.toLocaleString()} {pos}s</span>
         <span><span className="inline-block h-2 w-2 rounded-sm bg-gold" /> him</span>
-        <span>squares: his {Math.min(N_NEIGHBOURS, view.near.length)} nearest, gold rim = Hall of Famer</span>
+        <span>squares: nearest comps</span>
       </p>
 
       <div className="rounded-lg border border-gold/25 bg-gold/5 p-2.5 text-sm">

@@ -14,3 +14,10 @@
 /* the card hint: desktop only, pushed to the row's end */
 .dd-facts__hint { margin-left: auto; border: 0 !important; background: none !important; padding: 0 !important; color: hsl(var(--muted-foreground)); font-size: 12px; }
 @media (max-width: 767px) { .dd-facts__hint { display: none !important; } }
+/* club logos on these dark pills sit on a solid light disc, so the Jets' and Rams' dark marks read */
+.dd-facts .logo-backed, .dd-path .logo-backed { background: #eef1f8; box-shadow: 0 0 0 2px #eef1f8; filter: none; }
+/* phones: each row's pills share the row's width (no ragged right edge) */
+@media (max-width: 767px) {
+  .dd-facts > *, .dd-path > *, .dd-path li > * { flex: 1 1 auto; justify-content: center; min-width: 0; }
+  .dd-path li { display: contents; }
+}

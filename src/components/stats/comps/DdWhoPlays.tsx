@@ -1,7 +1,7 @@
 import { ovrLabelOf } from '@/utils/useOfficialOvr';
 import { InfoTip, NoteChip } from '@/components/ui/InfoTip';
 import { useState } from 'react';
-import { Hexagon, Swords } from 'lucide-react';
+import { ArrowUpRight, Hexagon, Swords } from 'lucide-react';
 import type { Player } from '@/types/player';
 import { SIMILARITY_DEFINITIONS, SIMILARITY_LABELS, type Comp, type SimilarityMode } from '@/config/advanced';
 import { isHallOfFamer } from '@/config/stats';
@@ -103,8 +103,8 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           <span className={cn('font-display text-lg font-extrabold tabular-nums', on ? 'text-gold' : 'text-muted-foreground')}>{i + 1}</span>
           {c.player.team ? <TeamLogo team={c.player.team} size={24} decorative backed /> : <span className="w-6" />}
           <span className="flex min-w-0 flex-col">
-            <span className="flex min-w-0 items-center gap-x-1 max-sm:flex-wrap">
-              <span className="truncate text-sm font-semibold max-sm:whitespace-normal max-sm:leading-tight">{displayName(c.player.name)}</span>
+            <span className="flex min-w-0 items-center gap-x-1">
+              <span className="truncate text-sm font-semibold">{displayName(c.player.name)}</span>
               {nfl ? (
                 <span className="shrink-0 rounded bg-red-500/15 px-1 font-pixel text-[8px] uppercase text-red-300 ring-1 ring-red-400/40">NFL</span>
               ) : (
@@ -152,11 +152,12 @@ const DdWhoPlays = ({ player, model, mode, onMode, comps, topSets, overlay, onOv
           <button
             type="button"
             onClick={() => onDive(c.player)}
-            className="h-8 rounded-md px-1.5 text-[11px] font-semibold text-muted-foreground hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            className="inline-flex h-8 items-center gap-0.5 rounded-md px-1.5 text-[11px] font-semibold text-muted-foreground hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold max-sm:w-8 max-sm:justify-center max-sm:border max-sm:border-line max-sm:bg-night/60 max-sm:px-0"
             aria-label={`Deep dive into ${displayName(c.player.name)}`}
             title={`Deep dive into ${displayName(c.player.name)}`}
           >
-            Dive
+            <span className="max-sm:hidden">Dive</span>
+            <ArrowUpRight className="h-3.5 w-3.5 sm:hidden" aria-hidden="true" />
           </button>
           <button
             type="button"

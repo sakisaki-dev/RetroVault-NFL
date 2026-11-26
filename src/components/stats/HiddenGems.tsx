@@ -134,7 +134,7 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
         {list.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">Nobody fits right now.</p>
         ) : (
-          <ol className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <ol className="grid grid-cols-[minmax(0,1fr)] gap-2 md:grid-cols-2">
             {list.map((g, i) => (
               <li key={playerKey(g.player)} className="min-w-0">
                 <button
@@ -142,18 +142,18 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
                   {...peekProps(g.player)}
                   onClick={() => onSelect(g.player)}
                   aria-label={`${displayName(g.player.name)}, ${g.player.position}: overall ${g.ovr}, skill rating ${g.skill} (${g.grade.grade}), ${g.gap} points higher. Open card`}
-                  className="cs-card group flex w-full items-center gap-3 rounded-lg border border-line bg-night/40 px-3 py-2.5 text-left transition-colors hover:border-gold/60 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  className="cs-card group flex w-full min-w-0 items-center gap-3 rounded-lg border border-line bg-night/40 px-3 py-2.5 max-sm:gap-2 max-sm:px-2 text-left transition-colors hover:border-gold/60 hover:bg-panel-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   style={clubStyle(g.player)}
                 >
-                  <span className="w-5 shrink-0 text-center font-display text-lg font-extrabold italic text-muted-foreground">{i + 1}</span>
+                  <span className="w-4 shrink-0 text-center font-display text-lg max-sm:text-base font-extrabold italic text-muted-foreground">{i + 1}</span>
                   {/* the gem himself, in his club's kit (the club logo in the public build) */}
-                  <StageFigure player={g.player} action="idle" className="!relative !bottom-auto !right-auto !h-14 !w-14 shrink-0" />
+                  <StageFigure player={g.player} action="idle" className="!relative !bottom-auto !right-auto !h-14 !w-14 shrink-0 max-sm:!h-11 max-sm:!w-11" />
                   <span className="min-w-0 flex-1">
-                    <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="max-w-full truncate font-semibold group-hover:text-gold">{displayName(g.player.name)}</span>
+                    <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span className="min-w-0 max-w-full flex-1 basis-[7rem] truncate font-semibold group-hover:text-gold">{displayName(g.player.name)}</span>
                       <PositionBadge position={g.player.position} />
                       {g.player.games < SMALL_SAMPLE && (
-                        <span className="shrink-0 rounded bg-panel-2 px-1.5 py-0.5 font-pixel text-[8px] uppercase text-muted-foreground" title="Under 32 games: rates can still swing">
+                        <span className="shrink-0 rounded bg-panel-2 px-1.5 py-0.5 font-pixel text-[8px] uppercase text-muted-foreground max-sm:basis-auto" title="Under 32 games: rates can still swing">
                           small sample
                         </span>
                       )}
@@ -168,7 +168,7 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
                       <span>
                         {g.player.games} G{g.best && <> · Best: {g.best}</>}
                       </span>
-                      <span className="shrink-0 tabular-nums">
+                      <span className="min-w-0 truncate tabular-nums">
                         {ovrLabelOf(g.player)} <b className="text-chalk">{g.ovr}</b> → Skill <b className="text-gold">{g.skill}</b>
                       </span>
                     </span>
