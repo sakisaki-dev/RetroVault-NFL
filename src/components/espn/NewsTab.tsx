@@ -20,6 +20,7 @@ import { keyOfPlayer } from '@/utils/playerSearch';
 import { ArticleReader } from './ArticleReader';
 import { GROUPS, KIND_ACCENT, SCENE_KIND, agoParts, kindOf, openDeepDive, useNewsPlayers } from './newsData';
 import { FillGrid } from './FillGrid';
+import { InjuryDesk } from './InjuryDesk';
 import '@/components/news/news-art.css';
 import '@/components/news/story.css';
 import '@/components/news/takes.css';
@@ -99,8 +100,8 @@ const FadeImg = ({ src }: { src: string }) => {
   return <img src={src} alt="" loading="lazy" className={cn('en-fade', on && 'en-fade--on')} onLoad={() => setOn(true)} ref={(el) => { if (el?.complete && el.naturalWidth && !on) setOn(true); }} />;
 };
 
-const VideoCard = ({ it, onRead, i, style }: { it: NewsItem; onRead: (it: NewsItem) => void; i: number; style?: CSSProperties }) => (
-  <li ref={useReveal<HTMLLIElement>()} className="en-vid mo-auto" style={{ ...teamVars(it.teams[0]), '--k': KIND_ACCENT.video, '--i': Math.min(i, 5), ...style } as CSSProperties}>
+const VideoCard = ({ it, onRead, i, style, big }: { it: NewsItem; onRead: (it: NewsItem) => void; i: number; style?: CSSProperties; big?: boolean }) => (
+  <li ref={useReveal<HTMLLIElement>()} className={cn('en-vid mo-auto', big && 'en-vid--big')} style={{ ...teamVars(it.teams[0]), '--k': KIND_ACCENT.video, '--i': Math.min(i, 5), ...style } as CSSProperties}>
     <button type="button" className="en-vid__btn" onClick={() => onRead(it)} aria-label={`Watch: ${it.headline}`}>
       <span className="en-vid__poster">
         {it.image && <FadeImg src={it.image.url} />}
@@ -180,17 +181,20 @@ const NewsTab = () => {
   const stories = shown.filter((i) => i.type !== 'Media' && i.type !== 'HeadlineNews');
   const ranked = useMemo(() => [...stories.filter((i) => !FILLER.includes(kindOf(i))), ...stories.filter((i) => FILLER.includes(kindOf(i)))], [stories]);
   // the lead: the newest real story with a photo and a tagged player (else any story, else a headline item)
-  const lead = ranked.find((i) => i.image && (cast.get(i.id)?.length ?? 0) > 0) ?? ranked[0] ?? hits[0];
+  const injuryMode = section === 'injury';
+  const lead = injuryMode ? undefined : ranked.find((i) => i.image && (cast.get(i.id)?.length ?? 0) > 0) ?? ranked[0] ?? hits[0];
   const rest = ranked.filter((i) => i !== lead);
-  const top = rest.slice(0, 3);
-  const more = rest.slice(3);
-  const quick = lead && lead.type === 'HeadlineNews' ? hits.filter((i) => i !== lead) : hits;
+  const top = injuryMode ? [] : rest.slice(0, 3);
+  const more = injuryMode ? rest : rest.slice(3);
+  const quick = injuryMode ? hits : lead && lead.type === 'HeadlineNews' ? hits.filter((i) => i !== lead) : hits;
   const wire = useMemo(() => items.slice(0, 8), [items]);
   // the feed under the lead, in labelled sections by article type (a single type when a section is picked)
   const groups = useMemo(
     () => GROUPS.map((g) => ({ ...g, items: more.filter((i) => g.kinds.includes(kindOf(i))) })).filter((g) => g.items.length),
     [more],
   );
+  // clips take the main column when the Video section is picked, or when a filter leaves nothing else to show there
+  const clipsMain = videos.length > 0 && !injuryMode && (section === 'video' || (!lead && groups.length === 0 && quick.length === 0));
   const order = useMemo(() => (lead ? [lead, ...top, ...more, ...quick, ...videos] : []), [lead, top, more, quick, videos]);
   const open = order.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null;
   const read = (it: NewsItem) => setOpenId(it.id);
@@ -294,9 +298,8 @@ const NewsTab = () => {
           </button>
         </div>
       )}
-      {!!items.length && !shown.length && <p className="en-state">Nothing in the news for that filter.</p>}
-
-      {shown.length > 0 && (
+      
+      {!!items.length && (
         <div className="ss-front" key={`${section}-${team}`}>
           {lead && (
             <article ref={leadReveal} className="ss-lead mo-auto en-lead" style={{ ...teamVars(leadClub), '--i': 0 } as CSSProperties}>
@@ -336,6 +339,43 @@ const NewsTab = () => {
             </article>
           )}
 
+          {injuryMode && (
+            <div className="en-main">
+              <InjuryDesk players={players} team={team} onTeam={setTeam} />
+            </div>
+          )}
+
+          {!injuryMode && !shown.length && (
+            <div className="en-main">
+              <div className="en-empty" role="status">
+                <p className="en-empty__t">
+                  {team !== 'all' && <TeamLogo team={team} size={22} decorative />}
+                  Nothing {section === 'all' ? '' : `in ${SECTIONS.find((x) => x.id === section)!.label} `}
+                  {team !== 'all' ? `for the ${team} ` : ''}right now.
+                </p>
+                <div className="en-state__row">
+                  {team !== 'all' && section !== 'all' && <button type="button" className="en-refresh" onClick={() => setSection('all')}>All {team} news</button>}
+                  {section !== 'all' && <button type="button" className="en-refresh" onClick={() => setTeam('all')}>All {SECTIONS.find((x) => x.id === section)!.label.toLowerCase()}</button>}
+                  {team !== 'all' && section === 'all' && <button type="button" className="en-refresh" onClick={() => setTeam('all')}>All teams</button>}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {clipsMain && (
+            <section className="ss-more en-section en-clips" aria-labelledby="en-clips-title" style={{ '--k': KIND_ACCENT.video } as CSSProperties}>
+              <Rubric id="en-clips-title" kicker={team !== 'all' ? team : 'Watch'} count={videos.length} icon={<Video className="h-4 w-4" aria-hidden="true" />} club={team !== 'all' ? team : undefined} big>Video</Rubric>
+              <FillGrid
+                items={videos}
+                minW={250}
+                max={3}
+                gap={14}
+                className="en-vids en-vids--main"
+                render={(it, i, cell) => <VideoCard key={it.id} it={it} i={i} onRead={read} style={cell.style} big />}
+              />
+            </section>
+          )}
+
           <aside className="ss-side">
             <div className="ss-side__in">
             {top.length > 0 && (
@@ -352,7 +392,7 @@ const NewsTab = () => {
               </section>
             )}
 
-              {videos.length > 0 && (
+              {videos.length > 0 && !clipsMain && (
                 <section className="ss-dyk en-mod en-mod--video" aria-labelledby="en-vid-title">
                   <Rubric id="en-vid-title" kicker="Watch" count={Math.min(videos.length, 8)} icon={<Video className="h-4 w-4" aria-hidden="true" />}>Video</Rubric>
                   <FillGrid
@@ -413,7 +453,7 @@ const NewsTab = () => {
             <div className="ss-more en-sections">
               {groups.map((g, gi) => (
                 <section key={g.id} className="en-section" aria-labelledby={`en-sec-${g.id}`} style={{ ...(team !== 'all' ? teamVars(team) : {}), '--k': KIND_ACCENT[g.kinds[0]] } as CSSProperties}>
-                  <Rubric id={`en-sec-${g.id}`} kicker={team !== 'all' ? team : `Section ${String(gi + 1).padStart(2, '0')}`} count={g.items.length} club={team !== 'all' ? team : undefined} big>
+                  <Rubric id={`en-sec-${g.id}`} kicker={injuryMode ? 'In the news' : team !== 'all' ? team : `Section ${String(gi + 1).padStart(2, '0')}`} count={g.items.length} club={team !== 'all' ? team : undefined} big>
                     {g.label}
                   </Rubric>
                   <FillGrid
