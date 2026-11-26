@@ -61,7 +61,10 @@ export function useSwipeTabs<T extends string | number>({
       const { values: vs, value: v, onChange: go } = live.current;
       const i = vs.indexOf(v);
       const next = vs[i + (dx < 0 ? 1 : -1)];
-      if (i >= 0 && next !== undefined) go(next);
+      if (i >= 0 && next !== undefined) {
+        (e as TouchEvent & { rvSwiped?: boolean }).rvSwiped = true; // the site-wide SwipeNav leaves it
+        go(next);
+      }
     };
     const cancel = () => { ok = false; };
     el.addEventListener('touchstart', start, { passive: true });

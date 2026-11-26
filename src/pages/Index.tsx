@@ -11,6 +11,7 @@ import PullToSearch from '@/components/PullToSearch';
 import AddToHomeScreen from '@/components/homescreen/AddToHomeScreen';
 import TabFallback from '@/components/TabFallback';
 import LazyHost, { whenSettled } from '@/components/LazyHost';
+import SwipeNav from '@/components/SwipeNav';
 import { OPEN_PLAYER_CARD_EVENT } from '@/utils/playerCardLink';
 import { QUICK_SEARCH_EVENT } from '@/utils/quickSearchEvent';
 import CeremonyHost from '@/components/ceremony/CeremonyHost';
@@ -181,6 +182,7 @@ const IndexContent = () => {
         {!IS_NFL && <RivalryHost onTimeline={() => navigate({ tab: 'timeline' })} />}
         <LazyHost load={loadQuickSearch} wake={QUICK_SEARCH_WAKE} wakeKey={quickSearchKey} />
         <LazyHost load={loadPeekLayer} wake={PEEK_WAKE} />
+        <SwipeNav />
         <ScreensaverHost />
         <LazyHost load={loadUnlockToasts} />
         <LazyHost load={loadLegendExchange} />

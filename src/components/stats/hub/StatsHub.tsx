@@ -231,7 +231,7 @@ const StatsHub = ({ sub, section, onSubChange, players, onOpenPlayer, onPrefetch
   }, []);
 
   const tabs = (
-    <nav aria-label="Stats sections" className="min-w-0 flex-1">
+    <nav aria-label="Stats sections" className="min-w-0 flex-1" data-swipe-nav>
       <ul ref={stripRef} className="flex items-stretch gap-1 overflow-x-auto scrollbar-none max-sm:gap-0.5">
         {SUB_TABS.map(({ id, label, short, Icon, blurb }) => {
           const active = id === lit;
