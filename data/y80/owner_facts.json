@@ -4,19 +4,40 @@
   "Tom Brady": {
    "status": "Retired"
   },
+  "Adam Vinatieri": {
+   "status": "Retired"
+  },
+  "Phil Dawson": {
+   "status": "Retired"
+  },
   "Drew Brees": {
+   "status": "Retired"
+  },
+  "Sebastian Janikowski": {
    "status": "Retired"
   },
   "Marcedes Lewis": {
    "status": "Retired"
   },
+  "Matt Prater": {
+   "status": "Retired"
+  },
   "Jason Witten": {
+   "status": "Retired"
+  },
+  "Nick Folk": {
+   "status": "Retired"
+  },
+  "Robbie Gould": {
    "status": "Retired"
   },
   "Larry Fitzgerald": {
    "status": "Retired"
   },
   "Julius Peppers": {
+   "status": "Retired"
+  },
+  "Mason Crosby": {
    "status": "Retired"
   },
   "Peyton Manning": {
@@ -28,6 +49,9 @@
   "Philip Rivers": {
    "status": "Retired"
   },
+  "Matt Bryant": {
+   "status": "Retired"
+  },
   "Terrell Suggs": {
    "status": "Retired"
   },
@@ -35,6 +59,9 @@
    "status": "Retired"
   },
   "Tony Gonzalez": {
+   "status": "Retired"
+  },
+  "David Akers": {
    "status": "Retired"
   },
   "Charles Woodson": {
@@ -70,10 +97,25 @@
   "Steve Smith": {
    "status": "Retired"
   },
+  "Stephen Gostkowski": {
+   "status": "Retired"
+  },
+  "Ryan Succop": {
+   "status": "Retired"
+  },
+  "Jason Hanson": {
+   "status": "Retired"
+  },
   "Lavonte David": {
    "status": "Retired"
   },
   "Champ Bailey": {
+   "status": "Retired"
+  },
+  "Rian Lindell": {
+   "status": "Retired"
+  },
+  "Jay Feely": {
    "status": "Retired"
   },
   "Karlos Dansby": {
@@ -82,10 +124,16 @@
   "Johnathan Joseph": {
    "status": "Retired"
   },
+  "Ryan Longwell": {
+   "status": "Retired"
+  },
   "Antoine Bethea": {
    "status": "Retired"
   },
   "Domata Peko Sr.": {
+   "status": "Retired"
+  },
+  "Graham Gano": {
    "status": "Retired"
   },
   "Reggie Wayne": {
@@ -97,6 +145,9 @@
   "Russell Wilson": {
    "status": "Retired"
   },
+  "Olindo Mare": {
+   "status": "Retired"
+  },
   "Anquan Boldin": {
    "status": "Retired"
   },
@@ -104,6 +155,9 @@
    "status": "Retired"
   },
   "Kareem Jackson": {
+   "status": "Retired"
+  },
+  "Josh Brown": {
    "status": "Retired"
   },
   "Eric Weddle": {
@@ -167,6 +221,9 @@
    "status": "Retired"
   },
   "Andre Johnson": {
+   "status": "Retired"
+  },
+  "Greg Zuerlein": {
    "status": "Retired"
   },
   "Tyson Alualu": {
@@ -256,6 +313,9 @@
   "Mike Peterson": {
    "status": "Retired"
   },
+  "Neil Rackers": {
+   "status": "Retired"
+  },
   "Kyle Williams (DL, Bills)": {
    "status": "Retired"
   },
@@ -265,6 +325,9 @@
   "Tyrann Mathieu": {
    "status": "Retired"
   },
+  "Kris Brown": {
+   "status": "Retired"
+  },
   "Thomas Jones": {
    "status": "Retired"
   },
@@ -272,6 +335,9 @@
    "status": "Retired"
   },
   "Lawrence Guy": {
+   "status": "Retired"
+  },
+  "Shayne Graham": {
    "status": "Retired"
   },
   "Nate Clements": {
@@ -331,6 +397,9 @@
   "Brandon Marshall": {
    "status": "Retired"
   },
+  "John Kasay": {
+   "status": "Retired"
+  },
   "Andre Carter": {
    "status": "Retired"
   },
@@ -350,6 +419,12 @@
    "status": "Retired"
   },
   "Lance Briggs": {
+   "status": "Retired"
+  },
+  "Josh Scobee": {
+   "status": "Retired"
+  },
+  "Mike Nugent": {
    "status": "Retired"
   },
   "Corey Graham": {
@@ -406,6 +481,12 @@
   "Derek Carr": {
    "status": "Retired"
   },
+  "Jason Elam": {
+   "status": "Retired"
+  },
+  "Matt Stover": {
+   "status": "Retired"
+  },
   "Jerricho Cotchery": {
    "status": "Retired"
   },
@@ -416,6 +497,9 @@
    "status": "Retired"
   },
   "Duron Harmon": {
+   "status": "Retired"
+  },
+  "John Carney": {
    "status": "Retired"
   },
   "Ryan Clark": {
@@ -434,6 +518,9 @@
    "status": "Retired"
   },
   "Anthony Fasano": {
+   "status": "Retired"
+  },
+  "Steven Hauschka": {
    "status": "Retired"
   },
   "Julio Jones": {
@@ -547,6 +634,9 @@
   "Isaac Bruce": {
    "status": "Retired"
   },
+  "Greg Ellis": {
+   "status": "Retired"
+  },
   "Bart Scott": {
    "status": "Retired"
   },
@@ -617,6 +707,9 @@
    "status": "Retired"
   },
   "Buster Skrine": {
+   "status": "Retired"
+  },
+  "Dan Bailey": {
    "status": "Retired"
   },
   "Logan Ryan": {
@@ -829,6 +922,9 @@
   "Dennis Northcutt": {
    "status": "Retired"
   },
+  "Rob Bironas": {
+   "status": "Retired"
+  },
   "Robert Geathers": {
    "status": "Retired"
   },
@@ -842,6 +938,9 @@
    "status": "Retired"
   },
   "Michael Johnson": {
+   "status": "Retired"
+  },
+  "Randy Bullock": {
    "status": "Retired"
   },
   "Janoris Jenkins": {
@@ -922,6 +1021,9 @@
   "Keith Smith": {
    "status": "Retired"
   },
+  "Tedy Bruschi": {
+   "status": "Retired"
+  },
   "Chris Hovan": {
    "status": "Retired"
   },
@@ -964,6 +1066,9 @@
   "D'Qwell Jackson": {
    "status": "Retired"
   },
+  "Dan Carpenter": {
+   "status": "Retired"
+  },
   "Orlando Scandrick": {
    "status": "Retired"
   },
@@ -971,6 +1076,9 @@
    "status": "Retired"
   },
   "Earl Thomas": {
+   "status": "Retired"
+  },
+  "Dustin Hopkins": {
    "status": "Retired"
   },
   "Brandon Scherff": {
@@ -1003,7 +1111,13 @@
   "Vonn Bell": {
    "status": "Retired"
   },
+  "Joe Nedney": {
+   "status": "Retired"
+  },
   "Pierson Prioleau": {
+   "status": "Retired"
+  },
+  "Jeff Wilkins": {
    "status": "Retired"
   },
   "T.J. Houshmandzadeh": {
@@ -1076,6 +1190,9 @@
    "status": "Retired"
   },
   "Will Allen (DB, Dolphins)": {
+   "status": "Retired"
+  },
+  "Billy Cundiff": {
    "status": "Retired"
   },
   "Jeremy Shockey": {
@@ -1222,6 +1339,9 @@
   "Chris McAlister": {
    "status": "Retired"
   },
+  "Jeff Reed": {
+   "status": "Retired"
+  },
   "Tony Romo": {
    "status": "Retired"
   },
@@ -1271,6 +1391,9 @@
    "status": "Retired"
   },
   "Jason Craft": {
+   "status": "Retired"
+  },
+  "Jon Kitna": {
    "status": "Retired"
   },
   "Bryant Young": {
@@ -1363,6 +1486,9 @@
   "Michael Strahan": {
    "status": "Retired"
   },
+  "Lawrence Tynes": {
+   "status": "Retired"
+  },
   "Aaron Schobel": {
    "status": "Retired"
   },
@@ -1400,6 +1526,9 @@
    "status": "Retired"
   },
   "Demorrio Williams": {
+   "status": "Retired"
+  },
+  "Shaun Suisham": {
    "status": "Retired"
   },
   "Carlos Rogers": {
@@ -1612,6 +1741,9 @@
   "Jamison Crowder": {
    "status": "Retired"
   },
+  "Morten Andersen": {
+   "status": "Retired"
+  },
   "Kurt Warner": {
    "status": "Retired"
   },
@@ -1661,6 +1793,9 @@
    "status": "Retired"
   },
   "Max Garcia": {
+   "status": "Retired"
+  },
+  "Mike Vanderjagt": {
    "status": "Retired"
   },
   "Anthony Becht": {
@@ -1790,6 +1925,9 @@
    "status": "Retired"
   },
   "Vonta Leach": {
+   "status": "Retired"
+  },
+  "Nick Novak": {
    "status": "Retired"
   },
   "Kedric Golston": {
@@ -1922,6 +2060,9 @@
    "status": "Retired"
   },
   "Terrence McGee": {
+   "status": "Retired"
+  },
+  "Nate Kaeding": {
    "status": "Retired"
   },
   "Corey Williams": {
@@ -2206,6 +2347,9 @@
   "Nick Ferguson": {
    "status": "Retired"
   },
+  "Martin Gramatica": {
+   "status": "Retired"
+  },
   "Spencer Johnson": {
    "status": "Retired"
   },
@@ -2219,6 +2363,9 @@
    "status": "Retired"
   },
   "Parys Haralson": {
+   "status": "Retired"
+  },
+  "Connor Barth": {
    "status": "Retired"
   },
   "Leodis McKelvin": {
@@ -2590,6 +2737,9 @@
   "Charles Harris": {
    "status": "Retired"
   },
+  "John Hall": {
+   "status": "Retired"
+  },
   "Jeff Ulbrich": {
    "status": "Retired"
   },
@@ -2878,6 +3028,9 @@
   "Matt Breida": {
    "status": "Retired"
   },
+  "Younghoe Koo": {
+   "status": "Retired"
+  },
   "Jerome Bettis": {
    "status": "Retired"
   },
@@ -2957,6 +3110,9 @@
    "status": "Retired"
   },
   "Duke Johnson": {
+   "status": "Retired"
+  },
+  "Paul Edinger": {
    "status": "Retired"
   },
   "Marc Bulger": {
@@ -3154,6 +3310,9 @@
   "Aaron Brooks": {
    "status": "Retired"
   },
+  "Todd Peterson": {
+   "status": "Retired"
+  },
   "Chad Morton": {
    "status": "Retired"
   },
@@ -3203,6 +3362,9 @@
    "status": "Retired"
   },
   "Kaleb McGary": {
+   "status": "Retired"
+  },
+  "Gary Anderson": {
    "status": "Retired"
   },
   "Jerry Rice": {
@@ -3460,6 +3622,9 @@
   "Courtney Upshaw": {
    "status": "Retired"
   },
+  "Blair Walsh": {
+   "status": "Retired"
+  },
   "Patrick Omameh": {
    "status": "Retired"
   },
@@ -3560,6 +3725,9 @@
    "status": "Retired"
   },
   "Hayden Hurst": {
+   "status": "Retired"
+  },
+  "Wade Richey": {
    "status": "Retired"
   },
   "Corey Simon": {
@@ -3811,6 +3979,9 @@
   "Rashard Higgins": {
    "status": "Retired"
   },
+  "Steve Christie": {
+   "status": "Retired"
+  },
   "Tony Stewart": {
    "status": "Retired"
   },
@@ -3880,6 +4051,9 @@
   "Lerentee McCray": {
    "status": "Retired"
   },
+  "Cody Parkey": {
+   "status": "Retired"
+  },
   "Deone Bucannon": {
    "status": "Retired"
   },
@@ -3944,6 +4118,9 @@
    "status": "Retired"
   },
   "James Develin": {
+   "status": "Retired"
+  },
+  "Kai Forbath": {
    "status": "Retired"
   },
   "Garrett Celek": {
@@ -4064,6 +4241,9 @@
    "status": "Retired"
   },
   "Tanner Vallejo": {
+   "status": "Retired"
+  },
+  "Zane Gonzalez": {
    "status": "Retired"
   },
   "Tarell Basham": {
@@ -4309,6 +4489,9 @@
   "Carl Davis": {
    "status": "Retired"
   },
+  "Josh Lambo": {
+   "status": "Retired"
+  },
   "Bryce Hager": {
    "status": "Retired"
   },
@@ -4477,6 +4660,9 @@
   "Isaiah Crowell": {
    "status": "Retired"
   },
+  "Chandler Catanzaro": {
+   "status": "Retired"
+  },
   "Brent Qvale": {
    "status": "Retired"
   },
@@ -4502,6 +4688,9 @@
    "status": "Retired"
   },
   "J.C. Jackson": {
+   "status": "Retired"
+  },
+  "Doug Brien": {
    "status": "Retired"
   },
   "Bruce Smith": {
@@ -4666,6 +4855,9 @@
   "Boston Scott": {
    "status": "Retired"
   },
+  "Greg Joseph": {
+   "status": "Retired"
+  },
   "Brandon Facyson": {
    "status": "Retired"
   },
@@ -4820,6 +5012,9 @@
    "status": "Retired"
   },
   "Kenny Golladay": {
+   "status": "Retired"
+  },
+  "Mike Badgley": {
    "status": "Retired"
   },
   "Marquis Haynes": {
@@ -5231,6 +5426,9 @@
    "status": "Retired"
   },
   "Tommy Bohanon": {
+   "status": "Retired"
+  },
+  "Caleb Sturgis": {
    "status": "Retired"
   },
   "Datone Jones": {
@@ -5746,6 +5944,9 @@
   "Manti Te'o": {
    "status": "Retired"
   },
+  "Brett Maher": {
+   "status": "Retired"
+  },
   "Daimion Stafford": {
    "status": "Retired"
   },
@@ -6007,6 +6208,9 @@
   "Mike Wright": {
    "status": "Retired"
   },
+  "Dave Rayner": {
+   "status": "Retired"
+  },
   "Billy Bajema": {
    "status": "Retired"
   },
@@ -6020,6 +6224,9 @@
    "status": "Retired"
   },
   "Steve Smith (WR, Rams)": {
+   "status": "Retired"
+  },
+  "Garrett Hartley": {
    "status": "Retired"
   },
   "Jed Collins": {
@@ -6056,6 +6263,9 @@
    "status": "Retired"
   },
   "Jason Spriggs": {
+   "status": "Retired"
+  },
+  "Aldrick Rosas": {
    "status": "Retired"
   },
   "DeAndre Washington": {
@@ -6353,6 +6563,9 @@
    "status": "Retired"
   },
   "Chase Winovich": {
+   "status": "Retired"
+  },
+  "Jose Cortez": {
    "status": "Retired"
   },
   "Cecil Martin": {
@@ -6928,6 +7141,9 @@
   "Stanley Morgan": {
    "status": "Retired"
   },
+  "Garrison Hearst": {
+   "status": "Retired"
+  },
   "Ronney Jenkins": {
    "status": "Retired"
   },
@@ -6947,6 +7163,9 @@
    "status": "Retired"
   },
   "Marques Harris": {
+   "status": "Retired"
+  },
+  "Rhys Lloyd": {
    "status": "Retired"
   },
   "Matt Jones (WR, Jaguars)": {
@@ -6974,6 +7193,9 @@
    "status": "Retired"
   },
   "Casey Matthews": {
+   "status": "Retired"
+  },
+  "Alex Henery": {
    "status": "Retired"
   },
   "Cortez Allen": {
@@ -8188,6 +8410,9 @@
   "Godwin Igwebuike": {
    "status": "Retired"
   },
+  "Austin Seibert": {
+   "status": "Retired"
+  },
   "J.J. Arcega-Whiteside": {
    "status": "Retired"
   },
@@ -8195,6 +8420,9 @@
    "status": "Retired"
   },
   "Jerry Jacobs": {
+   "status": "Retired"
+  },
+  "Joe Johnson": {
    "status": "Retired"
   },
   "Marquis Smith": {
@@ -8315,6 +8543,9 @@
    "status": "Retired"
   },
   "Rondale Moore": {
+   "status": "Retired"
+  },
+  "Tommy Maddox": {
    "status": "Retired"
   },
   "Fred Jones": {
@@ -8731,6 +8962,9 @@
   "Chase Daniel": {
    "status": "Retired"
   },
+  "David Buehler": {
+   "status": "Retired"
+  },
   "Kyle Williams (WR, Chiefs)": {
    "status": "Retired"
   },
@@ -8992,6 +9226,9 @@
   "J.J. Moses": {
    "status": "Retired"
   },
+  "Bill Gramatica": {
+   "status": "Retired"
+  },
   "Marc Boerigter": {
    "status": "Retired"
   },
@@ -9139,6 +9376,9 @@
   "Justin Ena": {
    "status": "Retired"
   },
+  "Aaron Elling": {
+   "status": "Retired"
+  },
   "Monsanto Pope": {
    "status": "Retired"
   },
@@ -9202,6 +9442,9 @@
   "Eric Martin": {
    "status": "Retired"
   },
+  "Jordan Gay": {
+   "status": "Retired"
+  },
   "Dewey McDonald": {
    "status": "Retired"
   },
@@ -9241,6 +9484,9 @@
   "Kaden Smith": {
    "status": "Retired"
   },
+  "Matthew Wright": {
+   "status": "Retired"
+  },
   "Parker Hesse": {
    "status": "Retired"
   },
@@ -9251,6 +9497,9 @@
    "status": "Retired"
   },
   "Cortez Kennedy": {
+   "status": "Retired"
+  },
+  "Steve Lindsey": {
    "status": "Retired"
   },
   "Lyle West": {
@@ -9380,6 +9629,9 @@
    "status": "Retired"
   },
   "Zaire Anderson": {
+   "status": "Retired"
+  },
+  "Andrew Franks": {
    "status": "Retired"
   },
   "Bradley Marquez": {
@@ -9718,6 +9970,9 @@
   "Melvin White": {
    "status": "Retired"
   },
+  "Patrick Murray": {
+   "status": "Retired"
+  },
   "Jonathan Newsome": {
    "status": "Retired"
   },
@@ -9964,6 +10219,9 @@
   "Bobbie Howard": {
    "status": "Retired"
   },
+  "Tim Seder": {
+   "status": "Retired"
+  },
   "Shannon Taylor": {
    "status": "Retired"
   },
@@ -10082,6 +10340,9 @@
    "status": "Retired"
   },
   "Roger Lewis": {
+   "status": "Retired"
+  },
+  "Sam Ficken": {
    "status": "Retired"
   },
   "C.J. Board": {
@@ -10912,6 +11173,9 @@
   "Josh Rosen": {
    "status": "Retired"
   },
+  "Rodrigo Blankenship": {
+   "status": "Retired"
+  },
   "Dieter Eiselen": {
    "status": "Retired"
   },
@@ -10922,6 +11186,9 @@
    "status": "Retired"
   },
   "Demetric Felton": {
+   "status": "Retired"
+  },
+  "Anders Carlson": {
    "status": "Retired"
   },
   "Amari Burney": {
@@ -11123,6 +11390,9 @@
    "status": "Retired"
   },
   "Shi Smith": {
+   "status": "Retired"
+  },
+  "Cade York": {
    "status": "Retired"
   },
   "Jason Perry": {
@@ -11776,6 +12046,9 @@
   "Henry Ruggs III": {
    "status": "Retired"
   },
+  "Matt Ammendola": {
+   "status": "Retired"
+  },
   "Rachad Wildgoose": {
    "status": "Retired"
   },
@@ -11887,6 +12160,9 @@
   "Mike McNeill": {
    "status": "Retired"
   },
+  "Giorgio Tavecchio": {
+   "status": "Retired"
+  },
   "Jerry Franklin": {
    "status": "Retired"
   },
@@ -11918,6 +12194,9 @@
    "status": "Retired"
   },
   "Lorenzo Taliaferro": {
+   "status": "Retired"
+  },
+  "Travis Coons": {
    "status": "Retired"
   },
   "AJ McCarron": {
@@ -12493,6 +12772,9 @@
   "Isaiah Dunn": {
    "status": "Retired"
   },
+  "Milo Eifler": {
+   "status": "Retired"
+  },
   "Tory Carter": {
    "status": "Retired"
   },
@@ -12544,6 +12826,9 @@
   "Vinny Sutherland": {
    "status": "Retired"
   },
+  "Owen Pochman": {
+   "status": "Retired"
+  },
   "Tay Cody": {
    "status": "Retired"
   },
@@ -12557,6 +12842,9 @@
    "status": "Retired"
   },
   "Dominique Stevenson": {
+   "status": "Retired"
+  },
+  "Seth Marler": {
    "status": "Retired"
   },
   "Scott Vines": {
@@ -12725,6 +13013,9 @@
    "status": "Retired"
   },
   "Christian Westerman": {
+   "status": "Retired"
+  },
+  "Roberto Aguayo": {
    "status": "Retired"
   },
   "Fadol Brown": {

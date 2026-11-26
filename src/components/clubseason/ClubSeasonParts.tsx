@@ -76,6 +76,7 @@ const LEADERS: { label: string; pick: (r: RosterEntry) => number | undefined; po
   { label: 'Tackles', pick: (r) => r.tkl, pos: ['LB', 'DB', 'DL'] },
   { label: 'Sacks', pick: (r) => r.sck, pos: ['LB', 'DB', 'DL'], dec: 1 },
   { label: 'Interceptions', pick: (r) => r.dint, pos: ['LB', 'DB', 'DL'] },
+  { label: 'Field goals', pick: (r) => r.fgm, pos: ['K'] },
 ];
 
 export const Leaders = ({ rows, club, year, onPick }: { rows: RosterEntry[]; club: string; year: number; onPick: (key: string) => void }) => {
@@ -110,7 +111,7 @@ export const Leaders = ({ rows, club, year, onPick }: { rows: RosterEntry[]; clu
 
 /* ---------------- The roster as a yearbook ---------------- */
 
-const GROUPS = ['All', 'QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB'];
+const GROUPS = ['All', 'QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB', 'K'];
 const FIRST = 16;
 
 export const Yearbook = ({ rows, club, year, onPick }: { rows: RosterEntry[]; club: string; year: number; onPick: (key: string) => void }) => {

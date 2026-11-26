@@ -94,6 +94,11 @@ const SIGNATURE: Record<Position, { key: string; label: string }[]> = {
     { key: 'tackles', label: 'tackles' },
     { key: 'forcedFumbles', label: 'forced fumbles' },
   ],
+  K: [
+    { key: 'fgMade', label: 'field goals' },
+    { key: 'xpMade', label: 'extra points' },
+    { key: 'fgMade50', label: 'field goals from 50 yards and out' },
+  ],
 };
 
 export const signatureStats = (p: Player): SpeechStat[] =>

@@ -88,7 +88,7 @@ export const seedOf = (s: string) => {
 };
 
 
-export type Pose = 'qb' | 'rb' | 'wr' | 'ol' | 'def';
+export type Pose = 'qb' | 'rb' | 'wr' | 'ol' | 'def' | 'k';
 export const poseFor = (position: string): Pose => {
   switch (position) {
     case 'QB':
@@ -100,6 +100,8 @@ export const poseFor = (position: string): Pose => {
       return 'wr';
     case 'OL':
       return 'ol';
+    case 'K':
+      return 'k';
     default:
       return 'def';
   }

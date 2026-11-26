@@ -136,6 +136,11 @@
      "team": "Titans",
      "position": "DE"
     },
+    "cpoy": {
+     "player": "Bryant Young",
+     "team": "49ers",
+     "position": "DT"
+    },
     "sbmvp": {
      "player": "Kurt Warner",
      "team": "Rams",
@@ -2364,6 +2369,11 @@
      "team": "Bears",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Joe Johnson",
+     "team": "Saints",
+     "position": "DE"
+    },
     "sbmvp": {
      "player": "Ray Lewis",
      "team": "Ravens",
@@ -4584,6 +4594,11 @@
      "team": "Steelers",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Garrison Hearst",
+     "team": "49ers",
+     "position": "RB"
+    },
     "sbmvp": {
      "player": "Tom Brady",
      "team": "Patriots",
@@ -6803,6 +6818,11 @@
      "player": "Julius Peppers",
      "team": "Panthers",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Tommy Maddox",
+     "team": "Steelers",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Dexter Jackson",
@@ -9088,6 +9108,11 @@
      "player": "Terrell Suggs",
      "team": "Ravens",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Jon Kitna",
+     "team": "Bengals",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Tom Brady",
@@ -11376,6 +11401,11 @@
      "team": "Jets",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Drew Brees",
+     "team": "Chargers",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Deion Branch",
      "team": "Patriots",
@@ -13661,6 +13691,11 @@
      "team": "Chargers",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Steve Smith Sr.",
+     "team": "Panthers",
+     "position": "WR"
+    },
     "sbmvp": {
      "player": "Hines Ward",
      "team": "Steelers",
@@ -15940,6 +15975,11 @@
      "player": "DeMeco Ryans",
      "team": "Texans",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Chad Pennington",
+     "team": "Jets",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Peyton Manning",
@@ -18233,6 +18273,11 @@
      "team": "49ers",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Greg Ellis",
+     "team": "Cowboys",
+     "position": "DE"
+    },
     "sbmvp": {
      "player": "Eli Manning",
      "team": "Giants",
@@ -20525,6 +20570,11 @@
      "team": "Patriots",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Chad Pennington",
+     "team": "Dolphins",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Santonio Holmes",
      "team": "Steelers",
@@ -22808,6 +22858,11 @@
      "player": "Brian Cushing",
      "team": "Texans",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Tom Brady",
+     "team": "Patriots",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Drew Brees",
@@ -25104,6 +25159,11 @@
      "player": "Ndamukong Suh",
      "team": "Lions",
      "position": "DT"
+    },
+    "cpoy": {
+     "player": "Michael Vick",
+     "team": "Eagles",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Aaron Rodgers",
@@ -27403,6 +27463,11 @@
      "player": "Von Miller",
      "team": "Broncos",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Matthew Stafford",
+     "team": "Lions",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Eli Manning",
@@ -29706,6 +29771,11 @@
      "team": "Panthers",
      "position": "LB"
     },
+    "cpoy": {
+     "player": "Peyton Manning",
+     "team": "Broncos",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Joe Flacco",
      "team": "Ravens",
@@ -32007,6 +32077,11 @@
      "player": "Sheldon Richardson",
      "team": "Jets",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Philip Rivers",
+     "team": "Chargers",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Malcolm Smith",
@@ -34312,6 +34387,11 @@
      "team": "Rams",
      "position": "DT"
     },
+    "cpoy": {
+     "player": "Rob Gronkowski",
+     "team": "Patriots",
+     "position": "TE"
+    },
     "sbmvp": {
      "player": "Tom Brady",
      "team": "Patriots",
@@ -36607,6 +36687,11 @@
      "team": "Chiefs",
      "position": "CB"
     },
+    "cpoy": {
+     "player": "Eric Berry",
+     "team": "Chiefs",
+     "position": "S"
+    },
     "sbmvp": {
      "player": "Von Miller",
      "team": "Broncos",
@@ -38900,6 +38985,11 @@
      "player": "Joey Bosa",
      "team": "Chargers",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Jordy Nelson",
+     "team": "Packers",
+     "position": "WR"
     },
     "sbmvp": {
      "player": "Tom Brady",
@@ -41197,6 +41287,11 @@
      "team": "Saints",
      "position": "CB"
     },
+    "cpoy": {
+     "player": "Keenan Allen",
+     "team": "Chargers",
+     "position": "WR"
+    },
     "sbmvp": {
      "player": "Nick Foles",
      "team": "Eagles",
@@ -43489,6 +43584,11 @@
      "player": "Shaquille Leonard",
      "team": "Colts",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Andrew Luck",
+     "team": "Colts",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Julian Edelman",
@@ -45783,6 +45883,11 @@
      "player": "Nick Bosa",
      "team": "49ers",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Ryan Tannehill",
+     "team": "Titans",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Patrick Mahomes",
@@ -48090,6 +48195,11 @@
      "player": "Chase Young",
      "team": "Commanders",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Alex Smith",
+     "team": "Commanders",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Tom Brady",
@@ -50429,6 +50539,11 @@
      "player": "Micah Parsons",
      "team": "Cowboys",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Joe Burrow",
+     "team": "Bengals",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Cooper Kupp",
@@ -52874,6 +52989,11 @@
      "team": "Jets",
      "position": "CB"
     },
+    "cpoy": {
+     "player": "Geno Smith",
+     "team": "Seahawks",
+     "position": "QB"
+    },
     "sbmvp": {
      "player": "Patrick Mahomes",
      "team": "Chiefs",
@@ -55315,6 +55435,11 @@
      "player": "Will Anderson Jr.",
      "team": "Texans",
      "position": "DE"
+    },
+    "cpoy": {
+     "player": "Joe Flacco",
+     "team": "Browns",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Patrick Mahomes",
@@ -57761,6 +57886,11 @@
      "player": "Jared Verse",
      "team": "Rams",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Joe Burrow",
+     "team": "Bengals",
+     "position": "QB"
     },
     "sbmvp": {
      "player": "Jalen Hurts",
@@ -60220,6 +60350,11 @@
      "player": "Carson Schwesinger",
      "team": "Browns",
      "position": "LB"
+    },
+    "cpoy": {
+     "player": "Christian McCaffrey",
+     "team": "49ers",
+     "position": "RB"
     },
     "sbmvp": {
      "player": "Kenneth Walker III",

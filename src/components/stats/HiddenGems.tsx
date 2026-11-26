@@ -63,7 +63,7 @@ const HiddenGems = ({ data, onSelect }: { data: LeagueData; onSelect: (p: Player
   const [mode, setMode] = useState<Mode>('rising');
 
   const gems = useMemo(() => {
-    const league = (['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline'] as const)
+    const league = (['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline', 'kickers'] as const)
       .flatMap((k) => data[k] as Player[])
       .filter((p) => !p.isRealLegend);
     const out: Record<Mode, GemRow[]> = { rising: [], underrated: [] };

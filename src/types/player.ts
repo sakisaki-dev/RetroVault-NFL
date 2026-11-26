@@ -1,4 +1,4 @@
-export type Position = 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'LB' | 'DB' | 'DL';
+export type Position = 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'LB' | 'DB' | 'DL' | 'K';
 export type Status = 'Active' | 'Retired';
 
 export interface BasePlayer {
@@ -101,7 +101,24 @@ export interface DLPlayer extends DefensivePlayer {
   position: 'DL';
 }
 
-export type Player = QBPlayer | RBPlayer | WRPlayer | TEPlayer | OLPlayer | LBPlayer | DBPlayer | DLPlayer;
+/** Kickers (NFL edition, owner 2026-11-25): field goals made / attempted overall and by distance, extra points, the longest. */
+export interface KPlayer extends BasePlayer {
+  position: 'K';
+  fgMade: number;
+  fgAtt: number;
+  /** 0-39, 40-49 and 50+ yards */
+  fgMade39: number;
+  fgAtt39: number;
+  fgMade49: number;
+  fgAtt49: number;
+  fgMade50: number;
+  fgAtt50: number;
+  xpMade: number;
+  xpAtt: number;
+  longest: number;
+}
+
+export type Player = QBPlayer | RBPlayer | WRPlayer | TEPlayer | OLPlayer | LBPlayer | DBPlayer | DLPlayer | KPlayer;
 
 export interface LeagueData {
   quarterbacks: QBPlayer[];
@@ -112,6 +129,7 @@ export interface LeagueData {
   linebackers: LBPlayer[];
   defensivebacks: DBPlayer[];
   defensiveline: DLPlayer[];
+  kickers: KPlayer[];
   metadata?: {
     season?: string;
     uploadDate?: Date;

@@ -477,7 +477,7 @@ export const freezeSnapshot = (p: FreezeInput): AutographSnapshot => {
 // ---------- Validation (stored autographs) ----------
 
 const HEX = /^#[0-9a-f]{6}$/i;
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 const n0 = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) && x >= 0 ? Math.floor(x) : 0);
 const str = (x: unknown) => (typeof x === 'string' && x.trim() ? x : undefined);
 const isInk = (x: unknown): x is Ink => typeof x === 'string' && (x === 'gold' || x === 'silver' || x === 'team' || HEX.test(x));

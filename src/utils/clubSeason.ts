@@ -26,10 +26,26 @@ export interface RosterRow {
   ryds?: number; rtd?: number; car?: number;
   rec?: number; recyds?: number; rectd?: number;
   tkl?: number; sck?: number; dint?: number; ff?: number; pd?: number;
+  fgm?: number; fga?: number; xpm?: number; xpa?: number;
+  pr?: number; pry?: number; kr?: number; kry?: number;
+}
+/** A club-season's special teams (scripts/nfl/club_season.py special_teams): the unit's field goals, extra points and its leading returner */
+export interface ClubSpecial {
+  fg?: [made: number, att: number];
+  /** field goals by distance: 0-39, 40-49, 50+ as [made, attempts] */
+  b?: [number, number][];
+  long?: number;
+  xp?: [made: number, att: number];
+  /** the unit's field goal percentage rank among the clubs with an attempt (1 = best), and how many ranked */
+  rk?: number;
+  of?: number;
+  /** the kicker with the most attempts, by his key */
+  k?: string;
+  ret?: { k: string; kr: number; kry: number; pr: number; pry: number };
 }
 /** A club-season's starters, picked when the data is built: the player keys in spot order (QB RB WR WR TE, DL DL LB LB DB DB) and how */
 export interface ClubLineup { m: 'snaps' | 'weeks' | 'depth' | 'busiest'; k: string[] }
-export interface ClubRosterFile { season: number; clubs: Record<string, RosterRow[]>; lineups?: Record<string, ClubLineup> }
+export interface ClubRosterFile { season: number; clubs: Record<string, RosterRow[]>; lineups?: Record<string, ClubLineup>; st?: Record<string, ClubSpecial> }
 
 export interface CapFile {
   season: number;
@@ -57,6 +73,7 @@ export interface ClubSeasonData {
   year: number;
   roster: RosterRow[] | null;
   lineup: ClubLineup | null;
+  special: ClubSpecial | null;
   cap: CapFile | null;
   cell: TableRow | null;
   schedule: ScheduleSeason | null;
@@ -77,6 +94,7 @@ export const useClubSeason = (abbr: string | undefined, year: number): ClubSeaso
         year,
         roster: r?.clubs[abbr] ?? null,
         lineup: r?.lineups?.[abbr] ?? null,
+        special: r?.st?.[abbr] ?? null,
         cap,
         schedule,
         cell: schedule?.table.find((t) => t.abbr === abbr) ?? null,

@@ -71,6 +71,7 @@ const mergePlayerEdits = async (baseData: LeagueData): Promise<LeagueData> => {
       linebackers: [...baseData.linebackers],
       defensivebacks: [...baseData.defensivebacks],
       defensiveline: [...baseData.defensiveline],
+      kickers: [...baseData.kickers],
     };
 
     const positionArrayMap: Record<string, keyof LeagueData> = {
@@ -82,6 +83,7 @@ const mergePlayerEdits = async (baseData: LeagueData): Promise<LeagueData> => {
       LB: 'linebackers',
       DB: 'defensivebacks',
       DL: 'defensiveline',
+      K: 'kickers',
     };
 
     Object.values(edits).forEach((edit: PlayerEdit) => {
@@ -149,6 +151,7 @@ const POSITION_KEYS: (keyof Omit<LeagueData, 'metadata'>)[] = [
   'linebackers',
   'defensivebacks',
   'defensiveline',
+  'kickers',
 ];
 
 /**
@@ -239,6 +242,7 @@ export const LeagueProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             ...careerData.linebackers,
             ...careerData.defensivebacks,
             ...careerData.defensiveline,
+            ...careerData.kickers,
           ]
         : [],
     [careerData],

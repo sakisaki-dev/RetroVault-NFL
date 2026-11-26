@@ -17,7 +17,7 @@ import { displayName } from '@/utils/displayName';
 import { ordinal } from '../analytics/viz';
 import { GradeChip } from './ddParts';
 
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 export interface SznEntry {
   player: Player;

@@ -18,7 +18,7 @@ export interface BinderFilterState {
 }
 export const BINDER_DEFAULTS: BinderFilterState = { q: '', mine: true, tier: 'all', finish: 'all', pos: 'all', team: 'all', sort: 'set', rev: false };
 
-export const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+export const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 export const SORTS: { key: BinderSort; label: string }[] = [
   { key: 'set', label: 'Set #' },
   { key: 'recent', label: 'Newest' },

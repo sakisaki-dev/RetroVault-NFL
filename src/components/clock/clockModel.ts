@@ -204,6 +204,8 @@ export const careerLine = (p: Player, season: Record<string, number> = {}): { la
       ];
     case 'OL':
       return [{ label: 'Blocks', value: p.blocks + s('blk') }];
+    case 'K':
+      return [{ label: 'FG made', value: p.fgMade + s('fgm') }];
     default:
       return [
         { label: 'Tackles', value: p.tackles + s('tkl') },

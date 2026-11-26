@@ -28,6 +28,9 @@ LINE = {  # output key -> game-log columns summed
     "ryds": ["rushing_yards"], "rtd": ["rushing_tds"], "car": ["carries"],
     "rec": ["receptions"], "recyds": ["receiving_yards"], "rectd": ["receiving_tds"],
     "tkl": ["def_tackles_solo", "def_tackle_assists"], "sck": ["def_sacks"], "dint": ["def_interceptions"], "ff": ["def_fumbles_forced"], "pd": ["def_pass_defended"],
+    # kickers (owner, 2026-11-25) and returners (punt / kickoff returns and their yards)
+    "fgm": ["fg_made"], "fga": ["fg_att"], "xpm": ["pat_made"], "xpa": ["pat_att"],
+    "pr": ["punt_returns"], "pry": ["punt_return_yards"], "kr": ["kickoff_returns"], "kry": ["kickoff_return_yards"],
 }
 AWARD_KEYS = {"mvp": "MVP", "opoy": "OPOY", "dpoy": "DPOY", "oroy": "OROY", "droy": "DROY", "sbmvp": "SB MVP"}
 
@@ -152,6 +155,54 @@ def lineup_for(rows, snaps, pfr, depth=None, weeks=None):
     return {"m": method, "k": keys}
 
 
+def special_teams(gsis_key):
+    """season -> club -> the club's special teams, from every kicker's and returner's weekly line (not only the site's pool):
+    fg [made, attempts], b [[made, attempts] x 3 for 0-39, 40-49, 50+], long, xp [made, attempts], rk / of (the club's FG % among
+    the clubs with an attempt, 1 = best, ties share), k (the kicker with the most attempts, by his key), ret (the leading returner by
+    punt + kickoff return yards who has a card: key, kr, kry, pr, pry). Regular season."""
+    out = {}
+    for y in range(1999, 2027):
+        f = ROOT / "data" / "nfl-cache" / f"stats_player_week_{y}.csv.gz"
+        if not f.exists():
+            continue
+        clubs = defaultdict(lambda: {"fg": [0, 0], "b": [[0, 0], [0, 0], [0, 0]], "long": 0, "xp": [0, 0], "kick": defaultdict(int), "ret": defaultdict(lambda: [0, 0, 0, 0])})
+        for r in csv.DictReader(gzip.open(f, "rt")):
+            if r["season_type"] != "REG":
+                continue
+            c = clubs[ABBR.get(r["team"], r["team"])]
+            fl = lambda k: float(r.get(k) or 0)
+            if r["position"] == "K":
+                c["fg"][0] += int(fl("fg_made")); c["fg"][1] += int(fl("fg_att"))
+                c["xp"][0] += int(fl("pat_made")); c["xp"][1] += int(fl("pat_att"))
+                c["long"] = max(c["long"], int(fl("fg_long")))
+                c["kick"][r["player_id"]] += int(fl("fg_att"))
+                for i, bs in enumerate((("0_19", "20_29", "30_39"), ("40_49",), ("50_59", "60_"))):
+                    m = sum(int(fl(f"fg_made_{b}")) for b in bs)
+                    c["b"][i][0] += m
+                    c["b"][i][1] += m + sum(int(fl(f"fg_missed_{b}")) for b in bs)
+            if r["player_id"] in gsis_key and (fl("punt_returns") or fl("kickoff_returns")):
+                a = c["ret"][r["player_id"]]
+                a[0] += int(fl("kickoff_returns")); a[1] += int(fl("kickoff_return_yards"))
+                a[2] += int(fl("punt_returns")); a[3] += int(fl("punt_return_yards"))
+        pct = {t: c["fg"][0] / c["fg"][1] for t, c in clubs.items() if c["fg"][1]}
+        res = {}
+        for t, c in sorted(clubs.items()):
+            row = {}
+            if c["fg"][1]:
+                row.update(fg=c["fg"], b=c["b"], long=c["long"], xp=c["xp"], rk=1 + sum(1 for v in pct.values() if v > pct[t]), of=len(pct))
+                top = max(c["kick"].items(), key=lambda kv: (kv[1], kv[0]))[0]
+                if top in gsis_key:
+                    row["k"] = gsis_key[top]
+            if c["ret"]:
+                g, a = max(c["ret"].items(), key=lambda kv: (kv[1][1] + kv[1][3], kv[0]))
+                if a[1] + a[3] > 0:
+                    row["ret"] = {"k": gsis_key[g], "kr": a[0], "kry": a[1], "pr": a[2], "pry": a[3]}
+            if row:
+                res[t] = row
+        out[y] = res
+    return out
+
+
 def main():
     import season_ovr
     sovr = season_ovr.history_ratings()
@@ -203,6 +254,7 @@ def main():
             if a:
                 row["aw"] = a
             by[y][club].append(row)
+    st = special_teams(gsis_key)
     OUT.mkdir(parents=True, exist_ok=True)
     for old in OUT.glob("*.json"):
         old.unlink()
@@ -211,7 +263,7 @@ def main():
         clubs = {c: sorted(rs, key=lambda r: (-r.get("szn", -1), -r["g"], r["k"])) for c, rs in sorted(by[y].items())}
         weeks = depth_weeks(y, gsis_key) if 2001 <= y < SNAP_FROM else {}
         lineups = {c: lineup_for(rs, snap_raw.get((y, c)) if y >= SNAP_FROM else None, pfr, depth.get(c) if y == depth_year else None, weeks.get(c)) for c, rs in clubs.items()}
-        text = json.dumps({"season": y, "clubs": clubs, "lineups": lineups}, separators=(",", ":"), ensure_ascii=False)
+        text = json.dumps({"season": y, "clubs": clubs, "lineups": lineups, **({"st": st[y]} if st.get(y) else {})}, separators=(",", ":"), ensure_ascii=False)
         (OUT / f"{y}.json").write_text(text)
         total += len(text)
     print(f"club seasons: {len(by)} files, {total / 1e6:.1f} MB")

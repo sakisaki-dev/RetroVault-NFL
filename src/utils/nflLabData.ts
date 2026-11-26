@@ -32,6 +32,8 @@ export interface LabPlayer {
   d?: number[];
   /** targets, carries, sacks taken per game */
   r: number[];
+  /** kickers: weighted fantasy points per game (3 / 4 / 5 a field goal by distance, 1 an extra point, -1 a miss) */
+  kp?: number;
 }
 export interface LabTeam {
   g: number;

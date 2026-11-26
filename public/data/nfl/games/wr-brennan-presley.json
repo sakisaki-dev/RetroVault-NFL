@@ -1,1 +1,1 @@
-{"key":"WR:Brennan Presley","cols":["season","week","type","team","opp","game","date","home","pf","pa"],"games":[[2025,12,"REG","LA","TB","2025_12_TB_LA","2025-11-23",1,34,7],[2026,10,"REG","LA","ARI","2026_10_LA_ARI","2026-11-15",0,34,6]]}
+{"key":"WR:Brennan Presley","cols":["season","week","type","team","opp","game","kickoff_returns","kickoff_return_yards","date","home","pf","pa"],"games":[[2025,12,"REG","LA","TB","2025_12_TB_LA",0,0,"2025-11-23",1,34,7],[2026,10,"REG","LA","ARI","2026_10_LA_ARI",1,20,"2026-11-15",0,34,6]]}

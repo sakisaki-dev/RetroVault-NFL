@@ -9,7 +9,7 @@ import { CAREER_LABEL } from '@/config/ovr';
 
 // ---------- Loaders (one request per page load; 404 / bad JSON resolve to empty) ----------
 
-const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 const BASE_NUMBERS = ['games', 'rings', 'mvp', 'opoy', 'sbmvp', 'roty', 'trueTalent', 'dominance', 'careerLegacy', 'tpg'] as const;
 
 const normalizePhoto = (raw: unknown): LegendPhoto | undefined => {

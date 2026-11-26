@@ -78,6 +78,14 @@ export const FACE_SPECS: Record<Position, Spec[]> = {
   LB: DEF,
   DB: DEF,
   DL: DEF,
+  K: [
+    { code: 'ACC', name: 'Accuracy (field goal %)', trait: 'fgPct' },
+    { code: 'RNG', name: 'Range (field goal % from 40+)', trait: 'fg40Pct' },
+    { code: 'BOM', name: 'Bomber (field goal % from 50+)', trait: 'fg50Pct' },
+    { code: 'XP', name: 'Extra points (XP %)', trait: 'xpPct' },
+    { code: 'VOL', name: 'Volume (field goals per game)', trait: 'fgG' },
+    { code: 'LEG', name: 'Leg (longest field goal)', trait: 'longG' },
+  ],
 };
 
 /** Every code with its name, for the legend. */

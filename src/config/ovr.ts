@@ -71,6 +71,10 @@ export const leagueScore = (p: Player): number => {
     case 'OL':
       production = 5 * num(p, 'blocks') + 2 * num(p, 'games');
       break;
+    case 'K':
+      // Fallback only (the NFL edition reads scripts/nfl/kicker_rating.py's percentile): points scored over four
+      production = (3 * num(p, 'fgMade39') + 4 * num(p, 'fgMade49') + 5 * num(p, 'fgMade50') + num(p, 'xpMade')) / 4;
+      break;
     default:
       production = 0.7 * num(p, 'tackles') + 12 * num(p, 'interceptions') + 14 * num(p, 'sacks') + 14 * num(p, 'forcedFumbles');
   }
@@ -109,6 +113,7 @@ export const CAREER_QUALIFY: Record<string, { field: string; min: number; label:
   LB: { field: 'games', min: 48, label: '48 career games' },
   DB: { field: 'games', min: 48, label: '48 career games' },
   DL: { field: 'games', min: 48, label: '48 career games' },
+  K: { field: 'fgAtt', min: 100, label: '100 career field goal attempts' },
 };
 export const careerExposure = (p: Player): number => {
   const q = CAREER_QUALIFY[p.position];
@@ -195,7 +200,7 @@ export interface SeasonOvrFile {
   lines?: Record<string, Record<string, number>>;
 }
 
-const STAT_FIELDS = ['games', 'attempts', 'completions', 'passYds', 'passTD', 'interceptions', 'sacks', 'rushAtt', 'rushYds', 'rushTD', 'fumbles', 'receptions', 'recYds', 'recTD', 'longest', 'blocks', 'tackles', 'forcedFumbles'];
+const STAT_FIELDS = ['games', 'attempts', 'completions', 'passYds', 'passTD', 'interceptions', 'sacks', 'rushAtt', 'rushYds', 'rushTD', 'fumbles', 'receptions', 'recYds', 'recTD', 'longest', 'blocks', 'tackles', 'forcedFumbles', 'fgMade', 'fgAtt', 'fgMade39', 'fgAtt39', 'fgMade49', 'fgAtt49', 'fgMade50', 'fgAtt50', 'xpMade', 'xpAtt'];
 
 /**
  * The player as his season line: every stat the line lacks is NaN (never 0), so a skill that needs it shows "no data"

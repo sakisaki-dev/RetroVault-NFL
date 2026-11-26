@@ -409,6 +409,7 @@
   .position-lb { @apply bg-destructive/15 text-destructive; }
   .position-db { @apply bg-sky/10 text-sky; }
   .position-dl { @apply bg-orange-500/15 text-orange-300; }
+  .position-k { @apply bg-violet-500/15 text-violet-300; }
 
   /* Upload zone */
   .upload-zone {

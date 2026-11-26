@@ -212,7 +212,7 @@
    "Minnesota Vikings"
   ],
   "Shane Buechele": [
-   "Buffalo Bills",
+   "Indianapolis Colts",
    "Kansas City Chiefs"
   ],
   "Tua Tagovailoa": [
@@ -947,6 +947,10 @@
    "New England Patriots",
    "New York Jets",
    "Washington Commanders"
+  ],
+  "Adrian Martinez": [
+   "San Francisco 49ers",
+   "Seattle Seahawks"
   ],
   "Brenden Bates": [
    "Cleveland Browns",
@@ -2036,6 +2040,10 @@
    "Cincinnati Bengals",
    "New York Giants"
   ],
+  "C.J. Ravenell": [
+   "Carolina Panthers",
+   "Tennessee Titans"
+  ],
   "Josh Ross": [
    "Baltimore Ravens",
    "Minnesota Vikings",
@@ -2211,6 +2219,10 @@
   "Joseph Ossai": [
    "Cincinnati Bengals",
    "New York Jets"
+  ],
+  "Cam Sample": [
+   "Cincinnati Bengals",
+   "Indianapolis Colts"
   ],
   "Zach Carter": [
    "Arizona Cardinals",
@@ -2829,10 +2841,6 @@
    "Las Vegas Raiders",
    "Los Angeles Chargers",
    "Washington Commanders"
-  ],
-  "Kedon Slovis": [
-   "Arizona Cardinals",
-   "Baltimore Ravens"
   ],
   "Chris Myarick": [
    "Las Vegas Raiders",
@@ -3804,6 +3812,10 @@
   ],
   "Jashaun Corbin": [
    "Dallas Cowboys",
+   "New York Giants"
+  ],
+  "Eric Gray": [
+   "Indianapolis Colts",
    "New York Giants"
   ],
   "Isaiah Hodgins": [
@@ -5421,6 +5433,7 @@
    "Jacksonville Jaguars"
   ],
   "Terell Smith": [
+   "Atlanta Falcons",
    "Chicago Bears",
    "Pittsburgh Steelers"
   ],
@@ -6334,6 +6347,10 @@
    "Jacksonville Jaguars",
    "Miami Dolphins"
   ],
+  "A.J. Woods": [
+   "Buffalo Bills",
+   "Las Vegas Raiders"
+  ],
   "Ross Blacklock": [
    "Houston Texans",
    "Jacksonville Jaguars",
@@ -6619,6 +6636,7 @@
    "Tennessee Titans"
   ],
   "Isaac Yiadom": [
+   "Chicago Bears",
    "Denver Broncos",
    "Green Bay Packers",
    "Houston Texans",
@@ -6856,9 +6874,12 @@
   "Charlie Heck": [
    "Arizona Cardinals",
    "Houston Texans",
-   "Indianapolis Colts",
    "San Francisco 49ers",
    "Tampa Bay Buccaneers"
+  ],
+  "Chase Lundt": [
+   "Buffalo Bills",
+   "Seattle Seahawks"
   ],
   "Quinn Ewers": [
    "Jacksonville Jaguars",
@@ -7075,9 +7096,22 @@
    "New England Patriots",
    "Tampa Bay Buccaneers"
   ],
+  "Adam Vinatieri": [
+   "Indianapolis Colts",
+   "New England Patriots"
+  ],
+  "Phil Dawson": [
+   "Arizona Cardinals",
+   "Cleveland Browns",
+   "San Francisco 49ers"
+  ],
   "Drew Brees": [
    "Los Angeles Chargers",
    "New Orleans Saints"
+  ],
+  "Sebastian Janikowski": [
+   "Las Vegas Raiders",
+   "Seattle Seahawks"
   ],
   "Marcedes Lewis": [
    "Chicago Bears",
@@ -7085,14 +7119,38 @@
    "Green Bay Packers",
    "Jacksonville Jaguars"
   ],
+  "Matt Prater": [
+   "Arizona Cardinals",
+   "Atlanta Falcons",
+   "Buffalo Bills",
+   "Denver Broncos",
+   "Detroit Lions"
+  ],
   "Jason Witten": [
    "Dallas Cowboys",
    "Las Vegas Raiders"
+  ],
+  "Nick Folk": [
+   "Atlanta Falcons",
+   "Dallas Cowboys",
+   "New England Patriots",
+   "New York Jets",
+   "Tampa Bay Buccaneers",
+   "Tennessee Titans"
+  ],
+  "Robbie Gould": [
+   "Chicago Bears",
+   "New York Giants",
+   "San Francisco 49ers"
   ],
   "Julius Peppers": [
    "Carolina Panthers",
    "Chicago Bears",
    "Green Bay Packers"
+  ],
+  "Mason Crosby": [
+   "Green Bay Packers",
+   "New York Giants"
   ],
   "Peyton Manning": [
    "Denver Broncos",
@@ -7101,6 +7159,13 @@
   "Philip Rivers": [
    "Indianapolis Colts",
    "Los Angeles Chargers"
+  ],
+  "Matt Bryant": [
+   "Atlanta Falcons",
+   "Indianapolis Colts",
+   "Miami Dolphins",
+   "New York Giants",
+   "Tampa Bay Buccaneers"
   ],
   "Terrell Suggs": [
    "Arizona Cardinals",
@@ -7117,6 +7182,11 @@
   "Tony Gonzalez": [
    "Atlanta Falcons",
    "Kansas City Chiefs"
+  ],
+  "David Akers": [
+   "Detroit Lions",
+   "Philadelphia Eagles",
+   "San Francisco 49ers"
   ],
   "Charles Woodson": [
    "Green Bay Packers",
@@ -7154,9 +7224,35 @@
    "Baltimore Ravens",
    "Carolina Panthers"
   ],
+  "Stephen Gostkowski": [
+   "New England Patriots",
+   "Tennessee Titans"
+  ],
+  "Ryan Succop": [
+   "Kansas City Chiefs",
+   "Tampa Bay Buccaneers",
+   "Tennessee Titans"
+  ],
   "Champ Bailey": [
    "Denver Broncos",
    "Washington Commanders"
+  ],
+  "Rian Lindell": [
+   "Buffalo Bills",
+   "Seattle Seahawks",
+   "Tampa Bay Buccaneers"
+  ],
+  "Justin Tucker": [
+   "Baltimore Ravens",
+   "Kansas City Chiefs"
+  ],
+  "Jay Feely": [
+   "Arizona Cardinals",
+   "Atlanta Falcons",
+   "Chicago Bears",
+   "Miami Dolphins",
+   "New York Giants",
+   "New York Jets"
   ],
   "Karlos Dansby": [
    "Arizona Cardinals",
@@ -7170,6 +7266,11 @@
    "Houston Texans",
    "Tennessee Titans"
   ],
+  "Ryan Longwell": [
+   "Green Bay Packers",
+   "Minnesota Vikings",
+   "Seattle Seahawks"
+  ],
   "Antoine Bethea": [
    "Arizona Cardinals",
    "Indianapolis Colts",
@@ -7182,10 +7283,22 @@
    "Cincinnati Bengals",
    "Denver Broncos"
   ],
+  "Graham Gano": [
+   "Carolina Panthers",
+   "New York Giants",
+   "Washington Commanders"
+  ],
   "Russell Wilson": [
    "Denver Broncos",
    "New York Giants",
    "Pittsburgh Steelers",
+   "Seattle Seahawks"
+  ],
+  "Olindo Mare": [
+   "Carolina Panthers",
+   "Chicago Bears",
+   "Miami Dolphins",
+   "New Orleans Saints",
    "Seattle Seahawks"
   ],
   "Anquan Boldin": [
@@ -7204,6 +7317,12 @@
    "Buffalo Bills",
    "Denver Broncos",
    "Houston Texans"
+  ],
+  "Josh Brown": [
+   "Cincinnati Bengals",
+   "Los Angeles Rams",
+   "New York Giants",
+   "Seattle Seahawks"
   ],
   "Eric Weddle": [
    "Baltimore Ravens",
@@ -7311,10 +7430,21 @@
    "Indianapolis Colts",
    "Tennessee Titans"
   ],
+  "Greg Zuerlein": [
+   "Dallas Cowboys",
+   "Los Angeles Rams",
+   "New York Jets"
+  ],
   "Tyson Alualu": [
    "Detroit Lions",
    "Jacksonville Jaguars",
    "Pittsburgh Steelers"
+  ],
+  "Brandon McManus": [
+   "Denver Broncos",
+   "Green Bay Packers",
+   "Jacksonville Jaguars",
+   "Los Angeles Rams"
   ],
   "Brett Favre": [
    "Atlanta Falcons",
@@ -7447,10 +7577,20 @@
    "New York Jets",
    "Washington Commanders"
   ],
+  "Jason Myers": [
+   "Jacksonville Jaguars",
+   "New York Jets",
+   "Seattle Seahawks"
+  ],
   "Mike Peterson": [
    "Atlanta Falcons",
    "Indianapolis Colts",
    "Jacksonville Jaguars"
+  ],
+  "Neil Rackers": [
+   "Arizona Cardinals",
+   "Cincinnati Bengals",
+   "Houston Texans"
   ],
   "Stephon Gilmore": [
    "Buffalo Bills",
@@ -7466,6 +7606,11 @@
    "Kansas City Chiefs",
    "New Orleans Saints"
   ],
+  "Kris Brown": [
+   "Houston Texans",
+   "Los Angeles Chargers",
+   "Pittsburgh Steelers"
+  ],
   "Thomas Jones": [
    "Arizona Cardinals",
    "Chicago Bears",
@@ -7479,6 +7624,18 @@
    "Indianapolis Colts",
    "Los Angeles Chargers",
    "New England Patriots"
+  ],
+  "Shayne Graham": [
+   "Atlanta Falcons",
+   "Baltimore Ravens",
+   "Buffalo Bills",
+   "Carolina Panthers",
+   "Cincinnati Bengals",
+   "Houston Texans",
+   "Miami Dolphins",
+   "New England Patriots",
+   "New Orleans Saints",
+   "New York Giants"
   ],
   "Nate Clements": [
    "Buffalo Bills",
@@ -7547,6 +7704,13 @@
    "Denver Broncos",
    "Tennessee Titans"
   ],
+  "Cairo Santos": [
+   "Chicago Bears",
+   "Kansas City Chiefs",
+   "Los Angeles Rams",
+   "Tampa Bay Buccaneers",
+   "Tennessee Titans"
+  ],
   "Cullen Jenkins": [
    "Green Bay Packers",
    "New York Giants",
@@ -7565,6 +7729,10 @@
    "New York Giants",
    "New York Jets",
    "Seattle Seahawks"
+  ],
+  "John Kasay": [
+   "Carolina Panthers",
+   "New Orleans Saints"
   ],
   "Andre Carter": [
    "Las Vegas Raiders",
@@ -7588,6 +7756,20 @@
   "Rashean Mathis": [
    "Detroit Lions",
    "Jacksonville Jaguars"
+  ],
+  "Josh Scobee": [
+   "Jacksonville Jaguars",
+   "Pittsburgh Steelers"
+  ],
+  "Mike Nugent": [
+   "Arizona Cardinals",
+   "Chicago Bears",
+   "Cincinnati Bengals",
+   "Dallas Cowboys",
+   "Las Vegas Raiders",
+   "New England Patriots",
+   "New York Jets",
+   "Tampa Bay Buccaneers"
   ],
   "Corey Graham": [
    "Baltimore Ravens",
@@ -7687,6 +7869,14 @@
    "Las Vegas Raiders",
    "New Orleans Saints"
   ],
+  "Jason Elam": [
+   "Atlanta Falcons",
+   "Denver Broncos"
+  ],
+  "Matt Stover": [
+   "Baltimore Ravens",
+   "Indianapolis Colts"
+  ],
   "Jerricho Cotchery": [
    "Carolina Panthers",
    "New York Jets",
@@ -7709,6 +7899,13 @@
    "Los Angeles Rams",
    "New England Patriots",
    "Seattle Seahawks"
+  ],
+  "John Carney": [
+   "Jacksonville Jaguars",
+   "Kansas City Chiefs",
+   "Los Angeles Chargers",
+   "New Orleans Saints",
+   "New York Giants"
   ],
   "Ryan Clark": [
    "New York Giants",
@@ -7734,6 +7931,13 @@
    "Kansas City Chiefs",
    "Miami Dolphins",
    "Tennessee Titans"
+  ],
+  "Steven Hauschka": [
+   "Baltimore Ravens",
+   "Buffalo Bills",
+   "Denver Broncos",
+   "Jacksonville Jaguars",
+   "Seattle Seahawks"
   ],
   "Julio Jones": [
    "Atlanta Falcons",
@@ -7908,9 +8112,17 @@
    "Buffalo Bills",
    "Green Bay Packers"
   ],
+  "Wil Lutz": [
+   "Denver Broncos",
+   "New Orleans Saints"
+  ],
   "Isaac Bruce": [
    "Los Angeles Rams",
    "San Francisco 49ers"
+  ],
+  "Greg Ellis": [
+   "Dallas Cowboys",
+   "Las Vegas Raiders"
   ],
   "Bart Scott": [
    "Baltimore Ravens",
@@ -8011,6 +8223,10 @@
    "New York Jets",
    "San Francisco 49ers",
    "Tennessee Titans"
+  ],
+  "Dan Bailey": [
+   "Dallas Cowboys",
+   "Minnesota Vikings"
   ],
   "Logan Ryan": [
    "New England Patriots",
@@ -8373,6 +8589,14 @@
    "Cincinnati Bengals",
    "Tampa Bay Buccaneers"
   ],
+  "Randy Bullock": [
+   "Cincinnati Bengals",
+   "Houston Texans",
+   "New York Giants",
+   "New York Jets",
+   "Pittsburgh Steelers",
+   "Tennessee Titans"
+  ],
   "Janoris Jenkins": [
    "Los Angeles Rams",
    "New Orleans Saints",
@@ -8593,6 +8817,10 @@
    "Cleveland Browns",
    "Indianapolis Colts"
   ],
+  "Dan Carpenter": [
+   "Buffalo Bills",
+   "Miami Dolphins"
+  ],
   "Orlando Scandrick": [
    "Dallas Cowboys",
    "Kansas City Chiefs",
@@ -8608,6 +8836,11 @@
   "Earl Thomas": [
    "Baltimore Ravens",
    "Seattle Seahawks"
+  ],
+  "Dustin Hopkins": [
+   "Cleveland Browns",
+   "Los Angeles Chargers",
+   "Washington Commanders"
   ],
   "Brandon Scherff": [
    "Jacksonville Jaguars",
@@ -8669,6 +8902,14 @@
    "Carolina Panthers",
    "Cincinnati Bengals",
    "New Orleans Saints"
+  ],
+  "Joe Nedney": [
+   "Arizona Cardinals",
+   "Carolina Panthers",
+   "Denver Broncos",
+   "Las Vegas Raiders",
+   "San Francisco 49ers",
+   "Tennessee Titans"
   ],
   "Pierson Prioleau": [
    "Buffalo Bills",
@@ -8767,6 +9008,12 @@
    "Chicago Bears",
    "Washington Commanders"
   ],
+  "Daniel Carlson": [
+   "Las Vegas Raiders",
+   "Miami Dolphins",
+   "Minnesota Vikings",
+   "New Orleans Saints"
+  ],
   "John Lynch": [
    "Denver Broncos",
    "Tampa Bay Buccaneers"
@@ -8790,6 +9037,14 @@
   "Will Allen (DB, Dolphins)": [
    "Miami Dolphins",
    "New York Giants"
+  ],
+  "Billy Cundiff": [
+   "Baltimore Ravens",
+   "Buffalo Bills",
+   "Cleveland Browns",
+   "Dallas Cowboys",
+   "New Orleans Saints",
+   "Washington Commanders"
   ],
   "Jeremy Shockey": [
    "Carolina Panthers",
@@ -8997,6 +9252,10 @@
    "Baltimore Ravens",
    "New Orleans Saints"
   ],
+  "Jeff Reed": [
+   "Pittsburgh Steelers",
+   "San Francisco 49ers"
+  ],
   "Cortland Finnegan": [
    "Carolina Panthers",
    "Los Angeles Rams",
@@ -9092,6 +9351,12 @@
    "Pittsburgh Steelers",
    "Tennessee Titans",
    "Washington Commanders"
+  ],
+  "Jon Kitna": [
+   "Cincinnati Bengals",
+   "Dallas Cowboys",
+   "Detroit Lions",
+   "Seattle Seahawks"
   ],
   "Deltha O'Neal": [
    "Cincinnati Bengals",
@@ -9218,6 +9483,10 @@
    "Las Vegas Raiders",
    "Tampa Bay Buccaneers"
   ],
+  "Lawrence Tynes": [
+   "Kansas City Chiefs",
+   "New York Giants"
+  ],
   "Justin Bannan": [
    "Baltimore Ravens",
    "Buffalo Bills",
@@ -9283,6 +9552,11 @@
    "Atlanta Falcons",
    "Kansas City Chiefs",
    "Los Angeles Chargers"
+  ],
+  "Shaun Suisham": [
+   "Dallas Cowboys",
+   "Pittsburgh Steelers",
+   "Washington Commanders"
   ],
   "Carlos Rogers": [
    "Las Vegas Raiders",
@@ -9412,6 +9686,10 @@
    "Dallas Cowboys",
    "Jacksonville Jaguars",
    "Kansas City Chiefs"
+  ],
+  "Jason Sanders": [
+   "Miami Dolphins",
+   "New York Jets"
   ],
   "Junior Seau": [
    "Los Angeles Chargers",
@@ -9637,6 +9915,12 @@
    "New York Jets",
    "Washington Commanders"
   ],
+  "Morten Andersen": [
+   "Atlanta Falcons",
+   "Kansas City Chiefs",
+   "Minnesota Vikings",
+   "New York Giants"
+  ],
   "Kurt Warner": [
    "Arizona Cardinals",
    "Green Bay Packers",
@@ -9704,6 +9988,10 @@
    "Carolina Panthers",
    "Denver Broncos",
    "New Orleans Saints"
+  ],
+  "Mike Vanderjagt": [
+   "Dallas Cowboys",
+   "Indianapolis Colts"
   ],
   "Anthony Becht": [
    "Arizona Cardinals",
@@ -9784,6 +10072,14 @@
    "Los Angeles Rams",
    "New England Patriots",
    "Tampa Bay Buccaneers"
+  ],
+  "Joey Slye": [
+   "Carolina Panthers",
+   "Houston Texans",
+   "New England Patriots",
+   "San Francisco 49ers",
+   "Tennessee Titans",
+   "Washington Commanders"
   ],
   "Jevon Kearse": [
    "Philadelphia Eagles",
@@ -9913,6 +10209,13 @@
    "Baltimore Ravens",
    "Green Bay Packers",
    "Houston Texans"
+  ],
+  "Nick Novak": [
+   "Arizona Cardinals",
+   "Houston Texans",
+   "Kansas City Chiefs",
+   "Los Angeles Chargers",
+   "Washington Commanders"
   ],
   "Brice McCain": [
    "Houston Texans",
@@ -10130,6 +10433,10 @@
    "New Orleans Saints",
    "Tampa Bay Buccaneers"
   ],
+  "Nate Kaeding": [
+   "Los Angeles Chargers",
+   "Miami Dolphins"
+  ],
   "Corey Williams": [
    "Cleveland Browns",
    "Detroit Lions",
@@ -10317,6 +10624,14 @@
    "Las Vegas Raiders",
    "New York Giants",
    "San Francisco 49ers"
+  ],
+  "Matt Gay": [
+   "Indianapolis Colts",
+   "Las Vegas Raiders",
+   "Los Angeles Rams",
+   "San Francisco 49ers",
+   "Tampa Bay Buccaneers",
+   "Washington Commanders"
   ],
   "Mark Simoneau": [
    "Atlanta Falcons",
@@ -10575,6 +10890,12 @@
    "Houston Texans",
    "New York Jets"
   ],
+  "Martin Gramatica": [
+   "Dallas Cowboys",
+   "Indianapolis Colts",
+   "New Orleans Saints",
+   "Tampa Bay Buccaneers"
+  ],
   "Spencer Johnson": [
    "Buffalo Bills",
    "Minnesota Vikings"
@@ -10591,6 +10912,12 @@
   "Parys Haralson": [
    "New Orleans Saints",
    "San Francisco 49ers"
+  ],
+  "Connor Barth": [
+   "Chicago Bears",
+   "Denver Broncos",
+   "Kansas City Chiefs",
+   "Tampa Bay Buccaneers"
   ],
   "Leodis McKelvin": [
    "Buffalo Bills",
@@ -10705,6 +11032,15 @@
    "Los Angeles Chargers",
    "Pittsburgh Steelers",
    "Tennessee Titans"
+  ],
+  "Chase McLaughlin": [
+   "Cleveland Browns",
+   "Indianapolis Colts",
+   "Jacksonville Jaguars",
+   "Los Angeles Chargers",
+   "New York Jets",
+   "San Francisco 49ers",
+   "Tampa Bay Buccaneers"
   ],
   "Fakhir Brown": [
    "Los Angeles Chargers",
@@ -11226,6 +11562,10 @@
    "Miami Dolphins",
    "Philadelphia Eagles"
   ],
+  "John Hall": [
+   "New York Jets",
+   "Washington Commanders"
+  ],
   "Reuben Droughns": [
    "Cleveland Browns",
    "Denver Broncos",
@@ -11671,6 +12011,11 @@
    "New York Giants",
    "San Francisco 49ers"
   ],
+  "Younghoe Koo": [
+   "Atlanta Falcons",
+   "Los Angeles Chargers",
+   "New York Giants"
+  ],
   "Jerome Bettis": [
    "Los Angeles Rams",
    "Pittsburgh Steelers"
@@ -11801,6 +12146,10 @@
    "Cleveland Browns",
    "Houston Texans",
    "Miami Dolphins"
+  ],
+  "Paul Edinger": [
+   "Chicago Bears",
+   "Minnesota Vikings"
   ],
   "Hank Poteat": [
    "Cleveland Browns",
@@ -12081,9 +12430,22 @@
    "New Orleans Saints",
    "San Francisco 49ers"
   ],
+  "Eddy Pineiro": [
+   "Carolina Panthers",
+   "Chicago Bears",
+   "New York Jets",
+   "San Francisco 49ers"
+  ],
   "Aaron Brooks": [
    "Las Vegas Raiders",
    "New Orleans Saints"
+  ],
+  "Todd Peterson": [
+   "Atlanta Falcons",
+   "Kansas City Chiefs",
+   "Pittsburgh Steelers",
+   "San Francisco 49ers",
+   "Seattle Seahawks"
   ],
   "Chad Morton": [
    "New Orleans Saints",
@@ -12158,6 +12520,10 @@
    "Jacksonville Jaguars",
    "Las Vegas Raiders",
    "New York Jets"
+  ],
+  "Gary Anderson": [
+   "Minnesota Vikings",
+   "Tennessee Titans"
   ],
   "Jerry Rice": [
    "Las Vegas Raiders",
@@ -12533,6 +12899,10 @@
    "Atlanta Falcons",
    "Baltimore Ravens"
   ],
+  "Blair Walsh": [
+   "Minnesota Vikings",
+   "Seattle Seahawks"
+  ],
   "Patrick Omameh": [
    "Carolina Panthers",
    "Chicago Bears",
@@ -12675,6 +13045,11 @@
    "Carolina Panthers",
    "Cincinnati Bengals",
    "Los Angeles Chargers"
+  ],
+  "Wade Richey": [
+   "Baltimore Ravens",
+   "Los Angeles Chargers",
+   "San Francisco 49ers"
   ],
   "Corey Simon": [
    "Indianapolis Colts",
@@ -13087,6 +13462,11 @@
    "Carolina Panthers",
    "Cleveland Browns"
   ],
+  "Steve Christie": [
+   "Buffalo Bills",
+   "Los Angeles Chargers",
+   "New York Giants"
+  ],
   "Tony Stewart": [
    "Cincinnati Bengals",
    "Las Vegas Raiders",
@@ -13180,6 +13560,14 @@
    "Carolina Panthers",
    "Denver Broncos",
    "Jacksonville Jaguars"
+  ],
+  "Cody Parkey": [
+   "Chicago Bears",
+   "Cleveland Browns",
+   "Miami Dolphins",
+   "New Orleans Saints",
+   "Philadelphia Eagles",
+   "Tennessee Titans"
   ],
   "Deone Bucannon": [
    "Arizona Cardinals",
@@ -13286,6 +13674,15 @@
   "James Develin": [
    "Los Angeles Rams",
    "New England Patriots"
+  ],
+  "Kai Forbath": [
+   "Dallas Cowboys",
+   "Jacksonville Jaguars",
+   "Los Angeles Rams",
+   "Minnesota Vikings",
+   "New England Patriots",
+   "New Orleans Saints",
+   "Washington Commanders"
   ],
   "Neiko Thorpe": [
    "Kansas City Chiefs",
@@ -13446,6 +13843,14 @@
    "Arizona Cardinals",
    "Buffalo Bills",
    "Cleveland Browns",
+   "Washington Commanders"
+  ],
+  "Zane Gonzalez": [
+   "Arizona Cardinals",
+   "Atlanta Falcons",
+   "Carolina Panthers",
+   "Cleveland Browns",
+   "Miami Dolphins",
    "Washington Commanders"
   ],
   "Tarell Basham": [
@@ -13838,6 +14243,11 @@
    "New England Patriots",
    "Washington Commanders"
   ],
+  "Josh Lambo": [
+   "Jacksonville Jaguars",
+   "Los Angeles Chargers",
+   "Tennessee Titans"
+  ],
   "Bryce Hager": [
    "Los Angeles Rams",
    "New England Patriots",
@@ -14092,6 +14502,12 @@
    "Cleveland Browns",
    "New York Jets"
   ],
+  "Chandler Catanzaro": [
+   "Arizona Cardinals",
+   "Carolina Panthers",
+   "New York Jets",
+   "Tampa Bay Buccaneers"
+  ],
   "Brent Qvale": [
    "Houston Texans",
    "New York Jets"
@@ -14126,6 +14542,14 @@
   "J.C. Jackson": [
    "Los Angeles Chargers",
    "New England Patriots"
+  ],
+  "Doug Brien": [
+   "Chicago Bears",
+   "Indianapolis Colts",
+   "Minnesota Vikings",
+   "New Orleans Saints",
+   "New York Jets",
+   "Tampa Bay Buccaneers"
   ],
   "Bruce Smith": [
    "Buffalo Bills",
@@ -14359,6 +14783,14 @@
    "Dallas Cowboys",
    "Philadelphia Eagles"
   ],
+  "Greg Joseph": [
+   "Cleveland Browns",
+   "Minnesota Vikings",
+   "New York Giants",
+   "New York Jets",
+   "Tennessee Titans",
+   "Washington Commanders"
+  ],
   "Brandon Facyson": [
    "Indianapolis Colts",
    "Las Vegas Raiders",
@@ -14575,6 +15007,14 @@
    "Detroit Lions",
    "New York Giants"
   ],
+  "Mike Badgley": [
+   "Buffalo Bills",
+   "Chicago Bears",
+   "Detroit Lions",
+   "Indianapolis Colts",
+   "Los Angeles Chargers",
+   "Tennessee Titans"
+  ],
   "Miles Boykin": [
    "Baltimore Ravens",
    "Pittsburgh Steelers"
@@ -14725,6 +15165,10 @@
   "Jermaine Carter": [
    "Carolina Panthers",
    "Cleveland Browns"
+  ],
+  "Cameron Dicker": [
+   "Los Angeles Chargers",
+   "Philadelphia Eagles"
   ],
   "Jimmy Williams": [
    "San Francisco 49ers",
@@ -15168,6 +15612,11 @@
    "Jacksonville Jaguars",
    "New York Jets"
   ],
+  "Caleb Sturgis": [
+   "Los Angeles Chargers",
+   "Miami Dolphins",
+   "Philadelphia Eagles"
+  ],
   "Datone Jones": [
    "Dallas Cowboys",
    "Green Bay Packers",
@@ -15204,6 +15653,15 @@
   "Jarrad Davis": [
    "Detroit Lions",
    "New York Giants",
+   "New York Jets"
+  ],
+  "Riley Patterson": [
+   "Atlanta Falcons",
+   "Baltimore Ravens",
+   "Cleveland Browns",
+   "Detroit Lions",
+   "Jacksonville Jaguars",
+   "Miami Dolphins",
    "New York Jets"
   ],
   "Keion Carpenter": [
@@ -15907,6 +16365,11 @@
    "Los Angeles Chargers",
    "New Orleans Saints"
   ],
+  "Brett Maher": [
+   "Dallas Cowboys",
+   "Los Angeles Rams",
+   "New Orleans Saints"
+  ],
   "Kasim Edebali": [
    "Cincinnati Bengals",
    "Denver Broncos",
@@ -16251,6 +16714,16 @@
    "Houston Texans",
    "Miami Dolphins"
   ],
+  "Dave Rayner": [
+   "Buffalo Bills",
+   "Cincinnati Bengals",
+   "Detroit Lions",
+   "Green Bay Packers",
+   "Indianapolis Colts",
+   "Kansas City Chiefs",
+   "Las Vegas Raiders",
+   "Los Angeles Chargers"
+  ],
   "Billy Bajema": [
    "Baltimore Ravens",
    "Los Angeles Rams",
@@ -16271,6 +16744,10 @@
    "Los Angeles Rams",
    "New York Giants",
    "Philadelphia Eagles"
+  ],
+  "Garrett Hartley": [
+   "Cleveland Browns",
+   "New Orleans Saints"
   ],
   "Jed Collins": [
    "Detroit Lions",
@@ -16312,6 +16789,12 @@
    "Atlanta Falcons",
    "Chicago Bears",
    "Green Bay Packers"
+  ],
+  "Aldrick Rosas": [
+   "Detroit Lions",
+   "Jacksonville Jaguars",
+   "New Orleans Saints",
+   "New York Giants"
   ],
   "DeAndre Washington": [
    "Kansas City Chiefs",
@@ -16457,6 +16940,10 @@
    "Kansas City Chiefs",
    "New Orleans Saints",
    "Tennessee Titans"
+  ],
+  "Chad Ryland": [
+   "Arizona Cardinals",
+   "New England Patriots"
   ],
   "Mike Cloud": [
    "Kansas City Chiefs",
@@ -16695,6 +17182,15 @@
    "Cleveland Browns",
    "Miami Dolphins",
    "New England Patriots"
+  ],
+  "Jose Cortez": [
+   "Dallas Cowboys",
+   "Indianapolis Colts",
+   "Minnesota Vikings",
+   "New York Giants",
+   "Philadelphia Eagles",
+   "San Francisco 49ers",
+   "Washington Commanders"
   ],
   "Bryan Gilmore": [
    "Arizona Cardinals",
@@ -17358,6 +17854,15 @@
    "Baltimore Ravens",
    "Las Vegas Raiders"
   ],
+  "Blake Grupe": [
+   "Indianapolis Colts",
+   "Los Angeles Rams",
+   "New Orleans Saints"
+  ],
+  "Garrison Hearst": [
+   "Denver Broncos",
+   "San Francisco 49ers"
+  ],
   "Ronney Jenkins": [
    "Las Vegas Raiders",
    "Los Angeles Chargers"
@@ -17383,6 +17888,10 @@
   "Marques Harris": [
    "Los Angeles Chargers",
    "San Francisco 49ers"
+  ],
+  "Rhys Lloyd": [
+   "Baltimore Ravens",
+   "Carolina Panthers"
   ],
   "Daniel Muir": [
    "Green Bay Packers",
@@ -17412,6 +17921,10 @@
   "Alex Carrington": [
    "Buffalo Bills",
    "Los Angeles Rams"
+  ],
+  "Alex Henery": [
+   "Detroit Lions",
+   "Philadelphia Eagles"
   ],
   "Will Hill": [
    "Baltimore Ravens",
@@ -18517,6 +19030,13 @@
    "Los Angeles Chargers",
    "New Orleans Saints"
   ],
+  "Jake Moody": [
+   "Atlanta Falcons",
+   "Baltimore Ravens",
+   "Chicago Bears",
+   "San Francisco 49ers",
+   "Washington Commanders"
+  ],
   "Jermaine Haley": [
    "Miami Dolphins",
    "Washington Commanders"
@@ -18803,10 +19323,21 @@
    "Seattle Seahawks",
    "Tampa Bay Buccaneers"
   ],
+  "Austin Seibert": [
+   "Cincinnati Bengals",
+   "Cleveland Browns",
+   "Detroit Lions",
+   "New York Jets",
+   "Washington Commanders"
+  ],
   "James Robinson": [
    "Green Bay Packers",
    "Jacksonville Jaguars",
    "New York Jets"
+  ],
+  "Joe Johnson": [
+   "Green Bay Packers",
+   "New Orleans Saints"
   ],
   "Eric Johnson (LB, Cardinals)": [
    "Arizona Cardinals",
@@ -19699,6 +20230,10 @@
    "Green Bay Packers",
    "Houston Texans"
   ],
+  "Bill Gramatica": [
+   "Arizona Cardinals",
+   "Miami Dolphins"
+  ],
   "Nick Rogers": [
    "Green Bay Packers",
    "Indianapolis Colts",
@@ -19857,6 +20392,11 @@
    "Philadelphia Eagles",
    "Tennessee Titans"
   ],
+  "Aaron Elling": [
+   "Baltimore Ravens",
+   "Minnesota Vikings",
+   "Tennessee Titans"
+  ],
   "ReShard Lee": [
    "Dallas Cowboys",
    "Green Bay Packers",
@@ -19956,6 +20496,16 @@
    "Houston Texans",
    "Indianapolis Colts"
   ],
+  "Matthew Wright": [
+   "Carolina Panthers",
+   "Houston Texans",
+   "Jacksonville Jaguars",
+   "Kansas City Chiefs",
+   "Pittsburgh Steelers",
+   "San Francisco 49ers",
+   "Tennessee Titans",
+   "Washington Commanders"
+  ],
   "Parker Hesse": [
    "Atlanta Falcons",
    "Detroit Lions"
@@ -19965,6 +20515,10 @@
    "Indianapolis Colts",
    "Miami Dolphins",
    "Seattle Seahawks"
+  ],
+  "Steve Lindsey": [
+   "Denver Broncos",
+   "Jacksonville Jaguars"
   ],
   "Lyle West": [
    "Kansas City Chiefs",
@@ -20370,6 +20924,10 @@
    "New England Patriots",
    "New York Jets"
   ],
+  "Patrick Murray": [
+   "Cleveland Browns",
+   "Tampa Bay Buccaneers"
+  ],
   "Keith Reaser": [
    "Kansas City Chiefs",
    "San Francisco 49ers"
@@ -20592,6 +21150,12 @@
    "Indianapolis Colts",
    "New York Giants"
   ],
+  "Tim Seder": [
+   "Dallas Cowboys",
+   "Houston Texans",
+   "Jacksonville Jaguars",
+   "Washington Commanders"
+  ],
   "Shannon Taylor": [
    "Baltimore Ravens",
    "Jacksonville Jaguars",
@@ -20694,6 +21258,10 @@
   "Josh Ferguson": [
    "Indianapolis Colts",
    "Washington Commanders"
+  ],
+  "Sam Ficken": [
+   "Los Angeles Rams",
+   "New York Jets"
   ],
   "C.J. Board": [
    "Jacksonville Jaguars",
@@ -21436,6 +22004,10 @@
    "Atlanta Falcons",
    "Miami Dolphins"
   ],
+  "Rodrigo Blankenship": [
+   "Arizona Cardinals",
+   "Indianapolis Colts"
+  ],
   "Dieter Eiselen": [
    "Chicago Bears",
    "Houston Texans"
@@ -21444,6 +22016,11 @@
    "Arizona Cardinals",
    "Houston Texans",
    "New Orleans Saints"
+  ],
+  "Anders Carlson": [
+   "Green Bay Packers",
+   "New York Jets",
+   "San Francisco 49ers"
   ],
   "Larry Atkins": [
    "Kansas City Chiefs",
@@ -21610,6 +22187,11 @@
   "Mike Strachan": [
    "Carolina Panthers",
    "Indianapolis Colts"
+  ],
+  "Cade York": [
+   "Cincinnati Bengals",
+   "Cleveland Browns",
+   "Washington Commanders"
   ],
   "Jason Perry": [
    "Cincinnati Bengals",
@@ -22152,6 +22734,12 @@
    "Cleveland Browns",
    "Dallas Cowboys"
   ],
+  "Matt Ammendola": [
+   "Arizona Cardinals",
+   "Houston Texans",
+   "Kansas City Chiefs",
+   "New York Jets"
+  ],
   "Rachad Wildgoose": [
    "New York Jets",
    "Washington Commanders"
@@ -22167,6 +22755,11 @@
   "Keondre Coburn": [
    "Kansas City Chiefs",
    "Tennessee Titans"
+  ],
+  "Spencer Shrader": [
+   "Indianapolis Colts",
+   "Kansas City Chiefs",
+   "New York Jets"
   ],
   "Don Morgan": [
    "Arizona Cardinals",
@@ -22244,6 +22837,10 @@
    "Arizona Cardinals",
    "Indianapolis Colts"
   ],
+  "Giorgio Tavecchio": [
+   "Atlanta Falcons",
+   "Las Vegas Raiders"
+  ],
   "Jerry Franklin": [
    "Chicago Bears",
    "Kansas City Chiefs"
@@ -22259,6 +22856,10 @@
   "Chris Davis": [
    "Los Angeles Chargers",
    "San Francisco 49ers"
+  ],
+  "Travis Coons": [
+   "Cleveland Browns",
+   "Los Angeles Chargers"
   ],
   "AJ McCarron": [
    "Cincinnati Bengals",
@@ -22695,7 +23296,6 @@
   "Milo Eifler": [
    "Arizona Cardinals",
    "Atlanta Falcons",
-   "Tennessee Titans",
    "Washington Commanders"
   ],
   "AJ Parker": [
@@ -22719,6 +23319,10 @@
   ],
   "Vinny Sutherland": [
    "Chicago Bears",
+   "San Francisco 49ers"
+  ],
+  "Owen Pochman": [
+   "New York Giants",
    "San Francisco 49ers"
   ],
   "Ken Dorsey": [
@@ -74997,6 +75601,54 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Adam Vinatieri": {
+   "stints": [
+    {
+     "team": "Patriots",
+     "from": 1999,
+     "to": 2005,
+     "rings": [
+      2001,
+      2003,
+      2004
+     ]
+    },
+    {
+     "team": "Colts",
+     "from": 2006,
+     "to": 2019,
+     "rings": [
+      2006
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Phil Dawson": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 1999,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2013,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2017,
+     "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Drew Brees": {
    "stints": [
     {
@@ -75012,6 +75664,24 @@
      "rings": [
       2009
      ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Sebastian Janikowski": {
+   "stints": [
+    {
+     "team": "Raiders",
+     "from": 2000,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
     }
    ],
    "confidence": "confirmed",
@@ -75047,6 +75717,42 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Matt Prater": {
+   "stints": [
+    {
+     "team": "Falcons",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2007,
+     "to": 2013,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2014,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2021,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jason Witten": {
    "stints": [
     {
@@ -75065,6 +75771,78 @@
      "team": "Raiders",
      "from": 2020,
      "to": 2020,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Nick Folk": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2007,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2010,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Patriots",
+     "from": 2019,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2023,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Robbie Gould": {
+   "stints": [
+    {
+     "team": "Bears",
+     "from": 2005,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2016,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2017,
+     "to": 2022,
      "rings": []
     }
    ],
@@ -75107,6 +75885,26 @@
      "team": "Panthers",
      "from": 2017,
      "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Mason Crosby": {
+   "stints": [
+    {
+     "team": "Packers",
+     "from": 2007,
+     "to": 2022,
+     "rings": [
+      2010
+     ]
+    },
+    {
+     "team": "Giants",
+     "from": 2023,
+     "to": 2023,
      "rings": []
     }
    ],
@@ -75168,6 +75966,42 @@
      "team": "Colts",
      "from": 2025,
      "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Matt Bryant": {
+   "stints": [
+    {
+     "team": "Giants",
+     "from": 2002,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2005,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2009,
+     "to": 2019,
      "rings": []
     }
    ],
@@ -75255,6 +76089,30 @@
    ],
    "confidence": "confirmed",
    "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+  },
+  "David Akers": {
+   "stints": [
+    {
+     "team": "Eagles",
+     "from": 1999,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2011,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2013,
+     "to": 2013,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
   },
   "Charles Woodson": {
    "stints": [
@@ -75495,6 +76353,66 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Stephen Gostkowski": {
+   "stints": [
+    {
+     "team": "Patriots",
+     "from": 2006,
+     "to": 2019,
+     "rings": [
+      2014,
+      2016,
+      2018
+     ]
+    },
+    {
+     "team": "Titans",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Ryan Succop": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2009,
+     "to": 2013,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2014,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2020,
+     "to": 2022,
+     "rings": [
+      2020
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jason Hanson": {
+   "stints": [
+    {
+     "team": "Lions",
+     "from": 1999,
+     "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Lavonte David": {
    "stints": [
     {
@@ -75521,6 +76439,86 @@
      "team": "Broncos",
      "from": 2004,
      "to": 2013,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Rian Lindell": {
+   "stints": [
+    {
+     "team": "Seahawks",
+     "from": 2000,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2003,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2013,
+     "to": 2013,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Justin Tucker": {
+   "stints": [
+    {
+     "team": "Ravens",
+     "from": 2012,
+     "to": 2024,
+     "rings": [
+      2012
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jay Feely": {
+   "stints": [
+    {
+     "team": "Falcons",
+     "from": 2001,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2005,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2008,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2010,
+     "to": 2013,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2014,
+     "to": 2014,
      "rings": []
     }
    ],
@@ -75599,6 +76597,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Ryan Longwell": {
+   "stints": [
+    {
+     "team": "Packers",
+     "from": 1999,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2006,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2012,
+     "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Antoine Bethea": {
    "stints": [
     {
@@ -75661,6 +76683,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Graham Gano": {
+   "stints": [
+    {
+     "team": "Commanders",
+     "from": 2009,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2012,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2020,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Reggie Wayne": {
    "stints": [
     {
@@ -75717,6 +76763,42 @@
      "team": "Giants",
      "from": 2025,
      "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Olindo Mare": {
+   "stints": [
+    {
+     "team": "Dolphins",
+     "from": 1999,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2008,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2011,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2012,
+     "to": 2012,
      "rings": []
     }
    ],
@@ -75817,6 +76899,36 @@
      "team": "Bills",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Josh Brown": {
+   "stints": [
+    {
+     "team": "Seahawks",
+     "from": 2003,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2008,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2012,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2013,
+     "to": 2016,
      "rings": []
     }
    ],
@@ -76454,6 +77566,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Greg Zuerlein": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 2012,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2020,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2022,
+     "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Tyson Alualu": {
    "stints": [
     {
@@ -76472,6 +77608,38 @@
      "team": "Lions",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Brandon McManus": {
+   "stints": [
+    {
+     "team": "Broncos",
+     "from": 2014,
+     "to": 2022,
+     "rings": [
+      2015
+     ]
+    },
+    {
+     "team": "Jaguars",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Packers",
+     "from": 2024,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -77246,6 +78414,32 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jason Myers": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 2015,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2019,
+     "to": 2026,
+     "rings": [
+      2025
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Mike Peterson": {
    "stints": [
     {
@@ -77264,6 +78458,30 @@
      "team": "Falcons",
      "from": 2009,
      "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Neil Rackers": {
+   "stints": [
+    {
+     "team": "Bengals",
+     "from": 2000,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2003,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2010,
+     "to": 2011,
      "rings": []
     }
    ],
@@ -77358,6 +78576,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Kris Brown": {
+   "stints": [
+    {
+     "team": "Steelers",
+     "from": 1999,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2002,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Thomas Jones": {
    "stints": [
     {
@@ -77438,6 +78680,72 @@
      "team": "Bengals",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Shayne Graham": {
+   "stints": [
+    {
+     "team": "Bills",
+     "from": 2001,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2003,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Patriots",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2011,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2011,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2012,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2013,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2015,
+     "to": 2015,
      "rings": []
     }
    ],
@@ -77660,6 +78968,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Chris Boswell": {
+   "stints": [
+    {
+     "team": "Steelers",
+     "from": 2015,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Antonio Smith": {
    "stints": [
     {
@@ -77834,6 +79154,48 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Cairo Santos": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2014,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2020,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Cullen Jenkins": {
    "stints": [
     {
@@ -77936,6 +79298,30 @@
      "team": "Seahawks",
      "from": 2018,
      "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "John Kasay": {
+   "stints": [
+    {
+     "team": "Panthers",
+     "from": 1999,
+     "to": 1999,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2001,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2011,
+     "to": 2011,
      "rings": []
     }
    ],
@@ -78079,6 +79465,84 @@
      "team": "Bears",
      "from": 2003,
      "to": 2014,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Josh Scobee": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 2004,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2015,
+     "to": 2015,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Mike Nugent": {
+   "stints": [
+    {
+     "team": "Jets",
+     "from": 2005,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2010,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Raiders",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Patriots",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2020,
+     "to": 2020,
      "rings": []
     }
    ],
@@ -78573,6 +80037,44 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jason Elam": {
+   "stints": [
+    {
+     "team": "Broncos",
+     "from": 1999,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2008,
+     "to": 2009,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Matt Stover": {
+   "stints": [
+    {
+     "team": "Ravens",
+     "from": 1999,
+     "to": 2008,
+     "rings": [
+      2000
+     ]
+    },
+    {
+     "team": "Colts",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jerricho Cotchery": {
    "stints": [
     {
@@ -78693,6 +80195,48 @@
      "team": "Bears",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "John Carney": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2001,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2008,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2009,
+     "to": 2010,
      "rings": []
     }
    ],
@@ -78841,6 +80385,44 @@
      "team": "Dolphins",
      "from": 2017,
      "to": 2017,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Steven Hauschka": {
+   "stints": [
+    {
+     "team": "Ravens",
+     "from": 2008,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2011,
+     "to": 2016,
+     "rings": [
+      2013
+     ]
+    },
+    {
+     "team": "Bills",
+     "from": 2017,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2020,
+     "to": 2020,
      "rings": []
     }
    ],
@@ -79845,6 +81427,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Wil Lutz": {
+   "stints": [
+    {
+     "team": "Saints",
+     "from": 2016,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2023,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Isaac Bruce": {
    "stints": [
     {
@@ -79862,6 +81468,24 @@
    ],
    "confidence": "confirmed",
    "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+  },
+  "Greg Ellis": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 1999,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Raiders",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
   },
   "Bart Scott": {
    "stints": [
@@ -79950,6 +81574,21 @@
      "from": 2021,
      "to": 2022,
      "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jake Elliott": {
+   "stints": [
+    {
+     "team": "Eagles",
+     "from": 2017,
+     "to": 2026,
+     "rings": [
+      2017,
+      2024
+     ]
     }
    ],
    "confidence": "confirmed",
@@ -80414,6 +82053,24 @@
      "team": "49ers",
      "from": 2021,
      "to": 2021,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Dan Bailey": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2011,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2018,
+     "to": 2020,
      "rings": []
     }
    ],
@@ -81532,6 +83189,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Ka'imi Fairbairn": {
+   "stints": [
+    {
+     "team": "Texans",
+     "from": 2017,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Ricky Williams": {
    "stints": [
     {
@@ -81699,6 +83368,22 @@
      "from": 2022,
      "to": 2023,
      "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Harrison Butker": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2017,
+     "to": 2026,
+     "rings": [
+      2019,
+      2022,
+      2023
+     ]
     }
    ],
    "confidence": "confirmed",
@@ -82374,6 +84059,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Rob Bironas": {
+   "stints": [
+    {
+     "team": "Titans",
+     "from": 2005,
+     "to": 2013,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Robert Geathers": {
    "stints": [
     {
@@ -82487,6 +84184,54 @@
      "team": "Bengals",
      "from": 2015,
      "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Randy Bullock": {
+   "stints": [
+    {
+     "team": "Texans",
+     "from": 2013,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2015,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2016,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2016,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2016,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2021,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2023,
+     "to": 2023,
      "rings": []
     }
    ],
@@ -83193,6 +84938,22 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Tedy Bruschi": {
+   "stints": [
+    {
+     "team": "Patriots",
+     "from": 1999,
+     "to": 2008,
+     "rings": [
+      2001,
+      2003,
+      2004
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Chris Hovan": {
    "stints": [
     {
@@ -83681,6 +85442,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Dan Carpenter": {
+   "stints": [
+    {
+     "team": "Dolphins",
+     "from": 2008,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2013,
+     "to": 2016,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Orlando Scandrick": {
    "stints": [
     {
@@ -83761,6 +85540,30 @@
      "team": "Ravens",
      "from": 2019,
      "to": 2019,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Dustin Hopkins": {
+   "stints": [
+    {
+     "team": "Commanders",
+     "from": 2015,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2021,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2023,
+     "to": 2024,
      "rings": []
     }
    ],
@@ -84119,6 +85922,48 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Joe Nedney": {
+   "stints": [
+    {
+     "team": "Raiders",
+     "from": 1999,
+     "to": 1999,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 1999,
+     "to": 1999,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2000,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2000,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2001,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2005,
+     "to": 2010,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Pierson Prioleau": {
    "stints": [
     {
@@ -84158,6 +86003,18 @@
      "rings": [
       2009
      ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jeff Wilkins": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 1999,
+     "to": 2007,
+     "rings": []
     }
    ],
    "confidence": "confirmed",
@@ -84682,6 +86539,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Daniel Carlson": {
+   "stints": [
+    {
+     "team": "Raiders",
+     "from": 2018,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "John Lynch": {
    "stints": [
     {
@@ -84801,6 +86688,54 @@
      "team": "Dolphins",
      "from": 2011,
      "to": 2011,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Billy Cundiff": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2002,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2006,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2009,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2012,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2013,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2015,
+     "to": 2015,
      "rings": []
     }
    ],
@@ -85959,6 +87894,27 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jeff Reed": {
+   "stints": [
+    {
+     "team": "Steelers",
+     "from": 2002,
+     "to": 2010,
+     "rings": [
+      2005,
+      2008
+     ]
+    },
+    {
+     "team": "49ers",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Tony Romo": {
    "stints": [
     {
@@ -86469,6 +88425,36 @@
      "team": "Rams",
      "from": 2008,
      "to": 2008,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jon Kitna": {
+   "stints": [
+    {
+     "team": "Seahawks",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2001,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2006,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2010,
+     "to": 2011,
      "rings": []
     }
    ],
@@ -87187,6 +89173,27 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
   },
+  "Lawrence Tynes": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2004,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2007,
+     "to": 2012,
+     "rings": [
+      2007,
+      2011
+     ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Aaron Schobel": {
    "stints": [
     {
@@ -87538,6 +89545,36 @@
      "team": "Chargers",
      "from": 2012,
      "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Shaun Suisham": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2005,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2006,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2009,
+     "to": 2009,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2010,
+     "to": 2014,
      "rings": []
     }
    ],
@@ -88211,6 +90248,24 @@
      "team": "Panthers",
      "from": 2022,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jason Sanders": {
+   "stints": [
+    {
+     "team": "Dolphins",
+     "from": 2018,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -89473,6 +91528,42 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Morten Andersen": {
+   "stints": [
+    {
+     "team": "Falcons",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2001,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2002,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2006,
+     "to": 2007,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Kurt Warner": {
    "stints": [
     {
@@ -89865,6 +91956,24 @@
      "team": "Saints",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Mike Vanderjagt": {
+   "stints": [
+    {
+     "team": "Colts",
+     "from": 1999,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2006,
+     "to": 2006,
      "rings": []
     }
    ],
@@ -90279,6 +92388,48 @@
      "team": "Buccaneers",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Joey Slye": {
+   "stints": [
+    {
+     "team": "Panthers",
+     "from": 2019,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2021,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Patriots",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2025,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -90947,6 +93098,48 @@
      "rings": [
       2012
      ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Nick Novak": {
+   "stints": [
+    {
+     "team": "Commanders",
+     "from": 2005,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2008,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2011,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2015,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
     }
    ],
    "confidence": "confirmed",
@@ -92171,6 +94364,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Nate Kaeding": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2004,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2012,
+     "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Corey Williams": {
    "stints": [
     {
@@ -93206,6 +95417,50 @@
      "team": "49ers",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Matt Gay": {
+   "stints": [
+    {
+     "team": "Buccaneers",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2020,
+     "to": 2022,
+     "rings": [
+      2021
+     ]
+    },
+    {
+     "team": "Colts",
+     "from": 2023,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Raiders",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -94638,6 +96893,44 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Martin Gramatica": {
+   "stints": [
+    {
+     "team": "Buccaneers",
+     "from": 1999,
+     "to": 2004,
+     "rings": [
+      2002
+     ]
+    },
+    {
+     "team": "Colts",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2006,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2006,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2007,
+     "to": 2008,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Spencer Johnson": {
    "stints": [
     {
@@ -94728,6 +97021,42 @@
      "team": "Saints",
      "from": 2013,
      "to": 2014,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Connor Barth": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2008,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2009,
+     "to": 2012,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2014,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2015,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2016,
+     "to": 2017,
      "rings": []
     }
    ],
@@ -95361,6 +97690,60 @@
      "team": "Ravens",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Chase McLaughlin": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2023,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -98096,6 +100479,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "John Hall": {
+   "stints": [
+    {
+     "team": "Jets",
+     "from": 1999,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2003,
+     "to": 2006,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jeff Ulbrich": {
    "stints": [
     {
@@ -100505,6 +102906,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Younghoe Koo": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2019,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jerome Bettis": {
    "stints": [
     {
@@ -101229,6 +103654,24 @@
      "team": "Bills",
      "from": 2022,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Paul Edinger": {
+   "stints": [
+    {
+     "team": "Bears",
+     "from": 2000,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2005,
+     "to": 2005,
      "rings": []
     }
    ],
@@ -102825,6 +105268,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Eddy Pineiro": {
+   "stints": [
+    {
+     "team": "Bears",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2022,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Aaron Brooks": {
    "stints": [
     {
@@ -102837,6 +105310,42 @@
      "team": "Raiders",
      "from": 2006,
      "to": 2006,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Todd Peterson": {
+   "stints": [
+    {
+     "team": "Seahawks",
+     "from": 1999,
+     "to": 1999,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2000,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2003,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2005,
+     "to": 2005,
      "rings": []
     }
    ],
@@ -103255,6 +105764,42 @@
      "team": "Falcons",
      "from": 2019,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Tyler Bass": {
+   "stints": [
+    {
+     "team": "Bills",
+     "from": 2020,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Gary Anderson": {
+   "stints": [
+    {
+     "team": "Vikings",
+     "from": 1999,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2003,
+     "to": 2004,
      "rings": []
     }
    ],
@@ -105325,6 +107870,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Blair Walsh": {
+   "stints": [
+    {
+     "team": "Vikings",
+     "from": 2012,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Seahawks",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Patrick Omameh": {
    "stints": [
     {
@@ -106143,6 +108706,42 @@
      "team": "Chargers",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Evan McPherson": {
+   "stints": [
+    {
+     "team": "Bengals",
+     "from": 2021,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Wade Richey": {
+   "stints": [
+    {
+     "team": "49ers",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2001,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2003,
+     "to": 2004,
      "rings": []
     }
    ],
@@ -108318,6 +110917,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Steve Christie": {
+   "stints": [
+    {
+     "team": "Bills",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2001,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Tony Stewart": {
    "stints": [
     {
@@ -108826,6 +111449,54 @@
     },
     {
      "team": "Jaguars",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Cody Parkey": {
+   "stints": [
+    {
+     "team": "Eagles",
+     "from": 2014,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2016,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Saints",
      "from": 2021,
      "to": 2021,
      "rings": []
@@ -109372,6 +112043,54 @@
      "team": "Rams",
      "from": 2018,
      "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Kai Forbath": {
+   "stints": [
+    {
+     "team": "Commanders",
+     "from": 2012,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2015,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2016,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Patriots",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2020,
+     "to": 2020,
      "rings": []
     }
    ],
@@ -110282,6 +113001,48 @@
      "team": "Cardinals",
      "from": 2019,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Zane Gonzalez": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2017,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2018,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -112334,6 +115095,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Josh Lambo": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2015,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2017,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Bryce Hager": {
    "stints": [
     {
@@ -113672,6 +116457,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Chandler Catanzaro": {
+   "stints": [
+    {
+     "team": "Cardinals",
+     "from": 2014,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Brent Qvale": {
    "stints": [
     {
@@ -113848,6 +116663,48 @@
      "team": "Patriots",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Doug Brien": {
+   "stints": [
+    {
+     "team": "Saints",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2001,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2001,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2003,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2005,
+     "to": 2005,
      "rings": []
     }
    ],
@@ -115129,6 +117986,48 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Greg Joseph": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2019,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2021,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Giants",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Brandon Facyson": {
    "stints": [
     {
@@ -116285,6 +119184,54 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Mike Badgley": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2018,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2022,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Marquis Haynes": {
    "stints": [
     {
@@ -117075,6 +120022,24 @@
     },
     {
      "team": "Browns",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Cameron Dicker": {
+   "stints": [
+    {
+     "team": "Chargers",
+     "from": 2022,
+     "to": 2026,
+     "rings": []
+    },
+    {
+     "team": "Eagles",
      "from": 2022,
      "to": 2022,
      "rings": []
@@ -119516,6 +122481,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Caleb Sturgis": {
+   "stints": [
+    {
+     "team": "Dolphins",
+     "from": 2013,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Eagles",
+     "from": 2015,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Datone Jones": {
    "stints": [
     {
@@ -119702,6 +122691,60 @@
      "team": "Giants",
      "from": 2022,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Riley Patterson": {
+   "stints": [
+    {
+     "team": "Lions",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2023,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -123493,6 +126536,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Brett Maher": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2018,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Daimion Stafford": {
    "stints": [
     {
@@ -123691,6 +126764,18 @@
      "team": "Cowboys",
      "from": 2022,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Brandon Aubrey": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2023,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -125441,6 +128526,60 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Dave Rayner": {
+   "stints": [
+    {
+     "team": "Colts",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Packers",
+     "from": 2006,
+     "to": 2006,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2008,
+     "to": 2008,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2010,
+     "to": 2010,
+     "rings": []
+    },
+    {
+     "team": "Bills",
+     "from": 2011,
+     "to": 2011,
+     "rings": []
+    },
+    {
+     "team": "Raiders",
+     "from": 2011,
+     "to": 2011,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Billy Bajema": {
    "stints": [
     {
@@ -125557,6 +128696,32 @@
      "team": "Rams",
      "from": 2012,
      "to": 2012,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Garrett Hartley": {
+   "stints": [
+    {
+     "team": "Saints",
+     "from": 2008,
+     "to": 2010,
+     "rings": [
+      2009
+     ]
+    },
+    {
+     "team": "Saints",
+     "from": 2012,
+     "to": 2013,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2014,
+     "to": 2014,
      "rings": []
     }
    ],
@@ -125819,6 +128984,36 @@
     },
     {
      "team": "Falcons",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Aldrick Rosas": {
+   "stints": [
+    {
+     "team": "Giants",
+     "from": 2017,
+     "to": 2019,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Saints",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Lions",
      "from": 2021,
      "to": 2021,
      "rings": []
@@ -126604,6 +129799,24 @@
      "rings": [
       2019
      ]
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Chad Ryland": {
+   "stints": [
+    {
+     "team": "Patriots",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2024,
+     "to": 2026,
+     "rings": []
     }
    ],
    "confidence": "confirmed",
@@ -127956,6 +131169,60 @@
      "team": "Dolphins",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jose Cortez": {
+   "stints": [
+    {
+     "team": "Giants",
+     "from": 1999,
+     "to": 1999,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2001,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Vikings",
+     "from": 2003,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Cowboys",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Eagles",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2005,
+     "to": 2005,
      "rings": []
     }
    ],
@@ -131939,6 +135206,48 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Blake Grupe": {
+   "stints": [
+    {
+     "team": "Saints",
+     "from": 2023,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Rams",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Garrison Hearst": {
+   "stints": [
+    {
+     "team": "49ers",
+     "from": 2001,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Ronney Jenkins": {
    "stints": [
     {
@@ -132070,6 +135379,24 @@
      "team": "49ers",
      "from": 2009,
      "to": 2009,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Rhys Lloyd": {
+   "stints": [
+    {
+     "team": "Ravens",
+     "from": 2007,
+     "to": 2007,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2007,
+     "to": 2010,
      "rings": []
     }
    ],
@@ -132249,6 +135576,24 @@
     {
      "team": "Eagles",
      "from": 2011,
+     "to": 2014,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Alex Henery": {
+   "stints": [
+    {
+     "team": "Eagles",
+     "from": 2011,
+     "to": 2013,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2014,
      "to": 2014,
      "rings": []
     }
@@ -137198,6 +140543,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jake Bates": {
+   "stints": [
+    {
+     "team": "Lions",
+     "from": 2024,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Cam Little": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 2024,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Derrick Blaylock": {
    "stints": [
     {
@@ -138794,6 +142163,42 @@
      "team": "Saints",
      "from": 2024,
      "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Jake Moody": {
+   "stints": [
+    {
+     "team": "49ers",
+     "from": 2023,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Bears",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2026,
+     "to": 2026,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2026,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -140656,6 +144061,42 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Austin Seibert": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2019,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Lions",
+     "from": 2021,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "J.J. Arcega-Whiteside": {
    "stints": [
     {
@@ -140698,6 +144139,36 @@
      "team": "Lions",
      "from": 2021,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Will Reichard": {
+   "stints": [
+    {
+     "team": "Vikings",
+     "from": 2024,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Joe Johnson": {
+   "stints": [
+    {
+     "team": "Saints",
+     "from": 2000,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Packers",
+     "from": 2002,
+     "to": 2003,
      "rings": []
     }
    ],
@@ -141472,6 +144943,18 @@
      "team": "Cardinals",
      "from": 2021,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Tommy Maddox": {
+   "stints": [
+    {
+     "team": "Steelers",
+     "from": 2001,
+     "to": 2005,
      "rings": []
     }
    ],
@@ -144248,6 +147731,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "David Buehler": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2009,
+     "to": 2011,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Kyle Williams (WR, Chiefs)": {
    "stints": [
     {
@@ -146046,6 +149541,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Bill Gramatica": {
+   "stints": [
+    {
+     "team": "Cardinals",
+     "from": 2001,
+     "to": 2003,
+     "rings": []
+    },
+    {
+     "team": "Dolphins",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Marc Boerigter": {
    "stints": [
     {
@@ -147010,6 +150523,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Aaron Elling": {
+   "stints": [
+    {
+     "team": "Vikings",
+     "from": 2003,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2004,
+     "to": 2004,
+     "rings": []
+    },
+    {
+     "team": "Ravens",
+     "from": 2005,
+     "to": 2005,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Monsanto Pope": {
    "stints": [
     {
@@ -147394,6 +150931,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Jordan Gay": {
+   "stints": [
+    {
+     "team": "Bills",
+     "from": 2014,
+     "to": 2016,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Dewey McDonald": {
    "stints": [
     {
@@ -147658,6 +151207,72 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Matthew Wright": {
+   "stints": [
+    {
+     "team": "Steelers",
+     "from": 2020,
+     "to": 2020,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Steelers",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Panthers",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Titans",
+     "from": 2024,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2025,
+     "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Parker Hesse": {
    "stints": [
     {
@@ -147729,6 +151344,24 @@
    ],
    "confidence": "confirmed",
    "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+  },
+  "Steve Lindsey": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 1999,
+     "to": 2000,
+     "rings": []
+    },
+    {
+     "team": "Broncos",
+     "from": 2000,
+     "to": 2000,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
   },
   "Lyle West": {
    "stints": [
@@ -148444,6 +152077,18 @@
      "team": "Broncos",
      "from": 2016,
      "to": 2017,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Andrew Franks": {
+   "stints": [
+    {
+     "team": "Dolphins",
+     "from": 2015,
+     "to": 2016,
      "rings": []
     }
    ],
@@ -150472,6 +154117,30 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Patrick Murray": {
+   "stints": [
+    {
+     "team": "Buccaneers",
+     "from": 2014,
+     "to": 2014,
+     "rings": []
+    },
+    {
+     "team": "Browns",
+     "from": 2016,
+     "to": 2016,
+     "rings": []
+    },
+    {
+     "team": "Buccaneers",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jonathan Newsome": {
    "stints": [
     {
@@ -151972,6 +155641,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Tim Seder": {
+   "stints": [
+    {
+     "team": "Cowboys",
+     "from": 2000,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "Jaguars",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2002,
+     "to": 2002,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Shannon Taylor": {
    "stints": [
     {
@@ -152682,6 +156381,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Sam Ficken": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 2017,
+     "to": 2018,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2019,
+     "to": 2020,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "C.J. Board": {
    "stints": [
     {
@@ -152892,6 +156609,18 @@
      "team": "Commanders",
      "from": 2021,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Joshua Karty": {
+   "stints": [
+    {
+     "team": "Rams",
+     "from": 2024,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -153998,12 +157727,48 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Andre Szmyt": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Markees Watts": {
    "stints": [
     {
      "team": "Buccaneers",
      "from": 2023,
      "to": 2025,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Andy Borregales": {
+   "stints": [
+    {
+     "team": "Patriots",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Ryan Fitzgerald": {
+   "stints": [
+    {
+     "team": "Panthers",
+     "from": 2025,
+     "to": 2026,
      "rings": []
     }
    ],
@@ -156602,6 +160367,18 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Tyler Loop": {
+   "stints": [
+    {
+     "team": "Ravens",
+     "from": 2025,
+     "to": 2026,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Bobby Brooks": {
    "stints": [
     {
@@ -157870,6 +161647,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Rodrigo Blankenship": {
+   "stints": [
+    {
+     "team": "Colts",
+     "from": 2020,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Dieter Eiselen": {
    "stints": [
     {
@@ -157930,6 +161725,30 @@
      "team": "Browns",
      "from": 2021,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Anders Carlson": {
+   "stints": [
+    {
+     "team": "Packers",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2024,
+     "to": 2024,
      "rings": []
     }
    ],
@@ -159096,6 +162915,30 @@
      "team": "Panthers",
      "from": 2021,
      "to": 2022,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Cade York": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Bengals",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Commanders",
+     "from": 2024,
+     "to": 2024,
      "rings": []
     }
    ],
@@ -162914,6 +166757,36 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Matt Ammendola": {
+   "stints": [
+    {
+     "team": "Jets",
+     "from": 2021,
+     "to": 2021,
+     "rings": []
+    },
+    {
+     "team": "Chiefs",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Cardinals",
+     "from": 2022,
+     "to": 2022,
+     "rings": []
+    },
+    {
+     "team": "Texans",
+     "from": 2023,
+     "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Rachad Wildgoose": {
    "stints": [
     {
@@ -162980,6 +166853,30 @@
      "team": "Chiefs",
      "from": 2023,
      "to": 2023,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Spencer Shrader": {
+   "stints": [
+    {
+     "team": "Chiefs",
+     "from": 2024,
+     "to": 2024,
+     "rings": []
+    },
+    {
+     "team": "Colts",
+     "from": 2024,
+     "to": 2026,
+     "rings": []
+    },
+    {
+     "team": "Jets",
+     "from": 2024,
+     "to": 2024,
      "rings": []
     }
    ],
@@ -163570,6 +167467,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Giorgio Tavecchio": {
+   "stints": [
+    {
+     "team": "Raiders",
+     "from": 2017,
+     "to": 2017,
+     "rings": []
+    },
+    {
+     "team": "Falcons",
+     "from": 2018,
+     "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Jerry Franklin": {
    "stints": [
     {
@@ -163720,6 +167635,24 @@
      "team": "Ravens",
      "from": 2014,
      "to": 2016,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Travis Coons": {
+   "stints": [
+    {
+     "team": "Browns",
+     "from": 2015,
+     "to": 2015,
+     "rings": []
+    },
+    {
+     "team": "Chargers",
+     "from": 2017,
+     "to": 2017,
      "rings": []
     }
    ],
@@ -167253,6 +171186,24 @@
    "confidence": "confirmed",
    "evidence": "Games played for each club, season by season (nflverse)."
   },
+  "Owen Pochman": {
+   "stints": [
+    {
+     "team": "Giants",
+     "from": 2001,
+     "to": 2001,
+     "rings": []
+    },
+    {
+     "team": "49ers",
+     "from": 2003,
+     "to": 2003,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
   "Tay Cody": {
    "stints": [
     {
@@ -167306,6 +171257,18 @@
     {
      "team": "Bills",
      "from": 2002,
+     "to": 2003,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Seth Marler": {
+   "stints": [
+    {
+     "team": "Jaguars",
+     "from": 2003,
      "to": 2003,
      "rings": []
     }
@@ -168185,6 +172148,18 @@
      "team": "Bengals",
      "from": 2017,
      "to": 2018,
+     "rings": []
+    }
+   ],
+   "confidence": "confirmed",
+   "evidence": "Games played for each club, season by season (nflverse)."
+  },
+  "Roberto Aguayo": {
+   "stints": [
+    {
+     "team": "Buccaneers",
+     "from": 2016,
+     "to": 2016,
      "rings": []
     }
    ],
@@ -174752,16 +178727,24 @@
   "OL:Billy Schrauth": 75,
   "TE:Bauer Sharp": 84,
   "QB:Tom Brady": 12,
+  "K:Adam Vinatieri": 4,
+  "K:Phil Dawson": 4,
   "QB:Drew Brees": 9,
+  "K:Sebastian Janikowski": 11,
+  "K:Matt Prater": 15,
   "TE:Jason Witten": 82,
+  "K:Nick Folk": 6,
+  "K:Robbie Gould": 9,
   "WR:Larry Fitzgerald": 11,
   "DL:Julius Peppers": 90,
   "QB:Peyton Manning": 18,
   "QB:Ben Roethlisberger": 7,
   "QB:Philip Rivers": 17,
+  "K:Matt Bryant": 3,
   "LB:Terrell Suggs": 94,
   "RB:Frank Gore": 21,
   "TE:Tony Gonzalez": 88,
+  "K:David Akers": 2,
   "DB:Charles Woodson": 24,
   "QB:Eli Manning": 10,
   "TE:Antonio Gates": 85,
@@ -174773,18 +178756,28 @@
   "DB:Mike Adams": 27,
   "LB:Nick Bellore": 57,
   "WR:Steve Smith": 89,
+  "K:Stephen Gostkowski": 3,
+  "K:Ryan Succop": 3,
+  "K:Jason Hanson": 4,
   "LB:Lavonte David": 54,
   "DB:Champ Bailey": 24,
+  "K:Rian Lindell": 4,
+  "K:Justin Tucker": 42,
+  "K:Jay Feely": 4,
   "LB:Karlos Dansby": 56,
   "DB:Johnathan Joseph": 25,
+  "K:Ryan Longwell": 0,
   "DB:Antoine Bethea": 41,
   "DL:Domata Peko Sr.": 96,
+  "K:Graham Gano": 9,
   "WR:Reggie Wayne": 87,
   "DB:Devin McCourty": 32,
   "QB:Russell Wilson": 3,
+  "K:Olindo Mare": 10,
   "WR:Anquan Boldin": 80,
   "DB:Tramon Williams": 0,
   "DB:Kareem Jackson": 27,
+  "K:Josh Brown": 3,
   "DB:Eric Weddle": 0,
   "DB:Patrick Peterson": 20,
   "WR:Hines Ward": 86,
@@ -174806,6 +178799,7 @@
   "DL:Kevin Williams": 93,
   "WR:Ted Ginn": 19,
   "WR:Andre Johnson": 81,
+  "K:Greg Zuerlein": 9,
   "QB:Brett Favre": 4,
   "LB:Daryl Smith": 51,
   "DB:Antoine Winfield": 26,
@@ -174831,13 +178825,17 @@
   "DB:Quentin Jammer": 23,
   "DL:Cory Redding": 90,
   "WR:Andre Roberts": 18,
+  "K:Jason Myers": 5,
   "LB:Mike Peterson": 53,
+  "K:Neil Rackers": 4,
   "DL:Kyle Williams (DL, Bills)": 95,
   "DB:Stephon Gilmore": 23,
   "DB:Tyrann Mathieu": 32,
+  "K:Kris Brown": 2,
   "RB:Thomas Jones": 20,
   "DB:Adrian Wilson": 24,
   "DL:Lawrence Guy": 93,
+  "K:Shayne Graham": 6,
   "DB:Nate Clements": 22,
   "LB:Will Witherspoon": 51,
   "LB:DeMarcus Ware": 94,
@@ -174846,6 +178844,7 @@
   "LB:Calvin Pace": 97,
   "DB:Reggie Nelson": 27,
   "DB:Rodney McLeod Jr.": 12,
+  "K:Chris Boswell": 9,
   "DL:Antonio Smith": 94,
   "DL:Haloti Ngata": 94,
   "LB:Tamba Hali": 91,
@@ -174853,9 +178852,11 @@
   "WR:Wes Welker": 19,
   "DL:Jonathan Babineaux": 95,
   "LB:Wesley Woodyard": 59,
+  "K:Cairo Santos": 8,
   "DL:Cullen Jenkins": 73,
   "QB:Alex Smith": 11,
   "WR:Brandon Marshall": 15,
+  "K:John Kasay": 2,
   "DL:Andre Carter": 96,
   "LB:Trent Cole": 58,
   "WR:Torry Holt": 81,
@@ -174863,6 +178864,8 @@
   "DB:Ike Taylor": 24,
   "DB:Rashean Mathis": 31,
   "LB:Lance Briggs": 55,
+  "K:Josh Scobee": 8,
+  "K:Mike Nugent": 2,
   "DB:Corey Graham": 24,
   "WR:Emmanuel Sanders": 1,
   "DL:Ryan Kerrigan": 90,
@@ -174880,15 +178883,19 @@
   "DB:DeAngelo Hall": 23,
   "DL:Johnathan Hankins": 97,
   "QB:Derek Carr": 4,
+  "K:Jason Elam": 1,
+  "K:Matt Stover": 3,
   "WR:Jerricho Cotchery": 82,
   "LB:Lawrence Timmons": 94,
   "DB:William Gay": 22,
+  "K:John Carney": 3,
   "DB:Ryan Clark": 25,
   "DB:Sheldon Brown": 24,
   "WR:Roddy White": 84,
   "DB:Jason McCourty": 30,
   "DB:Charles Tillman": 31,
   "TE:Anthony Fasano": 80,
+  "K:Steven Hauschka": 4,
   "WR:Julio Jones": 80,
   "WR:Randall Cobb": 18,
   "QB:Donovan McNabb": 5,
@@ -174925,11 +178932,14 @@
   "DL:Shaun Rogers": 95,
   "DB:Joe Haden": 23,
   "WR:A.J. Green (WR, Cardinals)": 18,
+  "K:Wil Lutz": 3,
   "WR:Isaac Bruce": 88,
+  "DL:Greg Ellis": 99,
   "LB:Bart Scott": 57,
   "LB:A.J. Hawk": 54,
   "DB:Donte Whitner": 39,
   "DL:Michael Brockers": 90,
+  "K:Jake Elliott": 4,
   "DL:James Hall": 96,
   "TE:Randy McMichael": 81,
   "DB:Troy Polamalu": 43,
@@ -174950,6 +178960,7 @@
   "LB:Cameron Wake": 91,
   "DB:Captain Munnerlyn": 41,
   "DB:Buster Skrine": 38,
+  "K:Dan Bailey": 5,
   "WR:Amari Cooper": 18,
   "DL:Za'Darius Smith": 53,
   "LB:Dhani Jones": 57,
@@ -174987,11 +178998,13 @@
   "QB:Cam Newton": 1,
   "WR:Marvin Jones": 0,
   "OL:Rob Havenstein": 79,
+  "K:Ka'imi Fairbairn": 15,
   "RB:Ricky Williams": 34,
   "LB:Clark Haggans": 51,
   "DL:Gerard Warren": 98,
   "DB:Chris Hope": 24,
   "DL:Tommy Kelly": 95,
+  "K:Harrison Butker": 7,
   "WR:Marty Booker": 80,
   "WR:Marvin Harrison": 88,
   "TE:Alge Crumpler": 82,
@@ -175017,11 +179030,13 @@
   "DL:Jabaal Sheard": 0,
   "DL:Kelly Gregg": 77,
   "WR:Dennis Northcutt": 86,
+  "K:Rob Bironas": 2,
   "DL:Robert Geathers": 91,
   "DL:Justin Tuck": 91,
   "DL:Steve McLendon": 96,
   "WR:Mike Wallace": 14,
   "DL:Michael Johnson": 90,
+  "K:Randy Bullock": 46,
   "DB:Janoris Jenkins": 20,
   "DB:Cody Davis": 22,
   "QB:Mike Vick": 2,
@@ -175048,6 +179063,7 @@
   "WR:Demaryius Thomas": 18,
   "DB:Richard Sherman": 5,
   "RB:Keith Smith": 40,
+  "LB:Tedy Bruschi": 54,
   "DL:Chris Hovan": 93,
   "DL:Marcus Stroud": 99,
   "DL:John Henderson": 79,
@@ -175062,9 +179078,11 @@
   "WR:Jabar Gaffney": 10,
   "RB:Willis McGahee": 26,
   "LB:D'Qwell Jackson": 52,
+  "K:Dan Carpenter": 2,
   "DB:Orlando Scandrick": 45,
   "DB:Kurt Coleman": 28,
   "DB:Earl Thomas": 29,
+  "K:Dustin Hopkins": 7,
   "OL:Brandon Scherff": 68,
   "WR:Brandon Stokley": 80,
   "LB:Scott Fujita": 99,
@@ -175075,7 +179093,9 @@
   "DB:Josh Norman": 29,
   "WR:Allen Robinson": 8,
   "DB:Vonn Bell": 24,
+  "K:Joe Nedney": 6,
   "DB:Pierson Prioleau": 31,
+  "K:Jeff Wilkins": 14,
   "WR:T.J. Houshmandzadeh": 84,
   "RB:Maurice Morris": 28,
   "RB:Rock Cartwright": 25,
@@ -175099,6 +179119,7 @@
   "RB:Sammy Morris": 23,
   "DB:Tyrone Carter": 31,
   "DB:Will Allen (DB, Dolphins)": 26,
+  "K:Billy Cundiff": 8,
   "TE:Jeremy Shockey": 80,
   "WR:Kevin Walter": 87,
   "DB:Dunta Robinson": 21,
@@ -175146,6 +179167,7 @@
   "TE:Reggie Kelly": 89,
   "TE:Jimmy Kleinsasser": 40,
   "DB:Chris McAlister": 29,
+  "K:Jeff Reed": 3,
   "QB:Tony Romo": 9,
   "DB:Cortland Finnegan": 26,
   "LB:Erik Walden": 93,
@@ -175163,6 +179185,7 @@
   "WR:Chris Conley": 18,
   "OL:Andrus Peat": 71,
   "DB:Jason Craft": 31,
+  "QB:Jon Kitna": 3,
   "DL:Bryant Young": 97,
   "DB:Deltha O'Neal": 21,
   "RB:Jamal Lewis": 31,
@@ -175192,6 +179215,7 @@
   "DB:Daniel Sorensen": 25,
   "DL:Warren Sapp": 99,
   "DL:Michael Strahan": 92,
+  "K:Lawrence Tynes": 1,
   "DL:Aaron Schobel": 94,
   "DL:Justin Bannan": 97,
   "LB:Michael Boley": 53,
@@ -175205,6 +179229,7 @@
   "OL:Bradley Bozeman": 75,
   "DB:Michael Lewis": 22,
   "LB:Demorrio Williams": 58,
+  "K:Shaun Suisham": 6,
   "DB:Carlos Rogers": 27,
   "DL:Jason Hatcher": 97,
   "LB:Brooks Reed": 42,
@@ -175228,6 +179253,7 @@
   "DB:Nate Ebner": 43,
   "DL:Dontari Poe": 95,
   "LB:Markus Golden": 44,
+  "K:Jason Sanders": 19,
   "LB:Junior Seau": 55,
   "DL:Robaire Smith": 98,
   "DL:Darren Howard": 90,
@@ -175274,6 +179300,7 @@
   "WR:Doug Baldwin": 89,
   "LB:Kevin Minter": 51,
   "WR:Jamison Crowder": 80,
+  "K:Morten Andersen": 5,
   "QB:Kurt Warner": 13,
   "DB:David Barrett": 36,
   "DL:Damione Lewis": 97,
@@ -175291,6 +179318,7 @@
   "DL:Earl Mitchell": 93,
   "DB:Jimmy Smith": 22,
   "OL:Max Garcia": 73,
+  "K:Mike Vanderjagt": 13,
   "TE:Anthony Becht": 88,
   "DB:Nick Harper": 20,
   "LB:Morlon Greenwood": 56,
@@ -175306,6 +179334,7 @@
   "DB:Michael Thomas (DB, Bengals)": 31,
   "LB:Jon Bostic": 59,
   "LB:Vince Williams": 98,
+  "K:Joey Slye": 6,
   "DL:Jevon Kearse": 90,
   "WR:Darrell Jackson": 82,
   "LB:David Thornton": 50,
@@ -175333,6 +179362,7 @@
   "DL:Charles Grant (DL, Saints)": 94,
   "RB:Mewelde Moore": 37,
   "RB:Vonta Leach": 44,
+  "K:Nick Novak": 9,
   "DL:Kedric Golston": 64,
   "DB:Brice McCain": 23,
   "DL:Tyson Jackson": 94,
@@ -175374,6 +179404,7 @@
   "DB:Kevin Kaesviharn": 26,
   "DB:Dwight Smith": 26,
   "DB:Terrence McGee": 24,
+  "K:Nate Kaeding": 9,
   "DL:Corey Williams": 99,
   "DL:Jay Ratliff": 90,
   "DL:Paul Soliai": 90,
@@ -175413,6 +179444,7 @@
   "OL:Alejandro Villanueva": 78,
   "DB:Kyle Fuller": 23,
   "OL:Jon Feliciano": 55,
+  "K:Matt Gay": 14,
   "LB:Mark Simoneau": 99,
   "WR:Dante Hall": 82,
   "DL:Brian Young": 66,
@@ -175465,11 +179497,13 @@
   "RB:Derek Watt": 44,
   "DB:Cameron Sutton": 20,
   "DB:Nick Ferguson": 25,
+  "K:Martin Gramatica": 1,
   "DL:Spencer Johnson": 91,
   "TE:Chris Cooley": 47,
   "RB:Greg Jones": 33,
   "DL:Stephen Bowen": 72,
   "LB:Parys Haralson": 98,
+  "K:Connor Barth": 4,
   "DB:Leodis McKelvin": 21,
   "DB:Quintin Demps": 21,
   "LB:Kroy Biermann": 71,
@@ -175494,6 +179528,7 @@
   "WR:Dwayne Harris": 82,
   "DL:Tyrone Crawford": 98,
   "DB:Bradley McDougald": 22,
+  "K:Chase McLaughlin": 4,
   "DB:Fakhir Brown": 34,
   "LB:Gary Stills": 55,
   "TE:Bubba Franks": 88,
@@ -175584,6 +179619,7 @@
   "TE:Derek Carrier": 85,
   "WR:John Brown": 89,
   "DB:Andrew Adams": 37,
+  "K:John Hall": 10,
   "LB:Jeff Ulbrich": 53,
   "RB:Reuben Droughns": 22,
   "WR:Justin McCareins": 19,
@@ -175677,6 +179713,7 @@
   "TE:Richard Rodgers": 82,
   "LB:Nick Dzubnar": 49,
   "RB:Matt Breida": 31,
+  "K:Younghoe Koo": 37,
   "RB:Jerome Bettis": 36,
   "RB:Marshall Faulk": 28,
   "LB:Wali Rainer": 58,
@@ -175704,6 +179741,7 @@
   "DL:Nick Williams": 95,
   "DB:Ross Cockrell": 43,
   "RB:Duke Johnson": 22,
+  "K:Paul Edinger": 1,
   "QB:Marc Bulger": 10,
   "DB:Hank Poteat": 23,
   "TE:Jerramy Stevens": 86,
@@ -175765,7 +179803,9 @@
   "TE:Logan Thomas": 82,
   "RB:Tevin Coleman": 28,
   "DB:Erik Harris": 35,
+  "K:Eddy Pineiro": 18,
   "QB:Aaron Brooks": 2,
+  "K:Todd Peterson": 2,
   "RB:Chad Morton": 29,
   "WR:Drew Bennett": 83,
   "LB:Tracy White": 58,
@@ -175782,6 +179822,8 @@
   "RB:Devontae Booker": 28,
   "WR:Keelan Cole": 84,
   "OL:Kaleb McGary": 76,
+  "K:Tyler Bass": 16,
+  "K:Gary Anderson": 1,
   "WR:Jerry Rice": 80,
   "RB:Rudi Johnson": 32,
   "DB:Andre Dyson": 21,
@@ -175866,6 +179908,7 @@
   "DL:Eugene Sims": 97,
   "DB:Kyle Wilson": 24,
   "DL:Courtney Upshaw": 91,
+  "K:Blair Walsh": 0,
   "OL:Patrick Omameh": 63,
   "DL:Bennie Logan": 96,
   "WR:Albert Wilson": 25,
@@ -175899,6 +179942,8 @@
   "DL:Pat O'Connor": 95,
   "DB:Chandon Sullivan": 34,
   "TE:Hayden Hurst": 88,
+  "K:Evan McPherson": 2,
+  "K:Wade Richey": 9,
   "DL:Corey Simon": 96,
   "DB:William James": 31,
   "RB:Travis Henry": 20,
@@ -175980,6 +180025,7 @@
   "DB:Mackensie Alexander": 34,
   "LB:Blake Martinez": 40,
   "WR:Rashard Higgins": 17,
+  "K:Steve Christie": 2,
   "TE:Tony Stewart": 86,
   "WR:Quincy Morgan": 11,
   "WR:Cedrick Wilson": 80,
@@ -176003,6 +180049,7 @@
   "LB:Bryan Braman": 50,
   "RB:Doug Martin": 28,
   "DL:Lerentee McCray": 55,
+  "K:Cody Parkey": 0,
   "LB:Deone Bucannon": 41,
   "DB:Jarrod Wilson": 30,
   "DB:Tre Herndon": 28,
@@ -176025,6 +180072,7 @@
   "DB:Ryan Mundy": 21,
   "QB:Sam Bradford": 9,
   "RB:James Develin": 46,
+  "K:Kai Forbath": 0,
   "TE:Garrett Celek": 88,
   "DB:Neiko Thorpe": 23,
   "DB:Eddie Pleasant": 35,
@@ -176064,6 +180112,7 @@
   "WR:Kendall Wright": 12,
   "WR:Allen Hurns": 8,
   "LB:Tanner Vallejo": 51,
+  "K:Zane Gonzalez": 31,
   "LB:Tarell Basham": 57,
   "DL:Joe Tryon-Shoyinka": 93,
   "TE:Dan Campbell": 89,
@@ -176144,6 +180193,7 @@
   "DB:Trae Waynes": 26,
   "LB:Trey Flowers": 58,
   "DL:Carl Davis": 91,
+  "K:Josh Lambo": 4,
   "LB:Bryce Hager": 58,
   "LB:Reggie Ragland": 19,
   "RB:Alex Armah": 40,
@@ -176199,6 +180249,7 @@
   "OL:Kyle Long": 69,
   "DB:J.J. Wilcox": 0,
   "RB:Isaiah Crowell": 20,
+  "K:Chandler Catanzaro": 7,
   "OL:Brent Qvale": 76,
   "DL:Rodney Gunter": 95,
   "RB:Elijhaa Penny": 39,
@@ -176206,6 +180257,7 @@
   "LB:Joe Jones": 52,
   "LB:Dylan Cole": 55,
   "DB:J.C. Jackson": 29,
+  "K:Doug Brien": 10,
   "DL:Bruce Smith": 78,
   "RB:Terrelle Smith": 44,
   "DL:Kendrick Clancy": 71,
@@ -176310,6 +180362,7 @@
   "RB:Jordan Howard": 24,
   "DB:Marqui Christian": 23,
   "WR:Kenny Golladay": 19,
+  "K:Mike Badgley": 32,
   "LB:Marquis Haynes": 98,
   "WR:Miles Boykin": 80,
   "WR:David Boston": 89,
@@ -176341,6 +180394,7 @@
   "TE:O.J. Howard": 83,
   "DB:Tarvarius Moore": 30,
   "LB:Jermaine Carter": 40,
+  "K:Cameron Dicker": 11,
   "DB:Jimmy Williams": 41,
   "DL:Ellis Wyms": 97,
   "RB:Moran Norris": 44,
@@ -176444,6 +180498,7 @@
   "LB:Chris Carter": 55,
   "LB:Ben Jacobs": 53,
   "RB:Tommy Bohanon": 0,
+  "K:Caleb Sturgis": 6,
   "DL:Datone Jones": 95,
   "OL:Chance Warmack": 65,
   "WR:Bennie Fowler": 16,
@@ -176619,6 +180674,7 @@
   "LB:Stephone Anthony": 0,
   "OL:Jamon Brown": 0,
   "DL:Tyler Lancaster": 96,
+  "K:Brandon Aubrey": 17,
   "DL:John Randle": 93,
   "DL:Josh Williams (DL, Colts)": 96,
   "LB:Raynoch Thompson": 55,
@@ -176694,11 +180750,13 @@
   "WR:Keary Colbert": 84,
   "LB:Charlie Anderson": 52,
   "DL:Mike Wright": 99,
+  "K:Dave Rayner": 3,
   "TE:Billy Bajema": 86,
   "QB:Vince Young": 9,
   "DL:Johnny Jolly": 97,
   "DB:Derrick Martin": 39,
   "WR:Steve Smith (WR, Rams)": 12,
+  "K:Garrett Hartley": 8,
   "RB:Jed Collins": 45,
   "DL:Andre Fluellen": 96,
   "WR:Mike Thomas (WR, Lions)": 19,
@@ -176744,6 +180802,7 @@
   "LB:Darron Lee": 50,
   "OL:Sam Tevi": 71,
   "LB:Dorian O'Daniel": 44,
+  "K:Chad Ryland": 38,
   "RB:Mike Cloud": 30,
   "TE:Jerame Tuman": 84,
   "TE:Aaron Shea": 84,
@@ -176805,6 +180864,7 @@
   "DB:A.J. Moore": 33,
   "DB:C.J. Moore": 38,
   "DL:Chase Winovich": 50,
+  "K:Jose Cortez": 1,
   "RB:Cecil Martin": 37,
   "WR:Bryan Gilmore": 81,
   "DB:Travares Tillman": 26,
@@ -176988,6 +181048,7 @@
   "DL:Shilique Calhoun": 0,
   "LB:Calvin Munson": 48,
   "LB:Ola Adeniyi": 92,
+  "RB:Garrison Hearst": 20,
   "RB:Ronney Jenkins": 27,
   "DL:Chris Hoke": 76,
   "LB:Zeke Moreno": 57,
@@ -176995,6 +181056,7 @@
   "WR:Bethel Johnson": 81,
   "DL:Antonio Garay": 71,
   "LB:Marques Harris": 58,
+  "K:Rhys Lloyd": 8,
   "WR:Matt Jones (WR, Jaguars)": 18,
   "DL:Daniel Muir": 97,
   "DL:Tim Crowder": 96,
@@ -177004,6 +181066,7 @@
   "DL:Alex Carrington": 98,
   "TE:Garrett Graham": 80,
   "LB:Casey Matthews": 59,
+  "K:Alex Henery": 5,
   "DB:Cortez Allen": 28,
   "DB:Will Hill": 33,
   "OL:Eric Kush": 62,
@@ -177236,6 +181299,8 @@
   "DB:Joshua Kalu": 30,
   "RB:Cullen Gillaspia": 36,
   "RB:Damien Harris": 22,
+  "K:Jake Bates": 39,
+  "K:Cam Little": 39,
   "RB:Derrick Blaylock": 23,
   "RB:LaBrandon Toefield": 22,
   "QB:J.P. Losman": 6,
@@ -177394,8 +181459,11 @@
   "DL:Vincent Taylor": 96,
   "DL:P.J. Hall": 96,
   "RB:Godwin Igwebuike": 48,
+  "K:Austin Seibert": 15,
   "WR:J.J. Arcega-Whiteside": 82,
   "DB:Jerry Jacobs": 39,
+  "K:Will Reichard": 16,
+  "DL:Joe Johnson": 91,
   "DB:Marquis Smith": 21,
   "LB:Eric Johnson (LB, Cardinals)": 59,
   "LB:Marcus Bell (LB, Seahawks)": 57,
@@ -177435,6 +181503,7 @@
   "TE:Brycen Hopkins": 88,
   "LB:Derrek Tuszka": 59,
   "WR:Rondale Moore": 4,
+  "QB:Tommy Maddox": 8,
   "LB:Fred Jones": 53,
   "RB:Trung Canidate": 30,
   "DB:Eric Kelly": 25,
@@ -177570,6 +181639,7 @@
   "RB:Lance Ball": 35,
   "LB:Kenny Onatolu": 56,
   "QB:Chase Daniel": 4,
+  "K:David Buehler": 18,
   "WR:Kyle Williams (WR, Chiefs)": 15,
   "DB:Crezdon Butler": 41,
   "WR:Dane Sanzenbacher": 11,
@@ -177647,6 +181717,7 @@
   "DB:Todd McMillon": 26,
   "DB:David Gibson": 34,
   "WR:J.J. Moses": 82,
+  "K:Bill Gramatica": 11,
   "WR:Marc Boerigter": 85,
   "LB:James Allen": 50,
   "LB:Nick Rogers": 50,
@@ -177693,6 +181764,7 @@
   "RB:Ryan Neufeld": 88,
   "DB:Pat Dennis": 22,
   "LB:Justin Ena": 50,
+  "K:Aaron Elling": 0,
   "DL:Monsanto Pope": 75,
   "DB:Willie Offord": 24,
   "RB:ReShard Lee": 42,
@@ -177714,6 +181786,7 @@
   "RB:Deji Karim": 39,
   "WR:Kenbrell Thompkins": 10,
   "LB:Eric Martin": 52,
+  "K:Jordan Gay": 4,
   "LB:Dewey McDonald": 41,
   "DL:Ed Stinson": 97,
   "OL:Demetrius Rhaney": 74,
@@ -177729,6 +181802,7 @@
   "TE:Kaden Smith": 48,
   "TE:Parker Hesse": 43,
   "DL:Cortez Kennedy": 96,
+  "K:Steve Lindsey": 2,
   "DB:Lyle West": 30,
   "TE:Dustin Lyman": 89,
   "WR:Chris Cole": 81,
@@ -177772,6 +181846,7 @@
   "RB:Cameron Artis-Payne": 34,
   "RB:Terron Ward": 28,
   "LB:Zaire Anderson": 50,
+  "K:Andrew Franks": 3,
   "WR:Bradley Marquez": 12,
   "TE:Will Tye": 0,
   "OL:Alex Redmond": 64,
@@ -177880,6 +181955,7 @@
   "TE:Taylor Thompson": 84,
   "TE:Zach Sudfeld": 44,
   "DB:Melvin White": 0,
+  "K:Patrick Murray": 7,
   "LB:Jonathan Newsome": 91,
   "DB:Keith Reaser": 20,
   "LB:Max Bullough": 53,
@@ -177955,6 +182031,7 @@
   "OL:Solomon Kindley": 66,
   "WR:Na Brown": 85,
   "LB:Bobbie Howard": 52,
+  "K:Tim Seder": 3,
   "LB:Shannon Taylor": 56,
   "DB:Antwan Harris": 45,
   "RB:Travis Prentice": 25,
@@ -177995,6 +182072,7 @@
   "WR:Maurice Harris": 13,
   "RB:Josh Ferguson": 36,
   "WR:Roger Lewis": 0,
+  "K:Sam Ficken": 18,
   "WR:C.J. Board": 80,
   "LB:Blair Brown": 53,
   "DB:Holton Hill": 0,
@@ -178058,7 +182136,10 @@
   "DB:Xavier Crawford": 37,
   "DL:Albert Huggins": 94,
   "LB:Chapelle Russell": 49,
+  "K:Andre Szmyt": 25,
   "LB:Markees Watts": 58,
+  "K:Andy Borregales": 8,
+  "K:Ryan Fitzgerald": 10,
   "DL:Chukie Nwokorie": 90,
   "WR:JaJuan Dawson": 11,
   "DB:Robert Bean": 22,
@@ -178193,6 +182274,7 @@
   "LB:Jordan Glasgow": 59,
   "OL:Logan Stenberg": 74,
   "WR:Anthony Schwartz": 84,
+  "K:Tyler Loop": 33,
   "LB:Bobby Brooks": 56,
   "TE:James Dearth": 58,
   "LB:Andy Katzenmoyer": 59,
@@ -178261,6 +182343,7 @@
   "LB:Ukeme Eligwe": 54,
   "DB:Chris Jackson": 35,
   "RB:Eno Benjamin": 26,
+  "K:Anders Carlson": 18,
   "LB:Amari Burney": 56,
   "DB:Larry Atkins": 59,
   "DB:Trent Gamble": 42,
@@ -178533,9 +182616,11 @@
   "DL:Joe Jackson": 0,
   "WR:Jason Moore": 11,
   "WR:Henry Ruggs III": 11,
+  "K:Matt Ammendola": 16,
   "DB:Rachad Wildgoose": 37,
   "DB:Christian Matthew": 37,
   "DL:Keondre Coburn": 91,
+  "K:Spencer Shrader": 3,
   "TE:Matt Cushing": 48,
   "RB:Sedrick Irvin": 33,
   "RB:De'Mond Parker": 31,
@@ -178569,6 +182654,7 @@
   "RB:Robert Hughes": 0,
   "LB:Alex Albright": 55,
   "TE:Mike McNeill": 82,
+  "K:Giorgio Tavecchio": 0,
   "LB:Jerry Franklin": 59,
   "WR:Ryan Broyles": 84,
   "DB:Jonte Green": 36,
@@ -178580,6 +182666,7 @@
   "DB:Chris Davis": 43,
   "DB:Brock Vereen": 0,
   "RB:Lorenzo Taliaferro": 34,
+  "K:Travis Coons": 5,
   "QB:AJ McCarron": 4,
   "DB:Brandon Dixon": 25,
   "OL:Jake Rodgers": 76,
@@ -178774,11 +182861,13 @@
   "DL:Steve Warren": 96,
   "WR:Frank Murphy": 15,
   "WR:Vinny Sutherland": 85,
+  "K:Owen Pochman": 11,
   "DB:Tay Cody": 27,
   "WR:Nick Davis": 86,
   "LB:Jashon Sykes": 57,
   "WR:Ron Johnson": 83,
   "LB:Dominique Stevenson": 51,
+  "K:Seth Marler": 6,
   "WR:Scott Vines": 83,
   "DB:Terrell Roberts": 30,
   "QB:Ken Dorsey": 11,
@@ -178835,6 +182924,7 @@
   "WR:Aaron Burbridge": 0,
   "DB:Su'a Cravens": 21,
   "OL:Christian Westerman": 63,
+  "K:Roberto Aguayo": 0,
   "DL:Fadol Brown": 0,
   "OL:Ben Braden": 64,
   "WR:Brendan Langley": 0,
@@ -180377,7 +184467,7 @@
   "A.J. Klein": "Buffalo Bills",
   "A.J. Moore": "Houston Texans",
   "A.J. Terrell Jr.": "Atlanta Falcons",
-  "A.J. Woods": "Buffalo Bills",
+  "A.J. Woods": "Las Vegas Raiders",
   "A.T. Perry": "New Orleans Saints",
   "AJ Arcuri": "Baltimore Ravens",
   "AJ Barner": "Seattle Seahawks",
@@ -180395,6 +184485,7 @@
   "Aaron Curry": "Seattle Seahawks",
   "Aaron Dobson": "New England Patriots",
   "Aaron Donald": "Los Angeles Rams",
+  "Aaron Elling": "Minnesota Vikings",
   "Aaron Francisco": "Arizona Cardinals",
   "Aaron Hernandez": "New England Patriots",
   "Aaron Jones Sr.": "Minnesota Vikings",
@@ -180437,6 +184528,7 @@
   "Adam Shaheen": "Chicago Bears",
   "Adam Thielen": "Minnesota Vikings",
   "Adam Trautman": "Denver Broncos",
+  "Adam Vinatieri": "Indianapolis Colts",
   "Adarius Taylor": "Tampa Bay Buccaneers",
   "Ade Jimoh": "Washington Commanders",
   "Adedayo Odeleye": "Dallas Cowboys",
@@ -180452,7 +184544,7 @@
   "Adrian Clayborn": "Tampa Bay Buccaneers",
   "Adrian Colbert": "San Francisco 49ers",
   "Adrian Dingle": "Los Angeles Chargers",
-  "Adrian Martinez": "San Francisco 49ers",
+  "Adrian Martinez": "Seattle Seahawks",
   "Adrian Peterson": "Minnesota Vikings",
   "Adrian Peterson (RB, Bears)": "Chicago Bears",
   "Adrian Phillips": "Los Angeles Chargers",
@@ -180517,6 +184609,7 @@
   "Albert Wilson": "Kansas City Chiefs",
   "Aldon Smith": "San Francisco 49ers",
   "Aldrick Robinson": "Washington Commanders",
+  "Aldrick Rosas": "New York Giants",
   "Ale Kaho": "Washington Commanders",
   "Alec Anderson": "Buffalo Bills",
   "Alec Ingold": "Los Angeles Chargers",
@@ -180541,6 +184634,7 @@
   "Alex Green": "Green Bay Packers",
   "Alex Hall": "Cleveland Browns",
   "Alex Harkey": "Los Angeles Chargers",
+  "Alex Henery": "Philadelphia Eagles",
   "Alex Highsmith": "Pittsburgh Steelers",
   "Alex Leatherwood": "Chicago Bears",
   "Alex Lewis": "Detroit Lions",
@@ -180607,6 +184701,7 @@
   "Amon Gordon": "Tennessee Titans",
   "Amon-Ra St. Brown": "Detroit Lions",
   "Amos Zereoue": "Pittsburgh Steelers",
+  "Anders Carlson": "New York Jets",
   "Andra Davis": "Cleveland Browns",
   "Andrae Thurman": "Green Bay Packers",
   "Andre Baccellia": "Arizona Cardinals",
@@ -180636,6 +184731,7 @@
   "Andre Reed": "Buffalo Bills",
   "Andre Roberts": "Arizona Cardinals",
   "Andre Smith": "Buffalo Bills",
+  "Andre Szmyt": "Cleveland Browns",
   "Andre Tippett": "New England Patriots",
   "Andre Williams": "Los Angeles Chargers",
   "Andre Woolfolk": "Tennessee Titans",
@@ -180651,6 +184747,7 @@
   "Andrew Donnal": "Los Angeles Rams",
   "Andrew Dowell": "New Orleans Saints",
   "Andrew Farmer II": "San Francisco 49ers",
+  "Andrew Franks": "Miami Dolphins",
   "Andrew Gachkar": "Los Angeles Chargers",
   "Andrew Hawkins": "Cleveland Browns",
   "Andrew Luck": "Indianapolis Colts",
@@ -180669,6 +184766,7 @@
   "Andrew Wingard": "Arizona Cardinals",
   "Andrew Wylie": "Washington Commanders",
   "Andrus Peat": "New Orleans Saints",
+  "Andy Borregales": "New England Patriots",
   "Andy Dalton": "Atlanta Falcons",
   "Andy Isabella": "Arizona Cardinals",
   "Andy Janovich": "Denver Broncos",
@@ -180854,6 +184952,7 @@
   "Austin Reiter": "Kansas City Chiefs",
   "Austin Schlottmann": "Tennessee Titans",
   "Austin Seferian-Jenkins": "Tampa Bay Buccaneers",
+  "Austin Seibert": "Detroit Lions",
   "Austin Spitler": "Miami Dolphins",
   "Austin Trammell": "Jacksonville Jaguars",
   "Austin Walter": "New York Jets",
@@ -180968,11 +185067,13 @@
   "Bilal Nichols": "Chicago Bears",
   "Bilal Powell": "New York Jets",
   "Bilhal Kone": "Baltimore Ravens",
+  "Bill Gramatica": "Arizona Cardinals",
   "Bill Maas": "Kansas City Chiefs",
   "Bill Murray": "Los Angeles Rams",
   "Bill Norton": "Los Angeles Rams",
   "Billy Bajema": "San Francisco 49ers",
   "Billy Bowman Jr.": "Atlanta Falcons",
+  "Billy Cundiff": "Dallas Cowboys",
   "Billy McMullen": "Philadelphia Eagles",
   "Billy Miller": "New Orleans Saints",
   "Billy Price": "Cincinnati Bengals",
@@ -180986,6 +185087,7 @@
   "Bjoern Werner": "Indianapolis Colts",
   "Blaine Gabbert": "Tampa Bay Buccaneers",
   "Blair Brown": "Jacksonville Jaguars",
+  "Blair Walsh": "Minnesota Vikings",
   "Blair White": "Indianapolis Colts",
   "Blake Bell": "Kansas City Chiefs",
   "Blake Bortles": "Jacksonville Jaguars",
@@ -180996,6 +185098,7 @@
   "Blake Countess": "Los Angeles Rams",
   "Blake Fisher": "Houston Texans",
   "Blake Freeland": "New York Jets",
+  "Blake Grupe": "Los Angeles Rams",
   "Blake Hance": "Los Angeles Rams",
   "Blake Jarwin": "Dallas Cowboys",
   "Blake Lynch": "Los Angeles Chargers",
@@ -181066,6 +185169,7 @@
   "Brandin Echols": "Pittsburgh Steelers",
   "Brandon Aiyuk": "San Francisco 49ers",
   "Brandon Allen": "Cincinnati Bengals",
+  "Brandon Aubrey": "Dallas Cowboys",
   "Brandon Bair": "Philadelphia Eagles",
   "Brandon Banks": "Washington Commanders",
   "Brandon Bolden": "New England Patriots",
@@ -181115,6 +185219,7 @@
   "Brandon McGee": "Los Angeles Rams",
   "Brandon McGowan": "Chicago Bears",
   "Brandon McKinney": "Baltimore Ravens",
+  "Brandon McManus": "Los Angeles Rams",
   "Brandon Mebane": "Seattle Seahawks",
   "Brandon Meriweather": "New England Patriots",
   "Brandon Moore": "San Francisco 49ers",
@@ -181129,7 +185234,7 @@
   "Brandon Shell": "New York Jets",
   "Brandon Short": "New York Giants",
   "Brandon Siler": "Los Angeles Chargers",
-  "Brandon Smith": "New York Jets",
+  "Brandon Smith": "Pittsburgh Steelers",
   "Brandon Spikes": "New England Patriots",
   "Brandon Stephens": "New York Jets",
   "Brandon Stokley": "Baltimore Ravens",
@@ -181179,6 +185284,7 @@
   "Brett Hundley": "Green Bay Packers",
   "Brett Jones": "Minnesota Vikings",
   "Brett Keisel": "Pittsburgh Steelers",
+  "Brett Maher": "Dallas Cowboys",
   "Brett Rypien": "Las Vegas Raiders",
   "Brett Toth": "Philadelphia Eagles",
   "Brevin Jordan": "Houston Texans",
@@ -181337,7 +185443,7 @@
   "C.J. Mosley (DL, Dolphins)": "Jacksonville Jaguars",
   "C.J. Okoye": "New York Giants",
   "C.J. Prosise": "Seattle Seahawks",
-  "C.J. Ravenell": "Tennessee Titans",
+  "C.J. Ravenell": "Carolina Panthers",
   "C.J. Spiller": "Buffalo Bills",
   "C.J. Spillman": "San Francisco 49ers",
   "C.J. Stroud": "Houston Texans",
@@ -181353,11 +185459,13 @@
   "Cade McNown": "Chicago Bears",
   "Cade Otton": "Tampa Bay Buccaneers",
   "Cade Stover": "Houston Texans",
+  "Cade York": "Cincinnati Bengals",
   "Caden Curry": "Indianapolis Colts",
   "Caden Prieskorn": "Cincinnati Bengals",
   "Cadillac Williams": "Tampa Bay Buccaneers",
   "Caedan Wallace": "Miami Dolphins",
   "Caelen Carson": "Carolina Panthers",
+  "Cairo Santos": "Chicago Bears",
   "Calais Campbell": "Baltimore Ravens",
   "Caleb Banks": "Minnesota Vikings",
   "Caleb Benenoch": "Tampa Bay Buccaneers",
@@ -181372,6 +185480,7 @@
   "Caleb Murphy": "Los Angeles Chargers",
   "Caleb Ransaw": "Jacksonville Jaguars",
   "Caleb Rogers": "Las Vegas Raiders",
+  "Caleb Sturgis": "Philadelphia Eagles",
   "Caleb Tiernan": "Minnesota Vikings",
   "Caleb Williams": "Chicago Bears",
   "Calen Bullock": "Houston Texans",
@@ -181397,10 +185506,11 @@
   "Cam Jurgens": "Baltimore Ravens",
   "Cam Lampkin": "Los Angeles Rams",
   "Cam Lewis": "Chicago Bears",
+  "Cam Little": "Jacksonville Jaguars",
   "Cam Miller": "Green Bay Packers",
   "Cam Newton": "Carolina Panthers",
   "Cam Robinson": "Jacksonville Jaguars",
-  "Cam Sample": "Cincinnati Bengals",
+  "Cam Sample": "Indianapolis Colts",
   "Cam Sims": "Washington Commanders",
   "Cam Skattebo": "New York Giants",
   "Cam Smith": "Miami Dolphins",
@@ -181413,6 +185523,7 @@
   "Cameron Brate": "Tampa Bay Buccaneers",
   "Cameron Brown": "New York Giants",
   "Cameron Dantzler": "Minnesota Vikings",
+  "Cameron Dicker": "Los Angeles Chargers",
   "Cameron Erving": "Kansas City Chiefs",
   "Cameron Fleming": "New England Patriots",
   "Cameron Goode": "Miami Dolphins",
@@ -181508,6 +185619,7 @@
   "Chad Morton": "New York Giants",
   "Chad Muma": "Houston Texans",
   "Chad Pennington": "New York Jets",
+  "Chad Ryland": "Arizona Cardinals",
   "Chad Simpson": "Indianapolis Colts",
   "Chad Thomas": "Cleveland Browns",
   "Chad Wheeler": "New York Giants",
@@ -181519,6 +185631,7 @@
   "Chance Warmack": "Philadelphia Eagles",
   "Chandler Brayboy": "New England Patriots",
   "Chandler Brewer": "Los Angeles Rams",
+  "Chandler Catanzaro": "Arizona Cardinals",
   "Chandler Cox": "Miami Dolphins",
   "Chandler Jones": "New England Patriots",
   "Chandler Martin": "New York Giants",
@@ -181556,7 +185669,7 @@
   "Charlie Adams": "Denver Broncos",
   "Charlie Anderson": "Houston Texans",
   "Charlie Frye": "Cleveland Browns",
-  "Charlie Heck": "Indianapolis Colts",
+  "Charlie Heck": "Houston Texans",
   "Charlie Jones": "New York Giants",
   "Charlie Kolar": "Los Angeles Chargers",
   "Charlie Peprah": "Green Bay Packers",
@@ -181577,7 +185690,8 @@
   "Chase Ford": "Minnesota Vikings",
   "Chase Hansen": "New Orleans Saints",
   "Chase Lucas": "Detroit Lions",
-  "Chase Lundt": "Buffalo Bills",
+  "Chase Lundt": "Seattle Seahawks",
+  "Chase McLaughlin": "Tampa Bay Buccaneers",
   "Chase Reynolds": "Los Angeles Rams",
   "Chase Roullier": "Washington Commanders",
   "Chase Winovich": "New England Patriots",
@@ -181610,6 +185724,7 @@
   "Chris Bell": "Miami Dolphins",
   "Chris Blair": "Atlanta Falcons",
   "Chris Board": "Baltimore Ravens",
+  "Chris Boswell": "Pittsburgh Steelers",
   "Chris Braswell": "Houston Texans",
   "Chris Brazzell II": "Carolina Panthers",
   "Chris Brooks": "Green Bay Packers",
@@ -181720,7 +185835,7 @@
   "Christian Darrisaw": "Minnesota Vikings",
   "Christian Elliss": "New England Patriots",
   "Christian Gonzalez": "New England Patriots",
-  "Christian Harris": "Atlanta Falcons",
+  "Christian Harris": "Houston Texans",
   "Christian Haynes": "Miami Dolphins",
   "Christian Holmes": "Washington Commanders",
   "Christian Izien": "Detroit Lions",
@@ -181797,6 +185912,7 @@
   "Cody Latimer": "Denver Broncos",
   "Cody Lindenberg": "Las Vegas Raiders",
   "Cody Mauch": "Tampa Bay Buccaneers",
+  "Cody Parkey": "Philadelphia Eagles",
   "Cody Schrader": "Denver Broncos",
   "Cody Simon": "Arizona Cardinals",
   "Cody Spencer": "Tennessee Titans",
@@ -181838,6 +185954,7 @@
   "Colton Dowell": "Tennessee Titans",
   "Colton Hood": "New York Giants",
   "Colton McKivitz": "San Francisco 49ers",
+  "Connor Barth": "Tampa Bay Buccaneers",
   "Connor Barwin": "Philadelphia Eagles",
   "Connor Colby": "San Francisco 49ers",
   "Connor Heyward": "Las Vegas Raiders",
@@ -182063,7 +186180,9 @@
   "Damontae Kazee": "Atlanta Falcons",
   "Damontre Moore": "New York Giants",
   "Dan Arnold": "Jacksonville Jaguars",
+  "Dan Bailey": "Dallas Cowboys",
   "Dan Campbell": "New York Giants",
+  "Dan Carpenter": "Miami Dolphins",
   "Dan Chisena": "Minnesota Vikings",
   "Dan Connor": "Carolina Panthers",
   "Dan Dierdorf": "Arizona Cardinals",
@@ -182095,6 +186214,7 @@
   "Daniel Brown": "New York Jets",
   "Daniel Brunskill": "San Francisco 49ers",
   "Daniel Bullocks": "Detroit Lions",
+  "Daniel Carlson": "Miami Dolphins",
   "Daniel Coats": "Cincinnati Bengals",
   "Daniel Ekuale": "Washington Commanders",
   "Daniel Faalele": "Jacksonville Jaguars",
@@ -182232,9 +186352,11 @@
   "Davante Adams": "Los Angeles Rams",
   "Dave Ball": "Tennessee Titans",
   "Dave Casper": "Las Vegas Raiders",
+  "Dave Rayner": "Buffalo Bills",
   "Dave Tollefson": "New York Giants",
   "Daven Holly": "Cleveland Browns",
   "David Agoha": "Denver Broncos",
+  "David Akers": "Philadelphia Eagles",
   "David Allen": "Jacksonville Jaguars",
   "David Amerson": "Las Vegas Raiders",
   "David Anderson": "Houston Texans",
@@ -182248,6 +186370,7 @@
   "David Boston": "Arizona Cardinals",
   "David Bowens": "Miami Dolphins",
   "David Bruton": "Denver Broncos",
+  "David Buehler": "Dallas Cowboys",
   "David Caldwell": "Indianapolis Colts",
   "David Carr": "Houston Texans",
   "David Carter": "Arizona Cardinals",
@@ -182473,6 +186596,7 @@
   "Derrick Brooks": "Tampa Bay Buccaneers",
   "Derrick Brown": "Carolina Panthers",
   "Derrick Burgess": "Las Vegas Raiders",
+  "Derrick Canteen": "Tennessee Titans",
   "Derrick Coleman": "Seattle Seahawks",
   "Derrick Gibson": "Las Vegas Raiders",
   "Derrick Gore": "Washington Commanders",
@@ -182649,6 +186773,7 @@
   "Dorian Williams": "Buffalo Bills",
   "Doug Baldwin": "Seattle Seahawks",
   "Doug Betters": "Miami Dolphins",
+  "Doug Brien": "New York Jets",
   "Doug Chapman": "Minnesota Vikings",
   "Doug Gabriel": "Las Vegas Raiders",
   "Doug Johnson": "Atlanta Falcons",
@@ -182702,6 +186827,7 @@
   "Durell Nchami": "Indianapolis Colts",
   "Durham Smythe": "Baltimore Ravens",
   "Duron Harmon": "New England Patriots",
+  "Dustin Hopkins": "Washington Commanders",
   "Dustin Keller": "New York Jets",
   "Dustin Lyman": "Chicago Bears",
   "Dwaine Carpenter": "San Francisco 49ers",
@@ -182769,6 +186895,7 @@
   "Eddie Royal": "Denver Broncos",
   "Eddie Vanderdoes": "Houston Texans",
   "Eddie Yarbrough": "Minnesota Vikings",
+  "Eddy Pineiro": "San Francisco 49ers",
   "Edefuan Ulofoshio": "Cleveland Browns",
   "Edell Shepherd": "Tampa Bay Buccaneers",
   "Edgar Jones": "Baltimore Ravens",
@@ -182861,7 +186988,7 @@
   "Eric Fisher": "Kansas City Chiefs",
   "Eric Foster": "Indianapolis Colts",
   "Eric Frampton": "Minnesota Vikings",
-  "Eric Gray": "New York Giants",
+  "Eric Gray": "Indianapolis Colts",
   "Eric Green": "Arizona Cardinals",
   "Eric Gregory": "New England Patriots",
   "Eric Johnson": "San Francisco 49ers",
@@ -182924,6 +187051,7 @@
   "Evan Brown": "Houston Texans",
   "Evan Engram": "Denver Broncos",
   "Evan Hull": "Arizona Cardinals",
+  "Evan McPherson": "Cincinnati Bengals",
   "Evan Moore": "Cleveland Browns",
   "Evan Neal": "Philadelphia Eagles",
   "Evan Oglesby": "Baltimore Ravens",
@@ -183016,12 +187144,15 @@
   "Garrett Graham": "Houston Texans",
   "Garrett Greene": "Tampa Bay Buccaneers",
   "Garrett Griffin": "New Orleans Saints",
+  "Garrett Hartley": "New Orleans Saints",
   "Garrett McIntyre": "New York Jets",
   "Garrett Nussmeier": "Kansas City Chiefs",
   "Garrett Williams": "Arizona Cardinals",
   "Garrett Wilson": "New York Jets",
   "Garrett Wolfe": "Chicago Bears",
+  "Garrison Hearst": "San Francisco 49ers",
   "Garry Gilliam": "Seattle Seahawks",
+  "Gary Anderson": "Minnesota Vikings",
   "Gary Barnidge": "Cleveland Browns",
   "Gary Baxter": "Baltimore Ravens",
   "Gary Brackett": "Indianapolis Colts",
@@ -183079,6 +187210,7 @@
   "Gibril Wilson": "New York Giants",
   "Gijon Robinson": "Indianapolis Colts",
   "Gilbert Gardner": "Indianapolis Colts",
+  "Giorgio Tavecchio": "Atlanta Falcons",
   "Giovani Bernard": "Cincinnati Bengals",
   "Giovanni Manu": "Detroit Lions",
   "Giovanni Ricci": "Carolina Panthers",
@@ -183093,6 +187225,7 @@
   "Gracen Halton": "San Francisco 49ers",
   "Grady Jarrett": "Chicago Bears",
   "Graham Barton": "Tampa Bay Buccaneers",
+  "Graham Gano": "Carolina Panthers",
   "Graham Glasgow": "Detroit Lions",
   "Graham Mertz": "Houston Texans",
   "Grant Calcaterra": "Philadelphia Eagles",
@@ -183105,11 +187238,13 @@
   "Greg Camarillo": "Miami Dolphins",
   "Greg Dortch": "Buffalo Bills",
   "Greg Dulcich": "Miami Dolphins",
+  "Greg Ellis": "Dallas Cowboys",
   "Greg Estandia": "Jacksonville Jaguars",
   "Greg Gaines": "Buffalo Bills",
   "Greg Hardy": "Carolina Panthers",
   "Greg Jennings": "Green Bay Packers",
   "Greg Jones": "Jacksonville Jaguars",
+  "Greg Joseph": "Minnesota Vikings",
   "Greg K. Jones": "Jacksonville Jaguars",
   "Greg Lewis": "Philadelphia Eagles",
   "Greg Little": "Cleveland Browns",
@@ -183126,6 +187261,7 @@
   "Greg Van Roten": "New England Patriots",
   "Greg Ward": "Philadelphia Eagles",
   "Greg Wesley": "Kansas City Chiefs",
+  "Greg Zuerlein": "Los Angeles Rams",
   "Grey Zabel": "Seattle Seahawks",
   "Griff Whalen": "Indianapolis Colts",
   "Grover Stewart": "Indianapolis Colts",
@@ -183155,6 +187291,7 @@
   "Harold Landry III": "New England Patriots",
   "Harold Perkins Jr.": "Atlanta Falcons",
   "Harrison Bryant": "Indianapolis Colts",
+  "Harrison Butker": "Kansas City Chiefs",
   "Harrison Hand": "Minnesota Vikings",
   "Harrison Phillips": "New York Jets",
   "Harrison Smith": "Minnesota Vikings",
@@ -183210,6 +187347,7 @@
   "Ian Gold": "Denver Broncos",
   "Ian Scott": "Chicago Bears",
   "Ian Thomas": "Las Vegas Raiders",
+  "Ian Wheeler": "Los Angeles Chargers",
   "Ian Williams": "San Francisco 49ers",
   "Ibraheim Campbell": "Cleveland Browns",
   "Idrees Bashir": "Indianapolis Colts",
@@ -183234,7 +187372,7 @@
   "Isaac Seumalo": "Arizona Cardinals",
   "Isaac Sopoaga": "San Francisco 49ers",
   "Isaac TeSlaa": "Detroit Lions",
-  "Isaac Yiadom": "Washington Commanders",
+  "Isaac Yiadom": "Chicago Bears",
   "Isaiah Adams": "Arizona Cardinals",
   "Isaiah Bolden": "New England Patriots",
   "Isaiah Bond": "Cleveland Browns",
@@ -183430,11 +187568,13 @@
   "Jaishawn Barham": "Dallas Cowboys",
   "Jake Andrews": "Houston Texans",
   "Jake Ballard": "New York Giants",
+  "Jake Bates": "Detroit Lions",
   "Jake Bobo": "Seattle Seahawks",
   "Jake Brendel": "San Francisco 49ers",
   "Jake Briningstool": "Kansas City Chiefs",
   "Jake Browning": "Los Angeles Chargers",
   "Jake Curhan": "Carolina Panthers",
+  "Jake Elliott": "Philadelphia Eagles",
   "Jake Ferguson": "Dallas Cowboys",
   "Jake Fisher": "Cincinnati Bengals",
   "Jake Funk": "Indianapolis Colts",
@@ -183449,6 +187589,7 @@
   "Jake Locker": "Tennessee Titans",
   "Jake Majors": "Philadelphia Eagles",
   "Jake Matthews": "Atlanta Falcons",
+  "Jake Moody": "Atlanta Falcons",
   "Jake O'Connell": "Kansas City Chiefs",
   "Jake Rodgers": "Denver Broncos",
   "Jake Ryan": "Green Bay Packers",
@@ -183666,7 +187807,9 @@
   "Jason Croom": "Philadelphia Eagles",
   "Jason David": "Indianapolis Colts",
   "Jason Doering": "Indianapolis Colts",
+  "Jason Elam": "Denver Broncos",
   "Jason Glenn": "New York Jets",
+  "Jason Hanson": "Detroit Lions",
   "Jason Hatcher": "Dallas Cowboys",
   "Jason Hill": "San Francisco 49ers",
   "Jason Horton": "Green Bay Packers",
@@ -183679,10 +187822,12 @@
   "Jason McKie": "Chicago Bears",
   "Jason Moore": "Los Angeles Chargers",
   "Jason Moore (DB, 49ers)": "San Francisco 49ers",
+  "Jason Myers": "Seattle Seahawks",
   "Jason Perry": "Los Angeles Chargers",
   "Jason Phillips": "Carolina Panthers",
   "Jason Pierre-Paul": "New York Giants",
   "Jason Pinnock": "New York Giants",
+  "Jason Sanders": "New York Jets",
   "Jason Short": "Philadelphia Eagles",
   "Jason Snelling": "Atlanta Falcons",
   "Jason Spriggs": "Green Bay Packers",
@@ -183722,6 +187867,7 @@
   "Jay Bromley": "New York Giants",
   "Jay Cutler": "Chicago Bears",
   "Jay Elliott": "Green Bay Packers",
+  "Jay Feely": "Arizona Cardinals",
   "Jay Foreman": "Houston Texans",
   "Jay Higgins IV": "Baltimore Ravens",
   "Jay Prosch": "Houston Texans",
@@ -183785,10 +187931,12 @@
   "Jeff King": "Carolina Panthers",
   "Jeff Maehl": "Philadelphia Eagles",
   "Jeff Okudah": "Detroit Lions",
+  "Jeff Reed": "Pittsburgh Steelers",
   "Jeff Smith": "New York Jets",
   "Jeff Tarpinian": "Houston Texans",
   "Jeff Ulbrich": "San Francisco 49ers",
   "Jeff Webb": "Kansas City Chiefs",
+  "Jeff Wilkins": "Los Angeles Rams",
   "Jeff Wilson Jr.": "San Francisco 49ers",
   "Jeffery Simmons": "Chicago Bears",
   "Jeffrey Bassa": "Kansas City Chiefs",
@@ -183945,6 +188093,7 @@
   "Joe Haeg": "Indianapolis Colts",
   "Joe Huber": "Minnesota Vikings",
   "Joe Jackson": "Cleveland Browns",
+  "Joe Johnson": "Green Bay Packers",
   "Joe Jones": "Denver Broncos",
   "Joe Klecko": "New York Jets",
   "Joe Klopfenstein": "Los Angeles Rams",
@@ -183953,6 +188102,7 @@
   "Joe Milton III": "Philadelphia Eagles",
   "Joe Mixon": "Cincinnati Bengals",
   "Joe Montana": "San Francisco 49ers",
+  "Joe Nedney": "San Francisco 49ers",
   "Joe Odom": "Chicago Bears",
   "Joe Royer": "Cleveland Browns",
   "Joe Schobert": "Cleveland Browns",
@@ -183983,6 +188133,7 @@
   "Joey Hunt": "Seattle Seahawks",
   "Joey Porter": "Pittsburgh Steelers",
   "Joey Porter Jr.": "Dallas Cowboys",
+  "Joey Slye": "Tennessee Titans",
   "Joey Thomas": "Green Bay Packers",
   "John Abraham": "Atlanta Falcons",
   "John Bates": "Washington Commanders",
@@ -183992,6 +188143,7 @@
   "John Bullock": "Tampa Bay Buccaneers",
   "John Busing": "Cincinnati Bengals",
   "John Carlson": "Seattle Seahawks",
+  "John Carney": "New Orleans Saints",
   "John Cominsky": "Atlanta Falcons",
   "John Conner": "New York Jets",
   "John DiGiorgio": "Buffalo Bills",
@@ -184000,6 +188152,7 @@
   "John FitzPatrick": "Kansas City Chiefs",
   "John Franklin-Myers": "Tennessee Titans",
   "John Gilmore": "Chicago Bears",
+  "John Hall": "Washington Commanders",
   "John Hannah": "New England Patriots",
   "John Henderson": "Jacksonville Jaguars",
   "John Hilliard": "Seattle Seahawks",
@@ -184008,6 +188161,7 @@
   "John Jenkins": "Baltimore Ravens",
   "John Johnson III": "Los Angeles Rams",
   "John Jones": "Baltimore Ravens",
+  "John Kasay": "Carolina Panthers",
   "John Keith": "San Francisco 49ers",
   "John Kuhn": "Green Bay Packers",
   "John Lotulelei": "Jacksonville Jaguars",
@@ -184068,6 +188222,7 @@
   "Jon Feliciano": "Las Vegas Raiders",
   "Jon Gaines II": "Arizona Cardinals",
   "Jon Halapio": "New York Giants",
+  "Jon Kitna": "Cincinnati Bengals",
   "Jon McGraw": "Kansas City Chiefs",
   "Jon Rhattigan": "Los Angeles Rams",
   "Jon Runyan": "New York Giants",
@@ -184136,6 +188291,7 @@
   "Jordan Elliott": "Cleveland Browns",
   "Jordan Evans": "Cincinnati Bengals",
   "Jordan Fuller": "Los Angeles Rams",
+  "Jordan Gay": "Buffalo Bills",
   "Jordan Glasgow": "Indianapolis Colts",
   "Jordan Hancock": "Buffalo Bills",
   "Jordan Hicks": "Philadelphia Eagles",
@@ -184191,6 +188347,7 @@
   "Jordyn Tyson": "New Orleans Saints",
   "Jorvorskie Lane": "Tampa Bay Buccaneers",
   "Josaiah Stewart": "Los Angeles Rams",
+  "Jose Cortez": "San Francisco 49ers",
   "Jose Ramirez": "New England Patriots",
   "Joselio Hanson": "Philadelphia Eagles",
   "Joseph Addai": "Indianapolis Colts",
@@ -184210,6 +188367,7 @@
   "Josh Blackwell": "Chicago Bears",
   "Josh Boyd": "Green Bay Packers",
   "Josh Brent": "Dallas Cowboys",
+  "Josh Brown": "Seattle Seahawks",
   "Josh Bullocks": "New Orleans Saints",
   "Josh Bush": "Denver Broncos",
   "Josh Butler": "Chicago Bears",
@@ -184244,6 +188402,7 @@
   "Josh Kelly": "Houston Texans",
   "Josh Keyes": "Tampa Bay Buccaneers",
   "Josh Kline": "Tennessee Titans",
+  "Josh Lambo": "Jacksonville Jaguars",
   "Josh Mallard": "Cincinnati Bengals",
   "Josh Malone": "New York Jets",
   "Josh Martin": "New York Jets",
@@ -184265,6 +188424,7 @@
   "Josh Robinson": "Minnesota Vikings",
   "Josh Rosen": "Atlanta Falcons",
   "Josh Ross": "Minnesota Vikings",
+  "Josh Scobee": "Jacksonville Jaguars",
   "Josh Scobey": "Seattle Seahawks",
   "Josh Shaw": "Cincinnati Bengals",
   "Josh Sills": "New York Giants",
@@ -184290,6 +188450,7 @@
   "Joshua Gray": "Indianapolis Colts",
   "Joshua Josephs": "Washington Commanders",
   "Joshua Kalu": "Tennessee Titans",
+  "Joshua Karty": "Los Angeles Rams",
   "Joshua Kelley": "Los Angeles Chargers",
   "Joshua Metellus": "Minnesota Vikings",
   "Joshua Miles": "Arizona Cardinals",
@@ -184400,6 +188561,7 @@
   "Justin Trattou": "Minnesota Vikings",
   "Justin Tryon": "New York Giants",
   "Justin Tuck": "New York Giants",
+  "Justin Tucker": "Kansas City Chiefs",
   "Justin Tuggle": "Houston Texans",
   "Justin Walley": "Indianapolis Colts",
   "Justin Watson": "Kansas City Chiefs",
@@ -184426,6 +188588,7 @@
   "KT Leveston": "Cleveland Browns",
   "Ka'Deem Carey": "Chicago Bears",
   "Ka'dar Hollman": "Houston Texans",
+  "Ka'imi Fairbairn": "Houston Texans",
   "KaVontae Turpin": "Dallas Cowboys",
   "Kabeer Gbaja-Biamila": "Green Bay Packers",
   "Kadarius Toney": "Kansas City Chiefs",
@@ -184443,6 +188606,7 @@
   "Kage Casey": "Denver Broncos",
   "Kahlef Hailassie": "Cleveland Browns",
   "Kahlil Bell": "Chicago Bears",
+  "Kai Forbath": "Washington Commanders",
   "Kai Nacua": "San Francisco 49ers",
   "Kaiir Elam": "Los Angeles Chargers",
   "Kaimon Rucker": "Baltimore Ravens",
@@ -184507,7 +188671,7 @@
   "Kearis Jackson": "Tennessee Titans",
   "Keary Colbert": "Carolina Panthers",
   "Keaton Mitchell": "Los Angeles Chargers",
-  "Kedon Slovis": "Baltimore Ravens",
+  "Kedon Slovis": "Arizona Cardinals",
   "Kedric Golston": "Washington Commanders",
   "KeeSean Johnson": "Arizona Cardinals",
   "Keeanu Benton": "Pittsburgh Steelers",
@@ -184784,6 +188948,7 @@
   "Kregg Lumpkin": "Tampa Bay Buccaneers",
   "Kris Abrams-Draine": "Denver Broncos",
   "Kris Boyd": "Minnesota Vikings",
+  "Kris Brown": "Houston Texans",
   "Kris Durham": "Detroit Lions",
   "Kris Griffin": "Cleveland Browns",
   "Kris Jenkins": "Carolina Panthers",
@@ -184956,6 +189121,7 @@
   "Lawrence Taylor": "New York Giants",
   "Lawrence Thomas": "New York Jets",
   "Lawrence Timmons": "Pittsburgh Steelers",
+  "Lawrence Tynes": "New York Giants",
   "Lawrence Vickers": "Cleveland Browns",
   "Layden Robinson": "New England Patriots",
   "Le Kevin Smith": "New England Patriots",
@@ -185290,6 +189456,7 @@
   "Martellus Bennett": "New England Patriots",
   "Martez Wilson": "New Orleans Saints",
   "Martin Emerson Jr.": "New Orleans Saints",
+  "Martin Gramatica": "Tampa Bay Buccaneers",
   "Martinas Rankin": "Kansas City Chiefs",
   "Martrell Spaight": "Washington Commanders",
   "Marty Booker": "Chicago Bears",
@@ -185303,6 +189470,7 @@
   "Marvin White": "Cincinnati Bengals",
   "Marwin Evans": "Green Bay Packers",
   "Mason Cole": "Arizona Cardinals",
+  "Mason Crosby": "Green Bay Packers",
   "Mason Foster": "Washington Commanders",
   "Mason Graham": "Cleveland Browns",
   "Mason Kinsey": "Tennessee Titans",
@@ -185315,10 +189483,12 @@
   "Mason Tipton": "New Orleans Saints",
   "Mason Unck": "Cleveland Browns",
   "Mathias Kiwanuka": "New York Giants",
+  "Matt Ammendola": "Houston Texans",
   "Matt Asiata": "Minnesota Vikings",
   "Matt Barkley": "Buffalo Bills",
   "Matt Bowen": "Washington Commanders",
   "Matt Breida": "San Francisco 49ers",
+  "Matt Bryant": "Atlanta Falcons",
   "Matt Cassel": "Kansas City Chiefs",
   "Matt Chatham": "New England Patriots",
   "Matt Cushing": "Pittsburgh Steelers",
@@ -185329,6 +189499,7 @@
   "Matt Feiler": "Pittsburgh Steelers",
   "Matt Flynn": "Green Bay Packers",
   "Matt Forte": "Chicago Bears",
+  "Matt Gay": "Las Vegas Raiders",
   "Matt Giordano": "Indianapolis Colts",
   "Matt Goncalves": "Indianapolis Colts",
   "Matt Gono": "Atlanta Falcons",
@@ -185350,6 +189521,7 @@
   "Matt Nelson": "Detroit Lions",
   "Matt Paradis": "Denver Broncos",
   "Matt Peart": "Denver Broncos",
+  "Matt Prater": "Detroit Lions",
   "Matt Pryor": "New England Patriots",
   "Matt Roth": "Miami Dolphins",
   "Matt Ryan": "Atlanta Falcons",
@@ -185360,6 +189532,7 @@
   "Matt Sokol": "New England Patriots",
   "Matt Spaeth": "Pittsburgh Steelers",
   "Matt Stewart": "Atlanta Falcons",
+  "Matt Stover": "Baltimore Ravens",
   "Matt Tobin": "Philadelphia Eagles",
   "Matt Toeaina": "Chicago Bears",
   "Matt Waletzko": "Kansas City Chiefs",
@@ -185374,6 +189547,7 @@
   "Matthew Mulligan": "New York Jets",
   "Matthew Slater": "New England Patriots",
   "Matthew Stafford": "Los Angeles Rams",
+  "Matthew Wright": "Tennessee Titans",
   "Matthias Farley": "Indianapolis Colts",
   "Maurice Alexander": "Detroit Lions",
   "Maurice Alexander (LB, Bills)": "Los Angeles Rams",
@@ -185503,6 +189677,7 @@
   "Micheal Spurlock": "Tampa Bay Buccaneers",
   "Mike Adams": "Cleveland Browns",
   "Mike Anderson": "Denver Broncos",
+  "Mike Badgley": "Los Angeles Chargers",
   "Mike Bell": "New Orleans Saints",
   "Mike Boone": "Minnesota Vikings",
   "Mike Brown": "New England Patriots",
@@ -185554,6 +189729,7 @@
   "Mike Morris": "Seattle Seahawks",
   "Mike Munchak": "Tennessee Titans",
   "Mike Neal": "Green Bay Packers",
+  "Mike Nugent": "Cincinnati Bengals",
   "Mike Onwenu": "New England Patriots",
   "Mike Patterson": "Philadelphia Eagles",
   "Mike Pennel": "Kansas City Chiefs",
@@ -185569,6 +189745,7 @@
   "Mike Thomas": "Los Angeles Rams",
   "Mike Thomas (WR, Lions)": "Jacksonville Jaguars",
   "Mike Tolbert": "Carolina Panthers",
+  "Mike Vanderjagt": "Indianapolis Colts",
   "Mike Vick": "Atlanta Falcons",
   "Mike Wallace": "Pittsburgh Steelers",
   "Mike Washington Jr.": "Las Vegas Raiders",
@@ -185587,7 +189764,7 @@
   "Miles Killebrew": "Tampa Bay Buccaneers",
   "Miles Sanders": "Philadelphia Eagles",
   "Miles Scott": "Denver Broncos",
-  "Milo Eifler": "Tennessee Titans",
+  "Milo Eifler": "Washington Commanders",
   "Milton Williams": "New England Patriots",
   "Minkah Fitzpatrick": "New York Jets",
   "Mistral Raymond": "Minnesota Vikings",
@@ -185628,6 +189805,7 @@
   "Morlon Greenwood": "Houston Texans",
   "Moro Ojomo": "Philadelphia Eagles",
   "Morris Claiborne": "Dallas Cowboys",
+  "Morten Andersen": "Atlanta Falcons",
   "Muhammad Wilkerson": "New York Jets",
   "Musa Smith": "Baltimore Ravens",
   "Mustafah Muhammad": "Indianapolis Colts",
@@ -185681,6 +189859,7 @@
   "Nate Irving": "Denver Broncos",
   "Nate Jackson": "Denver Broncos",
   "Nate Jones": "Dallas Cowboys",
+  "Nate Kaeding": "Los Angeles Chargers",
   "Nate Landman": "Los Angeles Rams",
   "Nate Lynn": "New York Jets",
   "Nate Orchard": "Washington Commanders",
@@ -185708,6 +189887,7 @@
   "Nehemiah Pritchett": "Seattle Seahawks",
   "Neiko Thorpe": "Seattle Seahawks",
   "Neil Farrell": "Kansas City Chiefs",
+  "Neil Rackers": "Arizona Cardinals",
   "Nelson Agholor": "Philadelphia Eagles",
   "Nephi Sewell": "Chicago Bears",
   "Nesta Jade Silvera": "Las Vegas Raiders",
@@ -185743,6 +189923,7 @@
   "Nick Fairley": "Detroit Lions",
   "Nick Ferguson": "Denver Broncos",
   "Nick Foles": "Philadelphia Eagles",
+  "Nick Folk": "New York Jets",
   "Nick Gargiulo": "Denver Broncos",
   "Nick Gates": "New York Giants",
   "Nick Goings": "Carolina Panthers",
@@ -185767,6 +189948,7 @@
   "Nick Mullens": "Jacksonville Jaguars",
   "Nick Muse": "Atlanta Falcons",
   "Nick Niemann": "Green Bay Packers",
+  "Nick Novak": "Los Angeles Chargers",
   "Nick O'Leary": "Buffalo Bills",
   "Nick Perry": "Green Bay Packers",
   "Nick Reed": "Chicago Bears",
@@ -185827,6 +190009,7 @@
   "Ola Adeniyi": "Pittsburgh Steelers",
   "Olamide Zaccheaus": "Atlanta Falcons",
   "Olandis Gary": "Denver Broncos",
+  "Olindo Mare": "Miami Dolphins",
   "Olisaemeka Udoh": "Minnesota Vikings",
   "Oliver Celestin": "Arizona Cardinals",
   "Olivier Vernon": "Miami Dolphins",
@@ -185868,6 +190051,7 @@
   "Owa Odighizuwa": "New York Giants",
   "Owen Daniels": "Houston Texans",
   "Owen Pappoe": "Detroit Lions",
+  "Owen Pochman": "San Francisco 49ers",
   "Owen Schmitt": "Philadelphia Eagles",
   "Owen Wright": "Las Vegas Raiders",
   "Ozzie Newsome": "Cleveland Browns",
@@ -185916,6 +190100,8 @@
   "Patrick Mahomes": "Kansas City Chiefs",
   "Patrick McMorris": "Miami Dolphins",
   "Patrick Mekari": "Jacksonville Jaguars",
+  "Patrick Murray": "Tampa Bay Buccaneers",
+  "Patrick Murtagh": "New Orleans Saints",
   "Patrick O'Connell": "Seattle Seahawks",
   "Patrick Omameh": "Jacksonville Jaguars",
   "Patrick Onwuasor": "Baltimore Ravens",
@@ -185931,6 +190117,7 @@
   "Patrick Washington": "Jacksonville Jaguars",
   "Patrick Willis": "San Francisco 49ers",
   "Paul Dawson": "Cincinnati Bengals",
+  "Paul Edinger": "Chicago Bears",
   "Paul Hazel": "New York Giants",
   "Paul Kruger": "Baltimore Ravens",
   "Paul Oliver": "Los Angeles Chargers",
@@ -185974,6 +190161,7 @@
   "Pharoh Cooper": "Los Angeles Rams",
   "Phidarian Mathis": "Buffalo Bills",
   "Phil Clarke": "New Orleans Saints",
+  "Phil Dawson": "Cleveland Browns",
   "Phil Haynes": "Seattle Seahawks",
   "Phil Mafah": "New York Giants",
   "Phil Simms": "New York Giants",
@@ -186104,6 +190292,7 @@
   "Randall McDaniel": "Minnesota Vikings",
   "Randall Telfer": "Cleveland Browns",
   "Randell Johnson": "Buffalo Bills",
+  "Randy Bullock": "Cincinnati Bengals",
   "Randy Gradishar": "Denver Broncos",
   "Randy Gregory": "Dallas Cowboys",
   "Randy Hymes": "Baltimore Ravens",
@@ -186208,7 +190397,9 @@
   "Reynaldo Hill": "Tennessee Titans",
   "Rhamondre Stevenson": "New England Patriots",
   "Rhett Ellison": "Minnesota Vikings",
+  "Rhys Lloyd": "Carolina Panthers",
   "Riall Johnson": "Cincinnati Bengals",
+  "Rian Lindell": "Buffalo Bills",
   "Ricardo Allen": "Atlanta Falcons",
   "Ricardo Colclough": "Pittsburgh Steelers",
   "Ricardo Lockette": "Seattle Seahawks",
@@ -186249,9 +190440,11 @@
   "Riley Leonard": "Indianapolis Colts",
   "Riley Moss": "Denver Broncos",
   "Riley Nowakowski": "Pittsburgh Steelers",
+  "Riley Patterson": "Baltimore Ravens",
   "Riq Woolen": "Philadelphia Eagles",
   "Rishard Matthews": "Miami Dolphins",
   "River Cracraft": "Miami Dolphins",
+  "Rob Bironas": "Tennessee Titans",
   "Rob Francois": "Green Bay Packers",
   "Rob Gronkowski": "New England Patriots",
   "Rob Havenstein": "Los Angeles Rams",
@@ -186265,6 +190458,7 @@
   "Rob Reynolds": "Tennessee Titans",
   "Robaire Smith": "Tennessee Titans",
   "Robbie Chosen": "New York Jets",
+  "Robbie Gould": "Chicago Bears",
   "Robbie Ouzts": "Seattle Seahawks",
   "Robenson Therezie": "Atlanta Falcons",
   "Robert Alford": "Atlanta Falcons",
@@ -186299,6 +190493,7 @@
   "Robert Tonyan": "Pittsburgh Steelers",
   "Robert Turbin": "Seattle Seahawks",
   "Robert Woods": "Los Angeles Rams",
+  "Roberto Aguayo": "Tampa Bay Buccaneers",
   "Roc Alexander": "Denver Broncos",
   "Roc Carmichael": "Philadelphia Eagles",
   "Rock Cartwright": "Washington Commanders",
@@ -186327,6 +190522,7 @@
   "Rodney McLeod Jr.": "Philadelphia Eagles",
   "Rodney Thomas II": "Seattle Seahawks",
   "Rodney Williams": "Pittsburgh Steelers",
+  "Rodrigo Blankenship": "Indianapolis Colts",
   "Roger Craig": "San Francisco 49ers",
   "Roger Knight": "New Orleans Saints",
   "Roger Lewis": "New York Giants",
@@ -186419,6 +190615,7 @@
   "Ryan Davis": "Jacksonville Jaguars",
   "Ryan Delaire": "Carolina Panthers",
   "Ryan Denney": "Buffalo Bills",
+  "Ryan Fitzgerald": "Carolina Panthers",
   "Ryan Fitzpatrick": "Buffalo Bills",
   "Ryan Flournoy": "Dallas Cowboys",
   "Ryan Fowler": "Dallas Cowboys",
@@ -186435,6 +190632,7 @@
   "Ryan Kelly": "Indianapolis Colts",
   "Ryan Kerrigan": "Washington Commanders",
   "Ryan Lewis": "New York Giants",
+  "Ryan Longwell": "Green Bay Packers",
   "Ryan Mallett": "Baltimore Ravens",
   "Ryan Mathews": "Los Angeles Chargers",
   "Ryan McBean": "Denver Broncos",
@@ -186455,6 +190653,7 @@
   "Ryan Shazier": "Pittsburgh Steelers",
   "Ryan Sims": "Kansas City Chiefs",
   "Ryan Smith": "Tampa Bay Buccaneers",
+  "Ryan Succop": "Tennessee Titans",
   "Ryan Switzer": "Pittsburgh Steelers",
   "Ryan Tannehill": "Miami Dolphins",
   "Ryan Taylor": "Green Bay Packers",
@@ -186480,6 +190679,7 @@
   "Sam Darnold": "Seattle Seahawks",
   "Sam Eguavoen": "Miami Dolphins",
   "Sam Ehlinger": "Denver Broncos",
+  "Sam Ficken": "New York Jets",
   "Sam Franklin Jr.": "Buffalo Bills",
   "Sam Hartman": "Washington Commanders",
   "Sam Hecht": "Carolina Panthers",
@@ -186549,7 +190749,7 @@
   "Sean Lissemore": "Los Angeles Chargers",
   "Sean McGrath": "Los Angeles Chargers",
   "Sean McHugh": "Detroit Lions",
-  "Sean McKeon": "Dallas Cowboys",
+  "Sean McKeon": "Indianapolis Colts",
   "Sean Morey": "Arizona Cardinals",
   "Sean Murphy-Bunting": "Pittsburgh Steelers",
   "Sean Rhyan": "Green Bay Packers",
@@ -186563,6 +190763,7 @@
   "Seantrel Henderson": "Buffalo Bills",
   "Sebastian Castro": "Pittsburgh Steelers",
   "Sebastian Gutierrez": "San Francisco 49ers",
+  "Sebastian Janikowski": "Las Vegas Raiders",
   "Sebastian Joseph-Day": "Pittsburgh Steelers",
   "Sebastian Valdez": "San Francisco 49ers",
   "Sedrick Ellis": "New Orleans Saints",
@@ -186577,18 +190778,19 @@
   "Senorise Perry": "Miami Dolphins",
   "Sergio Brown": "Indianapolis Colts",
   "Seth DeValve": "Cleveland Browns",
+  "Seth Marler": "Jacksonville Jaguars",
   "Seth McGowan": "Indianapolis Colts",
   "Seth McLaughlin": "Detroit Lions",
   "Seth Roberts": "Las Vegas Raiders",
   "Seydou Traore": "Miami Dolphins",
   "Seyi Ajirotutu": "Los Angeles Chargers",
   "Shad Meier": "Tennessee Titans",
-  "Shaka Heyward": "Miami Dolphins",
+  "Shaka Heyward": "Cincinnati Bengals",
   "Shaka Toney": "Washington Commanders",
   "Shalom Luani": "Los Angeles Chargers",
   "Shamar Stephen": "Minnesota Vikings",
   "Shamarko Thomas": "Pittsburgh Steelers",
-  "Shane Buechele": "Buffalo Bills",
+  "Shane Buechele": "Indianapolis Colts",
   "Shane Conlan": "Buffalo Bills",
   "Shane Lemieux": "New York Giants",
   "Shane Ray": "Denver Broncos",
@@ -186625,6 +190827,7 @@
   "Shaun Prater": "Minnesota Vikings",
   "Shaun Rogers": "Detroit Lions",
   "Shaun Smith": "Cincinnati Bengals",
+  "Shaun Suisham": "Pittsburgh Steelers",
   "Shaun Wade": "New England Patriots",
   "Shaunard Harts": "Kansas City Chiefs",
   "Shavon Revel Jr.": "Dallas Cowboys",
@@ -186632,6 +190835,7 @@
   "Shawn Williams": "Cincinnati Bengals",
   "Shawne Merriman": "Los Angeles Chargers",
   "Shawntae Spencer": "San Francisco 49ers",
+  "Shayne Graham": "Cincinnati Bengals",
   "Shayne Skov": "San Francisco 49ers",
   "Shea McClellin": "Chicago Bears",
   "Shedeur Sanders": "Cleveland Browns",
@@ -186695,6 +190899,7 @@
   "Spencer Paysinger": "New York Giants",
   "Spencer Pulley": "New York Giants",
   "Spencer Rattler": "New Orleans Saints",
+  "Spencer Shrader": "Indianapolis Colts",
   "Spencer Ware": "Kansas City Chiefs",
   "Stacey Mack": "Jacksonville Jaguars",
   "Stacy McGee": "Las Vegas Raiders",
@@ -186717,6 +190922,7 @@
   "Stephen Carlson": "Chicago Bears",
   "Stephen Cooper": "Los Angeles Chargers",
   "Stephen Gosnell": "Buffalo Bills",
+  "Stephen Gostkowski": "New England Patriots",
   "Stephen Hill": "New York Jets",
   "Stephen Nicholas": "Atlanta Falcons",
   "Stephen Paea": "Chicago Bears",
@@ -186736,12 +190942,14 @@
   "Steve Atwater": "Denver Broncos",
   "Steve Avila": "Los Angeles Rams",
   "Steve Breaston": "Arizona Cardinals",
+  "Steve Christie": "Los Angeles Chargers",
   "Steve Gleason": "New Orleans Saints",
   "Steve Gregory": "Los Angeles Chargers",
   "Steve Heiden": "Cleveland Browns",
   "Steve Hutchinson": "Minnesota Vikings",
   "Steve Johnson": "Buffalo Bills",
   "Steve Largent": "Seattle Seahawks",
+  "Steve Lindsey": "Jacksonville Jaguars",
   "Steve Longa": "Detroit Lions",
   "Steve McLendon": "Pittsburgh Steelers",
   "Steve McMichael": "Chicago Bears",
@@ -186752,6 +190960,7 @@
   "Steve Warren": "Green Bay Packers",
   "Steve Williams": "Los Angeles Chargers",
   "Steve Young": "San Francisco 49ers",
+  "Steven Hauschka": "Seattle Seahawks",
   "Steven Jackson": "Los Angeles Rams",
   "Steven Johnson": "Denver Broncos",
   "Steven Jones": "Pittsburgh Steelers",
@@ -186894,6 +191103,7 @@
   "Teddy Williams": "Carolina Panthers",
   "Teddye Buchanan": "Baltimore Ravens",
   "Tedric Thompson": "Seattle Seahawks",
+  "Tedy Bruschi": "New England Patriots",
   "Tee Higgins": "Cincinnati Bengals",
   "Teez Tabor": "Seattle Seahawks",
   "Tejhaun Palmer": "Los Angeles Chargers",
@@ -186901,7 +191111,7 @@
   "Temarrick Hemingway": "Washington Commanders",
   "Tenny Palepoi": "Los Angeles Chargers",
   "Terdell Sands": "Las Vegas Raiders",
-  "Terell Smith": "Chicago Bears",
+  "Terell Smith": "Atlanta Falcons",
   "Terence Garvin": "Pittsburgh Steelers",
   "Terence Newman": "Dallas Cowboys",
   "Terence Steele": "Dallas Cowboys",
@@ -186994,6 +191204,7 @@
   "Tim Lelito": "New Orleans Saints",
   "Tim Patrick": "New York Jets",
   "Tim Rattay": "San Francisco 49ers",
+  "Tim Seder": "Dallas Cowboys",
   "Tim Settle Jr.": "Washington Commanders",
   "Tim Shaw": "Tennessee Titans",
   "Tim Smith": "Indianapolis Colts",
@@ -187015,6 +191226,7 @@
   "Todd Heap": "Baltimore Ravens",
   "Todd Johnson": "Chicago Bears",
   "Todd McMillon": "Chicago Bears",
+  "Todd Peterson": "San Francisco 49ers",
   "Todd Pinkston": "Philadelphia Eagles",
   "Todd Yoder": "Washington Commanders",
   "Tom Brady": "New England Patriots",
@@ -187031,6 +191243,7 @@
   "Tommy Eichenberg": "Las Vegas Raiders",
   "Tommy Hendricks": "Miami Dolphins",
   "Tommy Kelly": "Las Vegas Raiders",
+  "Tommy Maddox": "Pittsburgh Steelers",
   "Tommy Polley": "Los Angeles Rams",
   "Tommy Sweeney": "Buffalo Bills",
   "Tommy Togiai": "Houston Texans",
@@ -187091,6 +191304,7 @@
   "Travis Benjamin": "Los Angeles Chargers",
   "Travis Burke": "Los Angeles Chargers",
   "Travis Clayton": "Buffalo Bills",
+  "Travis Coons": "Los Angeles Chargers",
   "Travis Daniels": "Kansas City Chiefs",
   "Travis Etienne Jr.": "New Orleans Saints",
   "Travis Fisher": "Los Angeles Rams",
@@ -187266,6 +191480,7 @@
   "Tyler Allgeier": "Arizona Cardinals",
   "Tyler Badie": "Denver Broncos",
   "Tyler Baron": "New York Jets",
+  "Tyler Bass": "Buffalo Bills",
   "Tyler Batty": "Minnesota Vikings",
   "Tyler Biadasz": "Los Angeles Chargers",
   "Tyler Booker": "Dallas Cowboys",
@@ -187289,6 +191504,7 @@
   "Tyler Larsen": "Carolina Panthers",
   "Tyler Linderbaum": "Las Vegas Raiders",
   "Tyler Lockett": "Seattle Seahawks",
+  "Tyler Loop": "Baltimore Ravens",
   "Tyler Matakevich": "Pittsburgh Steelers",
   "Tyler Nubin": "New York Giants",
   "Tyler Onyedim": "Denver Broncos",
@@ -187409,6 +191625,7 @@
   "Vontae Davis": "Indianapolis Colts",
   "Vontaze Burfict": "Cincinnati Bengals",
   "Vyncint Smith": "New York Jets",
+  "Wade Richey": "Baltimore Ravens",
   "Wade Woodaz": "Houston Texans",
   "Wali Rainer": "Cleveland Browns",
   "Walker Little": "Jacksonville Jaguars",
@@ -187445,6 +191662,7 @@
   "Weslye Saunders": "Indianapolis Colts",
   "Weston Richburg": "New York Giants",
   "Whitney Mercilus": "Houston Texans",
+  "Wil Lutz": "Denver Broncos",
   "Will Allen": "Pittsburgh Steelers",
   "Will Allen (DB, Dolphins)": "New York Giants",
   "Will Anderson Jr.": "Houston Texans",
@@ -187477,6 +191695,7 @@
   "Will Parks": "Denver Broncos",
   "Will Putnam": "Las Vegas Raiders",
   "Will Redmond": "Green Bay Packers",
+  "Will Reichard": "Minnesota Vikings",
   "Will Richardson": "Jacksonville Jaguars",
   "Will Sheppard": "Miami Dolphins",
   "Will Sherman": "New Orleans Saints",
@@ -187554,6 +191773,7 @@
   "Yo Murphy": "Los Angeles Rams",
   "Yodny Cajuste": "New England Patriots",
   "Yosh Nijman": "Green Bay Packers",
+  "Younghoe Koo": "Atlanta Falcons",
   "Za'Darius Smith": "Atlanta Falcons",
   "Zac Diles": "Houston Texans",
   "Zac Kerin": "Minnesota Vikings",
@@ -187602,6 +191822,7 @@
   "Zakee Wheatley": "Carolina Panthers",
   "Zamir White": "New Orleans Saints",
   "Zane Durant": "Buffalo Bills",
+  "Zane Gonzalez": "Arizona Cardinals",
   "Zaven Collins": "Arizona Cardinals",
   "Zaviar Gooden": "Tennessee Titans",
   "Zavier Scott": "Chicago Bears",
@@ -187626,6 +191847,7 @@
   "A'Shawn Robinson": "Los Angeles Rams",
   "A.J. Brown": "Philadelphia Eagles",
   "A.J. Epenesa": "Buffalo Bills",
+  "A.J. Woods": "Buffalo Bills",
   "AJ Arcuri": "Los Angeles Rams",
   "AJ Dillon": "Green Bay Packers",
   "AJ Finley": "Los Angeles Chargers",
@@ -187635,6 +191857,7 @@
   "Aaron Rodgers": "Green Bay Packers",
   "Aaron Stinnie": "Tampa Bay Buccaneers",
   "Adam Prentice": "New Orleans Saints",
+  "Adrian Martinez": "San Francisco 49ers",
   "Aiden Fisher": "Houston Texans",
   "Ajani Cornelius": "Dallas Cowboys",
   "Akeem Davis-Gaither": "Cincinnati Bengals",
@@ -187692,6 +191915,7 @@
   "Benjamin St-Juste": "Washington Commanders",
   "Benton Whitley": "New York Giants",
   "Blake Freeland": "Indianapolis Colts",
+  "Blake Grupe": "New Orleans Saints",
   "Blake Hance": "Jacksonville Jaguars",
   "Bobby Brown III": "Los Angeles Rams",
   "Bobby Hart": "Cincinnati Bengals",
@@ -187706,6 +191930,8 @@
   "Brandon Codrington": "Buffalo Bills",
   "Brandon Johnson": "Denver Broncos",
   "Brandon Jones": "Miami Dolphins",
+  "Brandon McManus": "Denver Broncos",
+  "Brandon Smith": "New York Jets",
   "Brandon Stephens": "Baltimore Ravens",
   "Brant Banks": "Green Bay Packers",
   "Braxton Berrios": "New York Jets",
@@ -187724,6 +191950,7 @@
   "Buddy Johnson": "Dallas Cowboys",
   "Byron Cowart": "New England Patriots",
   "C.J. Henderson": "Carolina Panthers",
+  "C.J. Ravenell": "Tennessee Titans",
   "CJ Dippre": "New England Patriots",
   "Cade Mays": "Carolina Panthers",
   "Caedan Wallace": "New England Patriots",
@@ -187736,6 +191963,7 @@
   "Cam Horsley": "Tennessee Titans",
   "Cam Jurgens": "Philadelphia Eagles",
   "Cam Lewis": "Buffalo Bills",
+  "Cam Sample": "Cincinnati Bengals",
   "Cam Taylor-Britt": "Cincinnati Bengals",
   "Cameron McGrone": "Indianapolis Colts",
   "Cameron Mitchell": "Cleveland Browns",
@@ -187752,11 +191980,11 @@
   "Chandler Zavala": "Carolina Panthers",
   "Charles Omenihu": "Kansas City Chiefs",
   "Charles Snowden": "Las Vegas Raiders",
-  "Charlie Heck": "Houston Texans",
   "Charlie Jones": "Cincinnati Bengals",
   "Charlie Kolar": "Baltimore Ravens",
   "Charlie Woerner": "San Francisco 49ers",
   "Charvarius Ward": "Kansas City Chiefs",
+  "Chase Lundt": "Buffalo Bills",
   "Chase Young": "Washington Commanders",
   "Chauncey Golston": "Dallas Cowboys",
   "Chazz Surratt": "New York Jets",
@@ -187768,7 +191996,6 @@
   "Chris Rumph II": "Los Angeles Chargers",
   "Chris Williams": "Chicago Bears",
   "Christian Braswell": "Jacksonville Jaguars",
-  "Christian Harris": "Houston Texans",
   "Christian Haynes": "Seattle Seahawks",
   "Christian Izien": "Tampa Bay Buccaneers",
   "Christian Jones": "Arizona Cardinals",
@@ -187817,6 +192044,7 @@
   "Dan Moore Jr.": "Pittsburgh Steelers",
   "Dane Belton": "New York Giants",
   "Daniel Bellinger": "New York Giants",
+  "Daniel Carlson": "Las Vegas Raiders",
   "Daniel Ekuale": "New England Patriots",
   "Daniel Faalele": "Baltimore Ravens",
   "Daniel Thomas": "Jacksonville Jaguars",
@@ -187886,6 +192114,7 @@
   "Earnest Brown IV": "Los Angeles Rams",
   "Easton Stick": "Los Angeles Chargers",
   "Ed Ingram": "Minnesota Vikings",
+  "Eddy Pineiro": "Carolina Panthers",
   "Eku Leota": "Carolina Panthers",
   "Elandon Roberts": "New England Patriots",
   "Elgton Jenkins": "Green Bay Packers",
@@ -187900,6 +192129,7 @@
   "Emanuel Wilson": "Green Bay Packers",
   "Emari Demercado": "Arizona Cardinals",
   "Emmanuel Ogbah": "Miami Dolphins",
+  "Eric Gray": "New York Giants",
   "Eric Kendricks": "Minnesota Vikings",
   "Eric Murray": "Houston Texans",
   "Eric Stokes": "Green Bay Packers",
@@ -187978,6 +192208,7 @@
   "Jake Haener": "New Orleans Saints",
   "Jake Hummel": "Los Angeles Rams",
   "Jake Kubas": "New York Giants",
+  "Jake Moody": "San Francisco 49ers",
   "Jakobi Meyers": "New England Patriots",
   "Jakorian Bennett": "Las Vegas Raiders",
   "Jaleel McLaughlin": "Denver Broncos",
@@ -188009,6 +192240,7 @@
   "Jarrett Patterson": "Houston Texans",
   "Jarrick Bernard-Converse": "New York Jets",
   "Jason Brownlee": "Kansas City Chiefs",
+  "Jason Sanders": "Miami Dolphins",
   "Jauan Jennings": "San Francisco 49ers",
   "Javon Hargrave": "Pittsburgh Steelers",
   "Javon Kinlaw": "San Francisco 49ers",
@@ -188039,6 +192271,7 @@
   "Joe Giles-Harris": "Jacksonville Jaguars",
   "Joe Thuney": "New England Patriots",
   "Joey Porter Jr.": "Pittsburgh Steelers",
+  "Joey Slye": "Washington Commanders",
   "John FitzPatrick": "Green Bay Packers",
   "John Franklin-Myers": "New York Jets",
   "John Jenkins": "New Orleans Saints",
@@ -188082,6 +192315,7 @@
   "Julian Blackmon": "Indianapolis Colts",
   "Julian Hill": "Miami Dolphins",
   "Justin Fields": "Chicago Bears",
+  "Justin Tucker": "Baltimore Ravens",
   "K'Lavon Chaisson": "Jacksonville Jaguars",
   "K'Von Wallace": "Philadelphia Eagles",
   "K.J. Britt": "Tampa Bay Buccaneers",
@@ -188096,7 +192330,6 @@
   "Kayode Awosika": "Detroit Lions",
   "Kayshon Boutte": "New England Patriots",
   "Keaton Mitchell": "Baltimore Ravens",
-  "Kedon Slovis": "Arizona Cardinals",
   "Keenan Allen": "Los Angeles Chargers",
   "Keidron Smith": "New York Jets",
   "Keion White": "New England Patriots",
@@ -188166,6 +192399,7 @@
   "Martin Emerson Jr.": "Cleveland Browns",
   "Marvin Harrison Jr.": "Arizona Cardinals",
   "Matt Dickerson": "Tennessee Titans",
+  "Matt Gay": "Los Angeles Rams",
   "Matt Hennessy": "Atlanta Falcons",
   "Matt Peart": "New York Giants",
   "Matt Pryor": "Philadelphia Eagles",
@@ -188193,7 +192427,6 @@
   "Mike Gesicki": "Miami Dolphins",
   "Mike McGlinchey": "San Francisco 49ers",
   "Miles Killebrew": "Pittsburgh Steelers",
-  "Milo Eifler": "Washington Commanders",
   "Milton Williams": "Philadelphia Eagles",
   "Minkah Fitzpatrick": "Pittsburgh Steelers",
   "Mitchell Trubisky": "Chicago Bears",
@@ -188268,6 +192501,7 @@
   "Reed Blankenship": "Philadelphia Eagles",
   "Reggie Gilliam": "Buffalo Bills",
   "Rico Dowdle": "Dallas Cowboys",
+  "Riley Patterson": "Miami Dolphins",
   "Riq Woolen": "Seattle Seahawks",
   "Robert Hainsey": "Tampa Bay Buccaneers",
   "Robert Hunt": "Miami Dolphins",
@@ -188298,11 +192532,11 @@
   "Sauce Gardner": "New York Jets",
   "Scotty Miller": "Tampa Bay Buccaneers",
   "Sean Clifford": "Green Bay Packers",
+  "Sean McKeon": "Dallas Cowboys",
   "Sean Murphy-Bunting": "Tampa Bay Buccaneers",
   "Sebastian Joseph-Day": "Los Angeles Rams",
   "Sedrick Van Pran-Granger": "Buffalo Bills",
   "Segun Olubi": "Indianapolis Colts",
-  "Shaka Heyward": "Cincinnati Bengals",
   "Shane Buechele": "Kansas City Chiefs",
   "Shaq Thompson": "Carolina Panthers",
   "Shedrick Jackson": "Las Vegas Raiders",
@@ -188338,6 +192572,7 @@
   "Teair Tart": "Tennessee Titans",
   "Ted Karras": "New England Patriots",
   "Tejhaun Palmer": "Arizona Cardinals",
+  "Terell Smith": "Chicago Bears",
   "Terrell Burgess": "Los Angeles Rams",
   "Terrion Arnold": "Detroit Lions",
   "Tershawn Wharton": "Kansas City Chiefs",
@@ -188397,6 +192632,7 @@
   "Walter Rouse": "Minnesota Vikings",
   "Wan'Dale Robinson": "New York Giants",
   "Wanya Morris": "Kansas City Chiefs",
+  "Wil Lutz": "New Orleans Saints",
   "Will Fries": "Indianapolis Colts",
   "Will Levis": "Tennessee Titans",
   "Willie Gay Jr.": "Kansas City Chiefs",

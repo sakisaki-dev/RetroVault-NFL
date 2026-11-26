@@ -13,6 +13,7 @@ export const POSITION_NAMES: Record<Position, string> = {
   LB: 'Linebacker',
   DB: 'Defensive back',
   DL: 'Defensive line',
+  K: 'Kicker',
 };
 
 export type AwardKey = 'rings' | 'mvp' | 'opoy' | 'sbmvp' | 'roty';

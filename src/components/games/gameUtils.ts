@@ -29,6 +29,7 @@ export const POSITION_NAMES: Record<Position, string> = {
   LB: 'Linebacker',
   DB: 'Defensive back',
   DL: 'Defensive line',
+  K: 'Kicker',
 };
 
 export const randomItem = <T,>(items: T[]): T => items[Math.floor(Math.random() * items.length)];
@@ -68,6 +69,7 @@ const NUMBER_RANGES: Record<Position, [number, number][]> = {
   LB: [[40, 59]],
   DB: [[20, 39]],
   DL: [[90, 99]],
+  K: [[1, 19]],
 };
 
 /** A believable, stable jersey number generated from the player's name and position. */
@@ -166,6 +168,8 @@ export const getStatLine = (p: Player): StatItem[] => {
       ];
     case 'OL':
       return [{ label: 'Blocks', value: fmt(num(p, 'blocks')) }];
+    case 'K':
+      return [{ label: 'FG made', value: fmt(num(p, 'fgMade')) }, { label: 'FG att', value: fmt(num(p, 'fgAtt')) }, { label: 'XP made', value: fmt(num(p, 'xpMade')) }];
     default:
       return [
         { label: 'Tackles', value: fmt(num(p, 'tackles')) },
@@ -226,6 +230,8 @@ export const getScoutLine = (p: Player): ScoutStat[] => {
       ];
     case 'OL':
       return [gp, { label: 'Blocks', value: opt(p, 'blocks') }, { label: 'Blk/Gm', value: ratio(num(p, 'blocks'), num(p, 'games'), 2) }];
+    case 'K':
+      return [gp, { label: 'FGM', value: opt(p, 'fgMade') }, { label: 'FGA', value: opt(p, 'fgAtt') }, { label: 'FG%', value: ratio(num(p, 'fgMade') * 100, num(p, 'fgAtt'), 1) }, { label: 'XPM', value: opt(p, 'xpMade') }];
     default:
       return [
         gp,
@@ -270,6 +276,8 @@ export const getRateScoutLine = (p: Player): ScoutStat[] => {
       ];
     case 'OL':
       return [{ label: 'Blk/G', value: pg('blocks', 2) }];
+    case 'K':
+      return [{ label: 'FG/G', value: pg('fgMade', 2) }, { label: 'XP/G', value: pg('xpMade', 2) }];
     default:
       return [
         { label: 'Tkl/G', value: pg('tackles', 1) },
@@ -420,7 +428,12 @@ export const ArcadeRatingContext = createContext<ArcadeRating>('car');
 export const useRatingTag = (): 'OVR' | 'CAR' | 'SZN' => (useContext(ArcadeRatingContext) === 'szn' ? 'SZN' : CAREER_LABEL);
 
 export const useGamePlayers = (includeLegends: boolean, rating: 'car' | 'szn' = 'car', era: Era = 'all') => {
-  const { league, legends, careerOvrMap, ovrMap: shownMap, seasonOvr, ovrBasis, loaded, dataVersion } = useGamePool();
+  const pool = useGamePool();
+  const { legends, careerOvrMap, ovrMap: shownMap, seasonOvr, ovrBasis, loaded, dataVersion } = pool;
+  // Kickers (owner, 2026-11-25) are in the stats, cards and fantasy but out of every arcade game: a kicker's name and
+  // handful of numbers makes Guess the Legend, Higher or Lower, Imposter and the rest trivial or unfair. Build a Legend
+  // is position-scoped (BUILD_POSITIONS) and never offers K.
+  const league = useMemo(() => pool.league.filter((p) => p.position !== 'K'), [pool.league]);
   const extras = usePlayerExtras();
   // Players beyond the core league (retirees from the history load), fetched only when CAR mode needs them
   const [more, setMore] = useState<GamePlayer[]>([]);
@@ -437,7 +450,7 @@ export const useGamePlayers = (includeLegends: boolean, rating: 'car' | 'szn' = 
   const players = useMemo<GamePlayer[]>(() => {
     if (szn) return league.filter((p) => ovrBasis.get(playerKey(p)) === 'season'); // this season: actives only, no era row
     const have = new Set(league.map(playerKey));
-    const all = [...league, ...more.filter((p) => !have.has(playerKey(p)))];
+    const all = [...league, ...more.filter((p) => p.position !== 'K' && !have.has(playerKey(p)))];
     const pool = includeLegends ? [...all, ...legends] : all;
     return era === 'all' ? pool : pool.filter((p) => isLegend(p) || inEra(p, era, extras));
   }, [szn, includeLegends, league, legends, ovrBasis, more, era, extras]);

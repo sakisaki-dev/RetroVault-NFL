@@ -13,6 +13,9 @@ A season line is the sum of his regular-season game lines for that year (data/nf
   small samples  adj = prior + (pace - prior) x min(1, effective games / SHRINK_GAMES): few effective games pull him
               toward the position's FLOOR (its 5th percentile pace), never toward the average, so two good games do not make
               a 99 and a bench player rates at the bottom
+  kickers     K: production = points scored (3 / 4 / 5 a field goal by distance, 1 an extra point) / 4; efficiency = 3 per field
+              goal above the average kicker of that season from the same distances + 0.5 per extra point above the season's
+              rate (data/nfl/kick_rates.json), per game; snap share does not apply (no snaps for a kicker: full)
   no signal   OL (no blocking stats in the data) get no SZN at all: null, the site shows OVR
   rating      OVR = round(62 + 37 x pct ** 2.3), pct = his adj's rank within his position among everyone with a game that
               season (about 10% reach 90). Players with no game that season have no line (the site then shows CAR).
@@ -28,7 +31,11 @@ import csv
 import gzip
 import json
 from collections import defaultdict
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "nfl"))
+import kick_common as kc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "data" / "league" / "season_ovr.json"
@@ -47,11 +54,13 @@ FIELD_MAP = {
     "REC": {"g": "games", "rec": "receptions", "yds": "recYds", "td": "recTD", "fum": "fumbles", "lng": "longest"},
     "OL": {"g": "games", "blk": "blocks"},
     "DEF": {"g": "games", "tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles"},
+    "K": {"g": "games", "fgm": "fgMade", "fga": "fgAtt", "fgm39": "fgMade39", "fga39": "fgAtt39", "fgm49": "fgMade49", "fga49": "fgAtt49",
+          "fgm50": "fgMade50", "fga50": "fgAtt50", "xpm": "xpMade", "xpa": "xpAtt", "lng": "longest"},
 }
 
 
 def _group(pos):
-    return "REC" if pos in ("WR", "TE") else "DEF" if pos in ("LB", "DB", "DL") else pos
+    return pos if pos == "K" else "REC" if pos in ("WR", "TE") else "DEF" if pos in ("LB", "DB", "DL") else pos
 
 
 def line_of(pos, rows, cols):
@@ -67,6 +76,12 @@ def line_of(pos, rows, cols):
         return {"g": g, "rec": t("receptions"), "yds": t("receiving_yards"), "td": t("receiving_tds"), "fum": t("fumbles_lost_total")}
     if pos == "OL":
         return {"g": g}
+    if pos == "K":
+        made, att, xm, xa = kc.season_bands(rows, cols)
+        s_ = lambda d, bs: sum(d.get(b, 0) for b in bs)
+        return {"g": g, "fgm": t("fg_made"), "fga": t("fg_att"), "fgm39": s_(made, ("0_19", "20_29", "30_39")), "fga39": s_(att, ("0_19", "20_29", "30_39")),
+                "fgm49": s_(made, ("40_49",)), "fga49": s_(att, ("40_49",)), "fgm50": s_(made, ("50_59", "60_")), "fga50": s_(att, ("50_59", "60_")),
+                "xpm": xm, "xpa": xa, "lng": max((r[c["fg_long"]] or 0 for r in rows), default=0) or None}
     return {"g": g, "tkl": t("def_tackles_solo") + t("def_tackle_assists"), "int": t("def_interceptions"), "sck": t("def_sacks"), "ff": t("def_fumbles_forced")}
 
 
@@ -80,6 +95,9 @@ def production(pos, p):
         return g("yds") / (14 if pos == "WR" else 8) + (2.5 if pos == "WR" else 3) * g("td")
     if pos == "OL":
         return 2 * g("g")
+    if pos == "K":
+        # points scored over four: the volume a kicker brings (the accuracy part is efficiency() below)
+        return kc.points(g("fgm39"), g("fgm49"), g("fgm50"), g("xpm")) / 4
     return 0.7 * g("tkl") + 12 * g("int") + 14 * g("sck") + 14 * g("ff")
 
 
@@ -90,6 +108,13 @@ def efficiency(pos, rows, cols):
         return 1.0 * t("passing_epa") / max(1, len(rows))
     if pos in ("RB", "WR", "TE"):
         return 0.6 * (t("rushing_epa") + t("receiving_epa")) / max(1, len(rows))
+    if pos == "K":
+        # accuracy: 3 per field goal made above what the season's average kicker makes from the same distances, 0.5 per
+        # extra point above the season's rate (kick_common.py); none when the season has no baseline
+        made, att, xm, xa = kc.season_bands(rows, cols)
+        y = rows[0][c["season"]] if "season" in c else rows[0][0]
+        fo, xo = kc.fg_over_expected(y, made, att), kc.xp_over_expected(y, xm, xa)
+        return (3 * (fo or 0) + 0.5 * (xo or 0)) / max(1, len(rows))
     return 0.0
 
 
@@ -147,7 +172,7 @@ def rate_season(year):
         n = len(gs)
         pace = (production(pos, line) + efficiency(pos, gs, d["cols"][k]) * n) / n * PACE
         share = d["snap"].get((k, year), 1.0 if year < 2013 else 0.0) if year >= 2013 else 1.0
-        eff = n * min(1.0, share / 0.6) if year >= 2013 else n
+        eff = n * min(1.0, share / 0.6) if year >= 2013 and pos != "K" else n   # a kicker has no snap share: every game counts
         rows.append((k, pos, line, pace, eff))
     out = {}
     by = defaultdict(list)

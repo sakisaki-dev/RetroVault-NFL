@@ -148,13 +148,13 @@ export const spotOf = (l: Pick<NLineup, 'off' | 'def'>, id: string, tall: boolea
 
 /** The field's yard spots for a fantasy lineup (QB, RBs, WRs, TE, FLEX); DST stands on the defense side. */
 export const FANTASY_SPOTS: Record<string, [number, number]> = {
-  qb: [36, 62], rb1: [26, 50], rb2: [26, 74], wr1: [46, 22], wr2: [46, 97], te1: [46, 80], flex: [41, 40], dst: [74, 62],
+  qb: [36, 62], rb1: [26, 50], rb2: [26, 74], wr1: [46, 22], wr2: [46, 97], te1: [46, 80], flex: [41, 40], dst: [74, 62], k: [60, 40],
 };
 export const fantasySpot = (id: string, tall: boolean): { x: number; y: number } => {
   const [x, y] = FANTASY_SPOTS[id];
   if (!tall) return { x, y };
   // phone: name tags are wider than a sprite, so the lineup stands in rows of at most two, kept clear of the sideline crew
-  const TALL: Record<string, [number, number]> = { dst: [52, 20], wr1: [29, 38], wr2: [75, 38], te1: [29, 55], flex: [75, 55], qb: [52, 71], rb1: [29, 88], rb2: [75, 88] };
+  const TALL: Record<string, [number, number]> = { dst: [30, 20], k: [74, 20], wr1: [29, 38], wr2: [75, 38], te1: [29, 55], flex: [75, 55], qb: [52, 71], rb1: [29, 88], rb2: [75, 88] };
   const t = TALL[id];
   return t ? { x: t[0], y: t[1] } : { x: 13 + ((y - 16) / 82) * 74, y: id === 'dst' ? 30 : 60 + (46 - x) * 1.45 };
 };

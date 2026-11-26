@@ -71,14 +71,15 @@ const loadPos = (pos: string) => {
       loadMeta().then(async () => {
         if (!rows[pos]) {
           const r = await dataResponse(`data/nfl/advanced/${pos}.json`);
-          rows[pos] = r.ok ? ((await r.json()) as AdvFile['p']) : {};
+          // a position with no advanced metrics (kickers) has no file: the host may answer with its index page, which is not JSON
+          rows[pos] = r.ok ? ((await r.json().catch(() => ({}))) as AdvFile['p']) : {};
         }
         bump();
       }),
     );
   return posJobs.get(pos)!;
 };
-const ALL_POS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const ALL_POS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 export const useAdvanced = (pos?: string): AdvFile | null => {
   const [, tick] = useState(0);

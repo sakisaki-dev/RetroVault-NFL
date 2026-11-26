@@ -11,6 +11,7 @@ const POSITION_CLASSES: Record<Position, string> = {
   LB: 'position-lb',
   DB: 'position-db',
   DL: 'position-dl',
+  K: 'position-k',
 };
 
 interface PositionBadgeProps {

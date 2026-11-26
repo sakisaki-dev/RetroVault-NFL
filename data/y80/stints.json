@@ -51700,6 +51700,54 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Adam Vinatieri": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 1999,
+    "to": 2005,
+    "rings": [
+     2001,
+     2003,
+     2004
+    ]
+   },
+   {
+    "team": "Colts",
+    "from": 2006,
+    "to": 2019,
+    "rings": [
+     2006
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Phil Dawson": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 1999,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2013,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2017,
+    "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Drew Brees": {
   "stints": [
    {
@@ -51715,6 +51763,24 @@
     "rings": [
      2009
     ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Sebastian Janikowski": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 2000,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -51750,6 +51816,42 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Matt Prater": {
+  "stints": [
+   {
+    "team": "Falcons",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2007,
+    "to": 2013,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2014,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2021,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jason Witten": {
   "stints": [
    {
@@ -51768,6 +51870,78 @@
     "team": "Raiders",
     "from": 2020,
     "to": 2020,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Nick Folk": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2007,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2010,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2019,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2023,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Robbie Gould": {
+  "stints": [
+   {
+    "team": "Bears",
+    "from": 2005,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2016,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2017,
+    "to": 2022,
     "rings": []
    }
   ],
@@ -51810,6 +51984,26 @@
     "team": "Panthers",
     "from": 2017,
     "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Mason Crosby": {
+  "stints": [
+   {
+    "team": "Packers",
+    "from": 2007,
+    "to": 2022,
+    "rings": [
+     2010
+    ]
+   },
+   {
+    "team": "Giants",
+    "from": 2023,
+    "to": 2023,
     "rings": []
    }
   ],
@@ -51871,6 +52065,42 @@
     "team": "Colts",
     "from": 2025,
     "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Matt Bryant": {
+  "stints": [
+   {
+    "team": "Giants",
+    "from": 2002,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2005,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2009,
+    "to": 2019,
     "rings": []
    }
   ],
@@ -51958,6 +52188,30 @@
   ],
   "confidence": "confirmed",
   "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+ },
+ "David Akers": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 1999,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2011,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2013,
+    "to": 2013,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
  },
  "Charles Woodson": {
   "stints": [
@@ -52198,6 +52452,66 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Stephen Gostkowski": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 2006,
+    "to": 2019,
+    "rings": [
+     2014,
+     2016,
+     2018
+    ]
+   },
+   {
+    "team": "Titans",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Ryan Succop": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2009,
+    "to": 2013,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2014,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2020,
+    "to": 2022,
+    "rings": [
+     2020
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jason Hanson": {
+  "stints": [
+   {
+    "team": "Lions",
+    "from": 1999,
+    "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Lavonte David": {
   "stints": [
    {
@@ -52224,6 +52538,86 @@
     "team": "Broncos",
     "from": 2004,
     "to": 2013,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Rian Lindell": {
+  "stints": [
+   {
+    "team": "Seahawks",
+    "from": 2000,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2003,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2013,
+    "to": 2013,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Justin Tucker": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 2012,
+    "to": 2024,
+    "rings": [
+     2012
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jay Feely": {
+  "stints": [
+   {
+    "team": "Falcons",
+    "from": 2001,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2005,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2008,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2010,
+    "to": 2013,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2014,
+    "to": 2014,
     "rings": []
    }
   ],
@@ -52302,6 +52696,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Ryan Longwell": {
+  "stints": [
+   {
+    "team": "Packers",
+    "from": 1999,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2006,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Antoine Bethea": {
   "stints": [
    {
@@ -52364,6 +52782,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Graham Gano": {
+  "stints": [
+   {
+    "team": "Commanders",
+    "from": 2009,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2012,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2020,
+    "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Reggie Wayne": {
   "stints": [
    {
@@ -52420,6 +52862,42 @@
     "team": "Giants",
     "from": 2025,
     "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Olindo Mare": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 1999,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2008,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2011,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2012,
+    "to": 2012,
     "rings": []
    }
   ],
@@ -52520,6 +52998,36 @@
     "team": "Bills",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Josh Brown": {
+  "stints": [
+   {
+    "team": "Seahawks",
+    "from": 2003,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2008,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2013,
+    "to": 2016,
     "rings": []
    }
   ],
@@ -53157,6 +53665,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Greg Zuerlein": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2012,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2020,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2022,
+    "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Tyson Alualu": {
   "stints": [
    {
@@ -53175,6 +53707,38 @@
     "team": "Lions",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Brandon McManus": {
+  "stints": [
+   {
+    "team": "Broncos",
+    "from": 2014,
+    "to": 2022,
+    "rings": [
+     2015
+    ]
+   },
+   {
+    "team": "Jaguars",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Packers",
+    "from": 2024,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -53949,6 +54513,32 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jason Myers": {
+  "stints": [
+   {
+    "team": "Jaguars",
+    "from": 2015,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2019,
+    "to": 2026,
+    "rings": [
+     2025
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Mike Peterson": {
   "stints": [
    {
@@ -53967,6 +54557,30 @@
     "team": "Falcons",
     "from": 2009,
     "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Neil Rackers": {
+  "stints": [
+   {
+    "team": "Bengals",
+    "from": 2000,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2003,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2010,
+    "to": 2011,
     "rings": []
    }
   ],
@@ -54061,6 +54675,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Kris Brown": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 1999,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2002,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Thomas Jones": {
   "stints": [
    {
@@ -54141,6 +54779,72 @@
     "team": "Bengals",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Shayne Graham": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 2001,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2003,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2011,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2011,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2013,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2015,
+    "to": 2015,
     "rings": []
    }
   ],
@@ -54363,6 +55067,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Chris Boswell": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 2015,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Antonio Smith": {
   "stints": [
    {
@@ -54537,6 +55253,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Cairo Santos": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2014,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2020,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Cullen Jenkins": {
   "stints": [
    {
@@ -54639,6 +55397,30 @@
     "team": "Seahawks",
     "from": 2018,
     "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "John Kasay": {
+  "stints": [
+   {
+    "team": "Panthers",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2001,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2011,
+    "to": 2011,
     "rings": []
    }
   ],
@@ -54782,6 +55564,84 @@
     "team": "Bears",
     "from": 2003,
     "to": 2014,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Josh Scobee": {
+  "stints": [
+   {
+    "team": "Jaguars",
+    "from": 2004,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Steelers",
+    "from": 2015,
+    "to": 2015,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Mike Nugent": {
+  "stints": [
+   {
+    "team": "Jets",
+    "from": 2005,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2010,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2020,
+    "to": 2020,
     "rings": []
    }
   ],
@@ -55276,6 +56136,44 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jason Elam": {
+  "stints": [
+   {
+    "team": "Broncos",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2008,
+    "to": 2009,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Matt Stover": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 1999,
+    "to": 2008,
+    "rings": [
+     2000
+    ]
+   },
+   {
+    "team": "Colts",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jerricho Cotchery": {
   "stints": [
    {
@@ -55396,6 +56294,48 @@
     "team": "Bears",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "John Carney": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2001,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2009,
+    "to": 2010,
     "rings": []
    }
   ],
@@ -55544,6 +56484,44 @@
     "team": "Dolphins",
     "from": 2017,
     "to": 2017,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Steven Hauschka": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 2008,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2011,
+    "to": 2016,
+    "rings": [
+     2013
+    ]
+   },
+   {
+    "team": "Bills",
+    "from": 2017,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2020,
+    "to": 2020,
     "rings": []
    }
   ],
@@ -56548,6 +57526,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Wil Lutz": {
+  "stints": [
+   {
+    "team": "Saints",
+    "from": 2016,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2023,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Isaac Bruce": {
   "stints": [
    {
@@ -56565,6 +57567,24 @@
   ],
   "confidence": "confirmed",
   "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+ },
+ "Greg Ellis": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 1999,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
  },
  "Bart Scott": {
   "stints": [
@@ -56653,6 +57673,21 @@
     "from": 2021,
     "to": 2022,
     "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jake Elliott": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 2017,
+    "to": 2026,
+    "rings": [
+     2017,
+     2024
+    ]
    }
   ],
   "confidence": "confirmed",
@@ -57117,6 +58152,24 @@
     "team": "49ers",
     "from": 2021,
     "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Dan Bailey": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2011,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2018,
+    "to": 2020,
     "rings": []
    }
   ],
@@ -58235,6 +59288,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Ka'imi Fairbairn": {
+  "stints": [
+   {
+    "team": "Texans",
+    "from": 2017,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Ricky Williams": {
   "stints": [
    {
@@ -58402,6 +59467,22 @@
     "from": 2022,
     "to": 2023,
     "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Harrison Butker": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2017,
+    "to": 2026,
+    "rings": [
+     2019,
+     2022,
+     2023
+    ]
    }
   ],
   "confidence": "confirmed",
@@ -59077,6 +60158,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Rob Bironas": {
+  "stints": [
+   {
+    "team": "Titans",
+    "from": 2005,
+    "to": 2013,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Robert Geathers": {
   "stints": [
    {
@@ -59190,6 +60283,54 @@
     "team": "Bengals",
     "from": 2015,
     "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Randy Bullock": {
+  "stints": [
+   {
+    "team": "Texans",
+    "from": 2013,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2015,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2016,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2016,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Steelers",
+    "from": 2016,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2021,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2023,
+    "to": 2023,
     "rings": []
    }
   ],
@@ -59896,6 +61037,22 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Tedy Bruschi": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 1999,
+    "to": 2008,
+    "rings": [
+     2001,
+     2003,
+     2004
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Chris Hovan": {
   "stints": [
    {
@@ -60384,6 +61541,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Dan Carpenter": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 2008,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2013,
+    "to": 2016,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Orlando Scandrick": {
   "stints": [
    {
@@ -60464,6 +61639,30 @@
     "team": "Ravens",
     "from": 2019,
     "to": 2019,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Dustin Hopkins": {
+  "stints": [
+   {
+    "team": "Commanders",
+    "from": 2015,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2021,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2023,
+    "to": 2024,
     "rings": []
    }
   ],
@@ -60822,6 +62021,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Joe Nedney": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2001,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2005,
+    "to": 2010,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Pierson Prioleau": {
   "stints": [
    {
@@ -60861,6 +62102,18 @@
     "rings": [
      2009
     ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jeff Wilkins": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 1999,
+    "to": 2007,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -61385,6 +62638,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Daniel Carlson": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 2018,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "John Lynch": {
   "stints": [
    {
@@ -61504,6 +62787,54 @@
     "team": "Dolphins",
     "from": 2011,
     "to": 2011,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Billy Cundiff": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2002,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2006,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2009,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2013,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2015,
+    "to": 2015,
     "rings": []
    }
   ],
@@ -62662,6 +63993,27 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jeff Reed": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 2002,
+    "to": 2010,
+    "rings": [
+     2005,
+     2008
+    ]
+   },
+   {
+    "team": "49ers",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Tony Romo": {
   "stints": [
    {
@@ -63172,6 +64524,36 @@
     "team": "Rams",
     "from": 2008,
     "to": 2008,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jon Kitna": {
+  "stints": [
+   {
+    "team": "Seahawks",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2001,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2006,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2010,
+    "to": 2011,
     "rings": []
    }
   ],
@@ -63890,6 +65272,27 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
  },
+ "Lawrence Tynes": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2004,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2007,
+    "to": 2012,
+    "rings": [
+     2007,
+     2011
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Aaron Schobel": {
   "stints": [
    {
@@ -64241,6 +65644,36 @@
     "team": "Chargers",
     "from": 2012,
     "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Shaun Suisham": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2005,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2006,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2009,
+    "to": 2009,
+    "rings": []
+   },
+   {
+    "team": "Steelers",
+    "from": 2010,
+    "to": 2014,
     "rings": []
    }
   ],
@@ -64914,6 +66347,24 @@
     "team": "Panthers",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jason Sanders": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 2018,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -66176,6 +67627,42 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Morten Andersen": {
+  "stints": [
+   {
+    "team": "Falcons",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2001,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2002,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2006,
+    "to": 2007,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Kurt Warner": {
   "stints": [
    {
@@ -66568,6 +68055,24 @@
     "team": "Saints",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Mike Vanderjagt": {
+  "stints": [
+   {
+    "team": "Colts",
+    "from": 1999,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2006,
+    "to": 2006,
     "rings": []
    }
   ],
@@ -66982,6 +68487,48 @@
     "team": "Buccaneers",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Joey Slye": {
+  "stints": [
+   {
+    "team": "Panthers",
+    "from": 2019,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2021,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2025,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -67650,6 +69197,48 @@
     "rings": [
      2012
     ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Nick Novak": {
+  "stints": [
+   {
+    "team": "Commanders",
+    "from": 2005,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2011,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2015,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -68874,6 +70463,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Nate Kaeding": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2004,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2012,
+    "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Corey Williams": {
   "stints": [
    {
@@ -69909,6 +71516,50 @@
     "team": "49ers",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Matt Gay": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2020,
+    "to": 2022,
+    "rings": [
+     2021
+    ]
+   },
+   {
+    "team": "Colts",
+    "from": 2023,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -71341,6 +72992,44 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Martin Gramatica": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 1999,
+    "to": 2004,
+    "rings": [
+     2002
+    ]
+   },
+   {
+    "team": "Colts",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2006,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2006,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2007,
+    "to": 2008,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Spencer Johnson": {
   "stints": [
    {
@@ -71431,6 +73120,42 @@
     "team": "Saints",
     "from": 2013,
     "to": 2014,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Connor Barth": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2009,
+    "to": 2012,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2014,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2015,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2016,
+    "to": 2017,
     "rings": []
    }
   ],
@@ -72064,6 +73789,60 @@
     "team": "Ravens",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Chase McLaughlin": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2023,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -74799,6 +76578,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "John Hall": {
+  "stints": [
+   {
+    "team": "Jets",
+    "from": 1999,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2003,
+    "to": 2006,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jeff Ulbrich": {
   "stints": [
    {
@@ -77208,6 +79005,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Younghoe Koo": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2019,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jerome Bettis": {
   "stints": [
    {
@@ -77932,6 +79753,24 @@
     "team": "Bills",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Paul Edinger": {
+  "stints": [
+   {
+    "team": "Bears",
+    "from": 2000,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2005,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -79528,6 +81367,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Eddy Pineiro": {
+  "stints": [
+   {
+    "team": "Bears",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2022,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Aaron Brooks": {
   "stints": [
    {
@@ -79540,6 +81409,42 @@
     "team": "Raiders",
     "from": 2006,
     "to": 2006,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Todd Peterson": {
+  "stints": [
+   {
+    "team": "Seahawks",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2000,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Steelers",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2003,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2005,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -79958,6 +81863,42 @@
     "team": "Falcons",
     "from": 2019,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Tyler Bass": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 2020,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Gary Anderson": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 1999,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2003,
+    "to": 2004,
     "rings": []
    }
   ],
@@ -82028,6 +83969,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Blair Walsh": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 2012,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Seahawks",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Patrick Omameh": {
   "stints": [
    {
@@ -82846,6 +84805,42 @@
     "team": "Chargers",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Evan McPherson": {
+  "stints": [
+   {
+    "team": "Bengals",
+    "from": 2021,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Wade Richey": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2001,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2003,
+    "to": 2004,
     "rings": []
    }
   ],
@@ -85021,6 +87016,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Steve Christie": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2001,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Tony Stewart": {
   "stints": [
    {
@@ -85529,6 +87548,54 @@
    },
    {
     "team": "Jaguars",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Cody Parkey": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 2014,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2016,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Saints",
     "from": 2021,
     "to": 2021,
     "rings": []
@@ -86075,6 +88142,54 @@
     "team": "Rams",
     "from": 2018,
     "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Kai Forbath": {
+  "stints": [
+   {
+    "team": "Commanders",
+    "from": 2012,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2015,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2016,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Patriots",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2020,
+    "to": 2020,
     "rings": []
    }
   ],
@@ -86985,6 +89100,48 @@
     "team": "Cardinals",
     "from": 2019,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Zane Gonzalez": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2017,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2018,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -89037,6 +91194,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Josh Lambo": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2015,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2017,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Bryce Hager": {
   "stints": [
    {
@@ -90375,6 +92556,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Chandler Catanzaro": {
+  "stints": [
+   {
+    "team": "Cardinals",
+    "from": 2014,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Brent Qvale": {
   "stints": [
    {
@@ -90551,6 +92762,48 @@
     "team": "Patriots",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Doug Brien": {
+  "stints": [
+   {
+    "team": "Saints",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2001,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2001,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2003,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2005,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -91832,6 +94085,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Greg Joseph": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2021,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Giants",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Brandon Facyson": {
   "stints": [
    {
@@ -92988,6 +95283,54 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Mike Badgley": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2018,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2022,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Marquis Haynes": {
   "stints": [
    {
@@ -93778,6 +96121,24 @@
    },
    {
     "team": "Browns",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Cameron Dicker": {
+  "stints": [
+   {
+    "team": "Chargers",
+    "from": 2022,
+    "to": 2026,
+    "rings": []
+   },
+   {
+    "team": "Eagles",
     "from": 2022,
     "to": 2022,
     "rings": []
@@ -96219,6 +98580,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Caleb Sturgis": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 2013,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Eagles",
+    "from": 2015,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Datone Jones": {
   "stints": [
    {
@@ -96405,6 +98790,60 @@
     "team": "Giants",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Riley Patterson": {
+  "stints": [
+   {
+    "team": "Lions",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2023,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -100196,6 +102635,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Brett Maher": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2018,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Daimion Stafford": {
   "stints": [
    {
@@ -100394,6 +102863,18 @@
     "team": "Cowboys",
     "from": 2022,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Brandon Aubrey": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2023,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -102144,6 +104625,60 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Dave Rayner": {
+  "stints": [
+   {
+    "team": "Colts",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Packers",
+    "from": 2006,
+    "to": 2006,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2008,
+    "to": 2008,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2010,
+    "to": 2010,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2011,
+    "to": 2011,
+    "rings": []
+   },
+   {
+    "team": "Raiders",
+    "from": 2011,
+    "to": 2011,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Billy Bajema": {
   "stints": [
    {
@@ -102260,6 +104795,32 @@
     "team": "Rams",
     "from": 2012,
     "to": 2012,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Garrett Hartley": {
+  "stints": [
+   {
+    "team": "Saints",
+    "from": 2008,
+    "to": 2010,
+    "rings": [
+     2009
+    ]
+   },
+   {
+    "team": "Saints",
+    "from": 2012,
+    "to": 2013,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2014,
+    "to": 2014,
     "rings": []
    }
   ],
@@ -102522,6 +105083,36 @@
    },
    {
     "team": "Falcons",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Aldrick Rosas": {
+  "stints": [
+   {
+    "team": "Giants",
+    "from": 2017,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Saints",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Lions",
     "from": 2021,
     "to": 2021,
     "rings": []
@@ -103307,6 +105898,24 @@
     "rings": [
      2019
     ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Chad Ryland": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -104659,6 +107268,60 @@
     "team": "Dolphins",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jose Cortez": {
+  "stints": [
+   {
+    "team": "Giants",
+    "from": 1999,
+    "to": 1999,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2001,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Vikings",
+    "from": 2003,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Cowboys",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Eagles",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2005,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -108642,6 +111305,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Blake Grupe": {
+  "stints": [
+   {
+    "team": "Saints",
+    "from": 2023,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Garrison Hearst": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 2001,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Ronney Jenkins": {
   "stints": [
    {
@@ -108773,6 +111478,24 @@
     "team": "49ers",
     "from": 2009,
     "to": 2009,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Rhys Lloyd": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 2007,
+    "to": 2007,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2007,
+    "to": 2010,
     "rings": []
    }
   ],
@@ -108952,6 +111675,24 @@
    {
     "team": "Eagles",
     "from": 2011,
+    "to": 2014,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Alex Henery": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 2011,
+    "to": 2013,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2014,
     "to": 2014,
     "rings": []
    }
@@ -113901,6 +116642,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jake Bates": {
+  "stints": [
+   {
+    "team": "Lions",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Cam Little": {
+  "stints": [
+   {
+    "team": "Jaguars",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Derrick Blaylock": {
   "stints": [
    {
@@ -115497,6 +118262,42 @@
     "team": "Saints",
     "from": 2024,
     "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Jake Moody": {
+  "stints": [
+   {
+    "team": "49ers",
+    "from": 2023,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2026,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -117359,6 +120160,42 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Austin Seibert": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2019,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Lions",
+    "from": 2021,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "J.J. Arcega-Whiteside": {
   "stints": [
    {
@@ -117401,6 +120238,36 @@
     "team": "Lions",
     "from": 2021,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Will Reichard": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Joe Johnson": {
+  "stints": [
+   {
+    "team": "Saints",
+    "from": 2000,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Packers",
+    "from": 2002,
+    "to": 2003,
     "rings": []
    }
   ],
@@ -118175,6 +121042,18 @@
     "team": "Cardinals",
     "from": 2021,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Tommy Maddox": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 2001,
+    "to": 2005,
     "rings": []
    }
   ],
@@ -120951,6 +123830,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "David Buehler": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2009,
+    "to": 2011,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Kyle Williams (WR, Chiefs)": {
   "stints": [
    {
@@ -122749,6 +125640,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Bill Gramatica": {
+  "stints": [
+   {
+    "team": "Cardinals",
+    "from": 2001,
+    "to": 2003,
+    "rings": []
+   },
+   {
+    "team": "Dolphins",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Marc Boerigter": {
   "stints": [
    {
@@ -123713,6 +126622,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Aaron Elling": {
+  "stints": [
+   {
+    "team": "Vikings",
+    "from": 2003,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2004,
+    "to": 2004,
+    "rings": []
+   },
+   {
+    "team": "Ravens",
+    "from": 2005,
+    "to": 2005,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Monsanto Pope": {
   "stints": [
    {
@@ -124097,6 +127030,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jordan Gay": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 2014,
+    "to": 2016,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Dewey McDonald": {
   "stints": [
    {
@@ -124361,6 +127306,72 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Matthew Wright": {
+  "stints": [
+   {
+    "team": "Steelers",
+    "from": 2020,
+    "to": 2020,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Steelers",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Panthers",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2024,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2025,
+    "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Parker Hesse": {
   "stints": [
    {
@@ -124432,6 +127443,24 @@
   ],
   "confidence": "confirmed",
   "evidence": "Games played for each club from 1999 (nflverse); the years before from his Wikipedia infobox."
+ },
+ "Steve Lindsey": {
+  "stints": [
+   {
+    "team": "Jaguars",
+    "from": 1999,
+    "to": 2000,
+    "rings": []
+   },
+   {
+    "team": "Broncos",
+    "from": 2000,
+    "to": 2000,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
  },
  "Lyle West": {
   "stints": [
@@ -125147,6 +128176,18 @@
     "team": "Broncos",
     "from": 2016,
     "to": 2017,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Andrew Franks": {
+  "stints": [
+   {
+    "team": "Dolphins",
+    "from": 2015,
+    "to": 2016,
     "rings": []
    }
   ],
@@ -127175,6 +130216,30 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Patrick Murray": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 2014,
+    "to": 2014,
+    "rings": []
+   },
+   {
+    "team": "Browns",
+    "from": 2016,
+    "to": 2016,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jonathan Newsome": {
   "stints": [
    {
@@ -128675,6 +131740,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Tim Seder": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2000,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "Jaguars",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2002,
+    "to": 2002,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Shannon Taylor": {
   "stints": [
    {
@@ -129385,6 +132480,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Sam Ficken": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2017,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2019,
+    "to": 2020,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "C.J. Board": {
   "stints": [
    {
@@ -129595,6 +132708,18 @@
     "team": "Commanders",
     "from": 2021,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Joshua Karty": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2024,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -130701,12 +133826,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Andre Szmyt": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Markees Watts": {
   "stints": [
    {
     "team": "Buccaneers",
     "from": 2023,
     "to": 2025,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Andy Borregales": {
+  "stints": [
+   {
+    "team": "Patriots",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Ryan Fitzgerald": {
+  "stints": [
+   {
+    "team": "Panthers",
+    "from": 2025,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -133305,6 +136466,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Tyler Loop": {
+  "stints": [
+   {
+    "team": "Ravens",
+    "from": 2025,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Bobby Brooks": {
   "stints": [
    {
@@ -134573,6 +137746,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Rodrigo Blankenship": {
+  "stints": [
+   {
+    "team": "Colts",
+    "from": 2020,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Dieter Eiselen": {
   "stints": [
    {
@@ -134633,6 +137824,30 @@
     "team": "Browns",
     "from": 2021,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Anders Carlson": {
+  "stints": [
+   {
+    "team": "Packers",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2024,
+    "to": 2024,
     "rings": []
    }
   ],
@@ -135799,6 +139014,30 @@
     "team": "Panthers",
     "from": 2021,
     "to": 2022,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Cade York": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Bengals",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Commanders",
+    "from": 2024,
+    "to": 2024,
     "rings": []
    }
   ],
@@ -139617,6 +142856,36 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Matt Ammendola": {
+  "stints": [
+   {
+    "team": "Jets",
+    "from": 2021,
+    "to": 2021,
+    "rings": []
+   },
+   {
+    "team": "Chiefs",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Cardinals",
+    "from": 2022,
+    "to": 2022,
+    "rings": []
+   },
+   {
+    "team": "Texans",
+    "from": 2023,
+    "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Rachad Wildgoose": {
   "stints": [
    {
@@ -139683,6 +142952,30 @@
     "team": "Chiefs",
     "from": 2023,
     "to": 2023,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Spencer Shrader": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2024,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Colts",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   },
+   {
+    "team": "Jets",
+    "from": 2024,
+    "to": 2024,
     "rings": []
    }
   ],
@@ -140273,6 +143566,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Giorgio Tavecchio": {
+  "stints": [
+   {
+    "team": "Raiders",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Falcons",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Jerry Franklin": {
   "stints": [
    {
@@ -140423,6 +143734,24 @@
     "team": "Ravens",
     "from": 2014,
     "to": 2016,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Travis Coons": {
+  "stints": [
+   {
+    "team": "Browns",
+    "from": 2015,
+    "to": 2015,
+    "rings": []
+   },
+   {
+    "team": "Chargers",
+    "from": 2017,
+    "to": 2017,
     "rings": []
    }
   ],
@@ -143956,6 +147285,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Owen Pochman": {
+  "stints": [
+   {
+    "team": "Giants",
+    "from": 2001,
+    "to": 2001,
+    "rings": []
+   },
+   {
+    "team": "49ers",
+    "from": 2003,
+    "to": 2003,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Tay Cody": {
   "stints": [
    {
@@ -144009,6 +147356,18 @@
    {
     "team": "Bills",
     "from": 2002,
+    "to": 2003,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Seth Marler": {
+  "stints": [
+   {
+    "team": "Jaguars",
+    "from": 2003,
     "to": 2003,
     "rings": []
    }
@@ -144888,6 +148247,18 @@
     "team": "Bengals",
     "from": 2017,
     "to": 2018,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
+ "Roberto Aguayo": {
+  "stints": [
+   {
+    "team": "Buccaneers",
+    "from": 2016,
+    "to": 2016,
     "rings": []
    }
   ],

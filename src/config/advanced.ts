@@ -9,7 +9,7 @@ import { leagueScore } from './ovr';
  * See docs/STATS_REFERENCE.md, "Advanced metrics".
  */
 
-export const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+export const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 /** Minimum samples (inclusive). Shared with the record book so the two never disagree. */
 export const ADV_MIN = {
@@ -18,6 +18,10 @@ export const ADV_MIN = {
   receptions: 50,
   games: 16,
   defGames: 32,
+  fgAttempts: 60,
+  fgAttempts40: 30,
+  fgAttempts50: 15,
+  xpAttempts: 100,
 } as const;
 
 /** Replacement level for Value Over Replacement: this percentile of League Score at the position. */
@@ -86,7 +90,7 @@ export const buildContext = (players: Player[]): AdvContext => {
 
 // ---------- Metric catalogue ----------
 
-export type MetricFamily = 'Passing' | 'Skill' | 'Defense' | 'Line' | 'Value';
+export type MetricFamily = 'Passing' | 'Skill' | 'Defense' | 'Line' | 'Kicking' | 'Value';
 
 export interface AdvMetric {
   id: string;
@@ -300,6 +304,76 @@ export const ADV_METRICS: AdvMetric[] = [
     qualifies: minGames,
     value: (p) => ratio(n(p, 'blocks'), p.games),
   },
+  // Kicking (NFL edition: field goals by distance, extra points)
+  {
+    id: 'fgPct',
+    label: 'Field Goal %',
+    short: 'FG%',
+    family: 'Kicking',
+    definition: 'Career field goals made per attempt.',
+    minLabel: `min ${ADV_MIN.fgAttempts} att`,
+    positions: ['K'],
+    decimals: 1,
+    suffix: '%',
+    plus: true,
+    qualifies: (p) => n(p, 'fgAtt') >= ADV_MIN.fgAttempts,
+    value: (p) => ratio(n(p, 'fgMade'), n(p, 'fgAtt')) * 100,
+  },
+  {
+    id: 'fgPct40',
+    label: 'FG % from 40+',
+    short: '40+%',
+    family: 'Kicking',
+    definition: 'Field goals made per attempt from 40 yards and out.',
+    minLabel: `min ${ADV_MIN.fgAttempts40} att from 40+`,
+    positions: ['K'],
+    decimals: 1,
+    suffix: '%',
+    plus: true,
+    qualifies: (p) => n(p, 'fgAtt49') + n(p, 'fgAtt50') >= ADV_MIN.fgAttempts40,
+    value: (p) => ratio(n(p, 'fgMade49') + n(p, 'fgMade50'), n(p, 'fgAtt49') + n(p, 'fgAtt50')) * 100,
+  },
+  {
+    id: 'fgPct50',
+    label: 'FG % from 50+',
+    short: '50+%',
+    family: 'Kicking',
+    definition: 'Field goals made per attempt from 50 yards and out.',
+    minLabel: `min ${ADV_MIN.fgAttempts50} att from 50+`,
+    positions: ['K'],
+    decimals: 1,
+    suffix: '%',
+    plus: true,
+    qualifies: (p) => n(p, 'fgAtt50') >= ADV_MIN.fgAttempts50,
+    value: (p) => ratio(n(p, 'fgMade50'), n(p, 'fgAtt50')) * 100,
+  },
+  {
+    id: 'xpPct',
+    label: 'Extra Point %',
+    short: 'XP%',
+    family: 'Kicking',
+    definition: 'Extra points made per attempt.',
+    minLabel: `min ${ADV_MIN.xpAttempts} att`,
+    positions: ['K'],
+    decimals: 1,
+    suffix: '%',
+    plus: true,
+    qualifies: (p) => n(p, 'xpAtt') >= ADV_MIN.xpAttempts,
+    value: (p) => ratio(n(p, 'xpMade'), n(p, 'xpAtt')) * 100,
+  },
+  {
+    id: 'fgPerGame',
+    label: 'Field Goals / Game',
+    short: 'FG/G',
+    family: 'Kicking',
+    definition: 'Career field goals made per game played.',
+    minLabel: `min ${ADV_MIN.games} games`,
+    positions: ['K'],
+    decimals: 2,
+    plus: true,
+    qualifies: minGames,
+    value: (p) => ratio(n(p, 'fgMade'), p.games),
+  },
   // Cross-position value
   {
     id: 'scorePerGame',
@@ -369,6 +443,7 @@ export const HEADLINE_METRIC: Record<Position, string> = {
   LB: 'impactPerGame',
   DB: 'impactPerGame',
   DL: 'impactPerGame',
+  K: 'fgPct',
 };
 
 // ---------- Evaluation: value, + index, percentile ----------
@@ -628,6 +703,14 @@ const STYLE_FEATURES: Record<Position, CompFeature[]> = {
   LB: [],
   DB: [],
   DL: [],
+  K: [
+    { id: 'fgPct', label: 'FG%', definition: 'Field goals made per attempt.', get: (p) => safeDiv(v(p, 'fgMade'), v(p, 'fgAtt')), weight: 1, decimals: 1, scale: 100, suffix: '%' },
+    { id: 'fg40Pct', label: 'FG% 40+', definition: 'Field goals made per attempt from 40 yards and out.', get: (p) => safeDiv(sum(p, 'fgMade49', 'fgMade50'), sum(p, 'fgAtt49', 'fgAtt50')), weight: 1, decimals: 1, scale: 100, suffix: '%' },
+    { id: 'fg50Pct', label: 'FG% 50+', definition: 'Field goals made per attempt from 50 yards and out.', get: (p) => safeDiv(v(p, 'fgMade50'), v(p, 'fgAtt50')), weight: 1, decimals: 1, scale: 100, suffix: '%' },
+    { id: 'xpPct', label: 'XP%', definition: 'Extra points made per attempt.', get: (p) => safeDiv(v(p, 'xpMade'), v(p, 'xpAtt')), weight: 1, decimals: 1, scale: 100, suffix: '%' },
+    { id: 'fgG', label: 'FG/G', definition: 'Field goals made per game played.', get: perG('fgMade'), weight: 1, decimals: 2 },
+    { id: 'longG', label: 'Long', definition: 'His longest field goal, in yards.', get: (p) => (v(p, 'longest') > 0 ? v(p, 'longest') : NaN), weight: 0.5, decimals: 0 },
+  ],
 };
 const RECV_FEATURES: CompFeature[] = [
   { id: 'recG', label: 'Rec/G', definition: 'Catches per game played.', get: perG('receptions'), weight: 1, decimals: 2 },
@@ -834,5 +917,6 @@ export const leaguePlayers = (data: LeagueData | null | undefined): Player[] =>
         ...data.linebackers,
         ...data.defensivebacks,
         ...data.defensiveline,
+        ...data.kickers,
       ].filter((p) => !p.isRealLegend)
     : [];

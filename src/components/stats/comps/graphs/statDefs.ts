@@ -9,7 +9,7 @@ import { skillTraits } from '@/config/skillGrades';
  * RB carries, fumbles) come only from the live save's season line, so a trait that needs them is blank elsewhere.
  */
 
-export type Group = 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'DEF';
+export type Group = 'QB' | 'RB' | 'WR' | 'TE' | 'OL' | 'DEF' | 'K';
 export const groupOf = (pos: Position): Group => (pos === 'LB' || pos === 'DB' || pos === 'DL' ? 'DEF' : pos);
 
 export interface BoxStat {
@@ -50,10 +50,15 @@ export const BOX: Record<Group, BoxStat[]> = {
     { key: 'int', label: 'Interceptions', short: 'INT' },
     { key: 'ff', label: 'Forced fumbles', short: 'FF' },
   ],
+  K: [
+    { key: 'fgm', label: 'Field goals made', short: 'FG' },
+    { key: 'fga', label: 'Field goal attempts', short: 'FGA' },
+    { key: 'xpm', label: 'Extra points made', short: 'XP' },
+  ],
 };
 
 /** The headline total per group (the race chart's default). */
-export const HEADLINE: Record<Group, string> = { QB: 'yds', RB: 'ryds', WR: 'yds', TE: 'yds', OL: 'blk', DEF: 'tkl' };
+export const HEADLINE: Record<Group, string> = { QB: 'yds', RB: 'ryds', WR: 'yds', TE: 'yds', OL: 'blk', DEF: 'tkl', K: 'fgm' };
 
 /** Season keys → Player fields, including the live save's extra keys. */
 const FIELD_MAP: Record<Group, Record<string, string>> = {
@@ -63,10 +68,11 @@ const FIELD_MAP: Record<Group, Record<string, string>> = {
   TE: { rec: 'receptions', yds: 'recYds', td: 'recTD', fum: 'fumbles' },
   OL: { blk: 'blocks' },
   DEF: { tkl: 'tackles', int: 'interceptions', sck: 'sacks', ff: 'forcedFumbles' },
+  K: { fgm: 'fgMade', fga: 'fgAtt', fgm39: 'fgMade39', fga39: 'fgAtt39', fgm49: 'fgMade49', fga49: 'fgAtt49', fgm50: 'fgMade50', fga50: 'fgAtt50', xpm: 'xpMade', xpa: 'xpAtt', lng: 'longest' },
 };
 
 /** The extra keys only the live save keeps, per group (copied into the latest season when the games agree). */
-export const SAVE_ONLY: Record<Group, string[]> = { QB: ['att', 'cmp', 'ratt', 'sck'], RB: ['ratt', 'fum'], WR: ['fum'], TE: ['fum'], OL: [], DEF: [] };
+export const SAVE_ONLY: Record<Group, string[]> = { QB: ['att', 'cmp', 'ratt', 'sck'], RB: ['ratt', 'fum'], WR: ['fum'], TE: ['fum'], OL: [], DEF: [], K: [] };
 
 /** A season line as a Player (fields it doesn't have stay undefined, so strict rates come out NaN). */
 export const seasonPlayer = (pos: Position, box: Record<string, number>, games: number): Player => {
@@ -105,6 +111,9 @@ const EXTRA: Record<Group, SeasonRate[]> = {
   TE: [{ id: 'tdG', name: 'TD/G', label: 'TD/G', definition: 'Receiving touchdowns per game.', get: (p) => div(n(p, 'recTD'), p.games), decimals: 2, trait: false }],
   OL: [],
   DEF: [],
+  K: [
+    { id: 'fgG', name: 'FG/G', label: 'FG/G', definition: 'Field goals made per game.', get: (p) => div(n(p, 'fgMade'), p.games), decimals: 2, trait: false },
+  ],
 };
 
 const RATES = new Map<Position, SeasonRate[]>();

@@ -29,7 +29,7 @@ import { teamOf } from '../parts';
 
 const InjMini = ({ code }: { code: InjuryCode }) => <span className={`nfl-injchip nfl-injchip--${code.toLowerCase()}`}>{code === 'Questionable' ? 'Q' : code === 'Doubtful' ? 'Dbt' : code}</span>;
 
-const POS_OPTS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'DST'] as const;
+const POS_OPTS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'K', 'DST'] as const;
 
 /** Lineup: the field with your players, the slot plates, then the board, the draft and saved lineups. */
 const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Prefs; setPrefs: (p: Partial<Prefs>) => void; turf: Turf }) => {
@@ -93,7 +93,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         <section className="fh-slots" aria-label="Lineup slots">
           <header className="fh-slots__h">
             <h2>Lineup</h2>
-            <span className="fh-lamp" aria-label={`${filled} of 8 slots filled`}><b>{filled}</b>/8</span>
+            <span className="fh-lamp" aria-label={`${filled} of ${F_SLOTS.length} slots filled`}><b>{filled}</b>/{F_SLOTS.length}</span>
           </header>
           <ul>
             {F_SLOTS.map((s, i) => {
@@ -166,7 +166,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         onLoad={(s) => s.kind === 'fantasy' && hub.loadLineup(s.lineup)}
         onRename={hub.saved.rename}
         onDelete={hub.saved.remove}
-        summary={(s) => (s.kind === 'fantasy' && fctx ? `${f1(hub.total(s.lineup, week))} proj · ${fFilled(s.lineup)}/8` : '')}
+        summary={(s) => (s.kind === 'fantasy' && fctx ? `${f1(hub.total(s.lineup, week))} proj · ${fFilled(s.lineup)}/${F_SLOTS.length}` : '')}
       />
       <SlotPicker hub={hub} slot={slot} onClose={() => setPick(null)} />
     </div>

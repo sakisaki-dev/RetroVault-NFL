@@ -84,6 +84,15 @@ export const careerTotals = (p: Player): StatItem[] => {
       ];
     case 'OL':
       return [g, s('blocks', 'BLK', 'Blocks', p.blocks)];
+    case 'K':
+      return [
+        g,
+        s('fgMade', 'FGM', 'Field goals made', num(p, 'fgMade')),
+        s('fgAtt', 'FGA', 'Field goal attempts', num(p, 'fgAtt')),
+        s('xpMade', 'XPM', 'Extra points made', num(p, 'xpMade')),
+        s('xpAtt', 'XPA', 'Extra point attempts', num(p, 'xpAtt')),
+        s('long', 'LNG', 'Longest field goal', num(p, 'longest') || null),
+      ];
     default:
       return [
         g,
@@ -140,6 +149,15 @@ export const careerRates = (p: Player): StatItem[] => {
       return [
         s('blkG', 'BLK/G', 'Blocks per game', rate(p.blocks, g), 2),
         s('blk16', 'BLK/16G', 'Blocks per 16 games', rate(p.blocks, g, 16), 1),
+      ];
+    case 'K':
+      return [
+        s('fgPct', 'FG%', 'Field goals made per attempt', rate(num(p, 'fgMade'), num(p, 'fgAtt'), 100), 1, '%'),
+        s('fg40', 'FG% 40+', 'Field goal percentage from 40 yards and out', rate(num(p, 'fgMade49') + num(p, 'fgMade50'), num(p, 'fgAtt49') + num(p, 'fgAtt50'), 100), 1, '%'),
+        s('fg50', 'FG% 50+', 'Field goal percentage from 50 yards and out', rate(num(p, 'fgMade50'), num(p, 'fgAtt50'), 100), 1, '%'),
+        s('xpPct', 'XP%', 'Extra points made per attempt', rate(num(p, 'xpMade'), num(p, 'xpAtt'), 100), 1, '%'),
+        s('fgG', 'FG/G', 'Field goals made per game', rate(num(p, 'fgMade'), g), 2),
+        s('fg16', 'FG/16G', 'Field goals per 16 games', rate(num(p, 'fgMade'), g, 16), 1),
       ];
     default: {
       const t = num(p, 'tackles');
@@ -212,6 +230,15 @@ export const headlineStats = (p: Player): StatItem[] => {
       return [
         s('blocks', 'Blocks', 'Career blocks', p.blocks),
         s('blkG', 'Blocks / game', 'Blocks per game', rate(p.blocks, p.games), 2),
+        s('games', 'Games', 'Games played', p.games),
+      ];
+    case 'K':
+      return [
+        s('fgMade', 'Field goals', 'Career field goals made', num(p, 'fgMade')),
+        s('fgPct', 'FG %', 'Field goals made per attempt', rate(num(p, 'fgMade'), num(p, 'fgAtt'), 100), 1, '%'),
+        s('long', 'Long', 'Longest field goal', num(p, 'longest') || null),
+        s('xpMade', 'Extra points', 'Career extra points made', num(p, 'xpMade')),
+        s('fg50', 'FG % 50+', 'Field goal percentage from 50 yards and out', rate(num(p, 'fgMade50'), num(p, 'fgAtt50'), 100), 1, '%'),
         s('games', 'Games', 'Games played', p.games),
       ];
     default:

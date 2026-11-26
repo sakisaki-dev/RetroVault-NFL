@@ -48,6 +48,7 @@ const FAMILY_LABEL: Record<MetricFamily, string> = {
   Skill: 'Skill position',
   Defense: 'Defense',
   Line: 'Line play',
+  Kicking: 'Kicking',
   Value: 'Value (all positions)',
 };
 

@@ -118,9 +118,9 @@ const simple = (id: string, label: string, get: (p: Player) => number | null, de
 
 // ---------- Position families ----------
 
-export type Family = 'QB' | 'RB' | 'REC' | 'OL' | 'DEF';
+export type Family = 'QB' | 'RB' | 'REC' | 'OL' | 'DEF' | 'K';
 export const familyOf = (pos: Position): Family =>
-  pos === 'QB' ? 'QB' : pos === 'RB' ? 'RB' : pos === 'WR' || pos === 'TE' ? 'REC' : pos === 'OL' ? 'OL' : 'DEF';
+  pos === 'QB' ? 'QB' : pos === 'RB' ? 'RB' : pos === 'WR' || pos === 'TE' ? 'REC' : pos === 'OL' ? 'OL' : pos === 'K' ? 'K' : 'DEF';
 
 type StatRow = { id: string; label: string; get: (p: Player) => number | null; decimals: number; lowerIsBetter?: boolean };
 
@@ -160,6 +160,16 @@ const POSITION_ROWS: Record<Family, { title: string; rows: StatRow[] }> = {
   OL: {
     title: 'Blocking',
     rows: [{ id: 'blocks', label: 'Blocks', get: (p) => num(p, 'blocks'), decimals: 0 }],
+  },
+  K: {
+    title: 'Kicking',
+    rows: [
+      { id: 'fgMade', label: 'Field goals', get: (p) => num(p, 'fgMade'), decimals: 0 },
+      { id: 'fgPct', label: 'FG %', get: (p) => (num(p, 'fgAtt') > 0 ? (100 * num(p, 'fgMade')) / num(p, 'fgAtt') : null), decimals: 1 },
+      { id: 'fg40', label: 'FG % from 40+', get: (p) => (num(p, 'fgAtt49') + num(p, 'fgAtt50') > 0 ? (100 * (num(p, 'fgMade49') + num(p, 'fgMade50'))) / (num(p, 'fgAtt49') + num(p, 'fgAtt50')) : null), decimals: 1 },
+      { id: 'xpMade', label: 'Extra points', get: (p) => num(p, 'xpMade'), decimals: 0 },
+      { id: 'long', label: 'Longest', get: (p) => (num(p, 'longest') > 0 ? num(p, 'longest') : null), decimals: 0 },
+    ],
   },
   DEF: {
     title: 'Defense',

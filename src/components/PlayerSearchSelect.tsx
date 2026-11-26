@@ -54,7 +54,7 @@ export const matchPlayer = (value: string, search: string, keywords?: string[]) 
 };
 
 
-const POSITION_ORDER: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITION_ORDER: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 
 /** Team colour vars for the mini banner (falls back to the site's line colour for free agents / legends without a team). */
 const bannerVars = (team?: string): CSSProperties => {

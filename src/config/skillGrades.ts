@@ -17,6 +17,7 @@ const TRAIT_NAMES: Record<string, Record<string, string>> = {
   RB: { ypc: 'Vision', rushYdsG: 'Workhorse', recYdsG: 'Pass catching', recShare: 'Dual threat', td16: 'Nose for the end zone', fumRate: 'Ball security', ypt: 'Explosiveness' },
   REC: { recG: 'Hands', recYdsG: 'Production', ypr: 'Big play', tdPerRec: 'Red zone', fumRate: 'Ball security' },
   DEF: { tklG: 'Tackling', sackG: 'Pass rush', intG: 'Ball hawk', ffG: 'Strip', impactG: 'Playmaker' },
+  K: { fgPct: 'Accuracy', fg40Pct: 'Range', fg50Pct: 'Long range', xpPct: 'Extra points', fgG: 'Volume', longG: 'Leg' },
 };
 const traitGroup = (pos: Position) => (pos === 'WR' || pos === 'TE' ? 'REC' : pos === 'LB' || pos === 'DB' || pos === 'DL' ? 'DEF' : pos);
 export const traitName = (pos: Position, f: CompFeature) => TRAIT_NAMES[traitGroup(pos)]?.[f.id] ?? f.label;
@@ -72,6 +73,7 @@ const SAME_AS_METRIC: Partial<Record<Position, Record<string, string>>> = {
   LB: { tklG: 'tacklesPerGame', impactG: 'impactPerGame' },
   DB: { tklG: 'tacklesPerGame', impactG: 'impactPerGame' },
   DL: { tklG: 'tacklesPerGame', impactG: 'impactPerGame' },
+  K: { fgPct: 'fgPct', fg40Pct: 'fgPct40', fg50Pct: 'fgPct50', xpPct: 'xpPct', fgG: 'fgPerGame' },
 };
 
 /**
@@ -178,6 +180,7 @@ export const VALUE_WEIGHTS: Record<string, Record<string, number>> = {
   REC: { recYdsG: 0.35, ypr: 0.2, tdPerRec: 0.2, recG: 0.15, fumRate: 0.1 },
   DEF: { impactG: 0.35, tklG: 0.2, sackG: 0.15, intG: 0.15, ffG: 0.15 },
   OL: { blocksG: 1 },
+  K: { fgPct: 0.3, fg40Pct: 0.25, fg50Pct: 0.1, xpPct: 0.15, fgG: 0.15, longG: 0.05 },
 };
 /**
  * NFL season grades (owner, 2026-11-24: "count fumbles and learn the weights from the data"): the weights are fitted by

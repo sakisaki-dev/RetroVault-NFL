@@ -33,7 +33,7 @@ const CSV = 'public/data/initial-data.csv';
 const LEGENDS = 'public/data/legends.json';
 const SEASON_OVR = 'public/data/league/season_ovr.json';
 const EXCLUSIONS = 'public/data/game-exclusions.json';
-const KEYS = ['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline'];
+const KEYS = ['quarterbacks', 'runningbacks', 'widereceivers', 'tightends', 'offensiveline', 'linebackers', 'defensivebacks', 'defensiveline', 'kickers'];
 const POSITIONS: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
 
 /** Market points from the three data files' contents (the same inputs officialOvrMap uses on the site). */

@@ -441,8 +441,8 @@ const seeded = (seed: number) => {
   };
 };
 const choose = <T>(r: () => number, list: readonly T[]): T => list[Math.floor(r() * list.length)];
-const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
-const POS_PLURAL: Record<string, string> = { QB: 'quarterback', RB: 'running back', WR: 'wide receiver', TE: 'tight end', OL: 'offensive lineman', LB: 'linebacker', DB: 'defensive back', DL: 'defensive lineman' };
+const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
+const POS_PLURAL: Record<string, string> = { QB: 'quarterback', RB: 'running back', WR: 'wide receiver', TE: 'tight end', OL: 'offensive lineman', LB: 'linebacker', DB: 'defensive back', DL: 'defensive lineman', K: 'kicker' };
 const atLeast = (f: Finish, min: Finish) => finishRank(f) >= finishRank(min);
 /** "A Rams card", "An Eagles card", "An Epic-or-better player" */
 const article = (word: string) => `${/^[AEIOU]/i.test(word) ? 'An' : 'A'} ${word}`;

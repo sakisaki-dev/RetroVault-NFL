@@ -75,6 +75,14 @@ const PATHS: Record<Position, JSX.Element> = {
       <path d="M2.5 20h19" />
     </>
   ),
+  K: (
+    <>
+      {/* goalposts: the crossbar, two uprights and the stem */}
+      <path d="M5 3v6.5M19 3v6.5M5 9.5h14M12 9.5V21M8.5 21h7" />
+      {/* the kicked ball between the uprights */}
+      <ellipse cx="12" cy="4.6" rx="2.6" ry="1.5" transform="rotate(-24 12 4.6)" />
+    </>
+  ),
 };
 
 interface Props {

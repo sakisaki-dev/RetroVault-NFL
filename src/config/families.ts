@@ -126,6 +126,11 @@ const LABELS: Record<Position, Label[]> = {
     { name: 'Run stopper', sig: { tklG: 1, sackG: -0.5 } },
     { name: 'Disruptor', sig: { ffG: 1 } },
   ],
+  K: [
+    { name: 'Long-range specialist', sig: { fg40Pct: 1, fg50Pct: 1, longG: 0.5 } },
+    { name: 'Automatic', sig: { fgPct: 1, xpPct: 1 } },
+    { name: 'Volume kicker', sig: { fgG: 1 } },
+  ],
 };
 
 /** The single OL family (one style rate, so no shape). */
@@ -156,6 +161,12 @@ const PHRASES: Record<string, [string, string]> = {
   ffG: ['more forced fumbles per game', 'fewer forced fumbles per game'],
   impactG: ['more splash plays per game', 'fewer splash plays per game'],
   blocksG: ['more blocks per game', 'fewer blocks per game'],
+  fgPct: ['makes more of his field goals', 'misses more field goals'],
+  fg40Pct: ['better from 40 yards and out', 'worse from 40 yards and out'],
+  fg50Pct: ['better from 50 yards and out', 'worse from 50 yards and out'],
+  xpPct: ['more reliable on extra points', 'less reliable on extra points'],
+  fgG: ['more field goals per game', 'fewer field goals per game'],
+  longG: ['a longer leg', 'a shorter leg'],
 };
 
 // ---------- Maths ----------

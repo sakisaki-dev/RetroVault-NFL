@@ -170,6 +170,7 @@ export const milestoneStats = (p: Player): Record<string, number> => {
     TE: { rec: 'receptions', yds: 'recYds', td: 'recTD' },
     OL: { blk: 'blocks' },
     DEF: { tkl: 'tackles', int: 'interceptions', sck: 'sacks', ff: 'forcedFumbles' },
+    K: { fgm: 'fgMade', fga: 'fgAtt', fgm39: 'fgMade39', fga39: 'fgAtt39', fgm49: 'fgMade49', fga49: 'fgAtt49', fgm50: 'fgMade50', fga50: 'fgAtt50', xpm: 'xpMade', xpa: 'xpAtt' },
   };
   const fields: Record<string, string> = {
     g: 'games',

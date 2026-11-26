@@ -16,7 +16,7 @@ Missing stats are skipped, never zeroed: a player with no line has no row. Outpu
 
 HEADLINE STATS (black ink, boards, one list for the whole site: src/utils/blackInk.ts reads the same ids):
   pyds passing yards, ptd passing TD, ryds rushing yards, rtd rushing TD, rec receptions, recyds receiving yards,
-  rectd receiving TD, tkl tackles (solo + assists), sck sacks, int interceptions. League-wide, any position.
+  rectd receiving TD, tkl tackles (solo + assists), sck sacks, int interceptions, fgm field goals made (kickers). League-wide, any position.
 STREAK MARKS: 4,000 pass yds, 30 pass TD, 1,000 rush yds, 1,000 rec yds, 100 rec, 10 sacks, 100 tackles, 5 INT.
 Completed seasons only for ink and streaks; a run is "alive" when it reaches the latest completed season.
 Deterministic.
@@ -30,7 +30,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from game_stars import ALIAS, SITE_POS, site_keys  # noqa: E402
+from game_stars import ALIAS, SITE_POS as _SITE_POS, site_keys  # noqa: E402
+SITE_POS = {**_SITE_POS, "K": "K"}   # kickers (owner, 2026-11-25) are on the boards; the game stars stay offence / defence
 
 ROOT = HERE.parents[1]
 CACHE = ROOT / "data" / "nfl-cache"
@@ -43,11 +44,12 @@ STATS = [  # id, label, columns summed
     ("rec", "Receptions", ["receptions"]), ("recyds", "Receiving yards", ["receiving_yards"]),
     ("rectd", "Receiving TD", ["receiving_tds"]),
     ("tkl", "Tackles", ["def_tackles_solo", "def_tackle_assists"]), ("sck", "Sacks", ["def_sacks"]),
-    ("int", "Interceptions", ["def_interceptions"]),
+    ("int", "Interceptions", ["def_interceptions"]), ("fgm", "Field goals made", ["fg_made"]),
+    ("fg50", "Field goals from 50+", ["fg_made_50_59", "fg_made_60_"]),
 ]
 MARKS = [("pyds", 4000, "4,000 pass yds"), ("ptd", 30, "30 pass TD"), ("ryds", 1000, "1,000 rush yds"),
          ("recyds", 1000, "1,000 rec yds"), ("rec", 100, "100 rec"), ("sck", 10, "10 sacks"),
-         ("tkl", 100, "100 tackles"), ("int", 5, "5 INT")]
+         ("tkl", 100, "100 tackles"), ("int", 5, "5 INT"), ("fgm", 30, "30 field goals")]
 AWARDS = ["mvp", "opoy", "dpoy", "oroy", "droy", "cpoy", "sbmvp"]
 
 

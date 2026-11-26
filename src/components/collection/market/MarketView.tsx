@@ -22,7 +22,7 @@ interface MarketViewProps {
   onOpen: (info: CardInfo, list: CardInfo[]) => void;
 }
 
-const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 const LIST = 5;
 const TICKER = 16;
 const HEAT = 70;

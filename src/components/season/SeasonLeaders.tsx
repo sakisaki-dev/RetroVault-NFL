@@ -37,6 +37,7 @@ const GROUPS = [
   { id: 'rush', label: 'Rushing' },
   { id: 'rec', label: 'Receiving' },
   { id: 'def', label: 'Defense' },
+  { id: 'kick', label: 'Kicking' },
 ] as const;
 
 const ordinal = (n: number) => {
