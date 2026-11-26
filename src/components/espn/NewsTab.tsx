@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useSwipeTabs } from '@/hooks/useSwipeTabs';
-import { BookOpen, ChevronRight, Clock, Newspaper, Play, RefreshCw, Video, WifiOff, Zap } from 'lucide-react';
+import { Activity, ArrowLeftRight, BookOpen, ChevronRight, Clock, FileText, Newspaper, Play, RefreshCw, Video, WifiOff, Zap } from 'lucide-react';
+import { PageTabBar, PageTabs, type PageTab } from '@/components/nav/PageTabs';
 import { cn } from '@/lib/utils';
 import { useLeague } from '@/context/LeagueContext';
 import type { Player } from '@/types/player';
@@ -34,12 +35,12 @@ import './espn.css';
  */
 
 type Section = 'all' | 'recap' | 'trade' | 'injury' | 'video';
-const SECTIONS: { id: Section; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'recap', label: 'Recaps' },
-  { id: 'trade', label: 'Moves' },
-  { id: 'injury', label: 'Injuries' },
-  { id: 'video', label: 'Video' },
+const SECTIONS: PageTab<Section>[] = [
+  { value: 'all', label: 'All', Icon: Newspaper },
+  { value: 'recap', label: 'Recaps', Icon: FileText },
+  { value: 'trade', label: 'Moves', Icon: ArrowLeftRight },
+  { value: 'injury', label: 'Injuries', Icon: Activity },
+  { value: 'video', label: 'Video', Icon: Video },
 ];
 /** Betting lines and fantasy columns read as filler on a front page: they come after the news */
 const FILLER: NewsKind[] = ['betting', 'fantasy'];
@@ -196,7 +197,7 @@ const NewsTab = () => {
   const read = (it: NewsItem) => setOpenId(it.id);
   const itemProps = { players, cast, onRead: read };
   const swipeRef = useRef<HTMLDivElement>(null);
-  useSwipeTabs({ ref: swipeRef, values: SECTIONS.map((s) => s.id), value: section, onChange: (v) => setSection(v as Section) });
+  useSwipeTabs({ ref: swipeRef, values: SECTIONS.map((s) => s.value), value: section, onChange: (v) => setSection(v as Section) });
 
   const leadReveal = useReveal<HTMLElement>();
   const leadCast = lead ? cast.get(lead.id) ?? [] : [];
@@ -206,7 +207,11 @@ const NewsTab = () => {
   const ago = lead ? agoParts(lead.published) : null;
 
   return (
-    <div className="en container py-6 sm:py-8" ref={swipeRef}>
+    <div ref={swipeRef}>
+    <PageTabBar>
+      <PageTabs<Section> label="News sections" value={section} onChange={setSection} tabs={SECTIONS} />
+    </PageTabBar>
+    <div className="en container py-6 sm:py-8">
       <header className="ss-mast">
         <div className="ss-mast__text">
           <p className="ss-mast__kicker">
@@ -221,13 +226,6 @@ const NewsTab = () => {
               <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} aria-hidden /> {at ? `Updated ${timeAgo(new Date(at).toISOString())}` : 'Refresh'}
             </button>
           </p>
-        </div>
-        <div className="ss-seasons" role="group" aria-label="Section">
-          {SECTIONS.map((s) => (
-            <button key={s.id} type="button" className="ss-season" aria-pressed={section === s.id} onClick={() => setSection(s.id)}>
-              {s.label}
-            </button>
-          ))}
         </div>
       </header>
 
@@ -471,6 +469,7 @@ const NewsTab = () => {
 
       <p className="en-credit-line" style={!items.length && loading ? { visibility: 'hidden' } : undefined}>Headlines, articles, photos and video are ESPN&apos;s, fetched live and kept for this browser session only.</p>
       <ArticleReader item={open} order={order} onOpen={read} onClose={() => setOpenId(null)} players={players} />
+    </div>
     </div>
   );
 };

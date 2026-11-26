@@ -32,8 +32,6 @@
 /* phones close the sheet by swiping down (owner: "we don't need the x we just swipe down"), so the pill runs the full
    width; the X stays from 640px, where the sheet is a centred dialog */
 @media (max-width: 639px) { .cs-bar-top { padding-right: 12px; } }
-.cs-bar-top .cs-tabs { display: flex; }
-.cs-bar-top .cs-tabs .ax-seg { flex: 1 1 0; justify-content: center; text-align: center; }
 .cs-years {
   display: flex;
   gap: 6px;
@@ -737,3 +735,9 @@ button.pg-name:hover { filter: brightness(1.08); }
   .ch-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ch-tiles > .ch-tile:last-child:nth-child(even) { grid-column: 1 / -1; }
 }
+
+/* the switch between This season and Franchise: content fades in over its loader (transform / opacity only) */
+.cs-view { min-width: 0; }
+.cs-fadein { animation: cs-fadein 260ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)) both; }
+@keyframes cs-fadein { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cs-fadein { animation-duration: 1ms; } }
