@@ -113,15 +113,14 @@ def svg_parts() -> tuple[str, str, str]:
 
 
 def launch_image(w_css: int, h_css: int, dpr: int) -> Image.Image:
-    """Closed door, centred, one art pixel = 8/3 css px at 3x (so the HTML splash, 107 css px wide, lines up with it)."""
+    """Closed door, centred, one art pixel = 5 css px (the HTML splash is 200 css px wide, so the two line up exactly)."""
     w, h = w_css * dpr, h_css * dpr
     img = Image.new("RGB", (w, h), NAVY)
     door = Image.new("RGBA", (N, N), (0, 0, 0, 0))
     for layer in grid():
         for (x, y), c in layer.items():
             door.putpixel((x, y), tuple(int(C[c][i : i + 2], 16) for i in (1, 3, 5)) + (255,))
-    size = round(107 * dpr)
-    size -= size % N
+    size = 200 * dpr  # 40 art px x 5 css px x dpr: whole device pixels per art pixel
     door = door.resize((size, size), Image.NEAREST)
     img.paste(door, ((w - size) // 2, (h - size) // 2), door)
     return img
