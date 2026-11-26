@@ -290,6 +290,10 @@ const SNOW_SURFACES = [
   '.sv-rw__phone',
   '.sv-stunt__stand',
   '.sv-fly__cap',
+  // live scenes: the score bug's top, the box score and dashboard panels, the Red Zone wall's frame and its bugs
+  '.sv-lg__bug',
+  '.sv-lg__dash > *',
+  '.sv-lg__jumbo',
 ].join(',');
 /** Where a surface really meets falling snow or rain, in viewport px: its box's top edge, except where the drawn
  * object sits inside transparent space (owner: "the transparent border for their assets isn't the actual point at
@@ -356,16 +360,21 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
   const windRef = useRef(wind);
   windRef.current = wind;
   // pixels per CSS pixel: the screen's own density, or half a CSS pixel in lite mode (a TV's chip draws an eighth as many)
-  const pxScale = lite ? 0.5 : devicePixelRatio || 1;
+  // (owner: the snow was "really buffery": a canvas at three-quarters of a CSS pixel is soft anyway, and a quarter the pixels of a 2x screen)
+  const pxScale = lite ? 0.5 : Math.min(0.75, devicePixelRatio || 1);
   const scaleRef = useRef(pxScale);
   scaleRef.current = pxScale;
   // the surfaces of the scene on screen (none for the first moments of a scene, while it rises in)
   const sceneChange = useRef(0);
   const dropped = useRef<Ledge[]>([]);
+  // a roofed Game Day stadium: nothing falls inside it (the weather corner still shows the local weather)
+  const domeRef = useRef(false);
   useEffect(() => {
     sceneChange.current += 1;
     let t2 = 0;
+    // every layout read lives here, never in the frame loop: once the scene has risen in, again on resize, then every 2 s
     const read = () => {
+      domeRef.current = !!document.querySelector('.sv-live [data-dome="1"]');
       const dpr = scaleRef.current;
       const out: Ledge[] = [];
       document.querySelectorAll<HTMLElement>(SNOW_SURFACES.split(',').map((x) => `.sv-slide--in ${x}`).join(',')).forEach((el) => {
@@ -383,11 +392,13 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
     };
     const t1 = window.setTimeout(() => {
       read();
-      t2 = window.setInterval(read, 500);
+      t2 = window.setInterval(read, 2000);
     }, 1600);
+    addEventListener('resize', read);
     return () => {
       window.clearTimeout(t1);
       window.clearInterval(t2);
+      removeEventListener('resize', read);
     };
   }, [scene]);
   useEffect(() => {
@@ -397,15 +408,19 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
     const dpr = scaleRef.current;
     let W = 0;
     let H = 0;
+    // the drifts change slowly: they are painted to this canvas a few times a second and blitted every frame
+    const pileCv = document.createElement('canvas');
+    const pctx = pileCv.getContext('2d')!;
+    let hasPiles = false;
     const size = () => {
-      W = cv.width = Math.round(innerWidth * dpr);
-      H = cv.height = Math.round(innerHeight * dpr);
+      W = cv.width = pileCv.width = Math.round(innerWidth * dpr);
+      H = cv.height = pileCv.height = Math.round(innerHeight * dpr);
     };
     size();
     addEventListener('resize', size);
     const rnd = Math.random;
     const snow = kind === 'snow';
-    const N = Math.round((snow ? 280 : kind === 'storm' ? 560 : 400) * (lite ? 0.35 : 1));
+    const N = Math.round((snow ? 130 : kind === 'storm' ? 560 : 400) * (lite ? 0.5 : 1));
     // where a particle meets the field: nearer ones lower on the screen
     const groundY = (z: number) => H * (0.8 + 0.17 * z);
     const drops: Drop[] = [];
@@ -463,7 +478,7 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
         });
     };
     // what has piled up, as a height profile along each surface and along the ground (one bin every 3 px)
-    const BIN = 3 * dpr;
+    const BIN = 4 * dpr;
     const heights = (l: Ledge) => (l.h ??= new Float32Array(Math.max(2, Math.ceil((l.x2 - l.x1) / BIN))));
     const topAt = (l: Ledge, x: number) => (snow ? l.y - (heights(l)[Math.min(heights(l).length - 1, Math.max(0, Math.floor((x - l.x1) / BIN)))] || 0) : l.y);
     const hit = (x: number, y0: number, y1: number): Ledge | null => {
@@ -504,7 +519,8 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
         h[i] = Math.min(capMax(l, i, n), h[i] + amount * Math.exp(-(k * k) / 5));
       }
     };
-    const ground = new Float32Array(Math.ceil(W / (6 * dpr)) + 2);
+    const ground = new Float32Array(Math.min(300, Math.ceil(W / (6 * dpr))) + 2);
+    const gstep = W / (ground.length - 2);
     const groundSeed = [rnd() * 6, rnd() * 6, rnd() * 6];
     const groundMax = (i: number) => {
       const x = i / ground.length;
@@ -517,12 +533,25 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
     let sinking = 0;
     let last = performance.now();
     let raf = 0;
+    let tick = 0;
+    let driftDt = 0;
+    const layers: Flake[][] = [[], [], []];
+    const LAYER_ALPHA = [0.3, 0.52, 0.74];
     const frame = (now: number) => {
+      // lite mode holds a steady 30: every other frame is skipped
+      if (lite && now - last < 30) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       const t = now / 1000;
       const w = windRef.current;
       ctx.clearRect(0, 0, W, H);
+      if (domeRef.current) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
       if (!snow) {
         ctx.lineCap = 'round';
         for (const d of drops) {
@@ -551,15 +580,14 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
           ctx.stroke();
         }
       } else {
+        // flakes: moved one by one, drawn in three depth layers (one alpha change per layer, no per-flake state)
+        layers[0].length = layers[1].length = layers[2].length = 0;
         for (const f of flakes) {
           if (f.rest > 0) {
             // settled: melts into the cap or the drift
             f.rest -= dt;
             if (f.rest <= 0) spawnFlake(f, false);
-            else {
-              ctx.globalAlpha = Math.min(1, f.rest / 2) * (0.5 + 0.5 * f.z);
-              ctx.drawImage(flakeImg, f.x - f.r * 1.4, f.y - f.r * 1.4, f.r * 2.8, f.r * 2.8);
-            }
+            else if (f.rest > 0.6) layers[f.z < 0.4 ? 0 : f.z < 0.75 ? 1 : 2].push(f);
             continue;
           }
           const gust = (Math.sin(t * 0.37 + f.y * 0.003) * 14 + Math.sin(t * 0.11 + f.ph) * (10 + 40 * w)) * dpr;
@@ -574,7 +602,7 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
             spawnFlake(f, false);
             continue;
           }
-          const gi = Math.floor(f.x / (6 * dpr));
+          const gi = Math.floor(f.x / gstep);
           if (f.z > 0.7 && gi >= 0 && gi < ground.length && f.y >= H - ground[gi] - 2 * dpr) {
             for (let k = -3; k <= 3; k++) {
               const i = gi + k;
@@ -588,18 +616,23 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
             f.rest = 1.5 + rnd() * 2.5;
           }
           if (f.x < -0.1 * W) f.x += 1.2 * W;
-          ctx.globalAlpha = 0.3 + 0.65 * f.z;
-          const s = f.r * (f.z > 0.75 ? 3.2 : 2.4);
-          ctx.drawImage(flakeImg, f.x - s / 2, f.y - s / 2, s, s);
+          layers[f.z < 0.4 ? 0 : f.z < 0.75 ? 1 : 2].push(f);
+        }
+        for (let L = 0; L < 3; L++) {
+          ctx.globalAlpha = LAYER_ALPHA[L];
+          for (const f of layers[L]) {
+            const s = f.r * (f.z > 0.75 ? 3.2 : 2.4);
+            ctx.drawImage(flakeImg, f.x - s / 2, f.y - s / 2, s, s);
+          }
         }
         ctx.globalAlpha = 1;
-        // a new scene: what piled up on the old one breaks into clumps that slide off and fall; the drift sinks away
+        // a new scene: what piled up on the old one breaks into clumps that slide off and fall (not in lite); the drift sinks away
         const breakOff = (list: Ledge[]) => {
           for (const l of list) {
             const h = l.h;
             if (!h) continue;
             for (let i = 0; i < h.length; i += 4)
-              if (h[i] > 1.5 * dpr && chunks.length < 700)
+              if (h[i] > 1.5 * dpr && chunks.length < 160 && !lite)
                 chunks.push({ x: l.x1 + i * BIN, y: l.y - h[i] / 2, vx: (rnd() - 0.5) * 60 * dpr - w * 80 * dpr, vy: rnd() * 40 * dpr, r: Math.max(2 * dpr, h[i] * (0.6 + rnd() * 0.5)), life: 0 });
           }
         };
@@ -609,77 +642,82 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
         }
         if (seenChange !== sceneChange.current) {
           seenChange = sceneChange.current;
-          for (const l of ledges.current) {
-            const h = l.h;
-            if (!h) continue;
-            for (let i = 0; i < h.length; i += 4)
-              if (h[i] > 1.5 * dpr && chunks.length < 700)
-                chunks.push({ x: l.x1 + i * BIN, y: l.y - h[i] / 2, vx: (rnd() - 0.5) * 60 * dpr - w * 80 * dpr, vy: rnd() * 40 * dpr, r: Math.max(2 * dpr, h[i] * (0.6 + rnd() * 0.5)), life: 0 });
-          }
+          breakOff(ledges.current);
           ledges.current = [];
           sinking = 1;
         }
-        if (sinking > 0) {
-          sinking = Math.max(0, sinking - dt / 1.2);
-          for (let i = 0; i < ground.length; i++) ground[i] *= 1 - dt * 3.5;
-        }
-        // the fine snow too small to see adds to every pile a little all the time, unevenly
-        const fine = dt / 13;
-        for (const l of ledges.current) {
-          const h = heights(l);
-          const n = h.length;
-          for (let i = 0; i < n; i++) h[i] = Math.min(capMax(l, i, n), h[i] + capMax(l, i, n) * fine * (0.4 + 1.2 * rnd()));
-          // snow slumps a little into soft mounds
-          for (let i = 1; i < n - 1; i++) h[i] = h[i] * 0.98 + (h[i - 1] + h[i + 1]) * 0.01;
-        }
-        if (!sinking) for (let i = 0; i < ground.length; i++) ground[i] = Math.min(groundMax(i), ground[i] + groundMax(i) * fine * 0.9);
-        for (let i = 1; i < ground.length - 1; i++) ground[i] = ground[i] * 0.9 + (ground[i - 1] + ground[i + 1]) * 0.05;
-        // draw the piles: white on top, a cool blue-grey shadow under, a bright rim of light
-        const pile = (x0: number, base: number, h: Float32Array, step: number, top: number) => {
-          const g = ctx.createLinearGradient(0, base - top, 0, base);
-          g.addColorStop(0, '#ffffff');
-          g.addColorStop(0.55, '#eef3fb');
-          g.addColorStop(1, '#c9d6ea');
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.moveTo(x0, base);
-          for (let i = 0; i < h.length; i++) {
-            const x = x0 + i * step;
-            const nx = x0 + (i + 1) * step;
-            const y = base - h[i];
-            const ny = base - (h[i + 1] ?? h[i]);
-            ctx.quadraticCurveTo(x, y, (x + nx) / 2, (y + ny) / 2);
+        // the drifts (settling, slumping, painting) update every third frame, from the time that has passed
+        driftDt += dt;
+        if (++tick % 3 === 0) {
+          const ddt = driftDt;
+          driftDt = 0;
+          if (sinking > 0) {
+            sinking = Math.max(0, sinking - ddt / 1.2);
+            for (let i = 0; i < ground.length; i++) ground[i] *= 1 - ddt * 3.5;
           }
-          ctx.lineTo(x0 + (h.length - 1) * step, base);
-          ctx.closePath();
-          ctx.shadowColor = 'rgba(160,185,225,0.55)';
-          ctx.shadowBlur = lite ? 0 : 6 * dpr;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-          ctx.lineWidth = 0.8 * dpr;
-          ctx.stroke();
-          // a few crystals catching the light
-          ctx.fillStyle = '#ffffff';
-          for (let i = 3; i < h.length; i += 11) {
-            if (h[i] < 3 * dpr || Math.sin(t * 1.3 + i * 7.7) < 0.92) continue;
-            ctx.fillRect(x0 + i * step, base - h[i] + 1.5 * dpr, 1.6 * dpr, 1.6 * dpr);
+          // the fine snow too small to see adds to every pile a little all the time, unevenly
+          const fine = ddt / 13;
+          for (const l of ledges.current) {
+            const h = heights(l);
+            const n = h.length;
+            for (let i = 0; i < n; i++) h[i] = Math.min(capMax(l, i, n), h[i] + capMax(l, i, n) * fine * (0.4 + 1.2 * rnd()));
+            // snow slumps a little into soft mounds
+            for (let i = 1; i < n - 1; i++) h[i] = h[i] * 0.94 + (h[i - 1] + h[i + 1]) * 0.03;
           }
-        };
-        for (const l of ledges.current) {
-          const h = heights(l);
-          let top = 0;
-          for (const v of h) top = Math.max(top, v);
-          if (top > 0.6 * dpr) {
-            // a new cap fades in rather than starting as a hard line
-            ctx.globalAlpha = Math.min(1, top / (5 * dpr));
-            pile(l.x1, l.y, h, BIN, top);
-            ctx.globalAlpha = 1;
+          if (!sinking) for (let i = 0; i < ground.length; i++) ground[i] = Math.min(groundMax(i), ground[i] + groundMax(i) * fine * 0.9);
+          for (let i = 1; i < ground.length - 1; i++) ground[i] = ground[i] * 0.8 + (ground[i - 1] + ground[i + 1]) * 0.1;
+          // paint the piles to the cache: white on top, a cool blue-grey shadow under, a bright rim (no blur or shadow passes)
+          pctx.clearRect(0, 0, W, H);
+          hasPiles = false;
+          const pile = (x0: number, base: number, h: Float32Array, step: number, top: number) => {
+            const g = pctx.createLinearGradient(0, base - top, 0, base);
+            g.addColorStop(0, '#ffffff');
+            g.addColorStop(0.55, '#eef3fb');
+            g.addColorStop(1, '#c9d6ea');
+            pctx.fillStyle = g;
+            pctx.beginPath();
+            pctx.moveTo(x0, base);
+            for (let i = 0; i < h.length; i++) {
+              const x = x0 + i * step;
+              const nx = x0 + (i + 1) * step;
+              const y = base - h[i];
+              const ny = base - (h[i + 1] ?? h[i]);
+              pctx.quadraticCurveTo(x, y, (x + nx) / 2, (y + ny) / 2);
+            }
+            pctx.lineTo(x0 + (h.length - 1) * step, base);
+            pctx.closePath();
+            pctx.fill();
+            pctx.strokeStyle = 'rgba(255,255,255,0.7)';
+            pctx.lineWidth = 0.8 * dpr;
+            pctx.stroke();
+            // a few crystals catching the light (not in lite)
+            if (lite) return;
+            pctx.fillStyle = '#ffffff';
+            for (let i = 3; i < h.length; i += 11) {
+              if (h[i] < 3 * dpr || Math.sin(t * 1.3 + i * 7.7) < 0.92) continue;
+              pctx.fillRect(x0 + i * step, base - h[i] + 1.5 * dpr, 1.6 * dpr, 1.6 * dpr);
+            }
+          };
+          for (const l of ledges.current) {
+            const h = heights(l);
+            let top = 0;
+            for (const v of h) top = Math.max(top, v);
+            if (top > 0.6 * dpr) {
+              // a new cap fades in rather than starting as a hard line
+              pctx.globalAlpha = Math.min(1, top / (5 * dpr));
+              pile(l.x1, l.y, h, BIN, top);
+              pctx.globalAlpha = 1;
+              hasPiles = true;
+            }
+          }
+          let gtop = 0;
+          for (const v of ground) gtop = Math.max(gtop, v);
+          if (gtop > 1) {
+            pile(0, H, ground, gstep, gtop);
+            hasPiles = true;
           }
         }
-        let gtop = 0;
-        for (const v of ground) gtop = Math.max(gtop, v);
-        if (gtop > 1) pile(0, H, ground, 6 * dpr, gtop);
+        if (hasPiles) ctx.drawImage(pileCv, 0, 0);
         // clumps falling off a surface at the change of scene
         for (let i = chunks.length - 1; i >= 0; i--) {
           const c = chunks[i];
@@ -715,8 +753,17 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
+    // a hidden tab simulates nothing; it picks up from "now" when it is shown again
+    const onVis = () => {
+      cancelAnimationFrame(raf);
+      if (document.hidden) return;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    };
+    document.addEventListener('visibilitychange', onVis);
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener('visibilitychange', onVis);
       removeEventListener('resize', size);
     };
   }, [kind, lite]);
@@ -765,9 +812,10 @@ export const ClubTag = ({ team, label }: { team: string; label?: string }) => {
 };
 
 /** The stadium behind a scene: the game's stands, crowd and turf painted to the club, its logo at midfield, its pennants */
-export const Stadium = ({ club, roll, children, className }: { club: string; roll: number; children?: ReactNode; className?: string }) => {
+export const Stadium = ({ club, roll, children, className, look: lookSet }: { club: string; roll: number; children?: ReactNode; className?: string; look?: Look }) => {
   const live = useLiveSeason();
-  const look = lookFor(club, roll, live);
+  // a scene that knows the real weather (Game Day) sets the look itself: snow only when it snows, never in a dome
+  const look = lookSet ?? lookFor(club, roll, live);
   const art = useFieldArt(club, look === 'day' || look === 'dusk' ? 'day' : look === 'snow' ? 'snow' : 'night');
   const t = findNFLTeam(club);
   const style = {
@@ -793,7 +841,7 @@ export const Stadium = ({ club, roll, children, className }: { club: string; rol
         <TeamLogo team={club} size={260} decorative />
       </span>
       <span className="sv-stadium__wash" aria-hidden="true" />
-      {look === 'snow' && <Particles kind="snow" count={90} colors={['#ffffff']} />}
+      {look === 'snow' && !lookSet && <Particles kind="snow" count={90} colors={['#ffffff']} />}
       {children}
     </div>
   );
@@ -2445,6 +2493,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     lookFor: (club, roll) => lookFor(club, roll, live),
     sprites,
     lookup: makeLookup(players),
+    fx: fx === 'snow' || fx === 'rain' || fx === 'storm' ? fx : null,
   };
   // Live games: while an NFL game is on, the live scenes (Game Day, the Red Zone wall) take the screen; see scenes/LiveGameScenes
   const liveSetting = useSaverLive();
