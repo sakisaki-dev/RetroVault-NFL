@@ -26,7 +26,7 @@ import { IS_NFL } from '@/config/edition';
 import { useBlackInk } from '@/utils/seasonBoards';
 
 const ctl =
-  'inline-flex h-12 items-center justify-center gap-1.5 rounded-md border border-line bg-night/60 px-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-panel-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-40';
+  'inline-flex h-10 items-center justify-center gap-1.5 rounded-md border border-line bg-night/60 px-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-panel-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-40';
 
 interface Props {
   player: Player;
@@ -64,8 +64,9 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
 
   return (
     <div className="space-y-3">
-      <div className="flex">
-        <div className="grid w-full grid-cols-3 gap-2">
+      {/* the old compact group (Random, then arrow-only Prev / Next on phones), kept to the right now the search is gone */}
+      <div className="flex justify-end">
+        <div className="grid grid-cols-[auto_auto_auto] gap-2 sm:flex">
           <button type="button" onClick={onRandom} className={ctl}>
             <Shuffle className="h-4 w-4" aria-hidden="true" />
             Random
@@ -79,7 +80,7 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
             title={prev ? `Prev ${player.position}: ${displayName(prev.name)}` : undefined}
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            <span>Prev</span>
+            <span className="hidden md:inline">Prev</span>
           </button>
           <button
             type="button"
@@ -89,7 +90,7 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
             aria-label={next ? `Next ${player.position} by OVR: ${displayName(next.name)}` : 'No next player'}
             title={next ? `Next ${player.position}: ${displayName(next.name)}` : undefined}
           >
-            <span>Next</span>
+            <span className="hidden md:inline">Next</span>
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
