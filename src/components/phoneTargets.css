@@ -30,3 +30,62 @@
     min-height: 36px;
   }
 }
+
+/*
+ * Phone pass (Deep Dive, Players, News, Collection, search): chip rows grow to 40 px (the gap between chips stays), single
+ * buttons to 44 px. Only taller; the looks and widths are unchanged.
+ */
+@media (pointer: coarse) {
+  html .ss-season,
+  html .en-team,
+  html .ss-chip,
+  html .bk-seg__b,
+  html .bk-sort__rev,
+  html .ix-card.inline-flex,
+  html .dd-chips a,
+  html .dd-chips button {
+    min-height: 40px;
+  }
+  html button[aria-label='Retro Vault home'],
+  html .ss-cancel,
+  html .en-read,
+  html .col-daily__btn,
+  html .bk-sort .ax-select__btn {
+    min-height: 44px;
+  }
+  html .ss-clear {
+    width: 40px;
+    height: 40px;
+    right: 4px;
+  }
+  html .en-refresh--inline {
+    position: relative;
+  }
+  html .en-refresh--inline::before {
+    content: '';
+    position: absolute;
+    inset: -10px -6px;
+  }
+  /* The player card's Deep Dive / Share / Edit buttons over the banner */
+  html .pc-actions > * {
+    min-height: 40px !important;
+  }
+  /* Dense text buttons: the touch area grows inside the element (padding cancelled by margin), so overflow stays clipped */
+  html button.cl-cname {
+    padding: 9px 0;
+    margin: -9px 0;
+  }
+  html button.cl-chip,
+  html button.cl-school {
+    min-height: 32px;
+  }
+  html .cg-chip,
+  html .gl-seg__b,
+  html .cc-chip {
+    min-height: 36px;
+  }
+  html .dd-who button[class*='h-8'],
+  html #dd-who button.h-8 {
+    min-height: 40px;
+  }
+}

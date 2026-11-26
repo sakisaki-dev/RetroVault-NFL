@@ -54,7 +54,7 @@ const useSeen = () => {
     const el = ref.current;
     if (!el || seen) return;
     if (typeof IntersectionObserver === 'undefined') return setSeen(true);
-    const io = new IntersectionObserver((e) => e.some((x) => x.isIntersecting) && (setSeen(true), io.disconnect()), { rootMargin: '300px' });
+    const io = new IntersectionObserver((e) => e.some((x) => x.isIntersecting) && (setSeen(true), io.disconnect()), { rootMargin: '1600px 0px' });
     io.observe(el);
     return () => io.disconnect();
   }, [seen]);

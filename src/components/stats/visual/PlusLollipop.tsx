@@ -50,7 +50,7 @@ const LollipopRow = ({ r, board, scale, onSelect }: { r: Row; board: MetricBoard
         {...peekProps(r.player)}
         onClick={() => onSelect(r.player)}
         aria-label={`${r.nfl ? 'Real NFL, unranked' : `Rank ${r.rank}`}: ${displayName(r.player.name)}, ${fmtNum(r.value, m.decimals)}${suffix}${r.plus != null ? `, + index ${fmtPlus(r.plus)}` : ''}, ${ordinal(r.pct)} percentile. Open player`}
-        className={cn(GRID, 'h-7 w-full rounded px-1 text-left hover:bg-panel-2/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold')}
+        className={cn(GRID, 'h-7 [@media(pointer:coarse)]:h-10 w-full rounded px-1 text-left hover:bg-panel-2/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold')}
       >
         <span className={cn('text-center font-pixel text-[9px]', r.rank === 1 ? 'text-gold' : 'text-muted-foreground')} aria-hidden="true">
           {r.nfl ? <span className="rounded-sm bg-flag/80 px-0.5 text-[9px] text-night">NFL</span> : r.rank}

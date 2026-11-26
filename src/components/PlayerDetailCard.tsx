@@ -367,7 +367,7 @@ const PlayerDetailCard = ({ player: selectedProp, onClose }: PlayerDetailCardPro
             {retired ? ` Number ${retired.number} retired by the ${retired.teamLabel}.` : ''}
           </DialogDescription>
 
-          <div className="absolute right-14 top-3 z-10 flex gap-1.5">
+          <div className="pc-actions absolute right-14 top-3 z-10 flex gap-1.5">
             {/* Every league player's card links to his Deep Dive (real NFL players have none) */}
             {!player.isRealLegend && (
               <Button

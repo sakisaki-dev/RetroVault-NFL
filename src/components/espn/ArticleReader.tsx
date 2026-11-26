@@ -17,6 +17,9 @@ import { focusOf, mentionsOf } from '@/utils/newsMentions';
 import { KIND_ACCENT, SCENE_KIND, kindOf, openDeepDive, useTaggedPlayers } from './newsData';
 import './espn.css';
 
+/** The feed's description often opens with a dash ("— NFL fans…"); the drop cap needs a letter first */
+const ledeText = (t: string) => t.replace(/^[\s—–-]+/, '');
+
 /**
  * The reading sheet for an ESPN item: the site's FeatureSheet (club-colour header with the players' sprites, side rail
  * with player banners and clubs) around the real article: ESPN's story text cut to a whitelist, its photos with
@@ -165,7 +168,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     });
     el.querySelectorAll<HTMLElement>('.fs-lede').forEach((p) => {
       const first = [...p.childNodes].find((n) => n.nodeType !== 3 || (n.textContent ?? '').trim());
-      p.classList.toggle('fs-lede--nocap', first instanceof HTMLElement && first.matches('a.en-plink'));
+      p.classList.toggle('fs-lede--nocap', (first instanceof HTMLElement && first.matches('a.en-plink')) || !/^\p{L}/u.test((p.textContent ?? '').trim()));
     });
   });
   const onBodyClick = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -205,7 +208,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
   } else if (error) {
     bodyNode = (
       <div className="en-body">
-        {item.description && <p className="fs-lede">{item.description}</p>}
+        {item.description && <p className="fs-lede">{ledeText(item.description)}</p>}
         <aside className="en-fallback" role="status">
           <span className="en-fallback__mark" aria-hidden>
             <Newspaper className="h-5 w-5" />
@@ -231,7 +234,7 @@ export const ArticleReader = ({ item, order, onOpen, onClose, players }: Props) 
     const onlyVideo = article.blocks.every((b) => b.t === 'video');
     bodyNode = (
       <div className="en-body" ref={bodyRef} onClickCapture={onBodyClick}>
-        {onlyVideo && item.description && item.description !== item.headline && <p className="fs-lede">{item.description}</p>}
+        {onlyVideo && item.description && item.description !== item.headline && <p className="fs-lede">{ledeText(item.description)}</p>}
         {article.blocks.map((b, i) => (
           <Block key={i} b={b} first={i === firstText} poster={item.image?.url} />
         ))}

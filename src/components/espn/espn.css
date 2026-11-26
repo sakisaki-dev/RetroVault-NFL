@@ -331,3 +331,6 @@ ol.en-list { list-style: decimal; }
   :is(.en-card, .en-lead, .en-vid, .en-trend__btn, .en-rank__btn, .en-around__btn, .pn-card, .pn-link):hover { translate: none; }
   .en-vid:hover .en-vid__poster img, .en-vid:hover .en-vid__disc { scale: none; }
 }
+/* The Wire's place while the feed loads (its height: one row, 42 px) */
+.en-wire-ghost { min-height: 42px; border-radius: 12px; background: var(--ss-panel); opacity: 0.5; }
+.en { min-height: 100svh; align-content: start; }
