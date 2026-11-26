@@ -351,3 +351,57 @@ ol.en-list { list-style: decimal; }
 .en .en-rub { text-align: center; }
 .en .en-rub__kicker, .en .en-rub__title { justify-content: center; }
 .en .en-rub--big, .en .en-rub { padding-inline: 4px; }
+
+/* ---------- News desk layout (2026-11-25) ---------- */
+/* one fixed-track column that never grows past the page: a child's max-content (the Wire, the club chips) cannot widen it */
+.en { grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 100%; box-sizing: border-box; }
+.en > * { min-width: 0; max-width: 100%; }
+.en .ss-front { width: 100%; }
+/* a single subtle divider under the masthead (was a 3px double chalk rule) */
+.en .ss-mast { border-bottom: 1px solid var(--ss-line); }
+/* the club chips scroll inside their own box, with a fade on both edges */
+.en-teams { width: 100%; box-sizing: border-box; padding: 2px 14px; scroll-padding-inline: 14px; overscroll-behavior-x: contain;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%); }
+.en-wire { width: 100%; box-sizing: border-box; }
+
+/* blocks that take the main column's place (injury report, clips, the empty state) */
+.en .en-main, .en .en-clips { grid-area: lead; min-width: 0; }
+.en-vids--main { gap: 14px; }
+.en-vid--big .en-vid__btn { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0; overflow: hidden; align-items: stretch; }
+.en-vid--big .en-vid__poster { width: 100%; aspect-ratio: 16 / 9; height: auto; border-radius: 0; }
+.en-vid--big .en-vid__text { padding: 10px 12px 12px; gap: 6px; }
+.en-vid--big .en-vid__title { font-size: 15px; line-height: 1.3; -webkit-line-clamp: 3; }
+.en-vid--big .en-vid__disc { width: 52px; height: 52px; }
+
+.en-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 28px 16px; text-align: center; border: 1px dashed var(--ss-line); border-radius: 14px; color: var(--ss-muted); }
+.en-empty__t { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; color: var(--ss-chalk); }
+
+/* injury report */
+.en-inj { gap: 14px; }
+.en-inj__head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; color: var(--ss-flag); }
+.en-inj__head > div { min-width: 0; }
+.en-inj__head .en-rub__title { color: var(--ss-chalk); }
+.en-inj__lamps { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-left: auto; font-family: var(--font-pixel); font-size: 9px; text-transform: uppercase; }
+.en-inj__lamps i, .en-inj__tag i { display: inline-block; width: 7px; height: 7px; margin-right: 5px; border-radius: 50%; background: currentColor; }
+.en-inj__none { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-size: 13px; color: var(--ss-muted); }
+.en-inj__group { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.en-inj__group > h4 { display: flex; align-items: center; margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ss-chalk); }
+.en-inj__group > h4 b { margin-left: 8px; font-size: 12px; color: var(--ss-muted); }
+.en-inj__group > h4 button { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; color: inherit; text-transform: inherit; letter-spacing: inherit; }
+.en-inj__club { padding-top: 12px; border-top: 1px solid var(--ss-line); }
+.en-inj__club:first-of-type { border-top: 0; padding-top: 0; }
+.en-inj__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.en-inj__row { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 8px; min-width: 0; min-height: 44px; padding: 4px 10px 4px 6px; border: 1px solid color-mix(in srgb, var(--tc, var(--ss-line)) 40%, var(--ss-line)); border-left: 3px solid var(--tc, var(--ss-line)); border-radius: 10px; background: color-mix(in srgb, var(--tc, var(--ss-panel)) 10%, var(--ss-panel)); }
+.en-inj__bust { display: grid; place-items: center; width: 36px; height: 36px; overflow: hidden; }
+.en-inj__who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.en-inj__part { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; text-transform: capitalize; color: var(--ss-muted); }
+.en-inj__tag { display: inline-flex; align-items: center; font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; white-space: nowrap; }
+.en-inj__more { align-self: flex-start; font-size: 12px; color: var(--ss-muted); text-decoration: none; }
+.en-inj__more:hover { color: var(--ss-chalk); }
+
+/* every rail and section header: 14px between its underline and what follows (the header's own margin; FillGrid sets inline margins on lists) */
+.en .en-rub { margin-bottom: 14px; }
+.en-mod, .en-section { gap: 0; }
+.en-mod > :not(.en-rub) + *, .en-section > :not(.en-rub) + * { margin-top: 12px; }
+.en .ss-hits.en-section, .en .en-inj.en-mod { gap: 0; }
