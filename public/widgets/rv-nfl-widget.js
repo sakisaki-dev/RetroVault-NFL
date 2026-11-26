@@ -326,13 +326,16 @@ function cropImage(img, sx, sy, sw, sh, drawW, drawH, outW, outH) {
 function bustImage(sprite, size, abbr, ring) {
   const dc = newCtx(size, size);
   const c1 = stripColor(abbr), c2 = stripEdge(abbr);
-  fillRounded(dc, 0, 0, size, size, size * 0.26, new Color(c1));
+  // Scriptable can't clip an image to a rounded shape, so the corners stay tight and the figure is inset inside them
+  // (owner: the sprites "overflow the rounded square borders in a very odd way")
+  const r = size * 0.14, inset = Math.max(2, size * 0.08);
+  fillRounded(dc, 0, 0, size, size, r, new Color(c1));
   fillVertical(dc, 0, size * 0.55, size, size * 0.45, c1, mixHex(c1, '#000000', 0.45), 12, 0.55);
   if (sprite) {
-    const s = size / 32; // game pixels 16..48 x 3..35
-    dc.drawImageInRect(sprite, new Rect(-16 * s, -3 * s, 64 * s, 64 * s));
+    const s = (size - 2 * inset) / 32; // game pixels 16..48 x 3..35, shoulders inside the corners, head clear of the top
+    dc.drawImageInRect(sprite, new Rect(inset - 16 * s, size - inset * 0.5 - 35 * s, 64 * s, 64 * s));
   }
-  strokeRounded(dc, 0.75, 0.75, size - 1.5, size - 1.5, size * 0.26, 1.5, new Color(ring || c2));
+  strokeRounded(dc, 0.75, 0.75, size - 1.5, size - 1.5, r, 1.5, new Color(ring || c2));
   return dc.getImage();
 }
 // A club-colour name strip (the site's player names)
