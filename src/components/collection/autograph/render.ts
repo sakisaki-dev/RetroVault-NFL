@@ -1059,6 +1059,29 @@ function playDiagram(ctx: Ctx, W: number, H: number, p: AutographSnapshot, era: 
     ];
     routes.slice(0, 4 + Math.round(r() * 3)).forEach(([dx, dy]) => arrow(ctx, sx, stem, Math.max(30, Math.min(W - 30, sx + dx)), Math.max(top + 20, stem + dy)));
     for (let i = -2; i <= 2; i++) O(ctx, W / 2 + i * 36, los + 4, 8);
+  } else if (p.position === 'K') {
+    // a field goal try: the line, the holder and the kicker behind it, the ball's arc between the uprights
+    for (let i = -4; i <= 4; i++) {
+      if (i !== 0) O(ctx, W / 2 + i * 34, los + 6, 8);
+    }
+    const kx = W / 2 + 44;
+    const ky = bot - 20;
+    O(ctx, W / 2, los + 70, 9);
+    X(ctx, kx, ky, 10);
+    ctx.setLineDash([7, 8]);
+    ctx.beginPath();
+    ctx.moveTo(W / 2, los + 62);
+    ctx.quadraticCurveTo(W / 2 + (r() - 0.5) * 60, (top + los) / 2 - 90, W / 2, top + 24);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 60, top + 26);
+    ctx.lineTo(W / 2 - 60, top - 8);
+    ctx.moveTo(W / 2 + 60, top + 26);
+    ctx.lineTo(W / 2 + 60, top - 8);
+    ctx.moveTo(W / 2 - 60, top + 26);
+    ctx.lineTo(W / 2 + 60, top + 26);
+    ctx.stroke();
   } else if (p.position === 'OL') {
     for (let i = -3; i <= 3; i++) {
       const x = W / 2 + i * 56;

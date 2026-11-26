@@ -10,7 +10,7 @@ import ChangeBadge from './ChangeBadge';
 import { peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
 
-const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 /** Allocation bar segments: one hue family per bar, stepped light → dark, every segment labelled in the legend. */
 /** Tier colours match the card frames (collection.css .fut--<tier>) */
 const TIER_FILL: Record<Tier, string> = { common: 'hsl(22 45% 48%)', rare: 'hsl(208 45% 55%)', epic: 'hsl(268 60% 62%)', legendary: 'hsl(22 90% 55%)' };

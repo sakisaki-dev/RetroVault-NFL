@@ -5,7 +5,7 @@ import { changeText, dirOf, type MarketRow } from './marketRows';
 import { peekProps } from '@/components/peek/peekProps';
 import { displayName, surnameOf } from '@/utils/displayName';
 
-const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL'];
+const POS_ORDER = ['QB', 'RB', 'WR', 'TE', 'OL', 'LB', 'DB', 'DL', 'K'];
 const GAP = 2;
 const HEAD = 16;
 
