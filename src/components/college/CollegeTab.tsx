@@ -1,7 +1,8 @@
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect, useRef } from 'react';
 import { useSwipeTabs } from '@/hooks/useSwipeTabs';
-import { ArcadeToggle } from '@/components/arcade';
+import { ClipboardList, GraduationCap, Target } from 'lucide-react';
+import { PageTabBar, PageTabs, type PageTab } from '@/components/nav/PageTabs';
 import { useHubRoute } from '@/components/stats/hub/hashRoute';
 import { useCollegeIndex, type CollegeSection } from '@/utils/collegeData';
 import DraftBoard from './DraftBoard';
@@ -10,10 +11,10 @@ import SchoolPage from './SchoolPage';
 import WarRoom from './WarRoom';
 import './college.css';
 
-const SECTIONS: { value: CollegeSection; label: string }[] = [
-  { value: 'draft', label: 'Draft boards' },
-  { value: 'schools', label: 'Colleges' },
-  { value: 'warroom', label: 'War room' },
+const SECTIONS: PageTab<CollegeSection>[] = [
+  { value: 'draft', label: 'Draft boards', short: 'Boards', Icon: ClipboardList },
+  { value: 'schools', label: 'Colleges', short: 'Colleges', Icon: GraduationCap },
+  { value: 'warroom', label: 'War room', short: 'War room', Icon: Target },
 ];
 
 /**
@@ -47,10 +48,11 @@ const CollegeTab = () => {
   if (idx === null || year == null) return <p className="cl-note container py-6">The college data isn't built yet (npm run nfl:rebuild).</p>;
 
   return (
-    <div className="cl container py-6 sm:py-8" ref={swipeRef}>
-      <nav className="cl-nav" aria-label="College sections">
-        <ArcadeToggle<CollegeSection> fill label="College section" value={section} onChange={(s) => go(s, s === 'draft' ? { y: String(year) } : {})} options={SECTIONS} />
-      </nav>
+    <div ref={swipeRef}>
+      <PageTabBar>
+        <PageTabs<CollegeSection> label="College sections" value={section} onChange={(s) => go(s, s === 'draft' ? { y: String(year) } : {})} tabs={SECTIONS} />
+      </PageTabBar>
+      <div className="cl container py-6 sm:py-8">
 
       {section === 'draft' && (
         <DraftBoard
@@ -71,6 +73,7 @@ const CollegeTab = () => {
       {section === 'warroom' && (
         <WarRoom focus={q.club} view={q.v === 'order' ? 'order' : 'needs'} onView={(v) => go('warroom', { ...(q.club ? { club: q.club } : {}), ...(v === 'order' ? { v } : {}) }, true)} />
       )}
+      </div>
     </div>
   );
 };

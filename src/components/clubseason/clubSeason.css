@@ -738,3 +738,9 @@ button.pg-name:hover { filter: brightness(1.08); }
   .ch-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ch-tiles > .ch-tile:last-child:nth-child(even) { grid-column: 1 / -1; }
 }
+
+/* the switch between This season and Franchise: content fades in over its loader (transform / opacity only) */
+.cs-view { min-width: 0; }
+.cs-fadein { animation: cs-fadein 260ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)) both; }
+@keyframes cs-fadein { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cs-fadein { animation-duration: 1ms; } }

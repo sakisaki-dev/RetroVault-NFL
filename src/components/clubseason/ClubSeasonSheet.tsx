@@ -10,7 +10,8 @@ import { useLeague } from '@/context/LeagueContext';
 import { displayName } from '@/utils/displayName';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openGame, useGameIds } from '@/utils/nflGames';
-import { Choice } from '@/components/controls';
+import { CalendarDays, Landmark } from 'lucide-react';
+import { PageTabs, type PageTab } from '@/components/nav/PageTabs';
 import type { ClubTab } from '@/utils/openClub';
 import { mirrorClubHash } from './clubRoute';
 import { realNumberOf } from '@/utils/gameSprites';
@@ -26,11 +27,14 @@ import { CapBreakdown, Fixtures, Leaders, Yearbook, type RosterEntry } from './C
 import './clubSeason.css';
 import '@/components/season/seaPhone.css';
 
-const FranchiseTab = lazy(() => import('./FranchiseTab'));
+const loadFranchise = () => import('./FranchiseTab');
+const FranchiseTab = lazy(loadFranchise);
+/** A loader that fills the sheet, so the switch between tabs never resizes it */
+const FULL = 'calc(var(--safe-h, 100dvh) - 120px)';
 
-const TAB_OPTIONS: { value: ClubTab; label: string }[] = [
-  { value: 'season', label: 'This season' },
-  { value: 'franchise', label: 'Franchise' },
+const TAB_OPTIONS: PageTab<ClubTab>[] = [
+  { value: 'season', label: 'This season', short: 'This season', Icon: CalendarDays },
+  { value: 'franchise', label: 'Franchise', short: 'Franchise', Icon: Landmark },
 ];
 
 interface Props {
@@ -63,8 +67,28 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
   const years = useMemo(() => (ids ? Object.keys(ids).map(Number).sort((a, b) => b - a) : []), [ids]);
   const [picked, setPicked] = useState<number | null>(null);
   useEffect(() => setPicked(null), [club, season, nonce]);
-  const [tab, setTab] = useState<ClubTab>(tabProp);
-  useEffect(() => setTab(tabProp), [tabProp, club, nonce]);
+  const [tab, setTabNow] = useState<ClubTab>(tabProp);
+  // The sheet keeps the height of the tab it is leaving until the new one has rendered (no resize, no jump)
+  const view = useRef<HTMLDivElement>(null);
+  const [hold, setHold] = useState(0);
+  const setTab = useCallback((t: ClubTab) => {
+    setHold(view.current?.offsetHeight ?? 0);
+    setTabNow(t);
+  }, []);
+  useEffect(() => {
+    if (!hold) return;
+    const id = window.setTimeout(() => setHold(0), 700);
+    return () => window.clearTimeout(id);
+  }, [hold]);
+  // Franchise is the other half of the sheet: its code is fetched as soon as the sheet is open and idle
+  useEffect(() => {
+    if (!open) return;
+    const w = window as unknown as { requestIdleCallback?: (f: () => void) => number; cancelIdleCallback?: (h: number) => void };
+    const run = () => { loadFranchise().catch(() => undefined); };
+    const h = w.requestIdleCallback ? w.requestIdleCallback(run) : window.setTimeout(run, 300);
+    return () => (w.cancelIdleCallback ? w.cancelIdleCallback(h) : window.clearTimeout(h));
+  }, [open]);
+  useEffect(() => setTabNow(tabProp), [tabProp, club, nonce]);
   const year = picked ?? season ?? years[0] ?? 2026;
   const data = useClubSeason(abbr, year);
   const { getAllPlayers, dataVersion } = useLeague();
@@ -207,11 +231,12 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
           {team && abbr && (
             <div className="cs">
               <div className="cs-bar-top">
-                <Choice<ClubTab> fill label="Club page" size="md" club={team.name} className="cs-tabs" value={tab} onChange={setTab} options={TAB_OPTIONS} />
+                <PageTabs<ClubTab> label="Club page" className="cs-tabs" value={tab} onChange={setTab} tabs={TAB_OPTIONS} />
               </div>
+              <div className="cs-view" ref={view} style={hold ? { minHeight: hold } : undefined}>
               {tab === 'franchise' ? (
-                <Suspense fallback={<PixelLoader what={`the ${team.name} franchise`} minHeight={420} />}>
-                  <FranchiseTab club={team.name} onPlayer={openPlayer} section={section} />
+                <Suspense fallback={<PixelLoader what={`the ${team.name} franchise`} minHeight={FULL} />}>
+                  <div className="cs-fadein"><FranchiseTab club={team.name} onPlayer={openPlayer} section={section} /></div>
                 </Suspense>
               ) : (
                 <>
@@ -221,9 +246,9 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
                   ))}
                 </div>
               {data === undefined ? (
-                <PixelLoader what={`the ${year} ${team.name}`} minHeight={420} />
+                <PixelLoader what={`the ${year} ${team.name}`} minHeight={FULL} />
               ) : (
-                <div className="pg" key={`${abbr}-${year}`}>
+                <div className="pg cs-fadein" key={`${abbr}-${year}`}>
                   <Reveal className="pg-front">
                     <ClubSeasonHero club={club} year={year} record={record || '–'} cell={data.cell} result={result} lastPost={lastPost} rows={rows} onPick={pick} />
                     <ClubSeasonFacing abbr={abbr} year={year} cell={data.cell} table={data.schedule?.table ?? null} tickets={tickets} result={result} onOpenGame={openGameFromSheet} />
@@ -256,6 +281,7 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
               )}
                 </>
               )}
+              </div>
             </div>
           )}
         </DialogContent>
