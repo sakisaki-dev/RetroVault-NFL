@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { Player } from '@/types/player';
 import { SIM_MIN_GAMES, type SimilarityMode } from '@/config/advanced';
 import { isHallOfFamer } from '@/config/stats';
@@ -14,6 +14,8 @@ import { dotColors } from './compColors';
 import { pairScores, type PositionModel } from './compModel';
 import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
+import { nearestMarks, tapRadiusPx, useChartZoom, type TapInfo } from '@/utils/useChartZoom';
+import { ChartPicker, ZoomControls, type PickItem } from '../../charts/ChartZoomKit';
 
 /**
  * The Neighbourhood chart: his ~30 nearest comparable careers (by the similarity model) as club-colour dots over a
@@ -242,18 +244,68 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
   const W = wide ? 720 : 360;
   const H = wide ? 430 : 360;
   const pad = { l: 44, r: 14, t: 12, b: 36 };
-  const px = (v: number) => pad.l + ((Math.max(view.dx[0], Math.min(view.dx[1], v)) - view.dx[0]) / (view.dx[1] - view.dx[0])) * (W - pad.l - pad.r);
-  const py = (v: number) => H - pad.b - ((Math.max(view.dy[0], Math.min(view.dy[1], v)) - view.dy[0]) / (view.dy[1] - view.dy[0])) * (H - pad.t - pad.b);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const clipId = useId().replace(/:/g, '');
+  const [pick, setPick] = useState<{ x: number; y: number; items: PickItem[] } | null>(null);
+  const zoom = useChartZoom({
+    svgRef,
+    box: { W, H, l: pad.l, t: pad.t, r: pad.r, b: pad.b },
+    domX: view.dx,
+    domY: view.dy,
+    resetKey: view,
+    onTap: (t) => onChartTap(t),
+    onDoubleTap: () => setPick(null),
+  });
+  const zoomed = zoom.zoomed;
+  const [zx0, zx1] = zoom.dx;
+  const [zy0, zy1] = zoom.dy;
+  // unzoomed, a point beyond the plot's edge sits on it; zoomed, it leaves the window and the clip hides it
+  const px = (v: number) => pad.l + (((zoomed ? v : Math.max(zx0, Math.min(zx1, v))) - zx0) / (zx1 - zx0)) * (W - pad.l - pad.r);
+  const py = (v: number) => H - pad.b - (((zoomed ? v : Math.max(zy0, Math.min(zy1, v))) - zy0) / (zy1 - zy0)) * (H - pad.t - pad.b);
+  const xt = niceTicks(zx0, zx1, wide ? 6 : 4);
+  const yt = niceTicks(zy0, zy1, 5);
+  const inPlot = (x: number, y: number) => x >= pad.l - 1 && x <= W - pad.r + 1 && y >= pad.t - 1 && y <= H - pad.b + 1;
+
+  // A tap picks the nearest square within a fingertip; several close together open a short list instead
+  const onChartTap = (t: TapInfo) => {
+    const cand: { p: Player; x: number; y: number; sim?: number; me?: boolean }[] = view.near.map((d) => ({ p: d.p, x: px(d.x), y: py(d.y), sim: d.sim }));
+    if (view.meOk) cand.push({ p: player, x: px(view.me.x), y: py(view.me.y), me: true });
+    const hits = nearestMarks(cand.filter((c) => inPlot(c.x, c.y)), (c) => c, t.vx, t.vy, tapRadiusPx(t.pointerType) * t.unit, 8);
+    if (!hits.length) {
+      setPick(null);
+      return;
+    }
+    const open = (c: (typeof cand)[number], e: { clientX: number; clientY: number; currentTarget: Element }) => showCard(c.p, e);
+    if (hits.length === 1) {
+      setPick(null);
+      open(hits[0].item, { clientX: t.clientX, clientY: t.clientY, currentTarget: svgRef.current as Element });
+      return;
+    }
+    const box = wrapRef.current?.getBoundingClientRect();
+    setPick({
+      x: t.clientX - (box?.left ?? 0),
+      y: t.clientY - (box?.top ?? 0),
+      items: hits.map(({ item: c }) => ({
+        key: keyOf(c.p),
+        title: displayName(c.p.name),
+        team: bannerTeamOf(c.p),
+        badge: c.me ? 'ON SHOW' : isHallOfFamer(c.p) ? 'HOF' : undefined,
+        sub: `${X.label} ${fmt(X, X.get(c.p))} · ${Y.label} ${fmt(Y, Y.get(c.p))}${c.sim != null ? ` · ${Math.round(c.sim)}%` : ''}`,
+        onPick: (e) => open(c, e),
+      })),
+    });
+  };
+  useEffect(() => setPick(null), [zx0, zx1, zy0, zy1, view]);
   const cw = (W - pad.l - pad.r) / GX;
   const ch = (H - pad.t - pad.b) / GY;
-  const xt = niceTicks(view.dx[0], view.dx[1], wide ? 6 : 4);
-  const yt = niceTicks(view.dy[0], view.dy[1], 5);
 
-  // Labels: him, then the closest comps, skipping any that would overlap one already placed
+  // Labels: him, then the closest comps (zoomed: the squares nearest the middle of the window), skipping any that would overlap
   const labels = useMemo(() => {
     const placed: { x: number; y: number; w: number }[] = [];
     const out: { x: number; y: number; text: string; anchor: 'start' | 'end'; gold?: boolean }[] = [];
     const tryPlace = (x: number, y: number, text: string, gold?: boolean) => {
+      if (!inPlot(x, y)) return;
       const w = text.length * 5.4 + 6;
       const anchor: 'start' | 'end' = x + w + 12 > W - pad.r ? 'end' : 'start';
       const x0 = anchor === 'start' ? x + 9 : x - 9 - w;
@@ -262,10 +314,22 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
       out.push({ x: anchor === 'start' ? x + 9 : x - 9, y: y + 3.5, text, anchor, gold });
     };
     if (view.meOk) tryPlace(px(view.me.x), py(view.me.y), player.name, true);
-    view.near.slice(0, wide ? 9 : 5).forEach((d) => tryPlace(px(d.x), py(d.y), surnameOf(d.p.name)));
+    const cx = (pad.l + W - pad.r) / 2;
+    const cy = (pad.t + H - pad.b) / 2;
+    const order = zoomed
+      ? view.near.map((d) => ({ d, x: px(d.x), y: py(d.y) })).filter((o) => inPlot(o.x, o.y)).sort((a, b) => Math.hypot(a.x - cx, a.y - cy) - Math.hypot(b.x - cx, b.y - cy)).map((o) => o.d)
+      : view.near;
+    const cap = (wide ? 9 : 5) + (zoomed ? 3 : 0);
+    let n = 0;
+    for (const d of order) {
+      if (n >= cap) break;
+      const before = out.length;
+      tryPlace(px(d.x), py(d.y), surnameOf(d.p.name));
+      if (out.length > before) n++;
+    }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view, W, H, wide]);
+  }, [view, W, H, wide, zx0, zx1, zy0, zy1, zoomed]);
 
   const sim = (n: { sim: number }) => `${Math.round(n.sim)}%`;
   const closest = view.near.slice(0, 3).map((d) => d.p.name);
@@ -319,8 +383,13 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
         />
       </div>
 
-      <div className="relative overflow-hidden rounded-lg border border-line/60 bg-night/50">
-        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`${displayName(player.name)} among ${pos}s: ${X.label} against ${Y.label}`} style={{ imageRendering: 'pixelated', touchAction: 'manipulation' }}>
+      <div ref={wrapRef} className="relative rounded-lg border border-line/60 bg-night/50">
+        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="block w-full overflow-hidden rounded-lg" role="img" aria-label={`${displayName(player.name)} among ${pos}s: ${X.label} against ${Y.label}`} style={{ imageRendering: 'pixelated' }}>
+          <defs>
+            <clipPath id={clipId}>
+              <rect x={pad.l} y={pad.t} width={W - pad.l - pad.r} height={H - pad.t - pad.b} />
+            </clipPath>
+          </defs>
           {xt.map((t) => (
             <g key={`x${t}`}>
               <line x1={px(t)} x2={px(t)} y1={pad.t} y2={H - pad.b} stroke={VIZ.grid} strokeWidth={0.6} />
@@ -333,16 +402,28 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
               <text x={pad.l - 5} y={py(t) + 3} textAnchor="end" fontSize={12} fill={VIZ.muted}>{fmt(Y, t)}</text>
             </g>
           ))}
-          {[...view.cells].map(([k, c]) => {
-            const cx = k % GX;
-            const cy = Math.floor(k / GX);
-            const t = Math.sqrt(c / view.maxC);
-            return <rect key={k} x={pad.l + cx * cw} y={H - pad.b - (cy + 1) * ch} width={cw + 0.4} height={ch + 0.4} fill={`rgba(57,135,229,${(0.07 + t * 0.4).toFixed(3)})`} />;
-          })}
+          <g clipPath={`url(#${clipId})`}>
+            {[...view.cells].map(([k, c]) => {
+              const cx = k % GX;
+              const cy = Math.floor(k / GX);
+              const t = Math.sqrt(c / view.maxC);
+              const sx = (view.dx[1] - view.dx[0]) / GX;
+              const sy = (view.dy[1] - view.dy[0]) / GY;
+              const x0 = px(view.dx[0] + cx * sx);
+              const x1 = px(view.dx[0] + (cx + 1) * sx);
+              const y1 = py(view.dy[0] + cy * sy);
+              const y0 = py(view.dy[0] + (cy + 1) * sy);
+              if (x1 < pad.l || x0 > W - pad.r || y1 < pad.t || y0 > H - pad.b) return null;
+              return <rect key={k} x={x0} y={y0} width={x1 - x0 + 0.4} height={y1 - y0 + 0.4} fill={`rgba(57,135,229,${(0.07 + t * 0.4).toFixed(3)})`} />;
+            })}
+          </g>
+          <g clipPath={`url(#${clipId})`}>
           {Number.isFinite(view.medX) && <line x1={px(view.medX)} x2={px(view.medX)} y1={pad.t} y2={H - pad.b} stroke={VIZ.axis} strokeDasharray="3 4" strokeWidth={0.9} />}
           {Number.isFinite(view.medY) && <line y1={py(view.medY)} y2={py(view.medY)} x1={pad.l} x2={W - pad.r} stroke={VIZ.axis} strokeDasharray="3 4" strokeWidth={0.9} />}
+          </g>
           <text x={(pad.l + W - pad.r) / 2} y={H - 4} textAnchor="middle" fontSize={12} fontWeight={700} fill={VIZ.ink}>{X.label}{X.lower ? ' (lower is better)' : ''}</text>
           <text transform={`translate(10 ${(pad.t + H - pad.b) / 2}) rotate(-90)`} textAnchor="middle" fontSize={12} fontWeight={700} fill={VIZ.ink}>{Y.label}{Y.lower ? ' (lower is better)' : ''}</text>
+          <g clipPath={`url(#${clipId})`}>
           {view.meOk && view.near.slice(0, 5).map((d) => (
             <line key={`l${keyOf(d.p)}`} x1={px(view.me.x)} y1={py(view.me.y)} x2={px(d.x)} y2={py(d.y)} stroke="hsl(43 100% 62%)" strokeOpacity={0.45} strokeWidth={1} />
           ))}
@@ -396,12 +477,15 @@ const NeighbourhoodChart = ({ player, model, mode, ovrMap, careerOvrMap, seasonO
               <path d={`M${px(view.me.x)} ${py(view.me.y) - 7} l6 7 l-6 7 l-6 -7 z`} fill="hsl(43 100% 62%)" stroke="#111627" strokeWidth={1.4} />
             </g>
           )}
+          </g>
           {labels.map((l, i) => (
             <text key={i} x={l.x} y={l.y} textAnchor={l.anchor} fontSize={l.gold ? 12.5 : 11.5} fontWeight={l.gold ? 800 : 600} fill={l.gold ? 'hsl(43 100% 62%)' : VIZ.ink} stroke="#111627" strokeWidth={3} paintOrder="stroke" style={{ pointerEvents: 'none' }}>
               {l.text}
             </text>
           ))}
         </svg>
+        <ZoomControls zoom={zoom} />
+        {pick && <ChartPicker at={pick} items={pick.items} width={wrapRef.current?.clientWidth ?? W} heading={`${pick.items.length} players here`} onClose={() => setPick(null)} />}
       </div>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
         <span><span className="inline-block h-2 w-2 rounded-sm" style={{ background: 'rgba(57,135,229,.55)' }} /> the other {view.n.toLocaleString()} {pos}s (darker = more)</span>
