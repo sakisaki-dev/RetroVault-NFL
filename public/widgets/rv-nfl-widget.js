@@ -19,7 +19,7 @@
 // Low Power Mode can run it late; five minutes is the best a widget can do.
 //
 // Tap: the widget's Parameter field. Empty = open the site (SITE). A Shortcut's name = run it. A URL = open it. The
-// word `bug` (alone or inside the text) pins the live view to the broadcast score-bug style; `classic` pins the
+// live views use the pixel score bug; the word `classic` in the Parameter brings back the old layout (`bug` is the default); `classic` pins the
 // first one; otherwise they alternate.
 
 // ---------- where the data lives ----------
@@ -1052,6 +1052,14 @@ const tickStyle = (names) => {
   if (m && names.includes(m[1].toLowerCase())) return m[1].toLowerCase();
   return names[Math.floor(NOWMS / (15 * MIN)) % names.length];
 };
+/** The live views keep the pixel score bug (owner: the classic layout is "the 1a version that we didn't want"); the
+ * Parameter's `classic` still pins the old one */
+const liveStyle = (names) => {
+  if (FORCE.style && names.includes(FORCE.style)) return FORCE.style;
+  const m = /\b(bug|classic)\b/i.exec(PARAM);
+  if (m && names.includes(m[1].toLowerCase())) return m[1].toLowerCase();
+  return 'bug';
+};
 function winChance(ctx, g, club) {
   const s = winSeries(ctx.summary, g, g.home.abbr === club || g.away.abbr === club ? club : g.home.abbr);
   return s ? { p: s[s.length - 1], series: s } : null;
@@ -1074,7 +1082,7 @@ function liveHead(dc, x, y, w, g, data, short) {
 }
 async function liveMedium(data, ctx) {
   const sz = widgetSize('medium');
-  const style = tickStyle(['classic', 'shot', 'bug']);
+  const style = liveStyle(['classic', 'shot', 'bug']);
   const L = await liveCommon(data, ctx);
   const { g, A } = L;
   const club = data.club.abbr;
@@ -1150,7 +1158,7 @@ async function liveMedium(data, ctx) {
 // ---------- live: small ----------
 async function liveSmall(data, ctx) {
   const sz = widgetSize('small');
-  const style = tickStyle(['live', 'bug', 'duel']);
+  const style = liveStyle(['live', 'bug', 'duel']);
   const L = await liveCommon(data, ctx, ['fig', 'left']);
   const { g, A } = L;
   const club = data.club.abbr;
@@ -2114,7 +2122,7 @@ async function render(data, ctx) {
   const lock = String(FAMILY).startsWith('accessory');
   if (lock && typeof renderLock === 'function') return renderLock(data, ctx);
   if (ctx.mode === 'live') {
-    if (FAMILY === 'large') return tickStyle(['classic', 'bug']) === 'bug' ? liveLargeBug(data, ctx) : liveLarge(data, ctx);
+    if (FAMILY === 'large') return liveStyle(['classic', 'bug']) === 'bug' ? liveLargeBug(data, ctx) : liveLarge(data, ctx);
     return FAMILY === 'medium' ? liveMedium(data, ctx) : liveSmall(data, ctx);
   }
   if (ctx.mode === 'slate') {
