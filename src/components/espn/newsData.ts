@@ -1,3 +1,4 @@
+import { openPlayerCard } from '@/utils/playerCardLink';
 import { useMemo } from 'react';
 import type { Player } from '@/types/player';
 import type { StoryKind } from '@/utils/leagueContent';
@@ -68,7 +69,7 @@ export const useNewsPlayers = (items: NewsItem[], players: Player[]) => {
 };
 
 export const openDeepDive = (p: Player) => {
-  window.location.hash = buildHash({ tab: 'career', sub: 'deepdive', p: keyOfPlayer(p) });
+  openPlayerCard(keyOfPlayer(p));
 };
 
 export const kindOf = (it: NewsItem): NewsKind => newsKind(it);

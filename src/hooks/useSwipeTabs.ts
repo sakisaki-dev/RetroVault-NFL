@@ -2,7 +2,7 @@ import { useEffect, useRef, type RefObject } from 'react';
 import { NAV, attachSwipe, contentAfter, optionsOf, type Dir, type SwipeCtx } from '@/utils/swipeSlide';
 
 /*
- * Swipe between a page's pill tabs (touch only), interactively: a horizontal-dominant drag on the content under the
+ * Swipe between a page's pill tabs (touch, and a two-finger trackpad swipe on a desktop), interactively: a horizontal-dominant drag on the content under the
  * navigator makes that content follow the finger and, past a quarter of the width or a flick, slides the previous or
  * next value's content in (shared mechanism: src/utils/swipeSlide.ts, also used site-wide by SwipeNav). Vertical
  * scrolling is never blocked (the area gets `touch-action: pan-y`). A drag that starts inside something that scrolls or
@@ -29,7 +29,6 @@ export function useSwipeTabs<T extends string | number>({
   const el = ref.current; // read during render: a page that mounts its area late re-renders and re-attaches
   useEffect(() => {
     if (!el || !enabled) return;
-    if (typeof window !== 'undefined' && !window.matchMedia?.('(pointer: coarse)').matches && !('ontouchstart' in window)) return;
     el.style.touchAction = 'pan-y';
     const findNav = () => [...el.querySelectorAll(NAV)].find((n) => optionsOf(n).length >= 2) ?? null;
     const ctx: SwipeCtx = {

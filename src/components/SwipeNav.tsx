@@ -17,7 +17,7 @@ const NAV_ONLY = '.ax-toggle:not(.ax-toggle--wrap), [role="tablist"]';
 
 const SwipeNav = () => {
   useEffect(() => {
-    if (!window.matchMedia?.('(pointer: coarse)').matches && !('ontouchstart' in window)) return;
+    const touch = !!window.matchMedia?.('(pointer: coarse)').matches || 'ontouchstart' in window;
     const off = attachSwipe(document, {
       ignore: `${IGNORE}, ${NAV_ONLY}`,
       resolve: (t) => {
@@ -25,7 +25,7 @@ const SwipeNav = () => {
         return nav ? ctxForNav(nav) : null;
       },
     });
-    const offTap = attachTapSlide();
+    const offTap = touch ? attachTapSlide() : () => {};
     return () => {
       off();
       offTap();
