@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { Bus, CloudSun, MapPin, MonitorPlay, Music, Timer } from 'lucide-react';
+import { SAVER_LIVE_CHOICES, setSaverLive, useSaverLive, type SaverLive } from '@/utils/saverLive';
 import { lastSaverWeather, setSaverFx, useSaverFx, weatherKind } from '@/utils/screensaver';
 import { setBusSetting, useBusSetting, useRoute } from '@/utils/bus';
 import { connectSpotify, disconnectSpotify, spotifyAvailable, useSpotifyConnected } from '@/utils/spotify';
@@ -44,6 +45,7 @@ const ScreensaverButton = ({ season }: { season: string | number }) => {
   const sleep = useSaverSleep();
   const night = useSaverNight();
   const fx = useSaverFx();
+  const liveSetting = useSaverLive();
   const place = useSaverPlace();
   const bus = useBusSetting();
   const route = useRoute('11');
@@ -126,6 +128,15 @@ const ScreensaverButton = ({ season }: { season: string | number }) => {
         <div role="tabpanel" className="mt-3 flex flex-col gap-2.5">
           {tab === 'timing' && (
             <>
+              <Row label="Live games" hint="While an NFL game is on: Auto shows the score scenes most of the time, Always only them, Off never.">
+                <select value={liveSetting} onChange={(e) => setSaverLive(e.target.value as SaverLive)} className={selectCls}>
+                  {SAVER_LIVE_CHOICES.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </Row>
               <Row label="Start by itself after">
                 <select value={idle} onChange={(e) => setSaverIdle(Number(e.target.value))} className={selectCls}>
                   {SAVER_IDLE_CHOICES.map((m) => (
