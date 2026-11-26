@@ -4,7 +4,7 @@
 //
 //   1  the club's game is live        the live game (score bug, drive, field, leaders, team stats, win chance), read from
 //                                     ESPN's public scoreboard and the game's summary
-//   2  a primetime game is live       the same view for that game
+//   2  any other game is live         the same view for it (several at once take turns each refresh, tightest first)
 //   3  Sunday with games on           the slate (large) or the score ticker (medium, small)
 //   4  within 12 hours after the game the final with its stars and the playoff odds change
 //   5  the day before                 the preview: the opponent, kickoff, win chance
@@ -14,7 +14,7 @@
 // Data: widget.json and its sprites and art (rebuilt daily on GitHub Actions in the repo below; widget/scripts/widget_data.py
 // is the local copy), live scores from ESPN. Both are cached, so it still draws offline.
 //
-// Refresh (refreshAfterDate): every 5 minutes while the club plays, every 10 while other games are live, at kickoff
+// Refresh (refreshAfterDate): every 5 minutes while any game is live, at kickoff
 // (waking up exactly then) before a game, once in the morning on weekdays. iOS treats the date as a hint, so a phone in
 // Low Power Mode can run it late; five minutes is the best a widget can do.
 //
@@ -497,14 +497,19 @@ function decide(data, board) {
   const mine = board && board.find((g) => involves(g, club));
   const live = board ? board.filter((g) => g.state === 'in') : [];
   const mineLive = live.find((g) => involves(g, club));
-  const primeLive = live.find((g) => prime(g));
   const kickToday = (g) => dayNum(new Date(g.kick)) === TODAY;
   const sunday = NOW.getDay() === 0;
   const mineFinal = mine && mine.state === 'post' && NOWMS - mine.kick < GAME_LEN + FINAL_WINDOW ? mine : null;
   let mode = null, game = null;
   if (mineLive) { mode = 'live'; game = mineLive; }
-  else if (primeLive) { mode = 'live'; game = primeLive; }
-  else if (live.length || (board && sunday && board.some(kickToday) && !mineFinal)) { mode = 'slate'; }
+  // every live game is followed (owner: "it needs to follow all games"): one game on = that game; several = the club's
+  // first, else they take turns each 5-minute refresh, the tightest game (closest score, latest quarter) first
+  else if (live.length) {
+    mode = 'live';
+    const order = live.slice().sort((a, b) => (prime(b) ? 1 : 0) - (prime(a) ? 1 : 0) || Math.abs(a.away.score - a.home.score) - Math.abs(b.away.score - b.home.score) || b.period - a.period || a.kick - b.kick);
+    game = order[Math.floor(NOWMS / (5 * MIN)) % order.length];
+  }
+  else if (board && sunday && board.some(kickToday) && !mineFinal) { mode = 'slate'; }
   else if (mineFinal) { mode = 'final'; game = mineFinal; }
   else if (!mineFinal && !board && lk && NOWMS - lk > 0 && NOWMS - lk < GAME_LEN + FINAL_WINDOW && NOWMS - lk > GAME_LEN) { mode = 'final'; game = null; }
   else if (nk && nk - NOWMS > 0 && nk - NOWMS < 30 * HOUR) { mode = 'preview'; }
@@ -520,8 +525,7 @@ function refreshDate(data, ctx) {
   let at;
   const mineLive = ctx.mode === 'live' && ctx.game && involves(ctx.game, data.club.abbr);
   const anyLive = ctx.live && ctx.live.length;
-  if (mineLive) at = NOWMS + 5 * MIN;
-  else if (anyLive) at = NOWMS + 10 * MIN;
+  if (mineLive || anyLive) at = NOWMS + 5 * MIN;
   else {
     const kicks = arr(data.slate).map((g) => Date.parse(g.kickoff)).concat(data.next ? [Date.parse(data.next.kickoff)] : [])
       .concat((ctx.board || []).map((g) => g.kick)).filter((k) => k > NOWMS + MIN).sort((a, b) => a - b);
