@@ -124,22 +124,26 @@ export const parseGameQuery = (query: string): GameQuery | null => {
   return one ? { a: one.abbreviation, bs: [], explicit: connector } : null;
 };
 
-/** Games of a club (against any of `bs`, else all), newest first, from ids.json only. */
-export const gamesOfQuery = (ids: GameIds, q: GameQuery, limit = 5): Meeting[] => {
-  const out: Meeting[] = [];
+/**
+ * Games of a club (against any of `bs`, else all) from ids.json only. Completed games come first, newest first (season,
+ * then week); games not played yet (`unplayed`: ids whose score is missing) follow, soonest first.
+ */
+export const gamesOfQuery = (ids: GameIds, q: GameQuery, limit = 5, unplayed?: ReadonlySet<string>): Meeting[] => {
+  const done: Meeting[] = [];
+  const upcoming: Meeting[] = [];
   for (const y of Object.keys(ids).sort((x, z) => Number(z) - Number(x))) {
-    const found: Meeting[] = [];
     for (const [k, id] of Object.entries(ids[y])) {
       if (k.startsWith('p-')) continue;
       const [w, away, home] = k.split('-');
       const other = away === q.a ? home : home === q.a ? away : null;
-      if (other && (!q.bs.length || q.bs.includes(other))) found.push({ id, season: Number(y), week: Number(w), away, home, first: q.a });
+      if (!other || (q.bs.length && !q.bs.includes(other))) continue;
+      const m: Meeting = { id, season: Number(y), week: Number(w), away, home, first: q.a };
+      (unplayed?.has(id) ? upcoming : done).push(m);
     }
-    found.sort((p, r) => r.week - p.week);
-    out.push(...found);
-    if (out.length >= limit) break;
   }
-  return out.slice(0, limit);
+  done.sort((p, r) => r.season - p.season || r.week - p.week);
+  upcoming.sort((p, r) => p.season - r.season || p.week - r.week);
+  return [...done, ...upcoming].slice(0, limit);
 };
 
 /** How well the clubs found match what was typed, on the scale the player scores use (exact 900, name start 700, abbreviation or city start 600, other 400). */
