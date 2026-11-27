@@ -102,6 +102,8 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
   const p = favHome ? g.pHome : 1 - g.pHome;
   const toss = Math.abs(g.pHome - 0.5) < 0.03;
   const plate = clubPlate(nickOf(fav));
+  const awayFill = clubPlate(nickOf(g.away)).fill;
+  const homeFill = clubPlate(nickOf(g.home)).fill;
   const row = (abbr: string, rec: string, score?: number) => (
     <span className={cn('nu-tm', abbr === fav && !toss && 'is-fav')}>
       <TeamLogo team={nickOf(abbr)} decorative className="h-[22px] w-[22px]" />
@@ -116,10 +118,13 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
       <button
         type="button"
         className={cn('nu-ticket', n.phase === 'live' && 'is-live')}
-        style={{ '--nu-fav': plate.fill } as CSSProperties}
+        style={{ '--nu-fav': plate.fill, '--nu-a': awayFill, '--nu-h': homeFill } as CSSProperties}
         aria-label={`${nickOf(g.away)} at ${nickOf(g.home)}, ${n.phase === 'live' ? 'live' : n.phase === 'final' ? 'final' : localKick(n.kick)}. Open the game`}
         onClick={() => openGame(regularGameId(ids, season, g.week, g.away, g.home) ?? g.id)}
       >
+        {/* the matchup in club colours: each club's half of the ticket toned in its colour, its logo as a faint watermark */}
+        <span className="nu-wm nu-wm--a" aria-hidden><TeamLogo team={nickOf(g.away)} decorative className="h-full w-full" /></span>
+        <span className="nu-wm nu-wm--h" aria-hidden><TeamLogo team={nickOf(g.home)} decorative className="h-full w-full" /></span>
         <span className="nu-top">
           <span>{n.phase === 'live' ? <b className="nu-livetag">LIVE</b> : n.phase === 'final' ? 'Final' : localKick(n.kick)}</span>
           {n.phase === 'live' ? <span>{phaseText(l)}</span> : n.tag && <span className={cn('nu-tag', n.tag.length <= 3 && 'is-prime')}>{n.tag}</span>}

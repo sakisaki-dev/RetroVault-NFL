@@ -21,9 +21,20 @@
   -webkit-mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000), radial-gradient(circle 5px at 100% 50%, transparent 98%, #000);
   -webkit-mask-composite: source-in; mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000), radial-gradient(circle 5px at 100% 50%, transparent 98%, #000); mask-composite: intersect;
 }
+.nu-ticket {
+  overflow: hidden; isolation: isolate;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--nu-a, transparent) 30%, hsl(var(--card))) 0 49.5%, color-mix(in srgb, var(--nu-h, transparent) 30%, hsl(var(--card))) 50.5% 100%);
+  border-color: color-mix(in srgb, var(--nu-fav, hsl(var(--line))) 40%, hsl(var(--line)));
+}
+.nu-ticket > * { position: relative; z-index: 1; }
+.nu-ticket > .nu-wm { position: absolute; z-index: 0; width: 70px; height: 70px; opacity: .16; pointer-events: none; filter: saturate(.9); }
+.nu-wm--a { top: -14px; right: -12px; }
+.nu-wm--h { bottom: -16px; right: 30px; }
+.nu-ticket:hover > .nu-wm { opacity: .24; }
 .nu-ticket::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--nu-fav, hsl(var(--line))); }
-.nu-ticket:hover { background: hsl(var(--card) / .6); }
-.nu-ticket.is-live { background: color-mix(in srgb, hsl(var(--card)) 92%, #ff4d4d); }
+.nu-ticket:hover { filter: brightness(1.08); }
+.nu-ticket.is-live { box-shadow: inset 0 0 0 1px rgb(255 77 77 / .55); }
 .nu-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 10px; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; min-height: 15px; }
 .nu-tag { font-family: var(--font-pixel); font-size: 7px; padding: 2px 5px; border-radius: 4px; background: hsl(var(--line)); color: hsl(var(--foreground)); text-transform: uppercase; white-space: nowrap; }
 .nu-tag.is-prime { background: hsl(var(--gold)); color: #1a1205; }
