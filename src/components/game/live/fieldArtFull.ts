@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { clubPlate } from '@/components/arcade';
 import { FIELD_ART } from '@/components/teamlab/fieldArt';
+import { findNFLTeam } from '@/utils/nflTeams';
 
 /**
  * The live view's field: Retro Bowl's own full field (scripts/private_field_art.py → field-full-<turf>.png, 1300 × 237,
  * both end zones), painted the way the game paints it at runtime (owner: "the game files have a real field with endzone
- * designs, use that"): each end zone in its club's colour with a second-colour trim and the club's name in pixel type
+ * designs, use that"): each end zone the game's own texture tinted to its club and the club's name in white
  * (away left, home right, as the view draws them), the sideline crew's key colours in the home club's. Cropped to the
  * playing width (x 50–1250: 10 yards of end zone each side of 100, the same 1/12 the view's fx() uses). Only in a build
  * with the private sprites; elsewhere null and the CSS field stays. Cached per clubs and turf as a data URL.
@@ -37,39 +38,110 @@ const rgbOf = (css: string): [number, number, number] => {
   return [d[0], d[1], d[2]];
 };
 
-const paintZone = (x: CanvasRenderingContext2D, [a, b]: [number, number], club: string, name: string, left: boolean) => {
-  const p = clubPlate(club);
-  const w = b - a + 1;
-  const h = EZ_BOTTOM - EZ_TOP + 1;
-  x.fillStyle = p.fill;
-  x.fillRect(a, EZ_TOP, w, h);
-  // a second-colour trim inside the lines, like the game's painted end zones
-  x.strokeStyle = p.edge;
-  x.lineWidth = 3;
-  x.strokeRect(a + 5.5, EZ_TOP + 5.5, w - 11, h - 11);
-  // the club's name along the zone, reading toward the field from each side
+/** A loaded image, or null when it can't load (a club without a wordmark file keeps its name in pixel type) */
+const loadImg = async (src: string): Promise<HTMLImageElement | null> => {
+  const img = new Image();
+  img.src = src;
+  try {
+    await img.decode();
+    return img;
+  } catch {
+    return null;
+  }
+};
+
+/** Relative luminance of an RGB triple (WCAG) */
+const lum = ([r, g, b]: number[]) => {
+  const f = (c: number) => ((c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+};
+
+/**
+ * One end zone as the club paints it (owner: "use the official nfl endzone designs"): the club's colour over the game's
+ * grass grain (the grey spr_endzone texture, multiplied), and the club's official wordmark (public/data/nfl/wordmarks,
+ * scripts/nfl/fetch_wordmarks.py) running along the zone toward the field. A wordmark too close to its own end zone
+ * colour (navy on navy, black on black) is drawn as a white silhouette with a shadow, as many real end zones do.
+ */
+const paintZone = (x: CanvasRenderingContext2D, tex: HTMLImageElement, mark: HTMLImageElement | null, [a]: [number, number], club: string, name: string, left: boolean) => {
+  const team = findNFLTeam(club);
+  const colour = team ? `hsl(${team.primaryColor})` : 'hsl(220 30% 30%)';
+  const w = tex.naturalWidth;
+  const h = tex.naturalHeight;
+  const t = document.createElement('canvas');
+  t.width = w;
+  t.height = h;
+  const tx = t.getContext('2d', { willReadFrequently: true })!;
+  tx.imageSmoothingEnabled = false;
+  tx.drawImage(tex, 0, 0);
+  tx.globalCompositeOperation = 'multiply';
+  tx.fillStyle = colour;
+  tx.fillRect(0, 0, w, h);
+  tx.globalCompositeOperation = 'destination-in';
+  tx.drawImage(tex, 0, 0);
+  tx.globalCompositeOperation = 'source-over';
+  const fill = Array.from(tx.getImageData(w >> 1, h >> 1, 1, 1).data.slice(0, 3));
+  x.drawImage(t, a, EZ_TOP);
   x.save();
   x.translate(a + w / 2, EZ_TOP + h / 2);
   x.rotate(left ? -Math.PI / 2 : Math.PI / 2);
-  x.fillStyle = p.ink;
-  x.textAlign = 'center';
-  x.textBaseline = 'middle';
-  const text = name.toUpperCase();
-  let size = 34;
-  x.font = `${size}px Silkscreen, monospace`;
-  while (x.measureText(text).width > h - 26 && size > 12) x.font = `${(size -= 2)}px Silkscreen, monospace`;
-  x.fillStyle = 'rgba(0,0,0,0.45)';
-  x.fillText(text, 2, 2);
-  x.fillStyle = p.ink;
-  x.fillText(text, 0, 0);
+  if (mark) {
+    // fit along the zone (its length is the zone's height) and inside its depth
+    const maxL = h - 18;
+    const maxT = w - 22;
+    const k = Math.min(maxL / mark.naturalWidth, maxT / mark.naturalHeight);
+    const mw = mark.naturalWidth * k;
+    const mh = mark.naturalHeight * k;
+    // the wordmark's own average colour against the fill: too close and it is drawn white
+    const probe = document.createElement('canvas');
+    probe.width = 48;
+    probe.height = 16;
+    const px = probe.getContext('2d', { willReadFrequently: true })!;
+    px.drawImage(mark, 0, 0, 48, 16);
+    const d = px.getImageData(0, 0, 48, 16).data;
+    let r = 0, g = 0, b = 0, n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 128) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
+    const avg = n ? [r / n, g / n, b / n] : [255, 255, 255];
+    const [l1, l2] = [lum(avg), lum(fill)].sort((p, q) => q - p);
+    const contrast = (l1 + 0.05) / (l2 + 0.05);
+    let art: CanvasImageSource = mark;
+    if (contrast < 2.2) {
+      const wc = document.createElement('canvas');
+      wc.width = Math.ceil(mw);
+      wc.height = Math.ceil(mh);
+      const wx = wc.getContext('2d')!;
+      wx.drawImage(mark, 0, 0, mw, mh);
+      wx.globalCompositeOperation = 'source-in';
+      wx.fillStyle = '#ffffff';
+      wx.fillRect(0, 0, mw, mh);
+      art = wc;
+    }
+    x.shadowColor = 'rgba(0,0,0,0.5)';
+    x.shadowOffsetX = 2;
+    x.shadowOffsetY = 2;
+    x.imageSmoothingEnabled = true;
+    x.drawImage(art, -mw / 2, -mh / 2, mw, mh);
+  } else {
+    x.textAlign = 'center';
+    x.textBaseline = 'middle';
+    const text = name.toUpperCase();
+    let size = 34;
+    x.font = `${size}px Silkscreen, monospace`;
+    while (x.measureText(text).width > h - 22 && size > 12) x.font = `${(size -= 2)}px Silkscreen, monospace`;
+    x.fillStyle = 'rgba(0,0,0,0.55)';
+    x.fillText(text, 3, 3);
+    x.fillStyle = '#ffffff';
+    x.fillText(text, 0, 0);
+  }
   x.restore();
 };
 
 const build = async (away: string, awayName: string, home: string, homeName: string, turf: FieldTurf): Promise<string | null> => {
   const img = new Image();
   img.src = `${import.meta.env.BASE_URL}private-sprites/field/field-full-${turf}.png`;
+  const tex = new Image();
+  tex.src = `${import.meta.env.BASE_URL}private-sprites/field/endzone-${turf}.png`;
   try {
-    await img.decode();
+    await Promise.all([img.decode(), tex.decode()]);
     await document.fonts?.load?.('34px Silkscreen');
   } catch {
     return null;
@@ -91,8 +163,9 @@ const build = async (away: string, awayName: string, home: string, homeName: str
     if (k) [d[i], d[i + 1], d[i + 2]] = ink[k];
   }
   x.putImageData(data, 0, 0);
-  paintZone(x, EZ_L, away, awayName, true);
-  paintZone(x, EZ_R, home, homeName, false);
+  const [ma, mh] = await Promise.all([away, home].map((c) => loadImg(`${import.meta.env.BASE_URL}data/nfl/wordmarks/${findNFLTeam(c)?.abbreviation ?? c}.png`)));
+  paintZone(x, tex, ma, EZ_L, away, awayName, true);
+  paintZone(x, tex, mh, EZ_R, home, homeName, false);
   const out = document.createElement('canvas');
   out.width = X1 - X0;
   out.height = H;

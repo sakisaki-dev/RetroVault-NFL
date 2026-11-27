@@ -15,6 +15,7 @@ Output (public/private-sprites/field/), every piece the middle 640 px of the gam
 - crowd.png: spr_fieldfans frame 0, the crowd in the stands, 640 x 33 (key colours).
 - stands.png: spr_fieldfans frame 1, the stand front, 640 x 33.
 - index.json: the files, sizes, the field's playing rows and the key colours.
+- endzone-day.png, endzone-snow.png, endzone-night.png: spr_endzone frames 0, 1, 4 (grey, tinted to a club on the site).
 - field-full-day.png, field-full-night.png, field-full-snow.png: the same frames uncut (both end zones), for the live view.
 Key colours: #00ff00 club primary, #ff00ff club secondary, #00ffff a light trim.
 """
@@ -67,6 +68,12 @@ def main() -> None:
         fname = name.replace("turf-", "field-full-")
         full.save(OUT / fname, optimize=True)
         files[fname] = list(full.size)
+    # the end zone texture the game tints with each club's end zone colour (same frame order as the field: 0 normal,
+    # 1 snow, 4 dark), 100 x 169, exactly the field's end zone
+    for name, f in (("endzone-day.png", 0), ("endzone-snow.png", 1), ("endzone-night.png", 4)):
+        ez = frame(spr["spr_endzone"]["frames"][f])
+        ez.save(OUT / name, optimize=True)
+        files[name] = list(ez.size)
     for name, f in (("crowd.png", 0), ("stands.png", 1)):
         img = frame(spr["spr_fieldfans"]["frames"][f]).crop((X0, 0, X1, 33))
         img.save(OUT / name, optimize=True)

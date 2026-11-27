@@ -1,0 +1,197 @@
+{
+ "about": "Official club wordmarks (Wikimedia Commons, as named in each team's English Wikipedia infobox), PNG renderings; scripts/nfl/fetch_wordmarks.py",
+ "clubs": {
+  "BUF": {
+   "file": "Buffalo Bills wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Buffalo_Bills_wordmark.svg",
+   "w": 600,
+   "h": 156
+  },
+  "MIA": {
+   "file": "Miami Dolphins wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Miami_Dolphins_wordmark.svg",
+   "w": 600,
+   "h": 163
+  },
+  "NE": {
+   "file": "New England Patriots wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:New_England_Patriots_wordmark.svg",
+   "w": 600,
+   "h": 143
+  },
+  "NYJ": {
+   "file": "New York Jets 2024 (wordmark).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:New_York_Jets_2024_(wordmark).svg",
+   "w": 600,
+   "h": 188
+  },
+  "BAL": {
+   "file": "Baltimore Ravens wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Baltimore_Ravens_wordmark.svg",
+   "w": 600,
+   "h": 121
+  },
+  "CIN": {
+   "file": "Cincinnati Bengals wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cincinnati_Bengals_wordmark.svg",
+   "w": 600,
+   "h": 100
+  },
+  "CLE": {
+   "file": "Cleveland Browns wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cleveland_Browns_wordmark.svg",
+   "w": 600,
+   "h": 273
+  },
+  "PIT": {
+   "file": "Pittsburgh Steelers Script.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Pittsburgh_Steelers_Script.svg",
+   "w": 600,
+   "h": 182
+  },
+  "HOU": {
+   "file": "Houston Texans wordmark logo 2024.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Houston_Texans_wordmark_logo_2024.svg",
+   "w": 600,
+   "h": 113
+  },
+  "IND": {
+   "file": "Indianapolis Colts new wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Indianapolis_Colts_new_wordmark.svg",
+   "w": 600,
+   "h": 149
+  },
+  "JAX": {
+   "file": "Jacksonville Jaguars wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Jacksonville_Jaguars_wordmark.svg",
+   "w": 600,
+   "h": 204
+  },
+  "TEN": {
+   "file": "Tennessee Titans wordmark.png",
+   "source": "https://commons.wikimedia.org/wiki/File:Tennessee_Titans_wordmark.png",
+   "w": 600,
+   "h": 146
+  },
+  "DEN": {
+   "file": "Denver Broncos wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Denver_Broncos_wordmark.svg",
+   "w": 600,
+   "h": 104
+  },
+  "KC": {
+   "file": "Kansas City Chiefs wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Kansas_City_Chiefs_wordmark.svg",
+   "w": 600,
+   "h": 134
+  },
+  "LV": {
+   "file": "Las Vegas Raiders wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Las_Vegas_Raiders_wordmark.svg",
+   "w": 600,
+   "h": 111
+  },
+  "LAC": {
+   "file": "Los Angeles Chargers 2020 wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Los_Angeles_Chargers_2020_wordmark.svg",
+   "w": 600,
+   "h": 160
+  },
+  "DAL": {
+   "file": "Cowboys wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cowboys_wordmark.svg",
+   "w": 600,
+   "h": 102
+  },
+  "NYG": {
+   "file": "New York Giants wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:New_York_Giants_wordmark.svg",
+   "w": 600,
+   "h": 232
+  },
+  "PHI": {
+   "file": "Philadelphia Eagles wordmark (2022\u2013present).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Philadelphia_Eagles_wordmark_(2022%E2%80%93present).svg",
+   "w": 600,
+   "h": 100
+  },
+  "WAS": {
+   "file": "Washington Commanders wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Washington_Commanders_wordmark.svg",
+   "w": 600,
+   "h": 192
+  },
+  "CHI": {
+   "file": "Chicago Bears wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Chicago_Bears_wordmark.svg",
+   "w": 600,
+   "h": 91
+  },
+  "DET": {
+   "file": "Detroit Lions wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Detroit_Lions_wordmark.svg",
+   "w": 600,
+   "h": 162
+  },
+  "GB": {
+   "file": "Green Bay Packers wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Green_Bay_Packers_wordmark.svg",
+   "w": 600,
+   "h": 180
+  },
+  "MIN": {
+   "file": "Minnesota Vikings wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Minnesota_Vikings_wordmark.svg",
+   "w": 600,
+   "h": 196
+  },
+  "ATL": {
+   "file": "Atlanta Falcons wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Atlanta_Falcons_wordmark.svg",
+   "w": 600,
+   "h": 126
+  },
+  "CAR": {
+   "file": "Carolina Panthers wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Carolina_Panthers_wordmark.svg",
+   "w": 600,
+   "h": 234
+  },
+  "NO": {
+   "file": "New Orleans Saints wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:New_Orleans_Saints_wordmark.svg",
+   "w": 600,
+   "h": 144
+  },
+  "TB": {
+   "file": "Tampa Bay Buccaneers wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Tampa_Bay_Buccaneers_wordmark.svg",
+   "w": 600,
+   "h": 166
+  },
+  "ARI": {
+   "file": "Arizona Cardinals wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Arizona_Cardinals_wordmark.svg",
+   "w": 600,
+   "h": 121
+  },
+  "SF": {
+   "file": "San_Francisco_49ers_Saloon_Wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:San_Francisco_49ers_Saloon_Wordmark.svg",
+   "w": 600,
+   "h": 195
+  },
+  "SEA": {
+   "file": "Seattle Seahawks wordmark.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Seattle_Seahawks_wordmark.svg",
+   "w": 600,
+   "h": 96
+  },
+  "LAR": {
+   "file": "LA Rams wordmark.png",
+   "source": "https://commons.wikimedia.org/wiki/File:LA_Rams_wordmark.png",
+   "w": 600,
+   "h": 172
+  }
+ }
+}
