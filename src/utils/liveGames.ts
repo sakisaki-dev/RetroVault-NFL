@@ -239,6 +239,12 @@ export const normGame = (e: Record<string, any>): LiveGame | null => {
       lastYds: num(s.lastPlay?.statYardage),
       lastType: String(s.lastPlay?.type?.text ?? ''),
     };
+    // A break (halftime, the end of a quarter): ESPN keeps the last snap's down, distance and spot ("1st & 1" at the
+    // half). Nobody is on the field, so they are dropped; timeouts and the last play stay.
+    const name = String(st.type?.name ?? '');
+    if (/HALFTIME|END_PERIOD/.test(name) || /half|end of|end qtr|end quarter/i.test(g.desc)) {
+      g.sit = { ...g.sit, down: 0, dist: 0, dd: '', poss: null, spot: null, redZone: false, toGoal: null };
+    }
   }
   return g;
 };
