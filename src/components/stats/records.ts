@@ -1,4 +1,4 @@
-import type { DBPlayer, DLPlayer, LBPlayer, LeagueData, Player } from '@/types/player';
+import type { DBPlayer, DLPlayer, KPlayer, LBPlayer, LeagueData, Player } from '@/types/player';
 
 // Pure record-book logic for the Stats hub (no React). Career records only; there are no single-season boards.
 
@@ -11,14 +11,17 @@ export const MIN = {
   receptions: 50,
   games: 16,
   defGames: 32,
+  fgAttempts: 100,
+  fg50Attempts: 20,
+  xpAttempts: 100,
 } as const;
 
 /** Pace tracker: only flag players who could pass the record within this many 16-game seasons. */
 export const PACE_MAX_SEASONS = 5;
 
-export type GroupKey = 'qb' | 'rb' | 'wr' | 'te' | 'ol' | 'def' | 'awards';
+export type GroupKey = 'qb' | 'rb' | 'wr' | 'te' | 'ol' | 'def' | 'k' | 'awards';
 
-export const GROUP_ORDER: GroupKey[] = ['qb', 'rb', 'wr', 'te', 'ol', 'def', 'awards'];
+export const GROUP_ORDER: GroupKey[] = ['qb', 'rb', 'wr', 'te', 'ol', 'def', 'k', 'awards'];
 
 export const GROUP_META: Record<GroupKey, { label: string; hsl: string }> = {
   qb: { label: 'Quarterbacks', hsl: 'var(--chart-1)' },
@@ -27,6 +30,7 @@ export const GROUP_META: Record<GroupKey, { label: string; hsl: string }> = {
   te: { label: 'Tight Ends', hsl: 'var(--chart-3)' },
   ol: { label: 'Offensive Line', hsl: 'var(--chalk)' },
   def: { label: 'Defense', hsl: 'var(--flag)' },
+  k: { label: 'Kickers', hsl: 'var(--chart-5)' },
   awards: { label: 'Accolades & Metrics', hsl: 'var(--gold)' },
 };
 
@@ -103,9 +107,9 @@ export function board<T extends Player>(
 }
 
 /** Headline career records shown as the hero cards. */
-export const HEADLINE_IDS = ['qbPassYds', 'qbPassTD', 'rbRushYds', 'wrRecYds', 'wrRecTD', 'defSacks', 'defINT', 'rings', 'legacy'];
+export const HEADLINE_IDS = ['qbPassYds', 'qbPassTD', 'rbRushYds', 'wrRecYds', 'wrRecTD', 'defSacks', 'defINT', 'kFG', 'kPoints', 'rings', 'legacy'];
 /** Rate-stat leaders (each carries its minimum-sample label). */
-export const LEADER_IDS = ['qbYPA', 'qbTDINT', 'qbCmpPct', 'rbYPC', 'rbScrimYPG', 'wrYPR', 'wrRecYPG', 'defSPG', 'defTOPG'];
+export const LEADER_IDS = ['qbYPA', 'qbTDINT', 'qbCmpPct', 'rbYPC', 'rbScrimYPG', 'wrYPR', 'wrRecYPG', 'defSPG', 'defTOPG', 'kFGPct', 'kFG50Pct'];
 
 const EMPTY: RecordBook = { boards: new Map(), pace: [], playerCount: 0 };
 
@@ -118,14 +122,18 @@ export function buildRecordBook(data: LeagueData | null | undefined, depth = 5):
   const wrs = data.widereceivers;
   const tes = data.tightends;
   const ols = data.offensiveline;
+  const ks: KPlayer[] = data.kickers ?? [];
   const defs: (LBPlayer | DBPlayer | DLPlayer)[] = [...data.linebackers, ...data.defensivebacks, ...data.defensiveline];
   const offense: Player[] = [...qbs, ...rbs, ...wrs, ...tes, ...ols];
-  const all: Player[] = [...offense, ...defs];
+  const all: Player[] = [...offense, ...defs, ...ks];
 
   const minAtt = { label: `min ${MIN.qbAttempts} att`, ok: (p: { attempts: number }) => p.attempts >= MIN.qbAttempts };
   const minCar = { label: `min ${MIN.rbCarries} car`, ok: (p: { rushAtt: number }) => p.rushAtt >= MIN.rbCarries };
   const minRec = { label: `min ${MIN.receptions} rec`, ok: (p: { receptions: number }) => p.receptions >= MIN.receptions };
   const minGames = { label: `min ${MIN.games} games`, ok: (p: Player) => p.games >= MIN.games };
+  const minFg = { label: `min ${MIN.fgAttempts} FG att`, ok: (p: KPlayer) => p.fgAtt >= MIN.fgAttempts };
+  const minFg50 = { label: `min ${MIN.fg50Attempts} FG att from 50+`, ok: (p: KPlayer) => p.fgAtt50 >= MIN.fg50Attempts };
+  const minXp = { label: `min ${MIN.xpAttempts} XP att`, ok: (p: KPlayer) => p.xpAtt >= MIN.xpAttempts };
   const minDefGames = { label: `min ${MIN.defGames} games`, ok: (p: Player) => p.games >= MIN.defGames };
 
   const list = [
@@ -177,6 +185,16 @@ export function buildRecordBook(data: LeagueData | null | undefined, depth = 5):
     board(defs, { id: 'defTPG', group: 'def', title: 'Tackles / Game', short: 'Tkl/G', get: (p) => p.tackles / p.games, decimals: 2, min: minDefGames, mixed: true }, depth),
     board(defs, { id: 'defSPG', group: 'def', title: 'Sacks / Game', short: 'Sck/G', get: (p) => p.sacks / p.games, decimals: 2, min: minDefGames, mixed: true }, depth),
     board(defs, { id: 'defTOPG', group: 'def', title: 'Takeaways / Game', short: 'TkA/G', get: (p) => (p.interceptions + p.forcedFumbles) / p.games, decimals: 2, min: minDefGames, mixed: true }, depth),
+    // Kickers (points = 3 a field goal + 1 an extra point)
+    board(ks, { id: 'kFG', group: 'k', title: 'Field Goals Made', short: 'FG', get: (p) => p.fgMade }, depth),
+    board(ks, { id: 'kPoints', group: 'k', title: 'Kicking Points', short: 'Points', get: (p) => 3 * p.fgMade + p.xpMade }, depth),
+    board(ks, { id: 'kFG50', group: 'k', title: 'Field Goals from 50+', short: '50+ FG', get: (p) => p.fgMade50 }, depth),
+    board(ks, { id: 'kLong', group: 'k', title: 'Longest Field Goal', short: 'Long', get: (p) => p.longest }, depth),
+    board(ks, { id: 'kXP', group: 'k', title: 'Extra Points Made', short: 'XP', get: (p) => p.xpMade }, depth),
+    board(ks, { id: 'kFGPct', group: 'k', title: 'Field Goal %', short: 'FG %', get: (p) => (p.fgMade / p.fgAtt) * 100, decimals: 1, min: minFg }, depth),
+    board(ks, { id: 'kFG50Pct', group: 'k', title: 'FG % from 50+', short: '50+ %', get: (p) => (p.fgMade50 / p.fgAtt50) * 100, decimals: 1, min: minFg50 }, depth),
+    board(ks, { id: 'kXPPct', group: 'k', title: 'Extra Point %', short: 'XP %', get: (p) => (p.xpMade / p.xpAtt) * 100, decimals: 1, min: minXp }, depth),
+    board(ks, { id: 'kFGG', group: 'k', title: 'Field Goals / Game', short: 'FG/G', get: (p) => p.fgMade / p.games, decimals: 2, min: minGames }, depth),
     // Accolades + metrics
     board(all, { id: 'rings', group: 'awards', title: 'Championships', short: 'Rings', get: (p) => p.rings, mixed: true }, depth),
     board(all, { id: 'mvp', group: 'awards', title: 'MVP Awards', short: 'MVP', get: (p) => p.mvp, mixed: true }, depth),
@@ -191,19 +209,20 @@ export function buildRecordBook(data: LeagueData | null | undefined, depth = 5):
   ];
   const boards = new Map(list.filter((b): b is RecordBoardData => !!b).map((b) => [b.id, b]));
 
-  return { boards, pace: buildPace({ qbs, rbs, wrs, defs }), playerCount: all.length };
+  return { boards, pace: buildPace({ qbs, rbs, wrs, defs, ks }), playerCount: all.length };
 }
 
 /**
  * Pace: players (min games) on track to pass a career record within PACE_MAX_SEASONS 16-game seasons.
  * Internal only: the (unreliable, never displayed) status flag is the sole signal of who can still add stats.
  */
-function buildPace({ qbs, rbs, wrs, defs }: { qbs: Player[]; rbs: Player[]; wrs: Player[]; defs: Player[] }): PaceEntry[] {
+function buildPace({ qbs, rbs, wrs, defs, ks }: { qbs: Player[]; rbs: Player[]; wrs: Player[]; defs: Player[]; ks: Player[] }): PaceEntry[] {
   const specs: { name: string; players: Player[]; get: (p: Player) => number }[] = [
     { name: 'Career Passing Yards', players: qbs, get: (p) => (p.position === 'QB' ? p.passYds : 0) },
     { name: 'Career Passing TDs', players: qbs, get: (p) => (p.position === 'QB' ? p.passTD : 0) },
     { name: 'Career Rushing Yards', players: rbs, get: (p) => (p.position === 'RB' ? p.rushYds : 0) },
     { name: 'Career Receiving Yards', players: wrs, get: (p) => (p.position === 'WR' ? p.recYds : 0) },
+    { name: 'Career Field Goals', players: ks, get: (p) => (p.position === 'K' ? p.fgMade : 0) },
     { name: 'Career Sacks', players: defs, get: (p) => ('sacks' in p && p.position !== 'QB' ? p.sacks : 0) },
   ];
   const pace: PaceEntry[] = [];
