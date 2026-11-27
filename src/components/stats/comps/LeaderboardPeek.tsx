@@ -112,7 +112,7 @@ const Body = ({ board, player, self, onOpen, sheet }: { board: PeekBoard; player
       </div>
       <ul className="rbk-list relative space-y-1 overflow-y-auto overscroll-contain pr-1" style={{ maxHeight: sheet ? 'calc(var(--safe-h, 100svh) * 0.6)' : 'min(26rem, 60vh)' }} onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
         {board.rows.map((r, i) => (
-          <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} pin={same(r.player, player) && i >= TOP} extras={extras} onOpen={onOpen} />
+          <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} pin={same(r.player, player)} extras={extras} onOpen={onOpen} />
         ))}
         {extra && (
           <>

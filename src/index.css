@@ -1697,5 +1697,5 @@ body::before {
 
 /* leaderboard peek (LeaderboardPeek.tsx): the full list scrolls; rows off screen skip layout and paint */
 .rbk-list > li { content-visibility: auto; contain-intrinsic-size: auto 32px; }
-/* the player's own row rides the bottom of the list until the scroll reaches his place */
-.rbk-list > li.rbk-pin { content-visibility: visible; position: sticky; bottom: 0; z-index: 1; background: hsl(var(--night, var(--background))); box-shadow: 0 -8px 12px -6px hsl(0 0% 0% / 0.6); border-radius: 6px; }
+/* the player's own row rides the bottom of the list until the scroll reaches his place, then the top once past it */
+.rbk-list > li.rbk-pin { content-visibility: visible; position: sticky; top: 0; bottom: 0; z-index: 1; background: hsl(var(--night, var(--background))); box-shadow: 0 0 12px 2px hsl(0 0% 0% / 0.55); border-radius: 6px; }
