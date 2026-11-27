@@ -556,6 +556,14 @@ source names that file).
   Super Bowls (`"note": null` in a superbowl.set drops a row's stale note) and added the two record-board marks Retro
   Vault lacked. Never import a mid-season career total into players.json: the live state covers the season in progress.
 
+## NFL nicknames (Wikipedia only)
+
+`players.json` `nick` (NFL build): `fetch_nicknames.py` (Wikipedia list pages) and `fetch_nicknames_lead.py` (each player's own
+page: infobox `nickname(s)` and lead "nicknamed/known as/dubbed" quotes, namesake guard by birth year, disambiguated titles
+and redirects). Junk is rejected by `junk()` (own name, diminutive, club, generic, over 3 words/24 chars). Best-known rule
+(`build_players.apply_nicknames`): a nickname both his page and a list page give, else his page's best (infobox+lead, infobox,
+lead, then most lead mentions), else the list page's first. Never invented; re-run both fetchers, then `npm run nfl:rebuild`.
+
 ## Owner facts (confirmed; don't "correct" them)
 
 - The current club is the **Eagles** (from Y88; owner: "in this new season i've moved to the eagles"). Before that the

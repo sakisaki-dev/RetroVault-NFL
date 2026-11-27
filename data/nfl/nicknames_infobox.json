@@ -1,30 +1,1612 @@
 {
-"00-0009056": "The Freak",
-"00-0015754": "The Slot Machine,",
-"00-0020536": "L.T.",
-"00-0022161": "T-Sizzle",
-"00-0022924": "Big Ben",
-"00-0022944": "the Sandman",
-"00-0024243": "Big Dog",
-"00-0025399": "Beast Mode",
-"00-0025401": "Revis Island",
-"00-0026143": "Matty Ice,",
-"00-0027656": "Gronk",
-"00-0027939": "Super Cam",
-"00-0027973": "the Red Rifle",
-"00-0028074": "Sausage",
-"00-0029606": "the Hitman",
-"00-0030062": "Big Play Slay",
-"00-0030383": "the Closer",
-"00-0030459": "the Honey Badger",
-"00-0030564": "DHop",
-"00-0030578": "Flash",
-"00-0031376": "Jet",
-"00-0031411": "Tank",
-"00-0031933": "Big Cat",
-"00-0032062": "Belldozer",
-"00-0032210": "the Shark",
-"00-0032764": "King Henry",
-"00-0033040": "Cheetah",
-"00-0038134": "K9"
+"00-0000282": {
+"best": "the Great Dane",
+"all": [
+[
+"the Great Dane",
+"lead",
+1
+]
+]
+},
+"00-0001215": {
+"best": "the Bus",
+"all": [
+[
+"the Bus",
+"lead",
+1
+]
+]
+},
+"00-0002099": {
+"best": "The Reverend",
+"all": [
+[
+"The Reverend",
+"lead",
+1
+]
+]
+},
+"00-0003888": {
+"best": "Chuck",
+"all": [
+[
+"Chuck",
+"lead",
+1
+]
+]
+},
+"00-0004054": {
+"best": "T. D.",
+"all": [
+[
+"T. D.",
+"lead",
+1
+]
+]
+},
+"00-0004073": {
+"best": "Weapon X",
+"all": [
+[
+"Weapon X",
+"lead",
+1
+]
+]
+},
+"00-0006398": {
+"best": "Buddy Lee",
+"all": [
+[
+"Buddy Lee",
+"lead",
+1
+]
+]
+},
+"00-0007681": {
+"best": "Big Game",
+"all": [
+[
+"Big Game",
+"lead",
+1
+]
+]
+},
+"00-0008044": {
+"best": "the Playmaker",
+"all": [
+[
+"the Playmaker",
+"lead",
+1
+]
+]
+},
+"00-0008529": {
+"best": "J. J.",
+"all": [
+[
+"J. J.",
+"lead",
+1
+]
+]
+},
+"00-0009056": {
+"best": "The Freak",
+"all": [
+[
+"The Freak",
+"lead",
+1
+]
+]
+},
+"00-0010346": {
+"best": "the Sheriff",
+"all": [
+[
+"the Sheriff",
+"lead",
+1
+]
+]
+},
+"00-0011024": {
+"best": "Air",
+"all": [
+[
+"Air",
+"lead",
+6
+]
+]
+},
+"00-0014324": {
+"best": "Coach Prime",
+"all": [
+[
+"Coach Prime",
+"lead",
+1
+],
+[
+"Prime Time",
+"lead",
+1
+]
+]
+},
+"00-0015754": {
+"best": "The Slot Machine",
+"all": [
+[
+"The Slot Machine",
+"lead",
+1
+]
+]
+},
+"00-0016248": {
+"best": "D. T.",
+"all": [
+[
+"D. T.",
+"lead",
+1
+]
+]
+},
+"00-0016344": {
+"best": "Baby Elephant",
+"all": [
+[
+"Baby Elephant",
+"lead",
+1
+]
+]
+},
+"00-0017693": {
+"best": "Money",
+"all": [
+[
+"Money",
+"lead",
+1
+]
+]
+},
+"00-0018941": {
+"best": "Runway",
+"all": [
+[
+"Runway",
+"lead",
+1
+]
+]
+},
+"00-0019453": {
+"best": "He Hate Me",
+"all": [
+[
+"He Hate Me",
+"lead",
+1
+]
+]
+},
+"00-0019539": {
+"best": "the Human Joystick",
+"all": [
+[
+"the Human Joystick",
+"lead",
+1
+],
+[
+"the X-Factor",
+"lead",
+1
+]
+]
+},
+"00-0019545": {
+"best": "Big Katt",
+"all": [
+[
+"Big Katt",
+"lead",
+1
+]
+]
+},
+"00-0019617": {
+"best": "KGB",
+"all": [
+[
+"KGB",
+"lead",
+1
+]
+]
+},
+"00-0020407": {
+"best": "Auburn Rambler",
+"all": [
+[
+"Auburn Rambler",
+"lead",
+1
+]
+]
+},
+"00-0020477": {
+"best": "41 Spot",
+"all": [
+[
+"41 Spot",
+"lead",
+1
+]
+]
+},
+"00-0020528": {
+"best": "Big Baby",
+"all": [
+[
+"Big Baby",
+"lead",
+1
+]
+]
+},
+"00-0020535": {
+"best": "the Cowboy",
+"all": [
+[
+"the Cowboy",
+"lead",
+1
+]
+]
+},
+"00-0020536": {
+"best": "L.T.",
+"all": [
+[
+"L.T.",
+"lead",
+2
+]
+]
+},
+"00-0020578": {
+"best": "Money Matt",
+"all": [
+[
+"Money Matt",
+"lead",
+1
+]
+]
+},
+"00-0021144": {
+"best": "Big Hen",
+"all": [
+[
+"Big Hen",
+"lead",
+1
+],
+[
+"Big John",
+"lead",
+1
+]
+]
+},
+"00-0021314": {
+"best": "Che Tay",
+"all": [
+[
+"Che Tay",
+"lead",
+1
+]
+]
+},
+"00-0022123": {
+"best": "Peanut",
+"all": [
+[
+"Peanut",
+"lead",
+2
+],
+[
+"Peanut punch",
+"lead",
+1
+]
+]
+},
+"00-0022161": {
+"best": "T-Sizzle",
+"all": [
+[
+"T-Sizzle",
+"lead",
+1
+]
+]
+},
+"00-0022777": {
+"best": "Meast",
+"all": [
+[
+"Meast",
+"lead",
+1
+]
+]
+},
+"00-0022924": {
+"best": "Big Ben",
+"all": [
+[
+"Big Ben",
+"lead",
+1
+]
+]
+},
+"00-0022944": {
+"best": "the Sandman",
+"all": [
+[
+"the Sandman",
+"lead",
+1
+]
+]
+},
+"00-0023441": {
+"best": "Pacman",
+"all": [
+[
+"Pacman",
+"lead",
+2
+]
+]
+},
+"00-0023446": {
+"best": "Lights Out",
+"all": [
+[
+"Lights Out",
+"lead",
+1
+]
+]
+},
+"00-0023455": {
+"best": "Swagu",
+"all": [
+[
+"Swagu",
+"lead",
+1
+]
+]
+},
+"00-0024243": {
+"best": "Big Dog",
+"all": [
+[
+"Big Dog",
+"lead",
+1
+]
+]
+},
+"00-0024269": {
+"best": "the Bonecrusher",
+"all": [
+[
+"the Bonecrusher",
+"lead",
+1
+],
+[
+"Patriot-Killer",
+"lead",
+1
+]
+]
+},
+"00-0024296": {
+"best": "Clipboard Jesus",
+"all": [
+[
+"Clipboard Jesus",
+"lead",
+1
+]
+]
+},
+"00-0025389": {
+"best": "Megatron",
+"all": [
+[
+"Megatron",
+"lead",
+1
+]
+]
+},
+"00-0025399": {
+"best": "Beast Mode",
+"all": [
+[
+"Beast Mode",
+"lead",
+1
+]
+]
+},
+"00-0025401": {
+"best": "Revis Island",
+"all": [
+[
+"Revis Island",
+"lead",
+1
+]
+]
+},
+"00-0025626": {
+"best": "C. J.",
+"all": [
+[
+"C. J.",
+"lead",
+1
+]
+]
+},
+"00-0025860": {
+"best": "the Law Firm",
+"all": [
+[
+"the Law Firm",
+"lead",
+1
+]
+]
+},
+"00-0026143": {
+"best": "Matty Ice",
+"all": [
+[
+"Matty Ice",
+"lead",
+1
+]
+]
+},
+"00-0026512": {
+"best": "Swaggy",
+"all": [
+[
+"Swaggy",
+"lead",
+1
+]
+]
+},
+"00-0026758": {
+"best": "C. J.",
+"all": [
+[
+"C. J.",
+"lead",
+1
+]
+]
+},
+"00-0027029": {
+"best": "Shady",
+"all": [
+[
+"Shady",
+"lead",
+1
+]
+]
+},
+"00-0027046": {
+"best": "Mutton Chop",
+"all": [
+[
+"Mutton Chop",
+"lead",
+1
+],
+[
+"Pot Roast",
+"lead",
+1
+]
+]
+},
+"00-0027539": {
+"best": "Co-Cap",
+"all": [
+[
+"Co-Cap",
+"lead",
+1
+]
+]
+},
+"00-0027656": {
+"best": "Gronk",
+"all": [
+[
+"Gronk",
+"lead",
+7
+]
+]
+},
+"00-0027663": {
+"best": "the General",
+"all": [
+[
+"the General",
+"lead",
+1
+]
+]
+},
+"00-0027732": {
+"best": "Hoo Man",
+"all": [
+[
+"Hoo Man",
+"lead",
+1
+],
+[
+"Uh-Oh",
+"lead",
+1
+]
+]
+},
+"00-0027733": {
+"best": "Bam Bam Kam",
+"all": [
+[
+"Bam Bam Kam",
+"lead",
+1
+]
+]
+},
+"00-0027739": {
+"best": "the Terminator",
+"all": [
+[
+"the Terminator",
+"lead",
+1
+]
+]
+},
+"00-0027817": {
+"best": "R. J.",
+"all": [
+[
+"R. J.",
+"lead",
+1
+]
+]
+},
+"00-0027840": {
+"best": "Reggie",
+"all": [
+[
+"Reggie",
+"lead",
+1
+]
+]
+},
+"00-0027876": {
+"best": "Tebowing",
+"all": [
+[
+"Tebowing",
+"lead",
+1
+]
+]
+},
+"00-0027939": {
+"best": "Super Cam",
+"all": [
+[
+"Super Cam",
+"lead",
+1
+]
+]
+},
+"00-0027942": {
+"best": "A. J.",
+"all": [
+[
+"A. J.",
+"lead",
+1
+]
+]
+},
+"00-0027973": {
+"best": "the Red Rifle",
+"all": [
+[
+"the Red Rifle",
+"lead",
+1
+]
+]
+},
+"00-0028074": {
+"best": "Sausage",
+"all": [
+[
+"Sausage",
+"lead",
+1
+]
+]
+},
+"00-0028307": {
+"best": "D.J.",
+"all": [
+[
+"D.J.",
+"lead",
+1
+]
+]
+},
+"00-0028907": {
+"best": "Italian Ice",
+"all": [
+[
+"Italian Ice",
+"lead",
+1
+]
+]
+},
+"00-0029606": {
+"best": "the Hitman",
+"all": [
+[
+"the Hitman",
+"lead",
+1
+]
+]
+},
+"00-0029664": {
+"best": "Flash",
+"all": [
+[
+"Flash",
+"lead",
+1
+]
+]
+},
+"00-0029681": {
+"best": "Jackrabbit",
+"all": [
+[
+"Jackrabbit",
+"lead",
+1
+]
+]
+},
+"00-0030062": {
+"best": "Big Play Slay",
+"all": [
+[
+"Big Play Slay",
+"lead",
+1
+]
+]
+},
+"00-0030383": {
+"best": "the Closer",
+"all": [
+[
+"the Closer",
+"lead",
+1
+]
+]
+},
+"00-0030459": {
+"best": "the Honey Badger",
+"all": [
+[
+"the Honey Badger",
+"lead",
+1
+]
+]
+},
+"00-0030496": {
+"best": "The Juice",
+"all": [
+[
+"The Juice",
+"infobox",
+1
+]
+]
+},
+"00-0030505": {
+"best": "D. J.",
+"all": [
+[
+"D. J.",
+"lead",
+1
+]
+]
+},
+"00-0030543": {
+"best": "J. J.",
+"all": [
+[
+"J. J.",
+"lead",
+1
+]
+]
+},
+"00-0030564": {
+"best": "DHop",
+"all": [
+[
+"DHop",
+"lead",
+1
+],
+[
+"Nuk",
+"lead",
+1
+]
+]
+},
+"00-0030578": {
+"best": "Flash",
+"all": [
+[
+"Flash",
+"lead",
+1
+]
+]
+},
+"00-0031051": {
+"best": "Smoke",
+"all": [
+[
+"Smoke",
+"lead",
+2
+],
+[
+"Smokey",
+"lead",
+1
+]
+]
+},
+"00-0031059": {
+"best": "Quest",
+"all": [
+[
+"Quest",
+"lead",
+2
+]
+]
+},
+"00-0031189": {
+"best": "T. J.",
+"all": [
+[
+"T. J.",
+"lead",
+1
+]
+]
+},
+"00-0031345": {
+"best": "Jimmy G",
+"all": [
+[
+"Jimmy G",
+"lead",
+1
+]
+]
+},
+"00-0031411": {
+"best": "Tank",
+"all": [
+[
+"Tank",
+"lead",
+1
+]
+]
+},
+"00-0031552": {
+"best": "Snacks",
+"all": [
+[
+"Snacks",
+"lead",
+1
+]
+]
+},
+"00-0032062": {
+"best": "Belldozer",
+"all": [
+[
+"Belldozer",
+"lead",
+1
+]
+]
+},
+"00-0032210": {
+"best": "the Shark",
+"all": [
+[
+"the Shark",
+"lead",
+1
+]
+]
+},
+"00-0032371": {
+"best": "Fat Rob",
+"all": [
+[
+"Fat Rob",
+"lead",
+1
+]
+]
+},
+"00-0032573": {
+"best": "Peanut",
+"all": [
+[
+"Peanut",
+"lead",
+1
+]
+]
+},
+"00-0032764": {
+"best": "King Henry",
+"all": [
+[
+"King Henry",
+"lead",
+1
+]
+]
+},
+"00-0032918": {
+"best": "C. J.",
+"all": [
+[
+"C. J.",
+"lead",
+1
+]
+]
+},
+"00-0032977": {
+"best": "Hollywood",
+"all": [
+[
+"Hollywood",
+"lead",
+1
+]
+]
+},
+"00-0033040": {
+"best": "Cheetah",
+"all": [
+[
+"Cheetah",
+"lead",
+1
+]
+]
+},
+"00-0033045": {
+"best": "Zeke",
+"all": [
+[
+"Zeke",
+"lead",
+1
+]
+]
+},
+"00-0033138": {
+"best": "Kickin' Ficken",
+"all": [
+[
+"Kickin' Ficken",
+"lead",
+1
+]
+]
+},
+"00-0033367": {
+"best": "C. J.",
+"all": [
+[
+"C. J.",
+"lead",
+1
+]
+]
+},
+"00-0033376": {
+"best": "Pancake Pat",
+"all": [
+[
+"Pancake Pat",
+"lead",
+1
+]
+]
+},
+"00-0033785": {
+"best": "the Hulk",
+"all": [
+[
+"the Hulk",
+"lead",
+1
+]
+]
+},
+"00-0033863": {
+"best": "Skip",
+"all": [
+[
+"Skip",
+"lead",
+3
+]
+]
+},
+"00-0033907": {
+"best": "D.J.",
+"all": [
+[
+"D.J.",
+"lead",
+1
+]
+]
+},
+"00-0033949": {
+"best": "the Passtronaut",
+"all": [
+[
+"the Passtronaut",
+"lead",
+1
+]
+]
+},
+"00-0034084": {
+"best": "the Money Badger",
+"all": [
+[
+"the Money Badger",
+"lead",
+1
+]
+]
+},
+"00-0034184": {
+"best": "Gus the Bus",
+"all": [
+[
+"Gus the Bus",
+"lead",
+1
+]
+]
+},
+"00-0034262": {
+"best": "P. J.",
+"all": [
+[
+"P. J.",
+"lead",
+1
+]
+]
+},
+"00-0034729": {
+"best": "Juice",
+"all": [
+[
+"Juice",
+"lead",
+1
+]
+]
+},
+"00-0034777": {
+"best": "D. J.",
+"all": [
+[
+"D. J.",
+"lead",
+1
+]
+]
+},
+"00-0034846": {
+"best": "Maniac",
+"all": [
+[
+"Maniac",
+"lead",
+1
+]
+]
+},
+"00-0035243": {
+"best": "Boobie Miles",
+"all": [
+[
+"Boobie Miles",
+"lead",
+1
+]
+]
+},
+"00-0035250": {
+"best": "Motor",
+"all": [
+[
+"Motor",
+"lead",
+1
+]
+]
+},
+"00-0035378": {
+"best": "Dewey",
+"all": [
+[
+"Dewey",
+"lead",
+1
+]
+]
+},
+"00-0035685": {
+"best": "Knuckles",
+"all": [
+[
+"Knuckles",
+"lead",
+1
+]
+]
+},
+"00-0035710": {
+"best": "Danny Dimes",
+"all": [
+[
+"Danny Dimes",
+"lead",
+1
+],
+[
+"Indiana Jones",
+"lead",
+1
+]
+]
+},
+"00-0035849": {
+"best": "Hot Rod",
+"all": [
+[
+"Hot Rod",
+"lead",
+1
+]
+]
+},
+"00-0035890": {
+"best": "Turk",
+"all": [
+[
+"Turk",
+"lead",
+1
+]
+]
+},
+"00-0035942": {
+"best": "The Exploding Flower",
+"all": [
+[
+"The Exploding Flower",
+"lead",
+1
+]
+]
+},
+"00-0035993": {
+"best": "Snoop",
+"all": [
+[
+"Snoop",
+"lead",
+1
+]
+]
+},
+"00-0036196": {
+"best": "Big-Game Gabe",
+"all": [
+[
+"Big-Game Gabe",
+"lead",
+1
+]
+]
+},
+"00-0036233": {
+"best": "DPJ",
+"all": [
+[
+"DPJ",
+"lead",
+1
+]
+]
+},
+"00-0036265": {
+"best": "Quadzilla",
+"all": [
+[
+"Quadzilla",
+"lead",
+1
+]
+]
+},
+"00-0036284": {
+"best": "Big Ticket",
+"all": [
+[
+"Big Ticket",
+"lead",
+1
+]
+]
+},
+"00-0036335": {
+"best": "D. J.",
+"all": [
+[
+"D. J.",
+"lead",
+1
+]
+]
+},
+"00-0036428": {
+"best": "Garbs",
+"all": [
+[
+"Garbs",
+"lead",
+1
+]
+]
+},
+"00-0036442": {
+"best": "Joe Brrr",
+"all": [
+[
+"Joe Brrr",
+"lead",
+1
+],
+[
+"Joe Cool",
+"lead",
+1
+]
+]
+},
+"00-0036854": {
+"best": "Shooter",
+"all": [
+[
+"Shooter",
+"lead",
+1
+]
+]
+},
+"00-0037083": {
+"best": "JJ",
+"all": [
+[
+"JJ",
+"lead",
+1
+]
+]
+},
+"00-0037224": {
+"best": "Dicker the Kicker",
+"all": [
+[
+"Dicker the Kicker",
+"lead",
+1
+]
+]
+},
+"00-0037248": {
+"best": "Captain Cook",
+"all": [
+[
+"Captain Cook",
+"lead",
+1
+]
+]
+},
+"00-0037282": {
+"best": "the Governor",
+"all": [
+[
+"the Governor",
+"lead",
+1
+]
+]
+},
+"00-0037291": {
+"best": "Speedy",
+"all": [
+[
+"Speedy",
+"lead",
+1
+]
+]
+},
+"00-0037313": {
+"best": "Buster",
+"all": [
+[
+"Buster",
+"lead",
+1
+]
+]
+},
+"00-0037746": {
+"best": "B Rob",
+"all": [
+[
+"B Rob",
+"lead",
+1
+]
+]
+},
+"00-0037984": {
+"best": "Pepe",
+"all": [
+[
+"Pepe",
+"lead",
+1
+]
+]
+},
+"00-0038040": {
+"best": "Zeus",
+"all": [
+[
+"Zeus",
+"lead",
+1
+]
+]
+},
+"00-0038106": {
+"best": "Enyi",
+"all": [
+[
+"Enyi",
+"lead",
+1
+]
+]
+},
+"00-0038134": {
+"best": "K9",
+"all": [
+[
+"K9",
+"lead",
+1
+]
+]
+},
+"00-0038476": {
+"best": "Tommy Cutlets",
+"all": [
+[
+"Tommy Cutlets",
+"lead",
+1
+],
+[
+"Tommy Two Chains",
+"lead",
+1
+]
+]
+},
+"00-0038558": {
+"best": "Mount Washington",
+"all": [
+[
+"Mount Washington",
+"lead",
+1
+]
+]
+},
+"00-0038612": {
+"best": "A. T.",
+"all": [
+[
+"A. T.",
+"lead",
+1
+]
+]
+},
+"00-0038731": {
+"best": "T. J.",
+"all": [
+[
+"T. J.",
+"lead",
+1
+]
+]
+},
+"00-0038796": {
+"best": "Palcho",
+"all": [
+[
+"Palcho",
+"lead",
+1
+]
+]
+},
+"00-0039107": {
+"best": "The Mailman",
+"all": [
+[
+"The Mailman",
+"lead",
+1
+]
+]
+},
+"00-0039139": {
+"best": "Sonic",
+"all": [
+[
+"Sonic",
+"lead",
+2
+]
+]
+},
+"00-0039406": {
+"best": "Bookie",
+"all": [
+[
+"Bookie",
+"lead",
+1
+]
+]
+},
+"00-0039457": {
+"best": "the Windbreaker",
+"all": [
+[
+"the Windbreaker",
+"lead",
+1
+]
+]
+},
+"00-0039459": {
+"best": "Canadian Eagle",
+"all": [
+[
+"Canadian Eagle",
+"lead",
+1
+]
+]
+},
+"00-0039776": {
+"best": "Tank",
+"all": [
+[
+"Tank",
+"lead",
+1
+]
+]
+},
+"00-0039792": {
+"best": "Tez",
+"all": [
+[
+"Tez",
+"lead",
+2
+]
+]
+},
+"00-0039849": {
+"best": "Maserati Marv",
+"all": [
+[
+"Maserati Marv",
+"lead",
+1
+]
+]
+},
+"00-0040124": {
+"best": "T-Mac",
+"all": [
+[
+"T-Mac",
+"lead",
+1
+]
+]
+},
+"00-0040341": {
+"best": "Neiko",
+"all": [
+[
+"Neiko",
+"lead",
+2
+]
+]
+},
+"00-0040466": {
+"best": "Rocket",
+"all": [
+[
+"Rocket",
+"lead",
+1
+]
+]
+},
+"00-0040752": {
+"best": "Femi",
+"all": [
+[
+"Femi",
+"lead",
+2
+]
+]
+},
+"00-0041043": {
+"best": "A. J.",
+"all": [
+[
+"A. J.",
+"lead",
+1
+]
+]
+},
+"00-0041046": {
+"best": "Big Citrus",
+"all": [
+[
+"Big Citrus",
+"lead",
+1
+]
+]
+},
+"00-0041096": {
+"best": "Fatman",
+"all": [
+[
+"Fatman",
+"lead",
+1
+]
+]
+},
+"00-0041391": {
+"best": "IGB",
+"all": [
+[
+"IGB",
+"lead",
+2
+]
+]
+}
 }
