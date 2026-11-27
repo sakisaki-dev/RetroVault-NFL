@@ -11,6 +11,7 @@ import { displayName } from '@/utils/displayName';
 import { stripKeySuffix } from '@/utils/nameSuffix';
 import { openPlayerCard } from '@/utils/playerCardLink';
 import { useGameSprites } from '@/utils/gameSprites';
+import { useNflLabData, type NflLabData } from '@/utils/nflLabData';
 import { isLite, isReducedMotion, useReducedMotion } from '@/hooks/usePerfMode';
 import { SCORE_FLASH_MS, type LiveDetail, type LiveGame, type LiveLeader } from '@/utils/liveGames';
 import type { GameDetail } from '@/utils/nflGames';
@@ -18,6 +19,7 @@ import { sitePos } from '../gameModel';
 import { FORMATION, absOf, fx, fy, lampOf, manX, sameClub, situationOf, spotLabel, type Situation } from './liveField';
 import { playFx, type PlayFx, type Pt } from './playFx';
 import type { LiveForGame } from './useLiveForGame';
+import { turfFor, useLiveFieldArt } from './fieldArtFull';
 import './liveView.css';
 
 /**
@@ -187,10 +189,51 @@ const PixelMan = ({ abbr, n }: { abbr: string; n: number }) => {
   );
 };
 
+/**
+ * The 22 on the field are each club's real starters from its depth chart (depth_charts.json): offence LT LG C RG RT, TE,
+ * three WRs, QB, RB in the formation's order; defence its line, linebackers, corners and safeties (a 3-4 lends an outside
+ * linebacker to the line). Each stands in his own sprite; a slot with no starter or no known player falls back to the
+ * pixel man (owner: "use the real sprites instead of the silhouettes").
+ */
+const OFF_SLOTS = ['LT', 'LG', 'C', 'RG', 'RT', 'TE', 'WR', 'WR', 'WR', 'QB', 'RB'];
+const startersOf = (depth: NflLabData['depth'], abbr: string, side: 'o' | 'd'): (string | undefined)[] => {
+  const club = depth?.clubs?.[abbr] as { o?: Record<string, string[]>; d?: Record<string, string[]> } | undefined;
+  if (!club) return [];
+  if (side === 'o') {
+    const used: Record<string, number> = {};
+    return OFF_SLOTS.map((slot) => {
+      const n = (used[slot] = (used[slot] ?? -1) + 1);
+      return slot === 'WR' ? club.o?.WR?.[n] : club.o?.[slot]?.[0];
+    });
+  }
+  const d = club.d ?? {};
+  const first = (re: RegExp) => Object.keys(d).filter((k) => re.test(k)).map((k) => d[k]?.[0]).filter((x): x is string => !!x);
+  const line = first(/DE$|DT$|NT$|^DL/);
+  const lbs = first(/LB$/);
+  const cbs = first(/CB$/);
+  const safeties = first(/^(SS|FS|S)$/);
+  while (line.length < 4 && lbs.length > 3) line.push(lbs.pop()!);
+  return [...line.slice(0, 4), ...lbs.slice(0, 3), ...cbs.slice(0, 2), ...safeties.slice(0, 2)];
+};
+
 const Men = ({ g, sit, season }: { g: LiveGame; sit: Situation; season: number }) => {
   const sprites = useGameSprites();
+  const lab = useNflLabData();
+  const { getAllPlayers } = useLeague();
   const off = sit.poss;
   const def = sameClub(off, g.away.abbr) ? g.home.abbr : g.away.abbr;
+  const byKey = useMemo(() => new Map(getAllPlayers().map((p) => [`${p.position}:${displayName(p.name)}`, p])), [getAllPlayers]);
+  const cast = useMemo(() => {
+    const club = (a: string) => findNFLTeam(a)?.abbreviation ?? a;
+    const o = startersOf(lab?.depth ?? null, club(off), 'o');
+    const d = startersOf(lab?.depth ?? null, club(def), 'd');
+    let oi = 0;
+    let di = 0;
+    return FORMATION.map((m) => {
+      const key = m.side === 'o' ? o[oi++] : d[di++];
+      return key ? byKey.get(key) ?? byKey.get(stripKeySuffix(key)) : undefined;
+    });
+  }, [lab, off, def, byKey]);
   const men = useMemo(() => FORMATION.map((m, i) => ({ m, i, x: manX(m, sit) })).sort((a, b) => a.m.y - b.m.y), [sit]);
   return (
     <div className="lv-men" aria-hidden>
@@ -198,11 +241,12 @@ const Men = ({ g, sit, season }: { g: LiveGame; sit: Situation; season: number }
         const abbr = m.side === 'o' ? off : def;
         // the offence heads sit.dir; a sprite faces right by default, so those heading left are flipped (never a CSS mirror: the number would read backwards)
         const flip = m.side === 'o' ? sit.dir === -1 : sit.dir === 1;
+        const who = cast[i];
         return (
           <span key={i} className="lv-man" style={{ left: fx(x), top: `${fy(m.y) * 100}%`, ['--d' as string]: i } as CSSProperties}>
             <span className="lv-man__in">
-              {sprites ? (
-                <GameSprite player={{ name: `Live ${abbr} ${m.pos} ${i}`, position: m.pos, team: abbr, bannerTeam: abbr }} team={abbr} season={season} kind="figure" size="s" flip={flip} hoverName={false} />
+              {sprites && who ? (
+                <GameSprite player={who} team={abbr} season={season} kind="figure" size="s" flip={flip} hoverName={false} />
               ) : (
                 <PixelMan abbr={abbr} n={i} />
               )}
@@ -252,6 +296,7 @@ const PlayLayer = ({ fxs, rest, first, k }: { fxs: PlayFx | null; rest: Pt | nul
 
 const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; season: number }) => {
   const sit = situationOf(g);
+  const art = useLiveFieldArt(g.away.abbr, g.away.name, g.home.abbr, g.home.name, turfFor(g.kick, g.weather));
   const s = g.sit;
   const a = clubPlate(g.away.abbr);
   const h = clubPlate(g.home.abbr);
@@ -272,7 +317,9 @@ const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; seaso
         {dd && <span className="lv-dd">{dd}</span>}
         {sit && <span className="lv-muted">{nick(sit.poss)} {s?.redZone ? 'in the red zone' : 'driving'}, {g.clock} left</span>}
       </div>
-      <div className="lv-field" aria-label={sit ? `Ball on ${spotLabel(g)}` : 'The field'}>
+      <div className={cn('lv-field', art && 'has-art')} aria-label={sit ? `Ball on ${spotLabel(g)}` : 'The field'}>
+        {/* the game's own field (both end zones painted in the clubs' colours); the CSS field below when there's no art */}
+        {art && <div className="lv-art" style={{ backgroundImage: `url(${art})` }} aria-hidden />}
         <div className="lv-ez is-l" style={{ ['--ez' as string]: a.fill, color: a.ink }}><span>{g.away.name}</span></div>
         <div className="lv-ez is-r" style={{ ['--ez' as string]: h.fill, color: h.ink }}><span>{g.home.name}</span></div>
         <TeamLogo team={g.home.abbr} decorative className="lv-midmark" />

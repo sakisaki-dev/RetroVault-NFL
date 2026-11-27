@@ -15,6 +15,7 @@ Output (public/private-sprites/field/), every piece the middle 640 px of the gam
 - crowd.png: spr_fieldfans frame 0, the crowd in the stands, 640 x 33 (key colours).
 - stands.png: spr_fieldfans frame 1, the stand front, 640 x 33.
 - index.json: the files, sizes, the field's playing rows and the key colours.
+- field-full-day.png, field-full-night.png, field-full-snow.png: the same frames uncut (both end zones), for the live view.
 Key colours: #00ff00 club primary, #ff00ff club secondary, #00ffff a light trim.
 """
 from __future__ import annotations
@@ -59,6 +60,13 @@ def main() -> None:
         tall = img.transpose(Image.Transpose.ROTATE_90)
         tall.save(OUT / name.replace(".png", "-tall.png"), optimize=True)
         files[name.replace(".png", "-tall.png")] = list(tall.size)
+    # the whole field, both end zones (the live game view; owner: "the game files have a real field with endzone
+    # designs, use that"): every frame at the game's full 1300 px, key colours kept for the end zones to be painted
+    for name, f in TURF.items():
+        full = frame(spr["spr_field"]["frames"][f])
+        fname = name.replace("turf-", "field-full-")
+        full.save(OUT / fname, optimize=True)
+        files[fname] = list(full.size)
     for name, f in (("crowd.png", 0), ("stands.png", 1)):
         img = frame(spr["spr_fieldfans"]["frames"][f]).crop((X0, 0, X1, 33))
         img.save(OUT / name, optimize=True)

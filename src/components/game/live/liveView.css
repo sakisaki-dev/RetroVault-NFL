@@ -227,3 +227,14 @@
   .lv-sp { grid-template-columns: 52px 22px minmax(0, 1fr) 46px; gap: 8px; }
   .lv-dr { grid-template-columns: 24px minmax(0, 1fr) 62px; }
 }
+
+/* the game's own field art (fieldArtFull.ts): the playing surface (image rows 33–201 of 237) sits at 20%–92% of the box,
+   where fx()/fy() already place the men, ball and lines; the art's own end zones and yard lines replace the CSS ones */
+/* phones keep the CSS field: at the game's proportions a 390 px field would stand only ~76 px tall */
+.lv-art { display: none; }
+@media (min-width: 640px) {
+  .lv-field.has-art { height: auto; aspect-ratio: 1200 / 233.33; background: #2b5d14; border-radius: 12px; }
+  .lv-field.has-art .lv-art { display: block; position: absolute; left: 0; width: 100%; top: 5.857%; height: 101.57%; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; pointer-events: none; }
+  .lv-field.has-art :is(.lv-ez, .lv-midmark, .lv-hash, .lv-yl) { display: none; }
+  .lv-field.has-art .lv-redzone span { top: 22%; }
+}
