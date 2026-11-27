@@ -24,7 +24,6 @@ import { NameStrip, PlayerHit, Sprite, hcVars } from './hubParts';
 import { useOpenCard } from './cardContext';
 import { f1, isBenchId, nameOf, type FantasyHub } from './useFantasyHub';
 import BenchRow from './BenchRow';
-import type { FPos } from '@/utils/fantasy';
 import { teamOf } from '../parts';
 
 const InjMini = ({ code }: { code: InjuryCode }) => <span className={`nfl-injchip nfl-injchip--${code.toLowerCase()}`}>{code === 'Questionable' ? 'Q' : code === 'Doubtful' ? 'Dbt' : code}</span>;
@@ -39,7 +38,8 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
   const tall = useMedia('(max-width: 639px)');
   const art = useFieldArt(clubName, turf, tall);
   const [pick, setPick] = useState<string | null>(null);
-  const slot = F_SLOTS.find((s) => s.id === pick) ?? (pick && isBenchId(pick) ? { id: pick, label: 'a bench player', positions: ['QB', 'RB', 'WR', 'TE', 'K'] as FPos[] } : null);
+  const toggle = (id: string) => setPick((p) => (p === id ? null : id));
+  const close = () => setPick(null);
   const proj = (k: string) => (fctx ? projectWeek(fctx, k, week) : 0);
 
   const spots: FSpot[] = F_SLOTS.map((s) => {
@@ -103,7 +103,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
               const club = prof ? bannerTeamOf(prof.player) : dst;
               const f = prof ? fantasyFrom(raw, k) : null;
               return (
-                <li key={s.id} id={`fh-slot-${s.id}`} className={cn('fh-slot ix-card', k ? 'is-filled fx-flat' : 'is-empty')} style={{ ...hcVars(club || undefined), ...stag(i, 50) }}>
+                <li key={s.id} id={`fh-slot-${s.id}`} className={cn('fh-slot ix-card', pick === s.id && 'has-pick', k ? 'is-filled fx-flat' : 'is-empty')} style={{ ...hcVars(club || undefined), ...stag(i, 50) }}>
                   {k && club && <ClubMark club={club} size={96} />}
                   <span className="fh-slot__pos">{s.label}</span>
                   {k ? (
@@ -119,13 +119,14 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
                           {locks[s.id] ? <Lock className="h-4 w-4" aria-hidden="true" /> : <LockOpen className="h-4 w-4" aria-hidden="true" />}
                         </button>
                       )}
-                      <button type="button" className="fh-swap" onClick={() => setPick(s.id)}>Change</button>
+                      <button type="button" className="fh-swap" aria-expanded={pick === s.id} onClick={() => toggle(s.id)}>Change</button>
                     </>
                   ) : (
-                    <button type="button" className="fh-slot__empty" onClick={() => setPick(s.id)}>
+                    <button type="button" className="fh-slot__empty" aria-expanded={pick === s.id} onClick={() => toggle(s.id)}>
                       <Plus className="h-4 w-4" aria-hidden="true" /> Add {s.id === 'dst' ? 'a defence' : s.label}
                     </button>
                   )}
+                  {pick === s.id && <SlotPicker hub={hub} slot={s} onClose={close} />}
                 </li>
               );
             })}
@@ -139,7 +140,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         </section>
       </div>
 
-      <BenchRow hub={hub} onPick={setPick} />
+      <BenchRow hub={hub} pick={pick} onPick={toggle} onClose={close} />
 
       {prefs.fmode === 'draft' && <DraftBoard hub={hub} />}
 
@@ -168,7 +169,6 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
         onDelete={hub.saved.remove}
         summary={(s) => (s.kind === 'fantasy' && fctx ? `${f1(hub.total(s.lineup, week))} proj · ${fFilled(s.lineup)}/${F_SLOTS.length}` : '')}
       />
-      <SlotPicker hub={hub} slot={slot} onClose={() => setPick(null)} />
     </div>
   );
 };

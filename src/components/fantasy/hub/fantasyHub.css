@@ -489,3 +489,27 @@
   .fh-name::after { content: ''; position: absolute; inset: -9px 0; }
   .fh .h-10 { height: 44px; }
 }
+
+/* Inline slot picker: opens under the slot row, fixed height, the list scrolls inside */
+.fh-slot.has-pick { flex-wrap: wrap; }
+.fh-pick { flex: 1 0 100%; min-width: 0; display: grid; gap: 0.35rem; padding-top: 0.35rem; border-top: 1px solid hsl(var(--line)); }
+.fh-pick__bar { display: flex; align-items: center; gap: 0.4rem; min-height: 40px; padding: 0 0.3rem 0 0.55rem; border-radius: 10px; border: 1px solid hsl(var(--gold) / 0.6); background: hsl(var(--night)); color: hsl(var(--muted-foreground)); }
+.fh-pick__in { flex: 1; min-width: 0; height: 38px; background: none; border: 0; outline: 0; color: hsl(var(--foreground)); font-size: 16px; }
+.fh-pick__x, .fh-pick__cancel { flex: none; min-height: 32px; min-width: 32px; padding: 0 0.5rem; border-radius: 8px; border: 1px solid hsl(var(--line)); background: hsl(var(--panel)); color: hsl(var(--secondary-foreground)); font: 700 11px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+.fh-pick__x { padding: 0; display: grid; place-items: center; }
+.fh-pick__head, .fh-pick__row { display: grid; grid-template-columns: 34px 16px minmax(0, 1fr) 40px 40px 30px; align-items: center; gap: 0.35rem; }
+.fh-pick__head { grid-template-columns: minmax(0, 1fr) 40px 40px 30px; padding: 0 0.5rem 0 0.4rem; font: 700 10px 'Barlow Condensed', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.fh-pick__head span:not(:first-child) { text-align: right; }
+.fh-pick__list { list-style: none; margin: 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; border-radius: 8px; background: hsl(var(--night) / 0.55); }
+.fh-pick__row { width: 100%; min-height: 36px; padding: 0 0.5rem 0 0.4rem; background: none; border: 0; border-bottom: 1px solid hsl(var(--line) / 0.5); color: hsl(var(--foreground)); text-align: left; font-size: 13px; }
+.fh-pick__row:hover, .fh-pick__row:focus-visible, .fh-pick__row[aria-current] { background: hsl(var(--gold) / 0.12); }
+.fh-pick__pos { font: 800 12px 'Barlow Condensed', sans-serif; letter-spacing: 0.05em; color: hsl(var(--gold)); }
+.fh-pick__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.fh-pick__n, .fh-pick__s, .fh-pick__z { text-align: right; font: 700 13px 'Barlow Condensed', sans-serif; font-variant-numeric: tabular-nums; }
+.fh-pick__s, .fh-pick__z { color: hsl(var(--muted-foreground)); font-size: 12px; }
+.fh-pick__end { padding: 0.7rem; text-align: center; font: 600 12px 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.fh-slots ul.fh-pick__list { display: block; }
+.fh-pick__in, .fh-pick__in:focus, .fh-pick__in:focus-visible { box-shadow: none; outline: 0; border: 0; }
+.fh-pick__bar:focus-within { border-color: hsl(var(--gold)); box-shadow: 0 0 0 1px hsl(var(--gold) / 0.5); }
+.fh-pick__list li { display: block; }
+.fh-pick .fh-pick__in, .fh-pick .fh-pick__in:focus, .fh-pick .fh-pick__in:focus-visible { outline: 0 !important; box-shadow: none !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
