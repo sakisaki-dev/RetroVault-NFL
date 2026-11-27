@@ -495,3 +495,4 @@
 }
 .ss-extra { display: grid; justify-items: end; line-height: 1.1; font: 700 12px 'Barlow Condensed', sans-serif; color: hsl(var(--chalk, 0 0% 100%)); }
 .ss-extra i { font-style: normal; font-weight: 600; color: hsl(var(--muted-foreground)); }
+.ss-sub { margin-top: 8px; padding-bottom: 6px; }
