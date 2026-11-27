@@ -5,7 +5,7 @@ import './arcade.css';
 /**
  * LedDigits: by default the site's display numbers (Barlow Condensed, tabular; dot sets the size, 10px a dot); matrix? draws the
  * dot-matrix text on a 5 x 7 grid, lit dots over dim "off" dots (digits, - : . / % + and the letters A-Z in
- * a compact set; anything else is blank). Props: value (string | number), color 'amber' | 'red' | 'green', width? (pad
+ * a compact set; anything else is blank). Props: value (string | number), color 'amber' | 'red' | 'green' (or tone: any CSS colour for the lit dots, e.g. a club's), width? (pad
  * with blank cells on the left to this many characters, so a counter keeps its size), dot? (px per dot, default 3),
  * label? (accessible text, default the value).
  *
@@ -60,7 +60,7 @@ const G: Record<string, string> = {
 const LED: Record<string, string> = { amber: '#ffb21e', red: '#ff4a3d', green: '#3ddc84' };
 const INK: Record<string, string> = { amber: 'hsl(var(--gold))', red: '#ff6b5e', green: '#4ade80' };
 
-export const LedDigits = ({ value, color = 'amber', width, dot = 3, label, className, matrix }: { value: string | number; color?: keyof typeof LED; width?: number; dot?: number; label?: string; className?: string; matrix?: boolean }) => {
+export const LedDigits = ({ value, color = 'amber', tone, width, dot = 3, label, className, matrix }: { value: string | number; color?: keyof typeof LED; tone?: string; width?: number; dot?: number; label?: string; className?: string; matrix?: boolean }) => {
   if (!matrix) {
     return (
       <span role="img" aria-label={label ?? String(value)} className={cn('ax-num', className)} style={{ fontSize: dot * 10, color: INK[color] } as CSSProperties}>
@@ -91,7 +91,7 @@ export const LedDigits = ({ value, color = 'amber', width, dot = 3, label, class
       height={7 * dot}
       shapeRendering="crispEdges"
       className={cn('ax-led', className)}
-      style={{ '--led': LED[color] } as CSSProperties}
+      style={{ '--led': tone ?? LED[color] } as CSSProperties}
     >
       {rects}
     </svg>

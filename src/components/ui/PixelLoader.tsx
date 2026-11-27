@@ -32,8 +32,8 @@ const RECTS = BALL.flatMap((row, y) =>
   [...row].flatMap((c, x) => (INK[c] ? [<rect key={`${x}-${y}`} x={x} y={y} width={1.04} height={1.04} fill={INK[c]} />] : [])),
 );
 
-export const PixelBall = ({ className }: { className?: string }) => (
-  <svg className={cn('pl-ball', className)} viewBox="0 0 16 9" shapeRendering="crispEdges" aria-hidden="true">
+export const PixelBall = ({ className, style }: { className?: string; style?: CSSProperties }) => (
+  <svg className={cn('pl-ball', className)} style={style} viewBox="0 0 16 9" shapeRendering="crispEdges" aria-hidden="true">
     {RECTS}
   </svg>
 );

@@ -2,10 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/timeline/TeamLogo';
-import { clubPlate } from '@/components/arcade';
+import { LedDigits, clubPlate } from '@/components/arcade';
+import { lampOf, spotLabel } from '@/components/game/live/liveField';
+import { liveFixtureOn } from '@/components/game/live/useLiveForGame';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openGame, regularGameId, useGameIds } from '@/utils/nflGames';
 import { useLiveGames, type LiveGame } from '@/utils/liveGames';
+import { etInstant, matchLive } from '@/utils/liveMatch';
 import { reducedMotion } from '@/utils/motion';
 import type { PickGame, PlayoffOdds } from '@/utils/playoffOdds';
 import './nextUp.css';
@@ -17,22 +20,10 @@ import './nextUp.css';
  * lines). ESPN's scoreboard (the shared liveGames poller) is asked only while a kickoff is near or under way, to show
  * a live score; without it a game is "live" for its first 3.5 hours by the clock.
  */
-const ET = 'America/New_York';
 const WINDOW = 3.5 * 3600_000;
 const SOON = 15 * 60_000;
 const nickOf = (abbr: string) => findNFLTeam(abbr)?.name ?? abbr;
 const pc = (p: number) => `${Math.round(p * 100)}%`;
-
-/** an Eastern wall-clock date and time as the instant it is */
-const etInstant = (date: string, time: string): number => {
-  const [y, mo, d] = date.split('-').map(Number);
-  const [h, mi] = time.split(':').map(Number);
-  const guess = Date.UTC(y, mo - 1, d, h, mi);
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: ET, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(new Date(guess));
-  const p = (t: string) => Number(parts.find((x) => x.type === t)?.value);
-  const asEt = Date.UTC(p('year'), p('month') - 1, p('day'), p('hour'), p('minute'));
-  return guess - (asEt - guess);
-};
 
 const tagOf = (g: PickGame): string | null => {
   const [, mo, da] = g.date.split('-').map(Number);
@@ -74,10 +65,18 @@ const useNextGames = (odds: PlayoffOdds | null, on: boolean, tickMs: number) => 
   const base = useMemo(() => (on && odds ? odds.picks.games.map((g) => ({ g, kick: etInstant(g.date, g.time), tag: tagOf(g) })) : []), [on, odds]);
   const near = base.some((b) => b.kick - now < SOON && now - b.kick < WINDOW + 3600_000);
   const snap = useLiveGames(near);
+  // dev only (?liveFixture=1): the game nearest its kickoff is shown live from a recorded state
+  const fixture = liveFixtureOn();
+  useEffect(() => {
+    if (!fixture || !base.length) return;
+    // the game whose kickoff is nearest now
+    const at = [...base].sort((a, b) => Math.abs(a.kick - Date.now()) - Math.abs(b.kick - Date.now()))[0];
+    void import('@/components/game/live/liveViewFixture').then((m) => m.installLiveViewFixture(at.g.away, at.g.home, at.kick));
+  }, [fixture, base]);
   const games = useMemo(() => {
     const out: NextGame[] = [];
     base.forEach((b) => {
-      const lg = snap.games.find((x) => x.home.abbr === b.g.home && x.away.abbr === b.g.away && Math.abs(x.kick - b.kick) < 36 * 3600_000);
+      const lg = matchLive(snap.games, b.g.away, b.g.home, b.kick);
       if (lg?.state === 'in') out.push({ ...b, phase: 'live', live: lg });
       else if (lg?.state === 'post') out.push({ ...b, phase: 'final', live: lg });
       else if (b.kick > now) out.push({ ...b, phase: 'pre' });
@@ -113,6 +112,40 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
   );
   const l = n.live;
   const showScore = !!l && n.phase !== 'pre';
+  const open = () => openGame(regularGameId(ids, season, g.week, g.away, g.home) ?? g.id);
+  if (n.phase === 'live' && l) {
+    // a mini jumbotron: club-lit halves with dot-matrix scores, the red clock, the quarter, down and distance, the possession lamp
+    const half = (t: LiveGame['away'], side: 'a' | 'h') => (
+      <span className={cn('nu-half', `is-${side}`)} style={{ '--nu-lamp': lampOf(t.abbr), '--nu-tile': clubPlate(t.abbr).fill } as CSSProperties}>
+        <span className="nu-half__id">
+          <TeamLogo team={t.abbr} decorative className="h-[20px] w-[20px]" />
+          <b>{t.abbr}</b>
+          {l.sit?.poss === t.abbr && <i className="nu-poss" title="Has the ball" />}
+        </span>
+        <LedDigits value={t.score} matrix dot={3} width={2} tone="var(--nu-lamp)" label={`${nickOf(t.abbr)} ${t.score}`} />
+      </span>
+    );
+    const dd = l.sit?.dd ? [l.sit.dd, spotLabel(l)].filter(Boolean).join(' · ') : '';
+    return (
+      <li className="nu-li">
+        <button
+          type="button"
+          className="nu-ticket is-live is-tron"
+          style={{ '--nu-a': lampOf(g.away), '--nu-h': lampOf(g.home) } as CSSProperties}
+          aria-label={`${nickOf(g.away)} ${l.away.score}, ${nickOf(g.home)} ${l.home.score}, live, ${phaseText(l)}${dd ? `, ${dd}` : ''}. Open the live game`}
+          onClick={open}
+        >
+          <i className="nu-chase" aria-hidden />
+          <span className="nu-top">
+            <b className="nu-livetag"><i aria-hidden />LIVE</b>
+            <span className="nu-clock" aria-hidden><LedDigits value={l.clock || '0:00'} matrix dot={2} color="red" /></span>
+          </span>
+          <span className="nu-halves">{half(l.away, 'a')}{half(l.home, 'h')}</span>
+          <span className="nu-dd"><b>{/half/i.test(l.desc) && !/quarter/i.test(l.desc) ? 'HALF' : l.period > 4 ? 'OT' : `Q${l.period || 1}`}</b>{dd ? ` · ${dd}` : ''}</span>
+        </button>
+      </li>
+    );
+  }
   return (
     <li className="nu-li">
       <button
@@ -120,7 +153,7 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
         className={cn('nu-ticket', n.phase === 'live' && 'is-live')}
         style={{ '--nu-fav': plate.fill, '--nu-a': awayFill, '--nu-h': homeFill } as CSSProperties}
         aria-label={`${nickOf(g.away)} at ${nickOf(g.home)}, ${n.phase === 'live' ? 'live' : n.phase === 'final' ? 'final' : localKick(n.kick)}. Open the game`}
-        onClick={() => openGame(regularGameId(ids, season, g.week, g.away, g.home) ?? g.id)}
+        onClick={open}
       >
         {/* the matchup in club colours: each club's half of the ticket toned in its colour, its logo as a faint watermark */}
         <span className="nu-wm nu-wm--a" aria-hidden><TeamLogo team={nickOf(g.away)} decorative className="h-full w-full" /></span>

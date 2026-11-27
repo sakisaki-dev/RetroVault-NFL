@@ -1,0 +1,484 @@
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { cn } from '@/lib/utils';
+import { useLeague } from '@/context/LeagueContext';
+import GameSprite from '@/components/GameSprite';
+import TeamLogo from '@/components/timeline/TeamLogo';
+import { PixelBall } from '@/components/ui/PixelLoader';
+import { PodiumStage } from '../../season/NflSeasonExtras';
+import { ClubStrip, LedDigits, clubPlate } from '@/components/arcade';
+import { findNFLTeam } from '@/utils/nflTeams';
+import { displayName } from '@/utils/displayName';
+import { stripKeySuffix } from '@/utils/nameSuffix';
+import { openPlayerCard } from '@/utils/playerCardLink';
+import { useGameSprites } from '@/utils/gameSprites';
+import { isLite, isReducedMotion, useReducedMotion } from '@/hooks/usePerfMode';
+import { SCORE_FLASH_MS, type LiveDetail, type LiveGame, type LiveLeader } from '@/utils/liveGames';
+import type { GameDetail } from '@/utils/nflGames';
+import { sitePos } from '../gameModel';
+import { FORMATION, absOf, fx, fy, lampOf, manX, sameClub, situationOf, spotLabel, type Situation } from './liveField';
+import { playFx, type PlayFx, type Pt } from './playFx';
+import type { LiveForGame } from './useLiveForGame';
+import './liveView.css';
+
+/**
+ * The live game view (owner-approved mockup, docs/CLAUDE_REFERENCE.md "Live game view"): a night stadium with the
+ * jumbotron hung over it, the broadcast field with the ball on its real spot and the latest play drawn from the
+ * play-by-play, then panels (spotlight, win chance, quarters, drives, scoring, leaders). All of it is ESPN's scoreboard
+ * and summary (utils/liveGames.ts): a panel whose data ESPN doesn't give is not drawn, nothing is invented.
+ */
+const nick = (abbr: string) => findNFLTeam(abbr)?.name ?? abbr;
+
+/** The site's player key (POS:Name) for a name ESPN gives, or null: the exact key first, else the one suffixed match */
+const useSiteKey = () => {
+  const { getAllPlayers } = useLeague();
+  const pool = useMemo(() => {
+    const m = new Map<string, string | null>();
+    getAllPlayers().forEach((p) => {
+      const k = `${p.position}:${displayName(p.name)}`;
+      m.set(k, k);
+      const b = stripKeySuffix(k);
+      if (b !== k && !m.has(b)) m.set(b, k);
+      else if (b !== k && m.get(b) !== k) m.set(b, null);
+    });
+    return m;
+  }, [getAllPlayers]);
+  return (name: string, pos: string): string | null => {
+    const full = `${sitePos(pos)}:${displayName(name)}`;
+    return pool.get(full) ?? pool.get(stripKeySuffix(full)) ?? null;
+  };
+};
+
+/** A number that counts up on load (final value at once with reduced motion or Lite) and flashes when it changes */
+const useShown = (to: number, delay = 900) => {
+  const [v, setV] = useState(() => (isReducedMotion() || isLite() ? to : 0));
+  const [flash, setFlash] = useState(false);
+  const prev = useRef<number | null>(null);
+  const cur = useRef(v);
+  useEffect(() => {
+    const first = prev.current === null;
+    const changed = !first && prev.current !== to;
+    prev.current = to;
+    if (changed) {
+      setFlash(true);
+      const t = window.setTimeout(() => setFlash(false), Math.min(SCORE_FLASH_MS, 2400));
+      setV(to);
+      cur.current = to;
+      return () => window.clearTimeout(t);
+    }
+    if (!first || isReducedMotion() || isLite()) {
+      setV(to);
+      cur.current = to;
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now() + delay;
+    const tick = (now: number) => {
+      const p = Math.min(1, Math.max(0, (now - t0) / 900));
+      const n = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      cur.current = n;
+      setV(n);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to, delay]);
+  return { v, flash };
+};
+
+const periodLabel = (g: LiveGame) => (/half/i.test(g.desc) && !/quarter/i.test(g.desc) ? 'HALFTIME' : g.period > 4 ? (g.period === 5 ? 'OVERTIME' : `OT ${g.period - 4}`) : `QTR ${g.period || 1}`);
+const periodShort = (n: number) => (n > 4 ? 'OT' : `Q${n}`);
+
+/* ---------------- the stadium and the jumbotron ---------------- */
+
+const Toes = ({ ball, n, label }: { ball: boolean; n: number | null; label: string }) => (
+  <div className="lv-toes" aria-label={n === null ? undefined : `${label}: ${n} timeouts left${ball ? ', has the ball' : ''}`}>
+    {ball && <b title="Ball" />}
+    {n !== null && [0, 1, 2].map((i) => <i key={i} className={i < n ? '' : 'used'} />)}
+  </div>
+);
+
+const Half = ({ g, side, ball }: { g: LiveGame; side: 'a' | 'h'; ball: boolean }) => {
+  const t = side === 'a' ? g.away : g.home;
+  const { v, flash } = useShown(t.score);
+  return (
+    <div className={cn('lv-half', side === 'a' ? 'is-a' : 'is-h', flash && 'is-flash')} style={{ ['--lv-lamp' as string]: lampOf(t.abbr), ['--lv-tile' as string]: clubPlate(t.abbr).fill } as CSSProperties}>
+      <TeamLogo team={t.abbr} decorative className="lv-half__logo" />
+      <span className="lv-half__name">{t.name}</span>
+      <span className="lv-digits" role="img" aria-label={`${t.name} ${t.score}`}>
+        <LedDigits value={v} matrix dot={14} width={2} tone="var(--lv-lamp)" label={String(t.score)} />
+      </span>
+      <Toes ball={ball} n={t.timeouts} label={t.name} />
+    </div>
+  );
+};
+
+const Lamp = ({ k, v, title }: { k: string; v: string; title?: string }) => (
+  <div className="lv-lampbox" title={title}>
+    <span>{k}</span>
+    <LedDigits value={v} matrix dot={3} color="amber" label={title ?? v} />
+  </div>
+);
+
+const lead = (g: LiveGame): string =>
+  g.home.score === g.away.score ? `Tied ${g.home.score}–${g.away.score}` : `${g.home.score > g.away.score ? g.home.name : g.away.name} lead ${Math.max(g.home.score, g.away.score)}–${Math.min(g.home.score, g.away.score)}`;
+
+const Tron = ({ g, d, kicker }: { g: LiveGame; d: LiveDetail | undefined; kicker: string }) => {
+  const sit = g.sit;
+  const ball = spotLabel(g);
+  const last = d?.last || sit?.last || '';
+  const cur = d?.cur;
+  const crawl = [last && `Last play ▸ ${last}`, d?.drive && `${nick(sit?.poss ?? g.home.abbr)} ${d.drive}`, lead(g)].filter(Boolean).join('   ▸   ');
+  return (
+    <div className="lv-tron" role="group" aria-label="Scoreboard">
+      <div className="lv-tron__strip"><span>{kicker}</span><span>{g.venue}</span></div>
+      <div className="lv-tron__grid">
+        <Half g={g} side="a" ball={!!sit?.poss && sameClub(sit.poss, g.away.abbr)} />
+        <div className="lv-tron__mid">
+          <span className="lv-livetag"><i />LIVE</span>
+          <span className="lv-clock"><LedDigits value={g.clock || '0:00'} matrix dot={6} color="red" label={`${g.clock} left`} /></span>
+          <span className="lv-tron__q">{periodLabel(g)}</span>
+        </div>
+        <Half g={g} side="h" ball={!!sit?.poss && sameClub(sit.poss, g.home.abbr)} />
+      </div>
+      {(sit?.down || ball || cur) && (
+        <div className="lv-tron__row">
+          {!!sit?.down && <Lamp k="DOWN" v={String(sit.down)} />}
+          {!!sit?.down && <Lamp k="TO GO" v={sit.dist ? String(sit.dist) : 'GOAL'} />}
+          {ball && <Lamp k="BALL ON" v={ball} />}
+          {cur && cur.plays > 0 && <Lamp k="DRIVE" v={`${cur.plays}-${cur.yards}`} title={`${cur.plays} plays, ${cur.yards} yards`} />}
+        </div>
+      )}
+      {crawl && <div className="lv-crawl" aria-label={crawl}><span aria-hidden>{crawl}</span></div>}
+    </div>
+  );
+};
+
+const Hero = ({ g, d, kicker }: { g: LiveGame; d: LiveDetail | undefined; kicker: string }) => {
+  const style = { ['--lv-a' as string]: lampOf(g.away.abbr), ['--lv-h' as string]: lampOf(g.home.abbr) } as CSSProperties;
+  return (
+    <PodiumStage team={g.home.abbr} turf="night" className="lv-stage">
+      <div className="lv-sky" aria-hidden style={style}>
+        <i className="lv-stars" />
+        <div className="lv-skyname"><span>{g.away.name}</span><span>{g.home.name}</span></div>
+        <i className="lv-tower is-l" /><i className="lv-tower is-r" />
+        <i className="lv-crowd" />
+        <div className="lv-pennants">{Array.from({ length: 14 }, (_, i) => <i key={i} />)}</div>
+      </div>
+      <Tron g={g} d={d} kicker={kicker} />
+    </PodiumStage>
+  );
+};
+
+/* ---------------- the field ---------------- */
+
+const ROWS = [
+  '....HHHH....', '...HHHHHH...', '...HFFFFH...', '...HFFFF....', '....FFFF....', '..JJJJJJJJ..', '.JJJJNNJJJJ.', '.JJJJNNJJJJ.',
+  '.FJJJJJJJJF.', '..JJJJJJJJ..', '...PPPPPP...', '...PPPPPP...', '...PP..PP...', '...SS..SS...', '...SS..SS...', '..KKK..KKK..',
+];
+const SKIN = ['#e9c7a5', '#8d5a3b', '#6b4430', '#c99a72'];
+/** A little pixel player in a club's colours: stands in for the game sprite on a build that has none (the public site) */
+const PixelMan = ({ abbr, n }: { abbr: string; n: number }) => {
+  const p = clubPlate(abbr);
+  const ink: Record<string, string> = { H: p.fill, J: p.fill, N: p.ink, P: p.edge, S: p.fill, K: '#111', F: SKIN[n % SKIN.length] };
+  return (
+    <svg viewBox="0 0 12 16" width="36" height="48" shapeRendering="crispEdges" aria-hidden>
+      {ROWS.flatMap((r, y) => [...r].map((c, x) => (c === '.' ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1.02" height="1.02" fill={ink[c]} />)))}
+    </svg>
+  );
+};
+
+const Men = ({ g, sit, season }: { g: LiveGame; sit: Situation; season: number }) => {
+  const sprites = useGameSprites();
+  const off = sit.poss;
+  const def = sameClub(off, g.away.abbr) ? g.home.abbr : g.away.abbr;
+  const men = useMemo(() => FORMATION.map((m, i) => ({ m, i, x: manX(m, sit) })).sort((a, b) => a.m.y - b.m.y), [sit]);
+  return (
+    <div className="lv-men" aria-hidden>
+      {men.map(({ m, i, x }) => {
+        const abbr = m.side === 'o' ? off : def;
+        // the offence heads sit.dir; a sprite faces right by default, so those heading left are flipped (never a CSS mirror: the number would read backwards)
+        const flip = m.side === 'o' ? sit.dir === -1 : sit.dir === 1;
+        return (
+          <span key={i} className="lv-man" style={{ left: fx(x), top: `${fy(m.y) * 100}%`, ['--d' as string]: i } as CSSProperties}>
+            <span className="lv-man__in">
+              {sprites ? (
+                <GameSprite player={{ name: `Live ${abbr} ${m.pos} ${i}`, position: m.pos, team: abbr, bannerTeam: abbr }} team={abbr} season={season} kind="figure" size="s" flip={flip} hoverName={false} />
+              ) : (
+                <PixelMan abbr={abbr} n={i} />
+              )}
+            </span>
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+const pt = (p: Pt) => ({ x: fx(p[0]), y: `${fy(p[1]) * 100}%` });
+/** up to three waypoints as the custom properties the keyframes read (a two-point path gets its midpoint) */
+const way = (pts: Pt[]): CSSProperties => {
+  const a = pts[0];
+  const c = pts[pts.length - 1];
+  const b = pts.length > 2 ? pts[1] : ([(a[0] + c[0]) / 2, (a[1] + c[1]) / 2] as Pt);
+  const [A, B, C] = [pt(a), pt(b), pt(c)];
+  return { ['--x0' as string]: A.x, ['--y0' as string]: A.y, ['--x1' as string]: B.x, ['--y1' as string]: B.y, ['--x2' as string]: C.x, ['--y2' as string]: C.y } as CSSProperties;
+};
+
+/** The latest play: the runner's path and marker, the ball in flight (it is the one ball and ends on the spot), a tag. Decorative; the play's words sit under the field. */
+const PlayLayer = ({ fxs, rest, first, k }: { fxs: PlayFx | null; rest: Pt | null; first: boolean; k: string }) => {
+  if (!fxs) return rest ? <span className="lv-ball is-rest" style={{ left: fx(rest[0]), top: `${fy(rest[1]) * 100}%` }}><PixelBall /></span> : null;
+  const path = fxs.runner ? fxs.runner.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(2)} ${(fy(p[1]) * 100).toFixed(2)}`).join(' ') : null;
+  const m = fxs.mark ? pt(fxs.mark.at) : null;
+  return (
+    <div key={k} className={cn('lv-play', first && 'is-first')} aria-hidden>
+      {path && (
+        <svg className="lv-play__path" viewBox="-10 0 120 100" preserveAspectRatio="none">
+          <path d={path} pathLength={1} vectorEffect="non-scaling-stroke" />
+        </svg>
+      )}
+      {fxs.runner && <i className="lv-mv lv-run" style={way(fxs.runner)} />}
+      {m && fxs.mark && (
+        <span className={cn('lv-mark', `is-${fxs.mark.tone}`)} style={{ left: m.x, top: m.y }}>
+          <i />
+          <b>{fxs.mark.tag}</b>
+        </span>
+      )}
+      <span className="lv-mv lv-ballfly" style={{ ...way(fxs.ball), ['--arc' as string]: `${-fxs.arc}px` } as CSSProperties}>
+        <span className="lv-mv__in"><PixelBall /></span>
+      </span>
+    </div>
+  );
+};
+
+const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; season: number }) => {
+  const sit = situationOf(g);
+  const s = g.sit;
+  const a = clubPlate(g.away.abbr);
+  const h = clubPlate(g.home.abbr);
+  const fromYd = absOf(d?.cur?.from, g.away.abbr, g.home.abbr);
+  const arrow = sit && fromYd != null && Math.abs(sit.ball - fromYd) > 0.5 ? { lo: Math.min(fromYd, sit.ball), hi: Math.max(fromYd, sit.ball), left: sit.ball < fromYd } : null;
+  const fxs = useMemo(() => playFx(d?.lastPlay, g, sit), [d?.lastPlay, g, sit]);
+  const firstRef = useRef(true);
+  useEffect(() => { firstRef.current = false; }, []);
+  const key = d?.lastPlay?.id ?? 'rest';
+  const attackLo = sit ? (sit.dir === 1 ? 80 : 0) : null;
+  const marks = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+  const dd = s?.dd ? `${s.dd}${spotLabel(g) ? ` · ${spotLabel(g)}` : ''}` : '';
+  const style = { ['--lv-a' as string]: lampOf(g.away.abbr), ['--lv-h' as string]: lampOf(g.home.abbr) } as CSSProperties;
+  return (
+    <section className="lv-fieldsec" aria-labelledby="lv-fh" style={style}>
+      <div className="lv-fieldhead">
+        <h2 id="lv-fh">On the field</h2>
+        {dd && <span className="lv-dd">{dd}</span>}
+        {sit && <span className="lv-muted">{nick(sit.poss)} {s?.redZone ? 'in the red zone' : 'driving'}, {g.clock} left</span>}
+      </div>
+      <div className="lv-field" aria-label={sit ? `Ball on ${spotLabel(g)}` : 'The field'}>
+        <div className="lv-ez is-l" style={{ ['--ez' as string]: a.fill, color: a.ink }}><span>{g.away.name}</span></div>
+        <div className="lv-ez is-r" style={{ ['--ez' as string]: h.fill, color: h.ink }}><span>{g.home.name}</span></div>
+        <TeamLogo team={g.home.abbr} decorative className="lv-midmark" />
+        <div className="lv-hash" />
+        {attackLo != null && (
+          <div className="lv-redzone" style={{ left: fx(attackLo), width: `calc((100% - 100% / 6) * .2)` }}>
+            <span>RED ZONE</span>
+          </div>
+        )}
+        {marks.map((yd) => (
+          <div key={yd} className="lv-yl" style={{ left: fx(yd) }}><b>{yd <= 50 ? yd : 100 - yd}</b></div>
+        ))}
+        {arrow && <div className={cn('lv-drivearrow', arrow.left && 'is-l')} style={{ left: fx(arrow.lo), width: `calc((100% - 100% / 6) * ${((arrow.hi - arrow.lo) / 100).toFixed(4)})`, ['--arrow' as string]: sit && sameClub(sit.poss, g.away.abbr) ? 'var(--lv-a)' : 'var(--lv-h)' }} />}
+        {sit && <div className="lv-los" style={{ left: fx(sit.ball) }} />}
+        {sit?.first != null && <div className="lv-fd" style={{ left: fx(sit.first) }} />}
+        {sit && <Men g={g} sit={sit} season={season} />}
+        <PlayLayer fxs={fxs} rest={sit ? [sit.ball, 0.5] : null} first={firstRef.current} k={key} />
+      </div>
+      {(d?.lastPlay?.text || s?.last) && (
+        <p className="lv-lp"><b>Last play</b> {d?.lastPlay?.text || s?.last}</p>
+      )}
+    </section>
+  );
+};
+
+/* ---------------- the panels ---------------- */
+
+const SPOT_PLAY: Record<string, string> = { 'Pass Reception': 'Catch', Rush: 'Run', 'Passing Touchdown': 'Touchdown pass', 'Rushing Touchdown': 'Touchdown run', Sack: 'Sack', 'Pass Incompletion': 'Incomplete' };
+
+const Sprite = ({ name, pos, abbr, season, size }: { name: string; pos: string; abbr: string; season: number; size: 's' | 'm' }) => {
+  const sprites = useGameSprites();
+  if (!sprites) return <TeamLogo team={abbr} decorative className="lv-sprite__logo" />;
+  return <GameSprite player={{ name, position: sitePos(pos), team: abbr, bannerTeam: abbr }} team={abbr} season={season} kind="figure" size={size} hoverName={false} />;
+};
+
+const NameBanner = ({ name, keyOf, abbr }: { name: string; keyOf: string | null; abbr: string }) => (
+  <ClubStrip club={abbr} size="md" className="lv-strip" {...(keyOf ? { onClick: () => openPlayerCard(keyOf), title: `${displayName(name)}: open card` } : {})}>
+    {displayName(name)}
+  </ClubStrip>
+);
+
+const leadersOf = (g: LiveGame, d: LiveDetail | undefined): Record<string, LiveLeader[]> => (d && Object.keys(d.leaders).length ? d.leaders : g.leaders);
+
+const Spotlight = ({ g, d, season, siteKey, i }: { g: LiveGame; d: LiveDetail | undefined; season: number; siteKey: ReturnType<typeof useSiteKey>; i: number }) => {
+  const s = g.sit;
+  const ath = s?.lastAth;
+  const key = ath ? siteKey(ath.name, ath.pos) : null;
+  if (!ath || !key) return null;
+  const abbr = ath.abbr ?? s?.poss ?? g.home.abbr;
+  const today = Object.values(leadersOf(g, d)).flat().find((l) => displayName(l.name) === displayName(ath.name));
+  const type = s?.lastType ?? '';
+  const yds = s?.lastYds;
+  const play = [SPOT_PLAY[type] ?? type, yds ? `${yds > 0 ? '' : '−'}${Math.abs(yds)} yd${Math.abs(yds) === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ');
+  return (
+    <article className="lv-card lv-spot lv-rise" style={{ ['--i' as string]: i, ['--lv-tint' as string]: clubPlate(abbr).fill } as CSSProperties}>
+      <h3><span className="lv-k">Spotlight</span><span className="lv-livetag"><i />Last play</span></h3>
+      <div className="lv-spot__body">
+        <span className="lv-spot__sprite"><Sprite name={ath.name} pos={ath.pos} abbr={abbr} season={season} size="m" /></span>
+        <div className="lv-spot__txt">
+          <NameBanner name={ath.name} keyOf={key} abbr={abbr} />
+          {play && <div className="lv-spot__play">{play}</div>}
+          <div className="lv-chips">
+            <span className="lv-chip">{ath.pos} <b>{abbr}</b></span>
+            {today && <span className="lv-chip">Today <b>{today.line}</b></span>}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+const WinChance = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
+  const reduced = useReducedMotion();
+  if (d?.winHome == null) return null;
+  const h = Math.round(d.winHome * 100);
+  const deg = (d.winHome - 0.5) * 180;
+  const diff = g.home.score - g.away.score;
+  return (
+    <article className="lv-card lv-wp lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>Win chance</h3>
+      <div className="lv-dial" role="img" aria-label={`${g.away.name} ${100 - h} percent, ${g.home.name} ${h} percent`}>
+        <div className={cn('lv-needle', reduced && 'is-still')} style={{ rotate: `${deg}deg` }} />
+      </div>
+      <div className="lv-wpnums"><span style={{ color: 'var(--lv-a)' }}>{100 - h}</span><span style={{ color: 'var(--lv-h)' }}>{h}</span></div>
+      <div className="lv-wpnames"><span>{g.away.abbr}</span><span>{g.home.abbr}</span></div>
+      <p className="lv-wpnote">{diff === 0 ? 'All square' : `${diff > 0 ? g.home.name : g.away.name} up ${Math.abs(diff)}`}</p>
+    </article>
+  );
+};
+
+const Quarters = ({ g, i }: { g: LiveGame; i: number }) => {
+  const n = Math.max(4, g.away.ls.length, g.home.ls.length);
+  if (!g.away.ls.length && !g.home.ls.length) return null;
+  const cols = Array.from({ length: n }, (_, k) => k);
+  const row = (t: LiveGame['away']) => (
+    <tr>
+      <td><span className="lv-who"><TeamLogo team={t.abbr} decorative className="lv-lg" />{t.abbr}</span></td>
+      {cols.map((k) => <td key={k} className={cn(k + 1 === g.period && 'now')}>{t.ls[k] ?? '–'}</td>)}
+      <td className="t">{t.score}</td>
+    </tr>
+  );
+  return (
+    <article className="lv-card lv-q lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>By quarter</h3>
+      <table>
+        <thead><tr><th />{cols.map((k) => <th key={k} className={cn(k + 1 === g.period && 'now')}>{k < 4 ? k + 1 : 'OT'}</th>)}<th>T</th></tr></thead>
+        <tbody>{row(g.away)}{row(g.home)}</tbody>
+      </table>
+    </article>
+  );
+};
+
+const Drives = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
+  const sit = situationOf(g);
+  const rows = (d?.drives ?? []).slice(-7).map((x, k) => {
+    const from = absOf(x.from, g.away.abbr, g.home.abbr);
+    const to = x.live ? sit?.ball ?? null : absOf(x.to, g.away.abbr, g.home.abbr);
+    return { x, k, from, to };
+  }).filter((r) => r.from != null && r.to != null);
+  if (!rows.length) return null;
+  return (
+    <article className="lv-card lv-drives lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>Drives<span className="lv-k lv-r">Latest {rows.length}</span></h3>
+      {rows.map(({ x, k, from, to }) => {
+        const lo = Math.max(0, Math.min(from!, to!));
+        const hi = Math.min(100, Math.max(from!, to!, lo + 1.5));
+        const away = sameClub(x.abbr, g.away.abbr);
+        const res = x.live ? g.sit?.dd || 'Live' : x.result;
+        return (
+          <div key={k} className={cn('lv-dr', x.live && 'is-live')}>
+            <TeamLogo team={x.abbr} decorative className="lv-lg" />
+            <div className="lv-lane"><i className={away ? 'a' : 'h'} style={{ left: `${lo}%`, right: `${100 - hi}%`, ['--i' as string]: k } as CSSProperties} /></div>
+            <span className={cn('lv-res', /touchdown/i.test(res) && 'td', /field goal/i.test(res) && x.score && 'fg', x.live && 'live')}>{res || '–'}</span>
+          </div>
+        );
+      })}
+    </article>
+  );
+};
+
+const Scoring = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
+  const log = (d?.scoreLog ?? []).slice(-8).reverse();
+  if (!log.length) return null;
+  return (
+    <article className="lv-card lv-scoring lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>Scoring</h3>
+      {log.map((p, k) => (
+        <div key={k} className="lv-sp">
+          <span className="lv-spq">{periodShort(p.period)} {p.clock}</span>
+          <TeamLogo team={p.abbr} decorative className="lv-lg" />
+          <span className="lv-sptx">{p.text}</span>
+          <span className="lv-spsc">{p.away}–{p.home}</span>
+        </div>
+      ))}
+    </article>
+  );
+};
+
+const CAT: Record<LiveLeader['cat'], string> = { passing: 'Passing', rushing: 'Rushing', receiving: 'Receiving' };
+
+const Leaders = ({ g, d, season, siteKey, i }: { g: LiveGame; d: LiveDetail | undefined; season: number; siteKey: ReturnType<typeof useSiteKey>; i: number }) => {
+  const L = leadersOf(g, d);
+  const cards = [g.away, g.home].flatMap((t) => (L[t.abbr] ?? []).map((l) => ({ t, l })));
+  if (!cards.length) return null;
+  return (
+    <article className="lv-card lv-leaders lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>Leaders</h3>
+      <div className="lv-ldgrid">
+        {cards.map(({ t, l }) => {
+          const key = siteKey(l.name, l.pos);
+          return (
+            <div key={`${t.abbr}${l.cat}`} className="lv-ld" style={{ ['--lv-tint' as string]: clubPlate(t.abbr).fill } as CSSProperties}>
+              <span className="lv-ld__sprite"><Sprite name={l.name} pos={l.pos} abbr={t.abbr} season={season} size="s" /></span>
+              <div className="lv-ld__txt">
+                <span className="lv-cat">{t.abbr} · {CAT[l.cat]}</span>
+                <NameBanner name={l.name} keyOf={key} abbr={t.abbr} />
+                <span className="lv-ln">{l.line}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </article>
+  );
+};
+
+/* ---------------- the view ---------------- */
+
+const LiveGameView = ({ g, live, kicker }: { g: GameDetail; live: LiveForGame; kicker: string }) => {
+  const { lg, detail } = live;
+  const siteKey = useSiteKey();
+  const style = { ['--lv-a' as string]: lampOf(lg.away.abbr), ['--lv-h' as string]: lampOf(lg.home.abbr) } as CSSProperties;
+  return (
+    <div className="lv" style={style} aria-label={`${lg.away.name} at ${lg.home.name}, live`}>
+      <Hero g={lg} d={detail} kicker={`NFL · ${kicker}`} />
+      <Field g={lg} d={detail} season={g.season} />
+      <section className="lv-grid" aria-label="Game panels">
+        <Spotlight g={lg} d={detail} season={g.season} siteKey={siteKey} i={0} />
+        <WinChance g={lg} d={detail} i={1} />
+        <Quarters g={lg} i={2} />
+        <Drives g={lg} d={detail} i={3} />
+        <Scoring g={lg} d={detail} i={4} />
+        <Leaders g={lg} d={detail} season={g.season} siteKey={siteKey} i={5} />
+      </section>
+    </div>
+  );
+};
+
+export default LiveGameView;
