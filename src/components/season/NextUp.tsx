@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/timeline/TeamLogo';
-import { LedDigits, clubPlate } from '@/components/arcade';
-import { lampOf, spotLabel } from '@/components/game/live/liveField';
+import { clubPlate } from '@/components/arcade';
+import { spotLabel } from '@/components/game/live/liveField';
 import { liveFixtureOn } from '@/components/game/live/useLiveForGame';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { openGame, regularGameId, useGameIds } from '@/utils/nflGames';
@@ -107,45 +107,13 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
     <span className={cn('nu-tm', abbr === fav && !toss && 'is-fav')}>
       <TeamLogo team={nickOf(abbr)} decorative className="h-[22px] w-[22px]" />
       <b>{abbr}</b>
+      {n.phase === 'live' && n.live?.sit?.poss && nickOf(n.live.sit.poss) === nickOf(abbr) && <i className="nu-poss" title="Has the ball" aria-label="has the ball" />}
       <em>{score != null ? <i className="nu-sc">{score}</i> : rec}</em>
     </span>
   );
   const l = n.live;
   const showScore = !!l && n.phase !== 'pre';
   const open = () => openGame(regularGameId(ids, season, g.week, g.away, g.home) ?? g.id);
-  if (n.phase === 'live' && l) {
-    // a mini jumbotron: club-lit halves with dot-matrix scores, the red clock, the quarter, down and distance, the possession lamp
-    const half = (t: LiveGame['away'], side: 'a' | 'h') => (
-      <span className={cn('nu-half', `is-${side}`)} style={{ '--nu-lamp': lampOf(t.abbr), '--nu-tile': clubPlate(t.abbr).fill } as CSSProperties}>
-        <span className="nu-half__id">
-          <TeamLogo team={t.abbr} decorative className="h-[20px] w-[20px]" />
-          <b>{t.abbr}</b>
-          {l.sit?.poss === t.abbr && <i className="nu-poss" title="Has the ball" />}
-        </span>
-        <LedDigits value={t.score} matrix dot={3} width={2} tone="var(--nu-lamp)" label={`${nickOf(t.abbr)} ${t.score}`} />
-      </span>
-    );
-    const dd = l.sit?.dd ? [l.sit.dd, spotLabel(l)].filter(Boolean).join(' · ') : '';
-    return (
-      <li className="nu-li">
-        <button
-          type="button"
-          className="nu-ticket is-live is-tron"
-          style={{ '--nu-a': lampOf(g.away), '--nu-h': lampOf(g.home) } as CSSProperties}
-          aria-label={`${nickOf(g.away)} ${l.away.score}, ${nickOf(g.home)} ${l.home.score}, live, ${phaseText(l)}${dd ? `, ${dd}` : ''}. Open the live game`}
-          onClick={open}
-        >
-          <i className="nu-chase" aria-hidden />
-          <span className="nu-top">
-            <b className="nu-livetag"><i aria-hidden />LIVE</b>
-            <span className="nu-clock" aria-hidden><LedDigits value={l.clock || '0:00'} matrix dot={2} color="red" /></span>
-          </span>
-          <span className="nu-halves">{half(l.away, 'a')}{half(l.home, 'h')}</span>
-          <span className="nu-dd"><b>{/half/i.test(l.desc) && !/quarter/i.test(l.desc) ? 'HALF' : l.period > 4 ? 'OT' : `Q${l.period || 1}`}</b>{dd ? ` · ${dd}` : ''}</span>
-        </button>
-      </li>
-    );
-  }
   return (
     <li className="nu-li">
       <button
@@ -159,19 +127,42 @@ const Ticket = ({ n, ids, season }: { n: NextGame; ids: ReturnType<typeof useGam
         <span className="nu-wm nu-wm--a" aria-hidden><TeamLogo team={nickOf(g.away)} decorative className="h-full w-full" /></span>
         <span className="nu-wm nu-wm--h" aria-hidden><TeamLogo team={nickOf(g.home)} decorative className="h-full w-full" /></span>
         <span className="nu-top">
-          <span>{n.phase === 'live' ? <b className="nu-livetag">LIVE</b> : n.phase === 'final' ? 'Final' : localKick(n.kick)}</span>
+          <span>{n.phase === 'live' ? <b className="nu-livetag"><i aria-hidden />LIVE</b> : n.phase === 'final' ? 'Final' : localKick(n.kick)}</span>
           {n.phase === 'live' ? <span>{phaseText(l)}</span> : n.tag && <span className={cn('nu-tag', n.tag.length <= 3 && 'is-prime')}>{n.tag}</span>}
         </span>
         {row(g.away, g.awayRec, showScore ? l!.away.score : undefined)}
         {row(g.home, g.homeRec, showScore ? l!.home.score : undefined)}
-        <span className="nu-wp" aria-hidden><i style={{ width: pc(p) }} /></span>
-        <span className="nu-bot">
-          <span>{toss ? 'Toss-up' : `${nickOf(fav)} favoured`}</span>
-          <b>{toss ? '' : pc(p)}</b>
-        </span>
+        {n.phase === 'live' && l ? (
+          <>
+            {/* owner: keep the ticket, add a live tag and more: the bar is the share of the game played, the foot the down and distance */}
+            <span className="nu-wp nu-wp--clock" aria-hidden><i style={{ width: pc(playedShare(l)) }} /></span>
+            <span className="nu-bot">
+              <span>{l.sit?.dd ? [l.sit.dd, spotLabel(l)].filter(Boolean).join(' · ') : /half/i.test(l.desc) ? 'Halftime' : l.desc}</span>
+              <b>{l.sit?.redZone ? 'Red zone' : ''}</b>
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="nu-wp" aria-hidden><i style={{ width: pc(p) }} /></span>
+            <span className="nu-bot">
+              <span>{toss ? 'Toss-up' : `${nickOf(fav)} favoured`}</span>
+              <b>{toss ? '' : pc(p)}</b>
+            </span>
+          </>
+        )}
       </button>
     </li>
   );
+};
+
+/** Share of regulation played (0–1) from the quarter and the clock; a break counts its quarter as done; OT reads full */
+const playedShare = (l: LiveGame): number => {
+  const q = Math.max(1, l.period || 1);
+  if (q > 4) return 1;
+  const [m, sec] = (l.clock || '15:00').split(':').map(Number);
+  const left = Number.isFinite(m) ? m * 60 + (sec || 0) : 900;
+  const brk = /half|end of|end qtr|end quarter/i.test(l.desc);
+  return Math.min(1, ((q - 1) * 900 + (brk ? 900 : 900 - left)) / 3600);
 };
 
 export const NextUpStrip = ({ odds, show }: { odds: PlayoffOdds | null; show: boolean }) => {
