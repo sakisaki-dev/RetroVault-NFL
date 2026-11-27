@@ -3,6 +3,7 @@ import { InfoTip } from '@/components/ui/InfoTip';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Reveal, stag } from '@/components/motion/Reveal';
+import ClubStrip from '@/components/brand/ClubStrip';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import { StarSprite } from '@/components/season/NflSeasonExtras';
 import type { ClubLineup } from '@/utils/clubSeason';
@@ -61,7 +62,7 @@ const Card = ({ s, club, year, i, order, lead, onPick }: { s: Starter; club: str
         </span>
         <span className="pg-lu__strip">
           <i>{r.pos}</i>
-          <span>{surname(r.name)}</span>
+          <ClubStrip team={club} label={surname(r.name)} size="sm" />
           {r.number != null && <small className="num">#{r.number}</small>}
         </span>
         <span className="pg-lu__fig">{figure ? <><b className="num">{figure[0]}</b>{figure[1]}</> : <span className="pg-dim">{r.g} games</span>}</span>

@@ -136,17 +136,25 @@ const ClubSeasonSheet = ({ club, season, tab: tabProp = 'season', section, nonce
   const plate = clubPlate(club);
   const lift = liftOnNight(plate.fill);
   const liftEdge = liftOnNight(plate.edge);
+  // Toned club colours (owner, 2026-11-27: "keep the colors, just tone them"): the same fills as before with the
+  // saturation lowered and a little darker, so a club still reads as itself without the neon.
+  const tone = (c: string, sat = 0.66, lit = 0.84) => {
+    const m = c.match(/^hsl\(\s*([\d.]+)[ ,]+([\d.]+)%[ ,]+([\d.]+)%/);
+    return m ? `hsl(${m[1]} ${(+m[2] * sat).toFixed(1)}% ${(+m[3] * lit).toFixed(1)}%)` : `color-mix(in srgb, ${c} ${Math.round(sat * 100 + 8)}%, #1a2036)`;
+  };
+  const fill = tone(plate.fill);
+  const darkInk = inkOn(plate.fill) !== '#fff';
+  const ink = darkInk ? '#14101f' : '#f4f1e8';
   const vars = {
-    '--cs-fill': plate.fill,
-    '--cs-edge': plate.edge,
-    '--cs-ink': plate.ink,
-    // the masthead and the cover's accents: the secondary where it reads on the fill, else the fill's own ink
-    '--cs-acc': accentOn(plate.fill, plate.edge, plate.ink),
-    '--cs-acc-ink': plate.fill,
-    // the club colour lifted to read on the night page (win bars, rules), and its secondary the same way
-    '--cs-lift': lift,
-    '--cs-lift2': liftEdge,
-    '--cs-lift-ink': inkOn(plate.fill),
+    '--cs-raw': plate.fill,
+    '--cs-fill': fill,
+    '--cs-edge': tone(plate.edge, 0.7, 0.9),
+    '--cs-ink': ink,
+    '--cs-acc': accentOn(fill, tone(plate.edge, 0.7, 0.9), ink),
+    '--cs-acc-ink': fill,
+    '--cs-lift': tone(lift, 0.7, 0.92),
+    '--cs-lift2': tone(liftEdge, 0.7, 0.92),
+    '--cs-lift-ink': inkOn(lift),
     '--ax-c1': plate.fill,
     '--ax-c2': plate.edge,
     '--ax-ink': plate.ink,
