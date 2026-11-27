@@ -57,6 +57,19 @@ const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 /** Pages whose sections rise in as they scroll into view (the Players page does it itself; the Arcade, Collection and Team Lab are tools, never animated this way). */
 const SCROLL_IN_TABS = new Set(['season', 'timeline', 'news', 'college', 'office', 'hof']);
 
+/* Owner: a desktop reload opens on Season, not the Arcade. A reload (or a fresh open) of the bare Arcade page on a
+   desktop swaps it for Season before the router reads the hash; deep links into a game stay where they point. */
+if (IS_NFL && typeof window !== 'undefined') {
+  try {
+    const desktop = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+    if (desktop && /^#\/?games\/?$/.test(window.location.hash)) {
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}#season`);
+    }
+  } catch {
+    /* matchMedia or history unavailable: keep the hash */
+  }
+}
+
 const IndexContent = () => {
   const scrollIn = useAutoReveal<HTMLDivElement>();
   // The visible page lives in the URL hash (#stats/teams, #stats/deepdive?p=…) so it is linkable and Back works.
