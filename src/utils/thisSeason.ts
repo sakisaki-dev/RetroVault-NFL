@@ -50,3 +50,15 @@ export const useThisSeason = (key: string | null | undefined): SeasonData | null
   }, []);
   return IS_NFL && key ? seasonFor(raw, key) : null;
 };
+
+/** The whole live-season file (every player's line), for pages that rank a club's players; null while loading. */
+export const useThisSeasonAll = (): Raw | null => {
+  const [raw, setRaw] = useState<Raw | null>(loaded ?? null);
+  useEffect(() => {
+    if (!IS_NFL) return;
+    let alive = true;
+    load().then((d) => alive && setRaw(d));
+    return () => { alive = false; };
+  }, []);
+  return raw;
+};

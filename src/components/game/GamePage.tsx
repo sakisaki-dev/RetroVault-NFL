@@ -33,6 +33,7 @@ import { stripKeySuffix } from '@/utils/nameSuffix';
 import { Reveal, ViewCount, stag, useReveal } from '@/components/motion/Reveal';
 
 const MoreGames = lazy(() => import('./MoreGames'));
+const PreGame = lazy(() => import('./PreGame'));
 
 /**
  * Stats › Game: one game in depth (#stats/game?id=<nflverse game id>), any game 1999-2026. Broadcast header, recap,
@@ -744,10 +745,10 @@ const GameView = ({ g }: { g: GameDetail }) => {
           )}
         </>
       ) : (
-        <p className="gm-recap">This game has not been played yet. Kickoff {g.time ? `at ${g.time} ET` : 'time to be set'} on {fmtDate(g.date)}; the roster, box score and advanced stats appear here once it is final.</p>
+        <Suspense fallback={null}><PreGame g={g} /></Suspense>
       )}
 
-      <Missing g={g} />
+      {done && <Missing g={g} />}
 
       <Suspense fallback={null}>
         <MoreGames g={g} />
