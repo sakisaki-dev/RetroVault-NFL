@@ -62,6 +62,9 @@ import CareerArcScene, { arcFor, loadStints, type CareerArcData } from './scenes
 import RivalryNightScene, { type RivalryNightData } from './scenes/RivalryNightScene';
 import RecordChaseScene, { buildChases, type ChaseData } from './scenes/RecordChaseScene';
 import { reducedMotion } from '@/utils/motion';
+import { DraftNightScene, HometownScene, LockerRoomScene, LongOneScene, MilestoneScene, OldVsNewScene, TwoMinuteScene, WeatherGameScene } from './scenes/EightScenes';
+import { draftScenes, hometownScenes, lockerScenes, longOneScenes, milestoneScenes, oldNewScenes, twoMinScenes, useSaverExtras, weatherScenes, type DraftNightData, type HometownData, type LockerData, type LongOneData, type MilestoneData, type OldNewData, type TwoMinData, type WxGameData } from './scenes/eightData';
+import { saverDebug } from '@/utils/screensaver';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -106,6 +109,14 @@ type Scene =
   | { kind: 'careerarc'; data: CareerArcData }
   | { kind: 'nflrivalry'; data: RivalryNightData }
   | { kind: 'recordchase'; data: ChaseData }
+  | { kind: 'draftnight'; data: DraftNightData }
+  | { kind: 'twominute'; data: TwoMinData }
+  | { kind: 'longone'; data: LongOneData }
+  | { kind: 'locker'; data: LockerData }
+  | { kind: 'milestone'; data: MilestoneData }
+  | { kind: 'oldnew'; data: OldNewData }
+  | { kind: 'wxgame'; data: WxGameData }
+  | { kind: 'hometown'; data: HometownData }
   | { kind: 'pa' };
 
 interface CoachStint { club: string; years: number[]; seasons: number; titles: number; w: number; l: number; t: number }
@@ -2083,6 +2094,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   // NFL edition: the game files and the franchise wall behind Scoreboard Sunday, the ring sweep and Game of the week
   const saverSeason = schedule ? Number(latestScheduleSeason(schedule)?.season) || null : null;
   const saverGames = useSaverGames(saverSeason, IS_NFL);
+  const extras = useSaverExtras(IS_NFL);
   const bannerData = useBannerData();
   const allTime = useAllTimeRecords();
   const careerFile = useCareerSeasons();
@@ -2105,7 +2117,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     const t = window.setTimeout(() => setWaited(true), 4_000);
     return () => window.clearTimeout(t);
   }, []);
-  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading && (saverGames !== undefined || !saverSeason) && !!bannerData && !!allTime && careerFile !== undefined && stintFile !== undefined)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
+  const ready = players.length > 0 && (!IS_NFL || (leaders !== undefined && schedule !== null && !news.loading && (saverGames !== undefined || !saverSeason) && extras !== undefined && !!bannerData && !!allTime && careerFile !== undefined && stintFile !== undefined)) && ((feed !== undefined && !contentLoading && hof !== undefined && !!records && poolLoaded && !!marketHist && live !== undefined) || waited);
   const scenes = useMemo<Scene[]>(() => {
     if (!ready) return [];
     const spot = shuffle(players.slice(0, 80)).map((p): Scene => ({ kind: 'spotlight', player: p, roll: Math.random() }));
@@ -2332,9 +2344,21 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       const recentIds = new Set(wks.slice(0, 4).flatMap((w) => w.games.map((g) => g.id)));
       const cands = (saverGames ?? []).filter((g) => recentIds.has(g.id) && replayable(g)).sort((a, b) => notability(b) - notability(a)).slice(0, 10);
       nflDecks.push(sample(cands, 3).map((game): Scene => ({ kind: 'gameweek', game })));
+      // eight more, all from real files (scenes/eightData.ts): draft night, two-minute drill, the long one, locker room,
+      // milestone watch, old vs new, weather game, hometown
+      if (extras) {
+        nflDecks.push(draftScenes(extras.drafts, players).map((data): Scene => ({ kind: 'draftnight', data })));
+        nflDecks.push(twoMinScenes(extras).slice(0, 2).map((data): Scene => ({ kind: 'twominute', data })));
+        nflDecks.push(longOneScenes(extras, saverGames ?? [], players).slice(0, 2).map((data): Scene => ({ kind: 'longone', data })));
+        nflDecks.push(weatherScenes(extras).slice(0, 1).map((data): Scene => ({ kind: 'wxgame', data })));
+        nflDecks.push(hometownScenes(extras.schools, players).map((data): Scene => ({ kind: 'hometown', data })));
+      }
+      nflDecks.push(lockerScenes(players).map((data): Scene => ({ kind: 'locker', data })));
+      nflDecks.push(milestoneScenes(players).map((data): Scene => ({ kind: 'milestone', data })));
+      nflDecks.push(oldNewScenes(players, careerFile ?? null).map((data): Scene => ({ kind: 'oldnew', data })));
     }
     // dev only: ?saverScene=<kind> plays just that scene kind (Scoreboard Sunday, ringsweep, gameweek...)
-    const only = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('saverScene') : null;
+    const only = saverDebug() ? new URLSearchParams(window.location.search).get('saverScene') : null;
     if (only) {
       const mine = nflDecks.flat().filter((s) => s.kind === only);
       if (mine.length) return [...mine, ...mine, ...mine];
@@ -2344,7 +2368,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
     const decks = (IS_NFL ? [spot, ...nflDecks, ...nflB, pas, flyovers, cardScenes, duels, champs, recs, lineups, dyks, takeScenes, rising, farewell, chases, market, gauntlet] : [spot, pas, flyovers, cardScenes, duels, rewinds, dyks, lineups, trophies, champs, coachDeck, stunts, hofScenes, takeScenes, recs, rising, papers, chases, rivals, market, classes, dynasties, gauntlet, farewell, rafters]).filter((d) => d.length);
     const out: Scene[] = [];
     // dev only: ?saverScene=careerarc|rivalry|recordchase shows just that scene (several runs of it)
-    const forced = import.meta.env.DEV ? FORCED[new URLSearchParams(location.search).get('saverScene') ?? ''] : undefined;
+    const forced = saverDebug() ? FORCED[new URLSearchParams(location.search).get('saverScene') ?? ''] : undefined;
     if (forced) {
       const only = nflB.flat().filter((x) => x.kind === forced);
       for (let i = 0; only.length && i < 12; i++) out.push(only[i % only.length]);
@@ -2385,8 +2409,11 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
   }, [sleepMin, night]);
   // the menu can force rain, snow or a storm (or none) whatever the real weather
   const fxChoice = useSaverFx();
-  const fx = fxChoice === 'real' ? weather.fx : fxChoice === 'none' ? null : fxChoice;
-  const wind = fxChoice === 'real' ? weather.wind : Math.max(weather.wind, fxChoice === 'storm' ? 0.55 : 0.15);
+  // the Weather game scene brings its own game's weather (cold = a snow look, the game's wind) while it is on screen
+  const sceneNow = scenes[idx];
+  const gameWx = sceneNow?.kind === 'wxgame' && sceneNow.data.fx && fxChoice !== 'none' ? sceneNow.data : null;
+  const fx = gameWx ? gameWx.fx : fxChoice === 'real' ? weather.fx : fxChoice === 'none' ? null : fxChoice;
+  const wind = gameWx ? gameWx.wind : fxChoice === 'real' ? weather.wind : Math.max(weather.wind, fxChoice === 'storm' ? 0.55 : 0.15);
 
   useEffect(() => {
     if (scenes.length < 2 || resting) return;
@@ -2573,6 +2600,22 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
         return <RivalryNightScene data={s.data} sprites={sprites} />;
       case 'recordchase':
         return <RecordChaseScene data={s.data} sprites={sprites} />;
+      case 'draftnight':
+        return <DraftNightScene data={s.data} sprites={sprites} />;
+      case 'twominute':
+        return <TwoMinuteScene data={s.data} lookup={saverDeps.lookup} sprites={sprites} />;
+      case 'longone':
+        return <LongOneScene data={s.data} sprites={sprites} />;
+      case 'locker':
+        return <LockerRoomScene data={s.data} numberFor={numberFor} />;
+      case 'milestone':
+        return <MilestoneScene data={s.data} sprites={sprites} />;
+      case 'oldnew':
+        return <OldVsNewScene data={s.data} sprites={sprites} />;
+      case 'wxgame':
+        return <WeatherGameScene data={s.data} />;
+      case 'hometown':
+        return <HometownScene data={s.data} sprites={sprites} />;
       case 'pa':
         return nowPlaying ? <PaScene np={nowPlaying} club={paClub} /> : null;
     }

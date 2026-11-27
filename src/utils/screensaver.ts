@@ -319,3 +319,6 @@ export const windForce = (wx: SaverWeather | null): number => {
 /** A word for the corner once the wind is worth naming (Beaufort 4 and up) */
 export const windLabel = (kmh: number): string | null =>
   kmh >= 62 ? 'Gale' : kmh >= 39 ? 'Very windy' : kmh >= 29 ? 'Windy' : kmh >= 20 ? 'Breezy' : null;
+
+/** ?saverScene=<kind> plays just that scene kind: always in the dev server; in a build only when it was made with VITE_SAVER_DEBUG=1 (never the public site) */
+export const saverDebug = (): boolean => import.meta.env.DEV || import.meta.env.VITE_SAVER_DEBUG === '1';
