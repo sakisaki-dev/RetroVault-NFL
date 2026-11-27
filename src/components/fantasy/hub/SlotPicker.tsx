@@ -11,7 +11,8 @@ import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } 
 import { useGamePool } from '@/utils/useOfficialOvr';
 import { projectWeek, salaryOf, type FSlot } from '@/utils/nflFantasy';
 import type { FantasyHub } from './useFantasyHub';
-import { f1, nameOf } from './useFantasyHub';
+import { f1, isBenchId, nameOf } from './useFantasyHub';
+import { ArcadeToggle } from '@/components/arcade';
 import { teamOf } from '../parts';
 
 /** A bottom sheet that fills one lineup slot: players who can play it, best projection first; a defence for D/ST.
@@ -24,8 +25,9 @@ const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot | nul
   const value = slot ? fl[slot.id] ?? '' : '';
   const pool = useMemo(() => {
     if (!slot || slot.id === 'dst' || !fctx) return [];
+    const positions = isBenchId(slot.id) ? ['QB', 'RB', 'WR', 'TE', 'K'] : (slot.positions as string[]);
     const used = new Set(Object.values(fl).filter(Boolean));
-    return (slot.positions as string[])
+    return positions
       .flatMap((pos) => ctx.byPos.get(pos as never) ?? [])
       .filter((p) => lab?.p[p.key] && !excludes.has(p.key) && (!used.has(p.key) || p.key === value))
       .map((p) => ({ p, v: projectWeek(fctx, p.key, week) }))
@@ -47,12 +49,20 @@ const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot | nul
     setQ('');
     onClose();
   };
-  const dst = slot?.id === 'dst';
+  // the bench takes anyone: players (kickers included) or a defence (owner: "for the bench I should be able to select kickers and defense")
+  const bench = !!slot && isBenchId(slot.id);
+  const [benchKind, setBenchKind] = useState<'players' | 'dst'>('players');
+  const dst = slot?.id === 'dst' || (bench && benchKind === 'dst');
   return (
-    <Sheet open={!!slot} onOpenChange={(o) => { if (!o) { setQ(''); onClose(); } }}>
+    <Sheet open={!!slot} onOpenChange={(o) => { if (!o) { setQ(''); setBenchKind('players'); onClose(); } }}>
       <SheetContent side="bottom" className="fh-sheet fh-picker max-h-[82dvh] overflow-hidden p-0">
         <SheetTitle className="fh-picker__t font-display text-xl uppercase">{dst ? 'Pick a defence' : `Pick ${slot?.label ?? ''}`}</SheetTitle>
         <SheetDescription className="sr-only">Choose who starts in this slot.</SheetDescription>
+        {bench && (
+          <div className="px-4 pb-2">
+            <ArcadeToggle<'players' | 'dst'> fill label="Bench pick" size="sm" value={benchKind} onChange={(v) => { setBenchKind(v); setQ(''); }} options={[{ value: 'players', label: 'Players' }, { value: 'dst', label: 'Defences' }]} />
+          </div>
+        )}
         <Command shouldFilter={false}>
           <div className="fh-picker__in"><Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" /><CommandInput value={q} onValueChange={setQ} placeholder={dst ? 'Club, city or abbreviation' : 'Name, nickname, club or city'} className="h-10 text-[16px]" /></div>
           <CommandList className="max-h-[60dvh]">

@@ -39,7 +39,7 @@ const LineupPage = ({ hub, prefs, setPrefs, turf }: { hub: FantasyHub; prefs: Pr
   const tall = useMedia('(max-width: 639px)');
   const art = useFieldArt(clubName, turf, tall);
   const [pick, setPick] = useState<string | null>(null);
-  const slot = F_SLOTS.find((s) => s.id === pick) ?? (pick && isBenchId(pick) ? { id: pick, label: 'a bench player', positions: ['QB', 'RB', 'WR', 'TE'] as FPos[] } : null);
+  const slot = F_SLOTS.find((s) => s.id === pick) ?? (pick && isBenchId(pick) ? { id: pick, label: 'a bench player', positions: ['QB', 'RB', 'WR', 'TE', 'K'] as FPos[] } : null);
   const proj = (k: string) => (fctx ? projectWeek(fctx, k, week) : 0);
 
   const spots: FSpot[] = F_SLOTS.map((s) => {

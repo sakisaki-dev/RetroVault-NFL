@@ -12,7 +12,8 @@ export const useStatusLabel = (player: Pick<Player, 'status' | 'team' | 'name' |
   if (player.status !== 'Active') return null;
   if (hurt?.code === 'IR') return { label: 'Injured reserve', tone: 'hurt' };
   if (!player.team || player.team === 'FA') return { label: 'Free agent', tone: 'on' };
-  return hurt ? { label: `Active · ${hurt.code}`, tone: 'hurt' } : { label: 'Active', tone: 'on' };
+  // one status, never "Active" and an injury together: Questionable / Doubtful / Out replace Active while he's on the report
+  return hurt ? { label: hurt.code, tone: 'hurt' } : { label: 'Active', tone: 'on' };
 };
 
 /**

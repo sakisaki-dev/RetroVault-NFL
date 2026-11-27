@@ -39,7 +39,8 @@ export const OUT_MS = 150;
 const THRESHOLD = 0.25;
 const FLICK = 0.4;
 const LOCK_PX = 10;
-const WHEEL_PX = 80;
+// a deliberate two-finger swipe, not a brush (owner: "the swipe threshold should be increased since I can swipe on accident")
+const WHEEL_PX = 220;
 const WHEEL_GAP_MS = 180;
 
 const calm = () => reducedMotion() || document.documentElement.dataset.perf === 'lite';
@@ -383,7 +384,7 @@ export const attachSwipe = (root: Document | HTMLElement, o: DragOptions) => {
     const dX = we.deltaX * k;
     const dY = we.deltaY * k;
     if (wst === 'idle') {
-      if (Math.abs(dX) <= Math.abs(dY) || we.rvClaimed) return; // vertical wheel is never touched
+      if (Math.abs(dX) <= 2 * Math.abs(dY) || Math.abs(dX) < 4 || we.rvClaimed) return; // clearly sideways only; vertical wheel is never touched
       if (o.claim) we.rvClaimed = true;
       const t = we.target as Element | null;
       if (!t || t.closest(o.ignore) || scrollsSideways(t, o.within)) return;

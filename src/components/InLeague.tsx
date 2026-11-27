@@ -34,18 +34,18 @@ export const InjuredTag = ({ player, label = true, className }: { player: Subjec
   );
 };
 
+/** One status chip, never two (owner: Active and IR / Questionable "showing active and injured at the same time"): a player on
+ * this week's injury report shows his injury status in its place; everyone else on a roster shows Active */
 export const InLeague = ({ player, label = true, className }: { player: Subject; label?: boolean; className?: string }) => {
   const active = isInLeague(player);
-  const hurt = IS_NFL ? <InjuredTag player={player} label={label} className={className} /> : null;
-  if (!active) return hurt;
+  const hurt = useInjury(IS_NFL && player.name && player.position && !player.isRealLegend ? `${player.position}:${displayName(player.name)}` : undefined);
+  if (hurt) return <InjuredTag player={player} label={label} className={className} />;
+  if (!active) return null;
   return (
-    <>
-      <span className={cn('inl', label && 'inl--label', className)} title="Active: in the league now" aria-label="Active" role="img">
-        <i aria-hidden="true" />
-        {label && <b aria-hidden="true">Active</b>}
-      </span>
-      {hurt}
-    </>
+    <span className={cn('inl', label && 'inl--label', className)} title="Active: in the league now" aria-label="Active" role="img">
+      <i aria-hidden="true" />
+      {label && <b aria-hidden="true">Active</b>}
+    </span>
   );
 };
 

@@ -14,8 +14,8 @@ import { MOBILE_MOTION, dur, ease, reducedMotion } from '@/utils/motion';
  * under it); otherwise native scrolling is untouched. Lite mode / reduced motion: no rubber band or content shift,
  * just the threshold and the open.
  */
-const THRESHOLD = 76; // px of (resisted) pull
-const FLICK = 0.6; // px per ms
+const THRESHOLD = 130; // px of (resisted) pull (owner: the pull-down to search should take more)
+const FLICK = 1.1; // px per ms
 const HINT_KEY = 'retroVault:pullSearchUsed';
 const EXCLUDE =
   'input, textarea, select, [contenteditable="true"], [role="dialog"], [data-swipe-root="down"], [data-no-pull], svg[role="group"], canvas, .fut, .cbw, .gp-sheet, .bnav, [style*="touch-action"]';
