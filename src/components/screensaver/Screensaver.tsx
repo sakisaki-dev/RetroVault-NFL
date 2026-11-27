@@ -2374,7 +2374,9 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       for (let i = 0; only.length && i < 12; i++) out.push(only[i % only.length]);
       return out;
     }
-    for (let i = 0; out.length < 60 && decks.some((d) => i < d.length); i++) decks.forEach((d) => d[i] && out.push(d[i]));
+    // the kinds are dealt in a fresh shuffled order each run (owner: it always opened on a player spotlight)
+    const dealt = shuffle(decks);
+    for (let i = 0; out.length < 60 && dealt.some((d) => i < d.length); i++) dealt.forEach((d) => d[i] && out.push(d[i]));
     return out;
     // the playlist is dealt once a run; later collection or rafters changes wait for the next run
     // eslint-disable-next-line react-hooks/exhaustive-deps
