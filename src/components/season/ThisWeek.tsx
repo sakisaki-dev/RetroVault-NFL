@@ -38,8 +38,7 @@ const Pick = ({ g, stars, id, i, extra }: { extra?: boolean; g: PickGame; stars:
         <span className="tw-fig" aria-hidden>
           {star ? <StarSprite name={star.name} pos={star.position} team={nick} size="m" kind="bust" /> : <TeamLogo team={nick} decorative className="h-9 w-9" />}
         </span>
-        <ClubStrip club={nick} size="sm" logo={false}>{abbr}</ClubStrip>
-        <span className="tw-nick">{nick}</span>
+        <ClubStrip club={nick} size="sm" className="tw-strip"><span className="tw-ab">{abbr}</span> {nick}</ClubStrip>
         <small>{rec}</small>
         <b className="tw-p">{pc(p)}</b>
       </span>
@@ -67,7 +66,7 @@ const Pick = ({ g, stars, id, i, extra }: { extra?: boolean; g: PickGame; stars:
   );
   const label = `${away} at ${home}: ${nickOf(fav)} ${pc(Math.max(g.pHome, pa))}. ${kickoffText(k)}`;
   return (
-    <li className={cn('tw-pick mo-rise', g.gotw && 'is-gotw', extra && 'tw-extra')} style={stag(i, 50)}>
+    <li className={cn('tw-pick mo-rise', g.gotw && 'is-gotw', extra && 'tw-extra')} style={{ ...stag(i, 50), '--nu-a': clubPlate(away).fill, '--nu-h': clubPlate(home).fill, '--nu-fav': clubPlate(nickOf(fav)).fill } as CSSProperties}>
       {id ? (
         <button type="button" className="tw-card" aria-label={`${label}. Open the game`} onClick={() => openGame(id)}>{inner}</button>
       ) : (
