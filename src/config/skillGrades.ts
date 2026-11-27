@@ -328,26 +328,47 @@ export const careerPoolLabel = (pos: Position) => CAREER_QUALIFY[pos]?.label;
 /** The qualifier label for a season set's pool ("60 carries this season"), or undefined. */
 export const seasonPoolLabel = (players: Player[], pos: Position) => (SEASON_QUALIFY[pos] ? `${seasonMin(players, pos)} ${SEASON_QUALIFY[pos].noun} this season` : undefined);
 
+/** Traits a career-totals line (pre-1999, no weekly data) can carry, per trait group: what `overallFor` measures coverage against. */
+const TOTALS_TRAIT_IDS: Record<string, string[]> = {
+  DEF: ['tklG', 'sackG', 'intG', 'ffG'],
+  REC: ['recYdsG', 'ypr', 'tdPerRec', 'recG'],
+  RB: ['ypc', 'td16', 'rushYdsG', 'recYdsG', 'ypt'],
+};
+
 /**
  * THE overall (Build-a-Legend header, build panel, results; Player Deep Dive): value-weighted mean percentile
  * blended with the mean of the three best traits (OVERALL_TOP3_MIX) → OVR on the official 62–99 curve, letter
  * grade (same GRADE_SCALE) and tier from the grade. Null before any valued trait.
  */
 export const overallFor = (features: CompFeature[], baseline: Map<string, number[]>, values: (number | null)[], position: Position, season = false): Overall | null => {
-  const items: { w: number; pct: number }[] = [];
+  const items: { id: string; w: number; pct: number }[] = [];
   features.forEach((f, i) => {
     const v = values[i];
     const w = valueWeight(position, f.id, season);
     if (v == null || w <= 0) return;
     const pct = skillPct(f, baseline.get(f.id) ?? [], v);
-    if (Number.isFinite(pct)) items.push({ w, pct });
+    if (Number.isFinite(pct)) items.push({ id: f.id, w, pct });
   });
   if (!items.length) return null;
   const W = items.reduce((a, x) => a + x.w, 0);
   const mean = items.reduce((a, x) => a + x.w * x.pct, 0) / W;
   const top = [...items].sort((a, b) => b.pct - a.pct).slice(0, 3);
   const topMean = top.reduce((a, x) => a + x.pct, 0) / top.length;
-  const pct = (1 - OVERALL_TOP3_MIX) * mean + OVERALL_TOP3_MIX * topMean;
+  let pct = (1 - OVERALL_TOP3_MIX) * mean + OVERALL_TOP3_MIX * topMean;
+  // NFL career grades: a pre-1999 line misses tackles, forced fumbles and more (Youngblood has sacks only, Ham interceptions only), and
+  // the best-three blend would hand that one stat the whole grade. Pull the percentile toward the middle by the share of the career-totals
+  // weight his graded traits cover (share ^ 0.7; the same rule as scripts/nfl/career_rating.py). A missing trait is still skipped, never a zero.
+  if (IS_NFL && !season) {
+    const ids = TOTALS_TRAIT_IDS[traitGroup(position)];
+    if (ids) {
+      const ref = features.reduce((a, f) => a + (ids.includes(f.id) ? valueWeight(position, f.id, false) : 0), 0);
+      // only the traits a totals line can carry count as covered: a window-recorded trait (catch rate, TFL, PD, penalties) a pre-1999 or
+      // pre-2012 career never had is missing, the same as the others, and one a modern career has adds nothing to the coverage
+      const have = items.reduce((a, x) => a + (ids.includes(x.id) ? x.w : 0), 0);
+      const share = ref > 0 ? Math.min(1, have / ref) : 1;
+      pct = 50 + (pct - 50) * share ** 0.7;
+    }
+  }
   const grade = gradeFor(pct) ?? GRADE_SCALE[GRADE_SCALE.length - 1];
   return { pct, rating: ovrFromPercentile(pct), grade, tier: tierFor(grade) };
 };

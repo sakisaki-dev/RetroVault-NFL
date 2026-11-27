@@ -16,6 +16,7 @@ import SeasonClubWall from '@/components/season/SeasonClubWall';
 import { HighlightReel, useSeasonStars } from '@/components/season/NflSeasonExtras';
 import PlayoffRace from '@/components/season/PlayoffRace';
 import ThisWeek from '@/components/season/ThisWeek';
+import { NextUpLamp, NextUpStrip } from '@/components/season/NextUp';
 import { usePlayoffOdds } from '@/utils/playoffOdds';
 import SeasonLeaders from '@/components/season/SeasonLeaders';
 import PlayoffHistory from '@/components/season/PlayoffHistory';
@@ -122,6 +123,8 @@ const SeasonTab = () => {
   const upcoming = useUpcoming(); // a hook: before the early return below
   const odds = usePlayoffOdds(IS_NFL);
   const stars = useSeasonStars(IS_NFL ? wanted : null);
+  // the coming week's games show only on the live season, the one the odds file is about
+  const nextUpOn = IS_NFL && !!odds && odds.status === 'live' && !!wanted && String(odds.season) === wanted.replace(/\D/g, '');
   if (live === undefined || liveSched === undefined || !schedule) {
     return <PixelLoader label="Season" what="the season" minHeight="60vh" className="container justify-start pt-[14vh]" />;
   }
@@ -147,6 +150,7 @@ const SeasonTab = () => {
           title={<span id="season-heading">Season {shown ?? ''}</span>}
           right={
             <div className="flex flex-wrap items-center gap-2">
+              {IS_NFL && <NextUpLamp odds={odds} show={nextUpOn} />}
               {IS_NFL && (
                 <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="ball" size={16} color="#a8642a" />}>
                   Find a game
@@ -173,6 +177,7 @@ const SeasonTab = () => {
         ) : season ? (
           <>
             {IS_NFL && <SeasonJumbo season={season} live={isLive || !season.superBowl} />}
+            {IS_NFL && <NextUpStrip odds={odds} show={nextUpOn && String(odds?.season) === season.season} />}
             {IS_NFL && <PlayoffBracket season={season} />}
             {IS_NFL && <CrowdDivider />}
             {IS_NFL && <SeasonClubWall season={season} live={isLive} upcoming={upcoming && String(upcoming.season) === season.season ? upcoming.games : undefined} />}
