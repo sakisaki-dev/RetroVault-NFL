@@ -3,7 +3,6 @@
 /* one row of pills under the banner (facts, then college → draft → clubs), wrapping on a phone; the two groups are transparent to the flex row */
 .dd-bio { display: flex; flex-wrap: wrap; gap: 6px; }
 .dd-bio > .dd-facts, .dd-bio > .dd-path { display: contents; }
-.dd-bio > * > *, .dd-bio .dd-path li > * { flex: 1 1 auto; justify-content: center; min-width: 0; }
 .dd-facts > *, .dd-path > *, .dd-path li > * {
   height: 30px; display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box;
   border-radius: 999px; padding: 0 11px; font-size: 12.5px; line-height: 1; white-space: nowrap;

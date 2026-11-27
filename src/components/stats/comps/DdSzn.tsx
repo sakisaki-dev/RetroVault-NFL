@@ -173,11 +173,11 @@ const DdSzn = ({ player, players, seasonOvr, careerOvr, onOpenPlayer }: Props) =
         type="button"
         aria-label={`${career ? 'Career' : 'Season'} grade ${me.grade?.grade ?? 'none'}, ${career ? 'career' : 'season'} OVR ${me.szn}. Show the ${pos} leaderboard`}
         className={cn(
-          'rbk-chip glass-card flex h-full w-full flex-row items-center gap-4 p-3 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+          'rbk-chip glass-card flex w-full flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
           me.grade?.grade === 'S' && 'dd-card--s',
         )}
       >
-        <GradeChip grade={me.grade} size="lg" />
+        <GradeChip grade={me.grade} size="xl" />
         <div className="min-w-0 space-y-1.5">
           <p className="font-pixel text-[9px] uppercase text-gold">{career ? 'Career grade' : 'Season grade'}</p>
           <div className="flex flex-wrap gap-1.5">

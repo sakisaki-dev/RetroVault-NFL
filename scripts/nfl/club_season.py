@@ -86,6 +86,10 @@ def depth_starters(gsis_key):
         k = gsis_key.get(r["gsis_id"])
         if not k or int(r["pos_rank"]) > (2 if r["pos_abb"] == "WR" else 1):
             continue
+        # special teams only name the kicker: a returner (PR/KR) or holder is no starter at his own position
+        # (owner: the Bengals' second WR is Tee Higgins, not the punt returner Dohnte Meyers)
+        if r.get("pos_grp") == "Special Teams" and r["pos_abb"] != "PK":
+            continue
         # the base formation lists a player once per slot; both bases are kept, the site position decides the spot
         if k not in out[ABBR.get(r["team"], r["team"])][k.partition(":")[0]]:
             out[ABBR.get(r["team"], r["team"])][k.partition(":")[0]].append(k)
