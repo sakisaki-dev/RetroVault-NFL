@@ -56,11 +56,11 @@ const useNarrow = () => {
   return on;
 };
 
-const Row = ({ place, row, me, extras, onOpen }: { place: number | null; row: PeekRow; me: boolean; extras: IndexedExtras; onOpen: (p: Player) => void }) => {
+const Row = ({ place, row, me, pin = false, extras, onOpen }: { place: number | null; row: PeekRow; me: boolean; pin?: boolean; extras: IndexedExtras; onOpen: (p: Player) => void }) => {
   const team = signatureTeamOf(extras, row.player);
   const c = getTeamColors(team);
   return (
-    <li>
+    <li className={pin ? 'rbk-pin' : undefined}>
       <button
         type="button"
         data-rbk-row=""
@@ -97,16 +97,9 @@ const onListKey = (e: KeyboardEvent<HTMLElement>) => {
 const Body = ({ board, player, self, onOpen, sheet }: { board: PeekBoard; player: Player; self?: PeekRow; onOpen: (p: Player) => void; sheet: boolean }) => {
   const extras = usePlayerExtras();
   const rank = board.rows.findIndex((r) => same(r.player, player));
-  // owner: "scroll through the entire list instead of just showing the top 10": every qualifier in one scrolling list,
-  // opened on the player's own row; a player outside the pool (NQ) follows the list
+  // owner: the whole list scrolls from the top; the player's own row is pinned to the bottom (position: sticky) until
+  // the scroll reaches his real place, where it carries on with the list. A player outside the pool (NQ) follows it.
   const extra = rank < 0 ? self : undefined;
-  const listRef = useRef<HTMLUListElement | null>(null);
-  useLayoutEffect(() => {
-    const ul = listRef.current;
-    const me = ul?.querySelector<HTMLElement>('[data-me]');
-    if (!ul || !me || rank < TOP) return;
-    ul.scrollTop = me.offsetTop - ul.clientHeight / 2 + me.offsetHeight / 2;
-  }, [rank, board]);
   const Title = sheet ? SheetTitle : 'h4';
   const Desc = sheet ? SheetDescription : 'p';
   return (
@@ -117,14 +110,14 @@ const Body = ({ board, player, self, onOpen, sheet }: { board: PeekBoard; player
           {board.sub} · {board.rows.length} ranked
         </Desc>
       </div>
-      <ul ref={listRef} className="rbk-list relative space-y-1 overflow-y-auto overscroll-contain pr-1" style={{ maxHeight: sheet ? 'calc(var(--safe-h, 100svh) * 0.6)' : 'min(26rem, 60vh)' }} onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
+      <ul className="rbk-list relative space-y-1 overflow-y-auto overscroll-contain pr-1" style={{ maxHeight: sheet ? 'calc(var(--safe-h, 100svh) * 0.6)' : 'min(26rem, 60vh)' }} onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
         {board.rows.map((r, i) => (
-          <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} extras={extras} onOpen={onOpen} />
+          <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} pin={same(r.player, player) && i >= TOP} extras={extras} onOpen={onOpen} />
         ))}
         {extra && (
           <>
             <li role="separator" className="mx-1 border-t border-dashed border-line/80 pt-0.5" />
-            <Row place={null} row={extra} me extras={extras} onOpen={onOpen} />
+            <Row place={null} row={extra} me pin extras={extras} onOpen={onOpen} />
           </>
         )}
       </ul>

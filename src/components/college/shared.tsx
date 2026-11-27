@@ -61,7 +61,10 @@ export const cardVars = (club: string | null | undefined): CSSProperties => {
     '--a': p.edge,
     '--ink': p.ink,
     '--sub': light ? 'rgb(11 16 32 / 0.72)' : 'rgb(255 255 255 / 0.74)',
-    '--wm': light ? '0.16' : '0.2',
+    // the watermark is the club's mark as a silhouette in the card's ink (owner: Bailey's Jets and Reese's Giants logos
+    // vanished, green on Jets green, blue on Giants blue): white on a dark card, dark on a light one, every club alike
+    '--wm': light ? '0.12' : '0.14',
+    '--wm-f': light ? 'brightness(0)' : 'brightness(0) invert(1)',
   } as CSSProperties;
 };
 

@@ -50,9 +50,8 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
   }
   const best = [...graded].sort((a, b) => b.percentile - a.percentile)[0];
   return (
-    <div className="grid gap-3 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-stretch">
-      {/* owner: the tiles match the two grade cards' height so the whole block sits level */}
-      <div className="flex min-w-0 flex-col gap-3">
+    <div className="grid gap-3 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
+      <div className="min-w-0 space-y-3">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -95,15 +94,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
       )}
       {below}
       </div>
-      <ul
-        className={cn(
-          'grid grid-cols-1 gap-2 sm:grid-cols-2',
-          // whole rows at xl: 8 tiles are 2 rows of 4, 2 tiles one row stretched to the grade cards' height, the rest rows of 3
-          'lg:auto-rows-fr lg:self-stretch [&>li]:h-full [&>li>*]:h-full',
-          traits.length === 8 ? 'xl:grid-cols-4' : traits.length === 2 ? 'xl:grid-cols-2' : 'grid-fill-last xl:grid-cols-3',
-        )}
-        aria-label={`${displayName(player.name)} skill grades`}
-      >
+      <ul className="grid-fill-last grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (
@@ -130,7 +121,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
                   <GradeChip grade={t.grade} />
                   <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className={cn('font-display font-bold uppercase tracking-wide', traits.length === 8 ? 'text-sm leading-tight xl:text-[13px]' : 'truncate text-base')}>{t.trait.name}</span>
+                      <span className="truncate font-display text-base font-bold uppercase tracking-wide">{t.trait.name}</span>
                       <span className="shrink-0 font-mono text-xs tabular-nums text-chalk">{t.display}</span>
                     </div>
                     <DdBar pct={t.grade ? t.percentile : null} color={t.grade?.color} label={`${t.trait.name} percentile`} />

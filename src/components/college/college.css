@@ -24,7 +24,7 @@
 
 /* the logo watermark on a club or school card */
 .cl-wm { position: absolute; pointer-events: none; opacity: var(--wm, 0.2); line-height: 0; }
-.cl-wm img { max-width: none; }
+.cl-wm img { max-width: none; filter: var(--wm-f, none); }
 
 /* a name in the card's own ink: a button to the Deep Dive, never underlined */
 .cl-cname {
