@@ -569,6 +569,16 @@ def main():
               ["fgm", "fga", "fgm39", "fga39", "fgm49", "fga49", "fgm50", "fga50", "xpm", "xpa", "lng"], "OPOY"),
     }
 
+    if NFL:
+        # skill-trait stats the weekly data carries only in some seasons, with the exposure in those same seasons (build_players.py)
+        TGT = (["Targets", "Rec on targets"], ["tgt", "tgr"])
+        TFL = (["TFL", "TFL games"], ["tfl", "tflg"])
+        PD = (["PD", "PD games"], ["pd", "pdg"])
+        PEN = (["Penalties", "Starts since 2013"], ["pen", "penst"])
+        for pos_, (lab_, key_) in (("OL", PEN), ("RB", TGT), ("WR", TGT), ("TE", TGT), ("LB", TFL), ("DL", TFL), ("DB", PD)):
+            labels_, keys_, award_ = sections[pos_]
+            sections[pos_] = ([*labels_, *lab_], [*keys_, *key_], award_)
+
     inducted = inducted_keys()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="") as fh:

@@ -101,6 +101,48 @@ LOG = ["completions", "attempts", "passing_yards", "passing_tds", "passing_inter
        "punt_returns", "punt_return_yards", "kickoff_returns", "kickoff_return_yards"]
 
 
+# Skill-trait stats that nflverse only carries in some seasons (targets: 1999-2002 and 2009 on; tackles for loss: 1999-2002 and
+# 2012 on; passes defended: every season). A career total of them counts only the seasons the league recorded them, next to
+# the exposure in those same seasons (receptions with targets, games with tackles for loss), so a rate is never diluted by
+# years the source left blank: catch rate = tgr / tgt, TFL per game = tfl / tflg, passes defended per game = pd / pdg.
+# A player with none of those seasons gets None (a blank cell: skipped, never a zero).
+COVER_COLS = {"tgt": "targets", "tfl": "def_tackles_for_loss", "pd": "def_pass_defended"}
+COVER_MIN_ROWS = 1000   # a season has the stat when at least this many player-weeks carry it
+
+
+def covered_seasons():
+    cov = {k: set() for k in COVER_COLS}
+    for y in range(FIRST, LAST + 1):
+        cnt = {k: 0 for k in COVER_COLS}
+        for r in rows(f"stats_player_week_{y}.csv.gz"):
+            for k, c in COVER_COLS.items():
+                if n(r, c) > 0:
+                    cnt[k] += 1
+        for k in COVER_COLS:
+            if cnt[k] >= COVER_MIN_ROWS:
+                cov[k].add(y)
+    return cov
+
+
+def trait_extras(pos, rows_, cov, starts=0):
+    """The windowed skill-trait totals of one player over weekly rows (regular season). `starts` (offensive linemen): his starts
+    since SNAPS_FROM, the exposure of his penalties (nflverse has no sacks or pressures allowed, but it does count penalties)."""
+    out = {}
+    if pos == "OL":
+        out["pen"], out["penst"] = (int(sum(n(r, "penalties") for r in rows_ if int(r["season"]) >= SNAPS_FROM)), starts) if starts > 0 else (None, None)
+    if pos in ("WR", "TE", "RB"):
+        w = [r for r in rows_ if int(r["season"]) in cov["tgt"]]
+        t = int(sum(n(r, "targets") for r in w))
+        out["tgt"], out["tgr"] = (t, int(sum(n(r, "receptions") for r in w))) if t > 0 else (None, None)
+    if pos in ("LB", "DL"):
+        w = [r for r in rows_ if int(r["season"]) in cov["tfl"]]
+        out["tfl"], out["tflg"] = (int(sum(n(r, "def_tackles_for_loss") for r in w)), len(w)) if w else (None, None)
+    if pos == "DB":
+        w = [r for r in rows_ if int(r["season"]) in cov["pd"]]
+        out["pd"], out["pdg"] = (int(sum(n(r, "def_pass_defended") for r in w)), len(w)) if w else (None, None)
+    return out
+
+
 def norm(s: str) -> str:
     s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
     s = re.sub(r"\b(jr|sr|ii|iii|iv|v)\b\.?", " ", s.replace(".", " "))
@@ -383,6 +425,7 @@ def main():
                 now[r["gsis_id"]] = (w, ABBR.get(r["team"], r["team"]), r["status"])
     latest_week = max((v[0] for v in now.values()), default=0)
     players, stints, careers, moved = [], {}, {}, []
+    COV = covered_seasons()
     ends = {}  # key -> season -> the career line at that season's end (for the career graphs)
     (NFL / "games").mkdir(parents=True, exist_ok=True)
     award_rows = [(k, a) for k, lst in awards["awards"].items() for a in lst]
@@ -409,6 +452,7 @@ def main():
                 rec[key] = int(round(sum(cv(r, col) for r in reg)))
         if pos in ("WR", "TE"):
             rec["lng"] = None  # not in the weekly data
+        rec.update(trait_extras(pos, reg, COV, starts.get(pid, 0)))
         if pos == "K":
             rec["lng"] = int(max((n(r, "fg_long") for r in reg), default=0)) or None  # his longest field goal
         if pos == "OL":
@@ -494,7 +538,9 @@ def main():
         for r in reg:
             by_y[int(r["season"])].append(r)
         cum, line = defaultdict(float, base), {}
+        upto = []
         for y in sorted(by_season):
+            upto += by_y.get(y, [])
             for r in by_y.get(y, []):
                 for key, col in FIELDS[pos].items():
                     if key == "tkl":
@@ -511,6 +557,7 @@ def main():
             club_y = max(by_season[y].items(), key=lambda x: x[1])[0]
             line[y] = {"n": p["display"], "pos": pos, "team": club_y, "g": int(cum["g"]),
                        **{k: int(round(cum[k])) for k in FIELDS[pos]},
+                       **trait_extras(pos, upto, COV, sum(v_ for yy, v_ in starts_y[pid].items() if yy <= y) if pid else 0),
                        **({"lng": None} if pos in ("WR", "TE") else {"lng": int(cum["lng"]) or None} if pos == "K" else {}),
                        "rings": sum(1 for ry in rings if ry <= y), "mvp": won["mvp"], "opoy": won["opoy"],
                        "dpoy": won["dpoy"], "sbmvp": won["sbmvp"], "roty": won["oroy"] + won["droy"]}

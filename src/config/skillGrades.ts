@@ -14,9 +14,10 @@ import { METRIC_BY_ID, SIM_MIN_GAMES, compFeatures, similarityBaseline, type Com
 /** Football names for the play-style features (config/advanced.ts compFeatures ids). */
 const TRAIT_NAMES: Record<string, Record<string, string>> = {
   QB: { ya: 'Arm', cmp: 'Accuracy', tdPct: 'Gunslinger', intPct: 'Decision making', rating: 'Clutch rating', passYdsG: 'Volume', rushYdsG: 'Legs', rushShare: 'Scrambler' },
-  RB: { ypc: 'Vision', rushYdsG: 'Workhorse', recYdsG: 'Pass catching', recShare: 'Dual threat', td16: 'Nose for the end zone', fumRate: 'Ball security', ypt: 'Explosiveness' },
-  REC: { recG: 'Hands', recYdsG: 'Production', ypr: 'Big play', tdPerRec: 'Red zone', fumRate: 'Ball security' },
-  DEF: { tklG: 'Tackling', sackG: 'Pass rush', intG: 'Ball hawk', ffG: 'Strip', impactG: 'Playmaker' },
+  RB: { ypc: 'Vision', rushYdsG: 'Workhorse', recYdsG: 'Pass catching', recShare: 'Dual threat', td16: 'Nose for the end zone', fumRate: 'Ball security', ypt: 'Explosiveness', catchPct: 'Safe hands' },
+  REC: { recG: 'Hands', recYdsG: 'Production', ypr: 'Big play', tdPerRec: 'Red zone', fumRate: 'Ball security', catchPct: 'Reliability' },
+  OL: { penG: 'Discipline' },
+  DEF: { tklG: 'Tackling', sackG: 'Pass rush', intG: 'Ball hawk', ffG: 'Strip', impactG: 'Playmaker', tflG: 'Disruptor', pdG: 'Coverage' },
   K: { fgPct: 'Accuracy', fg40Pct: 'Range', fg50Pct: 'Long range', xpPct: 'Extra points', fgG: 'Volume', longG: 'Leg' },
 };
 const traitGroup = (pos: Position) => (pos === 'WR' || pos === 'TE' ? 'REC' : pos === 'LB' || pos === 'DB' || pos === 'DL' ? 'DEF' : pos);
@@ -176,10 +177,10 @@ export const tierFor = (grade: GradeStep) => TIERS[grade.grade[0]] ?? 'Depth cha
  */
 export const VALUE_WEIGHTS: Record<string, Record<string, number>> = {
   QB: { ya: 0.2, tdPct: 0.2, intPct: 0.15, cmp: 0.15, rating: 0.1, passYdsG: 0.15, rushYdsG: 0.05, rushShare: 0 },
-  RB: { ypc: 0.2, td16: 0.25, rushYdsG: 0.3, fumRate: 0.1, recYdsG: 0.1, ypt: 0.05, recShare: 0 },
-  REC: { recYdsG: 0.35, ypr: 0.2, tdPerRec: 0.2, recG: 0.15, fumRate: 0.1 },
-  DEF: { impactG: 0.35, tklG: 0.2, sackG: 0.15, intG: 0.15, ffG: 0.15 },
-  OL: { blocksG: 1 },
+  RB: { ypc: 0.2, td16: 0.25, rushYdsG: 0.3, fumRate: 0.1, recYdsG: 0.1, ypt: 0.05, recShare: 0, catchPct: 0.05 },
+  REC: { recYdsG: 0.35, ypr: 0.2, tdPerRec: 0.2, recG: 0.15, fumRate: 0.1, catchPct: 0.15 },
+  DEF: { impactG: 0.35, tklG: 0.2, sackG: 0.15, intG: 0.15, ffG: 0.15, tflG: 0.1, pdG: 0.1 },
+  OL: { blocksG: 0.7, penG: 0.3 },
   K: { fgPct: 0.3, fg40Pct: 0.25, fg50Pct: 0.1, xpPct: 0.15, fgG: 0.15, longG: 0.05 },
 };
 /**
@@ -208,15 +209,16 @@ export const OVERALL_TOP3_MIX = 0.4;
  * qualified pool, so S is the top 10% of starters. A season line (this-season grades) keeps the old pools. OL keeps its
  * single trait on the old pool.
  */
-const SHRINK: Record<string, Record<string, { stat: string; n: 'att' | 'carries' | 'touches' | 'rec' | 'g' }>> = {
+const SHRINK: Record<string, Record<string, { stat: string; n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg' }>> = {
   QB: { ya: { stat: 'ya', n: 'att' }, cmp: { stat: 'cmp', n: 'att' }, tdPct: { stat: 'td', n: 'att' }, intPct: { stat: 'int', n: 'att' }, rating: { stat: 'ya', n: 'att' } },
-  RB: { ypc: { stat: 'ypc', n: 'carries' }, td16: { stat: 'td_touch', n: 'touches' }, fumRate: { stat: 'fum_touch', n: 'touches' }, ypt: { stat: 'ypt', n: 'touches' } },
-  WR: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' } },
-  TE: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' } },
+  RB: { ypc: { stat: 'ypc', n: 'carries' }, td16: { stat: 'td_touch', n: 'touches' }, fumRate: { stat: 'fum_touch', n: 'touches' }, ypt: { stat: 'ypt', n: 'touches' }, catchPct: { stat: 'catch', n: 'tgt' } },
+  WR: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' }, catchPct: { stat: 'catch', n: 'tgt' } },
+  TE: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' }, catchPct: { stat: 'catch', n: 'tgt' } },
   LB: { tklG: { stat: 'tkl_g', n: 'g' }, sackG: { stat: 'sack_g', n: 'g' }, intG: { stat: 'int_g', n: 'g' }, ffG: { stat: 'ff_g', n: 'g' }, impactG: { stat: 'sack_g', n: 'g' } },
 };
-SHRINK.DB = SHRINK.LB;
-SHRINK.DL = SHRINK.LB;
+SHRINK.DB = { ...SHRINK.LB, pdG: { stat: 'pd_g', n: 'pdg' } };
+SHRINK.DL = { ...SHRINK.LB, tflG: { stat: 'tfl_g', n: 'tflg' } };
+SHRINK.LB = { ...SHRINK.LB, tflG: { stat: 'tfl_g', n: 'tflg' } };
 const NO_SIGNAL_K = 5000;
 const shrinkSpec = (pos: Position, id: string) => (IS_NFL && careerRatingMeta() ? SHRINK[pos]?.[id] : undefined);
 const kOf = (pos: Position, id: string, season = false): number | null | undefined => {
@@ -231,12 +233,12 @@ export const isNoSignal = (pos: Position, id: string, season = false): boolean =
   const k = kOf(pos, id, season);
   return k !== undefined && (k === null || k >= NO_SIGNAL_K);
 };
-const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g') => {
+const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg') => {
   const v = (k: string) => {
     const x = (p as unknown as Record<string, unknown>)[k];
     return typeof x === 'number' && Number.isFinite(x) ? x : 0;
   };
-  return n === 'att' ? v('attempts') : n === 'carries' ? v('rushAtt') : n === 'touches' ? v('rushAtt') + v('receptions') : n === 'rec' ? v('receptions') : v('games');
+  return n === 'att' ? v('attempts') : n === 'carries' ? v('rushAtt') : n === 'touches' ? v('rushAtt') + v('receptions') : n === 'rec' ? v('receptions') : n === 'tgt' ? v('targets') : n === 'tflg' ? v('tflGames') : n === 'pdg' ? v('pdGames') : v('games');
 };
 /**
  * NFL season pools (owner, 2026-11-24): a season is graded against the players who qualified for it so far, scaled to the weeks
@@ -339,13 +341,13 @@ const TOTALS_TRAIT_IDS: Record<string, string[]> = {
  * grade (same GRADE_SCALE) and tier from the grade. Null before any valued trait.
  */
 export const overallFor = (features: CompFeature[], baseline: Map<string, number[]>, values: (number | null)[], position: Position, season = false): Overall | null => {
-  const items: { w: number; pct: number }[] = [];
+  const items: { id: string; w: number; pct: number }[] = [];
   features.forEach((f, i) => {
     const v = values[i];
     const w = valueWeight(position, f.id, season);
     if (v == null || w <= 0) return;
     const pct = skillPct(f, baseline.get(f.id) ?? [], v);
-    if (Number.isFinite(pct)) items.push({ w, pct });
+    if (Number.isFinite(pct)) items.push({ id: f.id, w, pct });
   });
   if (!items.length) return null;
   const W = items.reduce((a, x) => a + x.w, 0);
@@ -360,7 +362,9 @@ export const overallFor = (features: CompFeature[], baseline: Map<string, number
     const ids = TOTALS_TRAIT_IDS[traitGroup(position)];
     if (ids) {
       const ref = features.reduce((a, f) => a + (ids.includes(f.id) ? valueWeight(position, f.id, false) : 0), 0);
-      const have = W;
+      // only the traits a totals line can carry count as covered: a window-recorded trait (catch rate, TFL, PD, penalties) a pre-1999 or
+      // pre-2012 career never had is missing, the same as the others, and one a modern career has adds nothing to the coverage
+      const have = items.reduce((a, x) => a + (ids.includes(x.id) ? x.w : 0), 0);
       const share = ref > 0 ? Math.min(1, have / ref) : 1;
       pct = 50 + (pct - 50) * share ** 0.7;
     }

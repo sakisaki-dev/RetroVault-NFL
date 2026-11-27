@@ -200,7 +200,7 @@ export interface SeasonOvrFile {
   lines?: Record<string, Record<string, number>>;
 }
 
-const STAT_FIELDS = ['games', 'attempts', 'completions', 'passYds', 'passTD', 'interceptions', 'sacks', 'rushAtt', 'rushYds', 'rushTD', 'fumbles', 'receptions', 'recYds', 'recTD', 'longest', 'blocks', 'tackles', 'forcedFumbles', 'fgMade', 'fgAtt', 'fgMade39', 'fgAtt39', 'fgMade49', 'fgAtt49', 'fgMade50', 'fgAtt50', 'xpMade', 'xpAtt'];
+const STAT_FIELDS = ['games', 'attempts', 'completions', 'passYds', 'passTD', 'interceptions', 'sacks', 'rushAtt', 'rushYds', 'rushTD', 'fumbles', 'receptions', 'recYds', 'recTD', 'longest', 'blocks', 'tackles', 'forcedFumbles', 'fgMade', 'fgAtt', 'fgMade39', 'fgAtt39', 'fgMade49', 'fgAtt49', 'fgMade50', 'fgAtt50', 'xpMade', 'xpAtt', 'targets', 'targetRec', 'tfl', 'tflGames', 'passesDefended', 'pdGames', 'penalties', 'penStarts'];
 
 /**
  * The player as his season line: every stat the line lacks is NaN (never 0), so a skill that needs it shows "no data"
