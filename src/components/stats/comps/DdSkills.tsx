@@ -94,7 +94,14 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
       )}
       {below}
       </div>
-      <ul className="grid-fill-last grid grid-cols-1 content-start items-start gap-2 self-start sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
+      <ul
+        className={cn(
+          'grid grid-cols-1 gap-2 sm:grid-cols-2',
+          // whole rows at xl: 8 tiles are 2 rows of 4, 2 tiles one row stretched to the grade cards' height, the rest rows of 3
+          traits.length === 8 ? 'content-start self-start xl:grid-cols-4' : traits.length === 2 ? 'xl:grid-cols-2 xl:auto-rows-fr xl:self-stretch' : 'grid-fill-last content-start items-start self-start xl:grid-cols-3',
+        )}
+        aria-label={`${displayName(player.name)} skill grades`}
+      >
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (
@@ -121,7 +128,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
                   <GradeChip grade={t.grade} />
                   <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className="truncate font-display text-base font-bold uppercase tracking-wide">{t.trait.name}</span>
+                      <span className={cn('font-display font-bold uppercase tracking-wide', traits.length === 8 ? 'text-sm leading-tight xl:text-[13px]' : 'truncate text-base')}>{t.trait.name}</span>
                       <span className="shrink-0 font-mono text-xs tabular-nums text-chalk">{t.display}</span>
                     </div>
                     <DdBar pct={t.grade ? t.percentile : null} color={t.grade?.color} label={`${t.trait.name} percentile`} />
