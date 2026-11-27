@@ -70,7 +70,7 @@
 .rw-pen { position: relative; display: block; width: 100%; aspect-ratio: 26 / 13; }
 .rw-pen svg { display: block; width: 100%; height: 100%; }
 .rw-pen__t { position: absolute; left: 6%; top: 0; bottom: 0; width: 52%; display: grid; place-items: center start; font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.06em; color: #fff; text-shadow: 0 1px 0 #000; text-transform: uppercase; }
-.rw-pen.is-locked { filter: grayscale(1) brightness(0.5); opacity: 0.55; }
+.rw-pen.is-locked { opacity: 0.7; }
 .bk__pennants { position: absolute; z-index: 2; left: 6px; right: 6px; top: 0; display: flex; gap: 6px; padding: 0 10px; pointer-events: none; overflow: hidden; }
 .bk__pennants::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; height: 2px; background: #b8925a; box-shadow: 0 1px 0 #000; }
 .bk__pennants .rw-pen { width: 44px; flex: 0 0 30px; width: 30px; aspect-ratio: 13 / 26; margin-top: 6px; filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.5)); }
@@ -182,6 +182,15 @@ html[data-reduce-motion] .rw-case__doors, html[data-reduce-motion] .rw-case__gli
 .rw-wall__grid { display: grid; gap: 10px 8px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (min-width: 640px) { .rw-wall__grid { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
 .rw-wall__item { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
-.rw-wall__item .rw-pen { filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.5)); }
+
 .rw-wall__n { font-family: var(--font-pixel); font-size: 8px; color: hsl(var(--muted-foreground)); }
 .rw-wall__item.is-done .rw-wall__n { color: hsl(var(--gold)); }
+
+/* Perf (owner: Milestones froze an iPhone): tiles and pennants off screen are skipped entirely (no layout, paint or
+   running animation) until they scroll near; each keeps its size so the page never jumps */
+.rw-card { content-visibility: auto; contain-intrinsic-size: auto 330px; }
+.rw-wall__grid { content-visibility: auto; contain-intrinsic-size: auto 420px; }
+
+/* only on-screen previews animate (phones froze with every preview running); off-screen cards skip rendering */
+.rw-root .rw-card__stage:not(.rw-live) *, .rw-root .rw-card__stage:not(.rw-live) *::before, .rw-root .rw-card__stage:not(.rw-live) *::after { animation-play-state: paused !important; }
+.rw-root .rw-card { content-visibility: auto; contain-intrinsic-size: auto 330px; }
