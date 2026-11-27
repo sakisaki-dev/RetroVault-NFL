@@ -30,6 +30,7 @@ import {
   type GamePlayer,
 } from './gameUtils';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 // ---------- Rules (ported from the original arcade) ----------
 
@@ -361,7 +362,6 @@ const advance = (s: Season): Season => {
 
 // ---------- Component ----------
 
-const reducedMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 /** Scroll to the game's title bar (not the page top: on a phone the arcade header would push the stage off screen). */
 const toTop = () => {
   const el = document.getElementById('arcade-game-title');

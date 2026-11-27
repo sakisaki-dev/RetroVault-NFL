@@ -14,6 +14,7 @@ import type { CeremonyVariant } from '@/utils/hallOfFameWatch';
 import { signatureStats, type Speech } from './speech';
 import './ceremony.css';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 export interface CeremonyInductee {
   key: string;
@@ -33,7 +34,7 @@ interface InductionCeremonyProps {
 }
 
 const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  reducedMotion();
 
 const CONFETTI_COLORS = ['43 100% 62%', '48 100% 80%', '36 90% 48%', '0 0% 100%', '43 100% 70%'];
 

@@ -61,6 +61,7 @@ import { useCareerSeasons } from '@/utils/careerSeasons';
 import CareerArcScene, { arcFor, loadStints, type CareerArcData } from './scenes/CareerArcScene';
 import RivalryNightScene, { type RivalryNightData } from './scenes/RivalryNightScene';
 import RecordChaseScene, { buildChases, type ChaseData } from './scenes/RecordChaseScene';
+import { reducedMotion } from '@/utils/motion';
 
 /*
  * The desktop screensaver (owner, 2026-11-17): a full-screen show that cycles through the site's art, one scene at a
@@ -767,7 +768,7 @@ const WeatherCanvas = ({ kind, wind, scene, lite }: { kind: 'rain' | 'storm' | '
       removeEventListener('resize', size);
     };
   }, [kind, lite]);
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+  if (reducedMotion()) return null;
   return <canvas ref={ref} className="sv-weather__canvas" aria-hidden="true" />;
 };
 
@@ -1648,7 +1649,7 @@ const Trophy = ({ year, big, band, glint }: { year: number; big: boolean; band: 
 const TrophiesScene = ({ club, years }: { club: string; years: number[] }) => {
   const { lite } = usePerfMode();
   // the glint is an SVG animation, so reduced motion and lite mode leave it out here
-  const still = lite || (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const still = lite || (reducedMotion());
   const t = findNFLTeam(club);
   const style = (t ? { '--sv-1': `hsl(${t.primaryColor})`, '--sv-2': `hsl(${t.secondaryColor})` } : {}) as CSSProperties;
   const ys = [...years].sort((a, b) => a - b);
@@ -1796,7 +1797,7 @@ const StuntScene = ({ club }: { club: string }) => {
     const H = (cv.height = cv.clientHeight * k);
     const cw = W / COLS;
     const ch = H / ROWS;
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const still = reducedMotion();
     let faces: string[] | null = null;
     let t0 = performance.now();
     let raf = 0;

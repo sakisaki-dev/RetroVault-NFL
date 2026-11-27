@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { reducedMotion } from '@/utils/motion';
 
 /**
  * Shared zoom + pan for SVG plots. Zoom is semantic: the hook returns the visible x / y domains, so the chart redraws
@@ -51,7 +52,6 @@ export interface ChartZoom {
   zoomBy: (factor: number) => void;
 }
 
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export function useChartZoom(opts: {

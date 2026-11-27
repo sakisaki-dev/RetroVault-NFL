@@ -20,6 +20,7 @@ import { SectionTitle } from './SeasonGames';
 import { signed } from './seasonGamesUi';
 import '@/components/teams/nfl/clubWall.css';
 import './seasonWall.css';
+import { reducedMotion } from '@/utils/motion';
 
 type Row = SeasonView['table'][number];
 type Sort = 'division' | 'power' | 'record' | 'name';
@@ -144,7 +145,7 @@ const SeasonClubWall = ({ season, upcoming, live }: { season: SeasonView; upcomi
   }, []);
   useEffect(() => {
     if (!div) return;
-    const t = window.setTimeout(() => document.getElementById('season-standings')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 350);
+    const t = window.setTimeout(() => document.getElementById('season-standings')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' }), 350);
     return () => window.clearTimeout(t);
   }, [div, season.season]);
   const sprites = useGameSprites();

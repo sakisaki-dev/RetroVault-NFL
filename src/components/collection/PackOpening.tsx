@@ -21,14 +21,8 @@ import type { TunnelGeo } from './tunnel/drawTunnel';
 import './kits.css';
 import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
+import { reducedMotion } from '@/utils/motion';
 
-const reducedMotion = () => {
-  try {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  } catch {
-    return false;
-  }
-};
 
 /**
  * "Out of the tunnel" (owner approved the storyboard, 2026-11-16). The whole opening plays in a players' tunnel

@@ -29,6 +29,7 @@ import PixelLoader from '@/components/ui/PixelLoader';
 import { IS_NFL, seasonLabel } from '@/config/edition';
 import { displayName } from '@/utils/displayName';
 import { clearSeasonJump, peekSeasonJump } from '@/utils/seasonLink';
+import { reducedMotion } from '@/utils/motion';
 
 /**
  * The Season page. Its backbone is the design that lived on the Timeline as "Season games" (scoreboard, club splits,
@@ -112,7 +113,7 @@ const SeasonTab = () => {
     const j = peekSeasonJump();
     if (!j || !ready) return;
     const t = window.setTimeout(() => {
-      document.getElementById('season-standings')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      document.getElementById('season-standings')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
       clearSeasonJump();
     }, 250);
     return () => window.clearTimeout(t);
@@ -147,7 +148,7 @@ const SeasonTab = () => {
           right={
             <div className="flex flex-wrap items-center gap-2">
               {IS_NFL && (
-                <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="flag" size={12} />}>
+                <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="flag" size={12} />}>
                   Find a game
                 </PixelChip>
               )}

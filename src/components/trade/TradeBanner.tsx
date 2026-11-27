@@ -14,6 +14,7 @@ import { firstAndLast } from '@/utils/displayName';
 import { useGameSprites } from '@/utils/gameSprites';
 import { TRADE_RULES, type TradeModel, type TradeResult } from '@/utils/tradeSim';
 import './tradeBanner.css';
+import { reducedMotion } from '@/utils/motion';
 
 /**
  * The Trade Desk's banner (owner picked concept 1, "the jumbotron is nice"): the game's stadium split down the middle and
@@ -25,7 +26,7 @@ import './tradeBanner.css';
  */
 const MAX = 4;
 const NOW = () => (typeof document !== 'undefined' ? document.documentElement.dataset.perf === 'lite' : false);
-const still = () => NOW() || (typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+const still = () => NOW() || (reducedMotion());
 
 /** Counts a number up (or between values) in a few frames; instant under reduced motion and Lite mode. */
 const useTween = (value: number, ms = 520) => {

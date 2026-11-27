@@ -18,6 +18,7 @@ import { useAutographFor } from './autograph/sample';
 import { autographValue, fmtMult, inkRowOf, parallelOf, serialStr } from '@/config/autographs';
 import { displayName } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
+import { reducedMotion } from '@/utils/motion';
 
 /** Firework bursts: [left %, top %, delay s]; Legendary fires a second volley. */
 const VOLLEY = [
@@ -62,13 +63,6 @@ const PRISM_BITS = 30;
 
 const CLUES: WkStage[] = ['logo', 'pos', 'ovr'];
 
-const reducedMotion = () => {
-  try {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  } catch {
-    return false;
-  }
-};
 
 /** OVR counting up to its value; writes the number straight to the DOM on animation frames (no re-renders). */
 const OvrCount = ({ to, ms }: { to: number | null; ms: number }) => {

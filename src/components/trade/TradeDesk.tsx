@@ -20,6 +20,7 @@ import { MethodTip, TEAM_LABELS, teamVars } from './TradeParts';
 import type { useTradeEnv } from './useTrade';
 import './trade.css';
 import './desk.css';
+import { reducedMotion } from '@/utils/motion';
 
 /**
  * Fantasy > Trade, the Trade Desk. Two teams: three columns, You send (a locker), the verdict jumbotron, You get (a
@@ -31,7 +32,7 @@ import './desk.css';
 interface Side { give: { key: string; to: number }[]; roster: string[] }
 const emptySides = (): Side[] => Array.from({ length: 4 }, () => ({ give: [], roster: [] }));
 const clubsOf = (keys: string[], model: TradeModel) => [...new Set(keys.map((k) => model.players.get(k)?.club).filter((c): c is string => !!c))];
-const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const reduced = () => reducedMotion();
 
 const TradeDesk = ({ env, onLeague, leagueSummary }: { env: ReturnType<typeof useTradeEnv>; onLeague?: () => void; leagueSummary?: string }) => {
   const { model, cards, cardValue } = env;

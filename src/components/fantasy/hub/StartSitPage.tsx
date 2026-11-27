@@ -19,13 +19,14 @@ import { NameStrip, PlayerHit, RangeBar, Sprite, hcVars } from './hubParts';
 import { slotName } from './BenchRow';
 import { f1, nameOf, type FantasyHub } from './useFantasyHub';
 import type { Sub } from './FantasyHub';
+import { reducedMotion } from '@/utils/motion';
 
 const BADGE = {
   start: { t: 'START', I: Check }, sit: { t: 'SIT', I: Minus }, swap: { t: 'SWAP', I: ArrowLeftRight },
   watch: { t: 'WATCH', I: Eye }, risk: { t: 'SIT RISK', I: TriangleAlert },
 } as const;
 
-const reduced = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const reduced = () => reducedMotion();
 /** Counts up to a value (and from the old value to a new one); the final number at once under reduced motion. */
 const useTween = (target: number, ms = 900) => {
   const [v, setV] = useState(() => (reduced() ? target : 0));

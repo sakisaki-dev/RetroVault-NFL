@@ -55,6 +55,7 @@ import SharePosterFrame from '@/components/share/SharePosterFrame';
 import { shareFileName } from '@/utils/shareImage';
 import { displayOf, readCollection } from '@/utils/collection';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 export interface CardDetailTarget {
   info: CardInfo;
@@ -106,7 +107,7 @@ interface CardDetailProps {
 
 const motionOk = () => {
   try {
-    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !reducedMotion();
   } catch {
     return false;
   }
