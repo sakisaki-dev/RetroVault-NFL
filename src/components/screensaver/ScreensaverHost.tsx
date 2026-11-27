@@ -1,7 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { completeSpotifyLogin } from '@/utils/spotify';
 import { liveFixtureScene } from '@/utils/liveGames';
-import { isNightRest, onScreensaverStart, saverSupported, useSaverIdle, useSaverNight } from '@/utils/screensaver';
+import { isNightRest, onScreensaverStart, saverDebug, saverSupported, useSaverIdle, useSaverNight } from '@/utils/screensaver';
 
 const Screensaver = lazy(() => import('./Screensaver'));
 
@@ -12,7 +12,7 @@ const ACTIVITY = ['pointermove', 'pointerdown', 'keydown', 'wheel', 'scroll', 't
  * desktop while the tab is visible. The screensaver itself is lazy, so nothing loads until it runs.
  */
 const ScreensaverHost = () => {
-  const [on, setOn] = useState(() => (import.meta.env.DEV && new URLSearchParams(location.search).has('saverScene')) || liveFixtureScene() !== null);
+  const [on, setOn] = useState(() => (saverDebug() && new URLSearchParams(location.search).has('saverScene')) || liveFixtureScene() !== null);
   const idle = useSaverIdle();
   const night = useSaverNight();
   const last = useRef(Date.now());
@@ -21,7 +21,7 @@ const ScreensaverHost = () => {
   useEffect(() => onScreensaverStart(() => setOn(true)), []);
   // dev only: ?saverScene=<kind> starts the show at once on that scene kind
   useEffect(() => {
-    if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('saverScene')) setOn(true);
+    if (saverDebug() && new URLSearchParams(window.location.search).get('saverScene')) setOn(true);
   }, []);
   // back from Spotify's sign-in (the screensaver's now playing card): finish it and tidy the address
   useEffect(() => {
