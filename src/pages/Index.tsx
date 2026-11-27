@@ -55,8 +55,8 @@ const FantasyHub = lazyRetry(() => import('@/components/fantasy/hub/FantasyHub')
 const TeamLabTab = lazyRetry(() => import('@/components/teamlab/TeamLabTab'));
 const CollegeTab = lazyRetry(() => import('@/components/college/CollegeTab'));
 
-/** Pages whose sections rise in as they scroll into view (the Players page does it itself; the Arcade, Collection and Team Lab are tools, never animated this way). */
-const SCROLL_IN_TABS = new Set(['season', 'timeline', 'news', 'college', 'office', 'hof']);
+/** Every page cascades in (useAutoReveal); Stats runs its own per sub-tab. */
+const OWN_REVEAL_TABS = new Set(['career']);
 
 /* Owner: a desktop reload opens on Season, not the Arcade. A reload (or a fresh open) of the bare Arcade page on a
    desktop swaps it for Season before the router reads the hash; deep links into a game stay where they point. */
@@ -168,7 +168,7 @@ const IndexContent = () => {
             {/* Tab changes are transitions (hashRoute), so the old tab stays until the new one is ready; it then
                 cross-fades in (.rv-view-in). The fallback only shows on a cold first load, after ~150 ms. */}
             <TabBoundary key={activeTab}><Suspense fallback={<TabFallback />}>
-              <div key={activeTab} ref={SCROLL_IN_TABS.has(activeTab) ? scrollIn : undefined} className="rv-view-in">
+              <div key={activeTab} ref={OWN_REVEAL_TABS.has(activeTab) ? undefined : scrollIn} className={OWN_REVEAL_TABS.has(activeTab) ? 'rv-view-in' : 'rv-view-in rv-view-fade'}>
                 {activeTab === 'career' && <CareerTab />}
                 {activeTab === 'lab' && <TeamLabTab />}
                 {IS_NFL && activeTab === 'fantasy' && <FantasyHub />}

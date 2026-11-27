@@ -162,8 +162,9 @@
           ctx.putImageData(img,0,0);
           return disA;
         }
+        var lifted=false;function lift(){if(lifted)return;lifted=true;window.__rvBootLifted=true;try{dispatchEvent(new Event("rv:boot-lift"))}catch(e){}}
         function finish(){
-          if(gone)return;gone=true;cancelAnimationFrame(raf);
+          lift();if(gone)return;gone=true;cancelAnimationFrame(raf);
           root.style.transform="";root.style.filter="";root.style.transformOrigin="";
           if(b.parentNode)b.parentNode.removeChild(b);cv.width=cv.height=0;
           removeEventListener("resize",onResize);
@@ -182,7 +183,7 @@
           if(o>1050)m.className=k.className="";
           var disA=draw(t,o,TS);
           if(o>=disA){
-            var p=ease(seg(o,disA,disA+600));
+            lift();var p=ease(seg(o,disA,disA+600));
             b.style.opacity=String(1-p);
             root.style.transformOrigin="50% 30%";root.style.transform="translateY("+(16*(1-p)).toFixed(2)+"px) scale("+(.985+.015*p).toFixed(4)+")";
           }
@@ -191,7 +192,7 @@
         }
         var rt;function onResize(){clearTimeout(rt);rt=setTimeout(function(){if(!gone)size()},100)}
         function fadeOut(){
-          if(gone)return;cancelAnimationFrame(raf);m.className=k.className="";b.className="roll fade";
+          if(gone)return;lift();cancelAnimationFrame(raf);m.className=k.className="";b.className="roll fade";
           setTimeout(finish,300);
         }
         function open(){ready=true;if(reduce)setTimeout(fadeOut,0)}
