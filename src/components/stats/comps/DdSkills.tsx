@@ -50,8 +50,9 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
   }
   const best = [...graded].sort((a, b) => b.percentile - a.percentile)[0];
   return (
-    <div className="grid gap-3 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-start">
-      <div className="min-w-0 space-y-3">
+    <div className="grid gap-3 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-stretch">
+      {/* owner: the tiles match the two grade cards' height so the whole block sits level */}
+      <div className="flex min-w-0 flex-col gap-3 lg:[&>*]:flex-1 lg:[&>*>button]:h-full">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -98,7 +99,8 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
         className={cn(
           'grid grid-cols-1 gap-2 sm:grid-cols-2',
           // whole rows at xl: 8 tiles are 2 rows of 4, 2 tiles one row stretched to the grade cards' height, the rest rows of 3
-          traits.length === 8 ? 'content-start self-start xl:grid-cols-4' : traits.length === 2 ? 'xl:grid-cols-2 xl:auto-rows-fr xl:self-stretch' : 'grid-fill-last content-start items-start self-start xl:grid-cols-3',
+          'lg:auto-rows-fr lg:self-stretch [&>li]:h-full [&>li>*]:h-full',
+          traits.length === 8 ? 'xl:grid-cols-4' : traits.length === 2 ? 'xl:grid-cols-2' : 'grid-fill-last xl:grid-cols-3',
         )}
         aria-label={`${displayName(player.name)} skill grades`}
       >
