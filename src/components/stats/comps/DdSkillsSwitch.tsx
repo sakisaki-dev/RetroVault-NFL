@@ -37,8 +37,8 @@ const DdSkillsSwitch = ({ player, car, players, seasonOvr, onOpenPlayer, careerO
   const line = seasonOvr?.lines?.[key];
   const hasSeason = !!line && player.status === 'Active';
   const [mode, setMode] = useState<'season' | 'career' | null>(null);
-  // The Season panel carries SZN, so the Skill panel opens on the career skill rating it is compared with (owner, 2026-11-25).
-  const shown = mode ?? (hasSeason && !hasSznPanel(player, seasonOvr) ? 'season' : 'career');
+  // Owner, 2026-11-27: the Deep Dive opens on the SZN grades for an active player who played this season; Career for the rest.
+  const shown = mode ?? (hasSeason ? 'season' : 'career');
 
   const seasonPlayers = useMemo(() => {
     const lines = seasonOvr?.lines;
