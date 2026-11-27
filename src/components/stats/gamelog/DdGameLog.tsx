@@ -219,10 +219,10 @@ const DdGameLog = ({ player, header }: { player: Player; /** the live-season hea
   return (
     <div className="gl space-y-3">
       {header}
-      <div className="gl-bar" role="toolbar" aria-label="Game log controls">
+      <div className="gl-ctl" role="toolbar" aria-label="Game log controls">
         <Seg<typeof tab> label="Game log view" value={tab} onChange={setTab} options={[{ v: 'overview', l: 'Overview' }, { v: 'last5', l: 'Last 5' }, { v: 'splits', l: 'Splits' }, { v: 'log', l: 'Game log' }]} className="gl-seg--view" />
         {tab !== 'last5' && (
-          <div className="gl-bar__row">
+          <div className="gl-ctl__row">
             <div className="gl-step" role="group" aria-label="Season">
               <button type="button" className="gl-step__b" aria-label="Older season" disabled={season === 'all' ? false : stepIdx >= seasons.length - 1} onClick={() => stepSeason(1)}>
                 <span className="ax-tri ax-tri--l" aria-hidden="true" />

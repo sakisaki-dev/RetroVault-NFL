@@ -209,13 +209,15 @@ export const OVERALL_TOP3_MIX = 0.4;
  * qualified pool, so S is the top 10% of starters. A season line (this-season grades) keeps the old pools. OL keeps its
  * single trait on the old pool.
  */
-const SHRINK: Record<string, Record<string, { stat: string; n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg' }>> = {
+const SHRINK: Record<string, Record<string, { stat: string; n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg' | 'fga' | 'fga40' | 'fga50' | 'xpa' }>> = {
   QB: { ya: { stat: 'ya', n: 'att' }, cmp: { stat: 'cmp', n: 'att' }, tdPct: { stat: 'td', n: 'att' }, intPct: { stat: 'int', n: 'att' }, rating: { stat: 'ya', n: 'att' } },
   RB: { ypc: { stat: 'ypc', n: 'carries' }, td16: { stat: 'td_touch', n: 'touches' }, fumRate: { stat: 'fum_touch', n: 'touches' }, ypt: { stat: 'ypt', n: 'touches' }, catchPct: { stat: 'catch', n: 'tgt' } },
   WR: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' }, catchPct: { stat: 'catch', n: 'tgt' } },
   TE: { ypr: { stat: 'ypr', n: 'rec' }, tdPerRec: { stat: 'td_rec', n: 'rec' }, fumRate: { stat: 'fum_rec', n: 'rec' }, catchPct: { stat: 'catch', n: 'tgt' } },
   LB: { tklG: { stat: 'tkl_g', n: 'g' }, sackG: { stat: 'sack_g', n: 'g' }, intG: { stat: 'int_g', n: 'g' }, ffG: { stat: 'ff_g', n: 'g' }, impactG: { stat: 'sack_g', n: 'g' } },
 };
+// Kickers (season grades; the career has no kicker pool yet): attempts shrink toward the pool mean with scripts/nfl/kicker_rating.py's K_FG / K_XP
+SHRINK.K = { fgPct: { stat: 'fg', n: 'fga' }, fg40Pct: { stat: 'fg', n: 'fga40' }, fg50Pct: { stat: 'fg', n: 'fga50' }, xpPct: { stat: 'xp', n: 'xpa' } };
 SHRINK.DB = { ...SHRINK.LB, pdG: { stat: 'pd_g', n: 'pdg' } };
 SHRINK.DL = { ...SHRINK.LB, tflG: { stat: 'tfl_g', n: 'tflg' } };
 SHRINK.LB = { ...SHRINK.LB, tflG: { stat: 'tfl_g', n: 'tflg' } };
@@ -233,11 +235,15 @@ export const isNoSignal = (pos: Position, id: string, season = false): boolean =
   const k = kOf(pos, id, season);
   return k !== undefined && (k === null || k >= NO_SIGNAL_K);
 };
-const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg') => {
+const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 'tgt' | 'tflg' | 'pdg' | 'fga' | 'fga40' | 'fga50' | 'xpa') => {
   const v = (k: string) => {
     const x = (p as unknown as Record<string, unknown>)[k];
     return typeof x === 'number' && Number.isFinite(x) ? x : 0;
   };
+  if (n === 'fga') return v('fgAtt');
+  if (n === 'fga40') return v('fgAtt49') + v('fgAtt50');
+  if (n === 'fga50') return v('fgAtt50');
+  if (n === 'xpa') return v('xpAtt');
   return n === 'att' ? v('attempts') : n === 'carries' ? v('rushAtt') : n === 'touches' ? v('rushAtt') + v('receptions') : n === 'rec' ? v('receptions') : n === 'tgt' ? v('targets') : n === 'tflg' ? v('tflGames') : n === 'pdg' ? v('pdGames') : v('games');
 };
 /**
@@ -245,7 +251,8 @@ const exposureOf = (p: Player, n: 'att' | 'carries' | 'touches' | 'rec' | 'g' | 
  * played (the most games anyone has): QB 10 attempts a week, RB 6 carries, WR / TE 2.5 catches, defenders 40% of the weeks
  * (at 10 weeks: 100 attempts, 60 carries, 25 catches, 4 games).
  */
-const SEASON_QUALIFY: Record<string, { field: 'attempts' | 'rushAtt' | 'receptions' | 'games'; per: number; noun: string }> = {
+const SEASON_QUALIFY: Record<string, { field: 'attempts' | 'rushAtt' | 'receptions' | 'games' | 'fgAtt'; per: number; noun: string }> = {
+  K: { field: 'fgAtt', per: 0.8, noun: 'field goal attempts' },
   QB: { field: 'attempts', per: 10, noun: 'attempts' },
   RB: { field: 'rushAtt', per: 6, noun: 'carries' },
   WR: { field: 'receptions', per: 2.5, noun: 'catches' },
@@ -294,7 +301,7 @@ const careerCtx = (players: Player[], pos: Position): CareerCtx | null => {
   if (!byPos) careerCache.set(players, (byPos = new Map()));
   if (byPos.has(pos)) return byPos.get(pos)!;
   const min = season ? seasonMin(players, pos) : 0;
-  const qualifies = (p: Player) => (season ? exposureOf(p, SEASON_QUALIFY[pos].field === 'games' ? 'g' : SEASON_QUALIFY[pos].field === 'attempts' ? 'att' : SEASON_QUALIFY[pos].field === 'rushAtt' ? 'carries' : 'rec') >= min : isCareerQualified(p));
+  const qualifies = (p: Player) => (season ? exposureOf(p, SEASON_QUALIFY[pos].field === 'games' ? 'g' : SEASON_QUALIFY[pos].field === 'attempts' ? 'att' : SEASON_QUALIFY[pos].field === 'rushAtt' ? 'carries' : SEASON_QUALIFY[pos].field === 'fgAtt' ? 'fga' : 'rec') >= min : isCareerQualified(p));
   const label = season ? `${min} ${SEASON_QUALIFY[pos].noun} this season` : CAREER_QUALIFY[pos].label;
   const pool = players.filter((p) => p.position === pos && !p.isRealLegend && qualifies(p));
   const features = compFeatures(pos);
