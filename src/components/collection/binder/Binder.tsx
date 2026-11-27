@@ -255,6 +255,11 @@ const Binder = ({
     () =>
       Array.from({ length: pages }, (_, p) => {
         const live = p >= (mounted - 1) * step && p < (mounted + 2) * step;
+        // owner: "collections gets slow the more cards u have": a page far from the open one is one empty box at the
+        // page's size (the track, snap points and counter are unchanged), never its pockets. 7,000 cards were ~18,500
+        // nodes re-laid out on every keystroke; now only the pages a swipe can reach carry pockets (ghosts or cards)
+        const near = p >= (mounted - 3) * step && p < (mounted + 4) * step;
+        if (!near) return <div key={p} className={cn('bk__page bk__page--far', spread && (p % 2 ? 'bk__page--right' : 'bk__page--left'))} aria-hidden="true" />;
         const slice = filtered.slice(p * per, p * per + per);
         return (
           <div key={p} className={cn('bk__page', spread && (p % 2 ? 'bk__page--right' : 'bk__page--left'), p === 0 && pennants?.length && 'bk__page--pen')}>

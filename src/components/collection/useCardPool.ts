@@ -44,12 +44,22 @@ const hintFor = (tier: Tier) => `${tierLabel(tier)} · ${fmtPct(STANDARD.tiers[t
  * Every collectible player: league players in the game pool (league minus game exclusions), in set order
  * (by franchise, then position and name). Real NFL legends are not collectible; they stay in the games only.
  */
+const EMPTY: CardInfo[] = [];
+let lastPool: { deps: unknown[]; cards: CardInfo[] } | null = null;
+const byKeyCache = new WeakMap<CardInfo[], Map<string, CardInfo>>();
+const faceCache = new WeakMap<object, ReturnType<typeof faceStatsFor>>();
+const faceStatsOf = (league: Player[]) => {
+  let f = faceCache.get(league);
+  if (!f) faceCache.set(league, (f = faceStatsFor(league)));
+  return f;
+};
+
 export const useCardPool = () => {
   const { league, careerOvrMap: ovrMap, seasonOvr, loaded } = useGamePool();
   const { numberFor, retiredInfo } = useJerseyNumbers();
   const extras = usePlayerExtras();
 
-  const faceStats = useMemo(() => faceStatsFor(league), [league]);
+  const faceStats = useMemo(() => faceStatsOf(league), [league]);
   // Pack pulls hand back card players (already in their signature team): describe from the league row
   const leagueByKey = useMemo(() => new Map(league.map((p) => [playerKey(p), p])), [league]);
   const describe = useCallback(
@@ -79,6 +89,17 @@ export const useCardPool = () => {
   );
 
   const cards = useMemo<CardInfo[]>(() => {
+    // the same inputs as the last visit (the data is loaded once per session): reuse that pool, never rebuild ~7,500
+    // card descriptions each time the Collection opens
+    // nothing is built from a half-loaded league (the pool rebuilt two or three times as files landed)
+    if (!loaded) return EMPTY;
+    const deps = [league, ovrMap, seasonOvr, numberFor, retiredInfo, extras];
+    if (lastPool && lastPool.deps.every((d, i) => d === deps[i])) return lastPool.cards;
+    const built = buildCards();
+    lastPool = { deps, cards: built };
+    return built;
+  }, [league, describe, loaded]); // eslint-disable-line react-hooks/exhaustive-deps
+  function buildCards(): CardInfo[] {
     // One collator and one franchise label per player: String.localeCompare builds a collator on every call, and
     // ~7,400 players sorted that way took over a second on a phone
     const coll = new Intl.Collator();
@@ -88,9 +109,13 @@ export const useCardPool = () => {
     lg.forEach((p) => fr.set(p, franchiseOf(p)));
     lg.sort((a, b) => coll.compare(fr.get(a)!, fr.get(b)!) || byName(a, b));
     return lg.map((p, i) => describe(p, i + 1));
-  }, [league, describe]);
+  }
 
-  const byKey = useMemo(() => new Map(cards.map((c) => [c.key, c])), [cards]);
+  const byKey = useMemo(() => {
+    let m = byKeyCache.get(cards);
+    if (!m) byKeyCache.set(cards, (m = new Map(cards.map((c) => [c.key, c]))));
+    return m;
+  }, [cards]);
   const tierPool = useMemo<TierPool>(() => {
     const g = groupByTier(cards, (c) => c.tier);
     return { common: g.common.map((c) => c.player), rare: g.rare.map((c) => c.player), epic: g.epic.map((c) => c.player), legendary: g.legendary.map((c) => c.player) };

@@ -128,7 +128,16 @@ export const copiesOf = (info: CardInfo, card: OwnedCard | undefined, autos: Own
 };
 
 /** Every copy in the binder. */
-export const allCopies = (byKey: Map<string, CardInfo>, owned: Record<string, OwnedCard>, autos: OwnedAuto[], latest: MarketSnapshot | undefined): OwnedCopy[] =>
+/** Exchange, the trophy case and Sell duplicates all ask for the same inputs: the last answer is reused (perf pass) */
+let lastCopies: { args: unknown[]; out: OwnedCopy[] } | null = null;
+export const allCopies = (byKey: Map<string, CardInfo>, owned: Record<string, OwnedCard>, autos: OwnedAuto[], latest: MarketSnapshot | undefined): OwnedCopy[] => {
+  const args = [byKey, owned, autos, latest];
+  if (lastCopies && lastCopies.args.every((a, i) => a === args[i])) return lastCopies.out;
+  const out = computeCopies(byKey, owned, autos, latest);
+  lastCopies = { args, out };
+  return out;
+};
+const computeCopies = (byKey: Map<string, CardInfo>, owned: Record<string, OwnedCard>, autos: OwnedAuto[], latest: MarketSnapshot | undefined): OwnedCopy[] =>
   Object.entries(owned).flatMap(([key, card]) => {
     const info = byKey.get(key);
     const value = latest?.players[key]?.value;

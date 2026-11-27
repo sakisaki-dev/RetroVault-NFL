@@ -1,5 +1,5 @@
 import { IS_NFL } from '@/config/edition';
-import { Suspense, lazy, type ReactNode, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, memo, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNewSlot, useSlot, type Slot } from '@/utils/slot';
 import { toast } from 'sonner';
 import { Coins, Hammer, Info, LayoutGrid } from 'lucide-react';
@@ -270,9 +270,19 @@ interface OverlaysProps {
 }
 
 /** The card detail, the swipe browser and the player card: everything that opens over the Collection. */
+const PlayerDetailCardM = memo(PlayerDetailCard);
+const TrophyCaseM = memo(TrophyCase);
+const ShardWorkshopM = memo(ShardWorkshop);
+const ExchangeM = memo(Exchange);
+const OpenAllM = memo(OpenAll);
+
 const CollectionOverlays = ({ detailSlot, playerSlot, owned, state, shardsPerPack, total, browsing, onBrowseClose, browseList }: OverlaysProps) => {
   const detail = useSlot(detailSlot);
   const player = useSlot(playerSlot);
+  const closePlayer = useCallback(() => playerSlot.set(null), [playerSlot]);
+  // the player card mounts the first time one is opened (it rates every career on mount), then stays for its exit
+  const [playerUsed, setPlayerUsed] = useState(false);
+  if (player && !playerUsed) setPlayerUsed(true);
   // browseFocus follows CardDetail when it steps to another card on top of the browser; a fresh browse starts unfocused
   const [browseFocus, setBrowseFocus] = useState<string | null>(null);
   const [wasBrowsing, setWasBrowsing] = useState(browsing);
@@ -310,10 +320,16 @@ const CollectionOverlays = ({ detailSlot, playerSlot, owned, state, shardsPerPac
         onClose={onBrowseClose}
         onDetails={(info, variant, finish, from) => detailSlot.set({ info, list: browseList, variant, finish, from })}
       />
-      <PlayerDetailCard player={player} onClose={() => playerSlot.set(null)} />
+      {playerUsed && <PlayerDetailCardM player={player} onClose={closePlayer} />}
     </>
   );
 };
+
+/*
+ * Perf (owner: "collections gets slow the more cards u have"): the binder's search and filters live in this component,
+ * so a keystroke re-rendered every section. The heavy ones (the *M memos above CollectionOverlays) get stable callbacks, so typing in
+ * the binder re-renders the binder only.
+ */
 
 const CollectionTab = () => {
   const { cards, byKey, tierPool, loaded } = useCardPool();
@@ -455,9 +471,10 @@ const CollectionTab = () => {
   // The swipe browser shows every owned card of the filter (not just the loaded page of the grid)
   const browseList = useMemo(() => filtered.filter((c) => !!owned[c.key]), [filtered, owned]);
 
-  const shelf = SHELF_ORDER.filter((t) => packCount(state, t) > 0);
+  const shelf = useMemo(() => SHELF_ORDER.filter((t) => packCount(state, t) > 0), [state]);
   const previewCards = useMemo(() => samplePack(designRows(cards), cards), [cards]);
   const openCard = (c: CardInfo, list: CardInfo[], from?: DOMRect) => setDetail({ info: c, list, from });
+  const openOne = useCallback((c: CardInfo) => setDetail({ info: c, list: [c] }), [setDetail]);
   const describe = (pc: { player: Player }) => byKey.get(`${pc.player.position}:${displayName(pc.player.name)}`)!;
   // What a card shows by default: the display choice when still owned, else auto (with the best kit owned there)
   const shown_ = (c: CardInfo) => {
@@ -606,20 +623,20 @@ const CollectionTab = () => {
           ) : (
             <p className="text-sm text-muted-foreground">No packs yet</p>
           )}
-          <OpenAll
+          <OpenAllM
             state={state}
             types={shelf}
             disabled={!loaded || !cards.length}
             tierPool={tierPool}
             freeze={freeze}
             byKey={byKey}
-            onCard={(c) => openCard(c, [c])}
+            onCard={openOne}
           />
         </div>
       </section>
 
       {/* Trophy case (8M reward): the three most valuable cards and a cup per milestone, at the top of the Collection */}
-      <TrophyCase state={state} top={topCards} total={cards.length} onOpen={(c) => openCard(c, [c])} />
+      <TrophyCaseM state={state} top={topCards} total={cards.length} onOpen={openOne} />
 
       {/* Binder: right under the packs, so the cards are the first thing after the shelf */}
       <Binder
@@ -643,7 +660,7 @@ const CollectionTab = () => {
         onSellDupes={() => setSellingDupes(true)}
       />
 
-      {loaded && cards.length > 0 && <ShardWorkshop cards={cards} owned={owned} shards={state.shards} perPack={shardsPerPack} onOpen={(c) => openCard(c, [c])} />}
+      {loaded && cards.length > 0 && <ShardWorkshopM cards={cards} owned={owned} shards={state.shards} perPack={shardsPerPack} onOpen={openOne} />}
 
       {/* Showcase */}
       {showcase.length > 0 && (
@@ -677,15 +694,15 @@ const CollectionTab = () => {
 
       {/* Exchange (pack shop, bounties, sets, trade-up, milestones) above the Market (owner, 2026-11-17) */}
       {loaded && cards.length > 0 && (
-        <Exchange
+        <ExchangeM
           cards={cards}
           byKey={byKey}
           tierPool={tierPool}
           state={state}
           content={content}
           freeze={freeze}
-          onOpenPack={(t) => setOpening(t)}
-          onOpenCard={(c) => openCard(c, [c])}
+          onOpenPack={setOpening}
+          onOpenCard={openOne}
         />
       )}
 

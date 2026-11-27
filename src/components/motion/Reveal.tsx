@@ -87,15 +87,17 @@ export const useAutoReveal = <T extends HTMLElement>(): RefCallback<T> =>
       setTimeout(lift, 8000); // the loader never lifted (an error path): never leave the page hidden
     }
     const skip = (el: HTMLElement) => !!el.dataset.mo || !!el.closest('[data-mo], [data-no-mo]');
-    const scan = () => {
+    const scan = (scopes: Element[] = [root]) => {
       // owner: "everything just goes into the page" (the Game page has its own entrance). While the page is opening,
       // what is on screen cascades in top to bottom, as the Game page's header does; later blocks (below the fold,
       // a lazy chunk, a fetched file) wait and rise as they scroll in
       const opening = booting() || performance.now() - opened < OPEN_MS;
       const fold = window.innerHeight - 24;
       const picked: HTMLElement[] = [];
-      root.querySelectorAll<HTMLElement>(FINE).forEach((el) => !skip(el) && (el.dataset.mo = 'pick', picked.push(el)));
-      root.querySelectorAll<HTMLElement>(COARSE).forEach((el) => {
+      // perf: only the scopes that changed are searched (the scope itself counts when it matches)
+      const within = (sel: string) => scopes.flatMap((sc) => [...(sc !== root && sc.matches(sel) ? [sc as HTMLElement] : []), ...sc.querySelectorAll<HTMLElement>(sel)]);
+      within(FINE).forEach((el) => !skip(el) && (el.dataset.mo = 'pick', picked.push(el)));
+      within(COARSE).forEach((el) => {
         if (skip(el) || el.querySelector('[data-mo]') || !el.getClientRects().length) return;
         el.dataset.mo = 'pick';
         picked.push(el);
@@ -125,10 +127,19 @@ export const useAutoReveal = <T extends HTMLElement>(): RefCallback<T> =>
     };
     scan();
     let frame = 0;
+    let pending: Element[] = [];
     const mo = new MutationObserver((list) => {
       if (!root.isConnected) return mo.disconnect();
-      if (frame || !list.some((m) => Array.prototype.some.call(m.addedNodes, (n: Node) => n.nodeType === 1))) return;
-      frame = requestAnimationFrame(() => ((frame = 0), scan()));
+      // a node added inside a block that already played (data-mo) can hold nothing new to reveal: skipped outright, so
+      // a busy list (the binder, a live score) never makes the page re-search itself
+      list.forEach((m) => m.addedNodes.forEach((n) => n.nodeType === 1 && !(n as Element).closest('[data-mo]') && pending.push(n as Element)));
+      if (frame || !pending.length) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const scopes = pending.filter((el) => el.isConnected);
+        pending = [];
+        if (scopes.length) scan(scopes);
+      });
     });
     mo.observe(root, { childList: true, subtree: true });
   }, []);

@@ -1470,20 +1470,34 @@ export const claimCard = (p: Pick<Player, 'name' | 'position'>, tier: Tier): Var
  * for "about N packs to go" next to claims and upgrades (an estimate: it ignores the no-repeat rule within a pack).
  */
 export const expectedShardsPerPack = (type: EarnablePack, cards: Record<string, OwnedCard>, pool: Record<Tier, string[]>): number => {
+  // The same sum as over every pool card × finish × art, walked over owned cards only: a card not owned adds 0
+  // (perf pass: ~150,000 dupeChance calls on a full binder became one per owned art × finish)
   const j = expectedJoint(type);
+  const tierOf = new Map<string, Tier>();
+  TIERS.forEach(({ key: t }) => pool[t].forEach((k) => tierOf.set(k, t)));
+  const pvs = new Map<string, (v: Variant) => number>();
+  const pvOf = (t: Tier, f: Finish) => {
+    const id = `${t}|${f}`;
+    let pv = pvs.get(id);
+    if (!pv) pvs.set(id, (pv = norm(variantWeights(type, t, f))));
+    return pv;
+  };
   let perCard = 0;
-  TIERS.forEach(({ key: t }) => {
-    const keys = pool[t];
-    if (!keys.length) return;
-    FINISHES.forEach(({ key: f }) => {
-      if (!j[t][f]) return;
-      const pv = norm(variantWeights(type, t, f));
-      VARIANTS.forEach(({ key: v }) => {
-        const have = keys.reduce((n, k) => n + dupeChance(type, cards[k]?.variants[v], v, f), 0);
-        perCard += j[t][f] * pv(v) * (have / keys.length) * duplicateShards(f, t);
-      });
-    });
-  });
+  for (const k in cards) {
+    const t = tierOf.get(k);
+    if (!t) continue;
+    const n = pool[t].length;
+    const card = cards[k];
+    for (const v in card.variants) {
+      const vc = card.variants[v as Variant];
+      if (!vc) continue;
+      for (const f in vc.counts) {
+        const jf = j[t][f as Finish];
+        if (!jf || !vc.counts[f as Finish]) continue;
+        perCard += (jf * pvOf(t, f as Finish)(v as Variant) * dupeChance(type, vc, v as Variant, f as Finish) * duplicateShards(f as Finish, t)) / n;
+      }
+    }
+  }
   return perCard * PACKS[type].size + PACK_SHARDS[type];
 };
 

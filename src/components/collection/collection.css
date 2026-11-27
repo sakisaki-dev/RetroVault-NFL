@@ -4112,3 +4112,14 @@ button.fut__card:focus-visible {
   .col-hero__tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 12px; }
   .col-hero__tiers .col-gem { justify-content: flex-start; }
 }
+
+/* Perf pass: the sections below the binder skip layout and paint while off screen (a binder keystroke re-laid out the
+   whole page); each keeps a remembered height so the scrollbar doesn't jump */
+section[aria-labelledby='col-best'],
+section[aria-labelledby='col-market'],
+section[aria-labelledby='col-sets'],
+section[aria-labelledby='col-workshop'],
+#col-exchange {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}

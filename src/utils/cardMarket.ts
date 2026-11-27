@@ -364,11 +364,24 @@ export const marketNews = (history: MarketHistory, limit = 8): MarketNews[] => {
 };
 
 /** Base value of a card in the snapshot that was current at `time` (ms), else the first one listing him. */
+// Snapshot times parsed once per history (perf pass: valueAt ran Date.parse on every snapshot for every owned card)
+const timesOf = new WeakMap<MarketHistory, number[]>();
+const snapTimes = (history: MarketHistory) => {
+  let t = timesOf.get(history);
+  if (!t) timesOf.set(history, (t = history.map((s) => Date.parse(s.date))));
+  return t;
+};
 export const valueAt = (history: MarketHistory, key: string, time: number): number | null => {
-  let hit: MarketPoint | undefined;
-  for (const s of history) {
-    if (Date.parse(s.date) > time) break;
-    if (s.players[key]) hit = s.players[key];
+  // the last snapshot at or before `time` that lists him (the same answer as the old forward scan, which stopped at the
+  // first snapshot after `time`), else his first listing
+  const t = snapTimes(history);
+  let lo = 0, hi = t.length; // first index whose time is after `time`
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (t[mid] > time) hi = mid;
+    else lo = mid + 1;
   }
-  return (hit ?? history.find((s) => s.players[key])?.players[key])?.value ?? null;
+  for (let i = lo - 1; i >= 0; i--) if (history[i].players[key]) return history[i].players[key].value;
+  for (const s of history) if (s.players[key]) return s.players[key].value;
+  return null;
 };
