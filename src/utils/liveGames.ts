@@ -82,6 +82,8 @@ export interface FieldSpot {
   yd: number;
 }
 export interface LiveDrive {
+  /** ESPN's drive id (matches its plays' driveId) */
+  id?: string;
   abbr: string;
   plays: number;
   yards: number;
@@ -132,7 +134,34 @@ export interface LiveDetail {
   cur?: { plays: number; yards: number; time: string; from: FieldSpot | null } | null;
   /** the latest play, placed on the field (what the field animates) */
   lastPlay?: LivePlay | null;
+  /** the win probability through the game (the home club's chance after each play; the play's id lets the chart find its time) */
+  wp?: { id: string; h: number }[];
+  /** the boxscore's team statistics by club: ESPN's stat name -> its display value ("thirdDownEff": "7-14") */
+  stats?: Record<string, Record<string, string>>;
+  /** the whole play-by-play, oldest first */
+  plays?: LivePlayRow[];
 }
+/** One play of the game's play-by-play (the summary's drives, in order) */
+export interface LivePlayRow {
+  id: string;
+  /** the drive it belongs to (ESPN's drive id) */
+  driveId: string;
+  /** the offence */
+  abbr: string | null;
+  period: number;
+  clock: string;
+  text: string;
+  type: string;
+  yds: number;
+  scoring: boolean;
+  turnover: boolean;
+  /** "3rd & 4 at DEN 30" as the broadcast says it */
+  dd: string;
+  /** absolute yards (0 = away goal line .. 100 = home goal line) */
+  from: number | null;
+  to: number | null;
+}
+
 export interface ScoreEvent {
   gameId: string;
   /** the scoring club's abbreviation */
@@ -262,6 +291,7 @@ export const normDetail = (d: Record<string, any>): LiveDetail => {
   const cur = d.drives?.current;
   const plays = arr<any>(cur?.plays);
   const driveOf = (x: any, live: boolean): LiveDrive => ({
+    id: String(x.id ?? ''),
     abbr: abbrOf(x.team?.abbreviation ?? ''),
     plays: num(x.offensivePlays) ?? arr<any>(x.plays).length,
     yards: num(x.yards) ?? 0,
@@ -294,11 +324,46 @@ export const normDetail = (d: Record<string, any>): LiveDetail => {
         off: abbrById(lp.start?.team?.id),
       }
     : null;
+  const driveList = [...arr<any>(d.drives?.previous), ...(cur && !arr<any>(d.drives?.previous).some((x) => x.id === cur.id) ? [cur] : [])];
+  const playRows: LivePlayRow[] = driveList.flatMap((dr) =>
+    arr<any>(dr.plays).map((p) => {
+      const type = String(p.type?.text ?? '');
+      const text = String(p.text ?? '').trim();
+      return {
+        id: String(p.id ?? text),
+        driveId: String(dr.id ?? ''),
+        abbr: abbrById(p.start?.team?.id) ?? (dr.team?.abbreviation ? abbrOf(dr.team.abbreviation) : null),
+        period: num(p.period?.number) ?? 0,
+        clock: String(p.clock?.displayValue ?? ''),
+        text,
+        type,
+        yds: num(p.statYardage) ?? 0,
+        scoring: !!p.scoringPlay,
+        turnover: /interception|fumble/i.test(type) && !/penalty/i.test(type) && /intercept|recovered by/i.test(text),
+        dd: String(p.start?.downDistanceText ?? ''),
+        from: absAt(p.start?.yardLine, p.start?.team?.id),
+        to: absAt(p.end?.yardLine, p.end?.team?.id ?? p.start?.team?.id),
+      };
+    }),
+  );
+  const stats: Record<string, Record<string, string>> = {};
+  arr<any>(d.boxscore?.teams).forEach((t) => {
+    const ab = abbrOf(t.team?.abbreviation ?? '');
+    if (!ab) return;
+    const m: Record<string, string> = {};
+    arr<any>(t.statistics).forEach((x) => {
+      if (x.name && !(x.name in m)) m[String(x.name)] = String(x.displayValue ?? '');
+    });
+    stats[ab] = m;
+  });
   const prev = arr<any>(d.drives?.previous).filter((x) => x.id !== cur?.id);
   const drives = [...prev.map((x) => driveOf(x, false)), ...(cur ? [driveOf(cur, true)] : [])].filter((x) => x.abbr);
   return {
     lastPlay,
     drives,
+    plays: playRows,
+    stats,
+    wp: wp.map((x) => ({ id: String(x.playId ?? ''), h: num(x.homeWinPercentage) ?? 0.5 })),
     scoreLog: arr<any>(d.scoringPlays).map((p) => ({
       abbr: abbrOf(p.team?.abbreviation ?? ''),
       text: String(p.text ?? ''),

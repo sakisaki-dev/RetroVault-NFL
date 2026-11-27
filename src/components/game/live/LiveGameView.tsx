@@ -19,6 +19,8 @@ import { sitePos } from '../gameModel';
 import { FORMATION, absOf, fx, fy, lampOf, manX, sameClub, situationOf, spotLabel, type Situation } from './liveField';
 import { playFx, type PlayFx, type Pt } from './playFx';
 import type { LiveForGame } from './useLiveForGame';
+import { DriveTracker, PlayFeed, Quarters, ScoreBug, Scoring, TeamStats, WinChart } from './LivePanels';
+import { currentDrivePlays, gainOf, playTone } from './liveModel';
 import { turfFor, useLiveFieldArt } from './fieldArtFull';
 import './liveView.css';
 
@@ -88,7 +90,6 @@ const useShown = (to: number, delay = 900) => {
 };
 
 const periodLabel = (g: LiveGame) => (/half/i.test(g.desc) && !/quarter/i.test(g.desc) ? 'HALFTIME' : g.period > 4 ? (g.period === 5 ? 'OVERTIME' : `OT ${g.period - 4}`) : `QTR ${g.period || 1}`);
-const periodShort = (n: number) => (n > 4 ? 'OT' : `Q${n}`);
 
 /* ---------------- the stadium and the jumbotron ---------------- */
 
@@ -303,6 +304,8 @@ const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; seaso
   const fromYd = absOf(d?.cur?.from, g.away.abbr, g.home.abbr);
   const arrow = sit && fromYd != null && Math.abs(sit.ball - fromYd) > 0.5 ? { lo: Math.min(fromYd, sit.ball), hi: Math.max(fromYd, sit.ball), left: sit.ball < fromYd } : null;
   const fxs = useMemo(() => playFx(d?.lastPlay, g, sit), [d?.lastPlay, g, sit]);
+  const chain = useMemo(() => currentDrivePlays(g, d), [g, d]);
+  const chainFrom = chain.length ? chain[0].from : null;
   const firstRef = useRef(true);
   useEffect(() => { firstRef.current = false; }, []);
   const key = d?.lastPlay?.id ?? 'rest';
@@ -315,7 +318,8 @@ const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; seaso
       <div className="lv-fieldhead">
         <h2 id="lv-fh">On the field</h2>
         {dd && <span className="lv-dd">{dd}</span>}
-        {sit && <span className="lv-muted">{nick(sit.poss)} {s?.redZone ? 'in the red zone' : 'driving'}, {g.clock} left</span>}
+        {s?.redZone && <span className="lv-tag is-red">Red zone</span>}
+        {sit ? <span className="lv-muted">{nick(sit.poss)} {chain.length ? `drive: ${chain.length} play${chain.length === 1 ? '' : 's'}` : 'ball'} · {g.clock} left</span> : <span className="lv-muted">{/half/i.test(g.desc) ? 'Halftime' : 'Between plays'}</span>}
       </div>
       <div className={cn('lv-field', art && 'has-art')} aria-label={sit ? `Ball on ${spotLabel(g)}` : 'The field'}>
         {/* the game's own field (both end zones painted in the clubs' colours); the CSS field below when there's no art */}
@@ -332,15 +336,30 @@ const Field = ({ g, d, season }: { g: LiveGame; d: LiveDetail | undefined; seaso
         {marks.map((yd) => (
           <div key={yd} className="lv-yl" style={{ left: fx(yd) }}><b>{yd <= 50 ? yd : 100 - yd}</b></div>
         ))}
-        {arrow && <div className={cn('lv-drivearrow', arrow.left && 'is-l')} style={{ left: fx(arrow.lo), width: `calc((100% - 100% / 6) * ${((arrow.hi - arrow.lo) / 100).toFixed(4)})`, ['--arrow' as string]: sit && sameClub(sit.poss, g.away.abbr) ? 'var(--lv-a)' : 'var(--lv-h)' }} />}
-        {sit && <div className="lv-los" style={{ left: fx(sit.ball) }} />}
-        {sit?.first != null && <div className="lv-fd" style={{ left: fx(sit.first) }} />}
+        {arrow && !chain.length && <div className={cn('lv-drivearrow', arrow.left && 'is-l')} style={{ left: fx(arrow.lo), width: `calc((100% - 100% / 6) * ${((arrow.hi - arrow.lo) / 100).toFixed(4)})`, ['--arrow' as string]: sit && sameClub(sit.poss, g.away.abbr) ? 'var(--lv-a)' : 'var(--lv-h)' }} />}
+        {chain.length > 0 && sit && (
+          <div className="lv-chain" aria-hidden>
+            {chainFrom != null && <span className="lv-chain__start" style={{ left: fx(chainFrom) }}><b>START</b></span>}
+            {chain.map((p, k) => {
+              const lo = Math.min(p.from!, p.to!);
+              const hi = Math.max(p.from!, p.to!);
+              const tone = playTone(p);
+              const gain = gainOf(p, g);
+              const cls = tone === 'td' ? 'td' : tone === 'to' ? 'to' : gain >= 10 ? 'big' : gain > 0 ? 'up' : gain < 0 ? 'down' : 'flat';
+              return (
+                <span key={p.id} className={cn('lv-chain__seg', `is-${cls}`)} style={{ left: fx(lo), width: `calc((100% - 100% / 6) * ${((hi - lo) / 100).toFixed(4)})`, ['--k' as string]: k } as CSSProperties} title={p.text}>
+                  <i style={{ [p.to! >= p.from! ? 'right' : 'left']: -6 } as CSSProperties}>{k + 1}</i>
+                </span>
+              );
+            })}
+          </div>
+        )}
+        {sit && <div className="lv-los" data-l="LOS" style={{ left: fx(sit.ball) }} />}
+        {sit?.first != null && <div className="lv-fd" data-l="1ST" style={{ left: fx(sit.first) }} />}
         {sit && <Men g={g} sit={sit} season={season} />}
         <PlayLayer fxs={fxs} rest={sit ? [sit.ball, 0.5] : null} first={firstRef.current} k={key} />
       </div>
-      {(d?.lastPlay?.text || s?.last) && (
-        <p className="lv-lp"><b>Last play</b> {d?.lastPlay?.text || s?.last}</p>
-      )}
+      <p className="lv-lp"><b>Last play</b> {d?.lastPlay?.text || s?.last || 'Waiting for the next snap.'}</p>
     </section>
   );
 };
@@ -374,7 +393,7 @@ const Spotlight = ({ g, d, season, siteKey, i }: { g: LiveGame; d: LiveDetail | 
   const yds = s?.lastYds;
   const play = [SPOT_PLAY[type] ?? type, yds ? `${yds > 0 ? '' : '−'}${Math.abs(yds)} yd${Math.abs(yds) === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ');
   return (
-    <article className="lv-card lv-spot lv-rise" style={{ ['--i' as string]: i, ['--lv-tint' as string]: clubPlate(abbr).fill } as CSSProperties}>
+    <article className={'lv-card lv-spot lv-rise'} style={{ ['--i' as string]: i, ['--lv-tint' as string]: clubPlate(abbr).fill } as CSSProperties}>
       <h3><span className="lv-k">Spotlight</span><span className="lv-livetag"><i />Last play</span></h3>
       <div className="lv-spot__body">
         <span className="lv-spot__sprite"><Sprite name={ath.name} pos={ath.pos} abbr={abbr} season={season} size="m" /></span>
@@ -387,120 +406,43 @@ const Spotlight = ({ g, d, season, siteKey, i }: { g: LiveGame; d: LiveDetail | 
           </div>
         </div>
       </div>
-    </article>
-  );
-};
-
-const WinChance = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
-  const reduced = useReducedMotion();
-  if (d?.winHome == null) return null;
-  const h = Math.round(d.winHome * 100);
-  const deg = (d.winHome - 0.5) * 180;
-  const diff = g.home.score - g.away.score;
-  return (
-    <article className="lv-card lv-wp lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
-      <h3>Win chance</h3>
-      <div className="lv-dial" role="img" aria-label={`${g.away.name} ${100 - h} percent, ${g.home.name} ${h} percent`}>
-        <div className={cn('lv-needle', reduced && 'is-still')} style={{ rotate: `${deg}deg` }} />
+      <div className="lv-spot__sit">
+        {s?.down ? <span><em>Down</em><b>{s.dd}</b></span> : null}
+        {s?.toGoal != null && s.poss ? <span><em>To goal</em><b>{s.toGoal} yds</b></span> : null}
+        {g.away.timeouts != null && g.home.timeouts != null && <span><em>Timeouts</em><b>{g.away.abbr} {g.away.timeouts} · {g.home.abbr} {g.home.timeouts}</b></span>}
       </div>
-      <div className="lv-wpnums"><span style={{ color: 'var(--lv-a)' }}>{100 - h}</span><span style={{ color: 'var(--lv-h)' }}>{h}</span></div>
-      <div className="lv-wpnames"><span>{g.away.abbr}</span><span>{g.home.abbr}</span></div>
-      <p className="lv-wpnote">{diff === 0 ? 'All square' : `${diff > 0 ? g.home.name : g.away.name} up ${Math.abs(diff)}`}</p>
-    </article>
-  );
-};
-
-const Quarters = ({ g, i }: { g: LiveGame; i: number }) => {
-  const n = Math.max(4, g.away.ls.length, g.home.ls.length);
-  if (!g.away.ls.length && !g.home.ls.length) return null;
-  const cols = Array.from({ length: n }, (_, k) => k);
-  const row = (t: LiveGame['away']) => (
-    <tr>
-      <td><span className="lv-who"><TeamLogo team={t.abbr} decorative className="lv-lg" />{t.abbr}</span></td>
-      {cols.map((k) => <td key={k} className={cn(k + 1 === g.period && 'now')}>{t.ls[k] ?? '–'}</td>)}
-      <td className="t">{t.score}</td>
-    </tr>
-  );
-  return (
-    <article className="lv-card lv-q lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
-      <h3>By quarter</h3>
-      <table>
-        <thead><tr><th />{cols.map((k) => <th key={k} className={cn(k + 1 === g.period && 'now')}>{k < 4 ? k + 1 : 'OT'}</th>)}<th>T</th></tr></thead>
-        <tbody>{row(g.away)}{row(g.home)}</tbody>
-      </table>
-    </article>
-  );
-};
-
-const Drives = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
-  const sit = situationOf(g);
-  const rows = (d?.drives ?? []).slice(-7).map((x, k) => {
-    const from = absOf(x.from, g.away.abbr, g.home.abbr);
-    const to = x.live ? sit?.ball ?? null : absOf(x.to, g.away.abbr, g.home.abbr);
-    return { x, k, from, to };
-  }).filter((r) => r.from != null && r.to != null);
-  if (!rows.length) return null;
-  return (
-    <article className="lv-card lv-drives lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
-      <h3>Drives<span className="lv-k lv-r">Latest {rows.length}</span></h3>
-      {rows.map(({ x, k, from, to }) => {
-        const lo = Math.max(0, Math.min(from!, to!));
-        const hi = Math.min(100, Math.max(from!, to!, lo + 1.5));
-        const away = sameClub(x.abbr, g.away.abbr);
-        const res = x.live ? g.sit?.dd || 'Live' : x.result;
-        return (
-          <div key={k} className={cn('lv-dr', x.live && 'is-live')}>
-            <TeamLogo team={x.abbr} decorative className="lv-lg" />
-            <div className="lv-lane"><i className={away ? 'a' : 'h'} style={{ left: `${lo}%`, right: `${100 - hi}%`, ['--i' as string]: k } as CSSProperties} /></div>
-            <span className={cn('lv-res', /touchdown/i.test(res) && 'td', /field goal/i.test(res) && x.score && 'fg', x.live && 'live')}>{res || '–'}</span>
-          </div>
-        );
-      })}
-    </article>
-  );
-};
-
-const Scoring = ({ g, d, i }: { g: LiveGame; d: LiveDetail | undefined; i: number }) => {
-  const log = (d?.scoreLog ?? []).slice(-8).reverse();
-  if (!log.length) return null;
-  return (
-    <article className="lv-card lv-scoring lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
-      <h3>Scoring</h3>
-      {log.map((p, k) => (
-        <div key={k} className="lv-sp">
-          <span className="lv-spq">{periodShort(p.period)} {p.clock}</span>
-          <TeamLogo team={p.abbr} decorative className="lv-lg" />
-          <span className="lv-sptx">{p.text}</span>
-          <span className="lv-spsc">{p.away}–{p.home}</span>
-        </div>
-      ))}
     </article>
   );
 };
 
 const CAT: Record<LiveLeader['cat'], string> = { passing: 'Passing', rushing: 'Rushing', receiving: 'Receiving' };
 
-const Leaders = ({ g, d, season, siteKey, i }: { g: LiveGame; d: LiveDetail | undefined; season: number; siteKey: ReturnType<typeof useSiteKey>; i: number }) => {
+const Leaders = ({ g, d, season, siteKey, i, wide }: { g: LiveGame; d: LiveDetail | undefined; season: number; siteKey: ReturnType<typeof useSiteKey>; i: number; wide: boolean }) => {
   const L = leadersOf(g, d);
-  const cards = [g.away, g.home].flatMap((t) => (L[t.abbr] ?? []).map((l) => ({ t, l })));
-  if (!cards.length) return null;
+  const cols = [g.away, g.home].map((t) => ({ t, list: L[t.abbr] ?? [] })).filter((c) => c.list.length);
+  if (!cols.length) return null;
   return (
-    <article className="lv-card lv-leaders lv-rise" style={{ ['--i' as string]: i } as CSSProperties}>
-      <h3>Leaders</h3>
+    <article className={cn('lv-card lv-leaders lv-rise', wide && 'is-wide')} style={{ ['--i' as string]: i } as CSSProperties}>
+      <h3>Leaders<span className="lv-k lv-r">Tap a name for his card</span></h3>
       <div className="lv-ldgrid">
-        {cards.map(({ t, l }) => {
-          const key = siteKey(l.name, l.pos);
-          return (
-            <div key={`${t.abbr}${l.cat}`} className="lv-ld" style={{ ['--lv-tint' as string]: clubPlate(t.abbr).fill } as CSSProperties}>
-              <span className="lv-ld__sprite"><Sprite name={l.name} pos={l.pos} abbr={t.abbr} season={season} size="s" /></span>
-              <div className="lv-ld__txt">
-                <span className="lv-cat">{t.abbr} · {CAT[l.cat]}</span>
-                <NameBanner name={l.name} keyOf={key} abbr={t.abbr} />
-                <span className="lv-ln">{l.line}</span>
-              </div>
-            </div>
-          );
-        })}
+        {cols.map(({ t, list }) => (
+          <div key={t.abbr} className="lv-ldcol" style={{ ['--lv-tint' as string]: clubPlate(t.abbr).fill, ['--lv-lamp' as string]: lampOf(t.abbr) } as CSSProperties}>
+            <div className="lv-ldhead"><TeamLogo team={t.abbr} decorative className="lv-lg" />{t.name}<span>{t.score}</span></div>
+            {list.map((l) => {
+              const key = siteKey(l.name, l.pos);
+              return (
+                <div key={l.cat} className="lv-ld">
+                  <span className="lv-ld__sprite"><Sprite name={l.name} pos={l.pos} abbr={t.abbr} season={season} size="s" /></span>
+                  <div className="lv-ld__txt">
+                    <span className="lv-cat">{CAT[l.cat]}</span>
+                    <NameBanner name={l.name} keyOf={key} abbr={t.abbr} />
+                    <span className="lv-ln">{l.line}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </article>
   );
@@ -512,17 +454,30 @@ const LiveGameView = ({ g, live, kicker }: { g: GameDetail; live: LiveForGame; k
   const { lg, detail } = live;
   const siteKey = useSiteKey();
   const style = { ['--lv-a' as string]: lampOf(lg.away.abbr), ['--lv-h' as string]: lampOf(lg.home.abbr) } as CSSProperties;
+  const ath = lg.sit?.lastAth;
+  const spotOk = !!ath && !!siteKey(ath.name, ath.pos);
+  const hasWp = detail?.winHome != null || (detail?.wp?.length ?? 0) > 2;
+  const hasStats = !!detail?.stats?.[lg.away.abbr] && !!detail?.stats?.[lg.home.abbr];
+  const hasPlays = (detail?.plays?.length ?? 0) > 0;
+  const hasScoring = (detail?.scoreLog?.length ?? 0) > 0;
+  const hasLeaders = Object.keys(leadersOf(lg, detail)).length > 0;
   return (
     <div className="lv" style={style} aria-label={`${lg.away.name} at ${lg.home.name}, live`}>
       <Hero g={lg} d={detail} kicker={`NFL · ${kicker}`} />
+      <ScoreBug g={lg} d={detail} />
       <Field g={lg} d={detail} season={g.season} />
+      {!hasPlays && !hasWp && <p className="lv-wait">The game feed is still filling in. The win chart, drives and play by play appear when ESPN posts them.</p>}
       <section className="lv-grid" aria-label="Game panels">
-        <Spotlight g={lg} d={detail} season={g.season} siteKey={siteKey} i={0} />
-        <WinChance g={lg} d={detail} i={1} />
-        <Quarters g={lg} i={2} />
-        <Drives g={lg} d={detail} i={3} />
-        <Scoring g={lg} d={detail} i={4} />
-        <Leaders g={lg} d={detail} season={g.season} siteKey={siteKey} i={5} />
+        <div className={cn('lv-col lv-col--5', !hasWp && 'is-wide')}>
+          <Spotlight g={lg} d={detail} season={g.season} siteKey={siteKey} i={0} />
+          <Quarters g={lg} i={1} />
+        </div>
+        <WinChart g={lg} d={detail} i={1} wide={!(spotOk || lg.away.ls.length > 0)} />
+        <DriveTracker g={lg} d={detail} i={2} />
+        <PlayFeed g={lg} d={detail} i={3} wide={!hasScoring} />
+        <Scoring g={lg} d={detail} i={4} wide={!hasPlays} />
+        <TeamStats g={lg} d={detail} i={6} wide={!hasLeaders} />
+        <Leaders g={lg} d={detail} season={g.season} siteKey={siteKey} i={7} wide={!hasStats} />
       </section>
     </div>
   );
