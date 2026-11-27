@@ -1434,3 +1434,11 @@ everyone else wears his official primary. Keep the two tables in step; `npm run 
 - Fetch data with `${import.meta.env.BASE_URL}data/...`, never `/data/...`, because Pages serves the site under `/RetroVault/`.
 - Routing is hash-based (`#stats/deepdive?p=QB:Name`); see `src/components/stats/hub/hashRoute.ts`.
 - Keep every save compiling; the owner often has the dev server open.
+
+## Game page: live view
+
+While ESPN says a game is in progress, `GamePage` shows `src/components/game/live/LiveGameView.tsx` in place of the stadium header (PreGame stays below). Data is `src/utils/liveGames.ts` (scoreboard poll + the game's summary: drives, scoring plays with score, last play with its yard lines, win chance, leaders); `useLiveForGame` polls from 15 min before kickoff to 8 h after and pairs the ESPN game with the site's by both clubs' abbreviations + kickoff within 36 h (`src/utils/liveMatch.ts`, also used by Next up). Hero = `PodiumStage` art + sky/towers/pennants + the jumbotron (`LedDigits` matrix, club colours via `lampOf`); the field (`liveField.ts` geometry in yards from the away goal line; sprites, or a pixel man where there are none) draws the ball on its real spot, line of scrimmage, first-down line, drive arrow, and the latest play (`playFx.ts`: pass/run lane parsed from the play text, sack/kick/INT/fumble, else the ball moving old spot to new; `PixelBall`, aria-hidden, the text sits under the field). Panels with no data (spotlight with no resolvable site player, win chance, drives, scoring, leaders) are omitted, never invented. Reduced motion shows end states and stops loops; Lite drops all animation. Dev only: `?liveFixture=1` (`&liveAdvance=1` scores after 8 s), `liveViewFixture.ts`.
+
+## Season page: live ticker
+
+`season/NextUp.tsx` + `nextUp.css`: a live ticket (ESPN score available) is a mini jumbotron (club-lit halves, dot-matrix scores, red clock, quarter, down and distance, possession lamp) that opens the game's live view; other tickets are unchanged. `?liveFixture=1` (dev) makes the game nearest its kickoff live.

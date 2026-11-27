@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import type { Player } from '@/types/player';
 import TeamLogo from '@/components/brand/TeamLogo';
 import GameSprite from '@/components/GameSprite';
+import { PixelBall } from '@/components/ui/PixelLoader';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { liftForDarkBg } from '@/utils/teamColors';
 import { displayName, surnameOf } from '@/utils/displayName';
@@ -74,12 +75,8 @@ const useNow = (ms: number) => {
 };
 
 /* ---------- small pieces ---------- */
-const Football = ({ className }: { className?: string }) => (
-  <svg className={`sv-lg__ball ${className ?? ''}`} viewBox="0 0 24 14" aria-hidden="true">
-    <ellipse cx="12" cy="7" rx="11" ry="6" fill="#8a4a1f" stroke="#2a1306" strokeWidth="1.4" />
-    <path d="M6 7h12M9 4.8v4.4M12 4.4v5.2M15 4.8v4.4" stroke="#f5efe2" strokeWidth="1.2" strokeLinecap="round" />
-  </svg>
-);
+/** the site's pixel football (ui/PixelLoader PixelBall) */
+const Football = ({ className }: { className?: string }) => <PixelBall className={`sv-lg__ball ${className ?? ''}`} style={{ height: 'auto' }} />;
 const Pips = ({ n }: { n: number | null }) => (
   <span className="sv-lg__pips" aria-label={n === null ? undefined : `${n} timeouts`}>
     {[0, 1, 2].map((i) => (

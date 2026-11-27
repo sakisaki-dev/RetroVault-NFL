@@ -84,3 +84,27 @@
   html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-wp i::after { animation: nu-shine 700ms var(--ease-out) 80ms; }
 }
 @keyframes nu-shine { to { translate: 110% 0; } }
+
+/* a live game: a mini jumbotron (club-lit halves, dot-matrix scores, red clock, down and distance, possession lamp) */
+.nu-ticket.is-tron { background: #05070c; border: 0; padding: 7px 8px 7px; gap: 5px; box-shadow: 0 0 0 1px #1d2438; }
+.nu-ticket.is-tron::before { display: none; }
+.nu-chase { position: absolute; inset: 0; border-radius: inherit; padding: 2px; pointer-events: none; z-index: 2; background: repeating-linear-gradient(90deg, var(--nu-a) 0 8px, #05070c 8px 12px, var(--nu-h) 12px 20px, #05070c 20px 24px); background-size: 24px 100%; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.nu-ticket.is-tron > .nu-chase { position: absolute; }
+.nu-ticket.is-tron .nu-top { color: #ff8080; }
+.nu-ticket.is-tron .nu-livetag { display: inline-flex; align-items: center; gap: 5px; }
+.nu-ticket.is-tron .nu-livetag i { width: 6px; height: 6px; border-radius: 50%; background: #ff4d4d; box-shadow: 0 0 6px #ff4d4d; animation: nu-pulse 1.2s steps(2) infinite; }
+.nu-clock svg { height: 14px; width: auto; filter: drop-shadow(0 0 4px rgb(255 80 60 / .7)); }
+.nu-halves { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.nu-half { display: grid; justify-items: center; gap: 4px; padding: 6px 2px 5px; border-radius: 7px; min-width: 0; background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--nu-tile) 36%, #000), #07090f 78%); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nu-tile) 45%, transparent); }
+.nu-half__id { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #fff; }
+.nu-half svg.ax-led { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--nu-lamp) 60%, transparent)); }
+.nu-poss { width: 6px; height: 6px; border-radius: 2px; background: #ff6b5a; box-shadow: 0 0 6px #ff6b5a; }
+.nu-dd { font-family: var(--font-pixel); font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: #ffb43a; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nu-dd b { font-weight: 400; color: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .nu-chase { animation: nu-chase 1.6s steps(6) infinite; }
+}
+@keyframes nu-chase { to { background-position-x: 24px; } }
+@media (prefers-reduced-motion: reduce) { .nu-ticket.is-tron .nu-livetag i, .nu-chase { animation: none; } }
+[data-perf='lite'] .nu-chase, [data-perf='lite'] .nu-ticket.is-tron .nu-livetag i { animation: none; }
+@media (hover: hover) { .nu-ticket.is-tron:hover { filter: brightness(1.12); } }

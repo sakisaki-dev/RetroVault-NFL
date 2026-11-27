@@ -23,6 +23,7 @@ import {
 import { toneOf, NameStrip, SpriteOf, QbDuel, GroundGame, AirAttack, PassRush, Efficiency, Fantasy, SpecialTeams, matchupTabs, type Linker } from './gameSections';
 import { clubVars, clubPlate, SectionHeader, Marquee, PixelPanel, PixelChip, ClubBadge, ArcadeToggle, CrowdDivider, ClubStrip } from '@/components/arcade';
 import { Performers } from './GamePerformers';
+import { useLiveForGame } from './live/useLiveForGame';
 import { PixelCup } from '../frontoffice/PixelCup';
 import './game.css';
 import './gameStage.css';
@@ -34,6 +35,7 @@ import { Reveal, ViewCount, stag, useReveal } from '@/components/motion/Reveal';
 
 const MoreGames = lazy(() => import('./MoreGames'));
 const PreGame = lazy(() => import('./PreGame'));
+const LiveGameView = lazy(() => import('./live/LiveGameView'));
 
 /**
  * Stats › Game: one game in depth (#stats/game?id=<nflverse game id>), any game 1999-2026. Broadcast header, recap,
@@ -610,6 +612,8 @@ const GameView = ({ g }: { g: GameDetail }) => {
   };
   const [side, setSide] = useState<Side>(winnerOf(g) === 0 ? 0 : 1);
   const done = played(g);
+  // in progress right now (ESPN's feed): the live view stands in for the stadium header, the pre-game sections stay below it
+  const live = useLiveForGame(g, done);
   const sb = g.type === 'SB' && done;
   const advOk = hasPfr(g) || hasNgs(g);
   const snapOk = hasSnaps(g);
@@ -651,7 +655,11 @@ const GameView = ({ g }: { g: GameDetail }) => {
       </nav>
 
       {sb && <SuperBowlBanner g={g} />}
-      <Stadium g={g} link={link} />
+      {live ? (
+        <Suspense fallback={null}><LiveGameView g={g} live={live} kicker={g.type === 'REG' ? `Week ${g.week}` : roundLabel(g).replace(/^\d{4} /, '')} /></Suspense>
+      ) : (
+        <Stadium g={g} link={link} />
+      )}
 
       {done ? (
         <>

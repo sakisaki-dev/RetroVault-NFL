@@ -44,6 +44,13 @@ export interface LiveSituation {
   spot: { side: string; yd: number } | null;
   redZone: boolean;
   last: string;
+  /** yards from the ball to the end zone the offence attacks (ESPN's yardLine) */
+  toGoal?: number | null;
+  /** the player in the last play, as ESPN names him */
+  lastAth?: { name: string; pos: string; abbr: string | null } | null;
+  /** the last play's yards and type ("Rush", "Pass Reception") */
+  lastYds?: number | null;
+  lastType?: string;
 }
 export interface LiveLeader {
   cat: 'passing' | 'rushing' | 'receiving';
@@ -69,6 +76,45 @@ export interface LiveGame {
   leaders: Record<string, LiveLeader[]>;
   headline: string;
 }
+/** A spot on the field: the club whose half it is ('' at midfield) and the yard line */
+export interface FieldSpot {
+  side: string;
+  yd: number;
+}
+export interface LiveDrive {
+  abbr: string;
+  plays: number;
+  yards: number;
+  /** ESPN's result ("Punt", "Touchdown", "Field Goal") */
+  result: string;
+  score: boolean;
+  from: FieldSpot | null;
+  to: FieldSpot | null;
+  /** still going */
+  live: boolean;
+}
+export interface LiveScore {
+  abbr: string;
+  text: string;
+  period: number;
+  clock: string;
+  away: number;
+  home: number;
+  /** "TD", "FG", "SF" ... */
+  kind: string;
+}
+/** The latest play as the summary gives it, positions in yards from the away club's goal line (0-100) */
+export interface LivePlay {
+  id: string;
+  text: string;
+  /** ESPN's play type ("Rush", "Pass Reception", "Sack", "Punt") */
+  type: string;
+  yds: number;
+  from: number | null;
+  to: number | null;
+  /** the club with the ball when it began */
+  off: string | null;
+}
 export interface LiveDetail {
   /** home win probability 0..1 (the latest point), null when ESPN has none */
   winHome: number | null;
@@ -78,6 +124,14 @@ export interface LiveDetail {
   scoring: { text: string; abbr: string }[];
   leaders: Record<string, LiveLeader[]>;
   last: string;
+  /** every drive so far (the one under way last, live) */
+  drives?: LiveDrive[];
+  /** the scoring plays with the clock and the score after each */
+  scoreLog?: LiveScore[];
+  /** the drive under way: plays, yards and where it began */
+  cur?: { plays: number; yards: number; time: string; from: FieldSpot | null } | null;
+  /** the latest play, placed on the field (what the field animates) */
+  lastPlay?: LivePlay | null;
 }
 export interface ScoreEvent {
   gameId: string;
@@ -103,6 +157,22 @@ const leadersOf = (list: unknown[]): LiveLeader[] => {
     out.push({ cat, name: String(a.displayName ?? a.shortName ?? ''), pos: String((a.position as Record<string, unknown> | undefined)?.abbreviation ?? ''), line: String(l.displayValue ?? '') });
   });
   return out;
+};
+
+const lastAthOf = (lp: any, teams: LiveTeam[]): LiveSituation['lastAth'] => {
+  const a = arr<any>(lp?.athletesInvolved)[0];
+  if (!a) return null;
+  const name = String(a.displayName ?? a.fullName ?? '');
+  if (!name) return null;
+  return { name, pos: String(a.position?.abbreviation ?? a.position ?? ''), abbr: teams.find((t) => String(t.id) === String(a.team?.id))?.abbr ?? null };
+};
+
+/** "DEN 30" -> its side and yard; "50" -> midfield */
+export const parseSpot = (text: unknown): FieldSpot | null => {
+  const t = String(text ?? '').trim();
+  const m = /^([A-Z]{2,3})\s+(\d+)$/.exec(t);
+  if (m) return { side: abbrOf(m[1]), yd: +m[2] };
+  return /^\d+$/.test(t) ? { side: '', yd: +t } : null;
 };
 
 /** ESPN's scoreboard event -> a LiveGame (the widget's normGame, plus timeouts, weather and leaders by club) */
@@ -164,6 +234,10 @@ export const normGame = (e: Record<string, any>): LiveGame | null => {
       spot: m ? { side: abbrOf(m[1]), yd: +m[2] } : null,
       redZone: !!s.isRedZone,
       last: s.lastPlay?.text ?? '',
+      toGoal: num(s.yardLine),
+      lastAth: lastAthOf(s.lastPlay, [home, away]),
+      lastYds: num(s.lastPlay?.statYardage),
+      lastType: String(s.lastPlay?.type?.text ?? ''),
     };
   }
   return g;
@@ -181,7 +255,54 @@ export const normDetail = (d: Record<string, any>): LiveDetail => {
   });
   const cur = d.drives?.current;
   const plays = arr<any>(cur?.plays);
+  const driveOf = (x: any, live: boolean): LiveDrive => ({
+    abbr: abbrOf(x.team?.abbreviation ?? ''),
+    plays: num(x.offensivePlays) ?? arr<any>(x.plays).length,
+    yards: num(x.yards) ?? 0,
+    result: String(x.displayResult ?? x.result ?? ''),
+    score: !!x.isScore,
+    from: parseSpot(x.start?.text),
+    to: parseSpot(x.end?.text),
+    live,
+  });
+  const comps = arr<any>(d.header?.competitions?.[0]?.competitors);
+  const awayId = String(comps.find((c) => c.homeAway === 'away')?.id ?? '');
+  const abbrById = (id: unknown) => {
+    const c = comps.find((k) => String(k.id) === String(id));
+    return c ? abbrOf(c.team?.abbreviation ?? '') : null;
+  };
+  const absAt = (yl: unknown, id: unknown) => {
+    const n = num(yl);
+    return n == null || !id ? null : String(id) === awayId ? 100 - n : n;
+  };
+  const allPlays = [...arr<any>(d.drives?.previous), ...(cur ? [cur] : [])].flatMap((x) => arr<any>(x.plays));
+  const lp = [...allPlays].reverse().find((p) => !/timeout|end (of|period)|two-minute|official|coin toss|penalty/i.test(String(p.type?.text ?? '')));
+  const lastPlay: LivePlay | null = lp
+    ? {
+        id: String(lp.id ?? lp.text),
+        text: String(lp.text ?? '').trim(),
+        type: String(lp.type?.text ?? ''),
+        yds: num(lp.statYardage) ?? 0,
+        from: absAt(lp.start?.yardLine, lp.start?.team?.id),
+        to: absAt(lp.end?.yardLine, lp.end?.team?.id ?? lp.start?.team?.id),
+        off: abbrById(lp.start?.team?.id),
+      }
+    : null;
+  const prev = arr<any>(d.drives?.previous).filter((x) => x.id !== cur?.id);
+  const drives = [...prev.map((x) => driveOf(x, false)), ...(cur ? [driveOf(cur, true)] : [])].filter((x) => x.abbr);
   return {
+    lastPlay,
+    drives,
+    scoreLog: arr<any>(d.scoringPlays).map((p) => ({
+      abbr: abbrOf(p.team?.abbreviation ?? ''),
+      text: String(p.text ?? ''),
+      period: num(p.period?.number) ?? 0,
+      clock: String(p.clock?.displayValue ?? ''),
+      away: num(p.awayScore) ?? 0,
+      home: num(p.homeScore) ?? 0,
+      kind: String(p.scoringType?.abbreviation ?? ''),
+    })),
+    cur: cur ? { plays: num(cur.offensivePlays) ?? plays.length, yards: num(cur.yards) ?? 0, time: String(cur.timeElapsed?.displayValue ?? ''), from: parseSpot(cur.start?.text) } : null,
     winHome: wl,
     drive: cur?.description ?? '',
     scoring: arr<any>(d.scoringPlays).map((p) => ({ text: String(p.text ?? ''), abbr: abbrOf(p.team?.abbreviation ?? '') })),
