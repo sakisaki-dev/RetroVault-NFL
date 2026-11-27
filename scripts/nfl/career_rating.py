@@ -528,7 +528,9 @@ for pos in POS:
             z = (x * (-1.0 if tn == "int" else 1.0) - mean[tn]) / sd[tn]
             num_w += w * z; den_w += w
         if den_w > 0:
-            share = min(1.0, den_w / cap) if cap > 0 else 1.0
+            # coverage = the mean of the weight share and the plain share of traits he has: a rare trait with a tiny fitted weight (a linebacker's
+            # interceptions) is still evidence, so weight alone would zero it out
+            share = min(1.0, 0.5 * (den_w / cap if cap > 0 else 1.0) + 0.5 * len(TOT[k][1]) / max(1, len(traits)))
             sc[k] = num_w / den_w * share ** COV_P
     qs = np.sort([v for k, v in sc.items() if qual[k]])
     for k, v in sc.items():
@@ -538,13 +540,25 @@ for pos in POS:
 nq = defaultdict(int)
 
 
-def prod_of(p):
-    g = lambda k: p.get(k) or 0; pos = p["pos"]
-    if pos == "QB": return g("yds") / 80 + .9 * g("td") + .9 * g("rtd") - .6 * g("int")
-    if pos == "RB": return g("ryds") / 18 + 2.2 * g("rtd") + g("recyds") / 30 + 2.2 * g("rectd")
-    if pos == "WR": return g("yds") / 14 + 2.5 * g("td")
-    if pos == "TE": return g("yds") / 8 + 3 * g("td")
-    return .7 * g("tkl") + 12 * g("int") + 14 * g("sck") + 14 * g("ff")
+PROD_COMPS = {   # production components per position: (players.json key, points per unit)
+    "QB": [("yds", 1 / 80), ("td", .9), ("rtd", .9), ("int", -.6)],
+    "RB": [("ryds", 1 / 18), ("rtd", 2.2), ("recyds", 1 / 30), ("rectd", 2.2)],
+    "WR": [("yds", 1 / 14), ("td", 2.5)],
+    "TE": [("yds", 1 / 8), ("td", 3)],
+    "LB": [("tkl", .7), ("int", 12), ("sck", 14), ("ff", 14)],
+    "DB": [("tkl", .7), ("int", 12), ("sck", 14), ("ff", 14)],
+    "DL": [("tkl", .7), ("int", 12), ("sck", 14), ("ff", 14)],
+}
+
+
+def prod_has(p):
+    """the production components his line actually carries (a stat the era never recorded is None: skipped, never a zero)"""
+    return tuple(k for k, _ in PROD_COMPS[p["pos"]] if isinstance(p.get(k), (int, float)))
+
+
+def prod_of(p, keys=None):
+    keys = prod_has(p) if keys is None else keys
+    return sum(w * (p.get(k) or 0) for k, w in PROD_COMPS[p["pos"]] if k in keys)
 
 
 honours = lambda p: 30 * (p.get("mvp") or 0) + 18 * ((p.get("opoy") or 0) + (p.get("dpoy") or 0)) + 12 * (p.get("sbmvp") or 0) + 10 * (p.get("rings") or 0) + 2 * (p.get("roty") or 0)
@@ -552,7 +566,24 @@ RES = {}
 for pos in POS:
     ks = [k for k, p in byk.items() if p["pos"] == pos]
     q = [k for k in ks if qual[k]]
-    Pq = np.sort([prod_of(byk[k]) for k in q]); Lq = np.sort([byk[k].get("g") or 0 for k in q]); hmax = max([honours(byk[k]) for k in q] + [1])
+    PCOMP = PROD_COMPS[pos]
+    full = [k for k in q if len(prod_has(byk[k])) == len(PCOMP)]
+    # mean absolute contribution of each component among full-line qualified players: the weight a missing one takes away
+    cmean = {c: float(np.mean([abs(prod_of(byk[k], (c,))) for k in full])) if full else 1.0 for c, _ in PCOMP}
+    ctot = sum(cmean.values()) or 1.0
+    PQ = {}
+
+    def prod_pct(p):
+        # production on the components he carries, ranked against qualified peers on those SAME components (peers with them all),
+        # then pulled toward the middle by the share of production weight those components cover (COV_P), so one stat cannot carry it
+        keys = prod_has(p)
+        if not keys:
+            return None
+        if keys not in PQ:
+            PQ[keys] = np.sort([prod_of(byk[k], keys) for k in q if set(keys) <= set(prod_has(byk[k]))])
+        share = sum(cmean[c] for c in keys) / ctot
+        return 50 + (pctof(PQ[keys], prod_of(p, keys)) - 50) * share ** COV_P
+    Pq = None; Lq = np.sort([byk[k].get("g") or 0 for k in q]); hmax = max([honours(byk[k]) for k in q] + [1])
     score = {}
     for k in ks:
         p = byk[k]
@@ -561,7 +592,8 @@ for pos in POS:
         debut = nf.get("debut") or (int(nf["rookie"]) if str(nf.get("rookie") or "").isdigit() else None)
         full = k in EFF and not (debut and debut < 1999)   # a career that starts before the weekly data (1999) uses career totals
         eff = EFF[k] if full else TOT_EFF.get(k)
-        prod = 0.7 * pctof(Pq, prod_of(p)) + 0.3 * pctof(Lq, p.get("g") or 0)   # longevity = career games
+        pp = prod_pct(p); pl_ = pctof(Lq, p.get("g") or 0)
+        prod = (0.7 * pp + 0.3 * pl_) if pp is not None else pl_   # longevity = career games
         hon = 100.0 * honours(p) / hmax
         ph = 0.5 * prod + 0.5 * hon
         score[k] = (EFF_SHARE * eff + (1 - EFF_SHARE) * ph) if eff is not None else ph
