@@ -10,7 +10,7 @@ import type { DraftYear, PickRow, SchoolFile, SchoolInfo, CollegeIndex } from '@
 import { sample } from './nflSaverData';
 
 /*
- * The data behind the eight "real data" scenes (draft night, two-minute drill, the long one, locker room, milestone
+ * The data behind the seven "real data" scenes (draft night, two-minute drill, the long one, milestone
  * watch, old vs new, weather game, hometown). Everything is a rule over files the site already has; nothing is invented.
  * What loads, and only when the screensaver runs: saver_picks.json (scripts/nfl/saver_picks.py: coldest games, longest
  * field goals per season, one-score finishes), the one or two game seasons those picks sit in, three draft boards and
@@ -83,7 +83,6 @@ export const useSaverExtras = (on: boolean): SaverExtras | undefined => {
 export interface DraftNightData { year: number; pick: PickRow; school: SchoolInfo | null; player: Player | null; roll: number }
 export interface TwoMinData { game: GameDetail; roll: number }
 export interface LongOneData { name: string; yards: number; game: GameDetail; kicker: Player | null; roll: number }
-export interface LockerData { club: string; players: Player[]; roll: number }
 export interface MilestoneData { player: Player; label: string; unit: string; have: number; mark: number; perGame: number; games: number; roll: number }
 export interface OldNewData { old: Player; neu: Player; oldYear: number | null; neuYear: number | null; oldSpan: string; neuSpan: string; pos: string; roll: number }
 export interface WxGameData { game: GameDetail; fx: 'snow' | null; wind: number; roll: number }
@@ -139,15 +138,6 @@ export const weatherScenes = (extras: SaverExtras): WxGameData[] =>
     .filter((g): g is GameDetail => !!g && g.temp !== undefined && g.awayScore != null)
     // below freezing it is a snow look (the game files record temperature and wind, not precipitation)
     .map((game) => ({ game, fx: game.temp! <= 32 ? ('snow' as const) : null, wind: Math.min(1, Math.max(0.15, (game.wind ?? 8) / 28)), roll: 0.4 }));
-
-export const lockerScenes = (players: Player[]): LockerData[] => {
-  const byClub = new Map<string, Player[]>();
-  players.forEach((p) => {
-    const c = findNFLTeam(bannerTeamOf(p))?.name;
-    if (c) byClub.set(c, [...(byClub.get(c) ?? []), p]);
-  });
-  return sample([...byClub.entries()].filter(([, ps]) => ps.length >= 5), 4).map(([club, ps]) => ({ club, players: ps.slice(0, 5), roll: Math.random() }));
-};
 
 /* ---- milestone watch ---- */
 type Num = number | undefined;

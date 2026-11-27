@@ -62,8 +62,8 @@ import CareerArcScene, { arcFor, loadStints, type CareerArcData } from './scenes
 import RivalryNightScene, { type RivalryNightData } from './scenes/RivalryNightScene';
 import RecordChaseScene, { buildChases, type ChaseData } from './scenes/RecordChaseScene';
 import { reducedMotion } from '@/utils/motion';
-import { DraftNightScene, HometownScene, LockerRoomScene, LongOneScene, MilestoneScene, OldVsNewScene, TwoMinuteScene, WeatherGameScene } from './scenes/EightScenes';
-import { draftScenes, hometownScenes, lockerScenes, longOneScenes, milestoneScenes, oldNewScenes, twoMinScenes, useSaverExtras, weatherScenes, type DraftNightData, type HometownData, type LockerData, type LongOneData, type MilestoneData, type OldNewData, type TwoMinData, type WxGameData } from './scenes/eightData';
+import { DraftNightScene, HometownScene, LongOneScene, MilestoneScene, OldVsNewScene, TwoMinuteScene, WeatherGameScene } from './scenes/EightScenes';
+import { draftScenes, hometownScenes, longOneScenes, milestoneScenes, oldNewScenes, twoMinScenes, useSaverExtras, weatherScenes, type DraftNightData, type HometownData, type LongOneData, type MilestoneData, type OldNewData, type TwoMinData, type WxGameData } from './scenes/eightData';
 import { saverDebug } from '@/utils/screensaver';
 
 /*
@@ -112,7 +112,6 @@ type Scene =
   | { kind: 'draftnight'; data: DraftNightData }
   | { kind: 'twominute'; data: TwoMinData }
   | { kind: 'longone'; data: LongOneData }
-  | { kind: 'locker'; data: LockerData }
   | { kind: 'milestone'; data: MilestoneData }
   | { kind: 'oldnew'; data: OldNewData }
   | { kind: 'wxgame'; data: WxGameData }
@@ -2344,7 +2343,7 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
       const recentIds = new Set(wks.slice(0, 4).flatMap((w) => w.games.map((g) => g.id)));
       const cands = (saverGames ?? []).filter((g) => recentIds.has(g.id) && replayable(g)).sort((a, b) => notability(b) - notability(a)).slice(0, 10);
       nflDecks.push(sample(cands, 3).map((game): Scene => ({ kind: 'gameweek', game })));
-      // eight more, all from real files (scenes/eightData.ts): draft night, two-minute drill, the long one, locker room,
+      // seven more, all from real files (scenes/eightData.ts): draft night, two-minute drill, the long one,
       // milestone watch, old vs new, weather game, hometown
       if (extras) {
         nflDecks.push(draftScenes(extras.drafts, players).map((data): Scene => ({ kind: 'draftnight', data })));
@@ -2353,7 +2352,6 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
         nflDecks.push(weatherScenes(extras).slice(0, 1).map((data): Scene => ({ kind: 'wxgame', data })));
         nflDecks.push(hometownScenes(extras.schools, players).map((data): Scene => ({ kind: 'hometown', data })));
       }
-      nflDecks.push(lockerScenes(players).map((data): Scene => ({ kind: 'locker', data })));
       nflDecks.push(milestoneScenes(players).map((data): Scene => ({ kind: 'milestone', data })));
       nflDecks.push(oldNewScenes(players, careerFile ?? null).map((data): Scene => ({ kind: 'oldnew', data })));
     }
@@ -2608,14 +2606,12 @@ const Screensaver = ({ onClose }: { onClose: () => void }) => {
         return <TwoMinuteScene data={s.data} lookup={saverDeps.lookup} sprites={sprites} />;
       case 'longone':
         return <LongOneScene data={s.data} sprites={sprites} />;
-      case 'locker':
-        return <LockerRoomScene data={s.data} numberFor={numberFor} />;
       case 'milestone':
         return <MilestoneScene data={s.data} sprites={sprites} />;
       case 'oldnew':
         return <OldVsNewScene data={s.data} sprites={sprites} />;
       case 'wxgame':
-        return <WeatherGameScene data={s.data} />;
+        return <WeatherGameScene data={s.data} lookup={saverDeps.lookup} sprites={sprites} />;
       case 'hometown':
         return <HometownScene data={s.data} sprites={sprites} />;
       case 'pa':
