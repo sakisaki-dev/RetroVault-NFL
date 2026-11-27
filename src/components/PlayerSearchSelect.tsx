@@ -19,6 +19,7 @@ import { bannerTeamOf } from '@/utils/playerExtras';
 import { usePhone } from '@/hooks/usePhone';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
 import { displayName, firstAndLast } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 interface PlayerSearchSelectProps {
   players: Player[];
@@ -208,7 +209,7 @@ const PlayerSearchSelect = ({
         setOpen(o);
         if (o && openBelow) {
           const el = triggerRef.current;
-          if (el) window.setTimeout(() => el.scrollIntoView({ block: 'center', behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 0);
+          if (el) window.setTimeout(() => el.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' }), 0);
         }
         if (!o) {
           setPos('ALL');

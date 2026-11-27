@@ -26,6 +26,7 @@ import type { CardInfo } from './useCardPool';
 import { dur, ease } from '@/utils/motion';
 import { displayName } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
+import { reducedMotion } from '@/utils/motion';
 
 /*
  * Swipe browser: a full-screen carousel over the binder's current filter and sort (owned cards only). One large card
@@ -74,7 +75,7 @@ type Mode = 'full' | 'flat' | 'still';
 const motionMode = (): Mode => {
   let reduce = false;
   try {
-    reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    reduce = reducedMotion();
   } catch {
     /* no matchMedia */
   }

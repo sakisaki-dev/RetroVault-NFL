@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { findNFLTeam, NFL_TEAMS } from '@/utils/nflTeams';
 import { useFieldArt, type Turf } from '../fieldArt';
 import { useMedia } from '../useMedia';
+import { reducedMotion } from '@/utils/motion';
 
 /** What the team and fantasy modes share: the stage (kit, turf, painted field), mode switch, selects, picker opener. */
 /** Everything the two modes share: the stage (kit, turf, painted field) and its sizes. */
@@ -100,7 +101,7 @@ export const CountUp = ({ value, ms = 700 }: { value: number; ms?: number }) => 
   const [shown, setShown] = useState(value);
   const from = useRef(value);
   useEffect(() => {
-    const calm = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const calm = reducedMotion();
     if (calm || from.current === value) {
       from.current = value;
       setShown(value);
@@ -148,7 +149,7 @@ export const Stands = ({ art }: { art: Stage['art'] }) => (
 export const openPicker = (id: string) => {
   const row = document.getElementById(`lab-slot-${id}`);
   if (!row) return;
-  row.scrollIntoView({ block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  row.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
   row.querySelector<HTMLButtonElement>('button[role="combobox"]')?.click();
 };
 

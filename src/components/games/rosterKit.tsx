@@ -11,6 +11,7 @@ import { isHallOfFamer } from '@/config/stats';
 import GameSprite from '../GameSprite';
 import './rosterkit.css';
 import { displayName, firstAndLast } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 /*
  * Shared presentation for the card-dealing games (Blind Rank, Keep 3 Cut 3, Who's the Imposter?):
@@ -19,7 +20,7 @@ import { displayName, firstAndLast } from '@/utils/displayName';
  */
 
 export const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  reducedMotion();
 
 export const useMedia = (query: string) => {
   const [on, setOn] = useState(() => typeof window !== 'undefined' && !!window.matchMedia?.(query).matches);

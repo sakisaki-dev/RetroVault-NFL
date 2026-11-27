@@ -24,6 +24,7 @@ import { fnv1a } from '@/utils/edition';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useLeague } from '@/context/LeagueContext';
 import { CAREER_LABEL } from '@/config/ovr';
+import { reducedMotion } from '@/utils/motion';
 
 type GameId = 'rank' | 'perfect' | 'kc' | 'legend' | 'hol' | 'grid' | 'imposter' | 'sixdeg' | 'ou' | 'build';
 
@@ -176,7 +177,6 @@ const gameOfTheDay = (now: Date): GameDef => {
   return GAMES[fnv1a(`arcade-gotd:${day}`) % GAMES.length];
 };
 
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const pad2 = (n: number) => String(n).padStart(2, '0');
 const mcVars = (g: GameDef) => ({ '--mc': g.color }) as CSSProperties;
 

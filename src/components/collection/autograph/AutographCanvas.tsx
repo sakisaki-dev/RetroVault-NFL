@@ -6,6 +6,7 @@ import { compose, renderAutograph, renderLayers, CARD_H, CARD_W } from './render
 import { useAutographFigure } from './figure';
 import './autograph.css';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 interface AutographCanvasProps {
   snap: AutographSnapshot;
@@ -21,13 +22,6 @@ interface AutographCanvasProps {
   label?: string;
 }
 
-const reducedMotion = () => {
-  try {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  } catch {
-    return false;
-  }
-};
 
 /**
  * One autograph card on a canvas, drawn at its displayed size × devicePixelRatio (capped at 2). It renders only once it

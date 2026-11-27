@@ -9,6 +9,7 @@ import type { RingOfHonorEntry } from '@/utils/hallOfFame';
 import { peekKeyProps } from '@/components/peek/peekProps';
 import './rafters.css';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 interface Props {
   team: NFLTeam | null;
@@ -37,7 +38,7 @@ const ringsText = (n: number) => `${n} ring${n === 1 ? '' : 's'} here`;
 
 const reduceMotion = () => {
   try {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return reducedMotion();
   } catch {
     return false;
   }

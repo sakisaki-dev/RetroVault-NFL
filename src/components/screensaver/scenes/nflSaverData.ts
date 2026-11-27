@@ -3,6 +3,8 @@ import type { Player } from '@/types/player';
 import { loadGameSeason, type GameDetail, type GamePlayer } from '@/utils/nflGames';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { atsOf, played, podiumOf, sitePos, v, winnerOf } from '@/components/game/gameModel';
+import { reducedMotion } from '@/utils/motion';
+export { reducedMotion };
 
 /** Shared by the NFL screensaver scenes that read the per-game files (public/data/nfl/game/<year>.json). */
 
@@ -115,7 +117,6 @@ export const sample = <T,>(xs: T[], n: number): T[] => {
   }
   return a.slice(0, n);
 };
-export const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 export type SaverDeps = {
   Stadium: React.ComponentType<{ club: string; roll: number; children?: React.ReactNode; className?: string; look?: 'day' | 'dusk' | 'night' | 'snow' | 'dome' }>;
   /** the weather effect over the show now (real or forced): 'snow', 'rain', 'storm' or null */

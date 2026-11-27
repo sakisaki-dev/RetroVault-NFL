@@ -13,6 +13,7 @@ import GameSprite from '@/components/GameSprite';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { Stadium, ClubTag } from '../Screensaver';
 import './newScenes.css';
+import { reducedMotion } from '@/utils/motion';
 
 /*
  * Career arc: a legend's season-by-season SZN (career_seasons.json `sovr`) as bars that rise one by one while his
@@ -27,7 +28,7 @@ let stintReq: Promise<StintFile | null> | null = null;
 export const loadStints = (): Promise<StintFile | null> =>
   (stintReq ??= dataResponse('data/history/stints.json').then((r) => (r.ok ? (r.json() as Promise<StintFile>) : null)).catch(() => null));
 
-const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced = () => reducedMotion();
 
 /** His seasons with a season OVR; null under 8 */
 export const arcFor = (file: CareerSeasonsFile, p: Player, stints: StintFile | null, minSeasons = 8): ArcPoint[] | null => {

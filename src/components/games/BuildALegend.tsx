@@ -41,6 +41,7 @@ import {
   type Slot,
 } from './buildLegendLogic';
 import { displayName, surnameOf } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 const BEST_KEY = 'build:best';
 const CLONES_KEY = 'build:clones';
@@ -51,7 +52,6 @@ const LIVE_AFTER = 3;
 const C_BUILD = '#bf8516';
 const C_MATCH = '#2f86d6';
 
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 const ordinal = (n: number) => {
   if (!Number.isFinite(n)) return '—';

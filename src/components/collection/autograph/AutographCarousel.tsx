@@ -5,6 +5,7 @@ import { type OwnedAuto } from '@/utils/collection';
 import { autographValue, fmtMult, parallelOf, serialStr } from '@/config/autographs';
 import AutographCanvas from './AutographCanvas';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 interface AutographCarouselProps {
   autos: OwnedAuto[];
@@ -50,7 +51,7 @@ const AutographCarousel = ({ autos, selectedId, onSelect, size = 'card', label }
     if (!el || !li) return;
     let behavior: ScrollBehavior = smooth ? 'smooth' : 'auto';
     try {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) behavior = 'auto';
+      if (reducedMotion()) behavior = 'auto';
     } catch {
       /* no matchMedia */
     }

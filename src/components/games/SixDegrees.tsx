@@ -24,6 +24,7 @@ import {
   type SixDegPuzzle,
 } from './sixDegreesGraph';
 import { displayName, firstAndLast } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
 
 const BEST_KEY = 'sixdeg:best';
 const RECENT_TARGETS = 6;
@@ -223,7 +224,7 @@ const SixDegrees = ({ players, ovrMap }: { players: GamePlayer[]; ovrMap?: Map<s
   const resultRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (status === 'play') return;
-    const reduce = !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reduce = reducedMotion();
     const id = window.setTimeout(() => resultRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }), reduce ? 0 : 450);
     return () => window.clearTimeout(id);
   }, [status]);

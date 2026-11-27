@@ -9,6 +9,8 @@ import { RULES, roundShort, abbrOf, avg, dist, fmtDate, fmtN, parseGames, streak
 import { PixelSelect } from '@/components/arcade/PixelSelect';
 import './gameLog.css';
 import { displayName } from '@/utils/displayName';
+import { reducedMotion } from '@/utils/motion';
+import { useReducedMotion } from '@/hooks/usePerfMode';
 
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const PAGE = 12;
@@ -31,17 +33,7 @@ const Result = ({ g }: { g: Game }) => (
   </span>
 );
 
-const useReduced = () => {
-  const [r, setR] = useState(() => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
-  useEffect(() => {
-    const mq = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    if (!mq) return;
-    const f = () => setR(mq.matches);
-    mq.addEventListener('change', f);
-    return () => mq.removeEventListener('change', f);
-  }, []);
-  return r;
-};
+const useReduced = useReducedMotion;
 
 const Seg = <T extends string>({ value, onChange, options, label, className }: { value: T; onChange: (v: T) => void; options: { v: T; l: string }[]; label: string; className?: string }) => (
   <div className={cn('gl-seg', className)} role="group" aria-label={label}>

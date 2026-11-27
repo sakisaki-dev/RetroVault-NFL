@@ -9,6 +9,7 @@ import { liftForDarkBg } from '@/utils/teamColors';
 import { f1 } from '@/utils/fantasy';
 import { flagsFor, SCORING_LABEL, TRADE_METHOD_NOTES, type TradeModel, type TradePlayer, type TradeResult } from '@/utils/tradeSim';
 import { signed } from './TradeParts';
+import { reducedMotion } from '@/utils/motion';
 
 /**
  * The Trade duel: the Game page's QB duel (gameSections.tsx QbDuel; same header, grouped rows, mirrored bars that grow in,
@@ -43,7 +44,7 @@ const Val = ({ v, dec, suffix }: { v: number | null; dec: number; suffix: string
   const [shown, setShown] = useState<number | null>(v);
   useEffect(() => {
     const target = v ?? 0;
-    const still = typeof document !== 'undefined' && (document.documentElement.dataset.perf === 'lite' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+    const still = typeof document !== 'undefined' && (document.documentElement.dataset.perf === 'lite' || reducedMotion());
     if (still) { last.current = target; setShown(v); return; }
     const a = last.current;
     const t0 = performance.now();

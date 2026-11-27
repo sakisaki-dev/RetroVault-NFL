@@ -16,10 +16,11 @@ import { loadMarket } from '@/utils/useMarket';
 import './collection.css';
 import { displayName, surnameOf } from '@/utils/displayName';
 import { CAREER_LABEL } from '@/config/ovr';
+import { reducedMotion } from '@/utils/motion';
 
 const motionOk = () => {
   try {
-    return !isLite() && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !isLite() && !reducedMotion();
   } catch {
     return false;
   }
