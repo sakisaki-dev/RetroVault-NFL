@@ -118,7 +118,8 @@
    "salary": 30.0,
    "contract": 1.0,
    "playoffGames": 9
-  }
+  },
+  "nick": "Captain Cook"
  },
  {
   "n": "Nyheim Hines",
@@ -233,7 +234,8 @@
    "salary": 23.0,
    "contract": 3.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "Big-Game Gabe"
  },
  {
   "n": "Stefon Diggs",
@@ -5496,7 +5498,8 @@
    "salary": 8.0,
    "contract": 3.0,
    "playoffGames": 6
-  }
+  },
+  "nick": "Zeke"
  },
  {
   "n": "JaMycal Hasty",
@@ -7158,8 +7161,7 @@
    "salary": 40.0,
    "contract": 1.0,
    "playoffGames": 4
-  },
-  "nick": "Drake \"Drake Maye\" Maye"
+  }
  },
  {
   "n": "Bryan Hudson",
@@ -11340,7 +11342,8 @@
    "salary": 24.0,
    "contract": 3.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Enyi"
  },
  {
   "n": "Nik Bonitto",
@@ -11710,7 +11713,8 @@
    "salary": 16.0,
    "contract": 2.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "Garbs"
  },
  {
   "n": "Michael Burton",
@@ -12944,7 +12948,8 @@
    "salary": 12.0,
    "contract": 1.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "Palcho"
  },
  {
   "n": "Matt Peart",
@@ -15141,7 +15146,8 @@
    "salary": 21.0,
    "contract": 3.0,
    "playoffGames": 14
-  }
+  },
+  "nick": "Turk"
  },
  {
   "n": "Xavier Worthy",
@@ -18384,7 +18390,8 @@
    "salary": 5.0,
    "contract": 2.0,
    "playoffGames": 7
-  }
+  },
+  "nick": "Jimmy G"
  },
  {
   "n": "Aidan O'Connell",
@@ -18624,7 +18631,8 @@
    "salary": 9.0,
    "contract": 2.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Zeus"
  },
  {
   "n": "Davante Adams",
@@ -21221,7 +21229,8 @@
    "salary": 10.0,
    "contract": 3.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "Gus the Bus"
  },
  {
   "n": "Justice Hill",
@@ -22232,7 +22241,8 @@
    "salary": 14.0,
    "contract": 1.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "Pancake Pat"
  },
  {
   "n": "Tyler Linderbaum",
@@ -22485,7 +22495,8 @@
    "salary": 7.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Pepe"
  },
  {
   "n": "Daryl Worley",
@@ -23683,7 +23694,8 @@
    "salary": 16.0,
    "contract": 3.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Tez"
  },
  {
   "n": "Malik Cunningham",
@@ -24067,7 +24079,7 @@
    "contract": 2.0,
    "playoffGames": 7
   },
-  "nick": "Joe Shiesty"
+  "nick": "Joe Brrr"
  },
  {
   "n": "Chase Brown",
@@ -28470,7 +28482,8 @@
    "salary": 8.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Bookie"
  },
  {
   "n": "Winston Reid",
@@ -31318,7 +31331,8 @@
    "salary": 18.0,
    "contract": 2.0,
    "playoffGames": 10
-  }
+  },
+  "nick": "Motor"
  },
  {
   "n": "Noah Brown",
@@ -36689,8 +36703,7 @@
    "salary": 40.0,
    "contract": 3.0,
    "playoffGames": 3
-  },
-  "nick": "The Prince that was Promised"
+  }
  },
  {
   "n": "Tank Bigsby",
@@ -37991,7 +38004,8 @@
    "salary": 15.0,
    "contract": 1.0,
    "playoffGames": 7
-  }
+  },
+  "nick": "D.J."
  },
  {
   "n": "Travon Walker",
@@ -38102,7 +38116,8 @@
    "salary": 17.0,
    "contract": 2.0,
    "playoffGames": 1
-  }
+  },
+  "nick": "Buster"
  },
  {
   "n": "Tyson Campbell",
@@ -38324,7 +38339,8 @@
    "salary": 20.0,
    "contract": 3.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "Dewey"
  },
  {
   "n": "Ezra Cleveland",
@@ -44209,7 +44225,7 @@
    "contract": 3.0,
    "playoffGames": 0
   },
-  "nick": "Passing Paisano"
+  "nick": "Tommy Cutlets"
  },
  {
   "n": "Daniel Jones",
@@ -48695,7 +48711,8 @@
    "salary": 19.0,
    "contract": 2.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Big Ticket"
  },
  {
   "n": "Fred Johnson",
@@ -49291,7 +49308,8 @@
    "salary": 18.0,
    "contract": 2.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "B Rob"
  },
  {
   "n": "Chris Rodriguez Jr.",
@@ -53460,7 +53478,8 @@
    "salary": 23.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Maserati Marv"
  },
  {
   "n": "Darius Robinson",
@@ -54233,7 +54252,8 @@
    "salary": 10.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "The Mailman"
  },
  {
   "n": "Matthew Stafford",
@@ -55312,7 +55332,8 @@
    "salary": 19.0,
    "contract": 1.0,
    "playoffGames": 8
-  }
+  },
+  "nick": "The Exploding Flower"
  },
  {
   "n": "Keir Thomas II",
@@ -56052,7 +56073,8 @@
    "salary": 14.0,
    "contract": 1.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Tank"
  },
  {
   "n": "Charles Woods",
@@ -59812,7 +59834,7 @@
    "contract": 2.0,
    "playoffGames": 4
   },
-  "nick": "K-9"
+  "nick": "K9"
  },
  {
   "n": "Jake Bobo",
@@ -64085,7 +64107,8 @@
    "salary": 10.0,
    "contract": 2.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Canadian Eagle"
  },
  {
   "n": "Jake Curhan",
@@ -64312,8 +64335,7 @@
    "salary": 40.0,
    "contract": 1.0,
    "playoffGames": 10
-  },
-  "nick": "The Kid"
+  }
  },
  {
   "n": "Hendon Hooker",
@@ -64433,7 +64455,8 @@
    "salary": 30.0,
    "contract": 1.0,
    "playoffGames": 4
-  }
+  },
+  "nick": "Sonic"
  },
  {
   "n": "Bam Knight",
@@ -64513,7 +64536,8 @@
    "salary": 27.0,
    "contract": 2.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Knuckles"
  },
  {
   "n": "Craig Reynolds",
@@ -64591,7 +64615,8 @@
    "salary": 13.0,
    "contract": 3.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "DPJ"
  },
  {
   "n": "Kalif Raymond",
@@ -64819,7 +64844,8 @@
    "salary": 11.0,
    "contract": 3.0,
    "playoffGames": 1
-  }
+  },
+  "nick": "The Governor"
  },
  {
   "n": "Brock Wright",
@@ -66769,7 +66795,8 @@
    "salary": 15.0,
    "contract": 1.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "Quadzilla"
  },
  {
   "n": "Aaron Jones Sr.",
@@ -67598,7 +67625,8 @@
    "salary": 18.0,
    "contract": 3.0,
    "playoffGames": 3
-  }
+  },
+  "nick": "JJ"
  },
  {
   "n": "Rashan Gary",
@@ -69269,7 +69297,8 @@
    "salary": 10.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "The Passtronaut"
  },
  {
   "n": "Nick Mullens",
@@ -69660,7 +69689,8 @@
    "salary": 20.0,
    "contract": 2.0,
    "playoffGames": 2
-  }
+  },
+  "nick": "Speedy"
  },
  {
   "n": "K.J. Osborn",
@@ -70774,7 +70804,7 @@
    "contract": 2.0,
    "playoffGames": 8
   },
-  "nick": "the Hitman"
+  "nick": "The Hitman"
  },
  {
   "n": "Jay Ward",
@@ -74562,7 +74592,7 @@
    "contract": 2.0,
    "playoffGames": 4
   },
-  "nick": "Red Rifle"
+  "nick": "The Red Rifle"
  },
  {
   "n": "Bryce Young",
@@ -74682,7 +74712,8 @@
    "salary": 12.0,
    "contract": 3.0,
    "playoffGames": 5
-  }
+  },
+  "nick": "Boobie Miles"
  },
  {
   "n": "Terrace Marshall Jr.",
@@ -88577,7 +88608,8 @@
    "salary": 12.0,
    "contract": 2.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Rocket"
  },
  {
   "n": "Logan Brown",
@@ -89367,7 +89399,8 @@
    "salary": 7.0,
    "contract": 3.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Neiko"
  },
  {
   "n": "Aiden Williams",
@@ -91520,7 +91553,8 @@
    "salary": 6.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Femi"
  },
  {
   "n": "Kevin Winston Jr.",
@@ -100114,7 +100148,8 @@
    "salary": 20.0,
    "contract": 2.0,
    "playoffGames": 1
-  }
+  },
+  "nick": "T-Mac"
  },
  {
   "n": "Nic Scourton",
@@ -102190,7 +102225,8 @@
    "salary": 7.0,
    "contract": 2.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "IGB"
  },
  {
   "n": "Jude Bowry",
@@ -106403,7 +106439,8 @@
    "salary": 7.0,
    "contract": 2.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "A. J."
  },
  {
   "n": "George Gumbs Jr.",
@@ -108287,7 +108324,8 @@
    "salary": 4.0,
    "contract": 1.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Fatman"
  },
  {
   "n": "Matt Gulbin",
@@ -110202,7 +110240,8 @@
    "salary": 9.0,
    "contract": 3.0,
    "playoffGames": 0
-  }
+  },
+  "nick": "Big Citrus"
  },
  {
   "n": "Caleb Tiernan",
@@ -112186,7 +112225,8 @@
    "playoffGames": 11,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Money Matt"
  },
  {
   "n": "Terrell Suggs",
@@ -116035,7 +116075,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "the Honey Badger"
+  "nick": "The Honey Badger"
  },
  {
   "n": "Kris Brown",
@@ -118008,7 +118048,8 @@
    "playoffGames": 13,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Katt"
  },
  {
   "n": "Keith Bulluck",
@@ -118456,7 +118497,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "the Closer"
+  "nick": "The Closer"
  },
  {
   "n": "John Carney",
@@ -118698,7 +118739,8 @@
    "playoffGames": 6,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Peanut"
  },
  {
   "n": "Anthony Fasano",
@@ -120134,7 +120176,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Baby"
  },
  {
   "n": "Joe Haden",
@@ -120340,7 +120383,8 @@
    "last": 2009,
    "wiki": "Isaac Bruce",
    "lines1999": true
-  }
+  },
+  "nick": "The Reverend"
  },
  {
   "n": "Greg Ellis",
@@ -122407,7 +122451,8 @@
    "playoffGames": 6,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Che Tay"
  },
  {
   "n": "Patrick Chung",
@@ -122842,7 +122887,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Superman Cam"
+  "nick": "Super Cam"
  },
  {
   "n": "Marvin Jones",
@@ -124162,7 +124207,8 @@
    "playoffGames": 6,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Co-Cap"
  },
  {
   "n": "Jabaal Sheard",
@@ -124276,7 +124322,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Buddy Lee"
  },
  {
   "n": "Dennis Northcutt",
@@ -124640,7 +124687,8 @@
    "playoffGames": 8,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Jackrabbit"
  },
  {
   "n": "Cody Davis",
@@ -125796,7 +125844,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Big Hen"
  },
  {
   "n": "Akin Ayodele",
@@ -126518,7 +126567,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "The Slot Machine,"
+  "nick": "The Slot Machine"
  },
  {
   "n": "Scott Fujita",
@@ -126962,7 +127011,8 @@
    "debut": 1994,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Money"
  },
  {
   "n": "T.J. Houshmandzadeh",
@@ -127850,7 +127900,8 @@
    "last": 2009,
    "wiki": "Zach Thomas",
    "lines1999": true
-  }
+  },
+  "nick": "Baby Elephant"
  },
  {
   "n": "Sammy Morris",
@@ -132751,7 +132802,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "the Shark"
+  "nick": "The Shark"
  },
  {
   "n": "Marcus Washington",
@@ -135284,7 +135335,8 @@
    "debut": 1982,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Great Dane"
  },
  {
   "n": "Kurt Warner",
@@ -135725,7 +135777,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Bonecrusher"
  },
  {
   "n": "Brad Smith",
@@ -139334,8 +139387,7 @@
    "playoffGames": 10,
    "past": true,
    "retired": true
-  },
-  "nick": "Jet"
+  }
  },
  {
   "n": "Marcus Peters",
@@ -140007,7 +140059,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "KGB"
  },
  {
   "n": "Aaron Kampman",
@@ -140838,7 +140891,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "The General / General Lee"
+  "nick": "The General"
  },
  {
   "n": "Nigel Bradham",
@@ -141265,7 +141318,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "X Factor"
+  "nick": "The X-Factor"
  },
  {
   "n": "Brian Young",
@@ -144170,7 +144223,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Swagu"
  },
  {
   "n": "Brandon Jacobs",
@@ -148826,7 +148880,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Bam Bam"
+  "nick": "Bam Bam Kam"
  },
  {
   "n": "Kendrick Lewis",
@@ -154224,7 +154278,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Juice"
  },
  {
   "n": "Travis Frederick",
@@ -157008,7 +157063,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Auburn Rambler"
  },
  {
   "n": "Andre Dyson",
@@ -157671,7 +157727,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Chuck"
  },
  {
   "n": "Anthony McFarland",
@@ -161703,7 +161760,7 @@
    "playoffGames": 7,
    "past": true
   },
-  "nick": "Money Mac"
+  "nick": "Shooter"
  },
  {
   "n": "Wade Richey",
@@ -162149,7 +162206,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Swaggy"
  },
  {
   "n": "Willie Young",
@@ -163222,7 +163280,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Reggie"
  },
  {
   "n": "Ryan Mathews",
@@ -165029,7 +165088,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Hollywood"
  },
  {
   "n": "Steve Christie",
@@ -172513,7 +172573,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "Law Firm"
+  "nick": "The Law Firm"
  },
  {
   "n": "Erin Henderson",
@@ -172791,7 +172851,8 @@
    "playoffGames": 7,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Hoo Man"
  },
  {
   "n": "Stephen Paea",
@@ -176781,7 +176842,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Maniac"
  },
  {
   "n": "Rich Gannon",
@@ -178817,7 +178879,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Money Badger"
  },
  {
   "n": "Marquis Haynes",
@@ -179412,7 +179475,8 @@
    "playoffGames": 5,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Lights Out"
  },
  {
   "n": "Domenik Hixon",
@@ -183395,7 +183459,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Skip"
  },
  {
   "n": "Jordan Willis",
@@ -188912,7 +188977,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Peanut"
  },
  {
   "n": "Le'Raven Clark",
@@ -199889,7 +199955,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Meast"
  },
  {
   "n": "Gary Gibson",
@@ -205936,7 +206003,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Terminator"
  },
  {
   "n": "Stevie Brown",
@@ -210292,7 +210360,7 @@
    "past": true,
    "retired": true
   },
-  "nick": "the Sandman"
+  "nick": "The Sandman"
  },
  {
   "n": "Isaiah Ekejiuba",
@@ -221835,7 +221903,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Quest"
  },
  {
   "n": "Jason Verrett",
@@ -227852,7 +227921,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Juice"
  },
  {
   "n": "Malik Jefferson",
@@ -230702,7 +230772,8 @@
    "playoffGames": 4,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "41 Spot"
  },
  {
   "n": "Kelly Campbell",
@@ -234778,7 +234849,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Runway"
  },
  {
   "n": "David Gibson",
@@ -242362,7 +242434,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Tebowing"
  },
  {
   "n": "Evan Royster",
@@ -244408,7 +244481,8 @@
    "playoffGames": 2,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "D.J."
  },
  {
   "n": "Bront Bird",
@@ -245243,7 +245317,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "The Hulk"
  },
  {
   "n": "Danny Isidora",
@@ -249627,7 +249702,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Kickin' Ficken"
  },
  {
   "n": "C.J. Board",
@@ -259296,7 +259372,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Clipboard Jesus"
  },
  {
   "n": "Brady Quinn",
@@ -260214,7 +260291,8 @@
    "playoffGames": 3,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Snacks"
  },
  {
   "n": "Kurtis Drummond",
@@ -260448,7 +260526,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Fat Rob"
  },
  {
   "n": "Brian Price",
@@ -260889,7 +260968,8 @@
    "playoffGames": 1,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Hot Rod"
  },
  {
   "n": "Dieter Eiselen",
@@ -273981,7 +274061,8 @@
    "playoffGames": 0,
    "past": true,
    "retired": true
-  }
+  },
+  "nick": "Italian Ice"
  },
  {
   "n": "Jerry Franklin",
@@ -278943,7 +279024,8 @@
    "last": 2001,
    "wiki": "Terrell Davis",
    "lines1999": true
-  }
+  },
+  "nick": "T. D."
  },
  {
   "n": "Deon Humphrey",
@@ -282634,7 +282716,8 @@
    "last": 1999,
    "wiki": "Derrick Thomas",
    "lines1999": true
-  }
+  },
+  "nick": "D. T."
  },
  {
   "n": "Steve Warren",

@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import classics as classics_mod  # noqa: E402
+from fetch_nicknames_lead import junk as nick_junk  # noqa: E402
 CACHE = ROOT / "data" / "nfl-cache"
 NFL = ROOT / "data" / "nfl"
 Y80 = ROOT / "data" / "y80"
@@ -273,8 +274,8 @@ def inches(h):
 def apply_nicknames(players):
     """players.json `nick`: data/nfl/nicknames.json (nfl-wiki: players[] with nicknames, position, teams, era_hint), matched by
     normalised name. Namesakes: the position when the entry has one, then a club he played for (stints) or the era hint
-    overlapping his seasons, then the one with the most games. Plus data/nfl/nicknames_infobox.json {gsis: nick} (the first
-    paragraph of his own page, scripts/nfl/fetch_nicknames_lead.py). The first nickname listed is his `nick`."""
+    overlapping his seasons, then the one with the most games. Plus data/nfl/nicknames_infobox.json {gsis: {best, all}} (his own
+    page's infobox and lead, scripts/nfl/fetch_nicknames_lead.py). With several attested, the best-known is picked (rule below)."""
     path = NFL / "nicknames.json"
     stints = json.loads((Y80 / "stints.json").read_text()) if (Y80 / "stints.json").exists() else {}
     by = defaultdict(list)
@@ -286,6 +287,7 @@ def apply_nicknames(players):
         return min((r["from"] for r in runs), default=0), max((r["to"] for r in runs), default=0), {r["team"] for r in runs}
 
     given = 0
+    listed = defaultdict(list)
     entries = json.loads(path.read_text()).get("players", []) if path.exists() else []
     for e in entries:
         cands = [p for p in by.get(norm(e["name"]), []) if p["g"] > 0]
@@ -301,17 +303,41 @@ def apply_nicknames(players):
                 lo, hi, clubs = span(p)
                 return ((1 if teams & clubs else 0) + (1 if yrs and lo <= yrs[1] and hi >= yrs[0] else 0), p["g"])
             cands = [max(cands, key=score)]
-        # a nickname that is another person's full name ("David W. Gibson") is a list-parsing slip, not a nickname
-        nicks = [x for x in (e.get("nicknames") or []) if not re.fullmatch(r"[A-Z][a-z]+ [A-Z]\.? ?[A-Z][a-z]+", x)]
-        if cands and not cands[0].get("nick") and nicks:
-            cands[0]["nick"] = nicks[0]
-            given += 1
+        # junk (own name, diminutive, club, generic, over-long, another person's full name) is not a nickname
+        if cands:
+            for x in e.get("nicknames") or []:
+                if not nick_junk(x, cands[0]["n"]) and x not in listed[id(cands[0])]:
+                    listed[id(cands[0])].append(x)
     lead = NFL / "nicknames_infobox.json"
     own = json.loads(lead.read_text()) if lead.exists() else {}
+
+    def fold(x):
+        return re.sub(r"[^a-z0-9]+", "", x.lower())
+
+    # BEST-KNOWN RULE (deterministic, real data only): among the nicknames attested for one player take (1) one that both
+    # his own Wikipedia page (infobox / lead; ranked infobox+lead, infobox, lead, then most lead mentions) and a Wikipedia
+    # list page give; else (2) his page's best-ranked one; else (3) the first the list pages give.
     for p in players:
-        nick = own.get((p.get("nfl") or {}).get("gsis"))
-        if nick and not p.get("nick"):
-            p["nick"] = nick
+        page = own.get((p.get("nfl") or {}).get("gsis"))
+        pn = [x for x in (page["all"] if page else []) if not nick_junk(x[0], p["n"])]
+        ln = listed.get(id(p), [])
+        lf = {fold(y) for y in ln}
+        def core(x):
+            return re.sub(r"^the", "", fold(x))
+
+        def agrees(a, b):  # same nickname, or one is the other plus a word ("Flash" / "Flash Gordon")
+            a, b = core(a), core(b)
+            return bool(a and b and (a == b or (min(len(a), len(b)) >= 3 and (a in b or b in a))))
+
+        pick = None
+        for x in pn:  # page order is already the rank order
+            m = next((y for y in ln if agrees(x[0], y)), None)
+            if m:
+                pick = max((x[0], m), key=lambda s: len(core(s)))  # the more specific wording of the two
+                break
+        pick = pick or (pn[0][0] if pn else None) or (ln[0] if ln else None)
+        if pick:
+            p["nick"] = re.sub(r"^the ", "The ", pick)
             given += 1
     print(f"nicknames: {given} players")
 
