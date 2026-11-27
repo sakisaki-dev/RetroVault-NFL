@@ -148,7 +148,7 @@ const SeasonTab = () => {
           right={
             <div className="flex flex-wrap items-center gap-2">
               {IS_NFL && (
-                <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="flag" size={12} />}>
+                <PixelChip onClick={() => document.getElementById('scores')?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })} icon={<PixelIcon name="ball" size={16} color="#a8642a" />}>
                   Find a game
                 </PixelChip>
               )}
