@@ -22809,7 +22809,7 @@
    {
     "team": "Packers",
     "from": 2025,
-    "to": 2025,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -26072,6 +26072,12 @@
     "rings": [
      2024
     ]
+   },
+   {
+    "team": "Chiefs",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -28693,6 +28699,12 @@
     "from": 2025,
     "to": 2025,
     "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -30100,7 +30112,7 @@
    {
     "team": "Rams",
     "from": 2024,
-    "to": 2025,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -34275,7 +34287,14 @@
   "evidence": "Games played for each club, season by season (nflverse)."
  },
  "Bill Murray": {
-  "stints": [],
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
@@ -35358,7 +35377,7 @@
    {
     "team": "Lions",
     "from": 2024,
-    "to": 2025,
+    "to": 2026,
     "rings": []
    }
   ],
@@ -50891,7 +50910,14 @@
   "evidence": "Games played for each club, season by season (nflverse)."
  },
  "Keagen Trost": {
-  "stints": [],
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
@@ -55155,6 +55181,48 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Cairo Santos": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2014,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2017,
+    "to": 2017,
+    "rings": []
+   },
+   {
+    "team": "Buccaneers",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Rams",
+    "from": 2018,
+    "to": 2018,
+    "rings": []
+   },
+   {
+    "team": "Titans",
+    "from": 2019,
+    "to": 2019,
+    "rings": []
+   },
+   {
+    "team": "Bears",
+    "from": 2020,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Deon Grant": {
   "stints": [
    {
@@ -55247,48 +55315,6 @@
     "team": "Titans",
     "from": 2014,
     "to": 2019,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Cairo Santos": {
-  "stints": [
-   {
-    "team": "Chiefs",
-    "from": 2014,
-    "to": 2017,
-    "rings": []
-   },
-   {
-    "team": "Bears",
-    "from": 2017,
-    "to": 2017,
-    "rings": []
-   },
-   {
-    "team": "Buccaneers",
-    "from": 2018,
-    "to": 2018,
-    "rings": []
-   },
-   {
-    "team": "Rams",
-    "from": 2018,
-    "to": 2018,
-    "rings": []
-   },
-   {
-    "team": "Titans",
-    "from": 2019,
-    "to": 2019,
-    "rings": []
-   },
-   {
-    "team": "Bears",
-    "from": 2020,
-    "to": 2026,
     "rings": []
    }
   ],
@@ -56975,6 +57001,26 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Aaron Donald": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2014,
+    "to": 2023,
+    "rings": [
+     2021
+    ]
+   },
+   {
+    "team": "Rams",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Larry Foote": {
   "stints": [
    {
@@ -57047,26 +57093,6 @@
     "rings": [
      2017
     ]
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Aaron Donald": {
-  "stints": [
-   {
-    "team": "Rams",
-    "from": 2014,
-    "to": 2023,
-    "rings": [
-     2021
-    ]
-   },
-   {
-    "team": "Rams",
-    "from": 2026,
-    "to": 2026,
-    "rings": []
    }
   ],
   "confidence": "confirmed",
@@ -57550,6 +57576,21 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jake Elliott": {
+  "stints": [
+   {
+    "team": "Eagles",
+    "from": 2017,
+    "to": 2026,
+    "rings": [
+     2017,
+     2024
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Isaac Bruce": {
   "stints": [
    {
@@ -57673,21 +57714,6 @@
     "from": 2021,
     "to": 2022,
     "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Jake Elliott": {
-  "stints": [
-   {
-    "team": "Eagles",
-    "from": 2017,
-    "to": 2026,
-    "rings": [
-     2017,
-     2024
-    ]
    }
   ],
   "confidence": "confirmed",
@@ -59300,6 +59326,22 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Harrison Butker": {
+  "stints": [
+   {
+    "team": "Chiefs",
+    "from": 2017,
+    "to": 2026,
+    "rings": [
+     2019,
+     2022,
+     2023
+    ]
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Ricky Williams": {
   "stints": [
    {
@@ -59467,22 +59509,6 @@
     "from": 2022,
     "to": 2023,
     "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Harrison Butker": {
-  "stints": [
-   {
-    "team": "Chiefs",
-    "from": 2017,
-    "to": 2026,
-    "rings": [
-     2019,
-     2022,
-     2023
-    ]
    }
   ],
   "confidence": "confirmed",
@@ -81397,6 +81423,24 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Tyler Bass": {
+  "stints": [
+   {
+    "team": "Bills",
+    "from": 2020,
+    "to": 2024,
+    "rings": []
+   },
+   {
+    "team": "Bills",
+    "from": 2026,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Aaron Brooks": {
   "stints": [
    {
@@ -81863,24 +81907,6 @@
     "team": "Falcons",
     "from": 2019,
     "to": 2024,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Tyler Bass": {
-  "stints": [
-   {
-    "team": "Bills",
-    "from": 2020,
-    "to": 2024,
-    "rings": []
-   },
-   {
-    "team": "Bills",
-    "from": 2026,
-    "to": 2026,
     "rings": []
    }
   ],
@@ -102323,6 +102349,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Brandon Aubrey": {
+  "stints": [
+   {
+    "team": "Cowboys",
+    "from": 2023,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Tim Couch": {
   "stints": [
    {
@@ -102863,18 +102901,6 @@
     "team": "Cowboys",
     "from": 2022,
     "to": 2022,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Brandon Aubrey": {
-  "stints": [
-   {
-    "team": "Cowboys",
-    "from": 2023,
-    "to": 2026,
     "rings": []
    }
   ],
@@ -115898,6 +115924,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Jake Bates": {
+  "stints": [
+   {
+    "team": "Lions",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Chris Akins": {
   "stints": [
    {
@@ -116636,18 +116674,6 @@
     "team": "Bills",
     "from": 2023,
     "to": 2023,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Jake Bates": {
-  "stints": [
-   {
-    "team": "Lions",
-    "from": 2024,
-    "to": 2026,
     "rings": []
    }
   ],
@@ -131716,6 +131742,18 @@
   "confidence": "confirmed",
   "evidence": "Games played for each club, season by season (nflverse)."
  },
+ "Joshua Karty": {
+  "stints": [
+   {
+    "team": "Rams",
+    "from": 2024,
+    "to": 2026,
+    "rings": []
+   }
+  ],
+  "confidence": "confirmed",
+  "evidence": "Games played for each club, season by season (nflverse)."
+ },
  "Na Brown": {
   "stints": [
    {
@@ -132708,18 +132746,6 @@
     "team": "Commanders",
     "from": 2021,
     "to": 2022,
-    "rings": []
-   }
-  ],
-  "confidence": "confirmed",
-  "evidence": "Games played for each club, season by season (nflverse)."
- },
- "Joshua Karty": {
-  "stints": [
-   {
-    "team": "Rams",
-    "from": 2024,
-    "to": 2026,
     "rings": []
    }
   ],
