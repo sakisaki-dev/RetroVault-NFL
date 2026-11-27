@@ -18,6 +18,7 @@ import CeremonyHost from '@/components/ceremony/CeremonyHost';
 import TributeHost from '@/components/tribute/TributeHost';
 import RivalryHost from '@/components/rivalry/RivalryHost';
 import ClubSeasonHost from '@/components/clubseason/ClubSeasonHost';
+import SpriteNameToast from '@/components/hovername/SpriteNameToast';
 import ScreensaverHost from '@/components/screensaver/ScreensaverHost';
 import { LeagueProvider } from '@/context/LeagueContext';
 import { onCompFinderRequest, onHeadToHeadRequest } from '@/components/stats/comps/compFinderLink';
@@ -196,6 +197,7 @@ const IndexContent = () => {
         <LazyHost load={loadQuickSearch} wake={QUICK_SEARCH_WAKE} wakeKey={quickSearchKey} />
         <LazyHost load={loadPeekLayer} wake={PEEK_WAKE} />
         <SwipeNav />
+        <SpriteNameToast />
         <ScreensaverHost />
         <LazyHost load={loadUnlockToasts} />
         <LazyHost load={loadLegendExchange} />
