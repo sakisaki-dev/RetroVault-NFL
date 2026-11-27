@@ -67,7 +67,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
             type="button"
             aria-label={`Skill grade ${overall.grade.grade}, skill rating ${overall.rating}. Show the ${player.position} leaderboard`}
             className={cn(
-              'rbk-chip glass-card flex flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
+              'rbk-chip glass-card flex w-full flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
               overall.grade.grade === 'S' && 'dd-card--s',
             )}
           >
@@ -84,10 +84,6 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
                   Skill rating <b>{overall.rating}</b>
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                {ordinal(overall.pct)} percentile across his {graded.length} skill{graded.length === 1 ? '' : 's'} among {player.position}s. Best:{' '}
-                <b className="text-foreground">{best.trait.name}</b>.
-              </p>
             </div>
           </button>
         </LeaderboardPeek>

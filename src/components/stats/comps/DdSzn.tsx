@@ -188,9 +188,6 @@ const DdSzn = ({ player, players, seasonOvr, careerOvr, onOpenPlayer }: Props) =
               Rank <b>{me.rank}</b>/{list.length}
             </span>
           </div>
-          <p className="text-xs text-muted-foreground">
-            {ordinal(Math.round(me.pct))} percentile among {career ? `all ${pos}s` : `${pos}s this season`}.{!career && lead === 'up' ? ' Above his skill grade.' : lead === 'down' ? ' Below his skill grade.' : ''}
-          </p>
         </div>
       </button>
     </LeaderboardPeek>
