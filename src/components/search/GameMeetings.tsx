@@ -5,15 +5,17 @@ import { CommandItem } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
 import { loadGameIds, useSeasonGames, type GameIds } from '@/utils/nflGames';
-import { clubPairOf, meetingsOf, weekLabelOf, type Meeting } from '@/utils/gameFinder';
+import { gamesOfQuery, parseGameQuery, weekLabelOf, type Meeting } from '@/utils/gameFinder';
 import { IS_NFL } from '@/config/edition';
 
 /**
  * Quick search, NFL edition: two club names or abbreviations ("bengals commanders", "cin was") list their most recent
  * meetings, newest first. Built from ids.json only (loaded once, 230 KB), so no season file loads for a search.
  */
+export const useGameQuery = (query: string) => useMemo(() => (IS_NFL ? parseGameQuery(query) : null), [query]);
+
 export const useMeetings = (query: string, limit = 5): Meeting[] => {
-  const pair = useMemo(() => (IS_NFL ? clubPairOf(query) : null), [query]);
+  const pair = useGameQuery(query);
   const [ids, setIds] = useState<GameIds | null>(null);
   useEffect(() => {
     if (!pair) return;
@@ -23,7 +25,7 @@ export const useMeetings = (query: string, limit = 5): Meeting[] => {
       live = false;
     };
   }, [pair]);
-  return useMemo(() => (pair && ids ? meetingsOf(ids, pair[0], pair[1], limit).map((m) => ({ ...m, first: pair[0] })) : []), [pair, ids, limit]);
+  return useMemo(() => (pair && ids ? gamesOfQuery(ids, pair, limit) : []), [pair, ids, limit]);
 };
 
 /** A meeting's score from its season file, and the colour of the winning club (the home club until it is played). */

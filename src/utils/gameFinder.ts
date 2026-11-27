@@ -93,6 +93,70 @@ export const clubPairOf = (query: string): [string, string] | null => {
   return null;
 };
 
+export interface GameQuery {
+  /** The club the query leads with (abbreviation) */
+  a: string;
+  /** Opponents the rest of the query could mean (abbreviations); empty = every game of the club */
+  bs: string[];
+  /** The query reads like a game ("eagles v", "phi dal"), not just a club name */
+  explicit: boolean;
+}
+
+/**
+ * Partial game queries: "eagles v", "eagles vs cow", "phi dal", "eagles cowboys", or one club alone ("eagles" lists its
+ * games). The left club must be clear; what follows may be a prefix that several clubs share ("eagles n"), which lists
+ * the games against any of them. A complete pair still gives exactly that pair.
+ */
+export const parseGameQuery = (query: string): GameQuery | null => {
+  const tokens = query.replace(/[@/–—]|(?<=\S)-(?=\S)/g, ' ').trim().split(/\s+/).filter(Boolean);
+  const words = tokens.filter((w) => !strip.test(w));
+  if (!words.length || query.trim().length < 2) return null;
+  const connector = words.length < tokens.length;
+  const pair = clubPairOf(query);
+  if (pair) return { a: pair[0], bs: [pair[1]], explicit: true };
+  for (let k = 1; k < words.length; k++) {
+    const l = oneClub(words.slice(0, k));
+    if (!l) continue;
+    const rights = searchTeams(fold(words.slice(k).join(' ')), 8).filter((t) => t.id !== l.id);
+    if (rights.length) return { a: l.abbreviation, bs: rights.map((t) => t.abbreviation), explicit: true };
+  }
+  const one = oneClub(words);
+  return one ? { a: one.abbreviation, bs: [], explicit: connector } : null;
+};
+
+/** Games of a club (against any of `bs`, else all), newest first, from ids.json only. */
+export const gamesOfQuery = (ids: GameIds, q: GameQuery, limit = 5): Meeting[] => {
+  const out: Meeting[] = [];
+  for (const y of Object.keys(ids).sort((x, z) => Number(z) - Number(x))) {
+    const found: Meeting[] = [];
+    for (const [k, id] of Object.entries(ids[y])) {
+      if (k.startsWith('p-')) continue;
+      const [w, away, home] = k.split('-');
+      const other = away === q.a ? home : home === q.a ? away : null;
+      if (other && (!q.bs.length || q.bs.includes(other))) found.push({ id, season: Number(y), week: Number(w), away, home, first: q.a });
+    }
+    found.sort((p, r) => r.week - p.week);
+    out.push(...found);
+    if (out.length >= limit) break;
+  }
+  return out.slice(0, limit);
+};
+
+/** How well the clubs found match what was typed, on the scale the player scores use (exact 900, name start 700, abbreviation or city start 600, other 400). */
+export const clubsScore = (query: string, clubs: NFLTeam[]): number => {
+  const q = fold(query.replace(/[@/–—]|(?<=\S)-(?=\S)/g, ' ').trim().split(/\s+/).filter((w) => w && !strip.test(w)).join(' '));
+  let best = 0;
+  for (const t of clubs) {
+    const exact = [t.name, t.abbreviation, t.city, t.fullName].some((x) => fold(x) === q);
+    const s = exact || clubPairOf(query) ? 900 : fold(t.name).startsWith(q) ? 700 : fold(t.abbreviation).startsWith(q) || fold(t.city).startsWith(q) ? 600 : 400;
+    best = Math.max(best, s);
+  }
+  return best;
+};
+
+/** A Games group's score: 950 when the query reads like a game (it leads), 500 for a bare club name (the Teams group wins). */
+export const gamesScore = (q: GameQuery | null) => (q ? (q.explicit ? 950 : 500) : 0);
+
 /**
  * The clubs a query names, for the Teams group: both clubs of a pair ("bengals commanders"), else the clubs the words
  * match, ignoring connectors ("bengals vs", "bengals at") and, when nothing matches, dropping trailing words.

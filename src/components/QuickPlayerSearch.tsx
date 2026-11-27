@@ -1,5 +1,5 @@
 import { displayName, firstAndLast } from '@/utils/displayName';
-import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Fragment, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import { Clock, Radar, Radio, Search, Shield, Sparkles, Star, GraduationCap } from 'lucide-react';
 import InLeague from '@/components/InLeague';
@@ -19,9 +19,9 @@ import { openTeamPage } from '@/utils/teamSearch';
 import { openSchoolPage, useCollegeSearch } from '@/utils/collegeSearch';
 import { CollegeMark } from '@/components/player/DraftTiles';
 import { markInfo } from '@/utils/collegeData';
-import { clubsOfQuery } from '@/utils/gameFinder';
+import { clubsOfQuery, clubsScore, gamesScore } from '@/utils/gameFinder';
 import { openGame } from '@/utils/nflGames';
-import { MeetingItem, useMeetings } from './search/GameMeetings';
+import { MeetingItem, useGameQuery, useMeetings } from './search/GameMeetings';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import { useCurrentClub } from '@/utils/club';
 import PlayerDetailCard from './PlayerDetailCard';
@@ -31,7 +31,7 @@ import GameSprite from './GameSprite';
 import { openInCompFinder } from './stats/comps/compFinderLink';
 import { parseHash } from './stats/hub/hashRoute';
 import { isPhone, usePhone } from '@/hooks/usePhone';
-import { buildSearchIndex, pooledIndex, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
+import { buildSearchIndex, pooledIndex, pushRecent, readRecent, searchPlayersScored } from '@/utils/playerSearch';
 import { IS_NFL } from '@/config/edition';
 import { PEEK_ACTION_EVENT, peekProps } from '@/components/peek/peekProps';
 import PlayerSearchSheet, { type SheetGroup } from './search/PlayerSearchSheet';
@@ -289,7 +289,7 @@ const QuickSearchDialog = () => {
   const deferredQuery = useDeferredValue(query);
   const index = useMemo(() => pooledIndex(league, legends, { ovr: ovrMap, formerNames: extras.formerNames }), [league, legends, ovrMap, extras]);
   const byKey = index.byKey;
-  const { groups, more } = useMemo(() => {
+  const { groups, more, top } = useMemo(() => {
     const ovrOf = (p: Player) => ovrMap.get(playerKey(p)) ?? 0;
     const byOvr = (a: Player, b: Player) => ovrOf(b) - ovrOf(a) || a.name.localeCompare(b.name);
     const inPos = (p: Player) => pos === 'ALL' || p.position === pos;
@@ -310,14 +310,16 @@ const QuickSearchDialog = () => {
           { id: 'hof', label: 'Hall of Fame', Icon: Star, players: hof },
         ].filter((g) => g.players.length),
         more: 0,
+        top: 0,
       };
     }
     const keep = pos === 'ALL' ? undefined : inPos;
-    const hits = searchPlayers(index, deferredQuery, RESULT_LIMIT + 1, keep);
-    const shown = hits.slice(0, RESULT_LIMIT).map((e) => e.p);
+    const hits = searchPlayersScored(index, deferredQuery, RESULT_LIMIT + 1, keep);
+    const shown = hits.slice(0, RESULT_LIMIT).map((x) => x.e.p);
     return {
       groups: [{ id: 'results', label: 'Players', Icon: Search, players: shown }].filter((g) => g.players.length),
       more: hits.length > RESULT_LIMIT ? 1 : 0,
+      top: hits[0]?.s ?? 0,
     };
   }, [deferredQuery, pos, recent, byKey, index, league, ovrMap, currentClub]);
 
@@ -326,6 +328,17 @@ const QuickSearchDialog = () => {
 
   const meetings = useMeetings(deferredQuery);
   const schools = useCollegeSearch(deferredQuery, pos === 'ALL');
+  const gameQuery = useGameQuery(deferredQuery);
+  // Result groups lead with the one that matches the query best (the best score in each; ties keep Teams, Colleges, Games, Players)
+  const order = useMemo(() => {
+    const scored = [
+      { id: 'teams', s: clubs.length ? clubsScore(deferredQuery, clubs) : -1 },
+      { id: 'schools', s: schools.length ? (schools.some((c) => [c.name, c.s].some((n) => n.toLowerCase().startsWith(deferredQuery.trim().toLowerCase()))) ? 600 : 300) : -1 },
+      { id: 'games', s: meetings.length ? gamesScore(gameQuery) : -1 },
+      { id: 'players', s: groups.length ? top : -1 },
+    ];
+    return scored.sort((a, b) => b.s - a.s).map((x) => x.id);
+  }, [deferredQuery, clubs, schools, meetings.length, gameQuery, groups.length, top]);
 
   // Typing never scrolls the list (cmdk scrolls its selected item into view when the groups reorder): reset to the
   // top on every query change, and for a moment after it while cmdk re-selects. Arrow keys still scroll the active row.
@@ -352,6 +365,142 @@ const QuickSearchDialog = () => {
     setOpen(false);
     if (deepDive && !p.isRealLegend) openInCompFinder(p);
     else setSelected(p);
+  };
+
+  const blocks: Record<string, ReactNode> = {
+    teams: <>
+                {clubs.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <Shield className="h-3 w-3 text-gold" aria-hidden="true" />
+                        Teams
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {clubs.map((t) => (
+                      <CommandItem
+                        key={`team:${t.id}`}
+                        value={`team ${t.name} ${t.city} ${t.fullName} ${t.abbreviation}`}
+                        keywords={[t.name]}
+                        onSelect={() => {
+                          setOpen(false);
+                          openTeamPage(t.name);
+                        }}
+                        className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0"
+                        style={teamVars(t.name)}
+                      >
+                        <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
+                          <TeamLogo team={t.name} size={36} decorative />
+                          <span className="flex min-w-0 flex-1 flex-col items-start leading-none">
+                            <span className="qs-name truncate font-display text-xl font-extrabold uppercase italic tracking-wide">{t.name}</span>
+                            <span className="qs-sub mt-1 truncate text-[11px]">
+                              {t.city} · {t.conference} {t.division}
+                            </span>
+                          </span>
+                          <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">Team page</span>
+                        </span>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+</>,
+    schools: <>
+                {schools.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <GraduationCap className="h-3 w-3 text-gold" aria-hidden="true" />
+                        Colleges
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {schools.map((c) => {
+                      const info = markInfo(c);
+                      return (
+                        <CommandItem
+                          key={`school:${c.slug}`}
+                          value={`school ${c.name} ${c.s}`}
+                          keywords={[c.name]}
+                          onSelect={() => {
+                            setOpen(false);
+                            openSchoolPage(c.slug);
+                          }}
+                          className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0"
+                        >
+                          <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center">{info && <CollegeMark info={info} size={34} />}</span>
+                            <span className="flex min-w-0 flex-1 flex-col items-start leading-none">
+                              <span className="qs-name truncate font-display text-xl font-extrabold uppercase italic tracking-wide">{c.name}</span>
+                              <span className="qs-sub mt-1 truncate text-[11px]">
+                                {c.drafted} drafted · {c.active} active
+                              </span>
+                            </span>
+                            <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">School page</span>
+                          </span>
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                )}
+</>,
+    games: <>
+                {meetings.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <Radio className="h-3 w-3 text-gold" aria-hidden="true" />
+                        Games
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {meetings.map((m) => (
+                      <MeetingItem
+                        key={`game:${m.id}`}
+                        m={m}
+                        onOpen={() => {
+                          setOpen(false);
+                          openGame(m.id);
+                        }}
+                      />
+                    ))}
+                  </CommandGroup>
+                )}
+</>,
+    players: <>
+                {groups.map((g) => (
+                  <CommandGroup
+                    key={g.id}
+                    heading={
+                      <span className="flex items-center gap-1.5">
+                        <g.Icon className="h-3 w-3 text-gold" aria-hidden="true" />
+                        {g.label}
+                      </span>
+                    }
+                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
+                  >
+                    {g.players.map((p) => {
+                      const key = playerKey(p);
+                      return (
+                        <CommandItem
+                          key={`${g.id}:${key}`}
+                          value={key}
+                          onSelect={() => choose(p)}
+                          onPointerDown={() => warmPlayerCard(p)}
+                          {...peekProps(p)}
+                          className={cn('qs-item my-1 cursor-pointer rounded-lg p-0', sprites && !p.isRealLegend ? 'mt-3 overflow-visible' : 'overflow-hidden')}
+                          style={teamVars(bannerTeamOf(p))}
+                        >
+                          <ResultRow player={p} number={numberFor(p)} ovr={ovrMap.get(key)} grade={skills.get(key)?.grade} />
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                ))}
+</>,
   };
 
   return (
@@ -416,130 +565,8 @@ const QuickSearchDialog = () => {
             <div>
               <CommandList ref={listRef} onScroll={() => performance.now() - typedAt.current < 600 && toTop()} className="max-h-[min(26rem,calc(var(--dvh)*0.55))] overscroll-contain p-1.5">
                 <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">No players, clubs, colleges or games match <b>{query.trim()}</b>.</CommandEmpty>
-                {clubs.length > 0 && (
-                  <CommandGroup
-                    heading={
-                      <span className="flex items-center gap-1.5">
-                        <Shield className="h-3 w-3 text-gold" aria-hidden="true" />
-                        Teams
-                      </span>
-                    }
-                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
-                  >
-                    {clubs.map((t) => (
-                      <CommandItem
-                        key={`team:${t.id}`}
-                        value={`team ${t.name} ${t.city} ${t.fullName} ${t.abbreviation}`}
-                        keywords={[t.name]}
-                        onSelect={() => {
-                          setOpen(false);
-                          openTeamPage(t.name);
-                        }}
-                        className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0"
-                        style={teamVars(t.name)}
-                      >
-                        <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
-                          <TeamLogo team={t.name} size={36} decorative />
-                          <span className="flex min-w-0 flex-1 flex-col items-start leading-none">
-                            <span className="qs-name truncate font-display text-xl font-extrabold uppercase italic tracking-wide">{t.name}</span>
-                            <span className="qs-sub mt-1 truncate text-[11px]">
-                              {t.city} · {t.conference} {t.division}
-                            </span>
-                          </span>
-                          <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">Team page</span>
-                        </span>
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
-                {schools.length > 0 && (
-                  <CommandGroup
-                    heading={
-                      <span className="flex items-center gap-1.5">
-                        <GraduationCap className="h-3 w-3 text-gold" aria-hidden="true" />
-                        Colleges
-                      </span>
-                    }
-                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
-                  >
-                    {schools.map((c) => {
-                      const info = markInfo(c);
-                      return (
-                        <CommandItem
-                          key={`school:${c.slug}`}
-                          value={`school ${c.name} ${c.s}`}
-                          keywords={[c.name]}
-                          onSelect={() => {
-                            setOpen(false);
-                            openSchoolPage(c.slug);
-                          }}
-                          className="qs-item my-1 cursor-pointer overflow-hidden rounded-lg p-0"
-                        >
-                          <span className="relative flex min-w-0 flex-1 items-center gap-3 py-2 pl-2 pr-3">
-                            <span className="flex h-9 w-9 shrink-0 items-center justify-center">{info && <CollegeMark info={info} size={34} />}</span>
-                            <span className="flex min-w-0 flex-1 flex-col items-start leading-none">
-                              <span className="qs-name truncate font-display text-xl font-extrabold uppercase italic tracking-wide">{c.name}</span>
-                              <span className="qs-sub mt-1 truncate text-[11px]">
-                                {c.drafted} drafted · {c.active} active
-                              </span>
-                            </span>
-                            <span className="qs-sub shrink-0 font-pixel text-[8px] uppercase">School page</span>
-                          </span>
-                        </CommandItem>
-                      );
-                    })}
-                  </CommandGroup>
-                )}
-                {meetings.length > 0 && (
-                  <CommandGroup
-                    heading={
-                      <span className="flex items-center gap-1.5">
-                        <Radio className="h-3 w-3 text-gold" aria-hidden="true" />
-                        Games
-                      </span>
-                    }
-                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
-                  >
-                    {meetings.map((m) => (
-                      <MeetingItem
-                        key={`game:${m.id}`}
-                        m={m}
-                        onOpen={() => {
-                          setOpen(false);
-                          openGame(m.id);
-                        }}
-                      />
-                    ))}
-                  </CommandGroup>
-                )}
-                {groups.map((g) => (
-                  <CommandGroup
-                    key={g.id}
-                    heading={
-                      <span className="flex items-center gap-1.5">
-                        <g.Icon className="h-3 w-3 text-gold" aria-hidden="true" />
-                        {g.label}
-                      </span>
-                    }
-                    className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:font-pixel [&_[cmdk-group-heading]]:text-[9px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:text-muted-foreground"
-                  >
-                    {g.players.map((p) => {
-                      const key = playerKey(p);
-                      return (
-                        <CommandItem
-                          key={`${g.id}:${key}`}
-                          value={key}
-                          onSelect={() => choose(p)}
-                          onPointerDown={() => warmPlayerCard(p)}
-                          {...peekProps(p)}
-                          className={cn('qs-item my-1 cursor-pointer rounded-lg p-0', sprites && !p.isRealLegend ? 'mt-3 overflow-visible' : 'overflow-hidden')}
-                          style={teamVars(bannerTeamOf(p))}
-                        >
-                          <ResultRow player={p} number={numberFor(p)} ovr={ovrMap.get(key)} grade={skills.get(key)?.grade} />
-                        </CommandItem>
-                      );
-                    })}
-                  </CommandGroup>
+                {order.map((id) => (
+                  <Fragment key={id}>{blocks[id]}</Fragment>
                 ))}
                 {more > 0 && <p className="px-3 py-2 text-center font-pixel text-[9px] uppercase text-muted-foreground">Top {RESULT_LIMIT} shown, keep typing to narrow it</p>}
               </CommandList>
