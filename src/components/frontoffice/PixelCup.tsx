@@ -48,13 +48,23 @@ const CUP_INK: Record<string, string> = {
   p: '#151a24',
   r: '#3a4152',
 };
+/** The cup as runs of one colour per row (perf: ~4× fewer nodes than a rect per pixel; the trophy case draws many) */
+const CUP_RUNS = PIXEL_CUP.flatMap((row, y) => {
+  const out: { x: number; y: number; w: number; c: string }[] = [];
+  for (let x = 0; x < row.length; ) {
+    const c = row[x];
+    let w = 1;
+    while (row[x + w] === c) w++;
+    if (c !== '.') out.push({ x, y, w, c });
+    x += w;
+  }
+  return out;
+});
 export const PixelCup = ({ band, className, spark }: { band: string; className?: string; spark?: number }) => (
   <svg viewBox="0 0 18 28" className={className} shapeRendering="crispEdges" aria-hidden="true">
-    {PIXEL_CUP.flatMap((row, y) =>
-      [...row].map((ch, x) =>
-        ch === '.' ? null : <rect key={`${x}-${y}`} x={x} y={y} width={1.02} height={1.02} fill={ch === 'B' ? `hsl(${band})` : CUP_INK[ch]} />,
-      ),
-    )}
+    {CUP_RUNS.map((r) => (
+      <rect key={`${r.x}-${r.y}`} x={r.x} y={r.y} width={r.w + 0.02} height={1.02} fill={r.c === 'B' ? `hsl(${band})` : CUP_INK[r.c]} />
+    ))}
     {spark !== undefined && (
       <g className="px-cup__spark" style={{ '--k': spark } as CSSProperties}>
         <rect x={5} y={0} width={1} height={3} fill="#fff" />

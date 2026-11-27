@@ -24,7 +24,10 @@ const DOWN = Array.from({ length: W }, (_, y) => RIGHT.map((r) => r[y]).join('')
 /** A club's pennant in pixel art: club colours, its abbreviation in pixel type. `locked` greys it out. */
 const Pennant = ({ club, dir = 'right', locked = false }: { club: string; dir?: 'right' | 'down'; locked?: boolean }) => {
   const team = findNFLTeam(club);
-  const ink = { K: '#0b0f1a', P: `hsl(${team?.primaryColor ?? '215 12% 36%'})`, S: `hsl(${team?.secondaryColor ?? '0 0% 80%'})` };
+  // locked pennants get grey ink rather than a CSS grayscale filter (32 filtered layers sank the Milestones page on iPhone)
+  const ink = locked
+    ? { K: '#0b0f1a', P: 'hsl(220 8% 24%)', S: 'hsl(220 8% 34%)' }
+    : { K: '#0b0f1a', P: `hsl(${team?.primaryColor ?? '215 12% 36%'})`, S: `hsl(${team?.secondaryColor ?? '0 0% 80%'})` };
   const grid = dir === 'right' ? RIGHT : DOWN;
   return (
     <span className={cn('rw-pen', locked && 'is-locked')} title={team?.fullName ?? club} style={dir === 'down' ? { aspectRatio: `${H} / ${W}` } : undefined}>

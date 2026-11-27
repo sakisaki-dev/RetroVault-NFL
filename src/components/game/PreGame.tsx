@@ -1,3 +1,4 @@
+import { Reveal, stag } from '@/components/motion/Reveal';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { CalendarClock, HeartPulse, History, Scale, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -82,19 +83,19 @@ const WinChances = ({ g, pHome, line }: { g: GameDetail; pHome: number; line: nu
   const awayFav = pAway > pHome;
   return (
     <PixelPanel className="pg-win" pad="sm" style={{ ['--ca' as string]: `hsl(${hslOf(away)})`, ['--ch' as string]: `hsl(${hslOf(home)})` } as CSSProperties}>
-      <div className="pg-win__row">
-        <span className={cn('pg-win__club', awayFav && 'is-fav')}><TeamLogo team={away} decorative className="h-8 w-8" /><b>{away}</b><em>{pctText(pAway)}</em></span>
-        <span className="pg-win__vs" aria-hidden>VS</span>
-        <span className={cn('pg-win__club pg-win__club--h', !awayFav && 'is-fav')}><em>{pctText(pHome)}</em><b>{home}</b><TeamLogo team={home} decorative className="h-8 w-8" /></span>
-      </div>
-      <div className="pg-win__bar" role="img" aria-label={`${teamName(away)} ${pctText(pAway)}, ${teamName(home)} ${pctText(pHome)}`}>
-        <i className="a" style={{ width: `${pAway * 100}%` }} /><i className="h" style={{ width: `${pHome * 100}%` }} />
-      </div>
-      <ul className="pg-win__facts">
-        {line !== undefined && <li><span>Spread</span><b>{line === 0 ? 'Pick' : `${line > 0 ? home : away} −${Math.abs(line)}`}</b></li>}
-        {total !== undefined && <li><span>Over / under</span><b>{total}</b></li>}
-        {impA !== undefined && impH !== undefined && <li><span>Implied score</span><b>{away} {f1(impA)} · {home} {f1(impH)}</b></li>}
-      </ul>
+      <Reveal className="pg-win__row">
+        <span className={cn('pg-win__club mo-run-l', awayFav && 'is-fav')} style={stag(0)}><TeamLogo team={away} decorative className="h-8 w-8" /><b>{away}</b><em>{pctText(pAway)}</em></span>
+        <span className="pg-win__vs mo-pop" style={stag(2)} aria-hidden>VS</span>
+        <span className={cn('pg-win__club pg-win__club--h mo-run-r', !awayFav && 'is-fav')} style={stag(0)}><em>{pctText(pHome)}</em><b>{home}</b><TeamLogo team={home} decorative className="h-8 w-8" /></span>
+      </Reveal>
+      <Reveal className="pg-win__bar" role="img" aria-label={`${teamName(away)} ${pctText(pAway)}, ${teamName(home)} ${pctText(pHome)}`}>
+        <i className="a mo-grow" style={{ width: `${pAway * 100}%`, ...stag(3) }} /><i className="h mo-grow mo-grow--r" style={{ width: `${pHome * 100}%`, ...stag(3) }} />
+      </Reveal>
+      <Reveal as="ul" className="pg-win__facts">
+        {line !== undefined && <li className="mo-rise" style={stag(4)}><span>Spread</span><b>{line === 0 ? 'Pick' : `${line > 0 ? home : away} −${Math.abs(line)}`}</b></li>}
+        {total !== undefined && <li className="mo-rise" style={stag(5)}><span>Over / under</span><b>{total}</b></li>}
+        {impA !== undefined && impH !== undefined && <li className="mo-rise" style={stag(6)}><span>Implied score</span><b>{away} {f1(impA)} · {home} {f1(impH)}</b></li>}
+      </Reveal>
     </PixelPanel>
   );
 };
@@ -132,16 +133,18 @@ const Tape = ({ g, away, home, tapes, power }: { g: GameDetail; away: string; ho
   rows.push({ id: 'form', label: 'Last 5', a: <Dots r={A.last5} />, h: <Dots r={H.last5} />, better: null });
   rows.push({ id: 'str', label: 'Streak', a: A.streak, h: H.streak, better: null });
   return (
+    <Reveal>
     <PixelPanel className="pg-tape" pad="sm" style={{ ['--ca' as string]: `hsl(${hslOf(away)})`, ['--ch' as string]: `hsl(${hslOf(home)})` } as CSSProperties}>
       <div className="pg-tape__head"><TeamLogo team={away} decorative className="h-7 w-7" /><span>{g.season}</span><TeamLogo team={home} decorative className="h-7 w-7" /></div>
-      {rows.map((r) => (
-        <div key={r.id} className="pg-tape__row">
+      {rows.map((r, i) => (
+        <div key={r.id} className="pg-tape__row mo-rise" style={stag(i)}>
           <span className={cn('pg-tape__v', r.better === 0 && 'is-better')}>{r.a}</span>
           <span className="pg-tape__l">{r.label}</span>
           <span className={cn('pg-tape__v pg-tape__v--h', r.better === 1 && 'is-better')}>{r.h}</span>
         </div>
       ))}
     </PixelPanel>
+    </Reveal>
   );
 };
 
@@ -200,14 +203,14 @@ const ClubPlayers = ({ club, raw, hurt }: { club: string; raw: ReturnType<typeof
     <PixelPanel className="pg-club" pad="sm" style={{ ['--tc' as string]: liftForDarkBg(hslOf(club)) } as CSSProperties}>
       <p className="pg-club__tag"><TeamLogo team={club} decorative className="h-5 w-5" /> {teamName(club)}</p>
       {leads.length > 0 && (
-        <ul className="pg-leads" aria-label={`${teamName(club)} leaders this season`}>
-          {leads.map((l) => (
-            <li key={l.label} className="pg-lead">
+        <Reveal as="ul" className="pg-leads" aria-label={`${teamName(club)} leaders this season`}>
+          {leads.map((l, i) => (
+            <li key={l.label} className="pg-lead mo-rise" style={stag(i)}>
               <span className="pg-leads__k">{l.label}</span>
               <PlayerRow k={l.key} club={club} right={<span className="pg-leads__v"><b>{l.value.toLocaleString()}</b> {l.unit}{l.rank ? <small>#{l.rank}</small> : null}</span>} />
             </li>
           ))}
-        </ul>
+        </Reveal>
       )}
       <p className="pg-club__sub"><HeartPulse className="h-3.5 w-3.5" aria-hidden /> Injury report</p>
       {hurt.length === 0 ? <p className="pg-none">Nobody listed.</p> : (
@@ -246,14 +249,14 @@ const H2H = ({ g, away, home }: { g: GameDetail; away: string; home: string }) =
   return (
     <>
       <p className="pg-h2h__sum"><b>{away}</b> {wins(away)} · <b>{home}</b> {wins(home)}{rows.length - wins(away) - wins(home) ? ` · ${rows.length - wins(away) - wins(home)} tied` : ''}<span> in the last {rows.length}</span></p>
-      <ul className="pg-h2h">
-        {rows.map((x) => (
-          <li key={x.id}>
+      <Reveal as="ul" className="pg-h2h">
+        {rows.map((x, i) => (
+          <li key={x.id} className="mo-rise" style={stag(i)}>
             <span className="pg-h2h__when">{x.type === 'REG' ? `${x.season} · Wk ${x.week}` : `${x.season} · ${x.type}`}</span>
             <ScoreTile away={{ club: x.away, score: x.awayScore }} home={{ club: x.home, score: x.homeScore }} onClick={() => { window.location.hash = gameHash(x.id); }} />
           </li>
         ))}
-      </ul>
+      </Reveal>
     </>
   );
 };
@@ -321,10 +324,10 @@ const PreGame = ({ g }: { g: GameDetail }) => {
       </div>
       <section aria-labelledby="pg-key-h" className="space-y-3">
         <SectionHeader title={<span id="pg-key-h" className="gm-sech"><CalendarClock className="h-5 w-5 text-[hsl(var(--gold))]" aria-hidden /> Key players</span>} kicker="Leaders this season and who is hurt" />
-        <div className="pg-clubs">
-          <ClubPlayers club={away} raw={raw} hurt={hurtBy[away]} />
-          <ClubPlayers club={home} raw={raw} hurt={hurtBy[home]} />
-        </div>
+        <Reveal className="pg-clubs">
+          <div className="mo-run-l min-w-0"><ClubPlayers club={away} raw={raw} hurt={hurtBy[away]} /></div>
+          <div className="mo-run-r min-w-0" style={stag(1)}><ClubPlayers club={home} raw={raw} hurt={hurtBy[home]} /></div>
+        </Reveal>
       </section>
       <p className="pg-note">The box score, rosters and advanced stats appear here once the game is final.</p>
     </>

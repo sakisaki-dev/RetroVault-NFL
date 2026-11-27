@@ -58,7 +58,15 @@ export const DeskPicker = ({ model, cards, taken, onPick, label, big }: { model:
           onClose={() => setOpen(false)}
           players={players}
           ovrMap={ovrMap}
-          onPick={(p) => { const k = byKey.get(keyOfPlayer(p)); if (k) onPick(k); }}
+          onPick={(p) => {
+            // owner: the sheet "stays up with no indication of anything happening": a pick closes it (and the keyboard),
+            // so the desk shows the player just added
+            const k = byKey.get(keyOfPlayer(p));
+            if (!k) return;
+            (document.activeElement as HTMLElement | null)?.blur?.();
+            onPick(k);
+            setOpen(false);
+          }}
           title="Trade desk"
           word={label}
           placeholder="Name, nickname, club or city"
