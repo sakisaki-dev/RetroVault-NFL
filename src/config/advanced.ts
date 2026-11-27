@@ -696,10 +696,31 @@ const STYLE_FEATURES: Record<Position, CompFeature[]> = {
     { id: 'td16', label: 'TD/16', definition: 'Rushing + receiving touchdowns per 16 games.', get: (p) => safeDiv(16 * sum(p, 'rushTD', 'recTD'), p.games), weight: 1, decimals: 1 },
     { id: 'fumRate', label: 'Fum/100 tch', definition: 'Fumbles per 100 touches (carries + catches).', get: (p) => safeDiv(100 * v(p, 'fumbles'), sum(p, 'rushAtt', 'receptions')), weight: 1, decimals: 2, lowerIsBetter: true },
     { id: 'ypt', label: 'Yds/touch', definition: 'Scrimmage yards per touch.', get: (p) => safeDiv(sum(p, 'rushYds', 'recYds'), sum(p, 'rushAtt', 'receptions')), weight: 1, decimals: 2 },
+  {
+    id: 'catchPct',
+    label: 'Catch%',
+    definition: 'Catches per target, over the seasons the league recorded targets (1999-2002 and 2009 on); none for a career outside them.',
+    get: (p) => safeDiv(v(p, 'targetRec'), v(p, 'targets')),
+    weight: 1,
+    decimals: 1,
+    scale: 100,
+    suffix: '%',
+  },
   ],
   WR: [],
   TE: [],
-  OL: [{ id: 'blocksG', label: 'Blocks/G', definition: 'Blocks per game played.', get: perG('blocks'), weight: 1, decimals: 2 }],
+  OL: [
+    { id: 'blocksG', label: 'Blocks/G', definition: 'Blocks per game played.', get: perG('blocks'), weight: 1, decimals: 2 },
+    {
+      id: 'penG',
+      label: 'Pen/start',
+      definition: 'Penalties per start (NFL: since 2013, when snap counts begin; fewer is better); none for a career before it.',
+      get: (p) => safeDiv(v(p, 'penalties'), v(p, 'penStarts')),
+      weight: 1,
+      decimals: 2,
+      lowerIsBetter: true,
+    },
+  ],
   LB: [],
   DB: [],
   DL: [],
@@ -718,6 +739,16 @@ const RECV_FEATURES: CompFeature[] = [
   { id: 'ypr', label: 'Y/R', definition: 'Yards per reception.', get: (p) => safeDiv(v(p, 'recYds'), v(p, 'receptions')), weight: 1, decimals: 1 },
   { id: 'tdPerRec', label: 'TD/rec', definition: 'Receiving touchdowns per catch.', get: (p) => safeDiv(v(p, 'recTD'), v(p, 'receptions')), weight: 1, decimals: 1, scale: 100, suffix: '%' },
   { id: 'fumRate', label: 'Fum/100 rec', definition: 'Fumbles per 100 catches.', get: (p) => safeDiv(100 * v(p, 'fumbles'), v(p, 'receptions')), weight: 1, decimals: 2, lowerIsBetter: true },
+  {
+    id: 'catchPct',
+    label: 'Catch%',
+    definition: 'Catches per target, over the seasons the league recorded targets (1999-2002 and 2009 on); none for a career outside them.',
+    get: (p) => safeDiv(v(p, 'targetRec'), v(p, 'targets')),
+    weight: 1,
+    decimals: 1,
+    scale: 100,
+    suffix: '%',
+  },
 ];
 const DEF_STYLE: CompFeature[] = [
   { id: 'tklG', label: 'Tackles/G', definition: 'Tackles per game played.', get: perG('tackles'), weight: 1, decimals: 2 },
@@ -733,11 +764,28 @@ const DEF_STYLE: CompFeature[] = [
     decimals: 2,
   },
 ];
+/** Each defensive group's own sixth trait, on top of the shared five (rates over the seasons the league recorded the stat). */
+const tflG: CompFeature = {
+  id: 'tflG',
+  label: 'TFL/G',
+  definition: 'Tackles for loss per game, over the seasons the league recorded them (1999-2002 and 2012 on); none for a career outside them.',
+  get: (p) => safeDiv(v(p, 'tfl'), v(p, 'tflGames')),
+  weight: 1,
+  decimals: 2,
+};
+const pdG: CompFeature = {
+  id: 'pdG',
+  label: 'PD/G',
+  definition: 'Passes defended per game played.',
+  get: (p) => safeDiv(v(p, 'passesDefended'), v(p, 'pdGames')),
+  weight: 1,
+  decimals: 2,
+};
 STYLE_FEATURES.WR = RECV_FEATURES;
 STYLE_FEATURES.TE = RECV_FEATURES;
-DEF.forEach((pos) => {
-  STYLE_FEATURES[pos] = DEF_STYLE;
-});
+STYLE_FEATURES.DL = [...DEF_STYLE, tflG];
+STYLE_FEATURES.LB = [...DEF_STYLE, tflG];
+STYLE_FEATURES.DB = [...DEF_STYLE, pdG];
 
 /** The play-style features similarity compares at a position, in a fixed order. */
 export const compFeatures = (pos: Position): CompFeature[] => STYLE_FEATURES[pos];
@@ -780,8 +828,8 @@ export const similarityBaseline = (players: Player[], position: Position) =>
 /** False when a player has fewer than SIM_MIN_FEATURES usable style features ("insufficient data"). */
 export const hasSimilarityData = (p: Player) =>
   STYLE_FEATURES[p.position].filter((f) => Number.isFinite(f.get(p))).length >= minFeatures(p.position);
-/** OL has a single style feature (blocks/G), so its minimum is that one feature. */
-const minFeatures = (pos: Position) => Math.min(SIM_MIN_FEATURES, STYLE_FEATURES[pos].length);
+/** OL's blocks/G alone is enough (penalties per start only exist from 2013), so its minimum is one feature. */
+const minFeatures = (pos: Position) => (pos === 'OL' ? 1 : Math.min(SIM_MIN_FEATURES, STYLE_FEATURES[pos].length));
 
 /** Scorer for one position: z-scores each style feature over the baseline, returns 0–100 level and style scores. */
 const similarityScorer = (players: Player[], position: Position) => {

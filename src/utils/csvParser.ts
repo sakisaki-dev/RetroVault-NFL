@@ -223,6 +223,18 @@ const parseQB = (row: string[], header: HeaderIndex, metricCols: MetricColumns):
   };
 };
 
+/** NFL edition: targets and the catches on those targets, counted only in the seasons the source recorded targets (blank = none). */
+const targetFields = (row: string[], header: HeaderIndex) => ({
+  targets: parseStat(getField(row, header, 'Targets')),
+  targetRec: parseStat(getField(row, header, 'Rec on targets')),
+});
+
+/** NFL edition: tackles for loss (LB, DL) or passes defended (DB) with the games in the seasons the source recorded them. */
+const windowFields = (row: string[], header: HeaderIndex, position: 'LB' | 'DB' | 'DL') =>
+  position === 'DB'
+    ? { passesDefended: parseStat(getField(row, header, 'PD')), pdGames: parseStat(getField(row, header, 'PD games')) }
+    : { tfl: parseStat(getField(row, header, 'TFL')), tflGames: parseStat(getField(row, header, 'TFL games')) };
+
 const parseRB = (row: string[], header: HeaderIndex, metricCols: MetricColumns): RBPlayer | null => {
   const base = baseFields(row, header, metricCols);
   if (!base) return null;
@@ -237,6 +249,7 @@ const parseRB = (row: string[], header: HeaderIndex, metricCols: MetricColumns):
     receptions: parseNum(getField(row, header, 'Rec')),
     recYds: parseNum(getField(row, header, 'Rec Yds')),
     recTD: parseNum(getField(row, header, 'Rec TD')),
+    ...targetFields(row, header),
   };
 };
 
@@ -254,6 +267,7 @@ const parseReceiver = (row: string[], header: HeaderIndex, metricCols: MetricCol
     recTD,
     fumbles: parseNum(getField(row, header, 'Fumbles')) || parseNum(getField(row, header, 'Fum')),
     longest: parseNum(getField(row, header, 'Longest')),
+    ...targetFields(row, header),
   } as WRPlayer | TEPlayer;
 };
 
@@ -265,6 +279,9 @@ const parseOL = (row: string[], header: HeaderIndex, metricCols: MetricColumns):
     position: 'OL',
     ...base,
     blocks: parseNum(getField(row, header, 'Blocks')),
+    // NFL edition: penalties committed since snap counts began (2013), over the starts in those seasons (blank = none)
+    penalties: parseStat(getField(row, header, 'Penalties')),
+    penStarts: parseStat(getField(row, header, 'Starts since 2013')),
   };
 };
 
@@ -284,6 +301,7 @@ const parseDefensive = <T extends 'LB' | 'DB' | 'DL'>(
     interceptions: parseNum(getField(row, header, 'INT')),
     sacks: parseStat(getField(row, header, 'Sacks')),
     forcedFumbles: parseStat(getField(row, header, 'FF')),
+    ...windowFields(row, header, position),
   };
 };
 

@@ -253,10 +253,12 @@ talent = 6.8·TT, awards = 4·award points, longevity = 2·G (sum matches the st
 | Position | Features (weight 1 unless noted) |
 |---|---|
 | QB | Y/A, Cmp%, TD%, INT%, passer rating (½: mostly repeats the four rates), pass yds/G, rush yds/G, rush share (carries / (carries + attempts)) |
-| RB | Y/C, rush yds/G, rec yds/G, rec share (rec yds / scrimmage yds), TD per 16 G, fumbles per 100 touches, scrimmage yds per touch |
-| WR / TE | Rec/G, rec yds/G, Y/R, rec TD per catch, fumbles per 100 catches |
+| RB | Y/C, rush yds/G, rec yds/G, rec share (rec yds / scrimmage yds), TD per 16 G, fumbles per 100 touches, scrimmage yds per touch, catch rate (NFL: catches per target) |
+| WR / TE | Rec/G, rec yds/G, Y/R, rec TD per catch, fumbles per 100 catches, catch rate (NFL: catches per target) |
 | OL | Blocks/G |
-| LB / DB / DL | Tackles/G, sacks/G, INT/G, FF/G, impact plays/G (sacks + INT + FF; ½) |
+| LB / DB / DL | Tackles/G, sacks/G, INT/G, FF/G, impact plays/G (sacks + INT + FF; ½); NFL: LB and DL add tackles for loss/G, DB passes defended/G |
+
+NFL edition windowed traits (Catch%, TFL/G, PD/G): nflverse leaves some stats blank in some seasons (targets 2003-2008, tackles for loss 2003-2011), so these career totals count only the seasons the league recorded the stat (`COVER_COLS` in `scripts/nfl/build_players.py`: a season counts when 1,000+ player-weeks carry it), beside the exposure in those same seasons (`Targets` and `Rec on targets`; `TFL` and `TFL games`; `PD` and `PD games` columns of the league sheet). A career with none of those seasons has the trait missing (a blank cell, a "no data" tile), never a zero. They are shrunk by n / (n + k) with the career k for `catch`, `tfl_g` and `pd_g` (`career_rating.json`), weigh in the career overall (`VALUE_WEIGHTS`) and in the learned this-season weights (`scripts/nfl/season_skill_weights.py`; a season with no recording leaves the trait at a neutral percentile). Offensive linemen keep one trait: the data has no blocking stats (no sacks allowed, penalties or pressures allowed in nflverse; `blocks` is games started).
 
 **Inputs are strict.** A stat missing from the sheet is never read as 0, and a rate with a zero or missing denominator is blank (e.g. rush share, Y/A, Cmp%, TD%, INT% and rating need pass attempts > 0; per-game rates need games > 0; RB rec share needs both rush and rec yards). A player with fewer than **3** usable features (OL: its single feature) is shown as "insufficient data" and never scored.
 

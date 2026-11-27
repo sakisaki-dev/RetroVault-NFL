@@ -50,10 +50,10 @@ UNRATED = ("OL",)
 
 FIELD_MAP = {
     "QB": {"g": "games", "att": "attempts", "cmp": "completions", "yds": "passYds", "td": "passTD", "int": "interceptions", "sck": "sacks", "ratt": "rushAtt", "ryds": "rushYds", "rtd": "rushTD"},
-    "RB": {"g": "games", "ratt": "rushAtt", "ryds": "rushYds", "rtd": "rushTD", "fum": "fumbles", "rec": "receptions", "recyds": "recYds", "rectd": "recTD"},
-    "REC": {"g": "games", "rec": "receptions", "yds": "recYds", "td": "recTD", "fum": "fumbles", "lng": "longest"},
+    "RB": {"g": "games", "ratt": "rushAtt", "ryds": "rushYds", "rtd": "rushTD", "fum": "fumbles", "rec": "receptions", "recyds": "recYds", "rectd": "recTD", "tgt": "targets", "tgr": "targetRec"},
+    "REC": {"g": "games", "rec": "receptions", "yds": "recYds", "td": "recTD", "fum": "fumbles", "lng": "longest", "tgt": "targets", "tgr": "targetRec"},
     "OL": {"g": "games", "blk": "blocks"},
-    "DEF": {"g": "games", "tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles"},
+    "DEF": {"g": "games", "tkl": "tackles", "int": "interceptions", "sck": "sacks", "ff": "forcedFumbles", "tfl": "tfl", "tflg": "tflGames", "pd": "passesDefended", "pdg": "pdGames"},
     "K": {"g": "games", "fgm": "fgMade", "fga": "fgAtt", "fgm39": "fgMade39", "fga39": "fgAtt39", "fgm49": "fgMade49", "fga49": "fgAtt49",
           "fgm50": "fgMade50", "fga50": "fgAtt50", "xpm": "xpMade", "xpa": "xpAtt", "lng": "longest"},
 }
@@ -68,12 +68,15 @@ def line_of(pos, rows, cols):
     c = {n: i for i, n in enumerate(cols)}
     t = lambda n: sum((r[c[n]] or 0) for r in rows) if n in c else 0
     g = len(rows)
+    # skill-trait stats the source records only in some seasons (scripts/nfl/build_players.py COVER_COLS): a season without them has none
+    # (the site shows "no data"), never a zero. Every season this file rates today (the live one) records all three.
+    tg = {"tgt": t("targets"), "tgr": t("receptions")} if t("targets") > 0 else {}
     if pos == "QB":
         return {"g": g, "att": t("attempts"), "cmp": t("completions"), "yds": t("passing_yards"), "td": t("passing_tds"), "int": t("passing_interceptions"), "sck": t("sacks_suffered"), "ratt": t("carries"), "ryds": t("rushing_yards"), "rtd": t("rushing_tds")}
     if pos == "RB":
-        return {"g": g, "ratt": t("carries"), "ryds": t("rushing_yards"), "rtd": t("rushing_tds"), "fum": t("fumbles_lost_total"), "rec": t("receptions"), "recyds": t("receiving_yards"), "rectd": t("receiving_tds")}
+        return {"g": g, "ratt": t("carries"), "ryds": t("rushing_yards"), "rtd": t("rushing_tds"), "fum": t("fumbles_lost_total"), "rec": t("receptions"), "recyds": t("receiving_yards"), "rectd": t("receiving_tds"), **tg}
     if pos in ("WR", "TE"):
-        return {"g": g, "rec": t("receptions"), "yds": t("receiving_yards"), "td": t("receiving_tds"), "fum": t("fumbles_lost_total")}
+        return {"g": g, "rec": t("receptions"), "yds": t("receiving_yards"), "td": t("receiving_tds"), "fum": t("fumbles_lost_total"), **tg}
     if pos == "OL":
         return {"g": g}
     if pos == "K":
@@ -82,7 +85,10 @@ def line_of(pos, rows, cols):
         return {"g": g, "fgm": t("fg_made"), "fga": t("fg_att"), "fgm39": s_(made, ("0_19", "20_29", "30_39")), "fga39": s_(att, ("0_19", "20_29", "30_39")),
                 "fgm49": s_(made, ("40_49",)), "fga49": s_(att, ("40_49",)), "fgm50": s_(made, ("50_59", "60_")), "fga50": s_(att, ("50_59", "60_")),
                 "xpm": xm, "xpa": xa, "lng": max((r[c["fg_long"]] or 0 for r in rows), default=0) or None}
-    return {"g": g, "tkl": t("def_tackles_solo") + t("def_tackle_assists"), "int": t("def_interceptions"), "sck": t("def_sacks"), "ff": t("def_fumbles_forced")}
+    base = {"g": g, "tkl": t("def_tackles_solo") + t("def_tackle_assists"), "int": t("def_interceptions"), "sck": t("def_sacks"), "ff": t("def_fumbles_forced")}
+    if pos == "DB":
+        return {**base, "pd": t("def_pass_defended"), "pdg": g}
+    return {**base, "tfl": t("def_tackles_for_loss"), "tflg": g}
 
 
 def production(pos, p):

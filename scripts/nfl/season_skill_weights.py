@@ -79,7 +79,18 @@ def sd(n, d):
     return n / d if d > 0 else float("nan")
 
 
-def traits(pos, a):
+# a season that carries a stat at all (the weekly data leaves targets blank 2003-2008 and tackles for loss 2003-2011): its trait is
+# missing that year (NaN, a neutral percentile), never a zero (the same rule as the site's catch rate, TFL and PD traits)
+COVER = defaultdict(lambda: defaultdict(int))
+for (pos_, y_, _), a_ in acc.items():
+    for c_ in ("targets", "def_tackles_for_loss", "def_pass_defended"):
+        if a_[c_] > 0:
+            COVER[y_][c_] += 1
+has = lambda y, c: COVER[y][c] >= 200
+NAN = float("nan")
+
+
+def traits(pos, a, y):
     """trait id -> (value, exposure n, career-k stat name), as the site computes them on a season line."""
     g = a["g"]
     touches = a["carries"] + a["receptions"]
@@ -91,12 +102,20 @@ def traits(pos, a):
     if pos == "RB":
         return {"ypc": (sd(a["rushing_yards"], a["carries"]), a["carries"], "ypc"), "rushYdsG": (a["rushing_yards"] / g, 0, None), "recYdsG": (a["receiving_yards"] / g, 0, None),
                 "td16": (16 * (a["rushing_tds"] + a["receiving_tds"]) / g, touches, "td_touch"), "fumRate": (100 * sd(a["fumbles_lost_total"], touches), touches, "fum_touch"),
-                "ypt": (sd(a["rushing_yards"] + a["receiving_yards"], touches), touches, "ypt")}
+                "ypt": (sd(a["rushing_yards"] + a["receiving_yards"], touches), touches, "ypt"),
+                "catchPct": (sd(a["receptions"], a["targets"]) if has(y, "targets") else NAN, a["targets"], "catch")}
     if pos in ("WR", "TE"):
         rec = a["receptions"]
         return {"recG": (rec / g, 0, None), "recYdsG": (a["receiving_yards"] / g, 0, None), "ypr": (sd(a["receiving_yards"], rec), rec, "ypr"),
-                "tdPerRec": (sd(a["receiving_tds"], rec), rec, "td_rec"), "fumRate": (100 * sd(a["fumbles_lost_total"], rec), rec, "fum_rec")}
+                "tdPerRec": (sd(a["receiving_tds"], rec), rec, "td_rec"), "fumRate": (100 * sd(a["fumbles_lost_total"], rec), rec, "fum_rec"),
+                "catchPct": (sd(rec, a["targets"]) if has(y, "targets") else NAN, a["targets"], "catch")}
     imp = a["def_sacks"] + a["def_interceptions"] + a["def_fumbles_forced"]
+    extra = ({"pdG": (a["def_pass_defended"] / g, g, "pd_g")} if pos == "DB" else
+             {"tflG": (a["def_tackles_for_loss"] / g if has(y, "def_tackles_for_loss") else NAN, g, "tfl_g")})
+    return {**extra_base(a, g, imp), **extra}
+
+
+def extra_base(a, g, imp):
     return {"tklG": ((a["def_tackles_solo"] + a["def_tackle_assists"]) / g, g, "tkl_g"), "sackG": (a["def_sacks"] / g, g, "sack_g"), "intG": (a["def_interceptions"] / g, g, "int_g"),
             "ffG": (a["def_fumbles_forced"] / g, g, "ff_g"), "impactG": (imp / g, g, "sack_g")}
 
@@ -173,7 +192,7 @@ for pos in PER:
     for y, lst in sorted(byy.items()):
         if len(lst) < 12:
             continue
-        T = [traits(pos, a) for a in lst]
+        T = [traits(pos, a, y) for a in lst]
         tids = list(T[0])
         ids[pos] = tids
         mu = {t: np.nanmean([row[t][0] for row in T]) for t in tids}

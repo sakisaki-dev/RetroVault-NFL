@@ -57,6 +57,9 @@ export interface RBPlayer extends BasePlayer {
   receptions: number;
   recYds: number;
   recTD: number;
+  /** NFL edition: targets, and the catches on those targets, over the seasons the source recorded targets (NaN / absent = none) */
+  targets?: number;
+  targetRec?: number;
 }
 
 export interface WRPlayer extends BasePlayer {
@@ -66,6 +69,9 @@ export interface WRPlayer extends BasePlayer {
   recTD: number;
   fumbles: number;
   longest: number;
+  /** NFL edition: targets, and the catches on those targets, over the seasons the source recorded targets (NaN / absent = none) */
+  targets?: number;
+  targetRec?: number;
 }
 
 export interface TEPlayer extends BasePlayer {
@@ -75,11 +81,17 @@ export interface TEPlayer extends BasePlayer {
   recTD: number;
   fumbles: number;
   longest: number;
+  /** NFL edition: targets, and the catches on those targets, over the seasons the source recorded targets (NaN / absent = none) */
+  targets?: number;
+  targetRec?: number;
 }
 
 export interface OLPlayer extends BasePlayer {
   position: 'OL';
   blocks: number;
+  /** NFL edition: penalties committed since 2013 and the starts in those seasons (absent = none) */
+  penalties?: number;
+  penStarts?: number;
 }
 
 export interface DefensivePlayer extends BasePlayer {
@@ -87,6 +99,11 @@ export interface DefensivePlayer extends BasePlayer {
   interceptions: number;
   sacks: number;
   forcedFumbles: number;
+  /** NFL edition: tackles for loss (LB, DL) and games in the seasons the source recorded them; passes defended (DB) likewise */
+  tfl?: number;
+  tflGames?: number;
+  passesDefended?: number;
+  pdGames?: number;
 }
 
 export interface LBPlayer extends DefensivePlayer {
