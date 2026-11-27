@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactElement } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactElement } from 'react';
 import type { Player } from '@/types/player';
 import type { GradeStep } from '@/config/skillGrades';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,7 @@ import { peekProps } from '@/components/peek/peekProps';
 import { displayName } from '@/utils/displayName';
 
 /** Rows shown before the divider; the viewed player is appended below it when he sits further down. */
+/** Rows above this are on screen when the list opens, so it only scrolls to the player below it */
 const TOP = 10;
 
 export interface PeekRow {
@@ -96,23 +97,34 @@ const onListKey = (e: KeyboardEvent<HTMLElement>) => {
 const Body = ({ board, player, self, onOpen, sheet }: { board: PeekBoard; player: Player; self?: PeekRow; onOpen: (p: Player) => void; sheet: boolean }) => {
   const extras = usePlayerExtras();
   const rank = board.rows.findIndex((r) => same(r.player, player));
-  const extra = rank >= TOP ? board.rows[rank] : rank < 0 ? self : undefined;
+  // owner: "scroll through the entire list instead of just showing the top 10": every qualifier in one scrolling list,
+  // opened on the player's own row; a player outside the pool (NQ) follows the list
+  const extra = rank < 0 ? self : undefined;
+  const listRef = useRef<HTMLUListElement | null>(null);
+  useLayoutEffect(() => {
+    const ul = listRef.current;
+    const me = ul?.querySelector<HTMLElement>('[data-me]');
+    if (!ul || !me || rank < TOP) return;
+    ul.scrollTop = me.offsetTop - ul.clientHeight / 2 + me.offsetHeight / 2;
+  }, [rank, board]);
   const Title = sheet ? SheetTitle : 'h4';
   const Desc = sheet ? SheetDescription : 'p';
   return (
     <div className="space-y-2">
       <div className={sheet ? 'min-h-[3.25rem] pr-12' : undefined}>
         <Title className="font-display text-sm font-bold uppercase tracking-wide text-foreground">{board.title}</Title>
-        <Desc className="font-pixel text-[8px] uppercase leading-relaxed text-muted-foreground">{board.sub}</Desc>
+        <Desc className="font-pixel text-[8px] uppercase leading-relaxed text-muted-foreground">
+          {board.sub} · {board.rows.length} ranked
+        </Desc>
       </div>
-      <ul className="space-y-1" onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
-        {board.rows.slice(0, TOP).map((r, i) => (
+      <ul ref={listRef} className="rbk-list relative space-y-1 overflow-y-auto overscroll-contain pr-1" style={{ maxHeight: sheet ? 'calc(var(--safe-h, 100svh) * 0.6)' : 'min(26rem, 60vh)' }} onKeyDown={onListKey} aria-label={`${board.title} leaders`}>
+        {board.rows.map((r, i) => (
           <Row key={`${r.player.position}:${displayName(r.player.name)}`} place={i + 1} row={r} me={same(r.player, player)} extras={extras} onOpen={onOpen} />
         ))}
         {extra && (
           <>
             <li role="separator" className="mx-1 border-t border-dashed border-line/80 pt-0.5" />
-            <Row place={rank >= 0 ? rank + 1 : null} row={extra} me extras={extras} onOpen={onOpen} />
+            <Row place={null} row={extra} me extras={extras} onOpen={onOpen} />
           </>
         )}
       </ul>

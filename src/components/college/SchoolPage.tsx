@@ -158,7 +158,8 @@ const AllTimeXI = ({ s, players, club, turf }: { s: SchoolFile; players: Map<str
               <Figure player={players.get(r[0])} club={club(r)} size="m" action={r[1] === top || r[5] ? 'celebrate' : 'idle'} logo={48} />
             </span>
             <span className="sp-xi__plate" style={cardVars(club(r))}>
-              <TeamLogo team={club(r)} size={18} decorative />
+              {/* on a light disc: a club's mark on its own colour (the Jets' green on green) never vanishes */}
+              <TeamLogo team={club(r)} size={18} decorative backed />
               <CardName name={surname(nameOfKey(r[0]))} siteKey={r[0]} />
               <em>{r[1]}</em>
             </span>

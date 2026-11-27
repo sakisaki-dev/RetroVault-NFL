@@ -52,7 +52,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-stretch">
       {/* owner: the tiles match the two grade cards' height so the whole block sits level */}
-      <div className="flex min-w-0 flex-col gap-3 lg:[&>*]:flex-1 lg:[&>*>button]:h-full">
+      <div className="flex min-w-0 flex-col gap-3">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -68,11 +68,11 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
             type="button"
             aria-label={`Skill grade ${overall.grade.grade}, skill rating ${overall.rating}. Show the ${player.position} leaderboard`}
             className={cn(
-              'rbk-chip glass-card flex flex-row items-center gap-3 p-3 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+              'rbk-chip glass-card flex flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
               overall.grade.grade === 'S' && 'dd-card--s',
             )}
           >
-            <GradeChip grade={overall.grade} size="lg" />
+            <GradeChip grade={overall.grade} size="xl" />
             <div className="min-w-0 space-y-1.5">
               <p className="font-pixel text-[9px] uppercase text-gold">Skill grade</p>
               <div className="flex flex-wrap gap-1.5">

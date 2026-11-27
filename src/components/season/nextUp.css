@@ -12,7 +12,7 @@
 .nu-all:hover { color: hsl(var(--foreground)); }
 .nu button:focus-visible, .nu-lamp:focus-visible { outline: 2px solid hsl(var(--foreground) / .7); outline-offset: 2px; }
 
-.nu-row { list-style: none; margin: 0; padding: 0 0 2px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; overscroll-behavior-x: contain; min-width: 0; }
+.nu-row { list-style: none; margin: 0; padding: 4px 0 2px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; overscroll-behavior-x: contain; min-width: 0; }
 .nu-row::-webkit-scrollbar { display: none; }
 .nu-li { flex: none; width: 168px; scroll-snap-align: start; }
 .nu-ticket {
@@ -31,9 +31,7 @@
 .nu-ticket > .nu-wm { position: absolute; z-index: 0; width: 70px; height: 70px; opacity: .16; pointer-events: none; filter: saturate(.9); }
 .nu-wm--a { top: -14px; right: -12px; }
 .nu-wm--h { bottom: -16px; right: 30px; }
-.nu-ticket:hover > .nu-wm { opacity: .24; }
 .nu-ticket::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--nu-fav, hsl(var(--line))); }
-.nu-ticket:hover { filter: brightness(1.08); }
 .nu-ticket.is-live { box-shadow: inset 0 0 0 1px rgb(255 77 77 / .55); }
 .nu-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 10px; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; min-height: 15px; }
 .nu-tag { font-family: var(--font-pixel); font-size: 7px; padding: 2px 5px; border-radius: 4px; background: hsl(var(--line)); color: hsl(var(--foreground)); text-transform: uppercase; white-space: nowrap; }
@@ -61,3 +59,28 @@
 .nu-lamp.is-still .nu-dot { animation: none !important; }
 @keyframes nu-pulse { 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .nu-lamp.is-live .nu-dot { animation: none; } }
+
+/* hover (owner: "need hover animations for the upcoming games"): the ticket lifts, its two club marks drift in, the
+   logos pop in turn, the favourite's stripe widens and a shine runs the win-chance bar. Pointer only; reduced motion
+   and lite mode keep it still (the tokens zero the lift, the media query drops the rest). */
+.nu-ticket { transition: translate var(--hv-dur) var(--ease-out), filter var(--hv-dur) var(--ease-out); }
+.nu-ticket > .nu-wm { transition: opacity var(--hv-dur) var(--ease-out), translate 520ms var(--ease-out), scale 520ms var(--ease-out); }
+.nu-ticket::before { transition: width var(--hv-dur) var(--ease-out), top var(--hv-dur) var(--ease-out), bottom var(--hv-dur) var(--ease-out); }
+.nu-tm img, .nu-tm svg { transition: scale 260ms cubic-bezier(.34, 1.56, .64, 1); }
+.nu-wp i { position: relative; overflow: hidden; }
+.nu-wp i::after { content: ""; position: absolute; inset: 0; translate: -110% 0; background: linear-gradient(90deg, transparent, rgb(255 255 255 / .55), transparent); }
+@media (hover: hover) {
+  .nu-ticket:hover { translate: 0 calc(var(--hv-lift) * 1.5); filter: brightness(1.1); }
+  .nu-ticket:hover > .nu-wm { opacity: .26; }
+  .nu-ticket:hover::before { width: 5px; top: 4px; bottom: 4px; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover > .nu-wm--a { translate: -6px 4px; scale: 1.1; }
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover > .nu-wm--h { translate: -4px -4px; scale: 1.1; }
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-tm img,
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-tm svg { scale: 1.16; }
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-tm + .nu-tm img,
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-tm + .nu-tm svg { transition-delay: 70ms; }
+  html:not([data-reduce-motion]):not([data-perf='lite']) .nu-ticket:hover .nu-wp i::after { animation: nu-shine 700ms var(--ease-out) 80ms; }
+}
+@keyframes nu-shine { to { translate: 110% 0; } }

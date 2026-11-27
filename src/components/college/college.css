@@ -150,6 +150,8 @@ button.cl-chip:hover { background: rgb(0 0 0 / 0.62); }
 
 .dn-rtabs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-width: 0; padding: 10px 14px; border-radius: 14px; background: hsl(var(--panel)); }
 .dn-rtabs > :first-child { min-width: 0; max-width: 100%; }
+.dn-rtabs__pills { flex: 1 1 auto; }
+.dn-rtabs__k { font-family: var(--font-pixel); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--gold)); }
 .dn-rtabs__note { margin-left: auto; font-size: 11.5px; color: hsl(var(--muted-foreground)); }
 
 /* steals and busts: Record Book-style plaques */
@@ -348,6 +350,7 @@ button.ci-row:hover { background: hsl(var(--panel-2)); }
   background: var(--c); color: var(--ink); border-top: 3px solid var(--a);
 }
 .sp-xi__plate img { flex: none; }
+.sp-xi__plate .logo-backed { flex: none; background: #eef1f8; box-shadow: 0 0 0 1.5px #eef1f8; filter: none; }
 .sp-xi__plate .cl-cname { font: 800 15px/1 var(--font-display); text-transform: uppercase; }
 .sp-xi__plate em { flex: none; padding: 1px 4px; border-radius: 4px; font: 800 15px/1 var(--font-display); font-style: normal; background: #fff; color: #0b1020; }
 
@@ -522,7 +525,7 @@ button.sp-tl__dots:hover { background: rgb(255 255 255 / 0.08); }
   .sp-xi__m { width: 92px; }
   .sp-xi__fig { scale: 0.5; transform-origin: 50% 100%; margin: -64px 0 -6px; }
   .sp-xi__plate { padding: 2px 4px; }
-  .sp-xi__plate img { display: none; }
+  .sp-xi__plate img, .sp-xi__plate .logo-backed { width: 14px !important; height: 14px !important; }
   .sp-xi__plate .cl-cname, .sp-xi__plate em { font-size: 12px; }
   .sp-xi__pos { left: 4px; }
   .sp-two { grid-template-columns: 1fr; }

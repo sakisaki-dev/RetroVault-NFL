@@ -1694,3 +1694,6 @@ body::before {
 [cmdk-input-wrapper] > svg { color: hsl(var(--muted-foreground)); opacity: 1; transition: color var(--hv-dur) var(--ease-out); }
 [cmdk-input-wrapper]:focus-within > svg { color: hsl(var(--gold)); }
 [cmdk-input-wrapper] input:focus-visible { outline: none; }
+
+/* leaderboard peek (LeaderboardPeek.tsx): the full list scrolls; rows off screen skip layout and paint */
+.rbk-list > li { content-visibility: auto; contain-intrinsic-size: auto 32px; }

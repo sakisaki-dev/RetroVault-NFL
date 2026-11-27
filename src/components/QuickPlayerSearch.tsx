@@ -19,9 +19,9 @@ import { openTeamPage } from '@/utils/teamSearch';
 import { openSchoolPage, useCollegeSearch } from '@/utils/collegeSearch';
 import { CollegeMark } from '@/components/player/DraftTiles';
 import { markInfo } from '@/utils/collegeData';
-import { clubsOfQuery, clubsScore, gamesScore } from '@/utils/gameFinder';
+import { clubsOfQuery } from '@/utils/gameFinder';
 import { openGame } from '@/utils/nflGames';
-import { MeetingItem, useGameQuery, useMeetings } from './search/GameMeetings';
+import { MeetingItem, useMeetings } from './search/GameMeetings';
 import { normalizeName, usePlayerExtras } from '@/utils/playerExtras';
 import { useCurrentClub } from '@/utils/club';
 import PlayerDetailCard from './PlayerDetailCard';
@@ -289,7 +289,7 @@ const QuickSearchDialog = () => {
   const deferredQuery = useDeferredValue(query);
   const index = useMemo(() => pooledIndex(league, legends, { ovr: ovrMap, formerNames: extras.formerNames }), [league, legends, ovrMap, extras]);
   const byKey = index.byKey;
-  const { groups, more, top } = useMemo(() => {
+  const { groups, more } = useMemo(() => {
     const ovrOf = (p: Player) => ovrMap.get(playerKey(p)) ?? 0;
     const byOvr = (a: Player, b: Player) => ovrOf(b) - ovrOf(a) || a.name.localeCompare(b.name);
     const inPos = (p: Player) => pos === 'ALL' || p.position === pos;
@@ -328,17 +328,8 @@ const QuickSearchDialog = () => {
 
   const meetings = useMeetings(deferredQuery);
   const schools = useCollegeSearch(deferredQuery, pos === 'ALL');
-  const gameQuery = useGameQuery(deferredQuery);
-  // Result groups lead with the one that matches the query best (the best score in each; ties keep Teams, Colleges, Games, Players)
-  const order = useMemo(() => {
-    const scored = [
-      { id: 'teams', s: clubs.length ? clubsScore(deferredQuery, clubs) : -1 },
-      { id: 'schools', s: schools.length ? (schools.some((c) => [c.name, c.s].some((n) => n.toLowerCase().startsWith(deferredQuery.trim().toLowerCase()))) ? 600 : 300) : -1 },
-      { id: 'games', s: meetings.length ? gamesScore(gameQuery) : -1 },
-      { id: 'players', s: groups.length ? top : -1 },
-    ];
-    return scored.sort((a, b) => b.s - a.s).map((x) => x.id);
-  }, [deferredQuery, clubs, schools, meetings.length, gameQuery, groups.length, top]);
+  // Result groups in one fixed order (owner, 2026-11-27): players, then games, then teams, then colleges
+  const order = ['players', 'games', 'teams', 'schools'];
 
   // Typing never scrolls the list (cmdk scrolls its selected item into view when the groups reorder): reset to the
   // top on every query change, and for a moment after it while cmdk re-selects. Arrow keys still scroll the active row.
@@ -518,15 +509,16 @@ const QuickSearchDialog = () => {
                 e.preventDefault();
                 choose(activePlayer, true);
               } else if (e.key === 'Enter' && !e.shiftKey && query.trim() && !listRef.current?.querySelector('[cmdk-item][aria-selected="true"]')) {
-                // nothing highlighted yet: Enter takes the top result (a club, then a college, then a player)
+                // nothing highlighted yet: Enter takes the top result in the list's order (a player, then a club, then a college)
                 e.preventDefault();
-                if (clubs[0]) {
+                if (activePlayer) choose(activePlayer);
+                else if (clubs[0]) {
                   setOpen(false);
                   openTeamPage(clubs[0].name);
                 } else if (schools[0]) {
                   setOpen(false);
                   openSchoolPage(schools[0].slug);
-                } else if (activePlayer) choose(activePlayer);
+                }
               }
             }}
           >

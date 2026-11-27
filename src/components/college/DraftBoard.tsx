@@ -1,9 +1,10 @@
+import { PillScroller } from '@/components/controls/PillScroller';
 import PixelLoader from '@/components/ui/PixelLoader';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { InfoTip } from '@/components/ui/InfoTip';
 import type { Player } from '@/types/player';
-import { ArcadeToggle, PixelSelect } from '@/components/arcade';
+import { PixelSelect } from '@/components/arcade';
 import { Reveal, stag, useReveal } from '@/components/motion/Reveal';
 import TeamLogo from '@/components/brand/TeamLogo';
 import { useFillCols } from '@/components/espn/FillGrid';
@@ -48,9 +49,11 @@ const DraftBoard = ({ idx, year, round, onYear, onRound, onSchool }: Props) => {
     <section aria-labelledby="cl-board-title" className="cl-sec">
       <DraftNight idx={idx} year={year} d={d} players={players} school={school} onYear={onYear} />
       <div className="dn-rtabs">
-        <ArcadeToggle<string>
-          size="sm"
+        {/* owner: pills, not a dropdown */}
+        <PillScroller<string>
+          className="dn-rtabs__pills"
           label="Round"
+          lead={<span className="dn-rtabs__k">Round</span>}
           value={String(round)}
           onChange={(v) => onRound(v === 'all' ? 'all' : Number(v))}
           options={[...Array.from({ length: rounds }, (_, i) => ({ value: String(i + 1), label: `Rd ${i + 1}` })), { value: 'all', label: 'All' }]}

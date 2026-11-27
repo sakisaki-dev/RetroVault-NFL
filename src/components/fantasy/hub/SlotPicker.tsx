@@ -65,9 +65,14 @@ const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot; onCl
   }, [dst, slot, bench, ctx, lab, fl, excludes, fctx, week, value]);
 
   const done = (key: string) => {
+    // the keyboard and the picker leave together (owner: on a phone "the search bar stays up")
+    inputRef.current?.blur();
     setFl((l) => setF(l, slot.id, key));
     onClose();
   };
+  // a tap on a result must not blur the search first: the keyboard would slide away, the list re-fit and the row move
+  // from under the finger before the click lands, leaving the picker open with nothing picked
+  const keepFocus = (e: React.MouseEvent) => e.preventDefault();
 
   const rows = useMemo<Row[]>(() => {
     const q = query.trim();
@@ -164,7 +169,7 @@ const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot; onCl
       <ul className="fh-pick__list" style={{ height: h }}>
         {rows.map((r) => (
           <li key={r.key}>
-            <button type="button" className="fh-pick__row" aria-current={r.current || undefined} onClick={r.onPick}>
+            <button type="button" className="fh-pick__row" aria-current={r.current || undefined} onMouseDown={keepFocus} onClick={r.onPick}>
               <b className="fh-pick__pos">{r.pos}</b>
               <TeamLogo team={r.club} size={16} decorative backed />
               <span className="fh-pick__name">{r.name}</span>
