@@ -111,9 +111,8 @@ const EXTRA: Record<Group, SeasonRate[]> = {
   TE: [{ id: 'tdG', name: 'TD/G', label: 'TD/G', definition: 'Receiving touchdowns per game.', get: (p) => div(n(p, 'recTD'), p.games), decimals: 2, trait: false }],
   OL: [],
   DEF: [],
-  K: [
-    { id: 'fgG', name: 'FG/G', label: 'FG/G', definition: 'Field goals made per game.', get: (p) => div(n(p, 'fgMade'), p.games), decimals: 2, trait: false },
-  ],
+  // the skill traits already carry FG%, FG% 40+ and 50+, XP%, FG/G and Long
+  K: [],
 };
 
 const RATES = new Map<Position, SeasonRate[]>();

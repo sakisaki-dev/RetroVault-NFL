@@ -37,8 +37,11 @@ interface Col {
   card?: string;
   /** black ink stat id */
   ink?: string;
+  /** a rate or a maximum: computed from the season's game rows (and from the card for the career row) instead of summed */
+  calc?: { season: (rs: GameRow[]) => number | null; card: (c: Record<string, number>) => number | null };
 }
-const C = (id: string, label: string, title: string, src: string[], card?: string, ink?: string): Col => ({ id, label, title, src, card, ink });
+const C = (id: string, label: string, title: string, src: string[], card?: string, ink?: string, calc?: Col['calc']): Col => ({ id, label, title, src, card, ink, calc });
+const rowSum = (rs: GameRow[], k: string) => rs.reduce((a, r) => a + (typeof r[k] === 'number' ? (r[k] as number) : 0), 0);
 const TKL = ['def_tackles_solo', 'def_tackle_assists'];
 const COLS: Record<string, Col[]> = {
   QB: [
@@ -68,6 +71,23 @@ const COLS: Record<string, Col[]> = {
     C('sck', 'Sck', 'Sacks', ['def_sacks'], 'sacks', 'sck'),
     C('int', 'INT', 'Interceptions', ['def_interceptions'], 'interceptions', 'int'),
     C('ff', 'FF', 'Forced fumbles', ['def_fumbles_forced'], 'forcedFumbles'),
+  ],
+  K: [
+    C('fgm', 'FG', 'Field goals made', ['fg_made'], 'fgMade', 'fgm'),
+    C('fga', 'FGA', 'Field goals attempted', ['fg_att'], 'fgAtt'),
+    C('fgp', 'FG%', 'Field goals made per attempt', ['fg_made', 'fg_att'], undefined, undefined, {
+      season: (rs) => (rowSum(rs, 'fg_att') > 0 ? (100 * rowSum(rs, 'fg_made')) / rowSum(rs, 'fg_att') : null),
+      card: (c) => (c.fgAtt > 0 ? (100 * c.fgMade) / c.fgAtt : null),
+    }),
+    C('fg50', '50+', 'Field goals made from 50 yards and out', ['fg_made_50_59', 'fg_made_60_'], 'fgMade50', 'fg50'),
+    C('lng', 'Long', 'Longest field goal', ['fg_long'], 'longest', undefined, {
+      season: (rs) => {
+        const v = rs.map((r) => r.fg_long).filter((x): x is number => typeof x === 'number' && x > 0);
+        return v.length ? Math.max(...v) : null;
+      },
+      card: (c) => (c.longest > 0 ? c.longest : null),
+    }),
+    C('xpm', 'XP', 'Extra points made', ['pat_made'], 'xpMade'),
   ],
   OL: [],
 };
@@ -119,6 +139,10 @@ const buildRows = (rows: GameRow[], cols: Col[]): SeasonRow[] => {
       });
       const v: Record<string, number | null> = {};
       cols.forEach((c) => {
+        if (c.calc) {
+          v[c.id] = c.calc.season(rs);
+          return;
+        }
         // a column the log dropped (every value zero over the whole career) is a true zero; a null cell is a missing stat
         let any = false;
         let sum = 0;
@@ -191,9 +215,9 @@ const SeasonTable = ({ player }: { player: Player }) => {
   if (log === undefined) return <PixelLoader what="his seasons" minHeight={200} />;
 
   const card = player as unknown as Record<string, number>;
-  const cardOf = (c: Col) => (c.card && typeof card[c.card] === 'number' ? card[c.card] : null);
+  const cardOf = (c: Col) => (c.calc ? c.calc.card(card) : c.card && typeof card[c.card] === 'number' ? card[c.card] : null);
   const sums: Record<string, number> = {};
-  cols.forEach((c) => (sums[c.id] = rows.reduce((a, r) => a + (r.v[c.id] ?? 0), 0)));
+  cols.forEach((c) => (sums[c.id] = c.calc ? NaN : rows.reduce((a, r) => a + (r.v[c.id] ?? 0), 0)));
   const sumG = rows.reduce((a, r) => a + r.g, 0);
   // the seasons before the game log begins: card totals less the seasons shown, only when all of it is non-negative
   const gap = (() => {
@@ -205,7 +229,7 @@ const SeasonTable = ({ player }: { player: Player }) => {
     let ok = g > 0;
     cols.forEach((c) => {
       const t = cardOf(c);
-      const d = t == null ? null : t - sums[c.id];
+      const d = t == null || c.calc ? null : t - sums[c.id];
       if (d != null && d < -0.01) ok = false;
       v[c.id] = d;
     });
@@ -310,7 +334,7 @@ const SeasonTable = ({ player }: { player: Player }) => {
               <td className="st-pin st-pin--b">{banner && <TeamLogo team={banner.abbreviation} size={22} decorative backed />}</td>
               <td>{fmt(player.games)}</td>
               {cols.map((c) => (
-                <td key={c.id}>{fmt(cardOf(c) ?? sums[c.id])}</td>
+                <td key={c.id}>{fmt(cardOf(c) ?? (c.calc ? null : sums[c.id]))}</td>
               ))}
               <td className="st-honours">
                 {player.rings > 0 && <span className="st-chip st-chip--ring">{player.rings}× Ring</span>}

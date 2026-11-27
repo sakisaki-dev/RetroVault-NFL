@@ -57,11 +57,14 @@ export const CLUB_RECORD_FOR: Record<string, string> = {
   wrRecTD: 'Most TD receptions, career',
   defSacks: 'Most sacks, career',
   defINT: 'Most interceptions, career',
+  kFG: 'Most field goals, career',
+  kLong: 'Longest field goal, career',
+  kFGPct: 'Best field goal %, career',
 };
 
 /** Season records grouped like the career chips (the chip's colour). */
-export const SEASON_GROUP = (record: string): 'qb' | 'rb' | 'wr' | 'def' =>
-  /passing|TD passes/.test(record) ? 'qb' : /rushing/i.test(record) ? 'rb' : /receiving|TD receptions/.test(record) ? 'wr' : 'def';
+export const SEASON_GROUP = (record: string): 'qb' | 'rb' | 'wr' | 'def' | 'k' =>
+  /field goal|FG/i.test(record) ? 'k' : /passing|TD passes/.test(record) ? 'qb' : /rushing/i.test(record) ? 'rb' : /receiving|TD receptions/.test(record) ? 'wr' : 'def';
 
 /** "QB S. Brandson" -> the full name when known, else the board's own text without the position. */
 export const entryName = (e: Pick<ClubEntry, 'name' | 'player'>) => e.name ?? e.player.replace(/^[A-Z]{1,2} /, '').replace(/\s*\(now [^)]+\)/, '');

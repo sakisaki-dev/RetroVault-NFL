@@ -122,8 +122,8 @@ const Plaque = ({ item, index, onSelect }: { item: PlaqueItem; index: number; on
   );
 };
 
-const SHELF_ORDER: (keyof typeof GROUP_META)[] = ['qb', 'rb', 'wr', 'te', 'ol', 'def', 'awards'];
-const SHELF_LABEL: Partial<Record<keyof typeof GROUP_META, string>> = { qb: 'Passing', rb: 'Rushing', wr: 'Receiving', te: 'Tight ends', ol: 'Line', def: 'Defense', awards: 'Accolades' };
+const SHELF_ORDER: (keyof typeof GROUP_META)[] = ['qb', 'rb', 'wr', 'te', 'ol', 'def', 'k', 'awards'];
+const SHELF_LABEL: Partial<Record<keyof typeof GROUP_META, string>> = { qb: 'Passing', rb: 'Rushing', wr: 'Receiving', te: 'Tight ends', ol: 'Line', def: 'Defense', k: 'Kicking', awards: 'Accolades' };
 
 /** The plaques on trophy shelves, one shelf per unit (Passing, Rushing, Receiving, Defense, Accolades) */
 export const Shelves = ({ items, onSelect }: { items: PlaqueItem[]; onSelect: Select }) => {
@@ -195,7 +195,8 @@ export const RecordStrip = ({ headline, players, onSelect }: { headline: RecordB
               group: SEASON_GROUP(r.record),
               title: r.short,
               value: L.value,
-              decimals: 0,
+              decimals: L.value % 1 ? 1 : 0,
+              unit: /%$/.test(L.mark) ? '%' : undefined,
               holder: name,
               player: matchPlayerByName(name, players),
               team: top.team,

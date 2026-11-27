@@ -105,7 +105,8 @@ export const buildLeague = (file: CareerSeasonsFile, save: SaveState | null): Le
     if (!POSITIONS.has(pos)) continue;
     const group: Group = groupOf(pos);
     const fields = file.fields[group] ?? [];
-    const boxKeys = BOX[group].map((b) => b.key);
+    // a kicker's season also needs the distance bands and extra-point attempts his skill traits are rates of
+    const boxKeys = [...new Set([...BOX[group].map((b) => b.key), ...(group === 'K' ? fields.filter((f) => !['g', 'rings', 'mvp', 'sbmvp', 'opoy'].includes(f)) : [])])];
     const rates = seasonRates(pos);
     const start = seasons.indexOf(entry.from);
     const pts: SeasonPoint[] = [];

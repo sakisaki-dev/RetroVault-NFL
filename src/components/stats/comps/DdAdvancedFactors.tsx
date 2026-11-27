@@ -36,7 +36,8 @@ const DdAdvancedFactors = ({
   const [picked, setPicked] = useState<string | null>(null);
   const scope = picker ? (picked && scopes.includes(picked) ? picked : scopes[0]) : forced && scopes.includes(forced) ? forced : null;
   if (!adv || !mine || !scope) {
-    return picker && adv ? (
+    // a position with no advanced files (kickers) has no section to explain
+    return picker && adv && Object.keys(adv.p ?? {}).some((k) => k.startsWith(`${player.position}:`)) ? (
       <p className="text-xs text-muted-foreground">No advanced data on file</p>
     ) : null;
   }

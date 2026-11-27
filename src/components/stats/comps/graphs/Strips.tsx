@@ -13,7 +13,7 @@ import { displayName } from '@/utils/displayName';
 const shortYear = (y: number, narrow: boolean) => (narrow ? `'${y % 100}` : yLabel(y));
 
 /** Box stats whose per-game rate is already a skill-grade trait row (Workhorse = rush yds/G...): not repeated */
-const SAME_AS_TRAIT: Record<string, string> = { yds: 'passYdsG|recYdsG', ryds: 'rushYdsG', recyds: 'recYdsG', rec: 'recG', blk: 'blocksG', tkl: 'tklG', sck: 'sackG', int: 'intG', ff: 'ffG' };
+const SAME_AS_TRAIT: Record<string, string> = { yds: 'passYdsG|recYdsG', ryds: 'rushYdsG', recyds: 'recYdsG', rec: 'recG', blk: 'blocksG', tkl: 'tklG', sck: 'sackG', int: 'intG', ff: 'ffG', fgm: 'fgG' };
 
 /**
  * Percentile heat strip: seasons across, his skill-grade traits (and the box stats per game) down, each cell his
