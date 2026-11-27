@@ -144,20 +144,20 @@
           var boltIn=seg(o,520,760)*4;
           var push=1+.05*easeOut(seg(o,760,980));
           var rollX=-ease(seg(o,1050,2000))*(R*2.6),rho=rollX/R;
-          var L=o<760?0:.25*seg(o,760,1000)+.3*seg(o,1100,1900)-.2*seg(o,1800,2400);
-          var z=1+easeIn(seg(o,1750,2350))*2.6;
-          var disA=2300,dis=seg(o,disA,disA+650);
+          var L=o<760?0:.16*seg(o,760,1000)+.14*seg(o,1100,1800);
+          var z=1+easeIn(seg(o,1650,2200))*1.2;
+          /* owner: no yellow wash at the end: the vault fades to black, then the page animates in */
+          var blk=1-easeIn(seg(o,1650,2150)),disA=2150;
           var cr=Math.cos(-rho),sr=Math.sin(-rho);
           for(var y=0;y<H;y++)for(var x=0;x<W;x++){
             var i=(y*W+x)*4;
-            if(dis>0&&BAYER[((y&7)<<3)+(x&7)]/64<dis){d[i+3]=0;continue}
             var sx=(x+.5-cx)/z+cx,sy=(y+.5-cy)/z+cy,u=sx-cx,v=sy-cy,r=Math.hypot(u,v),shade=1;
             var du=(u-rollX)/push,dv=v/push;
             var col=face(du*cr-dv*sr,du*sr+dv*cr,wa,boltIn);
             if(col){if(o>760&&o<1000)shade=1.08}
             else if(r<R+.01)col=lightIn(x,y,u,v,r,L,o<0?0:o);
             else col=wall(Math.floor(sx),Math.floor(sy),u,v,r);
-            d[i]=Math.min(255,col[0]*shade);d[i+1]=Math.min(255,col[1]*shade);d[i+2]=Math.min(255,col[2]*shade);d[i+3]=255;
+            shade*=blk;d[i]=Math.min(255,col[0]*shade);d[i+1]=Math.min(255,col[1]*shade);d[i+2]=Math.min(255,col[2]*shade);d[i+3]=255;
           }
           ctx.putImageData(img,0,0);
           return disA;
@@ -181,11 +181,12 @@
           if(o>1050)b.className="roll";
           if(o>1050)m.className=k.className="";
           var disA=draw(t,o,TS);
-          if(o>disA&&o<disA+900){
-            var p=ease(seg(o,disA,disA+850));
-            root.style.transformOrigin="50% 45%";root.style.transform="scale("+(1.06-.06*p)+")";root.style.filter="brightness("+(1+.15-.15*p)+")";
+          if(o>=disA){
+            var p=ease(seg(o,disA,disA+600));
+            b.style.opacity=String(1-p);
+            root.style.transformOrigin="50% 30%";root.style.transform="translateY("+(16*(1-p)).toFixed(2)+"px) scale("+(.985+.015*p).toFixed(4)+")";
           }
-          if(o>=disA+900){finish();return}
+          if(o>=disA+650){finish();return}
           raf=requestAnimationFrame(frame);
         }
         var rt;function onResize(){clearTimeout(rt);rt=setTimeout(function(){if(!gone)size()},100)}
