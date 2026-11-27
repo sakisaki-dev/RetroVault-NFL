@@ -278,15 +278,15 @@
 .dk-search .ss-go { display: none; }
 .dk-search .ss-field input:focus-visible { outline: none !important; }
 /* stat line on the search rows: bigger, bold tabular figures with small labels; value leads (green, muted at zero) */
-.dk-search .ss-extra.dk-ex { gap: 0.7rem; }
-.dk-search .ss-extra.dk-ex span { font: 800 20px/1 'Barlow Condensed', sans-serif; color: hsl(var(--chalk)); }
-.dk-search .ss-extra.dk-ex span i { font-size: 9px; margin-top: 2px; }
-.dk-search .ss-extra.dk-ex em { font-size: 13px; padding: 2px 7px; }
-.dk-search .ss-extra.dk-ex .is-val { font-size: 27px; color: #5be38a; text-shadow: 0 0 10px rgb(91 227 138 / 0.35); }
-.dk-search .ss-extra.dk-ex .is-zero { font-size: 27px; color: hsl(var(--muted-foreground)); }
+.ss-root .ss-extra.dk-ex { gap: 0.7rem; }
+.ss-root .ss-extra.dk-ex span { font: 800 20px/1 'Barlow Condensed', sans-serif; color: hsl(var(--chalk)); }
+.ss-root .ss-extra.dk-ex span i { font-size: 9px; margin-top: 2px; }
+.ss-root .ss-extra.dk-ex em { font-size: 13px; padding: 2px 7px; }
+.ss-root .ss-extra.dk-ex .is-val { font-size: 27px; color: #5be38a; text-shadow: 0 0 10px rgb(91 227 138 / 0.35); }
+.ss-root .ss-extra.dk-ex .is-zero { font-size: 27px; color: hsl(var(--muted-foreground)); }
 .dk-search__list { border-radius: 12px; border: 1px solid hsl(var(--line)); background: hsl(var(--night)); padding: 8px 6px 6px; margin: -2px 0 0; }
 .dk-search__list .ss-chips { margin: 0 0 4px; padding: 0 2px; }
-@media (max-width: 480px) { .dk-search .ss-extra.dk-ex { gap: 0.45rem; } .dk-search .ss-extra.dk-ex span { font-size: 16px; } .dk-search .ss-extra.dk-ex .is-val, .dk-search .ss-extra.dk-ex .is-zero { font-size: 22px; } .dk-search .ss-extra.dk-ex em { display: none; } }
+@media (max-width: 480px) { .ss-root .ss-extra.dk-ex { gap: 0.45rem; } .ss-root .ss-extra.dk-ex span { font-size: 16px; } .ss-root .ss-extra.dk-ex .is-val, .ss-root .ss-extra.dk-ex .is-zero { font-size: 22px; } .ss-root .ss-extra.dk-ex em { display: none; } }
 
 /* Best trade: the one button under You get that fills it with the fair offer bringing back the most value */
 .dk-best { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; min-height: 44px; padding: 0 1rem; border-radius: 12px; border: 0; background: hsl(var(--gold)); color: #1a1300; font: 800 15px/1 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: translate var(--hv-dur) var(--ease-out), filter var(--hv-dur) var(--ease-out), scale 90ms var(--ease-out); }

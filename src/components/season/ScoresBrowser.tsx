@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Moon, Radio } from 'lucide-react';
-import { ClubPicker } from '@/components/controls';
+import { ClubPicker, PillScroller } from '@/components/controls';
 import { cn } from '@/lib/utils';
 import TeamLogo from '@/components/timeline/TeamLogo';
 import { NFL_TEAMS, findNFLTeam } from '@/utils/nflTeams';
 import { openGame, useSeasonGames, type GameDetail } from '@/utils/nflGames';
 import { POST_ROUNDS, ROUND_LABEL, kickoffOf, regWeeks } from '@/utils/gameFinder';
 import { BOARD_BG, RESULT_STYLE, color, type Result } from './seasonGamesUi';
-import { ArcadeToggle, ClubBadge, PixelStepper, SectionHeader } from '@/components/arcade';
+import { ClubBadge, SectionHeader } from '@/components/arcade';
 import { ScoreTile } from '@/components/arcade';
 import { Reveal, stag } from '@/components/motion/Reveal';
 import './sx.css';
@@ -152,14 +152,14 @@ const ScoresBrowser = () => {
         club={club ?? undefined}
         kicker={`Every game since ${FIRST}`}
         title={<span id="scores-heading">Scores</span>}
-        right={<PixelStepper label="Season" value={season} values={SEASONS} onChange={setSeason} />}
       />
 
+      <PillScroller<number> label="Season" value={season} onChange={setSeason} options={SEASONS.map((y) => ({ value: y, label: String(y) }))} />
+
       <div className={cn(club && 'opacity-40')}>
-        <ArcadeToggle
+        <PillScroller
           label="Week"
-          size="sm"
-          value={club ? '' : week}
+          value={club ? null : week}
           onChange={(v) => setPick(String(v))}
           options={chips.map((c) => ({ value: c.k, label: weekLabel[c.l] ?? c.l, disabled: (!!sorted && !have.has(c.k)) || !!club }))}
         />
