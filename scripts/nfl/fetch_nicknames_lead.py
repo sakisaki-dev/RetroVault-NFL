@@ -11,7 +11,7 @@ as wikitext, so the infobox field is real, not a guess from prose.
 
 Candidates: infobox `nickname`/`nicknames` (any list form), lead sentences ("nicknamed", "known as", "dubbed", "goes by",
 "referred to as", also a run of quoted names), and a quoted name inside the bolded title (First "Nick" Last).
-Rejected as junk: more than 4 words or 24 characters, bare numbers, his own first or last name (a diminutive of his
+Rejected as junk: a double quote inside, the explicit generic list (money, kid, co-cap, rookie, captain, big, boss), his own initials or an all-caps 2-3 letter tag (D.J., JJ, IGB, DPJ, with or without dots), more than 4 words or 24 characters, bare numbers, his own first or last name (a diminutive of his
 first name only for the quoted name inside the bolded title), a club name, generic descriptors ("The Rookie"), and another person's full name.
 
 Which one is "best" (several attested): infobox AND lead beats infobox alone beats lead alone; then the one the lead
@@ -46,10 +46,8 @@ CLUBS = {"49ers", "bears", "bengals", "bills", "broncos", "browns", "buccaneers"
          "commanders", "cowboys", "dolphins", "eagles", "falcons", "giants", "jaguars", "jets", "lions", "packers", "panthers",
          "patriots", "raiders", "rams", "ravens", "saints", "seahawks", "steelers", "texans", "titans", "vikings", "redskins",
          "oilers", "cardinals"}
-GENERIC = {"rookie", "veteran", "captain", "kid", "quarterback", "qb", "running", "back", "receiver", "end", "kicker", "punter",
-           "player", "defense", "offense", "team", "coach", "man", "guy", "one", "mvp", "champ", "champion", "pro", "star", "rb",
-           "wr", "te", "lb", "cb", "db", "the", "a", "an", "of", "and", "nfl", "football", "american", "junior", "senior", "jr", "sr",
-           "none", "n/a", "unknown", "tight", "wide", "linebacker", "safety", "cornerback", "lineman", "tackle", "guard", "center"}
+# Generic words that are not nicknames (explicit and small on purpose; a nickname made only of these is rejected).
+GENERIC = {"money", "kid", "co-cap", "rookie", "captain", "big", "boss"}
 MAX_CHARS, MAX_WORDS = 24, 4
 
 
@@ -135,9 +133,10 @@ def is_football_bio(wt, prose, year):
 def clean_nick(s):
     s = strip_markup(s)
     s = re.sub(r"\s+", " ", s).strip(" \t\"'“”‘’«»`,;:*–—-")
-    if not re.search(r"\b[A-Za-z]\.", s):  # keep the final period of initials ("T.D.", "L.T.")
+    if not re.search(r"\b[A-Za-z]\.", s):  # keep the final period of initials ("L.T.")
         s = s.rstrip(".")
-    s = s.strip()
+    s = s.strip(" ,;:")
+    s = re.sub(r"^the\s+", "The ", s, flags=re.I)  # a leading "the" is always "The"
     s = re.sub(r"\s*\((?:[^)]*)\)$", "", s).strip(" \"'“”‘’,;")  # "The Freak (high school)"
     s = re.sub(r"\s*\*$", "", s)
     return s
@@ -162,7 +161,10 @@ def junk(nick, name, dim=False):
     if re.fullmatch(r"[#\d\s.,/-]+|(?:no\.?|number)\s*\d+", nick, re.I):
         return True
     words = [w for w in re.findall(r"[A-Za-z0-9'’]+", nick.lower())]
-    if not words or all(w in GENERIC or w in CLUBS for w in words):
+    if '"' in nick or "“" in nick or "”" in nick:
+        return True
+    core = re.sub(r"^the\s+", "", nick.lower()).strip()
+    if not words or core in GENERIC or all(w == "the" or w in CLUBS for w in words):
         return True
     if not re.search(r"[A-Za-z]", nick):
         return True
@@ -174,6 +176,14 @@ def junk(nick, name, dim=False):
     if fn in toks or fn.replace(" ", "") in toks or fn == full or fn.replace(" ", "") == "".join(toks) or fn == toks[0] + " " + toks[-1]:
         return True
     if fn and len(toks) >= 2 and fn.split()[-1] == toks[-1] and fn.split()[0] == toks[0]:
+        return True
+    # his own initials (first/middle/last, with or without dots or spaces): "D.J.", "A. J.", "JJ", "DPJ"
+    letters = re.sub(r"[^a-z]", "", fn)
+    ini = [t[0] for t in re.sub(r"[-]", " ", re.sub(r" \(.*\)$", "", name)).split() if t.lower().strip(".") not in ("jr", "sr", "ii", "iii", "iv", "v")]
+    ini = [fold(t)[:1] for t in ini if fold(t)]
+    if re.fullmatch(r"[A-Z]{2,3}", nick):  # initials-style tag (JJ, IGB, DPJ): not a nickname
+        return True
+    if letters and len(letters) <= 4 and (re.fullmatch(r"(?:[A-Za-z]\.\s?){2,}", nick) or any("".join(ini[i:j]) == letters for i in range(len(ini)) for j in range(i + 2, len(ini) + 1))):
         return True
     if dim and diminutive(nick, toks[0]):  # only for a quoted name inside the bolded title (First "Joe" Last)
         return True

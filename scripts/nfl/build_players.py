@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import classics as classics_mod  # noqa: E402
-from fetch_nicknames_lead import junk as nick_junk  # noqa: E402
+from fetch_nicknames_lead import junk as nick_junk, clean_nick  # noqa: E402
 CACHE = ROOT / "data" / "nfl-cache"
 NFL = ROOT / "data" / "nfl"
 Y80 = ROOT / "data" / "y80"
@@ -305,7 +305,7 @@ def apply_nicknames(players):
             cands = [max(cands, key=score)]
         # junk (own name, diminutive, club, generic, over-long, another person's full name) is not a nickname
         if cands:
-            for x in e.get("nicknames") or []:
+            for x in map(clean_nick, e.get("nicknames") or []):
                 if not nick_junk(x, cands[0]["n"]) and x not in listed[id(cands[0])]:
                     listed[id(cands[0])].append(x)
     lead = NFL / "nicknames_infobox.json"
@@ -319,7 +319,7 @@ def apply_nicknames(players):
     # list page give; else (2) his page's best-ranked one; else (3) the first the list pages give.
     for p in players:
         page = own.get((p.get("nfl") or {}).get("gsis"))
-        pn = [x for x in (page["all"] if page else []) if not nick_junk(x[0], p["n"])]
+        pn = [[clean_nick(x[0])] + x[1:] for x in (page["all"] if page else []) if not nick_junk(clean_nick(x[0]), p["n"])]
         ln = listed.get(id(p), [])
         lf = {fold(y) for y in ln}
         def core(x):
@@ -337,7 +337,7 @@ def apply_nicknames(players):
                 break
         pick = pick or (pn[0][0] if pn else None) or (ln[0] if ln else None)
         if pick:
-            p["nick"] = re.sub(r"^the ", "The ", pick)
+            p["nick"] = clean_nick(pick)  # trailing punctuation off, leading "the" -> "The"
             given += 1
     print(f"nicknames: {given} players")
 
