@@ -233,13 +233,23 @@ export const pickSpotlight = (players: Player[], headlines: Headline[], edition:
   const inNews = [...new Set(headlines.flatMap((h) => h.players.slice(0, 1)))]
     .map((name) => matchPlayerByName(name, players))
     .filter((p): p is Player => !!p);
-  const picked = editionShuffle(inNews, edition, 'home-spotlight-news').slice(0, Math.min(2, n));
+  // NFL (owner: "why 2 OL"): linemen have no box-score line to show, so they never take a spotlight, and no two picks
+  // share a position
+  const showable = (p: Player) => !IS_NFL || p.position !== 'OL';
+  const picked: Player[] = [];
+  const take = (p: Player) => {
+    if (picked.length >= n || picked.includes(p) || !showable(p)) return;
+    if (IS_NFL && picked.some((q) => q.position === p.position)) return;
+    picked.push(p);
+  };
+  editionShuffle(inNews, edition, 'home-spotlight-news').filter(showable).slice(0, Math.min(2, n)).forEach(take);
   const top = [...players]
     .sort((a, b) => (b.careerLegacy || 0) - (a.careerLegacy || 0) || a.name.localeCompare(b.name))
     .filter((p) => !IS_NFL || (!!p.team && p.team !== 'FA' && p.status === 'Active')) // NFL: players on a club, with a 2026 game log
-    .slice(0, 24)
-    .filter((p) => !picked.includes(p));
-  return [...picked, ...editionShuffle(top, edition, 'home-spotlight')].slice(0, n);
+    .filter(showable)
+    .slice(0, 24);
+  editionShuffle(top, edition, 'home-spotlight').forEach(take);
+  return picked;
 };
 
 export const Spotlight = ({
