@@ -50,8 +50,9 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
   }
   const best = [...graded].sort((a, b) => b.percentile - a.percentile)[0];
   return (
-    <div className="grid gap-3 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
-      <div className="min-w-0 space-y-3">
+    <div className="space-y-2">
+      {/* the two grade cards side by side (one full width without a Season card), then the skill tiles filling the row */}
+      <div className="grid gap-2 sm:grid-cols-2 [&>*:only-child]:sm:col-span-2 [&>*]:min-w-0">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -67,11 +68,11 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
             type="button"
             aria-label={`Skill grade ${overall.grade.grade}, skill rating ${overall.rating}. Show the ${player.position} leaderboard`}
             className={cn(
-              'rbk-chip glass-card flex flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
+              'rbk-chip glass-card flex h-full w-full flex-row items-center gap-4 p-3 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ',
               overall.grade.grade === 'S' && 'dd-card--s',
             )}
           >
-            <GradeChip grade={overall.grade} size="xl" />
+            <GradeChip grade={overall.grade} size="lg" />
             <div className="min-w-0 space-y-1.5">
               <p className="font-pixel text-[9px] uppercase text-gold">Skill grade</p>
               <div className="flex flex-wrap gap-1.5">
@@ -94,11 +95,11 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
       )}
       {below}
       </div>
-      <ul className="grid-fill-last grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
+      <ul className="flex flex-wrap gap-2" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (
-            <li key={t.trait.id} className="dd-enter" style={{ '--i': i } as CSSProperties}>
+            <li key={t.trait.id} className="dd-enter min-w-0 flex-[1_1_13rem]" style={{ '--i': i } as CSSProperties}>
               <LeaderboardPeek
                 player={player}
                 onOpenPlayer={onOpenPlayer}

@@ -132,6 +132,7 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
 
       {/* owner: "the little pills on deep dive stack oddly": two tidy rows of one pill style, his facts then his path
           (college → draft → clubs), the card hint at the end of the first on desktop only */}
+      <div className="dd-bio">
       <div className="dd-facts">
         {/* His Player Tribute, when one has been written */}
         <TributeButton playerKey={keyOf(player)} label="Read his tribute" className="h-8 border border-gold/60 bg-gold/10 px-2.5 text-sm text-gold hover:bg-gold/20" />
@@ -158,10 +159,6 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
           </button>
         )}
         {IS_NFL && <BioPills player={player} />}
-        <span className="dd-facts__hint">
-          <IdCard className="h-3.5 w-3.5" aria-hidden="true" />
-          Tap the banner for the full player card
-        </span>
       </div>
       <div className="dd-path" aria-label="College, draft and clubs">
         <DraftPills playerKey={keyOf(player)} />
@@ -184,6 +181,11 @@ const DdHero = ({ player, ovr, ovrTitle, ovrLabel, ovrAlt, wide, onChoose, onRan
           </ul>
         )}
       </div>
+      </div>
+      <p className="dd-facts__hint">
+        <IdCard className="h-3.5 w-3.5" aria-hidden="true" />
+        Tap the banner for the full player card
+      </p>
     </div>
   );
 };
