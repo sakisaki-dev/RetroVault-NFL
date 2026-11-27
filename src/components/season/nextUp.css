@@ -1,0 +1,52 @@
+/* Season page: Next up strip and the countdown lamp */
+.nu { display: grid; gap: 6px; min-width: 0; }
+.nu-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.nu-k { font-family: var(--font-pixel); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--gold)); white-space: nowrap; }
+.nu-m { font-size: 11px; color: hsl(var(--muted-foreground)); white-space: nowrap; }
+.nu-arrows { margin-left: auto; display: inline-flex; gap: 4px; }
+.nu-arrows button { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 999px; border: 1px solid hsl(var(--line)); background: hsl(var(--card)); color: hsl(var(--muted-foreground)); cursor: pointer; }
+.nu-arrows button:hover:not(:disabled) { color: hsl(var(--foreground)); border-color: hsl(var(--foreground) / .5); }
+.nu-arrows button:disabled { opacity: .35; cursor: default; }
+@media (pointer: coarse) { .nu-arrows { display: none; } .nu-all { margin-left: auto; } }
+.nu-all { font-size: 11px; color: hsl(var(--foreground) / .8); background: none; border: 0; padding: 4px 2px; cursor: pointer; white-space: nowrap; }
+.nu-all:hover { color: hsl(var(--foreground)); }
+.nu button:focus-visible, .nu-lamp:focus-visible { outline: 2px solid hsl(var(--foreground) / .7); outline-offset: 2px; }
+
+.nu-row { list-style: none; margin: 0; padding: 0 0 2px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; overscroll-behavior-x: contain; min-width: 0; }
+.nu-row::-webkit-scrollbar { display: none; }
+.nu-li { flex: none; width: 168px; scroll-snap-align: start; }
+.nu-ticket {
+  position: relative; display: flex; flex-direction: column; gap: 5px; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  border-radius: 10px; background: hsl(var(--card)); border: 1px solid hsl(var(--line)); padding: 8px 10px 8px 12px;
+  -webkit-mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000), radial-gradient(circle 5px at 100% 50%, transparent 98%, #000);
+  -webkit-mask-composite: source-in; mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000), radial-gradient(circle 5px at 100% 50%, transparent 98%, #000); mask-composite: intersect;
+}
+.nu-ticket::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--nu-fav, hsl(var(--line))); }
+.nu-ticket:hover { background: hsl(var(--card) / .6); }
+.nu-ticket.is-live { background: color-mix(in srgb, hsl(var(--card)) 92%, #ff4d4d); }
+.nu-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 10px; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; min-height: 15px; }
+.nu-tag { font-family: var(--font-pixel); font-size: 7px; padding: 2px 5px; border-radius: 4px; background: hsl(var(--line)); color: hsl(var(--foreground)); text-transform: uppercase; white-space: nowrap; }
+.nu-tag.is-prime { background: hsl(var(--gold)); color: #1a1205; }
+.nu-livetag { font-family: var(--font-pixel); font-size: 8px; color: #ff8080; letter-spacing: .08em; }
+.nu-tm { display: flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: hsl(var(--foreground) / .72); }
+.nu-tm.is-fav { color: hsl(var(--foreground)); }
+.nu-tm b { font-weight: 700; }
+.nu-tm em { margin-left: auto; font-style: normal; font-family: inherit; font-size: 10px; font-weight: 400; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
+.nu-sc { font-style: normal; font-family: var(--font-display); font-size: 17px; font-weight: 800; color: hsl(var(--foreground)); }
+.nu-wp { height: 4px; border-radius: 3px; background: hsl(var(--line)); overflow: hidden; }
+.nu-wp i { display: block; height: 100%; background: var(--nu-fav); }
+.nu-bot { display: flex; justify-content: space-between; gap: 6px; font-size: 10px; color: hsl(var(--muted-foreground)); }
+.nu-bot b { color: hsl(var(--foreground)); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* countdown lamp: a small dark LED board */
+.nu-lamp { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px 0 9px; border-radius: 8px; background: #05070f; border: 1px solid hsl(var(--line)); box-shadow: inset 0 0 12px rgb(0 0 0 / .8); color: hsl(var(--foreground)); cursor: pointer; max-width: 100%; }
+.nu-lamp:hover { border-color: hsl(var(--foreground) / .4); }
+.nu-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: #ffb347; box-shadow: 0 0 6px rgb(255 179 71 / .8); }
+.nu-what { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.nu-led { font-family: var(--font-pixel-art); font-size: 11px; color: #ffb347; text-shadow: 0 0 6px rgb(255 160 40 / .6); letter-spacing: .06em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.nu-lamp.is-live { border-color: rgb(255 77 77 / .6); }
+.nu-lamp.is-live .nu-dot { background: #ff4d4d; box-shadow: 0 0 8px #ff4d4d; animation: nu-pulse 1.2s ease-in-out infinite; }
+.nu-lamp.is-live .nu-what { color: #ff9a9a; }
+.nu-lamp.is-still .nu-dot { animation: none !important; }
+@keyframes nu-pulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .nu-lamp.is-live .nu-dot { animation: none; } }
