@@ -8,12 +8,13 @@ import { findNFLTeam } from '@/utils/nflTeams';
 import { canFill, F_SLOTS, projectWeek } from '@/utils/nflFantasy';
 import { teamOf } from '../parts';
 import { Sprite, hcVars } from './hubParts';
+import SlotPicker from './SlotPicker';
 import { BENCH_MAX, f1, nameOf, type FantasyHub } from './useFantasyHub';
 
 export const slotName = (id: string) => id.toUpperCase();
 
 /** The bench under the lineup: your reserves (not the whole pool). Tap one to start him in a slot he can fill; the starter takes his seat. */
-const BenchRow = ({ hub, onPick }: { hub: FantasyHub; onPick: (id: string) => void }) => {
+const BenchRow = ({ hub, pick, onPick, onClose }: { hub: FantasyHub; pick: string | null; onPick: (id: string) => void; onClose: () => void }) => {
   const { bench, benchN, setBenchN, ctx, fl, setFl, fctx, week, startFromBench } = hub;
   const [sel, setSel] = useState<string | null>(null);
   const count = bench.filter((b) => b.key).length;
@@ -33,8 +34,9 @@ const BenchRow = ({ hub, onPick }: { hub: FantasyHub; onPick: (id: string) => vo
           const club = prof ? bannerTeamOf(prof.player) : '';
           const t = club ? teamOf(club) ?? findNFLTeam(club) : null;
           const open = sel === id;
+          const picking = pick === id;
           return (
-            <li key={id} className={cn('fh-bch ix-card', key ? 'is-filled fx-flat' : 'is-empty', open && 'is-open')} style={{ ...hcVars(club || undefined), ...stag(i, 40) }}>
+            <li key={id} className={cn('fh-bch ix-card', key ? 'is-filled fx-flat' : 'is-empty', (open || picking) && 'is-open')} style={{ ...hcVars(club || undefined), ...stag(i, 40) }}>
               {key && club && <ClubMark club={t?.name ?? club} size={80} />}
               {key ? (
                 <>
@@ -55,8 +57,9 @@ const BenchRow = ({ hub, onPick }: { hub: FantasyHub; onPick: (id: string) => vo
                   )}
                 </>
               ) : (
-                <button type="button" className="fh-slot__empty" onClick={() => onPick(id)}><Plus className="h-4 w-4" aria-hidden="true" /> Add to bench</button>
+                <button type="button" className="fh-slot__empty" aria-expanded={picking} onClick={() => onPick(id)}><Plus className="h-4 w-4" aria-hidden="true" /> Add to bench</button>
               )}
+              {picking && <SlotPicker hub={hub} slot={{ id, label: 'a bench player', positions: ['QB', 'RB', 'WR', 'TE', 'K'] }} onClose={onClose} />}
             </li>
           );
         })}
