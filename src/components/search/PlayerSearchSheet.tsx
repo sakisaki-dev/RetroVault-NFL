@@ -11,7 +11,8 @@ import { isHallOfFamer } from '@/config/stats';
 import { useSkillRatings } from '@/utils/useSkillRatings';
 import { useJerseyNumbers } from '@/utils/jerseys';
 import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
-import { findNFLTeam, type NFLTeam } from '@/utils/nflTeams';
+import { findNFLTeam, NFL_TEAMS, type NFLTeam } from '@/utils/nflTeams';
+import { searchTeams } from '@/utils/teamSearch';
 import { clubsOfQuery, clubsScore, gamesScore, type Meeting } from '@/utils/gameFinder';
 import { MeetingButton, useGameQuery, useMeetings } from './GameMeetings';
 import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers, searchPlayersScored } from '@/utils/playerSearch';
@@ -85,6 +86,12 @@ export interface PlayerSearchSheetProps {
   hidePositions?: boolean;
   /** From 768px: a centred panel instead of full screen */
   dock?: boolean;
+  /** Controls under the field (the Fantasy bench's Players / Defences switch) */
+  subheader?: ReactNode;
+  /** Defence mode (Fantasy D/ST): the results are the 32 clubs, searched by name, city or abbreviation */
+  defence?: { onPick: (t: NFLTeam) => void; extra?: (t: NFLTeam) => ReactNode };
+  /** Changing it clears the query (a mode switch) */
+  mode?: string;
 }
 
 const teamVars = (team?: string): CSSProperties => {
@@ -191,12 +198,13 @@ interface ListProps {
   onPickCollege?: (slug: string) => void;
   onPickGame?: (m: Meeting) => void;
   extra?: (p: Player) => ReactNode;
+  defence?: PlayerSearchSheetProps['defence'];
   /** Reports the Enter target (the first row) */
   firstRef: { current: Player | null };
 }
 
 /** Results for the deferred query: re-renders only when the deferred query, filter or pool change */
-const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickCollege, onPickGame, extra, firstRef }: ListProps) => {
+const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, suggestions, selectedKey, onPick, onPickTeam, onPickCollege, onPickGame, extra, defence, firstRef }: ListProps) => {
   const extras = usePlayerExtras();
   const skills = useSkillRatings();
   const { numberFor } = useJerseyNumbers();
@@ -313,6 +321,26 @@ const Results = memo(({ query, pos, players, ovrMap, showOvr, showActive, peek, 
     </section>
   );
 
+  if (defence) {
+    const ts = query.trim() ? searchTeams(query, 32) : [...NFL_TEAMS].sort((a, b) => a.name.localeCompare(b.name));
+    if (!ts.length) return <p className="ss-empty">No defence matches <b>{query.trim()}</b>.</p>;
+    return (
+      <ul className="ss-list">
+        {ts.map((t) => (
+          <li key={t.id}>
+            <button type="button" className="ss-team" style={teamVars(t.name)} onClick={() => defence.onPick(t)}>
+              <TeamLogo team={t.name} size={34} decorative />
+              <span className="ss-team__text">
+                <span className="ss-team__name">{t.fullName}</span>
+                <span className="ss-team__sub">{t.city} · {t.conference} {t.division}</span>
+              </span>
+              {defence.extra?.(t)}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  }
   if (!groups.length && !clubList && !schoolList && !gameList)
     return (
       <p className="ss-empty">
@@ -400,10 +428,17 @@ const Sheet = ({
   extra,
   hidePositions,
   dock,
+  subheader,
+  defence,
+  mode,
   onGone,
 }: PlayerSearchSheetProps & { onGone: () => void }) => {
   const [query, setQuery] = useState('');
   const [pos, setPos] = useState<Position | 'ALL'>('ALL');
+  useEffect(() => {
+    setQuery('');
+    inputRef.current?.focus({ preventScroll: true });
+  }, [mode]);
   const deferredQuery = useDeferredValue(query);
   const deferredPos = useDeferredValue(pos);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -565,6 +600,11 @@ const Sheet = ({
             onSubmit={(e) => {
               e.preventDefault();
               // The first result of what was typed (computed now if the deferred list is a frame behind)
+              if (defence) {
+                const t = searchTeams(query, 1)[0];
+                if (t) defence.onPick(t);
+                return;
+              }
               const p = stale ? searchPlayers(buildSearchIndex(players, { ovr: ovrMap }), query, 1, pos === 'ALL' ? undefined : (x) => x.position === pos)[0]?.p : firstRef.current;
               if (p) pick(p);
             }}
@@ -613,6 +653,7 @@ const Sheet = ({
               </button>
             ))}
           </div>}
+          {subheader && <div className="ss-sub" data-no-swipe>{subheader}</div>}
         </div>
         <div ref={scrollRef} className={cn('ss-scroll', stale && 'is-stale')} onTouchStart={onListTouchStart} onTouchMove={onListTouchMove} onTouchEnd={onListTouchEnd}>
           <Results
@@ -630,6 +671,7 @@ const Sheet = ({
             onPickCollege={onPickCollege}
             onPickGame={onPickGame}
             extra={extra}
+            defence={defence}
             firstRef={firstRef}
           />
           {footer && <p className="ss-foot">{footer}</p>}

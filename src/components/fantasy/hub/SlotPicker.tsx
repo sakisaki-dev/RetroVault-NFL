@@ -1,95 +1,85 @@
-import { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
-import { ClubMark, fxTone } from '@/components/fantasy/ClubMark';
-import TeamLogo from '@/components/brand/TeamLogo';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
-import { bannerTeamOf, usePlayerExtras } from '@/utils/playerExtras';
-import { NFL_TEAMS } from '@/utils/nflTeams';
-import { searchTeams } from '@/utils/teamSearch';
-import { buildSearchIndex, keyOfPlayer, pushRecent, readRecent, searchPlayers } from '@/utils/playerSearch';
+import { createPortal } from 'react-dom';
+import { useCallback, useMemo, useState } from 'react';
+import PlayerSearchSheet from '@/components/search/PlayerSearchSheet';
 import { useGamePool } from '@/utils/useOfficialOvr';
+import type { Player } from '@/types/player';
+import { keyOfPlayer } from '@/utils/playerSearch';
 import { projectWeek, salaryOf, type FSlot } from '@/utils/nflFantasy';
 import type { FantasyHub } from './useFantasyHub';
-import { f1, isBenchId, nameOf } from './useFantasyHub';
+import { f1, isBenchId } from './useFantasyHub';
 import { ArcadeToggle } from '@/components/arcade';
-import { teamOf } from '../parts';
 
-/** A bottom sheet that fills one lineup slot: players who can play it, best projection first; a defence for D/ST.
- *  Search ranks like the header's (names, nicknames, clubs, cities, abbreviations); recent picks lead while it is empty. */
+/** Fills one lineup slot with the site's search sheet (the header search's: field pinned on top, results right under it,
+ *  sized to the visual viewport so the keyboard never covers them, fixed height while typing; a centred panel from 768px).
+ *  Players who can play the slot, best projection first; a defence for D/ST; the bench takes players (kickers included)
+ *  or a defence. */
 const SlotPicker = ({ hub, slot, onClose }: { hub: FantasyHub; slot: FSlot | null; onClose: () => void }) => {
   const { ctx, lab, fl, setFl, excludes, fctx, week, setF } = hub;
-  const [q, setQ] = useState('');
-  const extras = usePlayerExtras();
-  const { ovrMap } = useGamePool();
   const value = slot ? fl[slot.id] ?? '' : '';
+  const bench = !!slot && isBenchId(slot.id);
+  const [benchKind, setBenchKind] = useState<'players' | 'dst'>('players');
+  const dst = slot?.id === 'dst' || (bench && benchKind === 'dst');
   const pool = useMemo(() => {
     if (!slot || slot.id === 'dst' || !fctx) return [];
-    const positions = isBenchId(slot.id) ? ['QB', 'RB', 'WR', 'TE', 'K'] : (slot.positions as string[]);
+    const positions = bench ? ['QB', 'RB', 'WR', 'TE', 'K'] : (slot.positions as string[]);
     const used = new Set(Object.values(fl).filter(Boolean));
     return positions
       .flatMap((pos) => ctx.byPos.get(pos as never) ?? [])
       .filter((p) => lab?.p[p.key] && !excludes.has(p.key) && (!used.has(p.key) || p.key === value))
       .map((p) => ({ p, v: projectWeek(fctx, p.key, week) }))
       .sort((a, b) => b.v - a.v);
-  }, [slot, ctx, lab, fl, excludes, fctx, week, value]);
+  }, [slot, bench, ctx, lab, fl, excludes, fctx, week, value]);
+  const players = useMemo(() => pool.map((x) => x.p.player), [pool]);
   const byKey = useMemo(() => new Map(pool.map((x) => [keyOfPlayer(x.p.player), x])), [pool]);
-  const index = useMemo(() => buildSearchIndex(pool.map((x) => x.p.player), { ovr: ovrMap, formerNames: extras.formerNames }), [pool, ovrMap, extras]);
-  const list = useMemo(() => {
-    const qq = q.trim();
-    type Item = (typeof pool)[number];
-    const has = (x: Item | undefined): x is Item => !!x;
-    if (qq) return searchPlayers(index, qq, 40).map((e) => byKey.get(keyOfPlayer(e.p))).filter(has);
-    const recent = readRecent().map((k) => byKey.get(k)).filter(has);
-    const seen = new Set(recent);
-    return [...recent, ...pool.filter((x) => !seen.has(x)).slice(0, 40)];
-  }, [q, index, byKey, pool]);
-  const done = (key: string) => {
-    if (slot) setFl((l) => setF(l, slot.id, key));
-    setQ('');
+  const suggestions = useMemo(() => [{ id: 'best', label: 'Best this week', players: players.slice(0, 20) }], [players]);
+  const { ovrMap } = useGamePool();
+  const extra = useCallback(
+    (pl: Player) => {
+      const x = byKey.get(keyOfPlayer(pl));
+      return x ? <span className="ss-extra">{f1(x.v)} pts<i>{lab ? `$${salaryOf(lab, x.p.key)}` : ''}</i></span> : null;
+    },
+    [byKey, lab],
+  );
+  const close = () => {
+    setBenchKind('players');
     onClose();
   };
-  // the bench takes anyone: players (kickers included) or a defence (owner: "for the bench I should be able to select kickers and defense")
-  const bench = !!slot && isBenchId(slot.id);
-  const [benchKind, setBenchKind] = useState<'players' | 'dst'>('players');
-  const dst = slot?.id === 'dst' || (bench && benchKind === 'dst');
-  return (
-    <Sheet open={!!slot} onOpenChange={(o) => { if (!o) { setQ(''); setBenchKind('players'); onClose(); } }}>
-      <SheetContent side="bottom" className="fh-sheet fh-picker max-h-[82dvh] overflow-hidden p-0">
-        <SheetTitle className="fh-picker__t font-display text-xl uppercase">{dst ? 'Pick a defence' : `Pick ${slot?.label ?? ''}`}</SheetTitle>
-        <SheetDescription className="sr-only">Choose who starts in this slot.</SheetDescription>
-        {bench && (
-          <div className="px-4 pb-2">
-            <ArcadeToggle<'players' | 'dst'> fill label="Bench pick" size="sm" value={benchKind} onChange={(v) => { setBenchKind(v); setQ(''); }} options={[{ value: 'players', label: 'Players' }, { value: 'dst', label: 'Defences' }]} />
-          </div>
-        )}
-        <Command shouldFilter={false}>
-          <div className="fh-picker__in"><Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" /><CommandInput value={q} onValueChange={setQ} placeholder={dst ? 'Club, city or abbreviation' : 'Name, nickname, club or city'} className="h-10 text-[16px]" /></div>
-          <CommandList className="max-h-[60dvh]">
-            <CommandEmpty>{dst ? 'No defence matches.' : 'No player matches.'}</CommandEmpty>
-            <CommandGroup>
-              {dst
-                ? (q.trim() ? searchTeams(q, 32) : [...NFL_TEAMS].sort((a, b) => a.name.localeCompare(b.name))).map((t) => (
-                    <CommandItem key={t.id} value={t.abbreviation} onSelect={() => done(`DST:${t.abbreviation}`)} className="fh-pick fx-flat fx-row" style={fxTone(t.name)}>
-                      <ClubMark club={t.name} size={64} />
-                      <TeamLogo team={t} size={24} decorative backed />
-                      <span className="fh-pick__n">{t.fullName}</span>
-                      <span className="fh-pick__m">${lab ? salaryOf(lab, `DST:${t.abbreviation}`) : 0}</span>
-                    </CommandItem>
-                  ))
-                : list.map(({ p, v }) => (
-                    <CommandItem key={p.key} value={p.key} onSelect={() => { pushRecent(keyOfPlayer(p.player)); done(p.key); }} className="fh-pick fx-flat fx-row" style={fxTone(bannerTeamOf(p.player))}>
-                      <ClubMark club={bannerTeamOf(p.player)} size={64} />
-                      <TeamLogo team={teamOf(bannerTeamOf(p.player)) ?? bannerTeamOf(p.player)} size={24} decorative backed />
-                      <span className="fh-pick__n">{nameOf(p.key)}</span>
-                      <span className="fh-pick__m">{f1(v)} pts{lab ? ` · $${salaryOf(lab, p.key)}` : ''}</span>
-                    </CommandItem>
-                  ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </SheetContent>
-    </Sheet>
+  const done = (key: string) => {
+    if (slot) setFl((l) => setF(l, slot.id, key));
+    close();
+  };
+  if (!slot) return null;
+  return createPortal(
+    <PlayerSearchSheet
+      open
+      onClose={close}
+      players={dst ? [] : players}
+      ovrMap={ovrMap}
+      onPick={(p) => done(keyOfPlayer(p))}
+      title="Fantasy"
+      word={dst ? 'Pick a defence' : `Pick ${slot.label}`}
+      placeholder={dst ? 'Club, city or abbreviation' : 'Name, nickname, club or city'}
+      suggestions={suggestions}
+      selectedKey={value || undefined}
+      extra={extra}
+      hidePositions
+      dock
+      mode={dst ? 'dst' : 'players'}
+      defence={
+        dst
+          ? {
+              onPick: (t) => done(`DST:${t.abbreviation}`),
+              extra: (t) => <span className="ss-extra">${lab ? salaryOf(lab, `DST:${t.abbreviation}`) : 0}</span>,
+            }
+          : undefined
+      }
+      subheader={
+        bench ? (
+          <ArcadeToggle<'players' | 'dst'> fill label="Bench pick" size="sm" value={benchKind} onChange={setBenchKind} options={[{ value: 'players', label: 'Players' }, { value: 'dst', label: 'Defences' }]} />
+        ) : undefined
+      }
+    />,
+    document.body,
   );
 };
 
