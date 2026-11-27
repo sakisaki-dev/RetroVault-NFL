@@ -16,7 +16,7 @@ Owner-approved model (2026-11-23, experiments rounds 1-3): career score = 70% EF
                and seasons as a qualified starter (longevity, 1999 on), 30%: percentiles among qualified players.
   honours      raw points, uncapped (MVP 30, OPOY / DPOY 18, SB MVP 12, ring 10, ROY 2), scaled to the position's maximum
                among qualified players, zero = 0.
-  score        0.5 x efficiency + 0.5 x (0.5 production + 0.5 honours) (owner tested 70/30, 60/40, 50/50 on 2026-11-23; 50/50 had the best Hall of Fame AUC on retirees); a career that starts before 1999 takes its efficiency from CAREER-TOTAL rates against the real league averages of the seasons he played, flagged.
+  score        0.5 x efficiency + 0.5 x (0.5 production + 0.5 honours) (owner tested 70/30, 60/40, 50/50 on 2026-11-23; 50/50 had the best Hall of Fame AUC on retirees); a career that starts before 1999 takes its efficiency from CAREER-TOTAL rates against the real league averages of the seasons he played, flagged; its efficiency is shrunk toward the mean by the share of the career-totals traits it actually has (COV_P, docs/STATS_REFERENCE.md).
   CAR          the score's percentile among qualified players (S = top 10%), then rating = 62 + 37 x (pct / 100) ^ 2.5.
 Qualified = QB 1,500 attempts, RB 500 carries, WR / TE 150 catches, LB / DB / DL 48 games. Offensive linemen have no weekly
 data and keep the League Score rating (src/config/ovr.ts). Deterministic. The site only reads the number.
@@ -37,6 +37,7 @@ CACHE = ROOT / "data" / "nfl-cache"
 OUT = ROOT / "public" / "data" / "nfl" / "career_rating.json"
 NOW = 2026
 ZERO_K = 5000
+COV_P = float(os.environ.get("RV_COV_P", 0.7))   # evidence shrink for career-totals efficiency built from few traits (see TOT_EFF)
 EFF_SHARE = float(os.environ.get("RV_EFF_SHARE", 0.5))   # efficiency's share of the career score; production and honours split the rest evenly
 
 players = json.loads((ROOT / "data/y80/players.json").read_text())
@@ -511,6 +512,12 @@ for pos in POS:
     wts = {tn: W[pos].get(TOT[ks[0]][1][tn][2] if tn in TOT[ks[0]][1] else "", 0.0) for tn in traits}
     # weight by the stat each trait maps to (looked up per player below)
     sc = {}
+    # Coverage: the share of the position's weight that can exist in career totals (stats some totals-only player has) that THIS player's
+    # totals actually cover. Pre-1999 lines miss tackles, forced fumbles and often more (Youngblood: sacks only; Ham: interceptions only), so
+    # his weighted z rests on one or two traits and is the noisiest kind of score: an extreme percentile out of a single stat. The score
+    # is pulled toward the qualified mean by that coverage, c = share ^ COV_P (0.7): 1 with every trait, ~0.6 with half
+    # of them, ~0.08 with a sliver (given only his best stat, his expected whole-game z is a fraction of it). A shrink of the evidence, not a zero for the missing stat (missing traits are still skipped).
+    cap = sum(W[pos].get(st, 0.0) for st in {t[2] for k in ks for t in TOT[k][1].values()})
     for k in ks:
         num_w = 0.0; den_w = 0.0
         for tn, (num, den, stat) in TOT[k][1].items():
@@ -521,7 +528,8 @@ for pos in POS:
             z = (x * (-1.0 if tn == "int" else 1.0) - mean[tn]) / sd[tn]
             num_w += w * z; den_w += w
         if den_w > 0:
-            sc[k] = num_w / den_w
+            share = min(1.0, den_w / cap) if cap > 0 else 1.0
+            sc[k] = num_w / den_w * share ** COV_P
     qs = np.sort([v for k, v in sc.items() if qual[k]])
     for k, v in sc.items():
         TOT_EFF[k] = pctof(qs, v)

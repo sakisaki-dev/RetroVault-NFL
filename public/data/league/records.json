@@ -986,39 +986,7 @@
     "year": ""
    },
    "scope": "season",
-   "league": {
-    "value": 44,
-    "mark": "44",
-    "top": [
-     {
-      "value": 44,
-      "mark": "44",
-      "player": "David Akers",
-      "pos": "K",
-      "team": "49ers",
-      "season": "2011"
-     },
-     {
-      "value": 44,
-      "mark": "44",
-      "player": "Ka'imi Fairbairn",
-      "pos": "K",
-      "team": "Texans",
-      "season": "2025"
-     },
-     {
-      "value": 41,
-      "mark": "41",
-      "player": "Chris Boswell",
-      "pos": "K",
-      "team": "Steelers",
-      "season": "2024"
-     }
-    ],
-    "basis": "seasons 1999-2026",
-    "clubHolds": false
-   },
-   "broken": false
+   "league": null
   },
   {
    "record": "Best field goal %, season",
@@ -1030,39 +998,7 @@
     "year": ""
    },
    "scope": "season",
-   "league": {
-    "value": 100,
-    "mark": "100 %",
-    "top": [
-     {
-      "value": 100,
-      "mark": "100 %",
-      "player": "Mike Vanderjagt",
-      "pos": "K",
-      "team": "Colts",
-      "season": "2003"
-     },
-     {
-      "value": 97.4,
-      "mark": "97.4 %",
-      "player": "Justin Tucker",
-      "pos": "K",
-      "team": "Ravens",
-      "season": "2016"
-     },
-     {
-      "value": 97.1,
-      "mark": "97.1 %",
-      "player": "Josh Lambo",
-      "pos": "K",
-      "team": "Jaguars",
-      "season": "2019"
-     }
-    ],
-    "basis": "seasons 1999-2026",
-    "clubHolds": false
-   },
-   "broken": false
+   "league": null
   }
  ]
 }
