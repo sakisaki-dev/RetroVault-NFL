@@ -1,3 +1,4 @@
+import ClubStrip from '@/components/brand/ClubStrip';
 import { useMemo, type CSSProperties } from 'react';
 import GameSprite from '@/components/GameSprite';
 import TeamLogo from '@/components/brand/TeamLogo';
@@ -119,7 +120,7 @@ const ClubSeasonHero = ({ club, year, record, cell, result, lastPost, rows, onPi
           ) : (
             <TeamLogo team={club} size={220} decorative />
           )}
-          <span className="pg-cover__who"><b>{star.name}</b>{star.szn != null && <i className="num">SZN {star.szn}</i>}</span>
+          <span className="pg-cover__who"><ClubStrip team={club} label={star.name} size="sm" />{star.szn != null && <i className="num">SZN {star.szn}</i>}</span>
         </button>
       )}
       <div className="pg-badge mo-pop" aria-label={`Record ${record}${place ? `, ${place}` : ''}`}>

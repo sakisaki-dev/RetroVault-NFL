@@ -1,6 +1,6 @@
 import { Reveal } from '@/components/motion/Reveal';
 import { StarSprite } from '@/components/season/NflSeasonExtras';
-import { peekKeyProps } from '@/components/peek/peekProps';
+import ClubStrip from '@/components/brand/ClubStrip';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { displayName } from '@/utils/displayName';
 import type { ClubSpecial } from '@/utils/clubSeason';
@@ -20,11 +20,10 @@ const BANDS = ['0-39', '40-49', '50+'];
 const ClubSeasonSpecial = ({ st, club, year, onPick }: { st: ClubSpecial | null; club: string; year: number; onPick: (key: string) => void }) => {
   if (!st || !st.fg || !st.fg[1]) return null;
   const [made, att] = st.fg;
-  const name = (key: string) => (
-    <button type="button" className="pg-name" data-peek-ok {...peekKeyProps(key)} onClick={() => onPick(key)}>
-      {displayName(key.split(':').slice(1).join(':'))}
-    </button>
-  );
+  const name = (key: string) => {
+    const n = displayName(key.split(':').slice(1).join(':'));
+    return <ClubStrip team={club} label={n} size="sm" className="pg-name" playerKey={key} onClick={() => onPick(key)} ariaLabel={`${n}: open player card`} />;
+  };
   const r = st.ret;
   const retYds = r ? r.kry + r.pry : 0;
   return (
@@ -38,7 +37,7 @@ const ClubSeasonSpecial = ({ st, club, year, onPick }: { st: ClubSpecial | null;
           )}
           <div className="pg-kk__who">
             <span className="pg-kick">Kicker</span>
-            {st.k ? name(st.k) : <span className="pg-name">Unit</span>}
+            {st.k ? name(st.k) : <ClubStrip team={club} label="Unit" size="sm" className="pg-name" />}
           </div>
           <div className="pg-kk__big">
             <b className="num">{nf(made)}<small>/{nf(att)}</small></b>

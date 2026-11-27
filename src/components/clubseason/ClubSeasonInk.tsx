@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from 'react';
 import { PixelIcon } from '@/components/arcade';
+import ClubStrip from '@/components/brand/ClubStrip';
 import { Reveal } from '@/components/motion/Reveal';
 import { INK_LABEL, leadersForClubSeason, streaksForClubSeason, useSeasonBoard, useStreaks } from '@/utils/seasonBoards';
 
@@ -25,11 +26,7 @@ const ClubSeasonInk = ({ club, season, onPick }: ClubSeasonInkProps) => {
   const runs = streakFile ? streaksForClubSeason(club, season) : [];
   if (!led.length && !runs.length) return null;
   const name = (k: string | null, n: string) =>
-    k && onPick ? (
-      <button type="button" className="pg-name" data-peek-ok data-player-key={k} onClick={() => onPick(k)}>{n}</button>
-    ) : (
-      <span className="pg-name">{n}</span>
-    );
+    <ClubStrip team={club} label={n} size="sm" className="pg-name" playerKey={k && onPick ? k : undefined} onClick={k && onPick ? () => onPick(k) : undefined} ariaLabel={k && onPick ? `${n}: open player card` : undefined} />;
   const lines: ReactNode[] = [
     ...led.slice(0, 3).map(({ stat, row }) => (
       <Fragment key={`l-${stat}`}>
