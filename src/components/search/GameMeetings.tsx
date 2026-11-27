@@ -4,7 +4,7 @@ import TeamLogo from '@/components/brand/TeamLogo';
 import { CommandItem } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { findNFLTeam } from '@/utils/nflTeams';
-import { loadGameIds, useSeasonGames, type GameIds } from '@/utils/nflGames';
+import { loadGameIds, loadGameSeason, useSeasonGames, type GameIds } from '@/utils/nflGames';
 import { gamesOfQuery, parseGameQuery, weekLabelOf, type Meeting } from '@/utils/gameFinder';
 import { IS_NFL } from '@/config/edition';
 
@@ -14,18 +14,37 @@ import { IS_NFL } from '@/config/edition';
  */
 export const useGameQuery = (query: string) => useMemo(() => (IS_NFL ? parseGameQuery(query) : null), [query]);
 
+/** Ids of games not played yet (no score in the season file), newest seasons first until a season is fully played. Null until read. */
+let unplayedJob: Promise<Set<string>> | null = null;
+const loadUnplayed = (ids: GameIds): Promise<Set<string>> =>
+  (unplayedJob ??= (async () => {
+    const out = new Set<string>();
+    for (const y of Object.keys(ids).sort((a, b) => Number(b) - Number(a)).slice(0, 3)) {
+      const m = await loadGameSeason(Number(y));
+      if (!m) continue;
+      let left = 0;
+      for (const g of m.values()) if (g.awayScore === undefined || g.homeScore === undefined) (out.add(g.id), left++);
+      if (!left) break;
+    }
+    return out;
+  })());
+
 export const useMeetings = (query: string, limit = 5): Meeting[] => {
   const pair = useGameQuery(query);
-  const [ids, setIds] = useState<GameIds | null>(null);
+  const [src, setSrc] = useState<{ ids: GameIds; unplayed: Set<string> } | null>(null);
   useEffect(() => {
     if (!pair) return;
     let live = true;
-    void loadGameIds().then((v) => live && setIds(v));
+    void loadGameIds().then(async (ids) => {
+      if (!ids) return;
+      const unplayed = await loadUnplayed(ids).catch(() => new Set<string>());
+      if (live) setSrc({ ids, unplayed });
+    });
     return () => {
       live = false;
     };
   }, [pair]);
-  return useMemo(() => (pair && ids ? gamesOfQuery(ids, pair, limit) : []), [pair, ids, limit]);
+  return useMemo(() => (pair && src ? gamesOfQuery(src.ids, pair, limit, src.unplayed) : []), [pair, src, limit]);
 };
 
 /** A meeting's score from its season file, and the colour of the winning club (the home club until it is played). */
