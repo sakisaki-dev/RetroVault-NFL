@@ -51,7 +51,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
   const best = [...graded].sort((a, b) => b.percentile - a.percentile)[0];
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
-      <div className="min-w-0 space-y-3">
+      <div className="grid min-w-0 grid-cols-2 gap-2.5 lg:block lg:space-y-3">
       {overall && (
         <LeaderboardPeek
           player={player}
@@ -67,11 +67,11 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
             type="button"
             aria-label={`Skill grade ${overall.grade.grade}, skill rating ${overall.rating}. Show the ${player.position} leaderboard`}
             className={cn(
-              'rbk-chip glass-card flex w-full flex-row items-center gap-4 p-4 text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:flex-col lg:items-start',
+              'rbk-chip glass-card flex w-full flex-col items-start gap-2 p-2.5 max-lg:h-full text-left hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:gap-4 lg:p-4',
               overall.grade.grade === 'S' && 'dd-card--s',
             )}
           >
-            <GradeChip grade={overall.grade} size="xl" />
+            <GradeChip grade={overall.grade} size="xl" className="max-lg:h-11 max-lg:min-w-[2.9rem] max-lg:text-3xl" />
             <div className="min-w-0 space-y-1.5">
               <p className="font-pixel text-[9px] uppercase text-gold">Skill grade</p>
               <div className="flex flex-wrap gap-1.5">
@@ -90,7 +90,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
       )}
       {below}
       </div>
-      <ul className="grid-fill-last grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3" aria-label={`${displayName(player.name)} skill grades`}>
+      <ul className="grid-fill-last grid grid-cols-2 gap-2 xl:grid-cols-3 max-sm:[&>li:last-child:nth-child(odd)]:col-span-2" aria-label={`${displayName(player.name)} skill grades`}>
         {traits.map((t, i) => {
           const s = t.grade?.grade === 'S';
           return (
@@ -117,7 +117,7 @@ const DdSkills = ({ player, ovr, ovrLabel = CAREER_LABEL, traits, overall, playe
                   <GradeChip grade={t.grade} />
                   <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className="truncate font-display text-base font-bold uppercase tracking-wide">{t.trait.name}</span>
+                      <span className="min-w-0 font-display text-base font-bold uppercase leading-tight tracking-wide max-sm:text-[13px] sm:truncate">{t.trait.name}</span>
                       <span className="shrink-0 font-mono text-xs tabular-nums text-chalk">{t.display}</span>
                     </div>
                     <DdBar pct={t.grade ? t.percentile : null} color={t.grade?.color} label={`${t.trait.name} percentile`} />
