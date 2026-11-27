@@ -29,7 +29,7 @@
 .gm-hero__club.is-lost .gm-hero__logo, .gm-hero__club.is-lost .gm-hero__qb { filter: saturate(0.55) brightness(0.8); }
 .gm-hero__logo { flex: none; width: 84px; height: 84px; background: none; border: 0; padding: 0; cursor: pointer; z-index: 1; }
 .gm-hero__role { font-family: var(--font-pixel); font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: hsl(var(--gold)); }
-.gm-hero__name { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.9rem; line-height: 0.95; text-transform: uppercase; font-style: italic; }
+.gm-hero__name { font-family: 'Barlow Condensed', inherit; font-weight: 800; font-size: 1.9rem; line-height: 1.1; text-transform: uppercase; }
 .gm-hero__sub { margin-top: 0.2rem; font-size: 11px; color: hsl(var(--muted-foreground)); }
 .gm-hero__qb { width: 64px; display: flex; justify-content: center; position: absolute; bottom: -10px; opacity: 0.95; pointer-events: none; z-index: 0; right: 0; }
 .gm-hero__club--home .gm-hero__qb { right: auto; left: 0; }
