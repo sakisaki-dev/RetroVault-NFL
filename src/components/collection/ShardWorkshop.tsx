@@ -144,7 +144,7 @@ const ShardWorkshop = ({ cards, owned, shards, perPack, onOpen }: Props) => {
           </div>
 
           <div className="sw__pickbar">
-            <label className="sw__search">
+            <label className="sw__search rv-search">
               <Search className="h-4 w-4 shrink-0 opacity-60" aria-hidden="true" />
               <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Any player" aria-label="Find any player to claim" autoComplete="off" spellCheck={false} />
               {q && (

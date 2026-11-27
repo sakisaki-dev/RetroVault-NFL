@@ -1078,8 +1078,8 @@ const CardDetail = ({ target, entry, shards, shardsPerPack = 0, display, total, 
 
                 {!target?.preview && variant === 'auto' && vEntry && (
                   <p className="text-xs text-muted-foreground">
-                    Autographs are pulled only: they can&apos;t be claimed or upgraded with shards. Each is its own numbered card, in Autographs below the
-                    binder.
+                    Autographs are pulled only: they can&apos;t be claimed or upgraded with shards. Each is its own numbered card: search
+                    &ldquo;auto&rdquo; in the binder to see every player you have one of.
                   </p>
                 )}
 

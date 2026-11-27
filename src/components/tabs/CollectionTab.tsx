@@ -30,7 +30,6 @@ import SellDuplicates from '@/components/collection/economy/SellDuplicates';
 import { activeCosmetic, slabKey } from '@/utils/economy';
 import TrophyCase from '@/components/collection/economy/TrophyCase';
 import { completedClubs, jerseyOf, useSets, useTopCards } from '@/components/collection/economy/useRewards';
-import AutographsSection from '@/components/collection/autograph/AutographsSection';
 import { autographOddsLine } from '@/components/collection/autograph/AutographDetails';
 import { PARALLELS } from '@/config/autographs';
 import { useAutographFreezer } from '@/components/collection/autograph/freeze';
@@ -229,7 +228,7 @@ const RulesPopover = () => (
         The Autograph art is a signed card: {autographOddsLine()} cards. Each one also rolls its parallel ({PARALLELS.map((p) => `${p.label.replace(/ auto( 1\/1)?$/, '')} ${p.serial === 1 ? '1/1' : `/${p.serial}`} ${p.w}%`).join(', ')};
         the Cut only for Hall of Famers), pen and ink, inscription, serial and a rare throwback design, which set its value: the card&apos;s price × its
         finish × 2.7 (a black ballpoint sticker) up to × 91 (a Hall of Famer&apos;s inscribed throwback 1/1 cut). Each autograph is its own numbered
-        card in Autographs; they are pulled only, never claimed or upgraded with shards.
+        card, under the A on the player's card in the binder; they are pulled only, never claimed or upgraded with shards.
       </p>
       <p className="mt-3 font-semibold">Earn packs</p>
       <ul className="mt-1 space-y-0.5 text-muted-foreground">
@@ -435,7 +434,7 @@ const CollectionTab = () => {
         (pos === 'all' || c.player.position === pos) &&
         (team === 'all' || c.franchise === team) &&
         (missing || !!owned[c.key]) &&
-        matchesQuery(c, bf.q),
+        matchesQuery(c, bf.q, owned[c.key]),
     );
     const fr = (c: CardInfo) => (owned[c.key] ? finishRank(owned[c.key].best) : -1);
     const surname = (c: CardInfo) => surnameOf(c.player.name);
@@ -675,15 +674,6 @@ const CollectionTab = () => {
         </section>
       )}
 
-      {loaded && (
-        <AutographsSection
-          autos={state.autos}
-          onOpen={(a, from) => {
-            const info = byKey.get(a.key);
-            if (info) setDetail({ info, variant: 'auto', finish: a.finish, auto: a, from });
-          }}
-        />
-      )}
 
       {/* Exchange (pack shop, bounties, sets, trade-up, milestones) above the Market (owner, 2026-11-17) */}
       {loaded && cards.length > 0 && (

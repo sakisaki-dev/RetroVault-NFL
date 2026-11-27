@@ -205,7 +205,7 @@ const Binder = ({
 
   // Counts for the sheet: how many cards each choice would show with the other filters as they are
   const dq = useDeferredValue(f.q); // typing never waits for the binder
-  const pool = useMemo(() => cards.filter((c) => (!f.mine || !!owned[c.key]) && matchesQuery(c, dq)), [cards, owned, f.mine, dq]);
+  const pool = useMemo(() => cards.filter((c) => (!f.mine || !!owned[c.key]) && matchesQuery(c, dq, owned[c.key])), [cards, owned, f.mine, dq]);
   const tierCount = (t: Tier) => pool.filter((c) => c.tier === t).length;
   const posCount = (p: Position) => pool.filter((c) => c.player.position === p).length;
 
@@ -298,7 +298,7 @@ const Binder = ({
 
       {/* Toolbar: search and the filters sheet */}
       <div className="bk-tools">
-        <label className="bk-search">
+        <label className="bk-search rv-search">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
           <input
             type="search"

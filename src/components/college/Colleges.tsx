@@ -69,7 +69,7 @@ export const CollegeIndexView = ({ idx, onSchool }: { idx: CollegeIndex; onSchoo
             The colleges
           </h2>
         </div>
-        <label className="ci__search">
+        <label className="ci__search rv-search">
           <Search aria-hidden="true" />
           <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Find a school: Ohio State, Slippery Rock…" aria-label="Find a school" />
         </label>

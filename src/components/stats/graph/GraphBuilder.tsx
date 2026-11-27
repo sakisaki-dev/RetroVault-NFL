@@ -513,7 +513,7 @@ const GraphBuilder = ({
                 <label htmlFor={`${uid}-mq`} className="block font-display text-xs font-bold uppercase tracking-wide text-muted-foreground">
                   Find a player on the chart
                 </label>
-                <input id={`${uid}-mq`} type="search" value={search} list={`${uid}-mnames`} onChange={(e) => setSearch(e.target.value)} placeholder="Name…" className={cn(inputCls, 'h-11 text-base')} />
+                <input id={`${uid}-mq`} type="search" value={search} list={`${uid}-mnames`} onChange={(e) => setSearch(e.target.value)} placeholder="Name…" className={cn(inputCls, 'rv-search-input h-11 text-base')} />
                 <datalist id={`${uid}-mnames`}>
                   {names.rows.map((p) => <option key={`${p.position}:${displayName(p.name)}`} value={displayName(p.name)} />)}
                 </datalist>
@@ -657,7 +657,7 @@ const GraphBuilder = ({
                 list={`${uid}-names`}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Find a player…"
-                className={inputCls}
+                className={cn(inputCls, 'rv-search-input')}
               />
               <datalist id={`${uid}-names`}>
                 {names.rows.map((p) => <option key={`${p.position}:${displayName(p.name)}`} value={displayName(p.name)} />)}

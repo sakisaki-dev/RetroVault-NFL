@@ -597,7 +597,7 @@ const Sheet = ({
           </div>
           <form
             role="search"
-            className="ss-field"
+            className="ss-field rv-search"
             onSubmit={(e) => {
               e.preventDefault();
               // The first result of what was typed (computed now if the deferred list is a frame behind)

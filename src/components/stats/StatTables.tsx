@@ -109,7 +109,7 @@ const StatTables = ({ data }: { data: LeagueData }) => {
               placeholder="Search players…"
               value={typed}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border-border/30 bg-secondary/50 pl-10"
+              className="rv-search-input pl-10"
             />
           </div>
           <Button variant="outline" size="sm" className="ml-auto" onClick={() => setIsAddingPlayer(true)}>

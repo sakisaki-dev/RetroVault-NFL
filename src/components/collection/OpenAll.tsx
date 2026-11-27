@@ -8,6 +8,8 @@ import type { Tier } from '@/utils/collection';
 import { fmtCoins } from '@/utils/cardMarket';
 import type { CardInfo } from './useCardPool';
 import CollectibleCard from './CollectibleCard';
+import { PackArt } from './PackOpening';
+import './openAll.css';
 import { isAuto, isPrizmChase, isThrowback } from './walkoutBeats';
 import { KIT_SOURCE } from './kits';
 import type { AutographFreezer, TierPool } from '@/utils/collection';
@@ -18,7 +20,7 @@ import { displayName } from '@/utils/displayName';
  * "Open all" (owner: "give me an option to open all packs at once"): every owned pack of one type, or everything, in
  * one go through the normal pull path (openPack: the same odds, kits, Prizm rolls, autographs, duplicate shards and
  * storage), with no tunnel and no walkouts, then one summary: cards, new players, tiers, the best pulls as tappable
- * card tiles, shards and coins. A confirm first, because it is a lot of packs.
+ * card tiles, shards and coins. One "Open all" bar; its sheet picks the pack types (all on) and confirms.
  */
 interface Summary {
   packs: number;
@@ -52,8 +54,10 @@ const OpenAll = ({
   const [ask, setAsk] = useState<PackType[] | null>(null);
   const [busy, setBusy] = useState<{ done: number; of: number } | null>(null);
   const [sum, setSum] = useState<Summary | null>(null);
+  const [pick, setPick] = useState<PackType[]>([]);
   const counts = types.map((t) => ({ t, n: packCount(state, t) })).filter((x) => x.n > 0);
   const total = counts.reduce((a, x) => a + x.n, 0);
+  const chosen = counts.filter((x) => pick.includes(x.t)).reduce((a, x) => a + x.n, 0);
   if (total < 2 && !sum && !busy && !ask) return null; // the summary outlives the packs it opened
 
   const run = async (list: PackType[]) => {
@@ -80,37 +84,51 @@ const OpenAll = ({
 
   return (
     <>
-      <div className={cn('flex flex-wrap items-center gap-2', total < 2 && !busy && 'hidden')} aria-label="Open many packs at once">
-        {counts.length > 1 &&
-          counts
-            .filter((x) => x.n > 1)
-            .map(({ t, n }) => (
-              <button key={t} type="button" disabled={disabled || !!busy} onClick={() => setAsk([t])} className="link-chip text-gold">
-                <Layers className="h-3.5 w-3.5" aria-hidden="true" /> Open all {n} {PACKS[t].label.replace(/ Pack$/, '')}
-              </button>
-            ))}
-        <button type="button" disabled={disabled || !!busy} onClick={() => setAsk(counts.map((x) => x.t))} className="link-chip text-gold">
-          <Layers className="h-3.5 w-3.5" aria-hidden="true" /> {counts.length === 1 ? `Open all ${total}` : `Open everything (${total})`}
-        </button>
-        {busy && (
-          <span className="font-pixel text-[9px] uppercase tracking-wider text-muted-foreground" role="status">
-            Opening {busy.done} / {busy.of}
-          </span>
+      {/* one bar, not a chip per pack type (owner: "this is clunky ui"): the sheet picks the types */}
+      <div className={cn('oa-bar', total < 2 && !busy && 'hidden')}>
+        {busy ? (
+          <div className="oa-prog" role="status" aria-label={`Opening ${busy.done} of ${busy.of} packs`}>
+            <span className="oa-prog__k">Opening packs</span>
+            <span className="oa-prog__n">{busy.done.toLocaleString('en-US')} / {busy.of.toLocaleString('en-US')}</span>
+            <i style={{ width: `${(busy.done / Math.max(1, busy.of)) * 100}%` }} />
+          </div>
+        ) : (
+          <button type="button" disabled={disabled} onClick={() => { setPick(counts.map((x) => x.t)); setAsk(counts.map((x) => x.t)); }} className="oa-btn">
+            <Layers className="h-4 w-4" aria-hidden="true" />
+            <span>Open all</span>
+            <b>{total.toLocaleString('en-US')} packs</b>
+          </button>
         )}
       </div>
 
       <Dialog open={!!ask} onOpenChange={(o) => !o && setAsk(null)}>
-        <DialogContent className="max-w-md border-line bg-night p-5">
-          <DialogTitle className="font-display text-xl font-bold uppercase">Open {ask ? ask.reduce((a, t) => a + packCount(state, t), 0) : 0} packs?</DialogTitle>
-          <DialogDescription>
-            Same odds as opening them one by one, but with no tunnel or walkouts: you get one summary. This cannot be undone.
-          </DialogDescription>
+        <DialogContent phoneSheet className="max-w-md border-line bg-night p-5">
+          <DialogTitle className="font-display text-xl font-bold uppercase">Open {chosen.toLocaleString('en-US')} packs</DialogTitle>
+          <DialogDescription className="text-xs">Same odds, no walkouts, one summary.</DialogDescription>
+          {counts.length > 1 && (
+            <ul className="oa-pick" aria-label="Pack types to open">
+              {counts.map(({ t, n }) => {
+                const on = pick.includes(t);
+                return (
+                  <li key={t}>
+                    <button type="button" aria-pressed={on} className="oa-pick__item" data-on={on || undefined} onClick={() => setPick((p) => (on ? p.filter((x) => x !== t) : [...p, t]))}>
+                      <span className={cn('pk-pack', `pk-pack--${t}`)}>
+                        <PackArt type={t} small />
+                      </span>
+                      <span className="oa-pick__n">{n.toLocaleString('en-US')}</span>
+                      <span className="oa-pick__l">{PACKS[t].label.replace(/ Pack$/, '')}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
           <div className="mt-4 flex justify-end gap-2">
             <button type="button" className="link-chip" onClick={() => setAsk(null)}>
               Cancel
             </button>
-            <button type="button" className="link-chip text-gold" onClick={() => ask && void run(ask)}>
-              Open them all
+            <button type="button" className="oa-btn oa-btn--go" disabled={!chosen} onClick={() => void run(pick)}>
+              Open {chosen.toLocaleString('en-US')}
             </button>
           </div>
         </DialogContent>

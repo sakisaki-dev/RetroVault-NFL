@@ -113,7 +113,7 @@ const MarketView = ({ byKey, owned, autos, onOpen }: MarketViewProps) => {
           onChange={setPos}
           options={['all', ...POSITIONS].map((p) => ({ value: p, label: p === 'all' ? 'All' : p }))}
         />
-        <label className="mk-search">
+        <label className="mk-search rv-search">
           <Search className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
           <span className="sr-only">Search players</span>
           <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search players" />
